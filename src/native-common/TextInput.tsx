@@ -1,4 +1,4 @@
-﻿/**
+/**
 * TextInput.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -78,6 +78,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
                 textBreakStrategy={ 'simple' }
                 accessibilityLabel={ this.props.accessibilityLabel }
                 allowFontScaling={ this.props.allowFontScaling }
+                underlineColorAndroid='transparent'
             />
         );
     }
