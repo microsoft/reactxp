@@ -12,7 +12,14 @@ import React = require('react');
 import RN = require('react-native');
 
 import RX = require('../common/Interfaces');
+import Styles from './Styles';
 import Types = require('../common/Types');
+
+const _styles = {
+    defaultTextInput: Styles.createTextInputStyle({
+        padding: 0
+    })
+};
 
 export interface TextInputState {
     inputValue?: string;
@@ -47,7 +54,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
             <RN.TextInput
                 ref='nativeTextInput'
                 multiline={ this.props.multiline }
-                style={ this.props.style }
+                style={ Styles.combine(_styles.defaultTextInput, this.props.style) }
                 value={ this.state.inputValue }
 
                 autoCorrect={ this.props.autoCorrect }
