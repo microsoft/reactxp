@@ -1,0 +1,75 @@
+---
+id: components/text
+title: Text
+layout: docs
+category: Components
+permalink: docs/components/text.html
+next: components/textinput
+---
+
+This component displays basic text. Its children must be one of the following types: a string or another Text component.
+
+Unlike other ReactXP components, some of the style attributes for an Text cascade to its children. In the following example, the title and body both inherit the styles from their parent RX.Text component, but they can also override specific style elements.
+
+Another difference between Text and other components is that Text children are not layed out according to flexbox layout rules. Instead, an inline text layout is used.
+
+## Props
+
+``` javascript
+// Alternate text to display if the image cannot be loaded
+// or by screen readers
+accessibilityHidden: boolean = false;
+
+// Hide the component from screen readers?
+accessibilityHidden: boolean = false;
+
+// Traits used to hint screen readers, etc.
+accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
+
+// Region for accessibility mechanisms
+accessibilityLiveRegion?: AccessibilityLiveRegion = undefined; // Android and web only
+
+// Keyboard tab order
+tabIndex: number = undefined;
+
+// Should fonts be scaled according to system setting?
+allowFontScaling: boolean = true; // Android and iOS only
+
+// For non-zero values, truncates with ellipsis if necessary
+numberOfLines: number = 0;
+
+// Is the text selectable (affects mouse pointer and copy command)
+selectable: boolean = false;
+
+// See below for supported styles
+style: RX.TextStyleRuleSet | RX.TextStyleRuleSet[] = [];
+```
+
+## Styles
+
+[**Text Styles**](docs/styles.html#text-style-attributes)
+
+[**Flexbox Styles**](docs/styles.html#flexbox-style-attributes)
+
+[**View Styles**](docs/styles.html#view-style-attributes)
+
+[**Transform Styles**](docs/styles.html#transform-style-attributes)
+
+## Methods
+
+No methods
+
+## Sample Usage
+
+``` javascript
+    <RX.Text style={ _styles.defaultText }>
+        <RX.Text style={ _styles.titleText }>
+            { this.props.title }
+        </RX.Text>
+        <RX.Text style={ _styles.bodyText }>
+            { this.props.body }
+        </RX.Text>
+    </RX.Text>
+```
+
+

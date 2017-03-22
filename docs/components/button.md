@@ -1,0 +1,84 @@
+---
+id: components/button
+title: Button
+layout: docs
+category: Components
+permalink: docs/components/button.html
+next: components/gestureview
+---
+
+Like View, this component is a generic container for other components. However, it adds some additional capabilities -- support for presses or clicks and hovering.
+
+This component supports only one child. If you require multiple child components, wrap them in a View.
+
+## Props
+``` javascript
+// Alternate text to display if the image cannot be loaded
+// or by screen readers
+accessibilityHidden: boolean = false;
+
+// Hide the component from screen readers?
+accessibilityHidden: boolean = false;
+
+// Traits used to hint screen readers, etc.
+accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
+
+// Region for accessibility mechanisms
+accessibilityLiveRegion?: AccessibilityLiveRegion = undefined; // Android and web only
+
+// Delay in ms before onLongPress is called
+delayLongPress: number = 1000;
+
+// If disabled, touch and mouse input events are ignored
+disabled: boolean = false;
+
+// Called when the user has pressed and held for a specified duration
+onLongPress: (e: RX.SyntheticEvent) => void;
+
+// Called when the mouse cursor enters or leaves the view bounds
+onHoverStart: (e: RX.SyntheticEvent) => void;
+onHoverEnd: (e: RX.SyntheticEvent) => void;
+
+// Called when the touch or mouse button is released within the bounds of the view and the press has not been canceled
+onPress: (e: RX.SyntheticEvent) => void;
+
+// Called when touch is initiated or mouse button is pressed
+onPressIn: (e: RX.SyntheticEvent) => void;
+
+// Called when touch or the mouse button is released or the user&apos;s finger or mouse cursor is no longer over the view
+onPressOut: (e: RX.SyntheticEvent) => void;
+
+// Rasterize contents using offscreen bitmap (perf optimization)
+shouldRasterizeIOS: boolean = false; // iOS only
+
+// See below for supported styles
+style: RX.ButtonStyleRuleSet | RX.ButtonStyleRuleSet[] = [];
+
+// Keyboard tab order
+tabIndex: number = undefined;
+
+// Text for a tooltip
+title: string = undefined;
+
+// Visual touchfeedback properties
+// Disable default opacity animation on touch of buttons
+disableTouchOpacityAnimation?: boolean;  // iOS and Android only
+
+// Opacity value the button should animate to on button touch
+activeOpacity?: number; // iOS and Android only
+
+// Background color that will be visible on button touch
+underlayColor?: string; // iOS and Android only
+```
+
+## Styles
+
+[**Flexbox Styles**](docs/styles.html#flexbox-style-attributes)
+
+[**View Styles**](docs/styles.html#view-style-attributes)
+
+[**Transform Styles**](docs/styles.html#transform-style-attributes)
+
+## Methods
+No methods
+
