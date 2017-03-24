@@ -1,0 +1,43 @@
+{% if page.excerpt %}
+{% assign type = 'article' %}
+{% assign sectionTitle = 'ReactXP Blog' %}
+{% assign description = page.excerpt | strip_html %}
+{% else %}
+{% assign type = 'website' %}
+{% assign sectionTitle = 'ReactXP' %}
+{% assign description = 'A library for cross-platform development' %}
+{% endif %}
+{% assign title = page.title | append: ' - ' | append: sectionTitle %}
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>{{ title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:type" content="{{ type }}">
+  <meta property="og:url" content="https://microsoft.github.io/reactxp{{ page.url }}">
+  <meta property="og:image" content="https://microsoft.github.io/reactxp/img/logo_og.png">
+  <meta property="og:description" content="{{ description }}">
+
+  <link rel="stylesheet" href="/reactxp/css/syntax.css">
+  <link rel="stylesheet" href="/reactxp/css/codemirror.css">
+  <link rel="stylesheet" href="/reactxp/css/reactxp.css">
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+
+    {% include navigation.html %}
+
+    {{ content }}
+
+    {% include footer.html %}
+  </div>
+</body>
+</html>
+
