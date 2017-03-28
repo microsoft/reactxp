@@ -1,0 +1,16 @@
+<div class="nav-main">
+  <div class="wrap">
+    <a class="nav-home" href="/reactxp/">
+      ReactXP
+    </a>
+    <div class="nav-lists">
+      <ul class="nav-site nav-site-internal">
+        <li><a href="/reactxp/docs/index.html"{% if page.sectionid == 'docs' or page.sectionid == 'tips' or page.sectionid == 'contributing' %} class="active"{% endif %}>Docs</a></li>
+        <li><a href="/reactxp/blog/"{% if page.sectionid == 'blog' %} class="active"{% endif %}>Blog</a></li>
+      </ul>
+      <ul class="nav-site nav-site-external">
+        <li><a href="https://github.com/microsoft/reactxp">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
