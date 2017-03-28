@@ -72,11 +72,6 @@ id: home
       <div id="markdownExample"></div>
     </div>
   </div>
-  <script src="/react/js/remarkable.min.js"></script>
-  <script src="/react/js/examples/hello.js"></script>
-  <script src="/react/js/examples/timer.js"></script>
-  <script src="/react/js/examples/todo.js"></script>
-  <script src="/react/js/examples/markdown.js"></script>
 </section>
 <hr class="home-divider" />
 <section class="home-bottom-section">
