@@ -1,6 +1,6 @@
 ---
 layout: hero
-title: A JavaScript library for building user interfaces
+title: A library for building cross-platform apps
 id: home
 ---
 
