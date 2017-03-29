@@ -6,7 +6,7 @@
       <ul>
         {% for item in section.items %}
           <li>
-            <a href=\"/reactxp/docs/#{item["id"]}.html\" #{item["title"]}</a>
+            <a href="/reactxp/docs/{{ item.id }}.html" {{ item.title }}</a>
           </li>
         {% endfor %}
       </ul>
