@@ -1,0 +1,8 @@
+source 'https://rubygems.org'
+
+# jekyll, which builds it all
+# 3.0 includes sass processing
+gem 'jekyll', '~>3.1'
+
+# Jekyll extensions
+gem 'jekyll-redirect-from'

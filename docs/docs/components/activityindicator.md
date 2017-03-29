@@ -1,5 +1,5 @@
 ---
-id: components/activityindiciator
+id: components/activityindicator
 title: ActivityIndicator
 layout: docs
 category: Components

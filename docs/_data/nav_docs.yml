@@ -14,7 +14,7 @@
       title: Animations
 - title: Components
   items:
-    - id: components/activityindiciator
+    - id: components/activityindicator
       title: ActivityIndicator
     - id: components/button
       title: Button
@@ -60,7 +60,7 @@
       title: Linking
     - id: apis/location
       title: Location
-    - id: apis/Modal
+    - id: apis/modal
       title: Modal
     - id: apis/network
       title: Network

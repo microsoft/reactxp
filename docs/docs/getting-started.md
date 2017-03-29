@@ -5,6 +5,8 @@ layout: docs
 category: Overview
 permalink: docs/getting-started.html
 next: react_concepts
+redirect_from:
+  - "docs/index.html"
 ---
 
 ## Web Technologies

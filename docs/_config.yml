@@ -1,2 +1,33 @@
 theme: jekyll-theme-slate
-sass_dir: ./_sass
+name: ReactXP
+description: A library for building cross-platform apps
+url: https://microsoft.github.io
+baseurl: /reactxp
+timezone: America/Los_Angeles
+defaults:
+- scope:
+    path: blog
+    type: pages
+  values:
+    layout: post
+    sectionid: blog
+- scope:
+    path: docs
+    type: pages
+  values:
+    layout: docs
+    sectionid: docs
+- scope:
+    path: community
+    type: pages
+  values:
+    layout: community
+    sectionid: community
+exclude:
+- Gemfile
+- README.md
+sass:
+  sass_dir: ./_sass
+gems:
+- jekyll-redirect-from
+
