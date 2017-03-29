@@ -33,6 +33,10 @@ id: home
         abstraction, you can share your view definitions, styles and animations across multiple target 
         platforms.
       </p>
+      <p>
+        Of course, you can still provide platform-specific UI features, but this can be done
+        selectively in situations where it is desirable.
+      </p>
     </div>
     <div class="overview-section">
       <h3>Design Philosophy</h3>
