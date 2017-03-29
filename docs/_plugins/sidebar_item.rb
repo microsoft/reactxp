@@ -15,7 +15,7 @@ module Jekyll
       if item["href"]
         classes.push("external")
       end
-      className = classes.size > 0  ? " class=\"#{classes.join(' ')}\"" : ""
+      className = classes.size > 0 ? " class=\"#{classes.join(' ')}\"" : ""
 
       return "<a href=\"#{href}\"#{className}>#{item["title"]}</a>"
     end

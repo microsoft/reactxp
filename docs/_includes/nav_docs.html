@@ -6,7 +6,7 @@
       <ul>
         {% for item in section.items %}
           <li>
-            {{ item | docs_sidebar_link}}
+            {{ item | docs_sidebar_link }}
             {% if item.subitems %}
               <ul>
                 {% for subitem in item.subitems %}
