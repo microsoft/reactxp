@@ -45,7 +45,7 @@ $bp-small: 480px;
 
 // basic reset
 * {
-  @include box-sizing(border-box);
+  box-sizing: border-box;
   border: none;
   margin: 0;
   padding: 0;
