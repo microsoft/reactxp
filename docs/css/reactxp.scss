@@ -700,7 +700,7 @@ section.black content {
 /* Button */
 
 .button {
-  @include background(linear-gradient($buttonGreyTop, $buttonGreyBottom));
+  background: linear-gradient($buttonGreyTop, $buttonGreyBottom);
   border-radius: 4px;
   padding: 8px 16px;
   font-size: 18px;
@@ -729,7 +729,7 @@ section.black content {
 }
 
 .button.blue {
-  @include background(linear-gradient($buttonBlueTop, $buttonBlueBottom));
+  background: linear-gradient($buttonBlueTop, $buttonBlueBottom);
 }
 
 
