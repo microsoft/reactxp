@@ -10,8 +10,8 @@ redirect_from:
 
 # ReactXP Versioning
 
-### Version Strategy
-A new version of ReactXP will be released on approximately a monthly basis, following the same general update timeline of React Native. Each new version will get its own branch, allowing consumers of the library to take a dependency on a stable code base.
+### Versioning Strategy
+A new version of ReactXP will be released a monthly basis (approximately), following the same general update timeline of React Native. Each new version will get its own branch, allowing consumers of the library to take a dependency on a stable code base.
 
 
 
