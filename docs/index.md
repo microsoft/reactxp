@@ -1,5 +1,5 @@
 ---
-layout: home
+layout: hero
 title: A library for building cross-platform apps
 id: home
 ---

@@ -1,7 +1,7 @@
 ---
 id: support
 title: Where To Get Support
-layout: default
+layout: hero
 sectionid: community
 permalink: community/support.html
 redirect_from:

@@ -1,7 +1,7 @@
 ---
 id: version_history
 title: Version History
-layout: default
+layout: hero
 sectionid: versions
 permalink: versions/version_history.html
 redirect_from:
