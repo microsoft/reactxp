@@ -44,7 +44,7 @@ $helvetica: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
 }
 
 
-@mixin retina-image($filename, $background-size, $extension: png, $retina-filename: null, $retina-suffix: _2x, $asset-pipeline: $asset-pipeline) {
+@mixin retina-image($filename, $background-size, $extension: png, $retina-filename: null, $retina-suffix: _2x) {
   background-image: url("#{$filename}.#{$extension}");
 
   @include hidpi {
