@@ -6,3 +6,4 @@ gem 'jekyll', '~>3.1'
 
 # Jekyll extensions
 gem 'jekyll-redirect-from'
+gem 'jekyll-paginate'

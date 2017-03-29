@@ -17,10 +17,5 @@ One popular model for stores and store updates is called _Flux_. It was designed
 
 ## ReSub
 
-The Skype team initially adopted the Flux principles, but we found it to be quite cumbersome. It requires the introduction of a bunch of new classes (dispatchers, action creators, and dispatch events), and program flow becomes difficult to follow and debug. Over time, we abandoned Flux and created a simpler model for stores. It leverages a new language feature in TypeScript (annotations) to automatically create subscriptions between components and stores. This eliminate most of the code involved in subscribing and unsubscribing. This pattern, which we refer to as [ReSub](https://github.com/Microsoft/ReSub), is independent of ReactXP, but they work well together.
-
-## Services
-
-In a pure Flux model, stores are not allowed to modify their own contents. Store modifications (including the initial population of the store from disk or the network) must be done by separate modules that are sometimes referred to as *services*. Even if you are not following the Flux principles, services are still useful in some cases. For example, the Skype client has a "ConversationsStore" that includes a list of all conversations that the user can access. It also has a "ChatSyncService" that implements the sync protocol with the Skype chat service. When the ChatSyncService receives a new or updated conversation, it updates the ConversationsStore. In turn, the store notifies any components that have active subscriptions with the store.
-
+The Skype team initially adopted the Flux principles, but we found it to be cumbersome. It requires the introduction of a bunch of new classes (dispatchers, action creators, and dispatch events), and program flow becomes difficult to follow and debug. Over time, we abandoned Flux and created a simpler model for stores. It leverages a new language feature in TypeScript (annotations) to automatically create subscriptions between components and stores. This eliminates most of the code involved in subscribing and unsubscribing. This pattern, which we refer to as [ReSub](https://github.com/Microsoft/ReSub), is independent of ReactXP, but they work well together.
 

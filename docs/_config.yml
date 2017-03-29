@@ -3,6 +3,9 @@ name: ReactXP
 description: A library for building cross-platform apps
 url: https://microsoft.github.io
 baseurl: /reactxp
+permalink: /blog/:year/:month/:day/:title.html
+paginate_path: /blog/page:num/
+paginate: 5
 timezone: America/Los_Angeles
 defaults:
 - scope:
@@ -30,4 +33,6 @@ sass:
   sass_dir: ./_sass
 gems:
 - jekyll-redirect-from
+- jekyll-paginate
+
 

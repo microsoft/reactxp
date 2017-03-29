@@ -63,14 +63,6 @@ id: home
         flexbox standard, so layouts are consistent across React JS (HTML) and React Native.
       </p>
     </div>
-    <div class="overview-section">
-      <h3>Evolution</h3>
-      <p>
-        We plan to snap a new version of ReactXP on a monthly basis, following the same general
-        update timeline of React Native. Each new version will get its own branch, allowing
-        consumers of the library to take a dependency on a stable code base.
-      </p>
-    </div>
   </div>
 </section>
 <hr class="home-divider" />
