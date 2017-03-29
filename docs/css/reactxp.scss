@@ -1,7 +1,9 @@
 ---
+title: reactxp.css
 ---
-@import '_variables';
-@import '_typography';
+
+@import 'variables';
+@import 'typography';
 
 @mixin code-typography {
   font-family: 'source-code-pro', Menlo, Consolas, 'Courier New', monospace;
