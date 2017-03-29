@@ -11,14 +11,7 @@
 <p class="meta">
   {{ page.date | date: "%B %e, %Y" }}
   by
-  {% for author in page.authors %}
-    {% if author.url %}
-      <a href="{{ author.url }}">{{ author.name }}</a>
-    {% else %}
-      {{ author.name }}
-    {% endif %}
-    {% if forloop.last == false %} and {% endif %}
-  {% endfor %}
+  <a href="{{ site.data.authors[page.author].url }}">{{ site.data.authors[page.author].name }}</a>
 </p>
 
 <hr>
