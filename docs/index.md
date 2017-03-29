@@ -11,7 +11,7 @@ id: home
       <p>ReactXP builds on the popular React JS and React Native frameworks.</p>
     </div>
     <div class="marketing-col">
-      <h3>XP stands for Cross-platform</h3>
+      <h3>XP means X-Platform</h3>
       <p>Share most of your code between the web, iOS, Android, and Windows.</p>
     </div>
     <div class="marketing-col">
@@ -50,7 +50,7 @@ id: home
       </p>
     </div>
     <div class="overview-section">
-      <h3>Genesis of ReactXP</h3>
+      <h3>Genesis</h3>
       <p>
         This library was initially developed within the Skype team, but it has since started to
         be used elsewhere within Microsoft. We now want to make it available to the broader
