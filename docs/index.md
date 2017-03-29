@@ -74,8 +74,3 @@ id: home
   </div>
 </section>
 <hr class="home-divider" />
-<section class="home-bottom-section">
-  <div class="buttons-unit">
-    <a href="docs/getting-started.html" class="button">Get Started</a>
-  </div>
-</section>
