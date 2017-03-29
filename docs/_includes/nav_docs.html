@@ -1,0 +1,26 @@
+<div class="nav-docs">
+  <!-- Docs Nav -->
+  {% for section in site.data.nav_docs %}
+    <div class="nav-docs-section">
+      <h3>{{ section.title }}</h3>
+      <ul>
+        {% for item in section.items %}
+          <li>
+            {{ item | docs_sidebar_link}}
+            {% if item.subitems %}
+              <ul>
+                {% for subitem in item.subitems %}
+                  <li>
+                    {{ subitem | docs_sidebar_link }}
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+
+</div>
+
