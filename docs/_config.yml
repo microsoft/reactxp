@@ -24,8 +24,14 @@ defaults:
     path: community
     type: pages
   values:
-    layout: community
+    layout: default
     sectionid: community
+- scope:
+    path: versions
+    type: pages
+  values:
+    layout: default
+    sectionid: versions
 exclude:
 - Gemfile
 - README.md

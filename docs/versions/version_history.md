@@ -4,7 +4,8 @@ title: Version History
 layout: default
 sectionid: versions
 permalink: versions/version_history.html
-redirect_from: "versions.html"
+redirect_from:
+  - "versions/index.html"
 ---
 
 ## Version Strategy

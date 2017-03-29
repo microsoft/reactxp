@@ -4,7 +4,8 @@ title: Where To Get Support
 layout: default
 sectionid: community
 permalink: community/support.html
-redirect_from: "support.html"
+redirect_from:
+  - "community/index.html"
 ---
 
 ## ReactXP Maintainers
