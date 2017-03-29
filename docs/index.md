@@ -64,7 +64,7 @@ id: home
       </p>
     </div>
     <div class="overview-section">
-      <h3>Evolving ReactXP</h3>
+      <h3>Evolution</h3>
       <p>
         We plan to snap a new version of ReactXP on a monthly basis, following the same general
         update timeline of React Native. Each new version will get its own branch, allowing

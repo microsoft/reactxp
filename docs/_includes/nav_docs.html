@@ -6,16 +6,7 @@
       <ul>
         {% for item in section.items %}
           <li>
-            {{ item | docs_sidebar_link }}
-            {% if item.subitems %}
-              <ul>
-                {% for subitem in item.subitems %}
-                  <li>
-                    {{ subitem | docs_sidebar_link }}
-                  </li>
-                {% endfor %}
-              </ul>
-            {% endif %}
+            <a href=\"/reactxp/docs/#{item["id"]}.html\" #{item["title"]}</a>
           </li>
         {% endfor %}
       </ul>

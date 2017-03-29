@@ -17,4 +17,4 @@ While it is possible to write ReactXP apps in Javascript, we *highly* recommend 
 
 ## Understanding React
 
-If you are new to React, you should first familiarize yourself with the core concepts. We provide an overview and some [simple examples](docs/react_concepts.html). Also refer to the official [React](http://facebook.github.io/react/) and [React Native](https://facebook.github.io/react-native/) documentation sites.
+If you are new to React, you should first familiarize yourself with the core concepts. We provide an overview and some [simple examples](react_concepts.html). Also refer to the official [React](http://facebook.github.io/react/) and [React Native](https://facebook.github.io/react-native/) documentation sites.
