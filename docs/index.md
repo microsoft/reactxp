@@ -34,8 +34,8 @@ id: home
         platforms.
       </p>
       <p>
-        Of course, you can still provide platform-specific UI features, but this can be done
-        selectively in situations where it is desirable.
+        Of course, you can still provide platform-specific UI variants, but this can be done
+        selectively where desired.
       </p>
     </div>
     <div class="overview-section">
