@@ -98,13 +98,13 @@ value: string = undefined;
 ```
 
 ## Styles
-[**Text Styles**](docs/styles.html#text-style-attributes)
+[**Text Styles**](/reactxp/docs/styles.html#text-style-attributes)
 
-[**Flexbox Styles**](docs/styles.html#flexbox-style-attributes)
+[**Flexbox Styles**](/reactxp/docs/styles.html#flexbox-style-attributes)
 
-[**View Styles**](docs/styles.html#view-style-attributes)
+[**View Styles**](/reactxp/docs/styles.html#view-style-attributes)
 
-[**Transform Styles**](docs/styles.html#transform-style-attributes)
+[**Transform Styles**](/reactxp/docs/styles.html#transform-style-attributes)
 
 ## Methods
 ``` javascript

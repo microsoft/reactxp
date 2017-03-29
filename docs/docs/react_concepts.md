@@ -78,7 +78,7 @@ The example above renders a string using default styles (font, size, color, etc.
         }
     }
 
-For more details about style attributes, refer to the [styles](docs/styles.html) documentation or the documentation for each component.
+For more details about style attributes, refer to the [styles](/reactxp/docs/styles.html) documentation or the documentation for each component.
 
 ## Layout Directives
 
@@ -101,7 +101,7 @@ Here is an example style that incorporates margin, padding and flexbox directive
         })
     };
 
-For more details about layout directives, refer to the [styles](docs/styles.html) documentation.
+For more details about layout directives, refer to the [styles](/reactxp/docs/styles.html) documentation.
 
 ## Event Handling
 

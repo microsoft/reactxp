@@ -38,11 +38,11 @@ style?: PickerStyleRuleSet | PickerStyleRuleSet[];
 color: 'string';
 ```
 
-[**Flexbox Styles**](docs/styles.html#flexbox-style-attributes)
+[**Flexbox Styles**](/reactxp/docs/styles.html#flexbox-style-attributes)
 
-[**View Styles**](docs/styles.html#view-style-attributes)
+[**View Styles**](/reactxp/docs/styles.html#view-style-attributes)
 
-[**Transform Styles**](docs/styles.html#transform-style-attributes)
+[**Transform Styles**](/reactxp/docs/styles.html#transform-style-attributes)
 
 ## Methods
 
