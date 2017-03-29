@@ -11,7 +11,7 @@ id: home
       <p>ReactXP builds on the popular React JS and React Native frameworks.</p>
     </div>
     <div class="marketing-col">
-      <h3>XP = Cross-platform</h3>
+      <h3>XP stands for Cross-platform</h3>
       <p>Share most of your code between the web, iOS, Android, and Windows.</p>
     </div>
     <div class="marketing-col">
@@ -22,41 +22,53 @@ id: home
 </section>
 <hr class="home-divider" />
 <section class="home-section">
-  <div id="examples">
-    <div class="example">
-      <h3>Why React?</h3>
-      <p>
-        React is an open-source framework initially developed by Facebook. It is a view framework, not 
-        a full app framework. It doesn't dictate a particular data model approach, nor does it provide 
-        or require any other layers such as controllers or view models. React is able to accommodate 
-        traditional patterns like MVC and MVVM, but it is flexible enough to accommodate others as well 
-        (for example, Flux, Baobab, and Relay). This allows React to be used in a variety of apps — both 
-        complex and simple.
-
-        React is the first framework that spans web and native controls. Using a single view definition 
-        language (which includes layout, style and animation information), developers can target both 
-        HTML and native controls. Application logic can be written in Javascript or TypeScript.
-
-        React provides a convenient and efficient way for developers to define component layout within 
-        their code. This so-called JSX notation is written within TypeScript code and looks similar to 
-        HTML in syntax. Style information can also be provided inline within a component's source file 
-        using CSS-like syntax, allowing components to be entirely self-contained. Because the layout 
-        information, style information and component logic are all written within a single language, 
-        the complier is able to provide type checking and IntelliSense.
-
-        Finally, there's a thriving open-source community built up around React. More companies are 
-        building on it every day, and Facebook continues to make major investments in it.
-      </p>
-    </div>
-    <div class="example">
+  <div id="overview">
+    <div class="overview-section">
       <h3>ReactXP</h3>
       <p>
-        The authors of React are fond of the phrase “learn once, write anywhere”. With React and React 
+        The authors of React use the phrase “learn once, write anywhere”. With React and React 
         Native, your web app can share most its logic with your iOS and Android apps, but the view 
         layer needs to be implemented separately for each platform. We have taken this a step further 
-        and developed a thin cross-platform layer that we call ReactX. If you write your app to this 
-        abstraction, you can share your view definitions, styles and animations across various target 
+        and developed a thin cross-platform layer we call ReactXP. If you write your app to this 
+        abstraction, you can share your view definitions, styles and animations across multiple target 
         platforms.
+      </p>
+    </div>
+    <div class="overview-section">
+      <h3>Design Philosophy</h3>
+      <p>
+        ReactXP is designed with cross-platform development in mind. In general, it exposes
+        APIs, components, props, styles and animation parameters that are implemented in
+        a consistent way across React JS (HTML) and React Native for iOS and Android. A few
+        platform-specific props and style attributes have been exposed, but we have tried to
+        keep these to a minimum.
+      </p>
+      <p>
+        ReactXP is meant to be as lightweight as possible. The “core” components and APIs are
+        limited to the functionality required for almost all applications. Extensions to
+        ReactXP expose more specialized functionality in a similar cross-platform manner.
+      </p>
+    </div>
+    <div class="overview-section">
+      <h3>Genesis of ReactXP</h3>
+      <p>
+        This library was initially developed within the Skype team, but it has since started to
+        be used elsewhere within Microsoft. We now want to make it available to the broader
+        React and React Native open source community.
+      </p>
+      <p>
+        We have made numerous other source contributions to React Native in an effort to minimize
+        the differences between various platforms. These contributions included a major rewrite of
+        the CSS Layout engine used in React Native. The new version more closely matches the W3C
+        flexbox standard, so layouts are consistent across React JS (HTML) and React Native.
+      </p>
+    </div>
+    <div class="overview-section">
+      <h3>Evolving ReactXP</h3>
+      <p>
+        We plan to snap a new version of ReactXP on a monthly basis, following the same general
+        update timeline of React Native. Each new version will get its own branch, allowing
+        consumers of the library to take a dependency on a stable code base.
       </p>
     </div>
   </div>

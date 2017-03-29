@@ -519,49 +519,20 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: 0;
 }
 
-#examples h3, .home-presentation h3 {
+#overview h3, .home-presentation h3 {
   color: $darkColor;
   font-size: 24px;
   font-weight: normal;
   margin-bottom: 5px;
 }
 
-#examples {
+#overview {
   p {
     margin: 0 0 25px 0;
-    max-width: $twoColumnWidth;
   }
 
-  .example {
+  .overview-section {
     margin-top: 60px;
-  }
-
-  #todoExample {
-    font-size: 14px;
-    ul {
-      list-style-type: square;
-      margin: 0 0 10px 0;
-    }
-    input {
-      border: 1px solid #ccc;
-      font: 14px proxima-nova, $helvetica;
-      padding: 3px;
-      width: 150px;
-    }
-    button {
-      font: 14px proxima-nova, $helvetica;
-      margin-left: 5px;
-      padding: 4px 10px;
-    }
-  }
-
-  #markdownExample {
-    textarea {
-      border: 1px solid #ccc;
-      font: 14px proxima-nova, $helvetica;
-      margin-bottom: 10px;
-      padding: 5px;
-    }
   }
 }
 
