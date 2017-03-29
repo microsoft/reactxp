@@ -13,7 +13,7 @@ module Jekyll
     end
 
     def convert(content)
-      engine = Sass::Engine.new(content, :syntax => :scss, :load_paths => ["./css/"])
+      engine = Sass::Engine.new(content, :syntax => :scss, :load_paths => ["#{@config['source']}/css/"])
       engine.render
     rescue StandardError => e
       puts "!!! SASS Error: " + e.message
