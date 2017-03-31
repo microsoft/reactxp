@@ -7,7 +7,7 @@ permalink: docs/components/text.html
 next: components/textinput
 ---
 
-This component displays basic text. Its children must be one of the following types: a string or another Text component.
+This component displays basic text. Its children must be a string literal or a series of children that are either Text components or View components with a fixed height and width.
 
 Unlike other ReactXP components, some of the style attributes for an Text cascade to its children. In the following example, the title and body both inherit the styles from their parent RX.Text component, but they can also override specific style elements.
 
@@ -72,4 +72,19 @@ No methods
     </RX.Text>
 ```
 
+``` javascript
+    static _styles = {
+        redBox: RX.Styles.createViewStyle({
+            width: 10,
+            height: 10,
+            backgroundColor: 'red'
+        })
+    }
+
+    <RX.Text style={ _styles.defaultText } numberOfLines={ 1 }>
+        <RX.Text> { 'Red box ' } </RX.Text>
+        <RX.View style={ _styles.redBox } />
+        <RX.Text> { ' inlined view example' } </RX.Text>
+    </RX.Text>
+```
 
