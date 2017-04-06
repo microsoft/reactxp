@@ -31,10 +31,10 @@ interface WebViewErrorState {
 // Allow javascript code to call storage methods?
 domStorageEnabled: boolean = true; // Native only
 
-// Javascript code that is injected into the control and executed
+// JavaScript code that is injected into the control and executed
 injectedJavaScript: string = undefined;
 
-// Is javascript executed within the control?
+// Is JavaScript executed within the control?
 javaScriptEnabled: boolean = true;
 
 // HTTP headers to include when fetching the URL.
@@ -78,7 +78,7 @@ goBack();
 goForward();
 
 // Posts a message to the web control, allowing for communication between
-// the app and the Javascript code running within the web control
+// the app and the JavaScript code running within the web control
 // Available only on web
 postMessage(message: string, targetOrigin?: string = '*'): void;
 

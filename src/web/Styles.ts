@@ -177,7 +177,7 @@ export class Styles extends RX.Styles {
         return aliases;
     });
 
-    // Converts a property from Javascript style (camel-case) to CSS style (lowercase with hyphens).
+    // Converts a property from JavaScript style (camel-case) to CSS style (lowercase with hyphens).
     private _convertJsToCssStyle(prop: string): string {
         let cssString = '';
 
