@@ -24,8 +24,6 @@
       title: Image
     - id: components/imagesvg
       title: ImageSvg
-    - id: components/incremental
-      title: Incremental
     - id: components/link
       title: Link
     - id: components/navigator
@@ -50,8 +48,6 @@
       title: Alert
     - id: apis/app
       title: App
-    - id: apis/audio
-      title: Audio
     - id: apis/clipboard
       title: Clipboard
     - id: apis/input

@@ -4,7 +4,7 @@ title: App
 layout: docs
 category: Interfaces
 permalink: docs/apis/app.html
-next: apis/audio
+next: apis/clipboard
 ---
 
 This interface provides core methods associated with the application. It also exposes events for low-memory conditions and activity state changes.
@@ -37,9 +37,6 @@ initialize(debug: boolean, development: boolean): void;
 // development mode
 isDebugMode(): boolean;
 isDevelopmentMode(): boolean;
-
-// Forces the app to reload itself and restart execution from the beginning
-reload(): void;
 
 // Returns the current activitation state for the app
 getActivationState(): AppActivationState;
