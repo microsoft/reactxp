@@ -3,4 +3,5 @@
 /src/bin
 /src/obj
 /samples
+/docs
 *.user
