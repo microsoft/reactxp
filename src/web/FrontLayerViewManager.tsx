@@ -1,9 +1,11 @@
 /**
- * FrontLayerViewManager.tsx
- * Copyright: Microsoft 2017
- *
- * Manages the layering of the main view, modals and popups.
- */
+* FrontLayerViewManager.tsx
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
+*
+* Manages the layering of the main view, modals and popups.
+*/
 
 import React = require('react');
 import ReactDOM = require('react-dom');

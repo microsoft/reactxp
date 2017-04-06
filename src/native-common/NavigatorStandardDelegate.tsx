@@ -1,6 +1,8 @@
 /**
 * NavigatorStandardDelegate.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Delegate which encapsulates standard react-native Navigator experience.
 */

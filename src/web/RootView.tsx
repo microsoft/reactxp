@@ -1,6 +1,8 @@
 ﻿ /**
 * RootView.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * The top-most view (rendered into window.body) that's used for proper
 * layering or modals, etc. in the web implementation of the ReactXP

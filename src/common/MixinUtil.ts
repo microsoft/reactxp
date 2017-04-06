@@ -1,9 +1,11 @@
- /**
- * MixinUtil.ts
- * Copyright: Microsoft 2017
- *
- * Function applyMixins expects that first argument applies properties from mixins.
- */
+/**
+* MixinUtil.ts
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
+*
+* Function applyMixins expects that first argument applies properties from mixins.
+*/
 
 function applyMixins(thisObj: any, mixins: any[]) {
     mixins.forEach(mixin => {

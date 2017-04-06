@@ -1,6 +1,8 @@
 ﻿/**
 * WebView.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * A control that allows the display of an independent web page.
 */

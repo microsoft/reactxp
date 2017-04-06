@@ -1,6 +1,8 @@
 /**
 * AccessibilityInfo.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * An iOS variant of AccessibilityInfo that performs announcements by calling 
 * React Native announcement API for iOS. 

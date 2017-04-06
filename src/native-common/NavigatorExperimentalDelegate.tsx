@@ -1,6 +1,8 @@
 /**
 * NavigatorExperimentalDelegate.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Delegate which encapsulates experimental react-native Navigator experience.
 * The main difference of Experimental Navigator is that it uses Animated for navigation animation

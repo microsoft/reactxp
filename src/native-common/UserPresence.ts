@@ -1,10 +1,12 @@
 ﻿/**
- * UserPresence.ts
- * Copyright: Microsoft 2017
- *
- * Native implementation of the RX interfaces related to
- * user presence.
- */
+* UserPresence.ts
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
+*
+* Native implementation of the RX interfaces related to
+* user presence.
+*/
 
 import RX = require('../common/Interfaces');
 

@@ -1,9 +1,11 @@
 /**
- * Image.tsx
- * Copyright: Microsoft 2017
- *
- * Android-specific implementation of Image component.
- */
+* Image.tsx
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
+*
+* Android-specific implementation of Image component.
+*/
 
 import { Image as CommonImage } from '../native-common/Image';
 import Styles from '../native-common/Styles';

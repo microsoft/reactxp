@@ -1,6 +1,8 @@
 ﻿/**
 * ModalContainer.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Web-specific implementation of a view that's used to render modals.
 */

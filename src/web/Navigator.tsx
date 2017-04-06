@@ -1,6 +1,8 @@
 ﻿/*
 * Navigator.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Web specific implementation of Navigator. This is inspired from React.Navigator.
 * This component is set with props, which are callback methods. It is primarily driven

@@ -1,6 +1,8 @@
 /**
 * ReactXP.ts
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Wrapper for all ReactXP functionality. Users of ReactXP should import just this
 * file instead of internals.

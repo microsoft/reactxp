@@ -1,6 +1,8 @@
 /**
 * Animated.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Implements animated components for web version of ReactXP.
 */

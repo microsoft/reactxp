@@ -1,6 +1,8 @@
 /**
 * Interfaces.ts
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Defines the template for the ReactXP interface that needs to be
 * implemented for each platform.

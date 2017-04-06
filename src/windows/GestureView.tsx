@@ -1,6 +1,8 @@
 /**
 * GestureView.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Windows-specific implementation of RN GestureView component.
 */

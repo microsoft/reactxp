@@ -1,6 +1,8 @@
 /**
 * StyleLeakDetector.ts
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Detects style memory-leaks in react-native.
 * To fix warning you could:

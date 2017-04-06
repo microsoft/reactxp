@@ -1,6 +1,8 @@
 /**
 * AppConfig.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * A simple class to store application config. 
 */

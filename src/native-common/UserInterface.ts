@@ -1,10 +1,12 @@
 /**
- * UserInterface.ts
- * Copyright: Microsoft 2017
- *
- * RN implementation of the ReactXP interfaces related to
- * UI (layout measurements, etc.).
- */
+* UserInterface.ts
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
+*
+* RN implementation of the ReactXP interfaces related to
+* UI (layout measurements, etc.).
+*/
 
 import assert = require('assert');
 import React = require('react');

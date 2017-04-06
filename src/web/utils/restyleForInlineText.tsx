@@ -1,6 +1,8 @@
 /**
 * restyleForInlineText.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * When a ReactXP component appears as a child of an RX.Text, it needs to be styled
 * specially so that it appears inline with the text rather than introducing line

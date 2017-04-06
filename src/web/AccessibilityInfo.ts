@@ -1,6 +1,8 @@
 /**
 * AccessibilityInfo.ts
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Web wrapper for subscribing or querying the current state of the
 * screen reader.

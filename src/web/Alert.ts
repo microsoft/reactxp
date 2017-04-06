@@ -1,9 +1,11 @@
 /**
- * Alert.ts
- * Copyright: Microsoft 2017
- *
- * Web Alert dialog boxes.
- */
+* Alert.ts
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
+*
+* Web Alert dialog boxes.
+*/
 
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');

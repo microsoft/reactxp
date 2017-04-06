@@ -1,6 +1,8 @@
 /**
 * ViewBase.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * A base class for the Web-specific implementation of the cross-platform View abstraction.
 */

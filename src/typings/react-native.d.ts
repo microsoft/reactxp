@@ -1,6 +1,8 @@
 /**
 * react-native.d.ts
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Type definition file for React Native, based on the React.js definition file on https://github.com/borisyankov/DefinitelyTyped.
 */

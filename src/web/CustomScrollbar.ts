@@ -1,6 +1,8 @@
 ﻿/**
 * Scrollbar.ts
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Custom scrollbar implementation for web.
 */

@@ -1,6 +1,8 @@
 /**
 * ViewBase.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Base class that is used for several RX views.
 */

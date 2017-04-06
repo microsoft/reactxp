@@ -1,9 +1,11 @@
 /**
- * View.tsx
- * Copyright: Microsoft 2017
- *
- * Android-specific implementation of View component.
- */
+* View.tsx
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
+*
+* Android-specific implementation of View component.
+*/
 
 import AccessibilityUtil from './AccessibilityUtil';
 import { View as CommonView } from '../native-common/View';

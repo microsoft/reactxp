@@ -1,9 +1,11 @@
 /**
- * Text.tsx
- * Copyright: Microsoft 2017
- *
- * Android-specific implementation of Text component.
- */
+* Text.tsx
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
+*
+* Android-specific implementation of Text component.
+*/
 
 import React = require('react');
 import RN = require('react-native');

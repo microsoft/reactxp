@@ -1,6 +1,8 @@
 ﻿/**
 * MainViewStore.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * A simple store that publishes changes to the main element
 * provided by the app.

@@ -1,6 +1,8 @@
 /**
 * react-native-art-svg.d.ts
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Type definition file for the React Native Art SVG.
 * https://github.com/magicismight/react-native-art-svg

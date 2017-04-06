@@ -1,6 +1,8 @@
 /**
 * NavigatorCommon.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Common native interfaces for Navigator on mobile.
 * We need this class to avoid circular references between Navigator and NavigatorDelegates.

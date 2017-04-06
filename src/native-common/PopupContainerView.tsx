@@ -1,6 +1,8 @@
 ﻿/**
 * PopupContainerView.ts
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * The view containing the Popup to show. This view does its own position
 * calculation on rendering as directed by position instructions received

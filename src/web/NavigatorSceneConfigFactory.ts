@@ -1,6 +1,8 @@
 ﻿/**
 * NavigatorSceneConfigFactory.ts
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * NavigatorSceneConfigFactory creates an 'object' of type NavigatorSceneConfig,
 * which is consumed by the Navigator. This object contains properties to execute

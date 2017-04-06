@@ -1,6 +1,8 @@
 /**
 * MonitorListEdits.tsx
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Looks for insertions, removals, and moves each time the component receives new
 * children. Communicates these list edits to the consumer giving it the opportunity

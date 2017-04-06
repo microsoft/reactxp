@@ -1,6 +1,8 @@
 /**
 * FrontLayerViewManager.ts
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Manages stackable modals and popup views that are posted and dismissed
 * by the Types showModal/dismissModal/showPopup/dismissPopup methods.

@@ -1,6 +1,8 @@
 /*
 * window.ts
-* Copyright: Microsoft 2017
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Window module to enable easy mocking.
 */

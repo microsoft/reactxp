@@ -1,9 +1,11 @@
 /**
- * Animated.tsx
- * Copyright: Microsoft 2017
- *
- * Android-specific implementation of Animated wrapper.
- */
+* Animated.tsx
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
+*
+* Android-specific implementation of Animated wrapper.
+*/
 
 import React = require('react');
 import RN = require('react-native');
