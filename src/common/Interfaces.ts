@@ -27,7 +27,6 @@ export interface ReactXP {
     DeviceNetworkType: typeof DeviceNetworkType;
     Image: typeof Image;
     GestureView: typeof GestureView;
-    ImageSvg: typeof ImageSvg;
     Input: Input;
     Link: typeof Link;
     Storage: Storage;
@@ -41,7 +40,6 @@ export interface ReactXP {
     ScrollView: typeof ScrollView;
     StatusBar: StatusBar;
     Styles: Styles;
-    SvgPath: typeof SvgPath;
     Text: typeof Text;
     TextInput: typeof TextInput;
     UserInterface: UserInterface;
@@ -186,8 +184,6 @@ export abstract class Clipboard {
     abstract getText(): SyncTasks.Promise<string>;
 }
 
-export abstract class ImageSvg<S> extends React.Component<Types.ImageSvgProps, S> {}
-
 export abstract class Link<S> extends React.Component<Types.LinkProps, S> {}
 
 export abstract class Storage {
@@ -281,12 +277,9 @@ export abstract class Styles {
     abstract createTextInputStyle(ruleSet: Types.TextInputStyle, cacheStyle?: boolean): Types.TextInputStyleRuleSet;
     abstract createImageStyle(ruleSet: Types.ImageStyle, cacheStyle?: boolean): Types.ImageStyleRuleSet;
     abstract createAnimatedImageStyle(ruleSet: Types.AnimatedImageStyle): Types.AnimatedImageStyleRuleSet;
-    abstract createImageSvgStyle(ruleSet: Types.ImageSvgStyle, cacheStyle?: boolean): Types.ImageSvgStyleRuleSet;
     abstract createLinkStyle(ruleSet: Types.LinkStyleRuleSet, cacheStyle?: boolean): Types.LinkStyleRuleSet;
     abstract createPickerStyle(ruleSet: Types.PickerStyle, cacheStyle?: boolean): Types.PickerStyleRuleSet;
 }
-
-export abstract class SvgPath<S> extends React.Component<Types.SvgPathProps, S> {}
 
 export abstract class Text<S> extends React.Component<Types.TextProps, S> {}
 

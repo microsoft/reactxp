@@ -207,15 +207,6 @@ export interface ActivityIndicatorStyle extends ViewStyle {
 export type ActivityIndicatorStyleRuleSet = StyleRuleSet<ActivityIndicatorStyle>;
 
 // ------------------------------------------------------------
-// ImageSvg Style Rules
-// ------------------------------------------------------------
-
-export interface ImageSvgStyle extends ViewStyle {
-}
-
-export type ImageSvgStyleRuleSet = StyleRuleSet<ImageSvgStyle>;
-
-// ------------------------------------------------------------
 // Text Style Rules
 // ------------------------------------------------------------
 
@@ -476,33 +467,6 @@ export interface ImageProps extends ImagePropsShared {
 
 export interface AnimatedImageProps extends ImagePropsShared {
     style?: AnimatedImageStyleRuleSet | (AnimatedImageStyleRuleSet | ImageStyleRuleSet)[];
-}
-
-// ImageSvg
-export interface SvgCommonProps {
-    key?: string | number;
-    strokeColor?: string;
-    strokeWidth?: number;
-    strokeOpacity?: number;
-    fillColor?: string;
-    fillOpacity?: number;
-}
-
-export interface ImageSvgProps extends SvgCommonProps, CommonStyledProps<ImageSvgStyleRuleSet> {
-    children?: ReactNode;
-    height: number;
-    width: number;
-    accessibilityLabel?: string;
-    title?: string;
-    viewBox?: string;
-    preserveAspectRatio?: string;
-
-    // Web-specific properties (no-ops on native platforms)
-    webShadow?: string;
-}
-
-export interface SvgPathProps extends SvgCommonProps {
-    d?: string;
 }
 
 // Text

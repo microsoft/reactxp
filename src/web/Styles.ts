@@ -103,11 +103,6 @@ export class Styles extends RX.Styles {
         return this._adaptStyles(ruleSet, false);
     }
 
-    // Creates opaque styles that can be used for ImageSvg
-    createImageSvgStyle(ruleSet: Types.ImageSvgStyle, cacheStyle: boolean = true): Types.ImageSvgStyleRuleSet {
-        return this._adaptStyles(ruleSet, cacheStyle);
-    }
-
     // Creates opaque styles that can be used for Picker
     createPickerStyle(ruleSet: Types.PickerStyle, cacheStyle: boolean = true): Types.PickerStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);

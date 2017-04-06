@@ -24,7 +24,7 @@
     "react-addons-perf": "^15.3.1-rc.2",
     "react-addons-test-utils": "^15.3.1-rc.2",
     "react-dom": "^15.3.1-rc.2",
-    "react-native-art-svg": "^1.1.0",
+    "reactxp": "^0.34.0",
     "rebound": "^0.0.13",
     "synctasks": "^0.2.9"
   }

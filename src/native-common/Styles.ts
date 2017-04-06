@@ -95,11 +95,6 @@ export class Styles extends RX.Styles {
         return this._adaptAnimatedStyles(ruleSet);
     }
 
-    // Creates opaque styles that can be used for ImageSvg
-    createImageSvgStyle(ruleSet: Types.ImageSvgStyle, cacheStyle: boolean = true): Types.ImageSvgStyleRuleSet {
-        return this._adaptStyles(ruleSet, cacheStyle);
-    }
-
     // Creates opaque styles that can be used for Link
     createLinkStyle(ruleSet: Types.LinkStyleRuleSet, cacheStyle: boolean = true): Types.LinkStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);

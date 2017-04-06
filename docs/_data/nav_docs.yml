@@ -22,8 +22,6 @@
       title: GestureView
     - id: components/image
       title: Image
-    - id: components/imagesvg
-      title: ImageSvg
     - id: components/link
       title: Link
     - id: components/navigator

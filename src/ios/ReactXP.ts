@@ -27,7 +27,6 @@ import { default as ImageImpl, Image as ImageType } from '../native-common/Image
 import { default as InputImpl, Input as InputType } from '../native-common/Input';
 import { default as ClipboardImpl, Clipboard as ClipboardType } from '../native-common/Clipboard';
 import { default as GestureViewImpl, GestureView as GestureViewType } from './GestureView';
-import { default as ImageSvgImpl, ImageSvg as ImageSvgType } from '../native-common/Svg/ImageSvg';
 import { default as LinkImpl, Link as LinkType } from '../native-common/Link';
 import { default as LinkingImpl, Linking as LinkingType } from './Linking';
 import { default as LocationImpl, Location as LocationType } from '../common/Location';
@@ -40,7 +39,6 @@ import { default as ScrollViewImpl, ScrollView as ScrollViewType } from '../nati
 import { default as StatusBarImpl, StatusBar as StatusBarType } from './StatusBar';
 import { default as StorageImpl, Storage as StorageType } from '../native-common/Storage';
 import { default as StylesImpl, Styles as StylesType } from '../native-common/Styles';
-import { default as SvgPathImpl, SvgPath as SvgPathType } from '../native-common/Svg/SvgPath';
 import { default as TextImpl, Text as TextType } from '../native-common/Text';
 import { default as TextInputImpl, TextInput as TextInputType } from '../native-common/TextInput';
 import { default as ProfilingImpl, Profiling as ProfilingType } from '../native-common/Profiling';
@@ -80,8 +78,6 @@ module ReactXP {
     export var GestureView = GestureViewImpl;
     export type Image = ImageType;
     export var Image = ImageImpl;
-    export type ImageSvg = ImageSvgType;
-    export var ImageSvg = ImageSvgImpl;
     export type Input = InputType;
     export var Input = InputImpl;
     export type Link = LinkType;
@@ -110,8 +106,6 @@ module ReactXP {
     export var Storage = StorageImpl;
     export type Styles = StylesType;
     export var Styles = StylesImpl;
-    export type SvgPath = SvgPathType;
-    export var SvgPath = SvgPathImpl;
     export type Text = TextType;
     export var Text = TextImpl;
     export type TextInput = TextInputType;

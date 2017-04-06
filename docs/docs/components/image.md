@@ -4,7 +4,7 @@ title: Image
 layout: docs
 category: Components
 permalink: docs/components/image.html
-next: components/imagesvg
+next: components/link
 ---
 
 This component displays an image, which can come from a local source or from the network. It supports JPEG, GIF and PNG formats.
