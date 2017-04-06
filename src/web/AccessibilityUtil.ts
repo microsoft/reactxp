@@ -5,7 +5,7 @@
 * Licensed under the MIT license.
 *
 * Web-specific implementation of accessiblity functions for cross-platform
-* ReactX framework.
+* ReactXP framework.
 */
 
 import _ = require('./utils/lodashMini');
