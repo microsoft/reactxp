@@ -89,7 +89,7 @@ export function executeTransition(element: HTMLElement, transitions: ITransition
     element.dataset['transitionId'] = timeoutId.toString();
 
     // On webkit browsers, we need to defer the setting of the actual properties
-    // for some reason. -EricTr
+    // for some reason.
     _.defer(() => {
         // Set the "to" values.
         _.each(transitions, (transition: ITransitionSpec) => {
