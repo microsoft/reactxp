@@ -27,8 +27,12 @@ export class Accessibility extends NativeAccessibility {
 
     constructor() {
         super();
-        // Subscribe to an event to get notified when an announcement will finish.  
-        RN.AccessibilityInfo.addEventListener('announcementFinished', this._recalcAnnouncement);
+
+        // Some versions of RN don't support this interface.
+        if (RN.AccessibilityInfo) {
+            // Subscribe to an event to get notified when an announcement will finish.  
+            RN.AccessibilityInfo.addEventListener('announcementFinished', this._recalcAnnouncement);
+        }
     }
 
     protected _updateScreenReaderStatus(isEnabled: boolean) {
@@ -57,7 +61,11 @@ export class Accessibility extends NativeAccessibility {
         if (resetTimestamp) {
             this._retryTimestamp = Date.now();
         }
-        RN.AccessibilityInfo.announceForAccessibility(announcement);
+
+        // Some versions of RN don't support this interface.
+        if (RN.AccessibilityInfo) {
+            RN.AccessibilityInfo.announceForAccessibility(announcement);
+        }
     }
 
     private _recalcAnnouncement = (payload: AnnouncementFinishedPayload) => {

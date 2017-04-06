@@ -21,18 +21,22 @@ export class Accessibility extends CommonAccessibility {
         super();
 
         let initialStateChanged = false;
-        // Subscribe to an event to get notified when screen reader is enabled or disabled.
-        RN.AccessibilityInfo.addEventListener('change', isEnabled => {
-            initialStateChanged = true;
-            this._updateScreenReaderStatus(isEnabled);
-        });
 
-        // Fetch initial state.
-        RN.AccessibilityInfo.fetch().then(isEnabled => {
-            if (!initialStateChanged) {
+        // Some versions of RN don't support this interface.
+        if (RN.AccessibilityInfo) {
+            // Subscribe to an event to get notified when screen reader is enabled or disabled.
+            RN.AccessibilityInfo.addEventListener('change', isEnabled => {
+                initialStateChanged = true;
                 this._updateScreenReaderStatus(isEnabled);
-            }
-        });
+            });
+
+            // Fetch initial state.
+            RN.AccessibilityInfo.fetch().then(isEnabled => {
+                if (!initialStateChanged) {
+                    this._updateScreenReaderStatus(isEnabled);
+                }
+            });
+        }
     }
 
     protected _updateScreenReaderStatus(isEnabled: boolean): void {
