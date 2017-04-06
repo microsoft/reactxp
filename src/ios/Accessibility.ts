@@ -28,7 +28,7 @@ export class Accessibility extends NativeAccessibility {
     constructor() {
         super();
         // Subscribe to an event to get notified when an announcement will finish.  
-        RN.Accessibility.addEventListener('announcementFinished', this._recalcAnnouncement);
+        RN.AccessibilityInfo.addEventListener('announcementFinished', this._recalcAnnouncement);
     }
 
     protected _updateScreenReaderStatus(isEnabled: boolean) {
@@ -57,7 +57,7 @@ export class Accessibility extends NativeAccessibility {
         if (resetTimestamp) {
             this._retryTimestamp = Date.now();
         }
-        RN.Accessibility.announceForAccessibility(announcement);
+        RN.AccessibilityInfo.announceForAccessibility(announcement);
     }
 
     private _recalcAnnouncement = (payload: AnnouncementFinishedPayload) => {

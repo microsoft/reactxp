@@ -22,13 +22,13 @@ export class Accessibility extends CommonAccessibility {
 
         let initialStateChanged = false;
         // Subscribe to an event to get notified when screen reader is enabled or disabled.
-        RN.Accessibility.addEventListener('change', isEnabled => {
+        RN.AccessibilityInfo.addEventListener('change', isEnabled => {
             initialStateChanged = true;
             this._updateScreenReaderStatus(isEnabled);
         });
 
         // Fetch initial state.
-        RN.Accessibility.fetch().then(isEnabled => {
+        RN.AccessibilityInfo.fetch().then(isEnabled => {
             if (!initialStateChanged) {
                 this._updateScreenReaderStatus(isEnabled);
             }

@@ -689,7 +689,7 @@ declare module 'react-native' {
         static removeEventListener(type: string, handler: (event: any) => void): void;
     }
 
-    class Accessibility {
+    class AccessibilityInfo {
         static fetch: () => Promise<boolean>;
         static addEventListener(type: string, handler: (event: any) => void): void;
         static removeEventListener(type: string, handler: (event: any) => void): void;
