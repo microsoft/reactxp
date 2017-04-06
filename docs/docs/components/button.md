@@ -80,5 +80,8 @@ underlayColor?: string; // iOS and Android only
 [**Transform Styles**](/reactxp/docs/styles.html#transform-style-attributes)
 
 ## Methods
-No methods
+``` javascript
+// Sets the accessibility focus to the component.
+focus(): void;
+```
 

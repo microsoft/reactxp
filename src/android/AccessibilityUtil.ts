@@ -10,7 +10,7 @@
 import React = require('react');
 import RN = require('react-native');
 
-import AccessibilityInfo from '../native-common/AccessibilityInfo';
+import Accessibility from '../native-common/Accessibility';
 import { AccessibilityUtil as CommonAccessibilityUtil } from '../native-common/AccessibilityUtil';
 
 export class AccessibilityUtil extends CommonAccessibilityUtil {
@@ -30,7 +30,7 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
     setAccessibilityFocus(component: React.Component<any, any>) {
         const TYPE_VIEW_FOCUSED = 8;
 
-        if (AccessibilityInfo.isScreenReaderEnabled()) {
+        if (Accessibility.isScreenReaderEnabled()) {
             this._sendAccessibilityEvent(component, TYPE_VIEW_FOCUSED);
         }
     }

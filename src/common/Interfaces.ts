@@ -167,7 +167,7 @@ export abstract class Linking {
     abstract launchEmail(emailData: Types.EmailInfo): SyncTasks.Promise<void>;
 }
 
-export abstract class AccessibilityInfo {
+export abstract class Accessibility {
     abstract isScreenReaderEnabled(): boolean;
     abstract announceForAccessibility(announcement: string): void;
     screenReaderChangedEvent = new SubscribableEvent.SubscribableEvent<(isEnabled: boolean) => void>();

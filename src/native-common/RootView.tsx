@@ -10,7 +10,7 @@
 import React = require('react');
 import RN = require('react-native');
 
-import AccessibilityInfo from './AccessibilityInfo';
+import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
 import { default as FrontLayerViewManager } from './FrontLayerViewManager';
 import MainViewStore from './MainViewStore';
@@ -63,7 +63,7 @@ export class RootView extends React.Component<{}, RootViewState> {
        
         // Update announcement text.  
         this._newAnnouncementEventChangedSubscription = 
-            AccessibilityInfo.newAnnouncementReadyEvent.subscribe(announcement => {
+            Accessibility.newAnnouncementReadyEvent.subscribe(announcement => {
                 this.setState({
                     announcementText: announcement
                 });

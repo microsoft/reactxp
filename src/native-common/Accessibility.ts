@@ -1,5 +1,5 @@
 /**
-* AccessibilityInfo.ts
+* Accessibility.ts
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
@@ -10,11 +10,11 @@
 import RN = require('react-native');
 import SyncTasks = require('synctasks');
 
-import { AccessibilityInfo as CommonAccessibilityInfo } from '../common/AccessibilityInfo';
+import { Accessibility as CommonAccessibility } from '../common/Accessibility';
 import SubscribableEvent = require('../common/SubscribableEvent');
 import RX = require('../common/Interfaces');
 
-export class AccessibilityInfo extends CommonAccessibilityInfo {
+export class Accessibility extends CommonAccessibility {
     protected _isScreenReaderEnabled = false;
 
     constructor() {
@@ -22,13 +22,13 @@ export class AccessibilityInfo extends CommonAccessibilityInfo {
 
         let initialStateChanged = false;
         // Subscribe to an event to get notified when screen reader is enabled or disabled.
-        RN.AccessibilityInfo.addEventListener('change', isEnabled => {
+        RN.Accessibility.addEventListener('change', isEnabled => {
             initialStateChanged = true;
             this._updateScreenReaderStatus(isEnabled);
         });
 
         // Fetch initial state.
-        RN.AccessibilityInfo.fetch().then(isEnabled => {
+        RN.Accessibility.fetch().then(isEnabled => {
             if (!initialStateChanged) {
                 this._updateScreenReaderStatus(isEnabled);
             }
@@ -47,4 +47,4 @@ export class AccessibilityInfo extends CommonAccessibilityInfo {
     }
 }
 
-export default new AccessibilityInfo();
+export default new Accessibility();

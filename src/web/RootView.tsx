@@ -13,7 +13,7 @@ import _ = require('./utils/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
 
-import AccessibilityInfo from './AccessibilityInfo';
+import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
 import { default as Input } from './Input';
 import ModalContainer from './ModalContainer';
@@ -103,7 +103,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
         // Update announcement text.
         this._newAnnouncementEventChangedSubscription =
-            AccessibilityInfo.newAnnouncementReadyEvent.subscribe(announcement => {
+            Accessibility.newAnnouncementReadyEvent.subscribe(announcement => {
                 this.setState({
                     announcementText: announcement
                 });

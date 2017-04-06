@@ -81,6 +81,21 @@ style: RX.ViewStyleRuleSet | RX.ViewStyleRuleSet[] = [];
 [**Transform Styles**](/reactxp/docs/styles.html#transform-style-attributes)
 
 ## Methods
-TODO: Document measurement and scroll Methods
+``` javascript
+// Sets the accessibility focus to the component.
+focus(): void;
+
+// Sets the absolute top or left position (measured in pixels) of the
+// viewport within the scroll view. Optionally animates from the current
+// position.
+setScrollLeft(scrollLeft: number, animate: boolean): void;
+setScrollTop(scrollTop: number, animate: boolean): void;
+
+// Adds a value to the current top or left position (measured in pixels) of the
+// viewport within the scroll view. Optionally animates from the current
+// position.
+addToScrollLeft(deltaLeft: number, animate: boolean): void;
+addToScrollTop(deltaTop: number, animate: boolean): void;
+```
 
 

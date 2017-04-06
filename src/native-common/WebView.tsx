@@ -58,6 +58,7 @@ export class WebView extends RX.WebView<{}> {
             webView.goBack();
         }
     }
+    
     goForward() {
         const webView : RN.WebView = this.refs[WEBVIEW_REF] as RN.WebView;
         if (webView) {

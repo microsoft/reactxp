@@ -44,6 +44,8 @@
       title: WebView
 - title: APIs
   items:
+    - id: apis/accessibility
+      title: Accessibility
     - id: apis/alert
       title: Alert
     - id: apis/app

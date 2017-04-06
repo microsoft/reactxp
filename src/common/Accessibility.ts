@@ -1,5 +1,5 @@
 /**
-* AccessibilityInfo.ts
+* Accessibility.ts
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
@@ -13,7 +13,7 @@ import SyncTasks = require('synctasks');
 import SubscribableEvent = require('../common/SubscribableEvent');
 import RX = require('../common/Interfaces');
 
-export abstract class AccessibilityInfo extends RX.AccessibilityInfo {
+export abstract class Accessibility extends RX.Accessibility {
     abstract isScreenReaderEnabled(): boolean;
 
     newAnnouncementReadyEvent = new SubscribableEvent.SubscribableEvent<(announcement: string) => void>();
@@ -22,4 +22,4 @@ export abstract class AccessibilityInfo extends RX.AccessibilityInfo {
     }
 }
 
-export default AccessibilityInfo;
+export default Accessibility;

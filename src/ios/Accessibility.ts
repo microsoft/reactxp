@@ -1,17 +1,17 @@
 /**
-* AccessibilityInfo.tsx
+* Accessibility.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
 *
-* An iOS variant of AccessibilityInfo that performs announcements by calling 
+* An iOS variant of Accessibility that performs announcements by calling 
 * React Native announcement API for iOS. 
 */
 
 import _ = require('../native-common/lodashMini');
 import RN = require('react-native');
 
-import { AccessibilityInfo as NativeAccessibilityInfo } from '../native-common/AccessibilityInfo';
+import { Accessibility as NativeAccessibility } from '../native-common/Accessibility';
 
 interface AnnouncementFinishedPayload {
     announcement: string,
@@ -20,7 +20,7 @@ interface AnnouncementFinishedPayload {
 
 const RetryTimeout = 3000; // 3 seconds
 
-export class AccessibilityInfo extends NativeAccessibilityInfo {
+export class Accessibility extends NativeAccessibility {
     // Queue of pending announcements. 
     private _announcementQueue: string[] = [];
     private _retryTimestamp: number; 
@@ -28,7 +28,7 @@ export class AccessibilityInfo extends NativeAccessibilityInfo {
     constructor() {
         super();
         // Subscribe to an event to get notified when an announcement will finish.  
-        RN.AccessibilityInfo.addEventListener('announcementFinished', this._recalcAnnouncement);
+        RN.Accessibility.addEventListener('announcementFinished', this._recalcAnnouncement);
     }
 
     protected _updateScreenReaderStatus(isEnabled: boolean) {
@@ -57,7 +57,7 @@ export class AccessibilityInfo extends NativeAccessibilityInfo {
         if (resetTimestamp) {
             this._retryTimestamp = Date.now();
         }
-        RN.AccessibilityInfo.announceForAccessibility(announcement);
+        RN.Accessibility.announceForAccessibility(announcement);
     }
 
     private _recalcAnnouncement = (payload: AnnouncementFinishedPayload) => {
@@ -84,4 +84,4 @@ export class AccessibilityInfo extends NativeAccessibilityInfo {
     }
 }
 
-export default new AccessibilityInfo();
+export default new Accessibility();

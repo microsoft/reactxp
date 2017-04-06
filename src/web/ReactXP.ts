@@ -26,7 +26,7 @@ import RXTypes = require('../common/Types');
 //    a type name. In order to generate the type of 'foo', the actual 'Foo' class needs to be imported. Of course, the same naming problem
 //    exists as (1) so it is imported as 'FooType'. Note: you will see 'FooType' in the generated RX.d.ts ('export var Foo: FooType').
 
-import { default as AccessibilityInfoImpl, AccessibilityInfo as AccessibilityInfoType } from './AccessibilityInfo';
+import { default as AccessibilityImpl, Accessibility as AccessibilityType } from './Accessibility';
 import { ActivityIndicator as ActivityIndicatorImpl } from './ActivityIndicator';
 import { default as AlertImpl, Alert as AlertType } from './Alert';
 import { default as AppImpl, App as AppType } from './App';
@@ -66,8 +66,8 @@ import { WebView as WebViewImpl } from './WebView';
 //    To avoid this problem, the type information is also exported. TypeScript will merge the var and type together (if the types match).
 
 module ReactXP {
-    export type AccessibilityInfo = AccessibilityInfoType;
-    export var AccessibilityInfo = AccessibilityInfoImpl;
+    export type Accessibility = AccessibilityType;
+    export var Accessibility = AccessibilityImpl;
     export import Animated = AnimatedImpl;
     export type ActivityIndicator = ActivityIndicatorImpl;
     export var ActivityIndicator = ActivityIndicatorImpl;

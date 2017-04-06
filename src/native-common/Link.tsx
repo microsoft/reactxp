@@ -43,14 +43,6 @@ export class Link extends RX.Link<{}> {
             Linking.openUrl(this.props.url);
         }
     };
-
-    getVisibleWidth(): number {
-        return 0;
-    }
-
-    getVisibleHeight(): number {
-        return 0;
-    }
 }
 
 export default Link;

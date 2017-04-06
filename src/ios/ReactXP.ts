@@ -17,7 +17,7 @@ import AnimatedImpl = require('../native-common/Animated');
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 
-import { default as AccessibilityInfoImpl, AccessibilityInfo as AccessibilityInfoType } from './AccessibilityInfo';
+import { default as AccessibilityImpl, Accessibility as AccessibilityType } from './Accessibility';
 import { default as ActivityIndicatorImpl, ActivityIndicator as ActivityIndicatorType } from '../native-common/ActivityIndicator';
 import { default as AlertImpl, Alert as AlertType } from '../native-common/Alert';
 import { default as AppImpl, App as AppType } from '../native-common/App';
@@ -61,8 +61,8 @@ ViewBase.setDefaultViewStyle(_defaultViewStyle);
 // See web/ReactXP.tsx for more details.
 
 module ReactXP {
-    export type AccessibilityInfo = AccessibilityInfoType;
-    export var AccessibilityInfo = AccessibilityInfoImpl;
+    export type Accessibility = AccessibilityType;
+    export var Accessibility = AccessibilityImpl;
     export import Animated = AnimatedImpl.Animated;
     export type ActivityIndicator = ActivityIndicatorImpl;
     export var ActivityIndicator = ActivityIndicatorType;
