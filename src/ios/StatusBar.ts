@@ -1,0 +1,40 @@
+/**
+* StatusBar.ts
+* Copyright: Microsoft 2017
+*
+* iOS-specific implementation of StatusBar APIs.
+*/
+
+import RN = require('react-native');
+
+import RX = require('../common/Interfaces');
+
+export class StatusBar extends RX.StatusBar {
+    isOverlay(): boolean {
+        // iOS always draws the status bar as an overlay, as opposed
+        // to a view that takes up space of its own.
+        return true;
+    }
+
+    setBarStyle(style: 'default' | 'light-content' | 'dark-content', animated: boolean): void {
+        RN.StatusBar.setBarStyle(style, true);
+    }
+
+    setHidden(hidden: boolean, showHideTransition: 'fade' | 'slide'): void {
+        RN.StatusBar.setHidden(hidden, showHideTransition);
+    }
+
+    setNetworkActivityIndicatorVisible(value: boolean): void {
+        RN.StatusBar.setNetworkActivityIndicatorVisible(value);
+    }
+
+    setBackgroundColor(color: string, animated: boolean): void {
+        // Nothing to do on iOS
+    }
+
+    setTranslucent(translucent: boolean): void {
+        // Nothing to do on iOS
+    }
+}
+
+export default new StatusBar();

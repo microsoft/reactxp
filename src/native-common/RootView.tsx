@@ -1,0 +1,120 @@
+/**
+* RootView.tsx
+* Copyright: Microsoft 2017
+*
+* The top-most view that's used for proper layering or modals and popups.
+*/
+
+import React = require('react');
+import RN = require('react-native');
+
+import AccessibilityInfo from './AccessibilityInfo';
+import AccessibilityUtil from './AccessibilityUtil';
+import { default as FrontLayerViewManager } from './FrontLayerViewManager';
+import MainViewStore from './MainViewStore';
+import Styles from './Styles';
+import SubscribableEvent = require('../common/SubscribableEvent');
+import Types = require('../common/Types');
+
+export interface RootViewState {
+    mainView?: RN.ReactElement<any>;
+    announcementText?: string;
+}
+
+const _styles = {
+    rootViewStyle: Styles.createViewStyle ({
+        flex: 1,
+        alignItems: 'stretch',
+        overflow: 'visible'
+    }),
+    liveRegionContainer: Styles.createViewStyle({
+        position: 'absolute',
+        opacity: 0,
+        top: -30,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 30
+    })
+};
+
+export class RootView extends React.Component<{}, RootViewState> {
+    private _changeListener = this._onChange.bind(this);
+    private _frontLayerViewChangedSubscription: SubscribableEvent.SubscriptionToken = null;
+    private _newAnnouncementEventChangedSubscription: SubscribableEvent.SubscriptionToken = null;
+
+    constructor() {
+        super();
+        this.state = {
+            mainView: null,
+            announcementText: ''
+        };
+    }
+
+    componentWillMount(): void {
+        MainViewStore.subscribe(this._changeListener);
+
+        this._frontLayerViewChangedSubscription = FrontLayerViewManager.event_changed.subscribe(() => { 
+            // Setting empty state will trigger a render.
+            this.setState({});
+        });
+       
+        // Update announcement text.  
+        this._newAnnouncementEventChangedSubscription = 
+            AccessibilityInfo.newAnnouncementReadyEvent.subscribe(announcement => {
+                this.setState({
+                    announcementText: announcement
+                });
+        })
+
+        this.setState(this._getStateFromStore());
+    }
+
+    componentWillUnmount(): void {
+        this._frontLayerViewChangedSubscription.unsubscribe();
+        this._frontLayerViewChangedSubscription = null;
+        this._newAnnouncementEventChangedSubscription.unsubscribe();
+        this._newAnnouncementEventChangedSubscription = null;
+        MainViewStore.unsubscribe(this._changeListener);
+    }
+
+    render() {
+        const modalLayerView = FrontLayerViewManager.getModalLayerView(this);
+        const popupLayerView = FrontLayerViewManager.getPopupLayerView(this);
+
+        // When showing a modal/popup we want to hide the mainView shown behind from an accessibility
+        // standpoint to ensure that it won't get the focus and the screen reader's attention.
+        const importantForAccessibility = (modalLayerView || popupLayerView) ? 
+            AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.NoHideDescendants) :
+            undefined; // default
+
+        return (
+            <RN.Animated.View style={ _styles.rootViewStyle }>
+                <RN.View 
+                    style={ _styles.rootViewStyle }
+                    importantForAccessibility={ importantForAccessibility }>
+                    { this.state.mainView }
+                </RN.View>
+                { modalLayerView }
+                { popupLayerView }
+                <RN.View 
+                    style={ _styles.liveRegionContainer } 
+                    accessibilityLabel={ this.state.announcementText } 
+                    accessibilityLiveRegion={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
+                /> 
+            </RN.Animated.View>
+        );
+    }
+
+    private _onChange() {
+        this.setState(this._getStateFromStore());
+    }
+
+    private _getStateFromStore(): RootViewState {
+        return {
+            mainView: MainViewStore.getMainView()
+        };
+    }
+}
+
+export default RootView;

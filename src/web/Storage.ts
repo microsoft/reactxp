@@ -1,0 +1,34 @@
+/**
+* Storage.ts
+* Copyright: Microsoft 2017
+*
+* Web-specific implementation of the cross-platform database storage abstraction.
+*/
+
+import SyncTasks = require('synctasks');
+
+import RX = require('../common/Interfaces');
+
+export class Storage extends RX.Storage {
+    getItem(key: string): SyncTasks.Promise<string> {
+        var value = window.localStorage.getItem(key);
+        return SyncTasks.Resolved<string>(value);
+    }
+
+    setItem(key: string, value: string): SyncTasks.Promise<void> {
+        window.localStorage.setItem(key, value);
+        return SyncTasks.Resolved<void>();
+    }
+
+    removeItem(key: string): SyncTasks.Promise<void> {
+        window.localStorage.removeItem(key);
+        return SyncTasks.Resolved<void>();
+    }
+
+    clear(): SyncTasks.Promise<void> {
+        window.localStorage.clear();
+        return SyncTasks.Resolved<void>();
+    }
+}
+
+export default new Storage();

@@ -35,3 +35,15 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# Build artifacts
+/src/.vs
+/src/bin
+/src/obj
+/dist
+
+# Miscellaneous user files
+*.user
+.vscode
+.DS_STORE
+

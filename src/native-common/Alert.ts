@@ -1,0 +1,20 @@
+/**
+* Alert.ts
+* Copyright: Microsoft 2017
+*
+* Native Alert dialog boxes for ReactXP.
+*/
+
+import RN = require('react-native');
+
+import RX = require('../common/Interfaces');
+import Types = require('../common/Types');
+
+// Native implementation for alert dialog boxes
+export class Alert implements RX.Alert {
+    public show(title: string, message?: string, buttons?: Types.AlertButtonSpec[]): void {
+        RN.Alert.alert(title, message, buttons);
+    }
+}
+
+export default new Alert();
