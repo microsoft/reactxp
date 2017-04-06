@@ -28,7 +28,7 @@ build/Release
 
 # Dependency directories
 node_modules
-jspm_packages
+/samples/*/node_modules
 
 # Optional npm cache directory
 .npm
@@ -41,6 +41,7 @@ jspm_packages
 /src/bin
 /src/obj
 /dist
+
 
 # Miscellaneous user files
 *.user

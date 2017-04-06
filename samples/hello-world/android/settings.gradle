@@ -1,0 +1,11 @@
+rootProject.name = 'RXPHelloWorld'
+
+include ':app'
+
+include ':ReactAndroid'
+project(':ReactAndroid').projectDir = new File(
+        rootProject.projectDir, '../node_modules/react-native/ReactAndroid')
+
+include ':processor'
+project(':processor').projectDir = new File(
+        rootProject.projectDir, '../node_modules/react-native/ReactAndroid/src/main/third-party/java/processor')
