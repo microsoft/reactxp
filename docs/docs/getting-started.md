@@ -4,7 +4,7 @@ title: Getting Started
 layout: docs
 category: Overview
 permalink: docs/getting-started.html
-next: react_concepts
+next: using-reactxp
 redirect_from:
   - "docs/index.html"
 ---

@@ -2,6 +2,8 @@
   items:
     - id: getting-started
       title: Getting Started
+    - id: using-reactxp
+      title: Using ReactXP
     - id: react_concepts
       title: React Concepts
     - id: react_lifecycle
