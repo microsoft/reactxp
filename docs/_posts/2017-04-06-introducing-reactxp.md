@@ -31,5 +31,5 @@ When we were deciding which props and style attributes to expose in ReactXP, we 
 
 The Skype team will continue to maintain and build upon ReactXP. Other teams within Microsoft are also starting to use it and make contributions. Today we are opening it to the broader open source community. We hope that others will find it useful, and we welcome feedback and contributions.
 
-We plan to snap a new version of ReactXP approximately monthly, roghly aligned to React Native releases. 
+We plan to snap a new version of ReactXP approximately monthly, roughly aligned to React Native releases. 
 
