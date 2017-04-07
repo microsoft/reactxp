@@ -116,6 +116,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
 
     private _customScrollbar: CustomScrollbar;
     private _customScrollbarEnabled: boolean = true;
+    private _dragging = false;
 
     componentDidUpdate() {
         super.componentDidUpdate();
@@ -223,7 +224,9 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         return (
             <div
                 ref='scrollView'
-                onScroll={this._onScroll}
+                onScroll={ this._onScroll }
+                onTouchStart={ this._onTouchStart }
+                onTouchEnd={ this._onTouchEnd }
                 style={ this._getContainerStyle() }
             >
                 { this.props.children }
@@ -259,6 +262,8 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                     onKeyDown={ this.props.onKeyPress }
                     onFocus={ this.props.onFocus }
                     onBlur={ this.props.onBlur }
+                    onTouchStart={ this._onTouchStart }
+                    onTouchEnd={ this._onTouchEnd }
                 >
                     { this.props.children }
                 </div>
@@ -345,6 +350,18 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         }
         currentTime -= 1;
         return -change / 2 * (currentTime * (currentTime - 2) - 1) + start;
+    }
+
+    private _onTouchStart = () => {
+        if (!this._dragging) {
+            this._dragging = true;
+            this.props.onScrollBeginDrag();
+        }
+    }
+
+    private _onTouchEnd = () => {
+        this._dragging = false;
+        this.props.onScrollEndDrag();
     }
 }
 

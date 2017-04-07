@@ -688,6 +688,8 @@ export interface ScrollViewProps extends ViewProps {
     onLayout?: (e: ViewOnLayoutEvent) => void;
     onContentSizeChange?: (width: number, height: number) => void;
     onScroll?: (newScrollTop: number, newScrollLeft: number) => void;
+    onScrollBeginDrag?: () => void;
+    onScrollEndDrag?: () => void;
     showsHorizontalScrollIndicator?: boolean;
     showsVerticalScrollIndicator?: boolean;
     scrollEnabled?: boolean;

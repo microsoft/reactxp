@@ -48,6 +48,10 @@ onLayout: (e: ViewOnLayoutEvent) => void = undefined;
 // Called when the scroll position changes
 onScroll: (newScrollTop: number, newScrollLeft: number) => void = undefined;
 
+// Called when the user starts or stops scrolling (touch-based systems only)
+onScrollBeginDrag: () => void = undefined;
+onScrollEndDrag: () => void = undefined;
+
 // Android only property to control overScroll mode
 overScrollMode?: 'always' | 'always-if-content-scrolls' | 'never';
 

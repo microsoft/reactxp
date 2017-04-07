@@ -244,6 +244,8 @@ declare module 'react-native' {
         keyboardDismissMode?: string; // enum( 'none', 'interactive', 'on-drag' )
         keyboardShouldPersistTaps?: boolean;
         onScroll?: Function;
+        onScrollBeginDrag?: Function;
+        onScrollEndDrag?: Function;
         onContentSizeChange?: (width: number, height: number) => void;
         showsHorizontalScrollIndicator?: boolean;
         showsVerticalScrollIndicator?: boolean;

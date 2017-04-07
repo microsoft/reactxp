@@ -77,6 +77,8 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 removeClippedSubviews={ false }
                 overScrollMode={ this.props.overScrollMode }
                 scrollIndicatorInsets={ this.props.scrollIndicatorInsets }
+                onScrollBeginDrag={ this.props.onScrollBeginDrag }
+                onScrollEndDrag={ this.props.onScrollEndDrag }
             >
                 { this.props.children }
             </RN.ScrollView>
