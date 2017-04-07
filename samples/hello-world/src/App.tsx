@@ -33,39 +33,28 @@ const styles = {
 
 class App extends RX.Component<null, null> {
     private _translationValue: RX.Animated.Value;
-    private _scaleValue: RX.Animated.Value;
     private _animatedStyle: RX.Types.AnimatedTextStyleRuleSet;
 
     constructor() {
         super();
 
         this._translationValue = new RX.Animated.Value(-100);
-        this._scaleValue = new RX.Animated.Value(0.5);
         this._animatedStyle = RX.Styles.createAnimatedTextStyle({
             transform: [
                 {
                     translateY: this._translationValue
-                },
-                {
-                    scale: this._scaleValue
                 }
             ]
         });
     }
 
     componentDidMount() {
-        let animation = RX.Animated.parallel([
-            RX.Animated.timing(this._translationValue, {
-                toValue: 0,
-                easing: RX.Animated.Easing.OutBack(),
-                duration: 500
-            }),
-            RX.Animated.timing(this._scaleValue, {
-                toValue: 1,
-                easing: RX.Animated.Easing.InOut(),
-                duration: 500
-            })
-        ]);
+        let animation = RX.Animated.timing(this._translationValue, {
+              toValue: 0,
+              easing: RX.Animated.Easing.OutBack(),
+              duration: 500
+            }
+        );
 
         animation.start();
     }
