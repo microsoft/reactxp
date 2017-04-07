@@ -7,7 +7,7 @@ permalink: docs/components/link.html
 next: components/navigator
 ---
 
-This component displays a hyperlink. On the web, it translates to an <a> tag.
+This component displays a hyperlink. On the web, it translates to an &lt;a&gt; tag.
 
 ## Props
 ``` javascript
