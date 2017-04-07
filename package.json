@@ -15,12 +15,12 @@
     "react-addons-perf": "^15.3.1-rc.2",
     "react-addons-test-utils": "^15.3.1-rc.2",
     "react-dom": "^15.3.1-rc.2",
+    "react-native": "^0.34.0",
+    "react-native-windows": "^0.33.0",
     "rebound": "^0.0.13",
     "synctasks": "^0.2.9"
   },
   "devDependencies": {
-    "react-native": "^0.34.0",
-    "react-native-windows": "^0.33.0",
     "typescript": "2.0.8"
   },
   "homepage": "https://microsoft.github.io/reactxp/",
