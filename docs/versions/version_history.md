@@ -15,7 +15,7 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 
 
-### Version 0.34.0
-_Released 10 Apr 2017_
+### Version 0.34.1
+_Released 6 Apr 2017_
 
 This is the initial public release of the ReactXP core library. It is built against React Native 0.34. We are working on updating it to a newer version of React Native, and this will be released shortly.
