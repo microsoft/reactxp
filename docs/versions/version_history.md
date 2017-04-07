@@ -15,6 +15,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 
 
+### Version 0.34.3
+_Released 7 Apr 2017_
+
+Added new props to ScrollView. Updated package.json to properly reflect peerDependencies on react and react-native.
+
+
 ### Version 0.34.1
 _Released 6 Apr 2017_
 
