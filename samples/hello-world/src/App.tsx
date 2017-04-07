@@ -44,7 +44,7 @@ class App extends RX.Component<null, null> {
         this._animatedStyle = RX.Styles.createAnimatedTextStyle({
             transform: [
                 {
-                    translateY: this._translationValue,
+                    translateY: this._translationValue
                 },
                 {
                     scale: this._scaleValue
