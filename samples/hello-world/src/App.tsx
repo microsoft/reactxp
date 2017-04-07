@@ -44,7 +44,9 @@ class App extends RX.Component<null, null> {
         this._animatedStyle = RX.Styles.createAnimatedTextStyle({
             transform: [
                 {
-                    translateY: this._translationValue,
+                    translateY: this._translationValue
+                },
+                {
                     scale: this._scaleValue
                 }
             ]
@@ -52,12 +54,18 @@ class App extends RX.Component<null, null> {
     }
 
     componentDidMount() {
-        let animation = RX.Animated.timing(this._translationValue, {
-              toValue: 0,
-              easing: RX.Animated.Easing.OutBack(),
-              duration: 500
-            }
-        );
+        let animation = RX.Animated.parallel([
+            RX.Animated.timing(this._translationValue, {
+                toValue: 0,
+                easing: RX.Animated.Easing.OutBack(),
+                duration: 500
+            }),
+            RX.Animated.timing(this._scaleValue, {
+                toValue: 1,
+                easing: RX.Animated.Easing.InOut(),
+                duration: 500
+            })
+        ]);
 
         animation.start();
     }
