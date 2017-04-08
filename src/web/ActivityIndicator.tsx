@@ -12,7 +12,7 @@ import React = require('react');
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
-const _activityIndiciatorCss = `
+const _activityIndicatorCss = `
 .rx-activity {
   position: relative;
   width: 100px;
@@ -641,9 +641,9 @@ export class ActivityIndicator extends RX.ActivityIndicator<ActivityIndicatorSta
 
         style.type = 'text/css';
         if (style.styleSheet){
-            style.styleSheet.cssText = _activityIndiciatorCss;
+            style.styleSheet.cssText = _activityIndicatorCss;
         } else {
-            style.appendChild(document.createTextNode(_activityIndiciatorCss));
+            style.appendChild(document.createTextNode(_activityIndicatorCss));
         }
 
         head.appendChild(style);

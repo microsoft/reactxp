@@ -4,7 +4,7 @@ title: Animations
 layout: docs
 category: Overview
 permalink: docs/animations.html
-next: components/activityindiciator
+next: components/activityindicator
 ---
 
 ReactXP supports a powerful animation abstraction. Inidividual style elements (e.g. transforms, opacity, or backgroundColor) can be animated. 
