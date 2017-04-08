@@ -206,7 +206,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             width: '100%',
             height: '100%',
             display: 'flex',
-            cursor: 'default'
+            cursor: 'default',
+            boxSizing: 'border-box'
         };
 
         let optionalPopup: JSX.Element = null;
