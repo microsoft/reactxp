@@ -3,7 +3,7 @@ id: using-reactxp
 title: Using ReactXP
 layout: docs
 category: Overview
-permalink: docs/getting-started.html
+permalink: docs/using-reactxp.html
 next: react_concepts
 ---
 
