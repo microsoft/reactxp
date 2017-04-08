@@ -555,10 +555,10 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
 export interface ViewProps extends ViewPropsShared {
     style?: ViewStyleRuleSet | ViewStyleRuleSet[];
     onContextMenu?: (e: React.SyntheticEvent) => void;
-    onStartShouldSetResponder?: (e: React.SyntheticEvent) => void;
-    onMoveShouldSetResponder?: (e: React.SyntheticEvent) => void;
-    onStartShouldSetResponderCapture?: (e: React.SyntheticEvent) => void;
-    onMoveShouldSetResponderCapture?: (e: React.SyntheticEvent) => void;
+    onStartShouldSetResponder?: (e: React.SyntheticEvent) => boolean;
+    onMoveShouldSetResponder?: (e: React.SyntheticEvent) => boolean;
+    onStartShouldSetResponderCapture?: (e: React.SyntheticEvent) => boolean;
+    onMoveShouldSetResponderCapture?: (e: React.SyntheticEvent) => boolean;
     onResponderGrant?: (e: React.SyntheticEvent) => void;
     onResponderReject?: (e: React.SyntheticEvent) => void;
     onResponderRelease?: (e: React.SyntheticEvent) => void;
@@ -566,7 +566,7 @@ export interface ViewProps extends ViewPropsShared {
     onResponderMove?: (e: React.TouchEvent) => void;
     onResponderEnd?: (e: React.TouchEvent) => void;
     onResponderTerminate?: (e: React.SyntheticEvent) => void;
-    onResponderTerminationRequest?: (e: React.SyntheticEvent) => void;
+    onResponderTerminationRequest?: (e: React.SyntheticEvent) => boolean;
 }
 
 export interface AnimatedViewProps extends ViewPropsShared {
