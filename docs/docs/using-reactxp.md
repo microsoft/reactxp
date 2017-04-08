@@ -1,6 +1,6 @@
 ---
-id: getting-started
-title: Getting Started
+id: using-reactxp
+title: Using ReactXP
 layout: docs
 category: Overview
 permalink: docs/getting-started.html
