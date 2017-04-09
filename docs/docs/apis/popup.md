@@ -11,7 +11,7 @@ A popup is not technically a component. Rather, it's a collection of methods on 
 
 When a popup is displayed, the caller specifies a PopupOptions structure that includes several callbacks, including a renderPopup method.
 
-Popups by default will not act like a toggle. When Popup.show is called, it will always show the Popup. If a Popup is required to act like a toggle, PopupOoptions.dimissIfShown should be set to true. In this case, if Popup.show is called once for a component, it will show the popup. A subsequent call from the same component will dimiss the popup and so on. 
+Popups by default will not act like a toggle. When Popup.show is called, it will always show the Popup. If a Popup is required to act like a toggle, PopupOptions.dismissIfShown should be set to true. In this case, if Popup.show is called once for a component, it will show the popup. A subsequent call from the same component will dismiss the popup and so on. 
 
 The overall dimensions of a popup are assumed to remain constant for the lifetime of the popup. This allows the dimensions to be measured once, and the popup can then be positioned relative to the anchor. 
 
