@@ -4,7 +4,7 @@ title: Using ReactXP
 layout: docs
 category: Overview
 permalink: docs/using-reactxp.html
-next: react_concepts
+next: faq
 ---
 
 ## Tips for Web
