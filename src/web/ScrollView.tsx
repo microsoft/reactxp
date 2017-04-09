@@ -237,7 +237,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
     private _renderWithCustomScrollbar() {
         let containerStyles: any = _customStyles.customScrollContainer;
         if (this.props.justifyEnd) {
-            containerStyles = _.extend({justifyContent: 'flex-end'}, containerStyles);
+            containerStyles = _.extend({ justifyContent: 'flex-end' }, containerStyles);
         }
 
         let scrollComponentClassNames = ['scrollViewport'];
@@ -246,7 +246,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         }
         if (this.props.vertical || this.props.vertical === undefined) {
             scrollComponentClassNames.push('scrollViewportV');
-            containerStyles = _.extend(_customStyles.customScrollVertical, containerStyles);
+            containerStyles = _.extend({}, _customStyles.customScrollVertical, containerStyles);
         }
 
         return (
