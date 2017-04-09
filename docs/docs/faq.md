@@ -29,6 +29,11 @@ We've tested ReactXP with recent versions of the following browsers:
 Other HTML5 browsers should theoretically work as well.
 
 
+### Can I use ReactXP without TypeScript?
+
+Yes, you can write your application's code in JavaScript or any language that compiles to JavaScript (TypeScript, Flow, etc.). ReactXP is implemented in TypeScript, and the distribution includes TypeScript type definitions for the ReactXP interface.
+
+
 ### How does ReactXP relate to React Native?
 
 ReactXP builds upon React Native. ReactXP's components and APIs are inspired by React Native --- and in most cases are the same as React Native. ReactXP generally exposes APIs, props, style attributes, and animation interfaces that are common to the React Native implementations on iOS and Android (as well as the nascent implementation on Windows). It also implements these same APIs, props, style attributes, and animation interfaces on the web.
