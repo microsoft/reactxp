@@ -31,9 +31,9 @@ Other HTML5 browsers should theoretically work as well.
 
 ### How does ReactXP relate to React Native?
 
-ReactXP builds upon React Native. ReactXP's components and APIs are inspired by by React Native --- and in most cases are the same as React Native. ReactXP generally exposes APIs, props, style attributes, and animation declarations that are common to the React Native implementations on iOS and Android (as well as the nascent implementation on Windows). It also implements these same APIs, props, style attributes, and animation declarations on the web.
+ReactXP builds upon React Native. ReactXP's components and APIs are inspired by React Native --- and in most cases are the same as React Native. ReactXP generally exposes APIs, props, style attributes, and animation interfaces that are common to the React Native implementations on iOS and Android (as well as the nascent implementation on Windows). It also implements these same APIs, props, style attributes, and animation interfaces on the web.
 
-ReactXP is neither a proper subset nor a superset of React Native. It doesn't expose every component provided by React Native. In particular, it doesn't expose any components that are platform-specific (such as PickerIOS or MapView). It also exposes some components and APIs that are not implemented in React Native, such as [GestureView](components/gestureview.html) and [UserPresence](apis/userpresence.html).
+ReactXP is neither a proper subset nor a proper superset of React Native. It doesn't expose every component provided by React Native. In particular, it doesn't expose any components that are platform-specific (such as PickerIOS or MapView). It also exposes some components and APIs that are not implemented in React Native, such as [GestureView](components/gestureview.html) and [UserPresence](apis/userpresence.html).
 
 Apps that use ReactXP can directly access React Native components and APIs. They can also directly access React DOM elements on the web. But such code will need to include build-time or run-time conditionals to avoid using these components or APIs on platforms where they don't apply. 
 
@@ -48,7 +48,7 @@ The goals behind these two efforts are similar, but the approaches differ. React
 
 ReactXP generally exposes only those props, style attributes, and APIs that are available across all platforms. If you write to ReactXP's abstraction, you can have high confidence that it will run on all supported platforms in the same manner. The same can be achieved with React Native for Web/iOS/Android, but you need to be more careful about which components, props, and APIs you use.
 
-One of our goals in writing ReactXP was to enable developersto write and debug code in whatever platform environment they felt most comfortable while having confidence that the same code would run the same on other platforms.
+One of our goals in writing ReactXP was to enable developers to write and debug code in whatever platform environment they felt most comfortable while having confidence that the resulting code would run the same on other platforms.
 
 
 ### How does ReactXP differ from Xamarin?
