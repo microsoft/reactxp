@@ -15,6 +15,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 
 
+### Version 0.42.0_rc.1
+_Released 9 Apr 2017_
+
+Updated project to use recent versions of React (15.5.3) and React Native (0.42.3).
+
+
 ### Version 0.34.3
 _Released 7 Apr 2017_
 
