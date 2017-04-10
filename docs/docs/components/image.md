@@ -21,10 +21,10 @@ accessibilityLabel: string = undefined;
 headers: { [headerName: string]: string } = undefined;
 
 // Called when an error occurs that prevents the image from loading
-onError: (e: RX.SyntheticEvent) => void;
+onError: (e: SyntheticEvent) => void;
 
 // Called when the image successfully loads
-onLoad: (e: RX.SyntheticEvent) => void;
+onLoad: (e: SyntheticEvent) => void;
 
 // Android-specific resize property
 resizeMethod?: 'auto' | 'resize' | 'scale'; // Android only
@@ -40,7 +40,7 @@ shouldRasterizeIOS: boolean = false; // iOS only
 source: string = undefined;
 
 // See below for supported styles
-style: RX.ImageStyleRuleSet | RX.ImageStyleRuleSet[] = [];
+style: ImageStyleRuleSet | ImageStyleRuleSet[] = [];
 
 // Tooltip for image
 title: string = undefined;

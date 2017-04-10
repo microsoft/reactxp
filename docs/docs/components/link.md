@@ -15,12 +15,12 @@ This component displays a hyperlink. On the web, it translates to an &lt;a&gt; t
 numberOfLines: number = 0;
 
 // Called when the mouse cursor enters or leaves the view bounds
-onHoverStart: (e: RX.SyntheticEvent) => void = undefined;
-onHoverEnd: (e: RX.SyntheticEvent) => void = undefined;
+onHoverStart: (e: SyntheticEvent) => void = undefined;
+onHoverEnd: (e: SyntheticEvent) => void = undefined;
 
 // Event called when the touch or mouse button is released 
 // within the bounds of the view and the press has not been canceled
-onPress: (e: RX.SyntheticEvent) => void = undefined;
+onPress: (e: SyntheticEvent) => void = undefined;
 
 // Can the link be included in a text selection?
 selectable: boolean = false;
@@ -32,7 +32,7 @@ title: string = undefined;
 url: string = undefined;
 
 // See below for supported styles
-style: RX.LinkStyleRuleSet | RX.LinkStyleRuleSet[] = [];
+style: LinkStyleRuleSet | LinkStyleRuleSet[] = [];
 ```
 
 ## Styles

@@ -42,7 +42,7 @@ numberOfLines: number = 0;
 selectable: boolean = false;
 
 // See below for supported styles
-style: RX.TextStyleRuleSet | RX.TextStyleRuleSet[] = [];
+style: TextStyleRuleSet | TextStyleRuleSet[] = [];
 ```
 
 ## Styles

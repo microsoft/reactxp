@@ -35,26 +35,26 @@ delayLongPress: number = 1000;
 disabled: boolean = false;
 
 // Called when the user has pressed and held for a specified duration
-onLongPress: (e: RX.SyntheticEvent) => void;
+onLongPress: (e: SyntheticEvent) => void;
 
 // Called when the mouse cursor enters or leaves the view bounds
-onHoverStart: (e: RX.SyntheticEvent) => void;
-onHoverEnd: (e: RX.SyntheticEvent) => void;
+onHoverStart: (e: SyntheticEvent) => void;
+onHoverEnd: (e: SyntheticEvent) => void;
 
 // Called when the touch or mouse button is released within the bounds of the view and the press has not been canceled
-onPress: (e: RX.SyntheticEvent) => void;
+onPress: (e: SyntheticEvent) => void;
 
 // Called when touch is initiated or mouse button is pressed
-onPressIn: (e: RX.SyntheticEvent) => void;
+onPressIn: (e: SyntheticEvent) => void;
 
 // Called when touch or the mouse button is released or the user&apos;s finger or mouse cursor is no longer over the view
-onPressOut: (e: RX.SyntheticEvent) => void;
+onPressOut: (e: SyntheticEvent) => void;
 
 // Rasterize contents using offscreen bitmap (perf optimization)
 shouldRasterizeIOS: boolean = false; // iOS only
 
 // See below for supported styles
-style: RX.ButtonStyleRuleSet | RX.ButtonStyleRuleSet[] = [];
+style: ButtonStyleRuleSet | ButtonStyleRuleSet[] = [];
 
 // Keyboard tab order
 tabIndex: number = undefined;

@@ -17,7 +17,7 @@ ScrollViews must have a bounded height (or width, if it scrolls horizontally) si
 bounces: boolean = true; // iOS only
 
 // Style applied to the scroll view content container,the view that wraps the children
-contentContainerStyle: RX.ViewStyleRuleSet | RX.ViewStyleRuleSet[] = [];
+contentContainerStyle: ViewStyleRuleSet | ViewStyleRuleSet[] = [];
 
 // Does it support scrolling in the horizontal and/or vertical directions?
 horizontal: boolean = false;
@@ -74,7 +74,7 @@ showsHorizontalScrollIndicator: boolean = [same as horizontal];
 showsVerticalScrollIndicator: boolean = [same as horizontal];
 
 // See below for supported styles
-style: RX.ViewStyleRuleSet | RX.ViewStyleRuleSet[] = [];
+style: ViewStyleRuleSet | ViewStyleRuleSet[] = [];
 ```
 
 ## Styles

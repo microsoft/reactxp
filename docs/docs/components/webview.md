@@ -41,13 +41,13 @@ javaScriptEnabled: boolean = true;
 headers: { [headerName: string]: string } = undefined;
 
 // Called when an error occurs that prevents the contents from loading
-onError: (e: RX.SyntheticEvent) => void = undefined; // Native only
+onError: (e: SyntheticEvent) => void = undefined; // Native only
 
 // Called when the contents successfully load
-onLoad: (e: RX.SyntheticEvent) => void = undefined;
+onLoad: (e: SyntheticEvent) => void = undefined;
 
 // Called when the contents start to load
-onLoadStart: (e: RX.SyntheticEvent) => void = undefined; // Native only
+onLoadStart: (e: SyntheticEvent) => void = undefined; // Native only
 
 // Called when the navigation state changes
 onNavigationStateChange: (navigationState: WebViewNavigationState) => void;
@@ -62,7 +62,7 @@ scalesPageToFit: boolean = false;
 startInLoadingState: boolean = true; // Native only
 
 // See below for supported styles
-style: RX.WebViewStyleRuleSet | RX.WebViewStyleRuleSet[] = [];
+style: WebViewStyleRuleSet | WebViewStyleRuleSet[] = [];
 
 // URL to HTML content
 url: string = undefined;

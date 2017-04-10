@@ -13,13 +13,13 @@ ReactXP supports a powerful animation abstraction. Inidividual style elements (e
 
 Three base RX classes can have animatable styles:
 
-* RX.Animated.View
+* Animated.View
 
-* RX.Animated.Image
+* Animated.Image
 
-* RX.Animated.Text
+* Animated.Text
 
-These component types should be used in place of the normal RX.View, RX.Image or RX.Text in the render method. In general, style properties expressed as numeric values or colors can be animated. Properties with text values (e.g. flexDirection or fontWeight) cannot be animated. 
+These component types should be used in place of the normal [View](components/view), [Image](components/image) or [Text](components/text) in the render method. In general, style properties expressed as numeric values or colors can be animated. Properties with text values (e.g. flexDirection or fontWeight) cannot be animated. 
 
 ## Animated Values
 The following example shows how to create animated values with an initial value. Animated values are typically stored as instance variables within a component class. They can also be stored in the state structure.

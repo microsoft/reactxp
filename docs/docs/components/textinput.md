@@ -4,7 +4,7 @@ title: TextInput
 layout: docs
 category: Components
 permalink: docs/components/textinput.html
-next: components/video
+next: components/view
 ---
 
 This component provides basic text input capabilities.
@@ -59,10 +59,10 @@ onChangeText: (newValue: string) => void = undefined;
 onFocus: () => void = undefined;
 
 // Called on a key event
-onKeyPress: (e: RX.KeyboardEvent) => void = undefined;
+onKeyPress: (e: KeyboardEvent) => void = undefined;
 
 // Called when text is pasted into the control
-onPaste: (e: RX.ClipboardEvent) => void = undefined;
+onPaste: (e: ClipboardEvent) => void = undefined;
 
 // Called when the selection scrolls due to overflow
 onScroll: (newScrollTop: number, newScrollLeft: number) => void = undefined;
@@ -89,7 +89,7 @@ secureTextEntry: boolean = false;
 spellCheck: boolean = [value of autoCorrect];
 
 // See below for supported styles
-style: RX.TextInputStyleRuleSet | RX.TextInputStyleRuleSet[] = [];
+style: TextInputStyleRuleSet | TextInputStyleRuleSet[] = [];
 
 // Alignment of text within the input box.
 textAlign: 'auto' | 'left' | 'right' | 'center' | 'justify';

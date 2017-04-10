@@ -54,7 +54,7 @@ interface PopupOptions {
     // IMPORTANT NOTE: This handler may be called when the component is
     // already unmounted as it uses a time delay accommodate 
     // fade-out animations.
-    onAnchorPressed?: (e: RX.Types.SyntheticEvent) => void;
+    onAnchorPressed?: (e: SyntheticEvent) => void;
 
     // Determines if the anchor invoking the popup should behave like a toggle. 
     // Value = true  => Calling Popup.show will show the popup. A subsequent call, will hide the popup, and so on. 
