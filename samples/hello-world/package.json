@@ -1,28 +1,26 @@
 {
   "name": "rxp-hello-world",
   "version": "1.0.0",
-  "description": "",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "web-watch": "webpack --progress --colors --watch",
     "rn-watch": "tsc --watch",
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
-    "awesome-typescript-loader": "^3.0.4-rc.2",
+    "awesome-typescript-loader": "3.1.2",
     "source-map-loader": "^0.1.6",
     "typescript": "2.1.6",
     "webpack": "2.2.1"
   },
   "dependencies": {
-    "reactxp": "^0.34.0",
-    "react": "^15.3.1-rc.2",
-    "react-addons-perf": "^15.3.1-rc.2",
-    "react-addons-test-utils": "^15.3.1-rc.2",
-    "react-dom": "^15.3.1-rc.2",
-    "react-native": "^0.34.0",
+    "reactxp": "0.42.0-rc.1",
+    "react": "15.5.3",
+    "react-addons-perf": "15.5.0-rc.2",
+    "react-addons-test-utils": "15.5.1",
+    "react-dom": "15.5.3",
+    "react-native": "0.42.3",
     "react-native-windows": "^0.33.0"
   }
 }
