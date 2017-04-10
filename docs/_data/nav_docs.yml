@@ -40,8 +40,6 @@
       title: Text
     - id: components/textinput
       title: TextInput
-    - id: components/video
-      title: Video
     - id: components/view
       title: View
     - id: components/webview
