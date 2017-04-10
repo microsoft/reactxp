@@ -10,6 +10,8 @@ next: components/webview
 This component is a generic container for other components.
 
 ## Props
+In addition to the [common accessibility props](/reactxp/docs/accessibility.html), the following props are supported.
+
 ``` javascript
 // Alternate text to display if the image cannot be loaded
 // or by screen readers

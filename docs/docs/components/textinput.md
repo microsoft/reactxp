@@ -10,6 +10,8 @@ next: components/video
 This component provides basic text input capabilities.
 
 ## Props
+In addition to the [common accessibility props](/reactxp/docs/accessibility.html), the following props are supported.
+
 ``` javascript
 // Should fonts be scaled according to system setting?
 allowFontScaling: boolean = true; // Android and iOS only

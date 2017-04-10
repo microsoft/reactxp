@@ -16,6 +16,8 @@
       title: Styles
     - id: animations
       title: Animations
+    - id: accessibility
+      title: Accessibility
 - title: Components
   items:
     - id: components/activityindicator

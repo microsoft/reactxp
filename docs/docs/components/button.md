@@ -12,6 +12,8 @@ Like View, this component is a generic container for other components. However, 
 This component supports only one child. If you require multiple child components, wrap them in a View.
 
 ## Props
+In addition to the [common accessibility props](/reactxp/docs/accessibility.html), the following props are supported.
+
 ``` javascript
 // Alternate text to display if the image cannot be loaded
 // or by screen readers
