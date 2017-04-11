@@ -41,7 +41,7 @@ export class WebView extends RX.WebView<{}> {
                 scalesPageToFit={ this.props.scalesPageToFit }
                 onError={ this.props.onError }
                 onLoadStart={ this.props.onLoadStart }
-                onMessage={this.props.onMessage}
+                onMessage={ this.props.onMessage }
             />
         );
     }
