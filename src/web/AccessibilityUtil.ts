@@ -81,7 +81,7 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
         }
         
         // Here we are returning undefined if the above condtion is not met 
-        // as we dont want to poluute the dom with "aria-selected = false" for every falsy condition
+        // as we dont want to pollute the dom with "aria-selected = false" for every falsy condition
         return undefined;
     }
 }
