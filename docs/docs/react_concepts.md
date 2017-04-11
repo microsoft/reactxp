@@ -30,7 +30,7 @@ Note that this component is emitting a "div" tag, which is valid only in browser
             return <RX.Text>Hello World</RX.Text>;
         }
     }
-Also note that `RX.Component` replaces `React.Component` in the above example. [ReactXP *re-exports* `React.Component`](https://github.com/Microsoft/reactxp/blob/master/src/web/ReactXP.ts#L131) as `RX-Component` so your imports remain tidy, you don't need to import `React` specifically.
+Also note that `RX.Component` replaces `React.Component` in the above example. [ReactXP *re-exports* `React.Component`](https://github.com/Microsoft/reactxp/blob/master/src/web/ReactXP.ts#L131) as `RX.Component` so your imports remain tidy, you don't need to import `React` specifically.
 
 ## Props
 It's convenient for parent components to customize child components by specifying parameters. React allows components to define a set of properties (or "props" for short). Some props are required, others are optional. Props can be simple values, objects, or even functions.
