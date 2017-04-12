@@ -1,4 +1,6 @@
-module.exports = {
+import * as webpack from 'webpack';
+
+const config: webpack.Configuration {
     entry: "./src/index.tsx",
     output: {
         filename: "bundle.js",
@@ -21,3 +23,4 @@ module.exports = {
     },
 };
 
+export default config;
