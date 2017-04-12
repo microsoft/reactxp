@@ -9,8 +9,11 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "devDependencies": {
+    "@types/node": "^7.0.12",
+    "@types/webpack": "^2.2.14",
     "awesome-typescript-loader": "3.1.2",
     "source-map-loader": "^0.1.6",
+    "ts-node": "^3.0.2",
     "typescript": "2.1.6",
     "webpack": "2.2.1"
   },
