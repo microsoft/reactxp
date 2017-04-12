@@ -21,7 +21,7 @@ import ViewBase from './ViewBase';
 
 export class View extends ViewBase<Types.ViewProps, {}> {
     private _internalProps: any = {};
-    
+
     constructor(props: Types.ViewProps) {
         super(props);
 
@@ -43,13 +43,13 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         this._internalProps.ref = this._setNativeView;
 
         const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(props.importantForAccessibility);
-        const accessibilityLabel = this.props.accessibilityLabel || this.props.title;
+        const accessibilityLabel = props.accessibilityLabel || props.title;
         // Set accessibility props on Native only if we have valid importantForAccessibility value or accessibility label or if this
-        // view is not a button. 
-        // For a button, we let the Button component compute its own accessibility props. 
-        const shouldSetAccessibilityProps = this._internalProps && !this._isButton(props) && 
+        // view is not a button.
+        // For a button, we let the Button component compute its own accessibility props.
+        const shouldSetAccessibilityProps = this._internalProps && !this._isButton(props) &&
             !!(importantForAccessibility || accessibilityLabel);
-        
+
         if (shouldSetAccessibilityProps) {
             this._internalProps.importantForAccessibility = importantForAccessibility;
             this._internalProps.accessibilityLabel = accessibilityLabel;
@@ -71,7 +71,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     }
 
     private _isButton (viewProps: Types.ViewProps): boolean {
-        return !!(viewProps.onPress || viewProps.onLongPress); 
+        return !!(viewProps.onPress || viewProps.onLongPress);
     }
 
     render() {
