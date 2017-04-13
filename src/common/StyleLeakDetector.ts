@@ -15,7 +15,7 @@
 import _ = require('./lodashMini');
 
 import AppConfig from './AppConfig';
-import RX = require('./Interfaces');
+
 import Types = require('../common/Types');
 
 export class StyleLeakDetector {
@@ -88,7 +88,7 @@ export class StyleLeakDetector {
             }
         }
     }
-};
+}
 
 var instance = new StyleLeakDetector();
 export default instance;

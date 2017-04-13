@@ -44,17 +44,17 @@ export class Network extends RX.Network {
 
     private static _NativeNetworkTypeToDeviceNetworkType(networkType: string): RX.DeviceNetworkType {
         switch (networkType) {
-            case "UNKNOWN":
+            case 'UNKNOWN':
                 return RX.DeviceNetworkType.UNKNOWN;
-            case "NONE":
+            case 'NONE':
                 return RX.DeviceNetworkType.NONE;
-            case "WIFI":
+            case 'WIFI':
                 return RX.DeviceNetworkType.WIFI;
-            case "MOBILE_2G":
+            case 'MOBILE_2G':
                 return RX.DeviceNetworkType.MOBILE_2G;
-            case "MOBILE_3G":
+            case 'MOBILE_3G':
                 return RX.DeviceNetworkType.MOBILE_3G;
-            case "MOBILE_4G":
+            case 'MOBILE_4G':
                 return RX.DeviceNetworkType.MOBILE_4G;
         }
 

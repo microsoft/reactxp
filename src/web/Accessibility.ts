@@ -8,10 +8,7 @@
 * screen reader.
 */
 
-import SyncTasks = require('synctasks');
-
 import { Accessibility as CommonAccessibility } from '../common/Accessibility';
-import RX = require('../common/Interfaces');
 
 export class Accessibility extends CommonAccessibility {
     // Calling this API on web has no effect.

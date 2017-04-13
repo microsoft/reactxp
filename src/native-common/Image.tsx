@@ -124,7 +124,7 @@ export class Image extends RX.Image<{}> {
         if (this.props.onLoad) {
             this.props.onLoad({ width: this._nativeImageWidth, height: this._nativeImageHeight });
         }
-    };
+    }
 
     private _onError = (e: React.SyntheticEvent) => {
         if (!this._isMounted) {
@@ -135,7 +135,7 @@ export class Image extends RX.Image<{}> {
             const event = e.nativeEvent as any;
             this.props.onError(new Error(event.error));
         }
-    };
+    }
 
     // Note: This works only if you have an onLoaded handler and wait for the image to load.
     getNativeWidth(): number {

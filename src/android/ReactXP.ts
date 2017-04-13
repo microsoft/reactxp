@@ -97,7 +97,7 @@ module ReactXP {
     export type Popup = PopupType;
     export var Popup = PopupImpl;
     export type Profiling = ProfilingType;
-    export var Profiling = ProfilingImpl
+    export var Profiling = ProfilingImpl;
     export type ScrollView = ScrollViewType;
     export var ScrollView = ScrollViewImpl;
     export type StatusBar = StatusBarType;
@@ -128,7 +128,7 @@ module ReactXP {
     export import Children = React.Children;
     export var __spread = (React as any).__spread;
     export import DeviceNetworkType = RXInterface.DeviceNetworkType;
-};
+}
 
 export = ReactXP;
 

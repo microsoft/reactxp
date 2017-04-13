@@ -124,7 +124,7 @@ module ReactXP {
     export import Children = React.Children;
     export var __spread = (React as any).__spread;
     export import DeviceNetworkType = RXInterface.DeviceNetworkType;
-};
+}
 
 export = ReactXP;
 

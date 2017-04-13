@@ -133,7 +133,7 @@ module ReactXP {
     export var Children = React.Children;
     export var __spread = (React as any).__spread;
     export import DeviceNetworkType = RXInterface.DeviceNetworkType;
-};
+}
 
 export = ReactXP;
 
@@ -154,7 +154,6 @@ var _rxImplementsRxInterface: RXInterface.ReactXP = ReactXP;
 /* tslint:enable:no-unused-variable */
 
 /*
-
 
 var rx = module.exports;
 Object.keys(rx)

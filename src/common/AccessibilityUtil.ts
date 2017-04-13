@@ -14,7 +14,7 @@ export const ImportantForAccessibilityMap = {
     [Types.ImportantForAccessibility.Yes]: 'yes',
     [Types.ImportantForAccessibility.No]: 'no',
     [Types.ImportantForAccessibility.NoHideDescendants]: 'no-hide-descendants'
-}
+};
 
 export abstract class AccessibilityUtil {
     isHidden(importantForAccessibility: Types.ImportantForAccessibility): boolean {

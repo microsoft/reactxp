@@ -19,6 +19,6 @@ export class Input extends RX.Input {
             return this.backButtonEvent.fire();
         });
     }
-};
+}
 
 export default new Input();

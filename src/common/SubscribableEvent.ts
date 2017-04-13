@@ -54,5 +54,5 @@ export class SubscribableEvent<F extends { (...args: any[]): boolean|void }> {
         }
 
         return false;
-    })
+    });
 }

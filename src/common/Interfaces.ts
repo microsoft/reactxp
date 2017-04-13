@@ -87,7 +87,9 @@ export interface IAnimatedValue {
 }
 
 export abstract class AnimatedValue implements IAnimatedValue {
-    constructor(val: number) { }
+    constructor(val: number) {
+        // No-op
+    }
     abstract setValue(value: number): void;
     abstract addListener(callback: any): number;
     abstract removeListener(id: string): void;
@@ -226,7 +228,7 @@ export enum DeviceNetworkType {
     MOBILE_2G,
     MOBILE_3G,
     MOBILE_4G
-};
+}
 
 export abstract class Network {
     abstract isConnected(): SyncTasks.Promise<boolean>;
@@ -323,4 +325,3 @@ export interface Animated {
     parallel: Types.Animated.ParallelFunction;
     sequence: Types.Animated.SequenceFunction;
 }
-

@@ -52,9 +52,11 @@ export class Text extends RX.Text<{}> {
     }
 
     focus() {
+        // No-op
     }
 
     blur() {
+        // No-op
     }
 }
 

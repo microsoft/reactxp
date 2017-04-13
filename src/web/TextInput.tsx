@@ -129,7 +129,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
         }
 
         this._checkSelectionChanged();
-    };
+    }
 
     private _onInput = (e: React.FormEvent) => {
         if (!e.defaultPrevented) {
@@ -154,7 +154,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
                 this._checkSelectionChanged();
             }
         }
-    };
+    }
 
     private _checkSelectionChanged = () => {
         let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
@@ -168,7 +168,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
                 }
             }
         }
-    };
+    }
 
     private _onKeyDown = (e: Types.KeyboardEvent) => {
         // Generate a "submit editing" event if the user
@@ -188,7 +188,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
         }
 
         this._checkSelectionChanged();
-    };
+    }
 
     private _onScroll = (e: Types.UIEvent) => {
         if (this.props.onScroll) {

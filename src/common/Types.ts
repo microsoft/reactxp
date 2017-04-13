@@ -21,7 +21,7 @@ export type ReactNode = React.ReactNode;
 // this detail away from the components' common implementation.
 export type ReactInterface = {
     createElement<P>(type: string, props?: P, ...children: React.ReactNode[]): React.ReactElement<P>;
-}
+};
 
 //------------------------------------------------------------
 // React Native Flexbox styles 0.14.2
@@ -549,7 +549,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     // iOS and Android only. Visual touchfeedback properties
     disableTouchOpacityAnimation?: boolean;    
     activeOpacity?: number;
-    underlayColor?: string
+    underlayColor?: string;
 }
 
 export interface ViewProps extends ViewPropsShared {
@@ -576,7 +576,7 @@ export interface AnimatedViewProps extends ViewPropsShared {
 // GestureView
 export interface GestureState {
     timeStamp: Date;
-};
+}
 
 export interface MultiTouchGestureState extends GestureState {
     initialCenterClientX: number;
@@ -939,7 +939,7 @@ export type NavigationTransitionStyleConfig = {
   scaleOutput: number | number[];
   translateXOutput: number | number[];
   translateYOutput: number | number[];
-}
+};
 
 // NOTE: Experimental navigator only
 export type CustomNavigatorSceneConfig = {
@@ -953,7 +953,7 @@ export type CustomNavigatorSceneConfig = {
   hideShadow?: boolean;
   // Optionally flip the visual order of the last two scenes
   presentBelowPrevious?: boolean;
-}
+};
 
 export interface NavigatorProps extends CommonProps {
     renderScene?: (route: NavigatorRoute) => JSX.Element;
@@ -1026,7 +1026,7 @@ export module Animated {
     export interface InterpolationConfigType {
         inputRange: number[];
         outputRange: (number | string)[];
-    };
+    }
 
     export type TimingFunction = (value: RX.AnimatedValue, config: TimingAnimationConfig) => CompositeAnimation;
     export var timing: TimingFunction;
@@ -1040,7 +1040,7 @@ export module Animated {
     export type EasingFunction = {
         cssName: string;
         function: (input: number) => number;
-    }
+    };
 
     export interface Easing {
         Default(): EasingFunction;
@@ -1089,7 +1089,7 @@ export type ViewOnLayoutEvent = {
     y: number;
     height: number;
     width: number;
-}
+};
 export interface KeyboardEvent extends SyntheticEvent {
     ctrlKey: boolean;
     altKey: boolean;
@@ -1113,7 +1113,7 @@ interface Element<P> {
 export type Dimensions = {
     width: number;
     height: number;
-}
+};
 
 //
 // Linking

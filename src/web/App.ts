@@ -7,10 +7,6 @@
 * Implements App interface for ReactXP.
 */
 
-import React = require('react');
-import ReactDOM = require('react-dom');
-
-import { RootView } from './RootView';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 

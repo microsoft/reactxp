@@ -38,7 +38,7 @@ if (typeof document !== 'undefined') {
 
 export interface ViewContext {
     isRxParentAText?: boolean;
-};
+}
 
 export class View extends ViewBase<Types.ViewProps, {}> {
     static contextTypes: React.ValidationMap<any> = {

@@ -215,11 +215,11 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
         }
         // no route? return empty scene
         return <RN.View />;
-    };
+    }
 
     handleBackPress(): void {
         this._owner.pop();
-    };
+    }
 
     processCommand(commandQueue: NavigationCommand[]): void {
         // Return if nothing to process
