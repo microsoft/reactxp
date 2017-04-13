@@ -101,4 +101,4 @@
      }
      return calcBezier(getTForX(x), mY1, mY2);
    };
- };
+ }

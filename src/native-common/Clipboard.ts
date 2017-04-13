@@ -15,13 +15,13 @@ import SyncTasks = require('synctasks');
 export class Clipboard extends RX.Clipboard  {
     public setText(text: string) {
         RN.Clipboard.setString(text);
-    };
+    }
 
     public getText(): SyncTasks.Promise<string> {
         let defer = SyncTasks.Defer<string>();
 
         return SyncTasks.fromThenable(RN.Clipboard.getString());
-    };
-};
+    }
+}
 
 export default new Clipboard();

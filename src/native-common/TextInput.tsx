@@ -88,7 +88,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
         if (this.props.onFocus) {
             this.props.onFocus(e);
         }
-    };
+    }
 
     private _onBlur = (e: Types.FocusEvent) => {
         this.setState({ isFocused: false });
@@ -96,7 +96,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
         if (this.props.onBlur) {
             this.props.onBlur(e);
         }
-    };
+    }
 
     private _onChangeText = (newText: string) => {
         this.setState({ inputValue: newText });
@@ -104,7 +104,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
         if (this.props.onChangeText) {
             this.props.onChangeText(newText);
         }
-    };
+    }
 
     private _onSelectionChange = (selEvent: React.SyntheticEvent) => {
         let selection: { start: number, end: number } =
@@ -122,7 +122,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
         }
 
         this.forceUpdate();
-    };
+    }
 
     private _onKeyPress = (e: React.KeyboardEvent) => {
         if (this.props.onKeyPress) {
@@ -165,7 +165,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
 
             this.props.onKeyPress(keyEvent);
         }
-    };
+    }
 
     private _onScroll = (e: React.UIEvent) => {
         if (this.props.onScroll) {

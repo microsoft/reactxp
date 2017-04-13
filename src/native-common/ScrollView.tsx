@@ -93,7 +93,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         if (this.props.onScroll) {
             this.props.onScroll(this._scrollTop, this._scrollLeft);
         }
-    };
+    }
 
     setScrollTop(scrollTop: number, animate: boolean): void {
         if (this._nativeView) {

@@ -42,7 +42,7 @@ export class Link extends RX.Link<{}> {
         if (this.props.url) {
             Linking.openUrl(this.props.url);
         }
-    };
+    }
 }
 
 export default Link;

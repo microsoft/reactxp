@@ -34,7 +34,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
 
     protected _setNativeView = (view: RN.View) => {
         this._nativeView = view;
-    };
+    }
 
     protected _getStyles(props: Types.ViewProps): Types.ViewStyleRuleSet {
         // If this platform uses an explicit default view style, push it on to
@@ -61,7 +61,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
                 this._layoutEventValues = layoutEventValues;
             }
         }
-    };
+    }
 
     focus() {
         // native mobile platforms doesn't have the notion of focus for Views, so ignore.

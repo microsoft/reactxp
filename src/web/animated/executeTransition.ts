@@ -43,6 +43,7 @@ export function executeTransition(element: HTMLElement, transitions: ITransition
         // Resolve styles. This is a trick to force the browser to refresh the
         // computed styles. Without this, it won't pick up the new "from" value
         // that we just set above.
+        // tslint:disable-next-line
         getComputedStyle(element).opacity;
 
         // TODO: Cross-browser equivalent of 'transition' style (e.g. vendor prefixed).

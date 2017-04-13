@@ -640,7 +640,7 @@ export class ActivityIndicator extends RX.ActivityIndicator<ActivityIndicatorSta
         var style = document.createElement('style') as any;
 
         style.type = 'text/css';
-        if (style.styleSheet){
+        if (style.styleSheet) {
             style.styleSheet.cssText = _activityIndicatorCss;
         } else {
             style.appendChild(document.createTextNode(_activityIndicatorCss));

@@ -10,7 +10,7 @@
 import React = require('react');
 import RN = require('react-native');
 
-import Animated from './Animated'
+import Animated from './Animated';
 import AccessibilityUtil from './AccessibilityUtil';
 import MixinUtil = require('../common/MixinUtil');
 import RX = require('../common/Interfaces');
@@ -104,7 +104,7 @@ export class Button extends RX.Button<{}> {
     }
 
     componentWillReceiveProps(nextProps: Types.ButtonProps) {
-        if(nextProps !== this.props) {
+        if (nextProps !== this.props) {
             // If opacity got updated as a part of props update, we need to reflect that in the opacity animation value
            this._setOpacityStyles(nextProps);
         }
@@ -127,7 +127,7 @@ export class Button extends RX.Button<{}> {
         if (!this.props.disabled && this.props.onPressIn) {
             this.props.onPressIn(e);
         }
-    };
+    }
 
     touchableHandleActivePressOut = (e: Types.SyntheticEvent) => {
         if (this._isTouchFeedbackApplicable()) {
@@ -144,27 +144,27 @@ export class Button extends RX.Button<{}> {
         if (!this.props.disabled && this.props.onPressOut) {
             this.props.onPressOut(e);
         }
-    };
+    }
 
     touchableHandlePress = (e: Types.MouseEvent) => {
         if (!this.props.disabled && this.props.onPress) {
             this.props.onPress(e);
         }
-    };
+    }
 
     touchableHandleLongPress = (e: Types.MouseEvent) => {
         if (!this.props.disabled && this.props.onLongPress) {
             this.props.onLongPress(e);
         }
-    };
+    }
 
     touchableGetHighlightDelayMS = () => {
         return 20;
-    };
+    }
 
     touchableGetPressRectOffset = () => {
         return {top: 20, left: 20, right: 20, bottom: 100};
-    };
+    }
 
     focus() {
         // native mobile platforms doesn't have the notion of focus for buttons, so ignore.

@@ -41,7 +41,7 @@ export interface ImageState {
 
 export interface ImageContext {
     isRxParentAText?: boolean;
-};
+}
 
 interface XhrBlobUrlCacheEntry {
     xhrBlobUrl: string;
@@ -382,7 +382,7 @@ export class Image extends RX.Image<ImageState> {
         if (this.props.onLoad) {
             this.props.onLoad({ width: this._nativeImageWidth, height: this._nativeImageHeight });
         }
-    };
+    }
 
     private _imgOnError = () => {
         this._onError();
@@ -402,7 +402,7 @@ export class Image extends RX.Image<ImageState> {
         if (this.props.onError) {
             this.props.onError(err);
         }
-    };
+    }
 
     private _onMouseUp = (e: Types.MouseEvent) => {
         if (e.button === 0) {
@@ -413,7 +413,7 @@ export class Image extends RX.Image<ImageState> {
                 onClick(e);
             }
         }
-    };
+    }
 
     // Note: This works only if you have an onLoaded handler and wait for the image to load.
     getNativeWidth(): number {

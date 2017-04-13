@@ -17,7 +17,7 @@ export class Clipboard extends RX.Clipboard {
         document.body.appendChild(node);
         Clipboard._copyNode(node);
         document.body.removeChild(node);
-    };
+    }
 
     public getText(): SyncTasks.Promise<string> {
         // Not supported in web platforms. This should can be only handled in the paste event handlers
@@ -62,6 +62,6 @@ export class Clipboard extends RX.Clipboard {
         document.execCommand('copy');
         selection.removeAllRanges();
     }
-};
+}
 
 export default new Clipboard();

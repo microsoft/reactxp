@@ -18,6 +18,6 @@ export class ScrollViewConfig {
     useCustomScrollbars(): boolean {
         return this._useCustomScrollbars;
     }
-};
+}
 
 export default new ScrollViewConfig();

@@ -29,7 +29,7 @@ let _styles = {
         backgroundColor: 'transparent',
         borderColor: 'transparent',
         textAlign: 'left',
-        borderWidth:'0'
+        borderWidth: '0'
     },
     disabled: {
         opacity: 0.5
@@ -51,7 +51,7 @@ export class Button extends RX.Button<void> {
         const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits, 
             _defaultAccessibilityTrait);
         const ariaSelected = AccessibilityUtil.accessibilityTraitToAriaSelected(this.props.accessibilityTraits);
-        const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility)
+        const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
 
         // NOTE: We use tabIndex=0 to support focus.
         return (

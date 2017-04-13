@@ -8,7 +8,7 @@
 */
 
 import RN = require('react-native');
-import RX = require('../common/Interfaces');
+
 import { Profiling as CommonProfiling } from '../common/Profiling';
 
 export class Profiling extends CommonProfiling {

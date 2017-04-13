@@ -7,11 +7,8 @@
 * Web-specific implementation of the cross-platform Popup abstraction.
 */
 
-import React = require('react');
-
 import { default as FrontLayerViewManager } from './FrontLayerViewManager';
 import RX = require('../common/Interfaces');
-import Styles from './Styles';
 import Types = require('../common/Types');
 
 export class Popup extends RX.Popup {

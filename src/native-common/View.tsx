@@ -8,12 +8,12 @@
 */
 
 import _ = require('./lodashMini');
-import assert = require('assert');
+
 import React = require('react');
 import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import { ImportantForAccessibilityMap } from '../common/AccessibilityUtil';
+
 import AnimateListEdits from './listAnimations/AnimateListEdits';
 import Button from './Button';
 import Types = require('../common/Types');
@@ -44,8 +44,8 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
         const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(props.importantForAccessibility);
         const accessibilityLabel = props.accessibilityLabel || props.title;
-        // Set accessibility props on Native only if we have valid importantForAccessibility value or accessibility label or if this
-        // view is not a button.
+        // Set accessibility props on Native only if we have valid importantForAccessibility value or accessibility label or
+        // if this view is not a button.
         // For a button, we let the Button component compute its own accessibility props.
         const shouldSetAccessibilityProps = this._internalProps && !this._isButton(props) &&
             !!(importantForAccessibility || accessibilityLabel);
@@ -54,7 +54,8 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             this._internalProps.importantForAccessibility = importantForAccessibility;
             this._internalProps.accessibilityLabel = accessibilityLabel;
             this._internalProps.accessibilityTraits = AccessibilityUtil.accessibilityTraitToString(props.accessibilityTraits);
-            this._internalProps.accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(props.accessibilityTraits);
+            this._internalProps.accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(
+                props.accessibilityTraits);
         }
 
         if (props.onLayout) {
