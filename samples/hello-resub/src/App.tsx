@@ -3,6 +3,7 @@
 */
 
 import RX = require('reactxp');
+import Hello =require('./hello');
 
 const styles = {
     container: RX.Styles.createViewStyle({
@@ -68,6 +69,9 @@ class App extends RX.Component<null, null> {
                 <RX.Text style={ styles.welcome }>
                     Welcome to ReactXP
                 </RX.Text>
+                <Hello >
+                    
+                </Hello>
                 <RX.Text style={ styles.instructions }>
                     Edit App.tsx to get started
                 </RX.Text>
