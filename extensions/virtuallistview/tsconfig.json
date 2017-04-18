@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "noResolve": false,
+        "jsx": "react",
+        "reactNamespace": "RX",
+        "module": "commonjs",
+        "target": "es5",
+        "outDir": "dist/",
+        "lib": [
+            "es5",
+            "dom"
+        ]
+    },
+
+    "filesGlob": [
+        "src/**/*{ts,tsx}"
+    ],
+
+    "exclude": [
+        "dist",
+        "node_modules"
+    ]
+}

@@ -4,7 +4,7 @@ title: Accessibility
 layout: docs
 category: Overview
 permalink: docs/accessibility.html
-next: components/activityindicator
+next: extensions
 ---
 
 ReactXP exposes a common way to implement accessibility features across platforms.

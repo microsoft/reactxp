@@ -78,3 +78,7 @@
       title: UserInterface
     - id: apis/userpresence
       title: UserPresence
+- title: Extensions
+  items:
+    - id: extensions/virtuallistview
+      title: VirtualListView
