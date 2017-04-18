@@ -30,6 +30,77 @@ It also limits the number of items it renders each time to avoid consuming too m
 
 It supports a special mode where items are re-rendered only if the corresponding VirtualListViewItemInfo changes. This mode requires that the renderItem method use only information within this object. To use this mode, set the skipRenderIfItemUnchanged prop to true.
 
+## Example
+``` javascript
+import { VirtualListView, VirtualListViewItemInfo } from 'virtuallistview';
+
+// Extend VirtualListViewItemInfo to include display text
+interface FruitListItemInfo extends VirtualListViewItemInfo {
+    text: string;
+}
+
+interface FruitListState {
+    items: FruitListItemInfo[];
+}
+
+const _headerItemHeight = 20;
+const _fruitItemHeight = 32;
+const _headerItemTemplate = 'header';
+const _fruitItemTemplate = 'fruit';
+
+class FruitListView extends RX.Component<null, FruitListState> {
+    constructor() {
+        super();
+
+        this.state = {
+            items: [{
+                key: 'header1',
+                height: _headerItemHeight,
+                text: 'Domstic Fruits',
+                template: _headerItemTemplate
+            }, {
+                key: 'bannana',
+                height: _fruitItemHeight,
+                text: 'Banana',
+                template: _fruitItemTemplate
+            }, {
+                key: 'apple',
+                height: _fruitItemHeight,
+                text: 'Apple',
+                template: _fruitItemTemplate
+            }]
+        };
+    }
+
+    render() {
+        return (
+            <VirtualListView
+                itemList={ this.state.items }
+                renderItem={ this._renderItem }
+                animateChanges={ true }
+                skipRenderIfItemUnchanged={ true }
+            />
+        );
+    }
+
+    private _renderItem(item: FruitListItemInfo, hasFocus?: boolean) {
+        const viewStyle = RX.Styles.createViewStyle({
+            height: item.height,
+            backgroundColor: item.template === _headerItemTemplate ? '#ddd' : '#fff',
+            alignItems: 'center'
+        }, false);
+        
+        return (
+            <RX.View style={ viewStyle }>
+                <RX.Text>
+                    { item.text }
+                </RX.Text>
+            </RX.View>
+        );
+    }
+}
+```
+
 
 ## Interfaces
 ``` javascript
