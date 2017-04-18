@@ -160,7 +160,7 @@ declare module 'react-native' {
         accessibilityComponentType?    : string; //enum ( 'none', 'button', 'radiobutton_checked', 'radiobutton_unchecked' )
         accessibilityTraits?: string | string[]; //enum( 'none', 'button', 'link', 'header', 'search', 'image', 'selected', 'plays', 'key', 'text', 'summary', 'disabled', 'frequentUpdates', 'startsMedia', 'adjustable', 'allowsDirectInteraction', 'pageTurn' )
         accessible?: boolean;
-        importantForAccessibility?     : string; //enum( 'auto', 'yes', 'no', 'no-hide-descendants' )
+        importantForAccessibility? : string; //enum( 'auto', 'yes', 'no', 'no-hide-descendants' )
         delayLongPress?: number;
         delayPressIn?: number;
         delayPressOut?: number;
