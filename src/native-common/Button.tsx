@@ -7,12 +7,12 @@
 * RN-specific implementation of the cross-platform Button abstraction.
 */
 
+import assert = require('assert');
 import React = require('react');
 import RN = require('react-native');
 
 import Animated from './Animated';
 import AccessibilityUtil from './AccessibilityUtil';
-import MixinUtil = require('../common/MixinUtil');
 import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -38,7 +38,22 @@ const _activeOpacityAnimationDuration = 0;
 const _hideUnderlayTimeout = 100;
 const _underlayInactive = 'transparent';
 
+function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, propertiesToSkip: string[]) {
+    Object.getOwnPropertyNames(mixin).forEach(name => {
+        if (name !== 'constructor' && propertiesToSkip.indexOf(name) === -1) {
+            assert(
+                !(name in thisObj),
+                `An object cannot have a method with the same name as one of its mixins: "${name}"`
+            );
+            thisObj[name] = mixin[name].bind(thisObj);
+        }
+    });
+}
+
 export class Button extends RX.Button<{}> {
+    private _mixin_componentDidMount: () => void;
+    private _mixin_componentWillUnmount: () => void;
+
     touchableGetInitialState: () => RN.Touchable.State;
     touchableHandleStartShouldSetResponder: () => boolean;
     touchableHandleResponderTerminationRequest: () => boolean;
@@ -57,7 +72,14 @@ export class Button extends RX.Button<{}> {
     constructor(props: Types.ButtonProps) {
         super(props);
 
-        MixinUtil.applyMixins(this, [RN.Touchable.Mixin]);
+        this._mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount && RN.Touchable.Mixin.componentDidMount.bind(this);
+        this._mixin_componentWillUnmount = RN.Touchable.Mixin.componentWillUnmount && RN.Touchable.Mixin.componentWillUnmount.bind(this);
+        applyMixin(this, RN.Touchable.Mixin, [
+            // Properties that Button and RN.Touchable.Mixin have in common. Button needs
+            // to dispatch these methods to RN.Touchable.Mixin manually.
+            'componentDidMount',
+            'componentWillUnmount'
+        ]);
         this.state = this.touchableGetInitialState();
         this._setOpacityStyles(props);
     }
@@ -96,10 +118,12 @@ export class Button extends RX.Button<{}> {
     }
 
     componentDidMount() {
+        this._mixin_componentDidMount && this._mixin_componentDidMount();
         this._isMounted = true;
     } 
 
     componentWillUnmount() {
+        this._mixin_componentWillUnmount && this._mixin_componentWillUnmount();
         this._isMounted = false;
     }
 
