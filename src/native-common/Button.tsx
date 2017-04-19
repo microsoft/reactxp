@@ -110,6 +110,12 @@ export class Button extends RX.Button<{}> {
         }
     }
 
+    public setNativeProps(nativeProps: RN.ViewProps) {
+        if (this._buttonElement) {
+            this._buttonElement.setNativeProps(nativeProps);
+        }
+    }
+
     touchableHandleActivePressIn = (e: Types.SyntheticEvent) => {
         if (this._isTouchFeedbackApplicable()) {
             if (this.props.underlayColor) {
