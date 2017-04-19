@@ -134,6 +134,7 @@ export class FrontLayerViewManager {
                 <ModalContainer>
                     <RN.TouchableWithoutFeedback
                         onPressOut={ this._onBackgroundPressed }
+                        importantForAccessibility={ 'no' }
                     >
                         <RN.View style={ _styles.fullScreenView }>
                             <PopupContainerView
