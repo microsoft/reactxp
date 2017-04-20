@@ -41,9 +41,9 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         //   causes you to have to click twice instead of once on some pieces of UI in
         //   order for the UI to acknowledge your interaction.
         const keyboardShouldPersistTaps = (
-            RN.Platform.OS === 'windows' ? 'always'
-            : this.props.keyboardShouldPersistTaps ? 'always'
-            : 'never'
+            RN.Platform.OS === 'windows'
+                ? 'always'
+                : (this.props.keyboardShouldPersistTaps ? 'always' : 'never')
         );
 
         // NOTE: We are setting `automaticallyAdjustContentInsets` to false

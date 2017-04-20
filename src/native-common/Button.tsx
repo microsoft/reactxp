@@ -134,7 +134,7 @@ export class Button extends RX.Button<{}> {
         }
     }
 
-    public setNativeProps(nativeProps: RN.ViewProps) {
+    setNativeProps(nativeProps: RN.ViewProps) {
         if (this._buttonElement) {
             this._buttonElement.setNativeProps(nativeProps);
         }

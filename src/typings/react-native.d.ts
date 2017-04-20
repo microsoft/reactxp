@@ -243,7 +243,7 @@ declare module 'react-native' {
         contentContainerStyle?: StyleRuleSet | StyleRuleSet[];
         horizontal?: boolean;
         keyboardDismissMode?: 'none' | 'interactive' | 'on-drag';
-        keyboardShouldPersistTaps?: string; //'always' | 'never' | 'handled';
+        keyboardShouldPersistTaps?: 'always' | 'never' | 'handled';
         onScroll?: Function;
         onScrollBeginDrag?: Function;
         onScrollEndDrag?: Function;
