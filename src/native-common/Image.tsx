@@ -46,6 +46,10 @@ export class Image extends RX.Image<{}> {
     private _nativeImageWidth: number;
     private _nativeImageHeight: number;
 
+    protected _getAdditionalProps(): RN.ImageProps {
+        return {};
+    }
+
     componentDidMount() {
         this._isMounted = true;
     }
@@ -77,6 +81,8 @@ export class Image extends RX.Image<{}> {
             resizeMode = this.props.resizeMode;
         }
 
+        const additionalProps = this._getAdditionalProps();
+
         return (
             <RN.Image
                 ref='nativeImage'
@@ -88,6 +94,7 @@ export class Image extends RX.Image<{}> {
                 onLoad={ this.props.onLoad ? this._onLoad : null }
                 onError={ this._onError }
                 shouldRasterizeIOS= { this.props.shouldRasterizeIOS }
+                { ...additionalProps }
             >
                 { this.props.children }
             </RN.Image>

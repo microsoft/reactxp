@@ -100,6 +100,9 @@ declare module 'react-native' {
         onLoadEnd?: (e: SyntheticEvent) => void;
         onLoadStart?: Function;
         onProgress?: Function;
+
+        // Android
+        fadeDuration?: number;
     }
 
     interface ActivityIndicatorProps extends ComponentPropsBase {
