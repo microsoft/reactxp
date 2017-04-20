@@ -3,10 +3,9 @@
         "declaration": true,
         "noResolve": false,
         "jsx": "react",
+        "reactNamespace": "RX",
         "module": "commonjs",
         "target": "es5",
-        "experimentalDecorators": true,
-        "noImplicitAny": true,
         "outDir": "dist/",
         "lib": [
             "es5",
@@ -20,9 +19,6 @@
 
     "exclude": [
         "dist",
-        "node_modules",
-        "samples",
-        "website",
-        "extensions"
+        "node_modules"
     ]
 }

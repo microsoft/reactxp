@@ -18,6 +18,8 @@
       title: Animations
     - id: accessibility
       title: Accessibility
+    - id: extensions
+      title: Extensions
 - title: Components
   items:
     - id: components/activityindicator
@@ -78,3 +80,7 @@
       title: UserInterface
     - id: apis/userpresence
       title: UserPresence
+- title: Extensions
+  items:
+    - id: extensions/virtuallistview
+      title: VirtualListView

@@ -15,7 +15,7 @@ React Native's layout engine assumes "border-box" box sizing rules, whereas brow
 
 ```
   <style>
-    * {
+    *, *:before, *:after {
       box-sizing: border-box;
     }
   </style>
