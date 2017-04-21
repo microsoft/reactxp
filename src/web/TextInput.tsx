@@ -118,6 +118,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
                     onMouseUp={ this._checkSelectionChanged }
                     onPaste={ this._onPaste }
                     aria-label={ this.props.accessibilityLabel }
+                    type={ this.props.secureTextEntry ? 'password' : 'text' }
                 />
             );
         }
