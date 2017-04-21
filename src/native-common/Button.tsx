@@ -38,6 +38,9 @@ const _activeOpacityAnimationDuration = 0;
 const _hideUnderlayTimeout = 100;
 const _underlayInactive = 'transparent';
 
+function nop() {
+}
+
 function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, propertiesToSkip: string[]) {
     Object.getOwnPropertyNames(mixin).forEach(name => {
         if (name !== 'constructor' && propertiesToSkip.indexOf(name) === -1) {
@@ -72,8 +75,8 @@ export class Button extends RX.Button<{}> {
     constructor(props: Types.ButtonProps) {
         super(props);
 
-        this._mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount && RN.Touchable.Mixin.componentDidMount.bind(this);
-        this._mixin_componentWillUnmount = RN.Touchable.Mixin.componentWillUnmount && RN.Touchable.Mixin.componentWillUnmount.bind(this);
+        this._mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount || nop;
+        this._mixin_componentWillUnmount = RN.Touchable.Mixin.componentWillUnmount || nop;
         applyMixin(this, RN.Touchable.Mixin, [
             // Properties that Button and RN.Touchable.Mixin have in common. Button needs
             // to dispatch these methods to RN.Touchable.Mixin manually.
@@ -118,12 +121,12 @@ export class Button extends RX.Button<{}> {
     }
 
     componentDidMount() {
-        this._mixin_componentDidMount && this._mixin_componentDidMount();
+        this._mixin_componentDidMount();
         this._isMounted = true;
     } 
 
     componentWillUnmount() {
-        this._mixin_componentWillUnmount && this._mixin_componentWillUnmount();
+        this._mixin_componentWillUnmount();
         this._isMounted = false;
     }
 
