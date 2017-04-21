@@ -741,6 +741,7 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
     numberOfLines?: number;
 
     onPress?: () => void;
+    onLongPress?: () => void;
     onHoverStart?: (e: SyntheticEvent) => void;
     onHoverEnd?: (e: SyntheticEvent) => void;
 }

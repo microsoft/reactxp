@@ -26,6 +26,7 @@ export class Link extends RX.Link<{}> {
                 ref='nativeLink'
                 numberOfLines={ this.props.numberOfLines === 0 ? null : this.props.numberOfLines }
                 onPress={ this._onPress }
+                onLongPress={ this._onLongPress }
             >
                 { this.props.children }
             </RN.Text>
@@ -43,6 +44,12 @@ export class Link extends RX.Link<{}> {
             Linking.openUrl(this.props.url);
         }
     }
+
+    private _onLongPress = () => {
+        if (this.props.onLongPress) {
+            this.props.onLongPress();
+        }
+    }    
 }
 
 export default Link;
