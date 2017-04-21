@@ -20,6 +20,13 @@ const forbiddenProps: string[] = [
     'cursor'
 ];
 
+// React Native styles that ReactXP doesn't expose.
+type ReactNativeViewAndImageCommonStyle<Style extends Types.ViewAndImageCommonStyle> = Style & {
+    flexGrow?: number;
+    flexShrink?: number;
+    flexBasis?: number;
+};
+
 export class Styles extends RX.Styles {
     combine<S>(defaultStyle: Types.StyleRuleSet<S>,
             ruleSet: Types.StyleRuleSet<S> | Types.StyleRuleSet<S>[],
@@ -106,7 +113,7 @@ export class Styles extends RX.Styles {
     }
 
     private _adaptStyles<S extends Types.ViewAndImageCommonStyle>(def: S, cacheStyle: boolean): Types.StyleRuleSet<S> {
-        let adaptedRuleSet = def;
+        let adaptedRuleSet = def as ReactNativeViewAndImageCommonStyle<S>;
         if (cacheStyle) {
             StyleLeakDetector.detectLeaks(def);
 
@@ -128,6 +135,24 @@ export class Styles extends RX.Styles {
                 textStyle.fontStyle = textStyle.font.fontStyle;
             }
             delete textStyle.font;
+        }
+
+        if (def.flex !== undefined) {
+            var flexValue = def.flex;
+            delete adaptedRuleSet.flex;
+            if (flexValue > 0) {
+                // n 1 auto
+                adaptedRuleSet.flexGrow = flexValue;
+                adaptedRuleSet.flexShrink = 1;
+            } else if (flexValue < 0) {
+                // 0 1 auto
+                adaptedRuleSet.flexGrow = 0;
+                adaptedRuleSet.flexShrink = 1;
+            } else {
+                // 0 0 auto
+                adaptedRuleSet.flexGrow = 0;
+                adaptedRuleSet.flexShrink = 0;
+            }
         }
 
         if (cacheStyle) {
