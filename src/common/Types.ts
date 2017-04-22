@@ -740,8 +740,8 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
     selectable?: boolean;
     numberOfLines?: number;
 
-    onPress?: () => void;
-    onLongPress?: () => void;
+    onPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
+    onLongPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
     onHoverStart?: (e: SyntheticEvent) => void;
     onHoverEnd?: (e: SyntheticEvent) => void;
 }

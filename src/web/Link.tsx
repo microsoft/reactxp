@@ -94,7 +94,7 @@ export class Link extends RX.Link<void> {
             this._ignoreClick = false;                        
         } else if (this.props.onPress) {
             e.preventDefault();
-            this.props.onPress();
+            this.props.onPress(e, this.props.url);
         }
     }
 
@@ -105,7 +105,7 @@ export class Link extends RX.Link<void> {
             this._longPressTimer = window.setTimeout(() => {
                 this._longPressTimer = undefined;
                 if (this.props.onLongPress) {
-                    this.props.onLongPress();
+                    this.props.onLongPress(e, this.props.url);
                     this._ignoreClick = true;
                 }
             }, _longPressTime);
