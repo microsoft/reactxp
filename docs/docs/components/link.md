@@ -20,7 +20,11 @@ onHoverEnd: (e: SyntheticEvent) => void = undefined;
 
 // Event called when the touch or mouse button is released 
 // within the bounds of the view and the press has not been canceled
-onPress: (e: SyntheticEvent) => void = undefined;
+onPress: (e: SyntheticEvent, url: string) => void = undefined;
+
+// Event called when a long touch or mouse (> 1000ms) button is released 
+// within the bounds of the view and the press has not been canceled
+onLongPress: (e: SyntheticEvent, url:string) => void = undefined;
 
 // Can the link be included in a text selection?
 selectable: boolean = false;
