@@ -82,5 +82,7 @@
       title: UserPresence
 - title: Extensions
   items:
+    - id: extensions/database
+      title: Database
     - id: extensions/virtuallistview
       title: VirtualListView
