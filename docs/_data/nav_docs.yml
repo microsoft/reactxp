@@ -84,5 +84,7 @@
   items:
     - id: extensions/database
       title: Database
+    - id: extensions/imagesvg
+      title: ImageSvg
     - id: extensions/virtuallistview
       title: VirtualListView
