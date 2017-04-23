@@ -14,7 +14,7 @@ This extension provides a cross-platform mechanism for wrapping a simple REST AP
 For more details, refer to the [SimpleRestClients](https://github.com/Microsoft/SimpleRestClients) github site.
 
 
-### Sample Code
+### Sample Usage
 
 ``` javascript
 interface User {
@@ -25,7 +25,7 @@ interface User {
 
 class MyRestClient extends GenericRestClient {
     constructor(private _appId: string) {
-        super('myhost.com/api/v1/');
+        super('https://myhost.com/api/v1/');
     }
 
     // Override _getHeaders to append a custom header with the app ID.
