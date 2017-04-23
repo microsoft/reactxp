@@ -1,6 +1,7 @@
 /*
 * Types.ts
-* Copyright: Microsoft 2017
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Type definitions to support the plugin.
 */

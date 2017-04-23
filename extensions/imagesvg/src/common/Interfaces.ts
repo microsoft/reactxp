@@ -1,6 +1,7 @@
 /*
 * Interfaces.ts
-* Copyright: Microsoft 2017
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Interface exposed by ImageSvg component.
 */

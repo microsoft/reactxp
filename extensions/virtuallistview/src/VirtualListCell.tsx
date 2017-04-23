@@ -1,6 +1,7 @@
 /**
 * VirtualListCell.tsx
-* Copyright: Microsoft 2017
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * This helper class is used in conjunction with VirtualListView. It represents the
 * container for a single list item.

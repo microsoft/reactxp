@@ -1,6 +1,7 @@
 /**
 * VirtualListView.tsx
-* Copyright: Microsoft 2017
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * A cross-platform virtualized list view supporting variable-height items and
 * methods to navigate to specific items by index.
