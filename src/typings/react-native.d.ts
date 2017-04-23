@@ -120,6 +120,7 @@ declare module 'react-native' {
         ellipsizeMode?   : 'head' | 'middle' | 'tail' // There's also 'clip' but it is iOS only
         onLayout?        : Function;
         onPress?         : Function;
+        onLongPress?     : Function;
         selectable?      : boolean; // only on android, windows
         testID?          : string;
 

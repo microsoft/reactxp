@@ -26,15 +26,16 @@ export class Link extends RX.Link<{}> {
                 ref='nativeLink'
                 numberOfLines={ this.props.numberOfLines === 0 ? null : this.props.numberOfLines }
                 onPress={ this._onPress }
+                onLongPress={ this._onLongPress }
             >
                 { this.props.children }
             </RN.Text>
         );
     }
 
-    private _onPress = () => {
+    private _onPress = (e: RX.Types.SyntheticEvent) => {
         if (this.props.onPress) {
-            this.props.onPress();
+            this.props.onPress(e, this.props.url);
             return;
         }
 
@@ -43,6 +44,12 @@ export class Link extends RX.Link<{}> {
             Linking.openUrl(this.props.url);
         }
     }
+
+    private _onLongPress = (e: RX.Types.SyntheticEvent) => {
+        if (this.props.onLongPress) {
+            this.props.onLongPress(e, this.props.url);
+        }
+    }    
 }
 
 export default Link;
