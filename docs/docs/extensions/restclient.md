@@ -7,9 +7,14 @@ permalink: docs/extensions/restclient.html
 next: extensions/virtuallistview
 ---
 
-ReactXP provides basic [Network APIs](/reactxp/docs/apis/network) for determining network connectivity, but it doesn't provide ways to access the network once connected. This extension provides a cross-platform mechanism for wrapping a simple REST API. It supports optional retry logic (including exponential backoff).
+ReactXP provides basic [Network APIs](/reactxp/docs/apis/network) for determining network connectivity, but it doesn't provide ways to access the network once connected.
+
+This extension provides a cross-platform mechanism for wrapping a simple REST API. It supports optional retry logic (including exponential backoff).
 
 For more details, refer to the [SimpleRestClients](https://github.com/Microsoft/SimpleRestClients) github site.
+
+
+### Sample Code
 
 ``` javascript
 interface User {
