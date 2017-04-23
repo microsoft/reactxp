@@ -41,9 +41,7 @@ const _longPressTime = 1000;
 
 export class Link extends RX.Link<void> {
     
-    private _lastMouseDownEvent: Types.SyntheticEvent;    
     private _longPressTimer: number;    
-    private _ignoreClick = false;
 
     render() {
        // SECURITY WARNING:
@@ -112,6 +110,7 @@ export class Link extends RX.Link<void> {
     private _onMouseUp = (e: Types.SyntheticEvent) => {
         if (this._longPressTimer) {
             window.clearTimeout(this._longPressTimer);
+            this._longPressTimer = undefined;            
         }
     }    
 }
