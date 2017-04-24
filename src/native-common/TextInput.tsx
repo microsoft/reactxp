@@ -11,6 +11,7 @@ import _ = require('./lodashMini');
 import React = require('react');
 import RN = require('react-native');
 
+import AccessibilityUtil from './AccessibilityUtil';
 import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -188,6 +189,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
 
     focus() {
         (this.refs['nativeTextInput'] as any).focus();
+        AccessibilityUtil.setAccessibilityFocus(this);
     }
 
     isFocused() {

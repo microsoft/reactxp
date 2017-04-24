@@ -9,8 +9,14 @@
 */
 
 import _ = require('./lodashMini');
+import assert = require('assert');
+import React = require('react');
+import RN = require('react-native');
 
 import { AccessibilityUtil as CommonAccessibilityUtil } from '../common/AccessibilityUtil';
+import AndroidAccessibilityUtil from '../android/AccessibilityUtil';
+import iOSAccessibilityUtil from '../ios/AccessibilityUtil';
+
 import Types = require('../common/Types');
 
 const liveRegionMap = {
@@ -54,6 +60,28 @@ const componentTypeMap = {
 };
 
 export class AccessibilityUtil extends CommonAccessibilityUtil {
+    // Native platform specific instance for AccessibilityUtil. 
+    private _instance: typeof AndroidAccessibilityUtil | typeof iOSAccessibilityUtil; 
+
+    constructor() {
+        super();
+
+        // Set AccessibilityUtil instance based on the platform. 
+        switch (RN.Platform.OS) {
+            case 'android':
+                this._instance = AndroidAccessibilityUtil;
+                break;
+
+            case 'ios':
+                this._instance = iOSAccessibilityUtil;
+                break;
+
+            default: 
+                assert(false, 'Unknown platform.');
+                break;
+        }
+    }
+
     // Converts an AccessibilityTrait to a string, but the returned value is only needed for iOS. Other platforms ignore it. Presence
     // of an AccessibilityTrait.None can make an element non-accessible on Android. We use the override traits if they are present, else
     // use the deafult trait.
@@ -88,6 +116,10 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
             return liveRegionMap[liveRegion];
         }
         return undefined;
+    }
+
+    setAccessibilityFocus(component: React.Component<any, any>): void {
+        this._instance.setAccessibilityFocus(component);
     }
 }
 

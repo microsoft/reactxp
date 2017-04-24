@@ -20,7 +20,7 @@ import { default as AccessibilityImpl, Accessibility as AccessibilityType } from
 import { default as ActivityIndicatorImpl, ActivityIndicator as ActivityIndicatorType } from '../native-common/ActivityIndicator';
 import { default as AlertImpl, Alert as AlertType } from '../native-common/Alert';
 import { default as AppImpl, App as AppType } from '../native-common/App';
-import { default as ButtonImpl, Button as ButtonType } from './Button';
+import { default as ButtonImpl, Button as ButtonType } from '../native-common/Button';
 import { default as PickerImpl, Picker as PickerType } from '../native-common/Picker';
 import { default as ImageImpl, Image as ImageType } from './Image';
 import { default as ClipboardImpl, Clipboard as ClipboardType } from '../native-common/Clipboard';
@@ -43,7 +43,7 @@ import { default as TextInputImpl, TextInput as TextInputType } from '../native-
 import { default as ProfilingImpl, Profiling as ProfilingType } from '../native-common/Profiling';
 import { default as UserInterfaceImpl, UserInterface as UserInterfaceType } from '../native-common/UserInterface';
 import { default as UserPresenceImpl, UserPresence as UserPresenceType } from '../native-common/UserPresence';
-import { default as ViewImpl, View as ViewType } from './View';
+import { default as ViewImpl, View as ViewType } from '../native-common/View';
 import { default as WebViewImpl, WebView as WebViewType } from '../native-common/WebView';
 import ViewBase from '../native-common/ViewBase';
 

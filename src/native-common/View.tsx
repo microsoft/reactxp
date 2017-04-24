@@ -96,6 +96,10 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             );
         }
     }
+
+    focus() {
+        AccessibilityUtil.setAccessibilityFocus(this);
+    }
 }
 
 export default View;
