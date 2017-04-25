@@ -16,6 +16,7 @@ import RN = require('react-native');
 import { AccessibilityUtil as CommonAccessibilityUtil } from '../common/AccessibilityUtil';
 import AndroidAccessibilityUtil from '../android/AccessibilityUtil';
 import iOSAccessibilityUtil from '../ios/AccessibilityUtil';
+import WindowsAccessibilityUtil from '../windows/AccessibilityUtil';
 
 import Types = require('../common/Types');
 
@@ -59,9 +60,14 @@ const componentTypeMap = {
     [Types.AccessibilityTrait.Radio_button_unchecked]: 'radiobutton_unchecked'
 };
 
+// Platform specific helpers exposed through Native-Common AccessibilityUtil. 
+export abstract class NativeHelpers {
+    abstract setAccessibilityFocus(component: React.Component<any, any>): void;
+}
+
 export class AccessibilityUtil extends CommonAccessibilityUtil {
-    // Native platform specific instance for AccessibilityUtil. 
-    private _instance: typeof AndroidAccessibilityUtil | typeof iOSAccessibilityUtil; 
+    // Specific native platform instance for AccessibilityUtil. 
+    private _instance: NativeHelpers;
 
     constructor() {
         super();
@@ -74,6 +80,10 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
 
             case 'ios':
                 this._instance = iOSAccessibilityUtil;
+                break;
+            
+            case 'windows':
+                this._instance = WindowsAccessibilityUtil;
                 break;
 
             default: 
