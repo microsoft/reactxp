@@ -15,6 +15,14 @@ import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 
+if (typeof document !== 'undefined') {
+    const textAsPseudoElement = '[data-text-as-pseudo-element]::before { content: attr(data-text-as-pseudo-element); }';
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(textAsPseudoElement));
+    document.head.appendChild(style);
+}
+
 const _styles = {
     defaultStyle: {
         position: 'relative',
@@ -54,16 +62,30 @@ export class Text extends RX.Text<void> {
         }
 
         const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
-        
-        return (
-            <div
-                style={ this._getStyles() }
-                aria-hidden={ isAriaHidden }
-                onClick={ this.props.onPress }
-            >
-                { this.props.children }
-            </div>
-        );
+
+        if (this.props.selectable || typeof this.props.children !== 'string') {
+            return (
+                <div
+                    style={ this._getStyles() }
+                    aria-hidden={ isAriaHidden }
+                    onClick={ this.props.onPress }
+                >
+                    { this.props.children }
+                </div>
+            );
+        } else {
+            // user-select CSS property doesn't prevent the text from being copied to clipboard.
+            // To avoid getting to clipboard, the text from data-text-as-pseudo-element attribute
+            // will be displayed as pseudo element.
+            return (
+                <div
+                    style={ this._getStyles() }
+                    aria-hidden={ isAriaHidden }
+                    onClick={ this.props.onPress }
+                    data-text-as-pseudo-element={ this.props.children }
+                />
+            );
+        }
     }
 
     _getStyles(): Types.TextStyleRuleSet {
@@ -89,7 +111,7 @@ export class Text extends RX.Text<void> {
 
         return combinedStyles;
     }
-    
+
     blur() {
         let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
         if (el) {
