@@ -13,10 +13,10 @@ import assert = require('assert');
 import React = require('react');
 import RN = require('react-native');
 
-import { AccessibilityUtil as CommonAccessibilityUtil } from '../common/AccessibilityUtil';
-import AndroidAccessibilityUtil from '../android/AccessibilityUtil';
-import iOSAccessibilityUtil from '../ios/AccessibilityUtil';
-import WindowsAccessibilityUtil from '../windows/AccessibilityUtil';
+import { AccessibilityUtil as CommonAccessibilityUtil, PlatformAccessibilityHelpers } from '../common/AccessibilityUtil';
+import AndroidAccessibilityUtil from '../android/AndroidAccessibilityUtil';
+import iOSAccessibilityUtil from '../ios/iOSAccessibilityUtil';
+import WindowsAccessibilityUtil from '../windows/WindowsAccessibilityUtil';
 
 import Types = require('../common/Types');
 
@@ -60,14 +60,9 @@ const componentTypeMap = {
     [Types.AccessibilityTrait.Radio_button_unchecked]: 'radiobutton_unchecked'
 };
 
-// Platform specific helpers exposed through Native-Common AccessibilityUtil. 
-export abstract class NativeHelpers {
-    abstract setAccessibilityFocus(component: React.Component<any, any>): void;
-}
-
 export class AccessibilityUtil extends CommonAccessibilityUtil {
     // Specific native platform instance for AccessibilityUtil. 
-    private _instance: NativeHelpers;
+    private _instance: PlatformAccessibilityHelpers;
 
     constructor() {
         super();

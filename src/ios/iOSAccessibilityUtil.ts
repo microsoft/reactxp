@@ -11,9 +11,9 @@ import React = require('react');
 import RN = require('react-native');
 
 import Accessibility from '../native-common/Accessibility';
-import { NativeHelpers } from '../native-common/AccessibilityUtil';
+import { PlatformAccessibilityHelpers } from '../common/AccessibilityUtil';
 
-export class iOSAccessibilityUtil extends NativeHelpers {
+export class iOSAccessibilityUtil extends PlatformAccessibilityHelpers {
     setAccessibilityFocus(component: React.Component<any, any>): void {
         // NO-OP
     }

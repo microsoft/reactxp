@@ -9,9 +9,9 @@
 
 import React = require('react');
 
-import { NativeHelpers } from '../native-common/AccessibilityUtil';
+import { PlatformAccessibilityHelpers } from '../common/AccessibilityUtil';
 
-export class WindowsAccessibilityUtil extends NativeHelpers {
+export class WindowsAccessibilityUtil extends PlatformAccessibilityHelpers {
     setAccessibilityFocus(component: React.Component<any, any>) {
         // No-Op
     }
