@@ -1,6 +1,6 @@
 {
   "name": "reactxp-imagesvg",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Plugin for ReactXP that provides support for SVG (scalable vector graphics) for all platforms",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
