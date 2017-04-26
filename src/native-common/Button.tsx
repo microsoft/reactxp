@@ -38,8 +38,7 @@ const _activeOpacityAnimationDuration = 0;
 const _hideUnderlayTimeout = 100;
 const _underlayInactive = 'transparent';
 
-function nop() {
-}
+function noop() { /* noop */ }
 
 function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, propertiesToSkip: string[]) {
     Object.getOwnPropertyNames(mixin).forEach(name => {
@@ -54,8 +53,8 @@ function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, properti
 }
 
 export class Button extends RX.Button<{}> {
-    private _mixin_componentDidMount: () => void;
-    private _mixin_componentWillUnmount: () => void;
+    private _mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount || noop;
+    private _mixin_componentWillUnmount = RN.Touchable.Mixin.componentWillUnmount || noop;
 
     touchableGetInitialState: () => RN.Touchable.State;
     touchableHandleStartShouldSetResponder: () => boolean;
@@ -74,9 +73,6 @@ export class Button extends RX.Button<{}> {
 
     constructor(props: Types.ButtonProps) {
         super(props);
-
-        this._mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount || nop;
-        this._mixin_componentWillUnmount = RN.Touchable.Mixin.componentWillUnmount || nop;
         applyMixin(this, RN.Touchable.Mixin, [
             // Properties that Button and RN.Touchable.Mixin have in common. Button needs
             // to dispatch these methods to RN.Touchable.Mixin manually.
@@ -88,19 +84,19 @@ export class Button extends RX.Button<{}> {
     }
 
     render() {
-        // Accessibility props. 
-        const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility, 
+        // Accessibility props.
+        const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
             _defaultImportantForAccessibility);
         const accessibilityTrait = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits,
              _defaultAccessibilityTrait);
-        const accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(this.props.accessibilityTraits, 
+        const accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(this.props.accessibilityTraits,
             _defaultAccessibilityTrait);
 
         const opacityStyle = !this.props.disableTouchOpacityAnimation && this._opacityAnimatedStyle;
 
         return (
             <RN.Animated.View
-                ref={ this._onButtonRef }            
+                ref={ this._onButtonRef }
                 style={ Styles.combine(_styles.defaultButton, [this.props.style, opacityStyle],
                 this.props.disabled && _styles.disabled) }
                 accessibilityLabel={ this.props.accessibilityLabel || this.props.title }
@@ -123,7 +119,7 @@ export class Button extends RX.Button<{}> {
     componentDidMount() {
         this._mixin_componentDidMount();
         this._isMounted = true;
-    } 
+    }
 
     componentWillUnmount() {
         this._mixin_componentWillUnmount();
@@ -168,7 +164,7 @@ export class Button extends RX.Button<{}> {
                 clearTimeout(this._hideTimeout);
                 this._hideTimeout = setTimeout(this._hideUnderlay, _hideUnderlayTimeout);
             }
-           
+
             if (!this.props.disableTouchOpacityAnimation && (this.props.activeOpacity || !this.props.underlayColor)) {
                 this._opacityInactive(_inactiveOpacityAnimationDuration);
             }
@@ -230,7 +226,7 @@ export class Button extends RX.Button<{}> {
         this.setOpacityTo(this.props.activeOpacity || _defaultActiveOpacity, duration);
     }
 
-    private _opacityInactive(duration: number) {    
+    private _opacityInactive(duration: number) {
         this.setOpacityTo(this._defaultOpacityValue, duration);
     }
 
@@ -253,7 +249,7 @@ export class Button extends RX.Button<{}> {
                 duration: duration,
                 easing: Animated.Easing.InOut()
             }
-        ).start(); 
+        ).start();
     }
 
     private _hasPressHandler() {
