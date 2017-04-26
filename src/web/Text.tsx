@@ -15,6 +15,10 @@ import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 
+// Adding a CSS rule to display non-selectable texts. Those texts
+// will be displayed as pseudo elements to prevent them from being copied
+// to clipboard. It's not possible to style pseudo elements with inline
+// styles, so, we're dynamically creating a <style> tag with the rule.
 if (typeof document !== 'undefined') {
     const textAsPseudoElement = '[data-text-as-pseudo-element]::before { content: attr(data-text-as-pseudo-element); }';
     const style = document.createElement('style');
