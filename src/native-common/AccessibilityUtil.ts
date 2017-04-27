@@ -13,10 +13,7 @@ import assert = require('assert');
 import React = require('react');
 import RN = require('react-native');
 
-import { AccessibilityUtil as CommonAccessibilityUtil, PlatformAccessibilityHelpers } from '../common/AccessibilityUtil';
-import AndroidAccessibilityUtil from '../android/AndroidAccessibilityUtil';
-import iOSAccessibilityUtil from '../ios/iOSAccessibilityUtil';
-import WindowsAccessibilityUtil from '../windows/WindowsAccessibilityUtil';
+import { AccessibilityUtil as CommonAccessibilityUtil, AccessibilityNativeUtil } from '../common/AccessibilityUtil';
 
 import Types = require('../common/Types');
 
@@ -61,30 +58,11 @@ const componentTypeMap = {
 };
 
 export class AccessibilityUtil extends CommonAccessibilityUtil {
-    // Specific native platform instance for AccessibilityUtil. 
-    private _instance: PlatformAccessibilityHelpers;
+    // Handle to accessibility platform helper instance that gets initialized during ReactXP initialization using the setter. 
+    private _instance: AccessibilityNativeUtil;
 
-    constructor() {
-        super();
-
-        // Set AccessibilityUtil instance based on the platform. 
-        switch (RN.Platform.OS) {
-            case 'android':
-                this._instance = AndroidAccessibilityUtil;
-                break;
-
-            case 'ios':
-                this._instance = iOSAccessibilityUtil;
-                break;
-            
-            case 'windows':
-                this._instance = WindowsAccessibilityUtil;
-                break;
-
-            default: 
-                assert(false, 'Unknown platform.');
-                break;
-        }
+    setAccessibilityNativeUtil(instance: AccessibilityNativeUtil) {
+        this._instance = instance; 
     }
 
     // Converts an AccessibilityTrait to a string, but the returned value is only needed for iOS. Other platforms ignore it. Presence
@@ -123,6 +101,7 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
         return undefined;
     }
 
+    // Platform specific accessibility APIs. 
     setAccessibilityFocus(component: React.Component<any, any>): void {
         this._instance.setAccessibilityFocus(component);
     }

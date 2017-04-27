@@ -1,5 +1,5 @@
 /**
-* iOSAccessibilityUtil.ts
+* AccessibilityNativeUtil.ts
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
@@ -11,12 +11,12 @@ import React = require('react');
 import RN = require('react-native');
 
 import Accessibility from '../native-common/Accessibility';
-import { PlatformAccessibilityHelpers } from '../common/AccessibilityUtil';
+import { AccessibilityNativeUtil as CommonAccessibilityNativeUtil } from '../common/AccessibilityUtil';
 
-export class iOSAccessibilityUtil extends PlatformAccessibilityHelpers {
+export class AccessibilityNativeUtil extends CommonAccessibilityNativeUtil {
     setAccessibilityFocus(component: React.Component<any, any>): void {
         // NO-OP
     }
 }
 
-export default new iOSAccessibilityUtil();
+export default new AccessibilityNativeUtil();
