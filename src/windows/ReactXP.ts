@@ -54,7 +54,6 @@ const _defaultViewStyle = StylesImpl.createViewStyle({
 });
 ViewBase.setDefaultViewStyle(_defaultViewStyle);
 
-
 // Initialize Windows implementation of platform accessibility helpers inside the singleton
 // instance of native-common AccessibilityUtil. This is to let native-common components access
 // platform specific APIs through native-common implementation itself. 

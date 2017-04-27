@@ -18,7 +18,6 @@ export const ImportantForAccessibilityMap = {
     [Types.ImportantForAccessibility.NoHideDescendants]: 'no-hide-descendants'
 };
 
-
 // Platform specific helpers exposed through Native-Common AccessibilityUtil. 
 export abstract class AccessibilityPlatformUtil {
     abstract setAccessibilityFocus(component: React.Component<any, any>): void;
