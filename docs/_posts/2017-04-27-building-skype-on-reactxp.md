@@ -77,7 +77,7 @@ navigateToConversation(conversationId: string) {
     if (NavigationStateStore.isUsingStackNav()) {
         NavigationStateStore.pushNewStackContext(convContext);
     } else {
-        NavgationStateStore.updateRightPanel(convContext);
+        NavigationStateStore.updateRightPanel(convContext);
     }
 }
 ```
@@ -99,7 +99,7 @@ The primary subscriber to the NavigationStateStore is a component called RootNav
 protected _buildState(/* params omitted */): RootNavigationViewState {
     return {
         isStackNav: NavigationStateStore.isUsingStackNav(),
-        compositeNavContext: NavigationStateStore.getCompositeNavContext()
+        compositeNavContext: NavigationStateStore.getCompositeNavContext(),
         stackNavContext: NavigationStateStore.getStackNavContext()
     };
 }
