@@ -6,9 +6,9 @@
 *
 * Android-specific implementation of Image component.
 */
+import RN = require('react-native');
 import { Image as CommonImage } from '../native-common/Image';
-import Types = require('../common/Types');
 export declare class Image extends CommonImage {
-    protected getStyles(): Types.ImageStyleRuleSet;
+    protected _getAdditionalProps(): RN.ImageProps;
 }
 export default Image;

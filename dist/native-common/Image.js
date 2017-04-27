@@ -12,6 +12,14 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 var React = require("react");
 var RN = require("react-native");
 var SyncTasks = require("synctasks");
@@ -76,6 +84,9 @@ var Image = (function (_super) {
         }
         return defer.promise();
     };
+    Image.prototype._getAdditionalProps = function () {
+        return {};
+    };
     Image.prototype.componentDidMount = function () {
         this._isMounted = true;
     };
@@ -104,7 +115,8 @@ var Image = (function (_super) {
                 this.props.resizeMode === 'stretch')) {
             resizeMode = this.props.resizeMode;
         }
-        return (React.createElement(RN.Image, { ref: 'nativeImage', style: this.getStyles(), source: imageSource, resizeMode: resizeMode, resizeMethod: this.props.resizeMethod, accessibilityLabel: this.props.accessibilityLabel, onLoad: this.props.onLoad ? this._onLoad : null, onError: this._onError, shouldRasterizeIOS: this.props.shouldRasterizeIOS }, this.props.children));
+        var additionalProps = this._getAdditionalProps();
+        return (React.createElement(RN.Image, __assign({ ref: 'nativeImage', style: this.getStyles(), source: imageSource, resizeMode: resizeMode, resizeMethod: this.props.resizeMethod, accessibilityLabel: this.props.accessibilityLabel, onLoad: this.props.onLoad ? this._onLoad : null, onError: this._onError, shouldRasterizeIOS: this.props.shouldRasterizeIOS }, additionalProps), this.props.children));
     };
     Image.prototype.setNativeProps = function (nativeProps) {
         this.refs['nativeImage'].setNativeProps(nativeProps);

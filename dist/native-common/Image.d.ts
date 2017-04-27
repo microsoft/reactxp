@@ -7,6 +7,7 @@ export declare class Image extends RX.Image<{}> {
     private _isMounted;
     private _nativeImageWidth;
     private _nativeImageHeight;
+    protected _getAdditionalProps(): RN.ImageProps;
     componentDidMount(): void;
     componentWillUnmount(): void;
     render(): JSX.Element;

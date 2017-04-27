@@ -136,7 +136,7 @@ var FrontLayerViewManager = (function () {
         var overlayContext = _.findLast(this._overlayStack, function (context) { return context instanceof PopupStackContext; });
         if (overlayContext) {
             return (React.createElement(ModalContainer_1.ModalContainer, null,
-                React.createElement(RN.TouchableWithoutFeedback, { onPressOut: this._onBackgroundPressed },
+                React.createElement(RN.TouchableWithoutFeedback, { onPressOut: this._onBackgroundPressed, importantForAccessibility: 'no' },
                     React.createElement(RN.View, { style: _styles.fullScreenView },
                         React.createElement(PopupContainerView_1.default, { activePopupOptions: overlayContext.popupOptions, anchorHandle: overlayContext.anchorHandle, onDismissPopup: function () { return _this.dismissPopup(overlayContext.popupId); } })))));
         }

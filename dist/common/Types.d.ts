@@ -310,6 +310,7 @@ export interface TextPropsShared extends CommonProps {
     selectable?: boolean;
     numberOfLines?: number;
     allowFontScaling?: boolean;
+    maximumFontScale?: number;
     ellipsizeMode?: 'head' | 'middle' | 'tail';
     textBreakStrategy?: 'highQuality' | 'simple' | 'balanced';
     importantForAccessibility?: ImportantForAccessibility;
@@ -480,7 +481,8 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
     children?: ReactNode;
     selectable?: boolean;
     numberOfLines?: number;
-    onPress?: () => void;
+    onPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
+    onLongPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
     onHoverStart?: (e: SyntheticEvent) => void;
     onHoverEnd?: (e: SyntheticEvent) => void;
 }

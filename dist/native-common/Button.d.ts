@@ -1,16 +1,10 @@
-/**
-* Button.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation of the cross-platform Button abstraction.
-*/
 import React = require('react');
 import RN = require('react-native');
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 export declare class Button extends RX.Button<{}> {
+    private _mixin_componentDidMount;
+    private _mixin_componentWillUnmount;
     touchableGetInitialState: () => RN.Touchable.State;
     touchableHandleStartShouldSetResponder: () => boolean;
     touchableHandleResponderTerminationRequest: () => boolean;
@@ -29,6 +23,7 @@ export declare class Button extends RX.Button<{}> {
     componentDidMount(): void;
     componentWillUnmount(): void;
     componentWillReceiveProps(nextProps: Types.ButtonProps): void;
+    setNativeProps(nativeProps: RN.ViewProps): void;
     touchableHandleActivePressIn: (e: React.SyntheticEvent) => void;
     touchableHandleActivePressOut: (e: React.SyntheticEvent) => void;
     touchableHandlePress: (e: React.MouseEvent) => void;

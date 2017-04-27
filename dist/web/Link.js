@@ -37,6 +37,7 @@ var _styles = {
         textOverflow: 'ellipsis'
     }
 };
+var _longPressTime = 1000;
 var Link = (function (_super) {
     __extends(Link, _super);
     function Link() {
@@ -45,7 +46,24 @@ var Link = (function (_super) {
             e.stopPropagation();
             if (_this.props.onPress) {
                 e.preventDefault();
-                _this.props.onPress();
+                _this.props.onPress(e, _this.props.url);
+            }
+        };
+        _this._onMouseDown = function (e) {
+            if (_this.props.onLongPress) {
+                e.persist();
+                _this._longPressTimer = window.setTimeout(function () {
+                    _this._longPressTimer = undefined;
+                    if (_this.props.onLongPress) {
+                        _this.props.onLongPress(e, _this.props.url);
+                    }
+                }, _longPressTime);
+            }
+        };
+        _this._onMouseUp = function (e) {
+            if (_this._longPressTimer) {
+                window.clearTimeout(_this._longPressTimer);
+                _this._longPressTimer = undefined;
             }
         };
         return _this;
@@ -55,7 +73,7 @@ var Link = (function (_super) {
         //   Note the use of rel='noreferrer'
         //   Destroy the back-link to this window. Otherwise the (untrusted) URL we are about to load can redirect OUR window.
         //   See: https://mathiasbynens.github.io/rel-noopener/
-        return (React.createElement("a", { style: this._getStyles(), title: this.props.title, href: this.props.url, target: '_blank', rel: 'noreferrer', onClick: this._onClick, onMouseEnter: this.props.onHoverStart, onMouseLeave: this.props.onHoverEnd }, this.props.children));
+        return (React.createElement("a", { style: this._getStyles(), title: this.props.title, href: this.props.url, target: '_blank', rel: 'noreferrer', onClick: this._onClick, onMouseEnter: this.props.onHoverStart, onMouseLeave: this.props.onHoverEnd, onMouseDown: this._onMouseDown }, this.props.children));
     };
     Link.prototype._getStyles = function () {
         // There's no way in HTML to properly handle numberOfLines > 1,

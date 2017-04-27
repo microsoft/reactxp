@@ -16,6 +16,12 @@ var _ = require("./lodashMini");
 var React = require("react");
 var RN = require("react-native");
 var RX = require("../common/Interfaces");
+var Styles_1 = require("./Styles");
+var _styles = {
+    defaultTextInput: Styles_1.default.createTextInputStyle({
+        padding: 0
+    })
+};
 var TextInput = (function (_super) {
     __extends(TextInput, _super);
     function TextInput(props) {
@@ -113,7 +119,7 @@ var TextInput = (function (_super) {
     TextInput.prototype.render = function () {
         var editable = (this.props.editable !== undefined ? this.props.editable : true);
         var blurOnSubmit = this.props.blurOnSubmit || !this.props.multiline;
-        return (React.createElement(RN.TextInput, { ref: 'nativeTextInput', multiline: this.props.multiline, style: this.props.style, value: this.state.inputValue, autoCorrect: this.props.autoCorrect, spellCheck: this.props.spellCheck, autoCapitalize: this.props.autoCapitalize, autoFocus: this.props.autoFocus, keyboardType: this.props.keyboardType, editable: editable, selectionColor: this.props.selectionColor, maxLength: this.props.maxLength, placeholder: this.props.placeholder, defaultValue: this.props.value, placeholderTextColor: this.props.placeholderTextColor, onSubmitEditing: this.props.onSubmitEditing, onKeyPress: this._onKeyPress, onChangeText: this._onChangeText, onSelectionChange: this._onSelectionChange, onFocus: this._onFocus, onBlur: this._onBlur, onScroll: this._onScroll, selection: { start: this._selectionStart, end: this._selectionEnd }, textAlign: this.props.textAlign, keyboardAppearance: this.props.keyboardAppearance, returnKeyType: this.props.returnKeyType, disableFullscreenUI: this.props.disableFullscreenUI, blurOnSubmit: blurOnSubmit, textBreakStrategy: 'simple', accessibilityLabel: this.props.accessibilityLabel, allowFontScaling: this.props.allowFontScaling }));
+        return (React.createElement(RN.TextInput, { ref: 'nativeTextInput', multiline: this.props.multiline, style: Styles_1.default.combine(_styles.defaultTextInput, this.props.style), value: this.state.inputValue, autoCorrect: this.props.autoCorrect, spellCheck: this.props.spellCheck, autoCapitalize: this.props.autoCapitalize, autoFocus: this.props.autoFocus, keyboardType: this.props.keyboardType, editable: editable, selectionColor: this.props.selectionColor, maxLength: this.props.maxLength, placeholder: this.props.placeholder, defaultValue: this.props.value, placeholderTextColor: this.props.placeholderTextColor, onSubmitEditing: this.props.onSubmitEditing, onKeyPress: this._onKeyPress, onChangeText: this._onChangeText, onSelectionChange: this._onSelectionChange, onFocus: this._onFocus, onBlur: this._onBlur, onScroll: this._onScroll, selection: { start: this._selectionStart, end: this._selectionEnd }, textAlign: this.props.textAlign, keyboardAppearance: this.props.keyboardAppearance, returnKeyType: this.props.returnKeyType, disableFullscreenUI: this.props.disableFullscreenUI, blurOnSubmit: blurOnSubmit, textBreakStrategy: 'simple', accessibilityLabel: this.props.accessibilityLabel, allowFontScaling: this.props.allowFontScaling, underlineColorAndroid: 'transparent' }));
     };
     TextInput.prototype.blur = function () {
         this.refs['nativeTextInput'].blur();

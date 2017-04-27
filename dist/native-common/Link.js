@@ -20,14 +20,19 @@ var Link = (function (_super) {
     __extends(Link, _super);
     function Link() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this._onPress = function () {
+        _this._onPress = function (e) {
             if (_this.props.onPress) {
-                _this.props.onPress();
+                _this.props.onPress(e, _this.props.url);
                 return;
             }
             // The default action is to launch a browser.
             if (_this.props.url) {
                 Linking_1.default.openUrl(_this.props.url);
+            }
+        };
+        _this._onLongPress = function (e) {
+            if (_this.props.onLongPress) {
+                _this.props.onLongPress(e, _this.props.url);
             }
         };
         return _this;
@@ -37,7 +42,7 @@ var Link = (function (_super) {
         this.refs['nativeLink'].setNativeProps(nativeProps);
     };
     Link.prototype.render = function () {
-        return (React.createElement(RN.Text, { style: this.props.style, ref: 'nativeLink', numberOfLines: this.props.numberOfLines === 0 ? null : this.props.numberOfLines, onPress: this._onPress }, this.props.children));
+        return (React.createElement(RN.Text, { style: this.props.style, ref: 'nativeLink', numberOfLines: this.props.numberOfLines === 0 ? null : this.props.numberOfLines, onPress: this._onPress, onLongPress: this._onLongPress }, this.props.children));
     };
     return Link;
 }(RX.Link));

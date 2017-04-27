@@ -12,11 +12,11 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var assert = require("assert");
 var React = require("react");
 var RN = require("react-native");
 var Animated_1 = require("./Animated");
 var AccessibilityUtil_1 = require("./AccessibilityUtil");
-var MixinUtil = require("../common/MixinUtil");
 var RX = require("../common/Interfaces");
 var Styles_1 = require("./Styles");
 var Types = require("../common/Types");
@@ -38,6 +38,16 @@ var _inactiveOpacityAnimationDuration = 250;
 var _activeOpacityAnimationDuration = 0;
 var _hideUnderlayTimeout = 100;
 var _underlayInactive = 'transparent';
+function nop() {
+}
+function applyMixin(thisObj, mixin, propertiesToSkip) {
+    Object.getOwnPropertyNames(mixin).forEach(function (name) {
+        if (name !== 'constructor' && propertiesToSkip.indexOf(name) === -1) {
+            assert(!(name in thisObj), "An object cannot have a method with the same name as one of its mixins: \"" + name + "\"");
+            thisObj[name] = mixin[name].bind(thisObj);
+        }
+    });
+}
 var Button = (function (_super) {
     __extends(Button, _super);
     function Button(props) {
@@ -107,7 +117,14 @@ var Button = (function (_super) {
                     }, _this.props.style],
             });
         };
-        MixinUtil.applyMixins(_this, [RN.Touchable.Mixin]);
+        _this._mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount || nop;
+        _this._mixin_componentWillUnmount = RN.Touchable.Mixin.componentWillUnmount || nop;
+        applyMixin(_this, RN.Touchable.Mixin, [
+            // Properties that Button and RN.Touchable.Mixin have in common. Button needs
+            // to dispatch these methods to RN.Touchable.Mixin manually.
+            'componentDidMount',
+            'componentWillUnmount'
+        ]);
         _this.state = _this.touchableGetInitialState();
         _this._setOpacityStyles(props);
         return _this;
@@ -121,15 +138,22 @@ var Button = (function (_super) {
         return (React.createElement(RN.Animated.View, { ref: this._onButtonRef, style: Styles_1.default.combine(_styles.defaultButton, [this.props.style, opacityStyle], this.props.disabled && _styles.disabled), accessibilityLabel: this.props.accessibilityLabel || this.props.title, accessibilityTraits: accessibilityTrait, accessibilityComponentType: accessibilityComponentType, importantForAccessibility: importantForAccessibility, onStartShouldSetResponder: this.touchableHandleStartShouldSetResponder, onResponderTerminationRequest: this.touchableHandleResponderTerminationRequest, onResponderGrant: this.touchableHandleResponderGrant, onResponderMove: this.touchableHandleResponderMove, onResponderRelease: this.touchableHandleResponderRelease, onResponderTerminate: this.touchableHandleResponderTerminate, shouldRasterizeIOS: this.props.shouldRasterizeIOS }, this.props.children));
     };
     Button.prototype.componentDidMount = function () {
+        this._mixin_componentDidMount();
         this._isMounted = true;
     };
     Button.prototype.componentWillUnmount = function () {
+        this._mixin_componentWillUnmount();
         this._isMounted = false;
     };
     Button.prototype.componentWillReceiveProps = function (nextProps) {
         if (nextProps !== this.props) {
             // If opacity got updated as a part of props update, we need to reflect that in the opacity animation value
             this._setOpacityStyles(nextProps);
+        }
+    };
+    Button.prototype.setNativeProps = function (nativeProps) {
+        if (this._buttonElement) {
+            this._buttonElement.setNativeProps(nativeProps);
         }
     };
     Button.prototype.focus = function () {
