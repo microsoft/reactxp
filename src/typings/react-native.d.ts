@@ -115,6 +115,7 @@ declare module 'react-native' {
     interface TextProps extends ComponentPropsStyleBase {
         importantForAccessibility?: string; // 'auto' | 'yes' | 'no' | 'no-hide-descendants';
         allowFontScaling?: boolean;
+        maximumFontScale?: number;
         children?        : React.ReactNode;
         numberOfLines?   : number;
         ellipsizeMode?   : 'head' | 'middle' | 'tail' // There's also 'clip' but it is iOS only
