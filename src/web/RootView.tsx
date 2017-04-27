@@ -89,6 +89,15 @@ const _styles = {
 
 const ESC_KEY_CODE = 27;
 
+// Setting the expected default box-sizing for everything.
+if (typeof document !== 'undefined') {
+    const defaultBoxSizing = '*, *:before, *:after { box-sizing: border-box; }';
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(defaultBoxSizing));
+    document.head.appendChild(style);
+}
+
 export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _hidePopupTimer: number = null;
     private _respositionPopupTimer: number = null;
