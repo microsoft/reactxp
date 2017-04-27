@@ -70,7 +70,6 @@ html {
   padding-top: $navHeight;
   width: 100%;
   background-color: white;
-  font-size: 14px;
 }
 
 .wrap {
@@ -747,6 +746,7 @@ figure {
   float: right;
   width: 100%;
   max-width: $skinnyContentWidth;
+  font-size: 15px;
 
   @include bp-large {
     width: calc(100% - 240px);
