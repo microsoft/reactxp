@@ -18,6 +18,8 @@ import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export class UserInterface extends RX.UserInterface {
+    private _layoutChangeAnimationFrame: number;
+
     measureLayoutRelativeToWindow(component: React.Component<any, any>) :
             SyncTasks.Promise<Types.LayoutInfo> {
 
@@ -92,7 +94,7 @@ export class UserInterface extends RX.UserInterface {
         }
 
         return pixelRatio;
-    }    
+    }
 
     setMainView(element: React.ReactElement<any>): void {
         FrontLayerViewManager.setMainView(element);
@@ -104,6 +106,19 @@ export class UserInterface extends RX.UserInterface {
 
     dismissKeyboard() {
         // Nothing to do
+    }
+
+    layoutChangePending() {
+        if (!this._layoutChangeAnimationFrame) {
+            // ViewBase checks for the layout changes once a second or on window resize.
+            // To avoid laggy layout updates we can indicate that there is a change pending.
+            this._layoutChangeAnimationFrame = window.requestAnimationFrame(() => {
+                this._layoutChangeAnimationFrame = undefined;
+                let event = document.createEvent('HTMLEvents');
+                event.initEvent('resize', true, false);
+                window.dispatchEvent(event);
+            });
+        }
     }
 }
 
