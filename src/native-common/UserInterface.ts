@@ -121,6 +121,10 @@ export class UserInterface extends RX.UserInterface {
     renderMainView() {
         // Nothing to do
     }
+
+    layoutChangePending() {
+        // Nothing to do
+    }
 }
 
 export default new UserInterface();
