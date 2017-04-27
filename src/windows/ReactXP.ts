@@ -45,9 +45,6 @@ import { default as UserInterfaceImpl, UserInterface as UserInterfaceType } from
 import { default as UserPresenceImpl, UserPresence as UserPresenceType } from '../native-common/UserPresence';
 import { default as ViewImpl, View as ViewType } from '../native-common/View';
 import { default as WebViewImpl, WebView as WebViewType } from '../native-common/WebView';
-
-import AccessibilityUtil from '../native-common/Accessibilityutil';
-import AccessibilityNativeUtil from './AccessibilityNativeUtil';
 import ViewBase from '../native-common/ViewBase';
 
 // Initialize the Windows default view style. This is required because on RN for Windows, the default
@@ -61,7 +58,10 @@ ViewBase.setDefaultViewStyle(_defaultViewStyle);
 // Initialize Windows implementation of platform accessibility helpers inside the singleton
 // instance of native-common AccessibilityUtil. This is to let native-common components access
 // platform specific APIs through native-common implementation itself. 
-AccessibilityUtil.setAccessibilityNativeUtil(AccessibilityNativeUtil);
+import AccessibilityUtil from '../native-common/Accessibilityutil';
+import AccessibilityPlatformUtil from './AccessibilityUtil';
+
+AccessibilityUtil.setAccessibilityPlatformUtil(AccessibilityPlatformUtil);
 
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.

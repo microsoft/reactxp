@@ -13,7 +13,7 @@ import assert = require('assert');
 import React = require('react');
 import RN = require('react-native');
 
-import { AccessibilityUtil as CommonAccessibilityUtil, AccessibilityNativeUtil } from '../common/AccessibilityUtil';
+import { AccessibilityUtil as CommonAccessibilityUtil, AccessibilityPlatformUtil } from '../common/AccessibilityUtil';
 
 import Types = require('../common/Types');
 
@@ -59,9 +59,9 @@ const componentTypeMap = {
 
 export class AccessibilityUtil extends CommonAccessibilityUtil {
     // Handle to accessibility platform helper instance that gets initialized during ReactXP initialization using the setter. 
-    private _instance: AccessibilityNativeUtil;
+    private _instance: AccessibilityPlatformUtil;
 
-    setAccessibilityNativeUtil(instance: AccessibilityNativeUtil) {
+    setAccessibilityPlatformUtil(instance: AccessibilityPlatformUtil) {
         this._instance = instance; 
     }
 

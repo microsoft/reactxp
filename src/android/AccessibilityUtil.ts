@@ -1,5 +1,5 @@
 /**
-* AccessibilityNativeUtil.ts
+* AccessibilityUtil.ts
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
@@ -11,9 +11,9 @@ import React = require('react');
 import RN = require('react-native');
 
 import Accessibility from '../native-common/Accessibility';
-import { AccessibilityNativeUtil as CommonAccessibilityNativeUtil } from '../common/AccessibilityUtil';
+import { AccessibilityPlatformUtil as CommonAccessibilityNativeUtil } from '../common/AccessibilityUtil';
 
-export class AccessibilityNativeUtil extends CommonAccessibilityNativeUtil {
+export class AccessibilityUtil extends CommonAccessibilityNativeUtil {
     private _sendAccessibilityEvent(component: React.Component<any, any>, eventId: number) {
         // See list of events here:
         // https://developer.android.com/reference/android/view/accessibility/AccessibilityEvent.html
@@ -36,4 +36,4 @@ export class AccessibilityNativeUtil extends CommonAccessibilityNativeUtil {
     }
 }
 
-export default new AccessibilityNativeUtil();
+export default new AccessibilityUtil();

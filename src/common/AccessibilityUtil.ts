@@ -20,7 +20,7 @@ export const ImportantForAccessibilityMap = {
 
 
 // Platform specific helpers exposed through Native-Common AccessibilityUtil. 
-export abstract class AccessibilityNativeUtil {
+export abstract class AccessibilityPlatformUtil {
     abstract setAccessibilityFocus(component: React.Component<any, any>): void;
 }
 
