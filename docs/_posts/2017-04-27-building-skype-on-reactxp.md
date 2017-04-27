@@ -98,7 +98,7 @@ The primary subscriber to the NavigationStateStore is a component called RootNav
 ``` javascript
 protected _buildState(/* params omitted */): RootNavigationViewState {
     return {
-        isStackNav: NavigationStateStore. isUsingStackNav(),
+        isStackNav: NavigationStateStore.isUsingStackNav(),
         compositeNavContext: NavigationStateStore.getCompositeNavContext()
         stackNavContext: NavigationStateStore.getStackNavContext()
     };
@@ -107,11 +107,11 @@ protected _buildState(/* params omitted */): RootNavigationViewState {
 render() {
     if (this.state.isStackNav) {
         return (
-            <RootStackNavigationView context={ this.state.stackNavContext } />
+            <RootStackNavigationView navContext={ this.state.stackNavContext } />
         );
     } else {
         return (
-            <RootCompositeNavigationView context={ this.state.compositeNavContext } />
+            <RootCompositeNavigationView navContext={ this.state.compositeNavContext } />
         );
     }
 }
