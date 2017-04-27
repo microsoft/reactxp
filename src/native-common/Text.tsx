@@ -52,7 +52,7 @@ export class Text extends RX.Text<{}> {
     }
 
     focus() {
-        // No-op
+        AccessibilityUtil.setAccessibilityFocus(this);
     }
 
     blur() {

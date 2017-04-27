@@ -11,9 +11,9 @@ import React = require('react');
 import RN = require('react-native');
 
 import Accessibility from '../native-common/Accessibility';
-import { AccessibilityUtil as CommonAccessibilityUtil } from '../native-common/AccessibilityUtil';
+import { AccessibilityPlatformUtil as CommonAccessibilityNativeUtil } from '../common/AccessibilityUtil';
 
-export class AccessibilityUtil extends CommonAccessibilityUtil {
+export class AccessibilityUtil extends CommonAccessibilityNativeUtil {
     private _sendAccessibilityEvent(component: React.Component<any, any>, eventId: number) {
         // See list of events here:
         // https://developer.android.com/reference/android/view/accessibility/AccessibilityEvent.html

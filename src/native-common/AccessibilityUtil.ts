@@ -9,8 +9,12 @@
 */
 
 import _ = require('./lodashMini');
+import assert = require('assert');
+import React = require('react');
+import RN = require('react-native');
 
-import { AccessibilityUtil as CommonAccessibilityUtil } from '../common/AccessibilityUtil';
+import { AccessibilityUtil as CommonAccessibilityUtil, AccessibilityPlatformUtil } from '../common/AccessibilityUtil';
+
 import Types = require('../common/Types');
 
 const liveRegionMap = {
@@ -54,6 +58,13 @@ const componentTypeMap = {
 };
 
 export class AccessibilityUtil extends CommonAccessibilityUtil {
+    // Handle to accessibility platform helper instance that gets initialized during ReactXP initialization using the setter. 
+    private _instance: AccessibilityPlatformUtil;
+
+    setAccessibilityPlatformUtil(instance: AccessibilityPlatformUtil) {
+        this._instance = instance; 
+    }
+
     // Converts an AccessibilityTrait to a string, but the returned value is only needed for iOS. Other platforms ignore it. Presence
     // of an AccessibilityTrait.None can make an element non-accessible on Android. We use the override traits if they are present, else
     // use the deafult trait.
@@ -88,6 +99,11 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
             return liveRegionMap[liveRegion];
         }
         return undefined;
+    }
+
+    // Platform specific accessibility APIs. 
+    setAccessibilityFocus(component: React.Component<any, any>): void {
+        this._instance.setAccessibilityFocus(component);
     }
 }
 
