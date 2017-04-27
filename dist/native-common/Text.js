@@ -33,7 +33,7 @@ var Text = (function (_super) {
     };
     Text.prototype.render = function () {
         var importantForAccessibility = AccessibilityUtil_1.default.importantForAccessibilityToString(this.props.importantForAccessibility);
-        return (React.createElement(RN.Text, { style: this._getStyles(), ref: 'nativeText', importantForAccessibility: importantForAccessibility, numberOfLines: this.props.numberOfLines, allowFontScaling: this.props.allowFontScaling, maximumFontScale: this.props.maximumFontScale, onPress: this.props.onPress, selectable: this.props.selectable, textBreakStrategy: 'simple', ellipsizeMode: this.props.ellipsizeMode, elevation: this.props.elevation }, this.props.children));
+        return (React.createElement(RN.Text, { style: this._getStyles(), ref: 'nativeText', importantForAccessibility: importantForAccessibility, numberOfLines: this.props.numberOfLines, allowFontScaling: this.props.allowFontScaling, maxFontSizeMultiplier: this.props.maxFontSizeMultiplier, onPress: this.props.onPress, selectable: this.props.selectable, textBreakStrategy: 'simple', ellipsizeMode: this.props.ellipsizeMode, elevation: this.props.elevation }, this.props.children));
     };
     Text.prototype._getStyles = function () {
         return Styles_1.default.combine(_styles.defaultText, this.props.style);

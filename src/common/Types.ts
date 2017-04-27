@@ -487,8 +487,8 @@ export interface TextPropsShared extends CommonProps {
     // to true. iOS and Android only.
     allowFontScaling?: boolean;
 
-    // iOS and (soon) Android only
-    maximumFontScale?: number;
+    // Specifies the maximum scale factor for text size. iOS and (soon) Android only.
+    maxFontSizeMultiplier?: number;
 
     // iOS and Android only
     ellipsizeMode?:  'head' | 'middle'| 'tail';

@@ -310,7 +310,7 @@ export interface TextPropsShared extends CommonProps {
     selectable?: boolean;
     numberOfLines?: number;
     allowFontScaling?: boolean;
-    maximumFontScale?: number;
+    maxFontSizeMultiplier?: number;
     ellipsizeMode?: 'head' | 'middle' | 'tail';
     textBreakStrategy?: 'highQuality' | 'simple' | 'balanced';
     importantForAccessibility?: ImportantForAccessibility;

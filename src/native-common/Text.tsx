@@ -36,7 +36,7 @@ export class Text extends RX.Text<{}> {
                 importantForAccessibility={ importantForAccessibility }
                 numberOfLines={ this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
-                maximumFontScale={ this.props.maximumFontScale }
+                maxFontSizeMultiplier={ this.props.maxFontSizeMultiplier }
                 onPress={ this.props.onPress }
                 selectable={ this.props.selectable }
                 textBreakStrategy={ 'simple' }
