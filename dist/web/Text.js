@@ -88,6 +88,9 @@ var Text = (function (_super) {
             el.focus();
         }
     };
+    Text.setDefaultMaxFontSizeMultiplier = function (maxFontSizeMultiplier) {
+        // No-op
+    };
     return Text;
 }(RX.Text));
 Text.childContextTypes = {

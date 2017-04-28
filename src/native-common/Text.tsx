@@ -59,6 +59,10 @@ export class Text extends RX.Text<{}> {
     blur() {
         // No-op
     }
+
+    static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void {
+        RN.Text.setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier);
+    }
 }
 
 export default Text;

@@ -18,5 +18,6 @@ export declare class Text extends RX.Text<void> {
     _getStyles(): Types.TextStyleRuleSet;
     blur(): void;
     focus(): void;
+    static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void;
 }
 export default Text;

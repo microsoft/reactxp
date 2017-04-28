@@ -53,6 +53,10 @@ export class Text extends CommonText {
     focus() {
         AccessibilityUtil.setAccessibilityFocus(this);
     }
+
+    static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void {
+        RN.Text.setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier);
+    }
 }
 
 export default Text;

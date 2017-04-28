@@ -44,6 +44,9 @@ var Text = (function (_super) {
     Text.prototype.blur = function () {
         // No-op
     };
+    Text.setDefaultMaxFontSizeMultiplier = function (maxFontSizeMultiplier) {
+        RN.Text.setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier);
+    };
     return Text;
 }(RX.Text));
 exports.Text = Text;

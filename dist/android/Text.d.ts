@@ -4,5 +4,6 @@ export declare class Text extends CommonText {
     protected _getStyles(): Types.TextStyleRuleSet;
     render(): JSX.Element;
     focus(): void;
+    static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void;
 }
 export default Text;

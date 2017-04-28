@@ -42,6 +42,9 @@ var Text = (function (_super) {
     Text.prototype.focus = function () {
         AccessibilityUtil_1.default.setAccessibilityFocus(this);
     };
+    Text.setDefaultMaxFontSizeMultiplier = function (maxFontSizeMultiplier) {
+        RN.Text.setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier);
+    };
     return Text;
 }(Text_1.Text));
 exports.Text = Text;

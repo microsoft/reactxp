@@ -466,7 +466,9 @@ declare module 'react-native' {
         static prefetch(url: string): Promise<boolean>;
     }
     class ActivityIndicator extends ReactNativeBaseComponent<ActivityIndicatorProps, {}> { }
-    class Text extends ReactNativeBaseComponent<TextProps, {}> { }
+    class Text extends ReactNativeBaseComponent<TextProps, {}> { 
+        static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void;
+    }
     class Picker extends ReactNativeBaseComponent<PickerProps, {}> {
         static Item: any;
     }

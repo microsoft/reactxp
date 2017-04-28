@@ -103,6 +103,10 @@ export class Text extends RX.Text<void> {
             el.focus();
         }
     }
+
+    static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void {
+        // No-op
+    }
 }
 
 export default Text;
