@@ -37,7 +37,7 @@ var Text = (function (_super) {
     // to null to indicate the default behavior.
     Text.prototype.render = function () {
         var importantForAccessibility = AccessibilityUtil_1.default.importantForAccessibilityToString(this.props.importantForAccessibility);
-        return (React.createElement(RN.Text, { style: this._getStyles(), ref: 'nativeText', importantForAccessibility: importantForAccessibility, numberOfLines: this.props.numberOfLines === 0 ? null : this.props.numberOfLines, allowFontScaling: this.props.allowFontScaling, ellipsizeMode: this.props.ellipsizeMode, onPress: this.props.onPress, textBreakStrategy: this.props.textBreakStrategy }, this.props.children));
+        return (React.createElement(RN.Text, { style: this._getStyles(), ref: 'nativeText', importantForAccessibility: importantForAccessibility, numberOfLines: this.props.numberOfLines === 0 ? null : this.props.numberOfLines, allowFontScaling: this.props.allowFontScaling, maxFontSizeMultiplier: this.props.maxFontSizeMultiplier, ellipsizeMode: this.props.ellipsizeMode, onPress: this.props.onPress, textBreakStrategy: this.props.textBreakStrategy }, this.props.children));
     };
     Text.prototype.focus = function () {
         AccessibilityUtil_1.default.setAccessibilityFocus(this);
