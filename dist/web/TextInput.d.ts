@@ -25,5 +25,6 @@ export declare class TextInput extends RX.TextInput<TextInputState> {
         end: number;
     };
     setValue(value: string): void;
+    static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void;
 }
 export default TextInput;

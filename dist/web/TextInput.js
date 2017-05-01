@@ -193,6 +193,9 @@ var TextInput = (function (_super) {
             }
         }
     };
+    TextInput.setDefaultMaxFontSizeMultiplier = function (maxFontSizeMultiplier) {
+        // No-op
+    };
     return TextInput;
 }(RX.TextInput));
 exports.TextInput = TextInput;

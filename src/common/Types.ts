@@ -770,6 +770,9 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     // to true. iOS and Android only.
     allowFontScaling?: boolean;
 
+    // Specifies the maximum scale factor for text size. iOS and Android only.
+    maxFontSizeMultiplier?: number;
+
     // iOS-only prop for controlling the keyboard appearance
     keyboardAppearance?: 'default' | 'light' | 'dark';
 

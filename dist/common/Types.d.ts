@@ -502,6 +502,7 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     value?: string;
     textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify';
     allowFontScaling?: boolean;
+    maxFontSizeMultiplier?: number;
     keyboardAppearance?: 'default' | 'light' | 'dark';
     returnKeyType?: 'done' | 'go' | 'next' | 'search' | 'send';
     disableFullscreenUI?: boolean;

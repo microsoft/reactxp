@@ -344,6 +344,7 @@ declare module 'react-native' {
         testID?: string;
         textAlign?: string; // enum('auto' | 'left' | 'right' | 'center' | 'justify')
         allowFontScaling?: boolean;
+        maxFontSizeMultiplier?: number;
         selection?: { start: number, end: number };
 
         //iOS and android
@@ -487,6 +488,7 @@ declare module 'react-native' {
     class Modal extends ReactNativeBaseComponent<ModalProps, {}> { }
     class TextInput extends ReactNativeBaseComponent<TextInputProps, {}> {
         static State: TextInputState;
+        static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void;
     }
     class WebView extends ReactNativeBaseComponent<WebViewProps, {}> {
         reload() : void;

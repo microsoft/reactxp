@@ -267,6 +267,10 @@ export class TextInput extends RX.TextInput<TextInputState> {
             }
         }
     }
+
+    static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void {
+        // No-op
+    }
 }
 
 export default TextInput;

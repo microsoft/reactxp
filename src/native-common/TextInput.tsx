@@ -85,6 +85,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
                 textBreakStrategy={ 'simple' }
                 accessibilityLabel={ this.props.accessibilityLabel }
                 allowFontScaling={ this.props.allowFontScaling }
+                maxFontSizeMultiplier={ this.props.maxFontSizeMultiplier }
                 underlineColorAndroid='transparent'
             />
         );
@@ -219,6 +220,10 @@ export class TextInput extends RX.TextInput<TextInputState> {
 
     setValue(value: string): void {
         this._onChangeText(value);
+    }
+
+    static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void {
+        RN.TextInput.setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier);
     }
 }
 
