@@ -49,11 +49,7 @@ export class Text extends CommonText {
             </RN.Text>
         );
     }
-
-    focus() {
-        AccessibilityUtil.setAccessibilityFocus(this);
-    }
-
+    
     static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void {
         RN.Text.setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier);
     }
