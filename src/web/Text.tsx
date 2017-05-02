@@ -104,7 +104,7 @@ export class Text extends RX.Text<void> {
         }
     }
 
-    static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void {
+    static setDefaultMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void {
         // No-op
     }
 }

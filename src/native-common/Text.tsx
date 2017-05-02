@@ -36,7 +36,7 @@ export class Text extends RX.Text<{}> {
                 importantForAccessibility={ importantForAccessibility }
                 numberOfLines={ this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
-                maxFontSizeMultiplier={ this.props.maxFontSizeMultiplier }
+                maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
                 onPress={ this.props.onPress }
                 selectable={ this.props.selectable }
                 textBreakStrategy={ 'simple' }
@@ -60,8 +60,8 @@ export class Text extends RX.Text<{}> {
         // No-op
     }
 
-    static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void {
-        RN.Text.setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier);
+    static setDefaultMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void {
+        RN.Text.setDefaultMaxContentSizeMultiplier(maxContentSizeMultiplier);
     }
 }
 

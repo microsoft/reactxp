@@ -115,7 +115,7 @@ declare module 'react-native' {
     interface TextProps extends ComponentPropsStyleBase {
         importantForAccessibility?: string; // 'auto' | 'yes' | 'no' | 'no-hide-descendants';
         allowFontScaling?: boolean;
-        maxFontSizeMultiplier?: number;
+        maxContentSizeMultiplier?: number;
         children?        : React.ReactNode;
         numberOfLines?   : number;
         ellipsizeMode?   : 'head' | 'middle' | 'tail' // There's also 'clip' but it is iOS only
@@ -344,7 +344,7 @@ declare module 'react-native' {
         testID?: string;
         textAlign?: string; // enum('auto' | 'left' | 'right' | 'center' | 'justify')
         allowFontScaling?: boolean;
-        maxFontSizeMultiplier?: number;
+        maxContentSizeMultiplier?: number;
         selection?: { start: number, end: number };
 
         //iOS and android
@@ -468,7 +468,7 @@ declare module 'react-native' {
     }
     class ActivityIndicator extends ReactNativeBaseComponent<ActivityIndicatorProps, {}> { }
     class Text extends ReactNativeBaseComponent<TextProps, {}> { 
-        static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void;
+        static setDefaultMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
     }
     class Picker extends ReactNativeBaseComponent<PickerProps, {}> {
         static Item: any;
@@ -488,7 +488,7 @@ declare module 'react-native' {
     class Modal extends ReactNativeBaseComponent<ModalProps, {}> { }
     class TextInput extends ReactNativeBaseComponent<TextInputProps, {}> {
         static State: TextInputState;
-        static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void;
+        static setDefaultMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
     }
     class WebView extends ReactNativeBaseComponent<WebViewProps, {}> {
         reload() : void;

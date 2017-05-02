@@ -40,7 +40,7 @@ export class Text extends CommonText {
                 importantForAccessibility={ importantForAccessibility }
                 numberOfLines={ this.props.numberOfLines === 0 ? null : this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
-                maxFontSizeMultiplier={ this.props.maxFontSizeMultiplier }
+                maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
                 ellipsizeMode={ this.props.ellipsizeMode }
                 onPress={ this.props.onPress }
                 textBreakStrategy={ this.props.textBreakStrategy }
@@ -49,9 +49,9 @@ export class Text extends CommonText {
             </RN.Text>
         );
     }
-    
-    static setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier: number): void {
-        RN.Text.setDefaultMaxFontSizeMultiplier(maxFontSizeMultiplier);
+
+    static setDefaultMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void {
+        RN.Text.setDefaultMaxContentSizeMultiplier(maxContentSizeMultiplier);
     }
 }
 
