@@ -62,10 +62,10 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             this._internalProps.onLayout = this._onLayout;
         }
 
-        if (this.props.blockPointerEvents) {
+        if (props.blockPointerEvents) {
             this._internalProps.pointerEvents = 'none';
         } else {
-            if (this.props.ignorePointerEvents) {
+            if (props.ignorePointerEvents) {
                 this._internalProps.pointerEvents = 'box-none';
             }
         }
