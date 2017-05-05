@@ -8,6 +8,7 @@
 */
 
 import React = require('react');
+import ReactDOM = require('react-dom');
 
 import AccessibilityUtil from './AccessibilityUtil';
 import AnimateListEdits from './listAnimations/AnimateListEdits';
@@ -24,6 +25,31 @@ const _styles = {
         flex: '0 0 auto',
         overflow: 'hidden',
         alignItems: 'stretch'
+    },
+
+    resizeDetectorContainerStyles: {
+        position: 'absolute',
+        left: '0',
+        top: '0',
+        right: '0',
+        bottom: '0',
+        overflow: 'scroll',
+        zIndex: '-1',
+        visibility: 'hidden'
+    },
+
+    resizeGrowDetectorStyles: {
+        position: 'absolute',
+        left: '100500px',
+        top: '100500px',
+        width: '1px',
+        height: '1px'
+    },
+
+    resizeShrinkDetectorStyles: {
+        position: 'absolute',
+        width: '150%',
+        height: '150%'
     }
 };
 
@@ -50,6 +76,89 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         isRxParentAText: React.PropTypes.bool.isRequired
     };
 
+    private resizeDetectorAnimationFrame: number;
+    private resizeDetectorNodes: {grow?: HTMLElement, shrink?: HTMLElement} = {};
+
+    private resizeDetectorReset() {
+        const scrollMax = 100500;
+
+        let node = this.resizeDetectorNodes.grow;
+
+        if (node) {
+            node.scrollLeft = scrollMax;
+            node.scrollTop = scrollMax;
+        }
+
+        node = this.resizeDetectorNodes.shrink;
+
+        if (node) {
+            node.scrollLeft = scrollMax;
+            node.scrollTop = scrollMax;
+        }
+    }
+
+    private resizeDetectorOnScroll() {
+        if (this.resizeDetectorAnimationFrame) {
+            return;
+        }
+
+        this.resizeDetectorAnimationFrame = window.requestAnimationFrame(() => {
+            this.resizeDetectorReset();
+            this.resizeDetectorAnimationFrame = undefined;
+            ViewBase._checkViews();
+        });
+
+    }
+
+    private renderResizeDetectorIfNeeded(containerStyles: any): React.ReactNode {
+        if (!this.props.importantForLayout) {
+            return null;
+        }
+
+        if (containerStyles.position !== 'relative') {
+            console.error('View: importantForLayout property is applicable only for a view with relative position');
+            return null;
+        }
+
+        let initResizer = (key: 'grow' | 'shrink', ref: React.DOMComponent<React.HTMLAttributes>) => {
+            const cur: HTMLElement = this.resizeDetectorNodes[key];
+            const element = ReactDOM.findDOMNode<HTMLElement>(ref);
+
+            if (cur) {
+                delete this.resizeDetectorNodes[key];
+            }
+
+            if (element) {
+                this.resizeDetectorNodes[key] = element;
+            }
+
+            this.resizeDetectorOnScroll();
+        };
+
+        return [
+            (
+                <div
+                    key='grow'
+                    style={ _styles.resizeDetectorContainerStyles }
+                    ref={ (ref) => initResizer('grow', ref) }
+                    onScroll={ () => this.resizeDetectorOnScroll() }>
+
+                    <div style={_styles.resizeGrowDetectorStyles}></div>
+                </div>
+            ),
+            (
+                <div
+                    key='shrink'
+                    style={ _styles.resizeDetectorContainerStyles }
+                    ref={ (ref) => initResizer('shrink', ref) }
+                    onScroll={ () => this.resizeDetectorOnScroll() }>
+
+                    <div style={_styles.resizeShrinkDetectorStyles}></div>
+                </div>
+            )
+        ];
+    }
+
     getChildContext() {
         // Let descendant Types components know that their nearest Types ancestor is not an Types.Text.
         // Because they're in an Types.View, they should use their normal styling rather than their
@@ -66,7 +175,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
         const ariaSelected = AccessibilityUtil.accessibilityTraitToAriaSelected(this.props.accessibilityTraits);
         const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
-        
+
         let props: Types.AccessibilityHtmlAttributes = {
             role: ariaRole,
             tabIndex: this.props.tabIndex,
@@ -111,6 +220,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         } else {
             reactElement = (
                 <div {...props} >
+                    {this.renderResizeDetectorIfNeeded(combinedStyles)}
                     {this.props.children}
                 </div>
             );
