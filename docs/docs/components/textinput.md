@@ -28,6 +28,9 @@ autoFocus: boolean = false;
 // Should focus be lost after submitting?
 blurOnSubmit: boolean = false;
 
+// If defined, value is set as a class attribute of text input element
+className: string = undefined; // web-specific
+
 // Initial value that will change when the user starts typing
 defaultValue: string = undefined;
 
