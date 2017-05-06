@@ -35,6 +35,7 @@ allowFontScaling: boolean = true; // Android and iOS only
 // Should the scale multiplier be capped when allowFontScaling is set to true?
 // The default of 0 indicates that the compoent should obey the global setting 
 // in UserInterface which by default is uncapped.
+// Note: Most versions of React Native don’t support this interface. 
 maxContentSizeMultiplier: number = 0; // Android and iOS only
 
 // For non-zero values, truncates with ellipsis if necessary

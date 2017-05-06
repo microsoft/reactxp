@@ -49,10 +49,12 @@ getContentSizeMultiplier(): SyncTasks.Promise<number>;
 
 // Indicates the default maximum "size multiplier" for text increase. 
 // Defaults to 0.0 which indicates no cap.
+// Note: Most versions of React Native don’t support this interface. 
 getMaxContentSizeMultiplier(): SyncTasks.Promise<number>;
 
 // Sets the default maximum "size multiplier" for text increase or 
 // decrease. Values must be 0 or >= 1.
+// Note: Most versions of React Native don’t support this interface. 
 setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
 
 // Dismisses the on-screen keyboard (applies to mobile only)
