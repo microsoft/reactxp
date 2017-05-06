@@ -221,10 +221,6 @@ export class TextInput extends RX.TextInput<TextInputState> {
     setValue(value: string): void {
         this._onChangeText(value);
     }
-
-    static setDefaultMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void {
-        RN.TextInput.setDefaultMaxContentSizeMultiplier(maxContentSizeMultiplier);
-    }
 }
 
 export default TextInput;

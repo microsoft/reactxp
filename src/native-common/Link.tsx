@@ -27,6 +27,8 @@ export class Link extends RX.Link<{}> {
                 numberOfLines={ this.props.numberOfLines === 0 ? null : this.props.numberOfLines }
                 onPress={ this._onPress }
                 onLongPress={ this._onLongPress }
+                allowFontScaling={ this.props.allowFontScaling }
+                maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
             >
                 { this.props.children }
             </RN.Text>

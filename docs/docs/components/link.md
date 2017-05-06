@@ -11,6 +11,14 @@ This component displays a hyperlink. On the web, it translates to an &lt;a&gt; t
 
 ## Props
 ``` javascript
+// Should fonts be scaled according to system setting?
+allowFontScaling: boolean = true; // Android and iOS only
+
+// Should the scale multiplier be capped when allowFontScaling is set to true?
+// The default of 0 indicates that the compoent should obey the global setting 
+// in UserInterface which by default is uncapped.
+maxContentSizeMultiplier: number = 0; // Android and iOS only
+
 // For non-zero values, truncates with ellipsis if necessary
 numberOfLines: number = 0;
 

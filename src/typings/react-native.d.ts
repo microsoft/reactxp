@@ -467,9 +467,7 @@ declare module 'react-native' {
         static prefetch(url: string): Promise<boolean>;
     }
     class ActivityIndicator extends ReactNativeBaseComponent<ActivityIndicatorProps, {}> { }
-    class Text extends ReactNativeBaseComponent<TextProps, {}> { 
-        static setDefaultMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
-    }
+    class Text extends ReactNativeBaseComponent<TextProps, {}> { }
     class Picker extends ReactNativeBaseComponent<PickerProps, {}> {
         static Item: any;
     }
@@ -488,7 +486,6 @@ declare module 'react-native' {
     class Modal extends ReactNativeBaseComponent<ModalProps, {}> { }
     class TextInput extends ReactNativeBaseComponent<TextInputProps, {}> {
         static State: TextInputState;
-        static setDefaultMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
     }
     class WebView extends ReactNativeBaseComponent<WebViewProps, {}> {
         reload() : void;

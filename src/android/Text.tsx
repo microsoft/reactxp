@@ -49,10 +49,6 @@ export class Text extends CommonText {
             </RN.Text>
         );
     }
-
-    static setDefaultMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void {
-        RN.Text.setDefaultMaxContentSizeMultiplier(maxContentSizeMultiplier);
-    }
 }
 
 export default Text;

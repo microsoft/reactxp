@@ -742,6 +742,8 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
     children?: ReactNode;
     selectable?: boolean;
     numberOfLines?: number;
+    allowFontScaling?: boolean;
+    maxContentSizeMultiplier?: number;
 
     onPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
     onLongPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
