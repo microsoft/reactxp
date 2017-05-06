@@ -821,6 +821,8 @@ declare module 'react-native' {
         dispatchViewManagerCommand: Function;
 
         getContentSizeMultiplier: Function;
+        getMaxContentSizeMultiplier: Function;
+        setMaxContentSizeMultiplier: Function;
 
         // ios
         takeSnapshot: (view: any, options?: SnapshotOptions) => Promise<string>;
