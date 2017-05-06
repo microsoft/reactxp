@@ -18,7 +18,7 @@ Another difference between Text and other components is that Text children are n
 ``` javascript
 // Alternate text to display if the image cannot be loaded
 // or by screen readers
-accessibilityHidden: boolean = false;
+accessibilityLabel: string = undefined;
 
 // Hide the component from screen readers?
 accessibilityHidden: boolean = false;
@@ -29,11 +29,13 @@ accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 // Region for accessibility mechanisms
 accessibilityLiveRegion?: AccessibilityLiveRegion = undefined; // Android and web only
 
-// Keyboard tab order
-tabIndex: number = undefined;
-
 // Should fonts be scaled according to system setting?
 allowFontScaling: boolean = true; // Android and iOS only
+
+// Should the scale multiplier be capped when allowFontScaling is set to true?
+// The default of 0 indicates that the compoent should obey the global setting 
+// in UserInterface which by default is uncapped.
+maxContentSizeMultiplier: number = 0; // Android and iOS only
 
 // For non-zero values, truncates with ellipsis if necessary
 numberOfLines: number = 0;
@@ -43,6 +45,9 @@ selectable: boolean = false;
 
 // See below for supported styles
 style: TextStyleRuleSet | TextStyleRuleSet[] = [];
+
+// Keyboard tab order
+tabIndex: number = undefined;
 ```
 
 ## Styles

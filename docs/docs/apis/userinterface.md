@@ -47,6 +47,14 @@ measureWindow(): Types.Dimensions;
 // can be adjusted by users on some platforms; defaults to 1.0
 getContentSizeMultiplier(): SyncTasks.Promise<number>;
 
+// Indicates the default maximum "size multiplier" for text increase. 
+// Defaults to 0.0 which indicates no cap.
+getMaxContentSizeMultiplier(): SyncTasks.Promise<number>;
+
+// Sets the default maximum "size multiplier" for text increase or 
+// decrease. Values must be 0 or >= 1.
+setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
+
 // Dismisses the on-screen keyboard (applies to mobile only)
 dismissKeyboard(): void;
 ```
@@ -56,6 +64,11 @@ dismissKeyboard(): void;
 // Triggered when the content size multiplier changes while the
 // app is running
 contentSizeMultiplierChangedEvent: SubscribableEvent<
+    (multiplier: number) => void>();
+
+// Triggered when the max content size multiplier changes while
+// the app is running.
+maxContentSizeMultiplierChangedEvent: SubscribableEvent<
     (multiplier: number) => void>();
 ```
 
