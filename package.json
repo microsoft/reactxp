@@ -20,7 +20,7 @@
     "react-addons-perf": "^15.4.1",
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-native": "git+https://skype.visualstudio.com/DefaultCollection/TPS/_git/react-native#timale/fontScalingLimit",
+    "react-native": "^0.42.0",
     "react-native-windows": "^0.33.0"
   },
   "devDependencies": {
