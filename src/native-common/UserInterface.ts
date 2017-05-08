@@ -114,9 +114,7 @@ export class UserInterface extends RX.UserInterface {
     setMaxContentSizeMultiplier(maxContentSizeMultiplier: number) {
         // TODO: #727532 Remove conditional after implementing UIManager.getContentSizeMultiplier for UWP
         if (RN.Platform.OS !== 'windows') {
-            RN.NativeModules.UIManager.setMaxContentSizeMultiplier(maxContentSizeMultiplier, (value: number) => {
-                this.maxContentSizeMultiplierChangedEvent.fire(value);
-            });
+            RN.NativeModules.UIManager.setMaxContentSizeMultiplier(maxContentSizeMultiplier);
         }
     }
 

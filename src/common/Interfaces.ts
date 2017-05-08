@@ -137,7 +137,6 @@ export abstract class UserInterface {
     // Content Size Multiplier
     abstract getContentSizeMultiplier(): SyncTasks.Promise<number>;
     contentSizeMultiplierChangedEvent = new SubscribableEvent.SubscribableEvent<(multiplier: number) => void>();
-    maxContentSizeMultiplierChangedEvent = new SubscribableEvent.SubscribableEvent<(maxMultiplier: number) => void>();
 
     // On-screen Keyboard
     abstract dismissKeyboard(): void;
