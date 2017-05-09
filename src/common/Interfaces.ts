@@ -140,9 +140,6 @@ export abstract class UserInterface {
 
     // On-screen Keyboard
     abstract dismissKeyboard(): void;
-
-    // Explicit layout change indication
-    abstract layoutChangePending(): void;
 }
 
 export abstract class Modal {

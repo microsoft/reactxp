@@ -277,7 +277,7 @@ export type LinkStyleRuleSet = StyleRuleSet<LinkStyle>;
 
 export interface ImageStyle extends ViewAndImageCommonStyle, FlexboxStyle {
     resizeMode?: 'contain' | 'cover' | 'stretch';
-    
+
     // This is an Android only style attribute that is used to fill the gap in the case of rounded corners
     // in gif images.
     overlayColor?: string;
@@ -452,7 +452,7 @@ export interface ImagePropsShared extends CommonProps {
     children?: ReactNode;
     resizeMode?: 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat';
 
-    resizeMethod?: 'auto' | 'resize' | 'scale'; // Android only 
+    resizeMethod?: 'auto' | 'resize' | 'scale'; // Android only
     title?: string;
 
     onLoad?: (size: Dimensions) => void;
@@ -489,17 +489,17 @@ export interface TextPropsShared extends CommonProps {
 
     // iOS and Android only
     ellipsizeMode?:  'head' | 'middle'| 'tail';
-    
+
     // Exposing this property as temporary workaround to fix a bug.
     // TODO : http://skype.vso.io/865016 : remove this exposed property
     // Used only for Android.
     textBreakStrategy?: 'highQuality' | 'simple' | 'balanced';
 
     importantForAccessibility?: ImportantForAccessibility;
-    
+
     // Android only
     elevation?: number;
-    
+
     onPress?: (e: SyntheticEvent) => void;
 }
 
@@ -522,6 +522,8 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     viewLayerTypeAndroid?: ViewLayerType; // Android only property
     children?: ReactNode;
     focusable?: boolean;
+
+    importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
 
     // There are a couple of constraints when child animations are enabled:
     //   - Every child must have a `key`.
@@ -547,7 +549,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     onBlur?: (e: FocusEvent) => void;
 
     // iOS and Android only. Visual touchfeedback properties
-    disableTouchOpacityAnimation?: boolean;    
+    disableTouchOpacityAnimation?: boolean;
     activeOpacity?: number;
     underlayColor?: string;
 }
@@ -762,7 +764,7 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     secureTextEntry?: boolean;
     value?: string;
     textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify';
-     
+
      // Should fonts be scaled according to system setting? Defaults
     // to true. iOS and Android only.
     allowFontScaling?: boolean;
@@ -869,9 +871,9 @@ export interface PopupOptions {
         popupWidth: number, popupHeight: number) => ReactNode;
 
     // Returns a mounted component instance that controls the triggering of the popup.
-    // In majority of cases, "anchor" of popup has handlers to control when the popup will be seen and this function is not required. 
+    // In majority of cases, "anchor" of popup has handlers to control when the popup will be seen and this function is not required.
     // In a few cases, where anchor is not the same as the whole component that triggers when the popup wil be seen, this can be used.
-    // For instance, a button combined with a chevron icon, which on click triggers a popup below the chevron icon. 
+    // For instance, a button combined with a chevron icon, which on click triggers a popup below the chevron icon.
     // In this example, getElementTriggeringPopup() can return the container with button and chevron icon.
     getElementTriggeringPopup?: () => React.Component<any, any>;
 
@@ -893,8 +895,8 @@ export interface PopupOptions {
     // already unmounted as it uses a time delay to accommodate a fade-out animation.
     onAnchorPressed?: (e: RX.Types.SyntheticEvent) => void;
 
-    // Determines if the anchor invoking the popup should behave like a toggle. 
-    // Value = true  => Calling Popup.show will show the popup. A subsequent call, will hide the popup, and so on. 
+    // Determines if the anchor invoking the popup should behave like a toggle.
+    // Value = true  => Calling Popup.show will show the popup. A subsequent call, will hide the popup, and so on.
     // Value = false or undefined (default)  => Calling Popup.show will always show the popup.
      dismissIfShown?: boolean;
 }
