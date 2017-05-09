@@ -522,6 +522,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     viewLayerTypeAndroid?: ViewLayerType; // Android only property
     children?: ReactNode;
     focusable?: boolean;
+
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
 
     // There are a couple of constraints when child animations are enabled:

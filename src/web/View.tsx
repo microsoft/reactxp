@@ -27,6 +27,7 @@ const _styles = {
         alignItems: 'stretch'
     },
 
+    // See resize detector comments in renderResizeDetectorIfNeeded() method below.
     resizeDetectorContainerStyles: {
         position: 'absolute',
         left: '0',
@@ -77,40 +78,22 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     };
 
     private resizeDetectorAnimationFrame: number;
-    private resizeDetectorNodes: {grow?: HTMLElement, shrink?: HTMLElement} = {};
-
-    private resizeDetectorReset() {
-        const scrollMax = 100500;
-
-        let node = this.resizeDetectorNodes.grow;
-
-        if (node) {
-            node.scrollLeft = scrollMax;
-            node.scrollTop = scrollMax;
-        }
-
-        node = this.resizeDetectorNodes.shrink;
-
-        if (node) {
-            node.scrollLeft = scrollMax;
-            node.scrollTop = scrollMax;
-        }
-    }
-
-    private resizeDetectorOnScroll() {
-        if (this.resizeDetectorAnimationFrame) {
-            return;
-        }
-
-        this.resizeDetectorAnimationFrame = window.requestAnimationFrame(() => {
-            this.resizeDetectorReset();
-            this.resizeDetectorAnimationFrame = undefined;
-            ViewBase._checkViews();
-        });
-
-    }
+    private resizeDetectorNodes: { grow?: HTMLElement, shrink?: HTMLElement } = {};
 
     private renderResizeDetectorIfNeeded(containerStyles: any): React.ReactNode {
+        // If needed, additional invisible DOM elements will be added inside the
+        // view to track the size changes that are performed behind our back by
+        // the browser's layout engine faster (ViewBase checks for the layout
+        // updates once a second and sometimes it's not fast enough).
+
+        // Unfortunately <div> doesn't have `resize` event, so we're trying to
+        // detect the fact that the view has been resized with `scroll` events.
+        // To do that, we create two scrollable <div>s and we put them into a
+        // state in which `scroll` event is triggered by the browser when the
+        // container gets resized (one element triggers `scroll` when the
+        // container gets bigger, another triggers `scroll` when the container
+        // gets smaller).
+
         if (!this.props.importantForLayout) {
             return null;
         }
@@ -138,25 +121,60 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         return [
             (
                 <div
-                    key='grow'
+                    key={ 'grow' }
                     style={ _styles.resizeDetectorContainerStyles }
                     ref={ (ref) => initResizer('grow', ref) }
                     onScroll={ () => this.resizeDetectorOnScroll() }>
 
-                    <div style={_styles.resizeGrowDetectorStyles}></div>
+                    <div style={ _styles.resizeGrowDetectorStyles }></div>
                 </div>
             ),
             (
                 <div
-                    key='shrink'
+                    key={ 'shrink' }
                     style={ _styles.resizeDetectorContainerStyles }
                     ref={ (ref) => initResizer('shrink', ref) }
                     onScroll={ () => this.resizeDetectorOnScroll() }>
 
-                    <div style={_styles.resizeShrinkDetectorStyles}></div>
+                    <div style={ _styles.resizeShrinkDetectorStyles }></div>
                 </div>
             )
         ];
+    }
+
+    private resizeDetectorReset() {
+        // Scroll the detectors to the bottom-right corner so
+        // that `scroll` events will be triggered when the container
+        // is resized.
+        const scrollMax = 100500;
+
+        let node = this.resizeDetectorNodes.grow;
+
+        if (node) {
+            node.scrollLeft = scrollMax;
+            node.scrollTop = scrollMax;
+        }
+
+        node = this.resizeDetectorNodes.shrink;
+
+        if (node) {
+            node.scrollLeft = scrollMax;
+            node.scrollTop = scrollMax;
+        }
+    }
+
+    private resizeDetectorOnScroll() {
+        if (this.resizeDetectorAnimationFrame) {
+            // Do not execute action more often than once per animation frame.
+            return;
+        }
+
+        this.resizeDetectorAnimationFrame = window.requestAnimationFrame(() => {
+            this.resizeDetectorReset();
+            this.resizeDetectorAnimationFrame = undefined;
+            ViewBase._checkViews();
+        });
+
     }
 
     getChildContext() {
@@ -209,19 +227,19 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         if (childAnimationsEnabled) {
             reactElement = (
                 <AnimateListEdits
-                    {...props}
-                    animateChildEnter={this.props.animateChildEnter}
-                    animateChildMove={this.props.animateChildMove}
-                    animateChildLeave={this.props.animateChildLeave}
+                    { ...props }
+                    animateChildEnter={ this.props.animateChildEnter }
+                    animateChildMove={ this.props.animateChildMove }
+                    animateChildLeave={ this.props.animateChildLeave }
                 >
-                    {this.props.children}
+                    { this.props.children }
                 </AnimateListEdits>
             );
         } else {
             reactElement = (
-                <div {...props} >
-                    {this.renderResizeDetectorIfNeeded(combinedStyles)}
-                    {this.props.children}
+                <div { ...props } >
+                    { this.renderResizeDetectorIfNeeded(combinedStyles) }
+                    { this.props.children }
                 </div>
             );
         }

@@ -43,6 +43,12 @@ ignorePointerEvents: boolean = false; // web only
 // Can the component accept keyboard focus?
 focusable: boolean = false; // web only
 
+// Additional invisible DOM elements will be added inside the view
+// to track the size changes that are performed behind our back by
+// the browser's layout engine faster (ViewBase checks for the layout
+// updates once a second and sometimes it's not fast enough)
+importantForLayout?: boolean = false; // web only
+
 // Mouse-specific Events
 onDragEnter?: (e: DragEvent) => void = undefined;
 onDragOver?: (e: DragEvent) => void = undefined;
@@ -97,7 +103,7 @@ disableTouchOpacityAnimation?: boolean;  // iOS and Android only
 // Opacity value the button should animate to, on touch on views that have onPress handlers.
 activeOpacity?: number; // iOS and Android only
 
-// Background color that will be visible on touch on views that have onPress handlers. 
+// Background color that will be visible on touch on views that have onPress handlers.
 underlayColor?: string; // ßiOS and Android only
 ```
 
