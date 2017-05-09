@@ -44,8 +44,8 @@ keyboardAppearance: 'default' | 'light' | 'dark';
 keyboardType: 'default' | 'numeric' | 'email-address' | 'number-pad';
 
 // Should the scale multiplier be capped when allowFontScaling is set to true?
-// The default of 0 indicates that the compoent should obey the global setting 
-// in UserInterface which by default is uncapped.
+// By default the value is inherited from the parent node or the global default.
+// Values must be >= 1.
 // Note: Older versions of React Native don’t support this interface. 
 maxContentSizeMultiplier: number = 0; // Android and iOS only
 
