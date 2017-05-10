@@ -15,6 +15,43 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 
 
+### Version 0.2.0 of reactxp-imagesvg
+_Released 10 May 2017_
+
+Switched from old version of react-native-art-svg to latest version of react-native-svg.
+
+
+### Version 0.42.0_rc.5 of reactxp
+_Released 10 May 2017_
+
+Fixed incorrect import path (using wrong case).
+Fixed bug in native View implementation - was using stale props.
+Added importantForLayout prop on View (web specific).
+Fixed bug in native NavigatorExperimentalDelegate - was using wrong props.
+
+
+### Version 0.42.0_rc.4 of reactxp
+_Released 27 Apr 2017_
+
+Changed web implementation of Text to prevent copying text to clipboard.
+Eliminated the need to specify box-sizing CSS in external CSS file.
+Fixed accessibility focus bugs.
+
+
+### Version 0.42.0_rc.3 of reactxp
+_Released 26 Apr 2017_
+
+Added onLongPress prop for Link.
+Fixed accessibility bug relating to Modal dialogs.
+
+
+### Version 0.42.0_rc.2 of reactxp
+_Released 18 Apr 2017_
+
+Added missing box-sizing CSS directives for web.
+Fixed bug in native implementation of View related to accessibility. 
+
+
 ### Version 0.1.0 of reactxp-imagesvg
 _Released 26 Apr 2017_
 
