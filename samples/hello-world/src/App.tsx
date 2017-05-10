@@ -4,10 +4,12 @@
 
 import RX = require('reactxp');
 
+import ProgressIndicator from './ProgressIndicator';
 import ToggleSwitch from './ToggleSwitch';
 
 interface AppState {
     toggleValue?: boolean;
+    progressValue?: number;
 }
 
 const styles = {
@@ -39,12 +41,16 @@ const styles = {
     toggleTitle: RX.Styles.createTextStyle({
         fontSize: 16,
         color: 'black'
+    }),
+    progressMargin: RX.Styles.createViewStyle({
+        margin: 16
     })
 };
 
 class App extends RX.Component<null, AppState> {
     private _translationValue: RX.Animated.Value;
     private _animatedStyle: RX.Types.AnimatedTextStyleRuleSet;
+    private _progressTimerToken: number;
 
     constructor() {
         super();
@@ -59,7 +65,8 @@ class App extends RX.Component<null, AppState> {
         });
 
         this.state = {
-            toggleValue: true
+            toggleValue: true,
+            progressValue: 0
         };
     }
 
@@ -72,6 +79,12 @@ class App extends RX.Component<null, AppState> {
         );
 
         animation.start();
+
+        this._startProgressIndicator();
+    }
+
+    componentWillUnmount() {
+        this._stopProgressIndicator();
     }
 
     render(): JSX.Element | null {
@@ -97,8 +110,32 @@ class App extends RX.Component<null, AppState> {
                     value={ this.state.toggleValue }
                     onChange={ this._onChangeToggle }
                 />
+
+                <RX.Text style={ styles.toggleTitle }>
+                    Here is an SVG image using a ReactXP extension
+                </RX.Text>
+                <ProgressIndicator
+                    style={ styles.progressMargin }
+                    progress={ this.state.progressValue }
+                    fillColor={ '#ccc' }
+                    size={ 32 }
+                />
             </RX.View>
         );
+    }
+
+    private _startProgressIndicator() {
+        this._progressTimerToken = window.setInterval(() => {
+            const newProgressValue = (this.state.progressValue + 0.02) % 1;
+            this.setState({ progressValue: newProgressValue });
+        }, 1000 / 15);
+    }
+
+    private _stopProgressIndicator() {
+        if (this._progressTimerToken) {
+            window.clearInterval(this._progressTimerToken);
+            this._progressTimerToken = undefined;
+        }
     }
 
     // Note that we define this as a variable rather than a normal method. Using this
