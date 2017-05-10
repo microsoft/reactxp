@@ -33,10 +33,12 @@ accessibilityLiveRegion?: AccessibilityLiveRegion = undefined; // Android and we
 allowFontScaling: boolean = true; // Android and iOS only
 
 // Should the scale multiplier be capped when allowFontScaling is set to true?
-// By default the value is inherited from the parent node or the global default.
-// Values must be >= 1.
+// Possible values include the following:
+// null/undefined (default) - inheret from parent/global default
+// 0 - no max
+// >= 1 - sets the maxContentSizeMultiplier of this node to this value
 // Note: Older versions of React Native don’t support this interface. 
-maxContentSizeMultiplier: number = 0; // Android and iOS only
+maxContentSizeMultiplier: number = null; // Android and iOS only
 
 // For non-zero values, truncates with ellipsis if necessary
 numberOfLines: number = 0;
