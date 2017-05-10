@@ -111,19 +111,11 @@ export class UserInterface extends RX.UserInterface {
         return deferred.promise();
     }
 
-    setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): SyncTasks.Promise<number> {
-        let deferred = SyncTasks.Defer<number>();
-
+    setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void {
         // TODO: #727532 Remove conditional after implementing UIManager.getContentSizeMultiplier for UWP
-        if (RN.Platform.OS === 'windows') {
-            deferred.resolve(1);
-        } else {
-            RN.NativeModules.UIManager.setMaxContentSizeMultiplier(maxContentSizeMultiplier, (value: number) => {
-                deferred.resolve(value);
-            });
+        if (RN.Platform.OS !== 'windows') {
+            RN.NativeModules.UIManager.setMaxContentSizeMultiplier(maxContentSizeMultiplier);
         }
-
-        return deferred.promise();
     }
 
     useCustomScrollbars(enable = true) {
