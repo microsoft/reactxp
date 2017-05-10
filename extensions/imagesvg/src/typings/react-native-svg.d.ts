@@ -1,13 +1,13 @@
 /**
-* react-native-art-svg.d.ts
+* react-native-svg.d.ts
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
 *
-* Type definition file for the React Native Art SVG.
-* https://github.com/magicismight/react-native-art-svg
+* Type definition file for the React Native SVG module.
+* https://github.com/react-native-community/react-native-svg
 */
 
-declare module 'react-native-art-svg' {
+declare module 'react-native-svg' {
 
     import React = require('react');
     import RN = require('react-native');
@@ -17,7 +17,7 @@ declare module 'react-native-art-svg' {
     interface SvgProps extends RN.ComponentPropsBase {
         height?: string,
         width?: string,
-        viewbox?: string,
+        viewBox?: string,
         opacity?: number,
         preserveAspectRatio?: string;
         style?: RN.StyleRuleSet;
@@ -63,7 +63,6 @@ declare module 'react-native-art-svg' {
         fontSize: number,
     }
 
-    // TODO add the rest of the element
     export class Svg extends React.Component<SvgProps, {}> { }
     export class Path extends React.Component<PathProps, {}> { }
     export class Rect extends React.Component<RectProps, {}> { }

@@ -8,14 +8,14 @@
 */
 
 import React = require('react');
-import ArtSvg = require('react-native-art-svg');
+import RNSvg = require('react-native-svg');
 
 import SvgInterfaces = require('../common/Interfaces');
 
 export class SvgPath extends SvgInterfaces.SvgPath<{}> {
     render() {
         return (
-            <ArtSvg.Path
+            <RNSvg.Path
                 key = { this.props.key }
                 d={ this.props.d }
                 fill={ this.props.fillColor || '#fff' }

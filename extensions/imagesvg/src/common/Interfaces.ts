@@ -22,4 +22,3 @@ export interface PluginInterface {
     default: typeof ImageSvg;
     SvgPath: typeof SvgPath;
 }
-

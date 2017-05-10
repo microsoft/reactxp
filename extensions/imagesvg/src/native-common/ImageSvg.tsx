@@ -9,7 +9,7 @@
 
 import assert = require('assert');
 import React = require('react');
-import ArtSvg = require('react-native-art-svg');
+import RNSvg = require('react-native-svg');
 
 import SvgInterfaces = require('../common/Interfaces');
 
@@ -20,16 +20,16 @@ export class ImageSvg extends SvgInterfaces.ImageSvg<{}> {
 
         if (this.props.width > 0 && this.props.height > 0) {
             return (
-                <ArtSvg.Svg
+                <RNSvg.Svg
                     width={ this.props.width.toString() }
                     height={ this.props.height.toString() }
                     style={ this.props.style }
                     opacity={ this.props.strokeOpacity }
                     preserveAspectRatio={ this.props.preserveAspectRatio }
-                    viewbox={ this.props.viewBox }
+                    viewBox={ this.props.viewBox }
                 >
                     { this.props.children }
-                </ArtSvg.Svg>
+                </RNSvg.Svg>
             );
         } else {
             return null;

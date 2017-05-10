@@ -8,7 +8,6 @@
 
 import { Types as RXTypes } from 'reactxp';
 
-
 export interface ImageSvgStyle extends RXTypes.ViewStyle {
 }
 export declare type ImageSvgStyleRuleSet = RXTypes.StyleRuleSet<ImageSvgStyle>;
@@ -24,6 +23,7 @@ export interface SvgCommonProps {
 
 export interface ImageSvgProps extends SvgCommonProps, RXTypes.CommonStyledProps<ImageSvgStyleRuleSet> {
     children?: RXTypes.ReactNode;
+    style?: RXTypes.ViewStyleRuleSet|RXTypes.ViewStyleRuleSet[];
     height: number;
     width: number;
     accessibilityLabel?: string;
@@ -35,4 +35,3 @@ export interface ImageSvgProps extends SvgCommonProps, RXTypes.CommonStyledProps
 export interface SvgPathProps extends SvgCommonProps {
     d?: string;
 }
-
