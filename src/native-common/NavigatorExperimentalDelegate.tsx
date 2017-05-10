@@ -207,7 +207,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
     // Callback from Navigator.js to RX.Navigator
     private _renderScene = (props: NavigationSceneRendererProps, navigator?: RN.Navigator): JSX.Element => {
         let parentState: NavigationState = props.navigationState;
-        let sceneState: NavigationRouteState = parentState.routes[parentState.index] as NavigationRouteState;
+        let sceneState: NavigationRouteState = parentState.routes[props.scene.index] as NavigationRouteState;
         // route exists?
         if (sceneState.route) {
             // call the renderScene callback sent from SkypeXNavigator
