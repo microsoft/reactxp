@@ -76,7 +76,8 @@ export class TextInput extends RX.TextInput<TextInputState> {
                 onFocus={ this._onFocus }
                 onBlur={ this._onBlur }
                 onScroll={ this._onScroll }
-                selection={{ start: this._selectionStart, end: this._selectionEnd}}
+                selection={{ start: this._selectionStart, end: this._selectionEnd }}
+                secureTextEntry={ this.props.secureTextEntry }
 
                 textAlign={ this.props.textAlign }
                 keyboardAppearance={ this.props.keyboardAppearance }
