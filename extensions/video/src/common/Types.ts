@@ -27,6 +27,7 @@ export interface VideoInfo {
 }
 
 export interface VideoProps extends RXTypes.CommonStyledProps<RXTypes.ViewStyleRuleSet> {
+    style?: RXTypes.ViewStyleRuleSet|RXTypes.ViewStyleRuleSet[];
     source: string;
     accessibilityLabel?: string;
     showControls?: boolean;

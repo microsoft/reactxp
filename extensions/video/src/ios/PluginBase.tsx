@@ -7,7 +7,7 @@
 * Base export for the iOS implementation of the plugin.
 */
 
-import Video from '../android/Video';
+import Video from '../native-common/Video';
 import Types = require('../common/Types');
 
 export { Video as default, Types };

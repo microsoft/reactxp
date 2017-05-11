@@ -35,63 +35,71 @@ interface VideoInfo {
 ``` javascript
 // Alternate text to display if the image cannot be loaded
 // or by screen readers
-accessibilityLabel?: string = undefined;
+accessibilityLabel: string = undefined;
 
 // Authentication token to include in request (not supported
 // on some React Native implementations)
-authToken?: string = undefined;
+authToken: string = undefined;
 
 // Should video playback loop to beginning after it completes?
-loop?: boolean = false;
+loop: boolean = false;
 
 // Called when enough of the video has been loaded that playback
 // is possible
-onCanPlay?: () => void = undefined;
+onCanPlay: () => void = undefined;
 
 // Called when enough of the video has been loaded that playback
 // can proceed all the way to the end without buffering pauses
-onCanPlayThrough?: () => void = undefined;
+onCanPlayThrough: () => void = undefined;
 
 // Called when the video playback reaches the end
-onEnded?: () => void = undefined;
+onEnded: () => void = undefined;
 
 // Called when the video cannot be loaded
-onError?: () => void = undefined;
+onError: () => void = undefined;
 
 // Called when the video's metadata has been loaded; returns
 // information about the video
-onLoadedData?: (info: VideoInfo) => void = undefined;
+onLoadedData: (info: VideoInfo) => void = undefined;
 
 // Called when the video data is starting to load
-onLoadStart?: () => void = undefined;
+onLoadStart: () => void = undefined;
 
 // Called when the video start playing
-onPlaying?: () => void = undefined;
+onPlaying: () => void = undefined;
 
 // Called periodically when the video is playing; reports
 // progress information
-onProgress?: (progress: VideoProgress) => void = undefined;
+onProgress: (progress: VideoProgress) => void = undefined;
 
 // Called when the video is paused for buffering
-onWaiting?: () => void = undefined;
+onWaiting: () => void = undefined;
 
 // Indiciates which portion of the video should be pre-loaded
 // when the component is mounted
-preload?: 'auto'|'metadata'|'none' = 'none';
+preload: 'auto'|'metadata'|'none' = 'none';
 
 // Determines how to resize the image if its natural size
 // does not match the size of the container
-resizeMode?: 'contain'|'cover'|'stretch' = 'contain';
+resizeMode: 'contain'|'cover'|'stretch' = 'contain';
 
 // Displays controls for play, pause, etc.
-showControls?: boolean = false;
+showControls: boolean = false;
 
 // Source of video (URL)
 source: string;
+
+// See below for supported styles
+style: ViewStyleRuleSet | ViewStyleRuleSet[] = [];
 ```
 
 ## Styles
-No styles
+[**Flexbox Styles**](/reactxp/docs/styles.html#flexbox-style-attributes)
+
+[**View Styles**](/reactxp/docs/styles.html#view-style-attributes)
+
+[**Transform Styles**](/reactxp/docs/styles.html#transform-style-attributes)
+
 
 ## Methods
 ``` javascript

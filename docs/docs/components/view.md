@@ -91,7 +91,7 @@ tabIndex: number = undefined;
 title: string = undefined;
 
 // See below for supported styles
-style_ ViewStyleRuleSet | ViewStyleRuleSet[] = [];
+style: ViewStyleRuleSet | ViewStyleRuleSet[] = [];
 
 // Should use hardware or software rendering?
 viewLayerTypeAndroid: 'none' | 'software' | 'hardware'; // Android only property
