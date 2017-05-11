@@ -16,9 +16,6 @@ ScrollViews must have a bounded height (or width, if it scrolls horizontally) si
 // Should scroll bar bounce when user hits the bounds?
 bounces: boolean = true; // iOS only
 
-// Style applied to the scroll view content container,the view that wraps the children
-contentContainerStyle: ViewStyleRuleSet | ViewStyleRuleSet[] = [];
-
 // Does it support scrolling in the horizontal and/or vertical directions?
 horizontal: boolean = false;
 vertical: boolean = true;
