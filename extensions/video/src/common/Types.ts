@@ -37,13 +37,12 @@ export interface VideoProps extends RXTypes.CommonStyledProps<RXTypes.ViewStyleR
     authToken?: string;
     shouldRedirectForAndroidHLS?: boolean;
 
-    onLoadStart?: () => void;
-    onLoadedData?: (info: VideoInfo) => void;
-    onError?: () => void;
-    onProgress?: (progress: VideoProgress) => void;
+    onBuffer?: () => void;
     onCanPlay?: () => void;
     onCanPlayThrough?: () => void;
     onEnded?: () => void;
-    onWaiting?: () => void;
-    onPlaying?: () => void;
+    onError?: () => void;
+    onLoadStart?: () => void;
+    onLoadedData?: (info: VideoInfo) => void;
+    onProgress?: (progress: VideoProgress) => void;
 }

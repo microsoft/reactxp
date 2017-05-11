@@ -8,7 +8,7 @@
 */
 
 import React = require('react');
-import { default as RNVideo, VideoInfo } from 'react-native-video';
+import { default as RNVideo, VideoInfo, VideoBufferInfo } from 'react-native-video';
 
 import Interfaces = require('../common/Interfaces');
 import Types = require('../common/Types');
@@ -43,14 +43,14 @@ class Video extends Interfaces.Video<VideoState> {
         return (
             <RNVideo
                 ref='video'
+                controls={ this.props.showControls }
                 paused={ !this.state.isPlaying }
                 muted={ this.state.isMuted }
                 repeat={ this.props.loop }
                 source={ { uri: this.props.source } }
                 style={ this.props.style }
                 onEnd={ this._onEnd }
-                onWaiting={ this.props.onWaiting }
-                onPlaying={ this.props.onPlaying }
+                onBuffer={ this._onBuffer }
                 onLoadStart={ this.props.onLoadStart}
                 onProgress={ this.props.onProgress }
                 onReadyForDisplay={ this._onLoad }
@@ -76,7 +76,9 @@ class Video extends Interfaces.Video<VideoState> {
             return;
         }
 
-        if (this.props.onCanPlay) {
+        // The native control calls _onLoad only if you are
+        // not displaying the native play controls.
+        if (!this.props.showControls && this.props.onCanPlay) {
             this.props.onCanPlay();
         }
     }
@@ -90,7 +92,29 @@ class Video extends Interfaces.Video<VideoState> {
             this.props.onLoadedData(loadInfo);
         }
 
+        // The native control calls _onLoad only if you are
+        // not displaying the native play controls.
+        if (this.props.showControls && this.props.onCanPlay) {
+            this.props.onCanPlay();
+        }
+
         this.setState({ duration: loadInfo.duration });
+    }
+
+    private _onBuffer = (bufferInfo: VideoBufferInfo) => {
+        if (!this._isMounted) {
+            return;
+        }
+
+        if (bufferInfo.isBuffering) {
+            if (this.props.onBuffer) {
+                this.props.onBuffer();
+            }
+        } else {
+            if (this.props.onCanPlayThrough) {
+                this.props.onCanPlayThrough();
+            }
+        }
     }
 
     private _onEnd = () => {

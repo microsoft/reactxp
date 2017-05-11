@@ -30,30 +30,51 @@ declare module 'react-native-video' {
         };
     }
 
+    interface VideoBufferInfo {
+        isBuffering: boolean;
+    }
+
     interface VideoProps extends RN.ComponentPropsBase {
         source: {
-            uri: string,
-            type?: string,
-            
+            uri: string;
+            type?: string;
+
             // Some versions of react-native-video may not support this option.
-            authToken?: string
+            authToken?: string;
+        };
 
-        }, // Can be a URL or a local file.
-        rate?: number,         // 0 is paused, 1 is normal.
-        volume?: number,       // 0 is muted, 1 is normal.
-        muted?: boolean,       // Mutes the audio entirely.
-        paused?: boolean,      // Pauses playback entirely.
-        resizeMode?: string,   // Fill the whole screen at aspect ratio.
-        repeat?: boolean,      // Repeat forever.
+        resizeMode?: string;
+        poster?: string;
+        repeat?: boolean;
+        paused?: boolean;
+        muted?: boolean;
+        volume?: number; // 0 is muted, 1 is normal
+        rate?: number; // 0 is paused, 1 is normal
+        playInBackground?: boolean;
+        playWhenInactive?: boolean;
+        ignoreSilentSwitch?: 'ignore'|'obey';
+        disableFocus?: boolean;
+        controls?: boolean;
+        currentTime?: number;
+        progressUpdateInterval?: number;
+        onLoadStart?: () => void;
+        onLoad?: (info: VideoInfo) => void;
+        onBuffer?: (bufferInfo: VideoBufferInfo) => void;
+        onError?: () => void;
+        onProgress?: (progress: VideoProgress) => void;
+        onSeek?: () => void;
+        onEnd?: () => void;
+        onFullscreenPlayerWillPresent?: () => void;
+        onFullscreenPlayerDidPresent?: () => void;
+        onFullscreenPlayerWillDismiss?: () => void;
+        onFullscreenPlayerDidDismiss?: () => void;
+        onReadyForDisplay?: () => void;
+        onPlaybackStalled?: () => void;
+        onPlaybackResume?: () => void;
+        onPlaybackRateChange?: () => void;
+        onAudioFocusChanged?: () => void;
+        onAudioBecomingNoisy?: () => void;
 
-        onLoadStart?: ()=> void, // Callback when video starts to load
-        onLoad?: (info: VideoInfo) => void, // Callback when video loads
-        onProgress?: (progress: VideoProgress) => void,  // Callback every ~250ms with currentTime
-        onReadyForDisplay?: () => void,
-        onEnd?: () => void,     // Callback when playback finishes
-        onWaiting?: () => void,
-        onPlaying?: () => void,
-        onError?: () => void,
         style?: any
     }
 

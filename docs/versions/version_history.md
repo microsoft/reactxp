@@ -16,7 +16,7 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
-#### Version 0.1.1 of reactxp-video
+#### Version 0.1.2 of reactxp-video
 _Released 11 May 2017_
 
 Published first version of reactxp-video extension.

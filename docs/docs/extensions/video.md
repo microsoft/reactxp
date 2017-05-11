@@ -44,6 +44,9 @@ authToken: string = undefined;
 // Should video playback loop to beginning after it completes?
 loop: boolean = false;
 
+// Called when the video is paused for buffering
+onBuffer: () => void = undefined;
+
 // Called when enough of the video has been loaded that playback
 // is possible
 onCanPlay: () => void = undefined;
@@ -65,15 +68,9 @@ onLoadedData: (info: VideoInfo) => void = undefined;
 // Called when the video data is starting to load
 onLoadStart: () => void = undefined;
 
-// Called when the video start playing
-onPlaying: () => void = undefined;
-
 // Called periodically when the video is playing; reports
 // progress information
 onProgress: (progress: VideoProgress) => void = undefined;
-
-// Called when the video is paused for buffering
-onWaiting: () => void = undefined;
 
 // Indiciates which portion of the video should be pre-loaded
 // when the component is mounted
