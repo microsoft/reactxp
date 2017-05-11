@@ -3,6 +3,7 @@
 */
 
 import RX = require('reactxp');
+import { default as RXVideo } from 'reactxp-video';
 
 import ProgressIndicator from './ProgressIndicator';
 import ToggleSwitch from './ToggleSwitch';
@@ -13,11 +14,14 @@ interface AppState {
 }
 
 const styles = {
-    container: RX.Styles.createViewStyle({
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+    scroll: RX.Styles.createScrollViewStyle({
+        alignSelf: 'stretch',
         backgroundColor: '#f5fcff'
+    }),
+    container: RX.Styles.createViewStyle({
+        padding: 16,
+        justifyContent: 'center',
+        alignItems: 'center'
     }),
     helloWorld: RX.Styles.createTextStyle({
         fontSize: 48,
@@ -31,19 +35,28 @@ const styles = {
     instructions: RX.Styles.createTextStyle({
         fontSize: 16,
         color: '#aaa',
-        marginBottom: 40
+        marginBottom: 16
     }),
     docLink: RX.Styles.createLinkStyle({
         fontSize: 16,
         color: 'blue',
-        marginBottom: 40
+        marginBottom: 16
     }),
-    toggleTitle: RX.Styles.createTextStyle({
+    titleText: RX.Styles.createTextStyle({
         fontSize: 16,
+        textAlign: 'center',
+        marginTop: 12,
         color: 'black'
     }),
+    videoTitleText: RX.Styles.createTextStyle({
+        marginBottom: 8
+    }),
     progressMargin: RX.Styles.createViewStyle({
-        margin: 16
+        margin: 8
+    }),
+    video: RX.Styles.createViewStyle({
+        height: 176,
+        width: 320
     })
 };
 
@@ -89,39 +102,61 @@ class App extends RX.Component<null, AppState> {
 
     render(): JSX.Element | null {
         return (
-            <RX.View style={ styles.container }>
-                <RX.Animated.Text style={ [styles.helloWorld, this._animatedStyle] }>
-                    Hello World
-                </RX.Animated.Text>
-                <RX.Text style={ styles.welcome }>
-                    Welcome to ReactXP
-                </RX.Text>
-                <RX.Text style={ styles.instructions }>
-                    Edit App.tsx to get started
-                </RX.Text>
-                <RX.Link style={ styles.docLink } url={ 'https://microsoft.github.io/reactxp/docs' }>
-                    View ReactXP documentation
-                </RX.Link>
+            <RX.ScrollView style={ styles.scroll }>
+                <RX.View style={ styles.container }>
+                    <RX.Animated.Text style={ [styles.helloWorld, this._animatedStyle] }>
+                        Hello World
+                    </RX.Animated.Text>
+                    <RX.Text style={ styles.welcome }>
+                        Welcome to ReactXP
+                    </RX.Text>
+                    <RX.Text style={ styles.instructions }>
+                        Edit App.tsx to get started
+                    </RX.Text>
+                    <RX.Link style={ styles.docLink } url={ 'https://microsoft.github.io/reactxp/docs' }>
+                        View ReactXP documentation
+                    </RX.Link>
 
-                <RX.Text style={ styles.toggleTitle }>
-                    Here is a simple control built using ReactXP
-                </RX.Text>
-                <ToggleSwitch
-                    value={ this.state.toggleValue }
-                    onChange={ this._onChangeToggle }
-                />
+                    <RX.Text style={ styles.titleText }>
+                        Here is a simple control built using ReactXP
+                    </RX.Text>
+                    <ToggleSwitch
+                        value={ this.state.toggleValue }
+                        onChange={ this._onChangeToggle }
+                    />
 
-                <RX.Text style={ styles.toggleTitle }>
-                    Here is an SVG image using a ReactXP extension
-                </RX.Text>
-                <ProgressIndicator
-                    style={ styles.progressMargin }
-                    progress={ this.state.progressValue }
-                    fillColor={ '#ccc' }
-                    size={ 32 }
-                />
-            </RX.View>
+                    <RX.Text style={ styles.titleText }>
+                        Here is an SVG image using the ImageSvg extension
+                    </RX.Text>
+                    <ProgressIndicator
+                        style={ styles.progressMargin }
+                        progress={ this.state.progressValue }
+                        fillColor={ '#ddd' }
+                        size={ 32 }
+                    />
+
+                    <RX.Text style={ [styles.titleText, styles.videoTitleText] }>
+                        Here is a video using the Video extension
+                    </RX.Text>
+                    <RXVideo
+                        ref='video'
+                        style={ styles.video }
+                        source={ 'https://www.w3schools.com/html/mov_bbb.mp4' }
+                        loop={ true }
+                        onCanPlay={ this._playVideo }
+                    />
+                </RX.View>
+            </RX.ScrollView>
+
         );
+    }
+
+    private _playVideo = () => {
+        const video = this.refs['video'] as RXVideo;
+        if (video) {
+            video.mute(true);
+            video.play();
+        }
     }
 
     private _startProgressIndicator() {
