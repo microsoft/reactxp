@@ -88,5 +88,7 @@
       title: ImageSvg
     - id: extensions/restclient
       title: REST Client
+    - id: extensions/video
+      title: Video
     - id: extensions/virtuallistview
       title: VirtualListView

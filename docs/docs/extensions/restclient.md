@@ -4,7 +4,7 @@ title: REST Client
 layout: docs
 category: Extensions
 permalink: docs/extensions/restclient.html
-next: extensions/virtuallistview
+next: extensions/video
 ---
 
 ReactXP provides basic [Network APIs](/reactxp/docs/apis/network) for determining network connectivity, but it doesn't provide ways to access the network once connected.
