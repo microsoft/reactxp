@@ -11,6 +11,17 @@ This component displays a hyperlink. On the web, it translates to an &lt;a&gt; t
 
 ## Props
 ``` javascript
+// Should fonts be scaled according to system setting?
+allowFontScaling: boolean = true; // Android and iOS only
+
+// Should the scale multiplier be capped when allowFontScaling is set to true?
+// Possible values include the following:
+// null/undefined (default) - inheret from parent/global default
+// 0 - no max
+// >= 1 - sets the maxContentSizeMultiplier of this node to this value
+// Note: Older versions of React Native don’t support this interface. 
+maxContentSizeMultiplier: number = null; // Android and iOS only
+
 // For non-zero values, truncates with ellipsis if necessary
 numberOfLines: number = 0;
 

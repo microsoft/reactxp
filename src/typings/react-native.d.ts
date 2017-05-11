@@ -115,6 +115,7 @@ declare module 'react-native' {
     interface TextProps extends ComponentPropsStyleBase {
         importantForAccessibility?: string; // 'auto' | 'yes' | 'no' | 'no-hide-descendants';
         allowFontScaling?: boolean;
+        maxContentSizeMultiplier?: number;
         children?        : React.ReactNode;
         numberOfLines?   : number;
         ellipsizeMode?   : 'head' | 'middle' | 'tail' // There's also 'clip' but it is iOS only
@@ -343,6 +344,7 @@ declare module 'react-native' {
         testID?: string;
         textAlign?: string; // enum('auto' | 'left' | 'right' | 'center' | 'justify')
         allowFontScaling?: boolean;
+        maxContentSizeMultiplier?: number;
         selection?: { start: number, end: number };
 
         //iOS and android
@@ -816,6 +818,8 @@ declare module 'react-native' {
         dispatchViewManagerCommand: Function;
 
         getContentSizeMultiplier: Function;
+        getMaxContentSizeMultiplier: Function;
+        setMaxContentSizeMultiplier: Function;
 
         // ios
         takeSnapshot: (view: any, options?: SnapshotOptions) => Promise<string>;
