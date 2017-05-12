@@ -70,7 +70,7 @@ export interface ViewContext {
 
 export class View extends ViewBase<Types.ViewProps, {}> {
     static contextTypes: React.ValidationMap<any> = {
-        isRxParentAText: PropTypes.bool.isRequired
+        isRxParentAText: PropTypes.bool
     };
     context: ViewContext;
 

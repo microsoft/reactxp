@@ -115,7 +115,7 @@ class XhrBlobUrlCache {
 
 export class Image extends RX.Image<ImageState> {
     static contextTypes: React.ValidationMap<any> = {
-        isRxParentAText: PropTypes.bool.isRequired
+        isRxParentAText: PropTypes.bool
     };
     context: ImageContext;
 
