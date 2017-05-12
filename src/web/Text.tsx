@@ -9,6 +9,7 @@
 
 import React = require('react');
 import ReactDOM = require('react-dom');
+import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
 import RX = require('../common/Interfaces');
@@ -49,7 +50,7 @@ const _styles = {
 
 export class Text extends RX.Text<void> {
     static childContextTypes: React.ValidationMap<any> = {
-        isRxParentAText: React.PropTypes.bool.isRequired
+        isRxParentAText: PropTypes.bool.isRequired
     };
 
     getChildContext() {
