@@ -62,10 +62,8 @@ export class Accessibility extends NativeAccessibility {
         }
 
         // Some versions of RN don't support this interface.
-        if (RN.AccessibilityInfo) {
-            if (RN.AccessibilityInfo.announceForAccessibility) {
-                RN.AccessibilityInfo.announceForAccessibility(announcement);
-            }
+        if (RN.AccessibilityInfo && RN.AccessibilityInfo.announceForAccessibility) {
+            RN.AccessibilityInfo.announceForAccessibility(announcement);
         }
     }
 
