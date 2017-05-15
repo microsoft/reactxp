@@ -15,7 +15,9 @@ import { AccessibilityPlatformUtil } from '../common/AccessibilityUtil';
 
 export class AccessibilityUtil extends AccessibilityPlatformUtil {
     setAccessibilityFocus(component: React.Component<any, any>): void {
-        // NO-OP
+        if (Accessibility.isScreenReaderEnabled() && RN.AccessibilityInfo && RN.AccessibilityInfo.setAccessibilityFocus) {
+            RN.AccessibilityInfo.setAccessibilityFocus(RN.findNodeHandle(component));
+        }
     }
 }
 
