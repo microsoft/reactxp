@@ -36,7 +36,6 @@ export interface ReactXP {
     Network: Network;
     Platform: Platform;
     Popup: Popup;
-    Profiling: Profiling;
     ScrollView: typeof ScrollView;
     StatusBar: StatusBar;
     Styles: Styles;
@@ -95,13 +94,6 @@ export abstract class AnimatedValue implements IAnimatedValue {
     abstract removeListener(id: string): void;
     abstract removeAllListeners(): void;
     abstract interpolate(config: any): AnimatedValue;
-}
-
-export abstract class Profiling {
-  abstract start(): void;
-  abstract stop(): void;
-  abstract printResults(config: Types.ProfilingLoggingConfig): void;
-  abstract installWatchdog(): void;
 }
 
 export abstract class App {
