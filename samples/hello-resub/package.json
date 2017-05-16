@@ -22,7 +22,7 @@
     "react-dom": "15.5.3",
     "react-native": "0.42.3",
     "react-native-windows": "^0.33.0",
-    "reactxp": "0.42.0-rc.1",
+    "reactxp": "0.42.0-rc.8",
     "resub": "^0.0.12"
   }
 }

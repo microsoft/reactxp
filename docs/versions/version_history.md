@@ -10,6 +10,12 @@ redirect_from:
 
 ## ReactXP Versioning
 
+#### Version 0.42.0_rc.8 of reactxp
+_Released 16 May 2017_
+
+Removed Profiling API namespace and dependency on react-addons-perf.
+
+
 ### Versioning Strategy
 A new version of ReactXP will be released a monthly basis (approximately), following the same general update timeline of React Native. Each new version will get its own branch, allowing consumers of the library to take a dependency on a stable code base.
 
