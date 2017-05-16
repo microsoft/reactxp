@@ -1177,14 +1177,3 @@ export interface LayoutInfo {
 // Platform
 // ----------------------------------------------------------------------
 export type PlatformType = 'web' | 'ios' | 'android' | 'windows';
-
-//
-// Profiling
-// ----------------------------------------------------------------------
-export interface ProfilingLoggingConfig {
-    printInclusive?: boolean;
-    printExclusive?: boolean;
-    printWasted?: boolean;
-    printOperations?: boolean;
-    printDOM?: boolean;
-}

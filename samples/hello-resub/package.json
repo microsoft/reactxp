@@ -19,8 +19,6 @@
   },
   "dependencies": {
     "react": "15.5.3",
-    "react-addons-perf": "15.5.0-rc.2",
-    "react-addons-test-utils": "15.5.1",
     "react-dom": "15.5.3",
     "react-native": "0.42.3",
     "react-native-windows": "^0.33.0",

@@ -70,8 +70,6 @@
       title: Platform
     - id: apis/popup
       title: Popup
-    - id: apis/profiling
-      title: Profiling
     - id: apis/statusbar
       title: StatusBar
     - id: apis/storage

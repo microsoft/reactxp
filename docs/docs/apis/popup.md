@@ -4,7 +4,7 @@ title: Popup
 layout: docs
 category: Interfaces
 permalink: docs/apis/popup.html
-next: apis/profiling
+next: apis/statusbar
 ---
 
 A popup is not technically a component. Rather, it's a collection of methods on the ReactXP.App namespace that allow the app to display a view that overlays a portion of the screen. Popups can be "anchored" to mounted components and follow them as they move around the screen (e.g. in reaction to scroll events).
