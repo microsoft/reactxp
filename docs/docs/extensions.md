@@ -13,7 +13,7 @@ There are two distinct types of extensions.
 1. Additional APIs or "primitive" components that have separate implementations for each of the supported platforms.
 2. Higher-level components that contain no platform-specific code but build upon the lower-level primitives to provide new (typically more complex) functionality.
 
-Extensions are published as spearate npm packages. They typically start with the prefix "reactxp-".
+Extensions are published as separate npm packages. They typically start with the prefix "reactxp-".
 
 
 ## Primitive ReactXP Extensions

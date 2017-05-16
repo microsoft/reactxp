@@ -196,7 +196,7 @@ export class Button extends RX.Button<{}> {
     }
 
     focus() {
-        // native mobile platforms doesn't have the notion of focus for buttons, so ignore.
+        AccessibilityUtil.setAccessibilityFocus(this);
     }
 
     blur() {
