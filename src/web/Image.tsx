@@ -11,6 +11,7 @@ import _ = require('./utils/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
 import SyncTasks = require('synctasks');
+import PropTypes = require('prop-types');
 
 import restyleForInlineText = require('./utils/restyleForInlineText');
 import RX = require('../common/Interfaces');
@@ -114,12 +115,12 @@ class XhrBlobUrlCache {
 
 export class Image extends RX.Image<ImageState> {
     static contextTypes: React.ValidationMap<any> = {
-        isRxParentAText: React.PropTypes.bool
+        isRxParentAText: PropTypes.bool
     };
     context: ImageContext;
 
     static childContextTypes: React.ValidationMap<any> = {
-        isRxParentAText: React.PropTypes.bool.isRequired
+        isRxParentAText: PropTypes.bool.isRequired
     };
     getChildContext() {
         // Let descendant RX components know that their nearest RX ancestor is not an RX.Text.

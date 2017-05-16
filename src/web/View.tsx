@@ -9,6 +9,7 @@
 
 import React = require('react');
 import ReactDOM = require('react-dom');
+import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
 import AnimateListEdits from './listAnimations/AnimateListEdits';
@@ -69,12 +70,12 @@ export interface ViewContext {
 
 export class View extends ViewBase<Types.ViewProps, {}> {
     static contextTypes: React.ValidationMap<any> = {
-        isRxParentAText: React.PropTypes.bool
+        isRxParentAText: PropTypes.bool
     };
     context: ViewContext;
 
     static childContextTypes: React.ValidationMap<any> = {
-        isRxParentAText: React.PropTypes.bool.isRequired
+        isRxParentAText: PropTypes.bool.isRequired
     };
 
     private resizeDetectorAnimationFrame: number;
