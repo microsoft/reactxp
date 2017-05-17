@@ -10,17 +10,23 @@ redirect_from:
 
 ## ReactXP Versioning
 
-#### Version 0.42.0_rc.8 of reactxp
-_Released 16 May 2017_
-
-Removed Profiling API namespace and dependency on react-addons-perf.
-
-
 ### Versioning Strategy
 A new version of ReactXP will be released a monthly basis (approximately), following the same general update timeline of React Native. Each new version will get its own branch, allowing consumers of the library to take a dependency on a stable code base.
 
 
 ### Version History
+
+#### Version 0.42.0_rc.9 of reactxp
+_Released 17 May 2017_
+
+Fixed bug in Navigator that caused crash in hello-world sample.
+
+
+#### Version 0.42.0_rc.8 of reactxp
+_Released 16 May 2017_
+
+Removed Profiling API namespace and dependency on react-addons-perf.
+
 
 #### Version 0.1.1 of reactxp-virtualistview
 _Released 11 May 2017_
