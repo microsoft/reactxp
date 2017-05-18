@@ -364,7 +364,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
                 ref={ 'scene_' + index }
                 style={ styles }
             >
-                { this.props.renderScene(route) }
+                { this.props.renderScene(route, this) }
             </View>
         );
     }
