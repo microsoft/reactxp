@@ -212,7 +212,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
         // Does the route exist?
         if (sceneState && sceneState.route) {
             // Call the renderScene callback.
-            return this._owner.props.renderScene(sceneState.route);
+            return this._owner.props.renderScene(sceneState.route, this._owner);
         }
 
         // No route? Return empty scene.

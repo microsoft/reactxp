@@ -49,7 +49,7 @@ export class NavigatorStandardDelegate extends NavigatorDelegate {
         // route exists?
         if (route) {
             // call the renderScene callback sent from SkypeXNavigator
-            return this._owner.props.renderScene(route);
+            return this._owner.props.renderScene(route, this._owner);
         }
         // no route? return empty scene
         return <RN.View />;
