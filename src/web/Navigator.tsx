@@ -146,12 +146,18 @@ export class Navigator extends RX.Navigator<NavigatorState> {
         if(initialRouteStack.length === 0 && initialRoute) {
             initialRouteStack.push(initialRoute);
         }
+
+        // need to initialize these or it will error 
+        (this.state as any).presentedIndex = 0;
+        (this.state as any).transitionFromIndex = null;
         
 
         // Default navigator state
         this.state = {
             sceneConfigStack: [],
+            presentedIndex: 0,
             routeStack: initialRouteStack,
+            transitionFromIndex: null,
             transitionQueue: []
         };
     }
