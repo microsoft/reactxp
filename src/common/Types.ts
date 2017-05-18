@@ -976,6 +976,8 @@ export interface NavigatorProps extends CommonProps {
     transitionCompleted?: () => void;
     cardStyle?: ViewStyleRuleSet;
     children?: ReactNode;
+    initialRouteStack?: Array<NavigatorRoute>;
+    initialRoute?: NavigatorRoute;
 }
 
 //
