@@ -95,6 +95,9 @@ replacePrevious(route: Types.NavigatorRoute): void;
 ```
 
 ## Sample Usage
+
+This sample demonstrates how an app can use Navigator to present a two-card stack, allowing the user to navigate between them. It omits some details for brevity. For a full working example, check out the hello-world sample app.
+
 ``` javascript
 enum NavigationRouteId {
     MainPanel,
@@ -105,6 +108,8 @@ class App extends RX.Component<null, null> {
     private _navigator: RX.Navigator;
 
     componentDidMount() {
+        // Now that the app is mounted, specify the initial
+        // navigator route.
         this._navigator.immediatelyResetRouteStack([{
             routeId: NavigationRouteId.MainPanel,
             sceneConfigType: RX.Types.NavigatorSceneConfigType.Fade
@@ -121,6 +126,7 @@ class App extends RX.Component<null, null> {
     }
 
     private _onNavigatorRef = (naviator: RX.Navigator) => {
+        // Stash away a reference to the mounted navigator
         this._navigator = navigator;
     }
 
@@ -144,16 +150,21 @@ class App extends RX.Component<null, null> {
         return null;
     }
 
+    // Called when the user presses a button on the MainPanel
+    // to navigate to the SecondPanel.
     private _onPressNavigate = () => {
         this._navigator.push({
             routeId: NavigationRouteId.SecondPanel,
-            sceneConfigType: RX.Types.NavigatorSceneConfigType.FloatFromRight,
+            sceneConfigType:
+                RX.Types.NavigatorSceneConfigType.FloatFromRight,
             customSceneConfig: {
                 hideShadow: true
             }
         });
     }
 
+    // Called when the user presses a back button on the
+    // SecondPanel to navigate back to the MainPanel.
     private _onPressBack = () => {
         this._navigator.pop();
     }
