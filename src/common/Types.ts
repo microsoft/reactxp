@@ -30,7 +30,8 @@ export type ReactInterface = {
 export interface FlexboxStyle {
     alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
     alignSelf?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
-
+    alignContent?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
+    
     borderWidth?: number;
     borderTopWidth?: number;
     borderRightWidth?: number;
