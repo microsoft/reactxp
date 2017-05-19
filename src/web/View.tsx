@@ -17,6 +17,7 @@ import restyleForInlineText = require('./utils/restyleForInlineText');
 import Styles from './Styles';
 import Types = require('../common/Types');
 import ViewBase from './ViewBase';
+import { FocusManager, applyFocusableComponentMixin } from './utils/FocusManager';
 
 const _styles = {
     defaultStyle: {
@@ -66,20 +67,32 @@ if (typeof document !== 'undefined') {
 
 export interface ViewContext {
     isRxParentAText?: boolean;
+    focusManager?: FocusManager;
 }
 
 export class View extends ViewBase<Types.ViewProps, {}> {
     static contextTypes: React.ValidationMap<any> = {
-        isRxParentAText: PropTypes.bool
+        isRxParentAText: PropTypes.bool,
+        focusManager: PropTypes.object
     };
     context: ViewContext;
 
     static childContextTypes: React.ValidationMap<any> = {
-        isRxParentAText: PropTypes.bool.isRequired
+        isRxParentAText: PropTypes.bool.isRequired,
+        focusManager: PropTypes.object
     };
+
+    private focusManager: FocusManager;
 
     private resizeDetectorAnimationFrame: number;
     private resizeDetectorNodes: { grow?: HTMLElement, shrink?: HTMLElement } = {};
+
+    constructor(props: Types.ViewProps) {
+        super(props);
+        if (this.props.restrictFocusWithin) {
+            this.focusManager = new FocusManager();
+        }
+    }
 
     private renderResizeDetectorIfNeeded(containerStyles: any): React.ReactNode {
         // If needed, additional invisible DOM elements will be added inside the
@@ -182,7 +195,16 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         // Let descendant Types components know that their nearest Types ancestor is not an Types.Text.
         // Because they're in an Types.View, they should use their normal styling rather than their
         // special styling for appearing inline with text.
-        return { isRxParentAText: false };
+        let childContext: ViewContext = {
+            isRxParentAText: false
+        };
+
+        // Provide the descendants with the focus manager (if any).
+        if (this.focusManager) {
+            childContext.focusManager = this.focusManager;
+        }
+
+        return childContext;
     }
 
     protected _getContainerRef(): React.Component<any, any> {
@@ -249,6 +271,22 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             restyleForInlineText(reactElement) :
             reactElement;
     }
+
+    componentDidMount() {
+        super.componentDidMount();
+        if (this.focusManager) {
+            this.focusManager.restrictFocusWithin();
+        }
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        if (this.focusManager) {
+            this.focusManager.release();
+        }
+    }
 }
+
+applyFocusableComponentMixin(View);
 
 export default View;

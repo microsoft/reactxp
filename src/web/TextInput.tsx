@@ -14,6 +14,7 @@ import ReactDOM = require('react-dom');
 import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
+import { applyFocusableComponentMixin } from './utils/FocusManager';
 
 export interface TextInputState {
     inputValue?: string;
@@ -268,5 +269,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
         }
     }
 }
+
+applyFocusableComponentMixin(TextInput);
 
 export default TextInput;

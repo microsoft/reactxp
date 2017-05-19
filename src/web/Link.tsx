@@ -12,6 +12,7 @@ import React = require('react');
 import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
+import { applyFocusableComponentMixin } from './utils/FocusManager';
 
 const _styles = {
     defaultStyle: {
@@ -40,8 +41,8 @@ const _styles = {
 const _longPressTime = 1000;
 
 export class Link extends RX.Link<void> {
-    
-    private _longPressTimer: number;    
+
+    private _longPressTimer: number;
 
     render() {
        // SECURITY WARNING:
@@ -94,7 +95,7 @@ export class Link extends RX.Link<void> {
         }
     }
 
-    private _onMouseDown = (e: Types.SyntheticEvent) => {        
+    private _onMouseDown = (e: Types.SyntheticEvent) => {
         if (this.props.onLongPress) {
             e.persist();
 
@@ -105,14 +106,16 @@ export class Link extends RX.Link<void> {
                 }
             }, _longPressTime);
         }
-    }    
+    }
 
     private _onMouseUp = (e: Types.SyntheticEvent) => {
         if (this._longPressTimer) {
             window.clearTimeout(this._longPressTimer);
-            this._longPressTimer = undefined;            
+            this._longPressTimer = undefined;
         }
-    }    
+    }
 }
+
+applyFocusableComponentMixin(Link);
 
 export default Link;

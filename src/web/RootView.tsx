@@ -12,6 +12,7 @@
 import _ = require('./utils/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
+import PropTypes = require('prop-types');
 
 import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
@@ -20,6 +21,7 @@ import ModalContainer from './ModalContainer';
 import Styles from './Styles';
 import SubscribableEvent = require('../common/SubscribableEvent');
 import Types = require('../common/Types');
+import FocusManager from './utils/FocusManager';
 
 export interface RootViewProps {
     mainView?: React.ReactNode;
@@ -99,6 +101,10 @@ if (typeof document !== 'undefined') {
 }
 
 export class RootView extends React.Component<RootViewProps, RootViewState> {
+    static childContextTypes: React.ValidationMap<any> = {
+        focusManager: PropTypes.object
+    };
+
     private _hidePopupTimer: number = null;
     private _respositionPopupTimer: number = null;
     private _clickHandlerInstalled = false;
@@ -106,6 +112,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _keyboardHandlerInstalled = false;
     private _lockTimeout: number;
     private _newAnnouncementEventChangedSubscription: SubscribableEvent.SubscriptionToken = null;
+    private _focusManager: FocusManager;
 
     constructor(props: RootViewProps) {
         super(props);
@@ -119,6 +126,18 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         });
 
         this.state = this._getInitialState();
+
+        // Initialize the root FocusManager which is aware of all
+        // focusable elements.
+        this._focusManager = new FocusManager();
+        this._focusManager.setAsRootFocusManager();
+    }
+
+    getChildContext() {
+        // Provide the context with root FocusManager to all descendants.
+        return {
+            focusManager: this._focusManager
+        };
     }
 
     private _getInitialState(): RootViewState {
