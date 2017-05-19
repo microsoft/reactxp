@@ -90,7 +90,7 @@ replace(route: Types.NavigatorRoute): void;
 // a new route
 replaceAtIndex(route: Types.NavigatorRoute, index: number): void;
 
-// REplaces the next-to-top-most route with a new route
+// Replaces the next-to-top-most route with a new route
 replacePrevious(route: Types.NavigatorRoute): void;
 ```
 
