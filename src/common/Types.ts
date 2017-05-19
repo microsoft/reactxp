@@ -936,9 +936,10 @@ export interface NavigatorRoute {
 
 // NOTE: Experimental navigator only
 export type NavigationTransitionSpec = {
-    duration?: number,
+    duration?: number;
+
     // NOTE: Elastic and bounce easing will not work as expected due to how the navigator interpolates styles
-    easing?: Animated.EasingFunction
+    easing?: Animated.EasingFunction;
 };
 
 // NOTE: Experimental navigator only
@@ -967,7 +968,7 @@ export type CustomNavigatorSceneConfig = {
 };
 
 export interface NavigatorProps extends CommonProps {
-    renderScene?: (route: NavigatorRoute) => JSX.Element;
+    renderScene: (route: NavigatorRoute) => JSX.Element;
     navigateBackCompleted?: () => void;
     // NOTE: Arguments are only passed to transitionStarted by the experimental navigator
     transitionStarted?: (progress?: RX.AnimatedValue,
