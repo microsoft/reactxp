@@ -197,7 +197,6 @@ export class FocusManager {
         let storedComponent = FocusManager._allFocusableComponents[componentId];
 
         if (storedComponent && !storedComponent.restricted) {
-            (storedComponent.component as any)._focusIsRestricted = true;
             storedComponent.origTabIndex = FocusManager._setTabIndex(storedComponent.component, -1);
             storedComponent.restricted = true;
         }
@@ -208,7 +207,6 @@ export class FocusManager {
 
         if (storedComponent && storedComponent.restricted) {
             FocusManager._setTabIndex(storedComponent.component, storedComponent.origTabIndex);
-            delete (storedComponent.component as any)._focusIsRestricted;
             delete storedComponent.origTabIndex;
             storedComponent.restricted = false;
         }
