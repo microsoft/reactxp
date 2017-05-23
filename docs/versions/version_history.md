@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.1.2 of reactxp-virtualistview
+_Released 23 May 2017_
+
+Republished because index files were missing in previous publish.
+
+
 #### Version 0.42.0_rc.9 of reactxp
 _Released 17 May 2017_
 
