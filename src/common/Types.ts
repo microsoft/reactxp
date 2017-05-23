@@ -30,7 +30,8 @@ export type ReactInterface = {
 export interface FlexboxStyle {
     alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
     alignSelf?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
-
+    alignContent?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
+    
     borderWidth?: number;
     borderTopWidth?: number;
     borderRightWidth?: number;
@@ -936,9 +937,10 @@ export interface NavigatorRoute {
 
 // NOTE: Experimental navigator only
 export type NavigationTransitionSpec = {
-    duration?: number,
+    duration?: number;
+
     // NOTE: Elastic and bounce easing will not work as expected due to how the navigator interpolates styles
-    easing?: Animated.EasingFunction
+    easing?: Animated.EasingFunction;
 };
 
 // NOTE: Experimental navigator only
@@ -967,7 +969,7 @@ export type CustomNavigatorSceneConfig = {
 };
 
 export interface NavigatorProps extends CommonProps {
-    renderScene?: (route: NavigatorRoute, navigator: RX.Navigator<any>) => JSX.Element;
+    renderScene: (route: NavigatorRoute, navigator?: RX.Navigator<any>) => JSX.Element;
     navigateBackCompleted?: () => void;
     // NOTE: Arguments are only passed to transitionStarted by the experimental navigator
     transitionStarted?: (progress?: RX.AnimatedValue,
