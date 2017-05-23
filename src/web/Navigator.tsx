@@ -139,7 +139,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
 
         // handle optional initialRouteStack or initialRoute props
         let { initialRouteStack, initialRoute } = initialProps;
-        if(!Array.isArray(initialRouteStack)) {
+        if (!Array.isArray(initialRouteStack)) {
             initialRouteStack = [];
         }
 
