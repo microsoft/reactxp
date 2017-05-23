@@ -92,8 +92,8 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 overflowY: 'scroll',
                 paddingRight: 30 - nativeScrollbarWidth,
                 marginRight: -30,
-                // Fixes a bug for Chrome beta where the parent flexbox (customScrollContainer) doesn't 
-                // recognize that its child got populated with items. Smallest default width gives an 
+                // Fixes a bug for Chrome beta where the parent flexbox (customScrollContainer) doesn't
+                // recognize that its child got populated with items. Smallest default width gives an
                 // indication that content will exist here.
                 minHeight: 0
             };
@@ -104,8 +104,8 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 overflowX: 'scroll',
                 paddingBottom: 30 - nativeScrollbarWidth,
                 marginBottom: -30,
-                // Fixes a bug for Chrome beta where the parent flexbox (customScrollContainer) doesn't 
-                // recognize that its child got populated with items. Smallest default width gives an 
+                // Fixes a bug for Chrome beta where the parent flexbox (customScrollContainer) doesn't
+                // recognize that its child got populated with items. Smallest default width gives an
                 // indication that content will exist here.
                 minWidth: 0
             };
@@ -118,8 +118,9 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
     private _customScrollbarEnabled: boolean = true;
     private _dragging = false;
 
-    componentDidUpdate() {
-        super.componentDidUpdate();
+    componentDidUpdate(prevProps: Types.ScrollViewProps) {
+        super.componentDidUpdate(prevProps);
+
         if (!this.props.onContentSizeChange) {
             return;
         }

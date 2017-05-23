@@ -82,19 +82,17 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         focusManager: PropTypes.object
     };
 
-    private focusManager: FocusManager;
+    private _focusManager: FocusManager;
 
-    private resizeDetectorAnimationFrame: number;
-    private resizeDetectorNodes: { grow?: HTMLElement, shrink?: HTMLElement } = {};
+    private _resizeDetectorAnimationFrame: number;
+    private _resizeDetectorNodes: { grow?: HTMLElement, shrink?: HTMLElement } = {};
 
     constructor(props: Types.ViewProps) {
         super(props);
-        if (this.props.restrictFocusWithin) {
-            this.focusManager = new FocusManager();
-        }
+        this._focusManager = new FocusManager();
     }
 
-    private renderResizeDetectorIfNeeded(containerStyles: any): React.ReactNode {
+    private _renderResizeDetectorIfNeeded(containerStyles: any): React.ReactNode {
         // If needed, additional invisible DOM elements will be added inside the
         // view to track the size changes that are performed behind our back by
         // the browser's layout engine faster (ViewBase checks for the layout
@@ -118,18 +116,18 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
 
         let initResizer = (key: 'grow' | 'shrink', ref: React.DOMComponent<React.HTMLAttributes>) => {
-            const cur: HTMLElement = this.resizeDetectorNodes[key];
+            const cur: HTMLElement = this._resizeDetectorNodes[key];
             const element = ReactDOM.findDOMNode<HTMLElement>(ref);
 
             if (cur) {
-                delete this.resizeDetectorNodes[key];
+                delete this._resizeDetectorNodes[key];
             }
 
             if (element) {
-                this.resizeDetectorNodes[key] = element;
+                this._resizeDetectorNodes[key] = element;
             }
 
-            this.resizeDetectorOnScroll();
+            this._resizeDetectorOnScroll();
         };
 
         return [
@@ -138,7 +136,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
                     key={ 'grow' }
                     style={ _styles.resizeDetectorContainerStyles }
                     ref={ (ref) => initResizer('grow', ref) }
-                    onScroll={ () => this.resizeDetectorOnScroll() }>
+                    onScroll={ () => this._resizeDetectorOnScroll() }>
 
                     <div style={ _styles.resizeGrowDetectorStyles }></div>
                 </div>
@@ -148,7 +146,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
                     key={ 'shrink' }
                     style={ _styles.resizeDetectorContainerStyles }
                     ref={ (ref) => initResizer('shrink', ref) }
-                    onScroll={ () => this.resizeDetectorOnScroll() }>
+                    onScroll={ () => this._resizeDetectorOnScroll() }>
 
                     <div style={ _styles.resizeShrinkDetectorStyles }></div>
                 </div>
@@ -156,20 +154,20 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         ];
     }
 
-    private resizeDetectorReset() {
+    private _resizeDetectorReset() {
         // Scroll the detectors to the bottom-right corner so
         // that `scroll` events will be triggered when the container
         // is resized.
         const scrollMax = 100500;
 
-        let node = this.resizeDetectorNodes.grow;
+        let node = this._resizeDetectorNodes.grow;
 
         if (node) {
             node.scrollLeft = scrollMax;
             node.scrollTop = scrollMax;
         }
 
-        node = this.resizeDetectorNodes.shrink;
+        node = this._resizeDetectorNodes.shrink;
 
         if (node) {
             node.scrollLeft = scrollMax;
@@ -177,15 +175,15 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
     }
 
-    private resizeDetectorOnScroll() {
-        if (this.resizeDetectorAnimationFrame) {
+    private _resizeDetectorOnScroll() {
+        if (this._resizeDetectorAnimationFrame) {
             // Do not execute action more often than once per animation frame.
             return;
         }
 
-        this.resizeDetectorAnimationFrame = window.requestAnimationFrame(() => {
-            this.resizeDetectorReset();
-            this.resizeDetectorAnimationFrame = undefined;
+        this._resizeDetectorAnimationFrame = window.requestAnimationFrame(() => {
+            this._resizeDetectorReset();
+            this._resizeDetectorAnimationFrame = undefined;
             ViewBase._checkViews();
         });
 
@@ -195,16 +193,12 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         // Let descendant Types components know that their nearest Types ancestor is not an Types.Text.
         // Because they're in an Types.View, they should use their normal styling rather than their
         // special styling for appearing inline with text.
-        let childContext: ViewContext = {
-            isRxParentAText: false
+        //
+        // Provide the descendants with the focus manager.
+        return {
+            isRxParentAText: false,
+            focusManager: this._focusManager
         };
-
-        // Provide the descendants with the focus manager (if any).
-        if (this.focusManager) {
-            childContext.focusManager = this.focusManager;
-        }
-
-        return childContext;
     }
 
     protected _getContainerRef(): React.Component<any, any> {
@@ -261,7 +255,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         } else {
             reactElement = (
                 <div { ...props } >
-                    { this.renderResizeDetectorIfNeeded(combinedStyles) }
+                    { this._renderResizeDetectorIfNeeded(combinedStyles) }
                     { this.props.children }
                 </div>
             );
@@ -274,15 +268,29 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
     componentDidMount() {
         super.componentDidMount();
-        if (this.focusManager) {
-            this.focusManager.restrictFocusWithin();
+
+        this._focusManager.addToParentFocusManager(this.context.focusManager);
+
+        if (this.props.restrictFocusWithin) {
+            this._focusManager.restrictFocusWithin();
         }
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
-        if (this.focusManager) {
-            this.focusManager.release();
+        this._focusManager.restoreFocusRestriction();
+        this._focusManager.removeFromParentFocusManager();
+    }
+
+    componentDidUpdate(prevProps: Types.ViewProps) {
+        super.componentDidUpdate(prevProps);
+
+        if (prevProps && (this.props.restrictFocusWithin !== prevProps.restrictFocusWithin)) {
+            if (this.props.restrictFocusWithin) {
+                this._focusManager.restrictFocusWithin();
+            } else {
+                this._focusManager.restoreFocusRestriction();
+            }
         }
     }
 }

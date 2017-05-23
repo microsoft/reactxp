@@ -203,10 +203,14 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         }
 
         // Chain through to the same render-checking code
-        this.componentDidUpdate();
+        this._checkAndReportLayoutIfNeeded();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps: Types.ViewProps) {
+        this._checkAndReportLayoutIfNeeded();
+    }
+
+    private _checkAndReportLayoutIfNeeded() {
         if (this.props.onLayout) {
             this._checkAndReportLayout();
         }

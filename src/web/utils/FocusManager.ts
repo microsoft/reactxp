@@ -10,8 +10,8 @@
 import React = require('react');
 import ReactDOM = require('react-dom');
 import PropTypes = require('prop-types');
-import Types = require('../../common/Types');
 
+let _lastFocusManagerId: number = 0;
 let _lastComponentId: number = 0;
 
 interface StoredFocusableComponent {
@@ -20,20 +20,48 @@ interface StoredFocusableComponent {
     origTabIndex?: number;
 }
 
+interface FocusableComponentsMap {
+    [id: string]: boolean;
+}
+
 export class FocusManager {
-    private static rootFocusManager: FocusManager;
-    private static restrictionStack: FocusManager[] = [];
-    private static currentRestrictionOwner: FocusManager;
+    private static _rootFocusManager: FocusManager;
+    private static _restrictionStack: FocusManager[] = [];
+    private static _currentRestrictionOwner: FocusManager;
 
-    private static allFocusableComponents: {[id: string]: StoredFocusableComponent} = {};
+    private static _allFocusableComponents: { [id: string]: StoredFocusableComponent } = {};
 
-    private myFocusableComponentIds: {[id: string]: boolean} = {};
+    private _myFocusableComponentIds: FocusableComponentsMap = {};
 
-    private isRoot: boolean;
+    private _id: string;
+    private _isRoot: boolean;
+    private _parent: FocusManager;
+    private _children: { [id: string]: FocusManager } = {};
+
+    constructor() {
+        this._id = 'fm-' + ++_lastFocusManagerId;
+    }
 
     setAsRootFocusManager() {
-        FocusManager.rootFocusManager = this;
-        this.isRoot = true;
+        FocusManager._rootFocusManager = this;
+        this._isRoot = true;
+    }
+
+    addToParentFocusManager(parent: FocusManager) {
+        if (!parent) {
+            console.error('FocusManager: parent FocusManager is not provided!');
+            return;
+        }
+
+        this._parent = parent;
+        this._parent._children[this._id] = this;
+    }
+
+    removeFromParentFocusManager() {
+        if (this._parent) {
+            delete this._parent._children[this._id];
+            this._parent = undefined;
+        }
     }
 
     // Whenever the focusable element is mounted, we let the application
@@ -42,75 +70,110 @@ export class FocusManager {
     addFocusableComponent(component: React.Component<any, any>): string {
         let componentId: string = 'fc-' + ++_lastComponentId;
 
-        FocusManager.allFocusableComponents[componentId] = {
+        FocusManager._allFocusableComponents[componentId] = {
             component: component
         };
 
-        if (!this.isRoot) {
-            this.myFocusableComponentIds[componentId] = true;
+        if (!this._isRoot) {
+            this._myFocusableComponentIds[componentId] = true;
         }
 
-        if (FocusManager.currentRestrictionOwner && (this !== FocusManager.currentRestrictionOwner)) {
+        if (!this._isInRestrictionOwner()) {
             // New focusable element is mounted but it's not in the scope of the
             // current view with restrictFocusWithin property.
-            FocusManager.restrictComponentFocus(componentId);
+            FocusManager._restrictComponentFocus(componentId);
         }
 
         return componentId;
     }
 
     removeFocusableComponent(componentId: string) {
-        FocusManager.removeComponentFocusRestriction(componentId);
-        delete this.myFocusableComponentIds[componentId];
-        delete FocusManager.allFocusableComponents[componentId];
+        FocusManager._removeComponentFocusRestriction(componentId);
+        delete this._myFocusableComponentIds[componentId];
+        delete FocusManager._allFocusableComponents[componentId];
     }
 
     restrictFocusWithin() {
         // Limit the focus received by the keyboard navigation to all
         // the descendant focusable elements by setting tabIndex of all
         // other elements to -1.
-        if (FocusManager.currentRestrictionOwner === this) {
+        if (FocusManager._currentRestrictionOwner === this) {
             return;
         }
 
-        if (FocusManager.currentRestrictionOwner) {
-            FocusManager.removeFocusRestriction();
+        if (FocusManager._currentRestrictionOwner) {
+            FocusManager._removeFocusRestriction();
         }
 
-        FocusManager.restrictionStack.push(this);
-        FocusManager.currentRestrictionOwner = this;
+        FocusManager._restrictionStack.push(this);
+        FocusManager._currentRestrictionOwner = this;
 
-        Object.keys(FocusManager.allFocusableComponents).forEach(componentId => {
-            if (!(componentId in this.myFocusableComponentIds)) {
-                FocusManager.restrictComponentFocus(componentId);
+        let focusableComponents = this._flattenFocusableChildren();
+
+        Object.keys(FocusManager._allFocusableComponents).forEach(componentId => {
+            if (!(componentId in focusableComponents)) {
+                FocusManager._restrictComponentFocus(componentId);
             }
         });
     }
 
-    release() {
-        // When the view is unmounted, restore the focus to the previous view with
-        // restrictFocusWithin or remove the restriction if there is no such view.
-        FocusManager.restrictionStack = FocusManager.restrictionStack.filter(focusManager => {
+    restoreFocusRestriction() {
+        // When the view is unmounted or when restrictFocusWithin property is changed,
+        // restore the focus to the previous view with restrictFocusWithin or remove
+        // the restriction if there is no such view.
+        FocusManager._restrictionStack = FocusManager._restrictionStack.filter(focusManager => {
             return focusManager !== this;
         });
 
-        if (FocusManager.currentRestrictionOwner === this) {
-            FocusManager.removeFocusRestriction();
-            FocusManager.currentRestrictionOwner = FocusManager.restrictionStack[FocusManager.restrictionStack.length - 1];
+        if (FocusManager._currentRestrictionOwner === this) {
+            FocusManager._removeFocusRestriction();
+            FocusManager._currentRestrictionOwner = FocusManager._restrictionStack[FocusManager._restrictionStack.length - 1];
 
-            if (FocusManager.currentRestrictionOwner) {
-                FocusManager.currentRestrictionOwner.restrictFocusWithin();
+            if (FocusManager._currentRestrictionOwner) {
+                FocusManager._currentRestrictionOwner.restrictFocusWithin();
             }
         }
     }
 
-    private static removeFocusRestriction() {
-        Object.keys(FocusManager.allFocusableComponents).forEach(componentId => {
-            FocusManager.removeComponentFocusRestriction(componentId);
+    private _isInRestrictionOwner(): boolean {
+        if (!FocusManager._currentRestrictionOwner) {
+            return true;
+        }
+
+        for (let ro: FocusManager = this; ro; ro = ro._parent) {
+            if (ro === FocusManager._currentRestrictionOwner) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private _flattenFocusableChildren(): FocusableComponentsMap {
+        let flattenedChildren: FocusableComponentsMap = {};
+
+        let traverse = (parent: FocusManager) => {
+            Object.keys(parent._myFocusableComponentIds).forEach(componentId => {
+                flattenedChildren[componentId] = true;
+            });
+
+            Object.keys(parent._children).forEach(focusManagerId => {
+                traverse(parent._children[focusManagerId]);
+            });
+        };
+
+        traverse(this);
+
+        return flattenedChildren;
+    }
+
+    private static _removeFocusRestriction() {
+        Object.keys(FocusManager._allFocusableComponents).forEach(componentId => {
+            FocusManager._removeComponentFocusRestriction(componentId);
         });
     }
 
-    private static setTabIndex(component: React.Component<any, any>, value: number): number {
+    private static _setTabIndex(component: React.Component<any, any>, value: number): number {
         let el = ReactDOM.findDOMNode<HTMLElement>(component);
 
         if (el) {
@@ -130,20 +193,22 @@ export class FocusManager {
         return null;
     }
 
-    private static restrictComponentFocus(componentId: string) {
-        let storedComponent = FocusManager.allFocusableComponents[componentId];
+    private static _restrictComponentFocus(componentId: string) {
+        let storedComponent = FocusManager._allFocusableComponents[componentId];
 
         if (storedComponent && !storedComponent.restricted) {
-            storedComponent.origTabIndex = FocusManager.setTabIndex(storedComponent.component, -1);
+            (storedComponent.component as any)._focusIsRestricted = true;
+            storedComponent.origTabIndex = FocusManager._setTabIndex(storedComponent.component, -1);
             storedComponent.restricted = true;
         }
     }
 
-    private static removeComponentFocusRestriction(componentId: string) {
-        let storedComponent = FocusManager.allFocusableComponents[componentId];
+    private static _removeComponentFocusRestriction(componentId: string) {
+        let storedComponent = FocusManager._allFocusableComponents[componentId];
 
         if (storedComponent && storedComponent.restricted) {
-            FocusManager.setTabIndex(storedComponent.component, storedComponent.origTabIndex);
+            FocusManager._setTabIndex(storedComponent.component, storedComponent.origTabIndex);
+            delete (storedComponent.component as any)._focusIsRestricted;
             delete storedComponent.origTabIndex;
             storedComponent.restricted = false;
         }
@@ -157,41 +222,41 @@ export function applyFocusableComponentMixin(Component: any) {
     contextTypes.focusManager = PropTypes.object;
     Component.contextTypes = contextTypes;
 
-    let origComponentDidMount = Component.prototype.componentDidMount;
-    let origComponentWillUnmount = Component.prototype.componentWillUnmount;
+    inheritMethod('componentDidMount', true, function (focusManager: FocusManager) {
+        this._focusableComponentId = focusManager.addFocusableComponent(this);
+    });
 
-    Component.prototype.componentDidMount = componentDidMount;
-    Component.prototype.componentWillUnmount = componentWillUnmount;
+    inheritMethod('componentWillUnmount', false, function (focusManager: FocusManager, focusableComponentId: string) {
+        focusManager.removeFocusableComponent(focusableComponentId);
+    });
 
-    function componentDidMount() {
-        let focusManager = this.context && this.context.focusManager;
-        if (focusManager) {
-            this._focusManagerId = focusManager.addFocusableComponent(this);
-        } else {
-            noFocusManagerError();
-        }
+    function inheritMethod(methodName: string, needsManagerOnly: boolean, action: Function) {
+        let origCallback = Component.prototype[methodName];
 
-        if (origComponentDidMount) {
-            origComponentDidMount.apply(this, arguments);
-        }
+        Component.prototype[methodName] = function () {
+            let focusManager: FocusManager = this.context && this.context.focusManager;
+            let focusableComponentId: string;
+            let success: boolean;
 
-    }
+            if (focusManager) {
+                if (!needsManagerOnly) {
+                    focusableComponentId = this._focusableComponentId;
+                }
 
-    function componentWillUnmount() {
-        let focusManager = this.context && this.context.focusManager;
-        if (focusManager && this._focusManagerId) {
-            focusManager.removeFocusableComponent(this._focusManagerId);
-        } else {
-            noFocusManagerError();
-        }
+                if (needsManagerOnly || (!needsManagerOnly && focusableComponentId)) {
+                    action.call(this, focusManager, focusableComponentId);
+                    success = true;
+                }
+            }
 
-        if (origComponentWillUnmount) {
-            origComponentWillUnmount.apply(this, arguments);
-        }
-    }
+            if (!success) {
+                console.error('FocusableComponentMixin: context error!');
+            }
 
-    function noFocusManagerError() {
-        console.error('FocusManager: the context does not provide FocusManager!');
+            if (origCallback) {
+                origCallback.apply(this, arguments);
+            }
+        };
     }
 }
 
