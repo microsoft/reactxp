@@ -137,10 +137,23 @@ export class Navigator extends RX.Navigator<NavigatorState> {
     constructor(initialProps?: Types.NavigatorProps) {
         super(initialProps);
 
+        // handle optional initialRouteStack or initialRoute props
+        let { initialRouteStack, initialRoute } = initialProps;
+        if (!Array.isArray(initialRouteStack)) {
+            initialRouteStack = [];
+        }
+
+        if(initialRouteStack.length === 0 && initialRoute) {
+            initialRouteStack.push(initialRoute);
+        }
+        
+
         // Default navigator state
         this.state = {
             sceneConfigStack: [],
-            routeStack: [],
+            presentedIndex: 0,
+            routeStack: initialRouteStack,
+            transitionFromIndex: null,
             transitionQueue: []
         };
     }
@@ -364,7 +377,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
                 ref={ 'scene_' + index }
                 style={ styles }
             >
-                { this.props.renderScene(route) }
+                { this.props.renderScene(route, this) }
             </View>
         );
     }
