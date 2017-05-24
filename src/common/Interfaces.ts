@@ -59,7 +59,7 @@ export interface ReactXP {
 export class ActivityIndicator<S> extends React.Component<Types.ActivityIndicatorProps, S> {}
 
 export abstract class Alert {
-    abstract show(title: string, message?: string, buttons?: Types.AlertButtonSpec[]): void;
+    abstract show(title: string, message?: string, buttons?: Types.AlertButtonSpec[], icon?: string): void;
 }
 
 export abstract class AnimatedComponent<P extends Types.CommonProps, T> extends React.Component<P, T> {

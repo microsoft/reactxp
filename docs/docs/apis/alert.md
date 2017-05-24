@@ -28,5 +28,5 @@ interface AlertButtonSpec {
 ## Methods
 ``` javascript
 // Displays an alert over the top of the current screen
-show(title: string, message?: string, buttons? AlertButtonSpec[]): void;
+show(title: string, message?: string, buttons? AlertButtonSpec[], icon?: string): void;
 ```
