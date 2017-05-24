@@ -14,10 +14,10 @@ declare var Notification: any;
 
 // Web/HTML implementation for alert dialog boxes
 export class Alert extends RX.Alert {
-    public show(title: string, message?: string, buttons?: Types.AlertButtonSpec[]): void {
+    public show(title: string, message?: string, buttons?: Types.AlertButtonSpec[], icon?: string): void {
         if ('Notification' in window) {
             // There is no <button> and <type> support for Web/HTML notifications!
-            let options = { body: message };
+            let options = { body: message, icon };
 
             // Permission check / request is needed to support browsers with an opt-in notificiaton permission model
             if (Notification.permission === 'granted') {
@@ -35,6 +35,9 @@ export class Alert extends RX.Alert {
                     }
                 });
             }
+        } else {
+            // Fallback to traditional js alert() if Notification isn't supported
+            alert(`${title}${message !== undefined && message !== null && message.length > 0 ? `: ${message}` : ''}`);
         }
     }
 }
