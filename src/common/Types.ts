@@ -277,8 +277,6 @@ export type LinkStyleRuleSet = StyleRuleSet<LinkStyle>;
 // ------------------------------------------------------------
 
 export interface ImageStyle extends ViewAndImageCommonStyle, FlexboxStyle {
-    resizeMode?: 'contain' | 'cover' | 'stretch';
-
     // This is an Android only style attribute that is used to fill the gap in the case of rounded corners
     // in gif images.
     overlayColor?: string;
