@@ -18,6 +18,8 @@ import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export class UserInterface extends RX.UserInterface {
+    private _touchLatencyThresholhdMs: number;
+
     constructor() {
         super();
 
@@ -142,6 +144,19 @@ export class UserInterface extends RX.UserInterface {
 
     renderMainView() {
         // Nothing to do
+    }
+
+    enableTouchLatencyEvents(latencyThresholdMs: number): void {
+        this._touchLatencyThresholhdMs = latencyThresholdMs;
+    }
+
+    evaluateTouchLatency(e: Types.SyntheticEvent) {
+        if (this._touchLatencyThresholhdMs) {
+            const latency = Date.now() - e.timeStamp.valueOf();
+            if (latency > this._touchLatencyThresholhdMs) {
+                this.touchLatencyEvent.fire(latency);
+            }
+        }
     }
 }
 

@@ -14,6 +14,7 @@ import React = require('react');
 import RN = require('react-native');
 
 import Types = require('../common/Types');
+import UserInterface from './UserInterface';
 import ViewBase from './ViewBase';
 
 enum GestureType {
@@ -67,6 +68,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         this._panResponder = RN.PanResponder.create({
             onStartShouldSetPanResponder: (e, gestureState) => {
                 const event = (e.nativeEvent as any) as Types.TouchEvent;
+                UserInterface.evaluateTouchLatency(e);
 
                 this._lastGestureStartEvent = event;
                 // If we're trying to detect a tap, set this as the responder immediately.
@@ -78,6 +80,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
 
             onMoveShouldSetPanResponder: (e, gestureState) => {
                 const event = (e.nativeEvent as any) as Types.TouchEvent;
+                UserInterface.evaluateTouchLatency(e);
 
                 this._lastGestureStartEvent = event;
                 this._pendingGestureType = this._detectMoveGesture(event, gestureState);
@@ -108,6 +111,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
 
             onPanResponderMove: (e, gestureState) => {
                 const event = (e.nativeEvent as any) as Types.TouchEvent;
+                UserInterface.evaluateTouchLatency(e);
 
                 let initializeFromEvent = false;
 
