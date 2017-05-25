@@ -34,7 +34,7 @@ Once your app is deployed at scale, it's important to monitor performance of cri
 ### Crossing the Bridge
 React Native apps contain two separate execution environments --- JavaScript and Native. These environments are relatively independent. They each run on separate threads and have access to their own data. All communication between the two environments takes place over the React Native "bridge". You can think of the bridge as a bidirectional message queue. Messages are processed in the order in which they are placed on each of the queues.
 
-Data is passed in a serialized form --- in particular, UTF16 text in JSON format. All I/O occurs in the native environment. This means any storage or networking request initiated by the JavaScript code must go across the bridge, and the resulting data must then be serialized and sent back across the bridge in the other direction. This works fine for small pieces of data, but it is expensive once the data sizes or the message counts grow. 
+Data is passed in a serialized form --- UTF16 text in JSON format. All I/O occurs in the native environment. This means any storage or networking request initiated by the JavaScript code must go across the bridge, and the resulting data must then be serialized and sent back across the bridge in the other direction. This works fine for small pieces of data, but it is expensive once the data sizes or the message counts grow. 
 
 One way to mitigate this bottleneck is to avoid passing large pieces of data across the bridge. If it doesn't require processing within the JavaScript environment, leave it on the native side. It can be represented as a "handle" within the JavaScript code. This is how we handle all images, sounds, and complex animation definitions. 
 
@@ -61,13 +61,13 @@ import MainPanel = require('./MainPanel');
 import SecondPanel = require('./SecondPanel');
 ```
 
-Each of these "require" calls initializes the specified module the first time it's encountered. A reference to that module is then cached, so subequent calls to "require" the same module are almost free. At startup time, the first module imports several other modules, which require several other modules, etc. This continues until the entire tree of module dependencies have been initialized. This all occurs before the first line of your first module executes. As the number of modules within your app increases, the initialization time increases. 
+Each of these "require" calls initializes the specified module the first time it's encountered. A reference to that module is then cached, so subequent calls to "require" the same module are almost free. At startup time, the first module requires several other modules, each of which requires several other modules, etc. This continues until the entire tree of module dependencies have been initialized. This all occurs before the first line of your first module executes. As the number of modules within your app increases, the initialization time increases. 
 
 The way to fix this problem is through deferred initialization. Why pay the cost of initializing a module for some seldom-used UI panel at startup? Just defer its initialization until it is needed. To do this, we make use of a babel plugin created by Facebook called [inline-requires](https://github.com/facebook/fbjs/blob/master/packages/babel-preset-fbjs/plugins/inline-requires.js). Just download the script and create a ".babelrc" file that looks something like this:
 ```
 {
    "presets": ["react-native"],
-   "plugins": ["./build/inline-require.js"]
+   "plugins": ["./build/inline-requires.js"]
 }
 ```
 
