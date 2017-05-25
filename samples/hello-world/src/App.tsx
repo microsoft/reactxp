@@ -4,78 +4,68 @@
 
 import RX = require('reactxp');
 
+import MainPanel = require('./MainPanel');
+import SecondPanel = require('./SecondPanel');
+
+enum NavigationRouteId {
+    MainPanel,
+    SecondPanel
+}
+
 const styles = {
-    container: RX.Styles.createViewStyle({
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+    navCardStyle: RX.Styles.createViewStyle({
         backgroundColor: '#f5fcff'
-    }),
-    helloWorld: RX.Styles.createTextStyle({
-        fontSize: 48,
-        fontWeight: 'bold',
-        marginBottom: 28
-    }),
-    welcome: RX.Styles.createTextStyle({
-        fontSize: 32,
-        marginBottom: 12
-    }),
-    instructions: RX.Styles.createTextStyle({
-        fontSize: 16,
-        color: '#aaa',
-        marginBottom: 40
-    }),
-    docLink: RX.Styles.createLinkStyle({
-        fontSize: 16,
-        color: 'blue'
     })
 };
 
 class App extends RX.Component<null, null> {
-    private _translationValue: RX.Animated.Value;
-    private _animatedStyle: RX.Types.AnimatedTextStyleRuleSet;
+    private _navigator: RX.Navigator;
 
-    constructor() {
-        super();
+    componentDidMount() {
+        this._navigator.immediatelyResetRouteStack([{
+            routeId: NavigationRouteId.MainPanel,
+            sceneConfigType: RX.Types.NavigatorSceneConfigType.Fade
+        }]);
+    }
 
-        this._translationValue = new RX.Animated.Value(-100);
-        this._animatedStyle = RX.Styles.createAnimatedTextStyle({
-            transform: [
-                {
-                    translateY: this._translationValue
-                }
-            ]
+    render() {
+        return (
+            <RX.Navigator
+                ref={ this._onNavigatorRef }
+                renderScene={ this._renderScene }
+                cardStyle={ styles.navCardStyle }
+            />
+        );
+    }
+
+    private _onNavigatorRef = (navigator: RX.Navigator) => {
+        this._navigator = navigator;
+    }
+
+    private _renderScene = (navigatorRoute: RX.Types.NavigatorRoute) => {
+        switch (navigatorRoute.routeId) {
+            case NavigationRouteId.MainPanel:
+                return <MainPanel onPressNavigate={ this._onPressNavigate } />
+
+            case NavigationRouteId.SecondPanel:
+                return <SecondPanel onNavigateBack={ this._onPressBack } />
+        }
+
+        return null;
+    }
+
+    private _onPressNavigate = () => {
+        this._navigator.push({
+            routeId: NavigationRouteId.SecondPanel,
+            sceneConfigType: RX.Types.NavigatorSceneConfigType.FloatFromRight,
+            customSceneConfig: {
+                hideShadow: true
+            }
         });
     }
 
-    componentDidMount() {
-        let animation = RX.Animated.timing(this._translationValue, {
-              toValue: 0,
-              easing: RX.Animated.Easing.OutBack(),
-              duration: 500
-            }
-        );
-
-        animation.start();
-    }
-
-    render(): JSX.Element | null {
-        return (
-            <RX.View style={ styles.container }>
-                <RX.Animated.Text style={ [styles.helloWorld, this._animatedStyle] }>
-                    Hello World
-                </RX.Animated.Text>
-                <RX.Text style={ styles.welcome }>
-                    Welcome to ReactXP
-                </RX.Text>
-                <RX.Text style={ styles.instructions }>
-                    Edit App.tsx to get started
-                </RX.Text>
-                <RX.Link style={ styles.docLink } url={ 'https://microsoft.github.io/reactxp/docs' }>
-                    View ReactXP documentation
-                </RX.Link>
-            </RX.View>
-        );
+    private _onPressBack = () => {
+        this._navigator.pop();
     }
 }
 

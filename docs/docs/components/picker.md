@@ -9,7 +9,7 @@ next: components/scrollview
 
 This component displays a control that allows the user to pick from a list of items.
 
-## Classes
+## Types
 ``` javascript
 interface PickerPropsItem {
     label: string;
@@ -28,7 +28,7 @@ selectedValue: string;
 // Invoked when the selected value changes
 onValueChange: (itemValue: string, itemPosition: number) => void;
 
-style?: PickerStyleRuleSet | PickerStyleRuleSet[];
+style: PickerStyleRuleSet | PickerStyleRuleSet[] = [];
 ```
 
 ## Styles

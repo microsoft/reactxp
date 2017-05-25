@@ -33,7 +33,7 @@ export interface MouseResponderConfig {
     shouldBecomeFirstResponder?: (event: MouseEvent, gestureState: Types.PanGestureState) => boolean;
     onMove?: (event: MouseEvent, gestureState: Types.PanGestureState) => void;
     onTerminate?: (event: MouseEvent, gestureState: Types.PanGestureState) => void;
-};
+}
 
 export interface MouseResponderSubscription {
     dispose(): void;

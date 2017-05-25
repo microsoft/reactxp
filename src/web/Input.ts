@@ -25,6 +25,6 @@ export class Input extends RX.Input {
             e.stopPropagation();
         }
     }
-};
+}
 
 export default new Input();

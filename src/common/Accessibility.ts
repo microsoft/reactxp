@@ -7,9 +7,6 @@
 * Common wrapper for accessibility helper exposed from ReactXP.
 */
 
-import RN = require('react-native');
-import SyncTasks = require('synctasks');
-
 import SubscribableEvent = require('../common/SubscribableEvent');
 import RX = require('../common/Interfaces');
 

@@ -7,8 +7,6 @@
 * iOS-specific implementation for deep linking.
 */
 
-import RN = require('react-native');
-
 import Types = require('../common/Types');
 import { Linking as CommonLinking } from '../native-common/Linking';
 

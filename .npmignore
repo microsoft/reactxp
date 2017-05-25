@@ -3,5 +3,6 @@
 /src/bin
 /src/obj
 /samples
+/extensions
 /docs
 *.user

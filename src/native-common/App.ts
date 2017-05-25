@@ -7,7 +7,6 @@
 * Native implementation of App API namespace.
 */
 
-import React = require('react');
 import RN = require('react-native');
 
 import { RootView } from './RootView';

@@ -36,7 +36,6 @@ export interface ReactXP {
     Network: Network;
     Platform: Platform;
     Popup: Popup;
-    Profiling: Profiling;
     ScrollView: typeof ScrollView;
     StatusBar: StatusBar;
     Styles: Styles;
@@ -59,7 +58,7 @@ export interface ReactXP {
 export class ActivityIndicator<S> extends React.Component<Types.ActivityIndicatorProps, S> {}
 
 export abstract class Alert {
-    abstract show(title: string, message?: string, buttons?: Types.AlertButtonSpec[]): void;
+    abstract show(title: string, message?: string, buttons?: Types.AlertButtonSpec[], icon?: string): void;
 }
 
 export abstract class AnimatedComponent<P extends Types.CommonProps, T> extends React.Component<P, T> {
@@ -87,19 +86,14 @@ export interface IAnimatedValue {
 }
 
 export abstract class AnimatedValue implements IAnimatedValue {
-    constructor(val: number) { }
+    constructor(val: number) {
+        // No-op
+    }
     abstract setValue(value: number): void;
     abstract addListener(callback: any): number;
     abstract removeListener(id: string): void;
     abstract removeAllListeners(): void;
     abstract interpolate(config: any): AnimatedValue;
-}
-
-export abstract class Profiling {
-  abstract start(): void;
-  abstract stop(): void;
-  abstract printResults(config: Types.ProfilingLoggingConfig): void;
-  abstract installWatchdog(): void;
 }
 
 export abstract class App {
@@ -226,7 +220,7 @@ export enum DeviceNetworkType {
     MOBILE_2G,
     MOBILE_3G,
     MOBILE_4G
-};
+}
 
 export abstract class Network {
     abstract isConnected(): SyncTasks.Promise<boolean>;
@@ -323,4 +317,3 @@ export interface Animated {
     parallel: Types.Animated.ParallelFunction;
     sequence: Types.Animated.SequenceFunction;
 }
-

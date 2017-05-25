@@ -17,6 +17,7 @@ import RXTypes = require('../common/Types');
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 
+import { default as AccessibilityImpl, Accessibility as AccessibilityType } from './Accessibility';
 import { default as ActivityIndicatorImpl, ActivityIndicator as ActivityIndicatorType } from '../native-common/ActivityIndicator';
 import { default as AlertImpl, Alert as AlertType } from '../native-common/Alert';
 import { default as AppImpl, App as AppType } from '../native-common/App';
@@ -40,7 +41,6 @@ import { default as StorageImpl, Storage as StorageType } from '../native-common
 import { default as StylesImpl, Styles as StylesType } from '../native-common/Styles';
 import { default as TextImpl, Text as TextType } from '../native-common/Text';
 import { default as TextInputImpl, TextInput as TextInputType } from '../native-common/TextInput';
-import { default as ProfilingImpl, Profiling as ProfilingType } from '../native-common/Profiling';
 import { default as UserInterfaceImpl, UserInterface as UserInterfaceType } from '../native-common/UserInterface';
 import { default as UserPresenceImpl, UserPresence as UserPresenceType } from '../native-common/UserPresence';
 import { default as ViewImpl, View as ViewType } from '../native-common/View';
@@ -54,10 +54,20 @@ const _defaultViewStyle = StylesImpl.createViewStyle({
 });
 ViewBase.setDefaultViewStyle(_defaultViewStyle);
 
+// Initialize Windows implementation of platform accessibility helpers inside the singleton
+// instance of native-common AccessibilityUtil. This is to let native-common components access
+// platform specific APIs through native-common implementation itself. 
+import AccessibilityUtil from '../native-common/AccessibilityUtil';
+import AccessibilityPlatformUtil from './AccessibilityUtil';
+
+AccessibilityUtil.setAccessibilityPlatformUtil(AccessibilityPlatformUtil);
+
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 
 module ReactXP {
+    export type Accessibility = AccessibilityType;
+    export var Accessibility = AccessibilityImpl;
     export import Animated = AnimatedImpl.Animated;
     export type ActivityIndicator = ActivityIndicatorImpl;
     export var ActivityIndicator = ActivityIndicatorType;
@@ -93,8 +103,6 @@ module ReactXP {
     export var Platform = PlatformImpl;
     export type Popup = PopupType;
     export var Popup = PopupImpl;
-    export type Profiling = ProfilingType;
-    export var Profiling = ProfilingImpl;
     export type ScrollView = ScrollViewType;
     export var ScrollView = ScrollViewImpl;
     export type Storage = StorageType;
@@ -124,7 +132,7 @@ module ReactXP {
     export import Children = React.Children;
     export var __spread = (React as any).__spread;
     export import DeviceNetworkType = RXInterface.DeviceNetworkType;
-};
+}
 
 export = ReactXP;
 

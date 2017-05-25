@@ -8,11 +8,8 @@
 */
 
 import RN = require('react-native');
-import SyncTasks = require('synctasks');
 
 import { Accessibility as CommonAccessibility } from '../common/Accessibility';
-import SubscribableEvent = require('../common/SubscribableEvent');
-import RX = require('../common/Interfaces');
 
 export class Accessibility extends CommonAccessibility {
     protected _isScreenReaderEnabled = false;

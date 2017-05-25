@@ -50,7 +50,6 @@ import { default as StorageImpl, Storage as StorageType } from './Storage';
 import { default as StylesImpl, Styles as StylesType } from './Styles';
 import { Text as TextImpl } from './Text';
 import { TextInput as TextInputImpl } from './TextInput';
-import { default as ProfilingImpl, Profiling as ProfilingType } from '../common/Profiling';
 import { default as UserInterfaceImpl, UserInterface as UserInterfaceType } from './UserInterface';
 import { default as UserPresenceImpl, UserPresence as UserPresenceType } from './UserPresence';
 import { default as ViewImpl, View as ViewType } from './View';
@@ -101,8 +100,6 @@ module ReactXP {
     export var Platform = PlatformImpl;
     export type Popup = PopupType;
     export var Popup = PopupImpl;
-    export type Profiling = ProfilingType;
-    export var Profiling = ProfilingImpl;
     export type ScrollView = ScrollViewImpl;
     export var ScrollView = ScrollViewImpl;
     export type StatusBar = StatusBarType;
@@ -133,7 +130,7 @@ module ReactXP {
     export var Children = React.Children;
     export var __spread = (React as any).__spread;
     export import DeviceNetworkType = RXInterface.DeviceNetworkType;
-};
+}
 
 export = ReactXP;
 
@@ -154,7 +151,6 @@ var _rxImplementsRxInterface: RXInterface.ReactXP = ReactXP;
 /* tslint:enable:no-unused-variable */
 
 /*
-
 
 var rx = module.exports;
 Object.keys(rx)

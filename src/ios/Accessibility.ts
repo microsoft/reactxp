@@ -8,14 +8,13 @@
 * React Native announcement API for iOS. 
 */
 
-import _ = require('../native-common/lodashMini');
 import RN = require('react-native');
 
 import { Accessibility as NativeAccessibility } from '../native-common/Accessibility';
 
 interface AnnouncementFinishedPayload {
-    announcement: string,
-    success: boolean
+    announcement: string;
+    success: boolean;
 }
 
 const RetryTimeout = 3000; // 3 seconds
@@ -63,7 +62,7 @@ export class Accessibility extends NativeAccessibility {
         }
 
         // Some versions of RN don't support this interface.
-        if (RN.AccessibilityInfo) {
+        if (RN.AccessibilityInfo && RN.AccessibilityInfo.announceForAccessibility) {
             RN.AccessibilityInfo.announceForAccessibility(announcement);
         }
     }

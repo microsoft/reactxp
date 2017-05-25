@@ -38,7 +38,7 @@ enum GestureType {
     Pan,
     PanVertical,
     PanHorizontal
-};
+}
 
 let _idCounter = 1;
 
@@ -157,7 +157,7 @@ export class GestureView extends RX.GestureView<{}> {
             this._reportDelayedTap();
             this._startDoubleTapTimer(e);
         }
-    };
+    }
 
     private _detectGestureType = (gestureState: Types.PanGestureState) => {
         // we need to lock gesture type until it's completed
@@ -251,7 +251,7 @@ export class GestureView extends RX.GestureView<{}> {
 
             this.props.onScrollWheel(scrollWheelEvent);
         }
-    };
+    }
 
     private _calcDistance(dx: number, dy: number) {
         return Math.sqrt(dx * dx + dy * dy);

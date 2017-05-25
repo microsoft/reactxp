@@ -67,7 +67,7 @@ export class RootView extends React.Component<{}, RootViewState> {
                 this.setState({
                     announcementText: announcement
                 });
-        })
+        });
 
         this.setState(this._getStateFromStore());
     }
@@ -86,9 +86,9 @@ export class RootView extends React.Component<{}, RootViewState> {
 
         // When showing a modal/popup we want to hide the mainView shown behind from an accessibility
         // standpoint to ensure that it won't get the focus and the screen reader's attention.
-        const importantForAccessibility = (modalLayerView || popupLayerView) ? 
-            AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.NoHideDescendants) :
-            undefined; // default
+        const importantForAccessibility   =  (modalLayerView  ||  popupLayerView)  ? 
+            AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.NoHideDescendants)   :
+            undefined;  // default
 
         return (
             <RN.Animated.View style={ _styles.rootViewStyle }>

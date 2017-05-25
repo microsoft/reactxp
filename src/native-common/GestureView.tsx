@@ -22,7 +22,7 @@ enum GestureType {
     Pan,
     PanVertical,
     PanHorizontal
-};
+}
 
 // These threshold values were chosen empirically.
 const _pinchZoomPixelThreshold = 3;

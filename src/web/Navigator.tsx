@@ -141,6 +141,8 @@ export class Navigator extends RX.Navigator<NavigatorState> {
         this.state = {
             sceneConfigStack: [],
             routeStack: [],
+            presentedIndex: 0,
+            transitionFromIndex: undefined,
             transitionQueue: []
         };
     }
@@ -252,7 +254,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
             sceneConfigStack: _.map(nextRouteStack, route => this._getSceneConfigFromRoute(route)),
             routeStack: nextRouteStack,
             presentedIndex: destIndex,
-            transitionFromIndex: null,
+            transitionFromIndex: undefined,
             transitionQueue: []
         }, () => {
             this._handleSpringUpdate();
@@ -344,7 +346,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
         if (route) {
             return NavigatorSceneConfigFactory.createConfig(route.sceneConfigType);
         }
-        return null;
+        return undefined;
     }
 
     // Render a scene for the navigator
@@ -382,7 +384,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
     // Add styles on the scene - At this time, the scene should be mounted and sitting in the
     // DOM. We are just adding giving styles to this current scene.
     private _enableScene(sceneIndex: number) {
-        let sceneStyle = Styles.combine(null, [_styles.baseScene, _styles.sceneStyle, _styles.defaultSceneStyle]);
+        let sceneStyle = Styles.combine(undefined, [_styles.baseScene, _styles.sceneStyle, _styles.defaultSceneStyle]);
 
         // Then restore the top value for this scene.
         const enabledSceneNativeProps = {
@@ -412,7 +414,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
         }
 
         // If we're already transitioning to another index, queue this one.
-        if (this.state.transitionFromIndex !== null) {
+        if (this.state.transitionFromIndex !== undefined) {
             let newTransitionQueue = _.cloneDeep(this.state.transitionQueue);
             newTransitionQueue.push({
                 destIndex: destIndex,
@@ -435,7 +437,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
         this._invariant(!!sceneConfig, 'Cannot configure scene at index ' + this.state.transitionFromIndex);
 
         // Set the spring in motion. Updates will trigger _handleSpringUpdate.
-        if (jumpSpringTo != null) {
+        if (jumpSpringTo !== undefined) {
             this.spring.setCurrentValue(jumpSpringTo);
         }
         this.spring.setOvershootClampingEnabled(true);
@@ -452,7 +454,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
     private _completeTransition() {
         let newState: NavigatorState = {};
 
-        this.state.transitionFromIndex = null;
+        this.state.transitionFromIndex = undefined;
         this.spring.setCurrentValue(0).setAtRest();
         this._hideScenes();
 
@@ -467,13 +469,13 @@ export class Navigator extends RX.Navigator<NavigatorState> {
             this._transitionTo(
                 queuedTransition.destIndex,
                 queuedTransition.velocity,
-                null,
+                undefined,
                 queuedTransition.transitionFinished
             );
 
             if (this.state.transitionFinished) {
                 this.state.transitionFinished();
-                newState.transitionFinished = null;
+                newState.transitionFinished = undefined;
             }
 
             newState.transitionQueue = newTransitionQueue;
@@ -500,7 +502,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
     // the transition and the gesture will catch up later.
     private _handleSpringUpdate() {
         // Prioritize handling transition in progress over a gesture:
-        if (this.state.transitionFromIndex != null) {
+        if (this.state.transitionFromIndex !== undefined) {
             this._transitionBetween(
                 this.state.transitionFromIndex,
                 this.state.presentedIndex,
@@ -511,7 +513,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
 
     private _transitionSceneStyle(fromIndex: number, toIndex: number, progress: number, index: number) {
         const viewAtIndex = this.refs['scene_' + index];
-        if (viewAtIndex === null || viewAtIndex === undefined) {
+        if (viewAtIndex === undefined) {
             return;
         }
 
@@ -571,8 +573,8 @@ export class Navigator extends RX.Navigator<NavigatorState> {
 
         this._transitionTo(
             popIndex,
-            null, // default velocity
-            null, // no spring jumping
+            undefined, // default velocity
+            undefined, // no spring jumping
             () => {
                 this._cleanScenesPastIndex(popIndex);
             }

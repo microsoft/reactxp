@@ -9,7 +9,6 @@
 
 import RN = require('react-native');
 
-import RX = require('../common/Interfaces');
 import { StyleLeakDetector as CommonStyleLeakDetector } from '../common/StyleLeakDetector';
 
 export class StyleLeakDetector extends CommonStyleLeakDetector {
@@ -40,6 +39,6 @@ export class StyleLeakDetector extends CommonStyleLeakDetector {
 
         return RN.Platform.OS === 'windows';
     }
-};
+}
 
 export default new StyleLeakDetector();

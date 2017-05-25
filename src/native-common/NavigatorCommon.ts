@@ -8,7 +8,6 @@
 * We need this class to avoid circular references between Navigator and NavigatorDelegates.
 */
 
-import React = require('react');
 import RN = require('react-native');
 import RX = require('../common/Interfaces');
 

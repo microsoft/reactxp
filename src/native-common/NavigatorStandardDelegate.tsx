@@ -53,7 +53,7 @@ export class NavigatorStandardDelegate extends NavigatorDelegate {
         }
         // no route? return empty scene
         return <RN.View />;
-    };
+    }
 
     // Try to remove this handling by scheduling as it's done in experimental
     handleBackPress(): void {
@@ -87,7 +87,7 @@ export class NavigatorStandardDelegate extends NavigatorDelegate {
                     return RN.Navigator.SceneConfigs.FloatFromRight;
             }
         }
-    };
+    }
 
     private _onRouteWillFocus = (route: Types.NavigatorRoute): void => {
         if (!this._navigator) {
@@ -117,13 +117,13 @@ export class NavigatorStandardDelegate extends NavigatorDelegate {
                 this._owner.props.navigateBackCompleted();
             }
         }
-    };
+    }
 
     private _onRouteDidFocus = (route: Types.NavigatorRoute): void => {
         if (this._owner.props.transitionCompleted) {
             this._owner.props.transitionCompleted();
         }
-    };
+    }
 
     processCommand(commandQueue: NavigationCommand[]): void {
         // Return if nothing to process

@@ -99,7 +99,7 @@ enum ComponentPhaseEnum {
     // The component is in the middle of playing an animation. The component should not
     // rerender while in this state.
     animating
-};
+}
 
 // Pieces of information we calculate in componentWillUpdate and consume in componentDidUpdate.
 // More specifically, we calculate animation information in componentWillUpdate and start the

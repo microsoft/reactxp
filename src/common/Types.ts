@@ -21,7 +21,7 @@ export type ReactNode = React.ReactNode;
 // this detail away from the components' common implementation.
 export type ReactInterface = {
     createElement<P>(type: string, props?: P, ...children: React.ReactNode[]): React.ReactElement<P>;
-}
+};
 
 //------------------------------------------------------------
 // React Native Flexbox styles 0.14.2
@@ -30,7 +30,8 @@ export type ReactInterface = {
 export interface FlexboxStyle {
     alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
     alignSelf?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
-
+    alignContent?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
+    
     borderWidth?: number;
     borderTopWidth?: number;
     borderRightWidth?: number;
@@ -276,8 +277,6 @@ export type LinkStyleRuleSet = StyleRuleSet<LinkStyle>;
 // ------------------------------------------------------------
 
 export interface ImageStyle extends ViewAndImageCommonStyle, FlexboxStyle {
-    resizeMode?: 'contain' | 'cover' | 'stretch';
-    
     // This is an Android only style attribute that is used to fill the gap in the case of rounded corners
     // in gif images.
     overlayColor?: string;
@@ -452,7 +451,7 @@ export interface ImagePropsShared extends CommonProps {
     children?: ReactNode;
     resizeMode?: 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat';
 
-    resizeMethod?: 'auto' | 'resize' | 'scale'; // Android only 
+    resizeMethod?: 'auto' | 'resize' | 'scale'; // Android only
     title?: string;
 
     onLoad?: (size: Dimensions) => void;
@@ -487,19 +486,22 @@ export interface TextPropsShared extends CommonProps {
     // to true. iOS and Android only.
     allowFontScaling?: boolean;
 
+    // Specifies the maximum scale factor for text size. iOS and Android only.
+    maxContentSizeMultiplier?: number;
+
     // iOS and Android only
     ellipsizeMode?:  'head' | 'middle'| 'tail';
-    
+
     // Exposing this property as temporary workaround to fix a bug.
     // TODO : http://skype.vso.io/865016 : remove this exposed property
     // Used only for Android.
     textBreakStrategy?: 'highQuality' | 'simple' | 'balanced';
 
     importantForAccessibility?: ImportantForAccessibility;
-    
+
     // Android only
     elevation?: number;
-    
+
     onPress?: (e: SyntheticEvent) => void;
 }
 
@@ -522,6 +524,8 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     viewLayerTypeAndroid?: ViewLayerType; // Android only property
     children?: ReactNode;
     focusable?: boolean;
+
+    importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
 
     // There are a couple of constraints when child animations are enabled:
     //   - Every child must have a `key`.
@@ -547,9 +551,9 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     onBlur?: (e: FocusEvent) => void;
 
     // iOS and Android only. Visual touchfeedback properties
-    disableTouchOpacityAnimation?: boolean;    
+    disableTouchOpacityAnimation?: boolean;
     activeOpacity?: number;
-    underlayColor?: string
+    underlayColor?: string;
 }
 
 export interface ViewProps extends ViewPropsShared {
@@ -576,7 +580,7 @@ export interface AnimatedViewProps extends ViewPropsShared {
 // GestureView
 export interface GestureState {
     timeStamp: Date;
-};
+}
 
 export interface MultiTouchGestureState extends GestureState {
     initialCenterClientX: number;
@@ -739,8 +743,11 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
     children?: ReactNode;
     selectable?: boolean;
     numberOfLines?: number;
+    allowFontScaling?: boolean;
+    maxContentSizeMultiplier?: number;
 
-    onPress?: () => void;
+    onPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
+    onLongPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
     onHoverStart?: (e: SyntheticEvent) => void;
     onHoverEnd?: (e: SyntheticEvent) => void;
 }
@@ -761,10 +768,13 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     secureTextEntry?: boolean;
     value?: string;
     textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify';
-     
+
      // Should fonts be scaled according to system setting? Defaults
     // to true. iOS and Android only.
     allowFontScaling?: boolean;
+
+    // Specifies the maximum scale factor for text size. iOS and Android only.
+    maxContentSizeMultiplier?: number;
 
     // iOS-only prop for controlling the keyboard appearance
     keyboardAppearance?: 'default' | 'light' | 'dark';
@@ -868,9 +878,9 @@ export interface PopupOptions {
         popupWidth: number, popupHeight: number) => ReactNode;
 
     // Returns a mounted component instance that controls the triggering of the popup.
-    // In majority of cases, "anchor" of popup has handlers to control when the popup will be seen and this function is not required. 
+    // In majority of cases, "anchor" of popup has handlers to control when the popup will be seen and this function is not required.
     // In a few cases, where anchor is not the same as the whole component that triggers when the popup wil be seen, this can be used.
-    // For instance, a button combined with a chevron icon, which on click triggers a popup below the chevron icon. 
+    // For instance, a button combined with a chevron icon, which on click triggers a popup below the chevron icon.
     // In this example, getElementTriggeringPopup() can return the container with button and chevron icon.
     getElementTriggeringPopup?: () => React.Component<any, any>;
 
@@ -892,8 +902,8 @@ export interface PopupOptions {
     // already unmounted as it uses a time delay to accommodate a fade-out animation.
     onAnchorPressed?: (e: RX.Types.SyntheticEvent) => void;
 
-    // Determines if the anchor invoking the popup should behave like a toggle. 
-    // Value = true  => Calling Popup.show will show the popup. A subsequent call, will hide the popup, and so on. 
+    // Determines if the anchor invoking the popup should behave like a toggle.
+    // Value = true  => Calling Popup.show will show the popup. A subsequent call, will hide the popup, and so on.
     // Value = false or undefined (default)  => Calling Popup.show will always show the popup.
      dismissIfShown?: boolean;
 }
@@ -925,9 +935,10 @@ export interface NavigatorRoute {
 
 // NOTE: Experimental navigator only
 export type NavigationTransitionSpec = {
-    duration?: number,
+    duration?: number;
+
     // NOTE: Elastic and bounce easing will not work as expected due to how the navigator interpolates styles
-    easing?: Animated.EasingFunction
+    easing?: Animated.EasingFunction;
 };
 
 // NOTE: Experimental navigator only
@@ -939,7 +950,7 @@ export type NavigationTransitionStyleConfig = {
   scaleOutput: number | number[];
   translateXOutput: number | number[];
   translateYOutput: number | number[];
-}
+};
 
 // NOTE: Experimental navigator only
 export type CustomNavigatorSceneConfig = {
@@ -953,10 +964,10 @@ export type CustomNavigatorSceneConfig = {
   hideShadow?: boolean;
   // Optionally flip the visual order of the last two scenes
   presentBelowPrevious?: boolean;
-}
+};
 
 export interface NavigatorProps extends CommonProps {
-    renderScene?: (route: NavigatorRoute) => JSX.Element;
+    renderScene: (route: NavigatorRoute) => JSX.Element;
     navigateBackCompleted?: () => void;
     // NOTE: Arguments are only passed to transitionStarted by the experimental navigator
     transitionStarted?: (progress?: RX.AnimatedValue,
@@ -1026,7 +1037,7 @@ export module Animated {
     export interface InterpolationConfigType {
         inputRange: number[];
         outputRange: (number | string)[];
-    };
+    }
 
     export type TimingFunction = (value: RX.AnimatedValue, config: TimingAnimationConfig) => CompositeAnimation;
     export var timing: TimingFunction;
@@ -1040,7 +1051,7 @@ export module Animated {
     export type EasingFunction = {
         cssName: string;
         function: (input: number) => number;
-    }
+    };
 
     export interface Easing {
         Default(): EasingFunction;
@@ -1089,7 +1100,7 @@ export type ViewOnLayoutEvent = {
     y: number;
     height: number;
     width: number;
-}
+};
 export interface KeyboardEvent extends SyntheticEvent {
     ctrlKey: boolean;
     altKey: boolean;
@@ -1113,7 +1124,7 @@ interface Element<P> {
 export type Dimensions = {
     width: number;
     height: number;
-}
+};
 
 //
 // Linking
@@ -1166,14 +1177,3 @@ export interface LayoutInfo {
 // Platform
 // ----------------------------------------------------------------------
 export type PlatformType = 'web' | 'ios' | 'android' | 'windows';
-
-//
-// Profiling
-// ----------------------------------------------------------------------
-export interface ProfilingLoggingConfig {
-    printInclusive?: boolean;
-    printExclusive?: boolean;
-    printWasted?: boolean;
-    printOperations?: boolean;
-    printDOM?: boolean;
-}

@@ -29,7 +29,7 @@ export interface RootViewProps {
     autoDismissDelay?: number;
     onDismissPopup?: () => void;
     keyBoardFocusOutline?: string;
-    mouseFocusOutline?: string
+    mouseFocusOutline?: string;
 }
 
 export interface RootViewState {
@@ -89,6 +89,15 @@ const _styles = {
 
 const ESC_KEY_CODE = 27;
 
+// Setting the expected default box-sizing for everything.
+if (typeof document !== 'undefined') {
+    const defaultBoxSizing = '*, *:before, *:after { box-sizing: border-box; }';
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(defaultBoxSizing));
+    document.head.appendChild(style);
+}
+
 export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _hidePopupTimer: number = null;
     private _respositionPopupTimer: number = null;
@@ -107,7 +116,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 this.setState({
                     announcementText: announcement
                 });
-        })
+        });
 
         this.state = this._getInitialState();
     }
@@ -309,8 +318,9 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                             }, 500);
                         }
 
-                        // If the popup is meant to behave like a toggle, we should not dimiss the popup from here
-                        // since the event came from the anchor/container of the popup. The popup will be dismissed during the click handling of the anchor/container.
+                        // If the popup is meant to behave like a toggle, we should not dimiss the popup from here since the event came
+                        // from the anchor/container of the popup. The popup will be dismissed during the click handling of the
+                        // anchor/container.
                         if (this.props.activePopupOptions.dismissIfShown) {
                             return;
                         }
@@ -319,9 +329,9 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 this._dismissPopup();
             });
         }
-    };
+    }
 
-    private _determineIfClickOnElement(elementReference: React.Component<any,any>, eventSource: Element): boolean {
+    private _determineIfClickOnElement(elementReference: React.Component<any, any>, eventSource: Element): boolean {
         const element = ReactDOM.findDOMNode<HTMLElement>(elementReference);
         const isClickOnElement = element && element.contains(eventSource);
         return isClickOnElement;
@@ -338,7 +348,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             this.setState({ focusClass: this.props.keyBoardFocusOutline });
         }
         Input.dispatchKeyDown(e as any);
-    };
+    }
 
     private _onKeyUp = (e: KeyboardEvent) => {
         if (this.props.activePopupOptions && (e.keyCode === ESC_KEY_CODE)) {
@@ -350,7 +360,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         }
 
         Input.dispatchKeyUp(e as any);
-    };
+    }
 
     private _onMouseEnter(e: React.MouseEvent) {
         this.setState({

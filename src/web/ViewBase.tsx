@@ -78,7 +78,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         }
     }
 
-    private static _checkViews() {
+    protected static _checkViews() {
         _.each(ViewBase._viewCheckingList, view => {
             view._checkAndReportLayout();
         });

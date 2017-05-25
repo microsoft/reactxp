@@ -10,7 +10,7 @@
 import React = require('react');
 import RN = require('react-native');
 
-import AccessibilityUtil from './AccessibilityUtil';
+import AccessibilityUtil from '../native-common/AccessibilityUtil';
 import { Text as CommonText } from '../native-common/Text';
 import Types = require('../common/Types');
 import Styles from '../native-common/Styles';
@@ -40,6 +40,7 @@ export class Text extends CommonText {
                 importantForAccessibility={ importantForAccessibility }
                 numberOfLines={ this.props.numberOfLines === 0 ? null : this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
+                maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
                 ellipsizeMode={ this.props.ellipsizeMode }
                 onPress={ this.props.onPress }
                 textBreakStrategy={ this.props.textBreakStrategy }
@@ -47,10 +48,6 @@ export class Text extends CommonText {
                 { this.props.children }
             </RN.Text>
         );
-    }
-
-    focus() {
-        AccessibilityUtil.setAccessibilityFocus(this);
     }
 }
 

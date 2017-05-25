@@ -7,12 +7,12 @@
 * RN-specific implementation of the cross-platform Button abstraction.
 */
 
+import assert = require('assert');
 import React = require('react');
 import RN = require('react-native');
 
-import Animated from './Animated'
+import Animated from './Animated';
 import AccessibilityUtil from './AccessibilityUtil';
-import MixinUtil = require('../common/MixinUtil');
 import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -38,7 +38,24 @@ const _activeOpacityAnimationDuration = 0;
 const _hideUnderlayTimeout = 100;
 const _underlayInactive = 'transparent';
 
+function noop() { /* noop */ }
+
+function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, propertiesToSkip: string[]) {
+    Object.getOwnPropertyNames(mixin).forEach(name => {
+        if (name !== 'constructor' && propertiesToSkip.indexOf(name) === -1) {
+            assert(
+                !(name in thisObj),
+                `An object cannot have a method with the same name as one of its mixins: "${name}"`
+            );
+            thisObj[name] = mixin[name].bind(thisObj);
+        }
+    });
+}
+
 export class Button extends RX.Button<{}> {
+    private _mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount || noop;
+    private _mixin_componentWillUnmount = RN.Touchable.Mixin.componentWillUnmount || noop;
+
     touchableGetInitialState: () => RN.Touchable.State;
     touchableHandleStartShouldSetResponder: () => boolean;
     touchableHandleResponderTerminationRequest: () => boolean;
@@ -56,26 +73,30 @@ export class Button extends RX.Button<{}> {
 
     constructor(props: Types.ButtonProps) {
         super(props);
-
-        MixinUtil.applyMixins(this, [RN.Touchable.Mixin]);
+        applyMixin(this, RN.Touchable.Mixin, [
+            // Properties that Button and RN.Touchable.Mixin have in common. Button needs
+            // to dispatch these methods to RN.Touchable.Mixin manually.
+            'componentDidMount',
+            'componentWillUnmount'
+        ]);
         this.state = this.touchableGetInitialState();
         this._setOpacityStyles(props);
     }
 
     render() {
-        // Accessibility props. 
-        const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility, 
+        // Accessibility props.
+        const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
             _defaultImportantForAccessibility);
         const accessibilityTrait = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits,
              _defaultAccessibilityTrait);
-        const accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(this.props.accessibilityTraits, 
+        const accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(this.props.accessibilityTraits,
             _defaultAccessibilityTrait);
 
         const opacityStyle = !this.props.disableTouchOpacityAnimation && this._opacityAnimatedStyle;
 
         return (
             <RN.Animated.View
-                ref={ this._onButtonRef }            
+                ref={ this._onButtonRef }
                 style={ Styles.combine(_styles.defaultButton, [this.props.style, opacityStyle],
                 this.props.disabled && _styles.disabled) }
                 accessibilityLabel={ this.props.accessibilityLabel || this.props.title }
@@ -96,17 +117,25 @@ export class Button extends RX.Button<{}> {
     }
 
     componentDidMount() {
+        this._mixin_componentDidMount();
         this._isMounted = true;
-    } 
+    }
 
     componentWillUnmount() {
+        this._mixin_componentWillUnmount();
         this._isMounted = false;
     }
 
     componentWillReceiveProps(nextProps: Types.ButtonProps) {
-        if(nextProps !== this.props) {
+        if (nextProps !== this.props) {
             // If opacity got updated as a part of props update, we need to reflect that in the opacity animation value
            this._setOpacityStyles(nextProps);
+        }
+    }
+
+    setNativeProps(nativeProps: RN.ViewProps) {
+        if (this._buttonElement) {
+            this._buttonElement.setNativeProps(nativeProps);
         }
     }
 
@@ -127,7 +156,7 @@ export class Button extends RX.Button<{}> {
         if (!this.props.disabled && this.props.onPressIn) {
             this.props.onPressIn(e);
         }
-    };
+    }
 
     touchableHandleActivePressOut = (e: Types.SyntheticEvent) => {
         if (this._isTouchFeedbackApplicable()) {
@@ -135,7 +164,7 @@ export class Button extends RX.Button<{}> {
                 clearTimeout(this._hideTimeout);
                 this._hideTimeout = setTimeout(this._hideUnderlay, _hideUnderlayTimeout);
             }
-           
+
             if (!this.props.disableTouchOpacityAnimation && (this.props.activeOpacity || !this.props.underlayColor)) {
                 this._opacityInactive(_inactiveOpacityAnimationDuration);
             }
@@ -144,30 +173,30 @@ export class Button extends RX.Button<{}> {
         if (!this.props.disabled && this.props.onPressOut) {
             this.props.onPressOut(e);
         }
-    };
+    }
 
     touchableHandlePress = (e: Types.MouseEvent) => {
         if (!this.props.disabled && this.props.onPress) {
             this.props.onPress(e);
         }
-    };
+    }
 
     touchableHandleLongPress = (e: Types.MouseEvent) => {
         if (!this.props.disabled && this.props.onLongPress) {
             this.props.onLongPress(e);
         }
-    };
+    }
 
     touchableGetHighlightDelayMS = () => {
         return 20;
-    };
+    }
 
     touchableGetPressRectOffset = () => {
         return {top: 20, left: 20, right: 20, bottom: 100};
-    };
+    }
 
     focus() {
-        // native mobile platforms doesn't have the notion of focus for buttons, so ignore.
+        AccessibilityUtil.setAccessibilityFocus(this);
     }
 
     blur() {
@@ -197,7 +226,7 @@ export class Button extends RX.Button<{}> {
         this.setOpacityTo(this.props.activeOpacity || _defaultActiveOpacity, duration);
     }
 
-    private _opacityInactive(duration: number) {    
+    private _opacityInactive(duration: number) {
         this.setOpacityTo(this._defaultOpacityValue, duration);
     }
 
@@ -220,7 +249,7 @@ export class Button extends RX.Button<{}> {
                 duration: duration,
                 easing: Animated.Easing.InOut()
             }
-        ).start(); 
+        ).start();
     }
 
     private _hasPressHandler() {

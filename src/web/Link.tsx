@@ -37,7 +37,12 @@ const _styles = {
     }
 };
 
+const _longPressTime = 1000;
+
 export class Link extends RX.Link<void> {
+    
+    private _longPressTimer: number;    
+
     render() {
        // SECURITY WARNING:
        //   Note the use of rel='noreferrer'
@@ -52,7 +57,8 @@ export class Link extends RX.Link<void> {
                 rel='noreferrer'
                 onClick={ this._onClick }
                 onMouseEnter={ this.props.onHoverStart }
-                onMouseLeave={ this.props.onHoverEnd}
+                onMouseLeave={ this.props.onHoverEnd }
+                onMouseDown={ this._onMouseDown }
             >
                 { this.props.children }
             </a>
@@ -84,10 +90,29 @@ export class Link extends RX.Link<void> {
 
         if (this.props.onPress) {
             e.preventDefault();
-
-            this.props.onPress();
+            this.props.onPress(e, this.props.url);
         }
     }
+
+    private _onMouseDown = (e: Types.SyntheticEvent) => {        
+        if (this.props.onLongPress) {
+            e.persist();
+
+            this._longPressTimer = window.setTimeout(() => {
+                this._longPressTimer = undefined;
+                if (this.props.onLongPress) {
+                    this.props.onLongPress(e, this.props.url);
+                }
+            }, _longPressTime);
+        }
+    }    
+
+    private _onMouseUp = (e: Types.SyntheticEvent) => {
+        if (this._longPressTimer) {
+            window.clearTimeout(this._longPressTimer);
+            this._longPressTimer = undefined;            
+        }
+    }    
 }
 
 export default Link;

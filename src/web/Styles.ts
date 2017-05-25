@@ -147,6 +147,7 @@ export class Styles extends RX.Styles {
             'alignItems',
             'justifyContent',
             'alignSelf',
+            'alignContent',
             'transform',
             'transition',
             'animationDuration',

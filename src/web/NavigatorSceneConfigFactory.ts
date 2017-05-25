@@ -32,7 +32,7 @@ export interface TransitionStyle {
     scaleX?: (progress: number) => number;
     scaleY?: (progress: number) => number;
     scaleZ?: (progress: number) => number;
-};
+}
 
 // Defined style interpolators for each transition type
 class SceneConfigStyles {
@@ -216,5 +216,5 @@ export class NavigatorSceneConfigFactory {
                 // Float from Right
                 return new NavigatorSceneConfig(SceneConfigStyles.fromTheLeft, SceneConfigStyles.fadeToTheRight);
         }
-    };
+    }
 }

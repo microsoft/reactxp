@@ -30,7 +30,7 @@ export class Linking extends CommonLinking {
                 defer.reject({
                     code: Types.LinkingErrorCode.NoAppFound,
                     url: url,
-                    description: "No app found to handle url: " + url
+                    description: 'No app found to handle url: ' + url
                 } as Types.LinkingErrorInfo);
             } else {
                 return RN.Linking.openURL(url);

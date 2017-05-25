@@ -134,6 +134,7 @@ export class FrontLayerViewManager {
                 <ModalContainer>
                     <RN.TouchableWithoutFeedback
                         onPressOut={ this._onBackgroundPressed }
+                        importantForAccessibility={ 'no' }
                     >
                         <RN.View style={ _styles.fullScreenView }>
                             <PopupContainerView
@@ -182,7 +183,7 @@ export class FrontLayerViewManager {
 
     private _onRequestClose = () => {
         this._dismissActivePopup();
-    };
+    }
 
     private _dismissActivePopup(): void {
         // Dismiss any currently visible popup:

@@ -100,6 +100,9 @@ declare module 'react-native' {
         onLoadEnd?: (e: SyntheticEvent) => void;
         onLoadStart?: Function;
         onProgress?: Function;
+
+        // Android
+        fadeDuration?: number;
     }
 
     interface ActivityIndicatorProps extends ComponentPropsBase {
@@ -112,11 +115,13 @@ declare module 'react-native' {
     interface TextProps extends ComponentPropsStyleBase {
         importantForAccessibility?: string; // 'auto' | 'yes' | 'no' | 'no-hide-descendants';
         allowFontScaling?: boolean;
+        maxContentSizeMultiplier?: number;
         children?        : React.ReactNode;
         numberOfLines?   : number;
         ellipsizeMode?   : 'head' | 'middle' | 'tail' // There's also 'clip' but it is iOS only
         onLayout?        : Function;
         onPress?         : Function;
+        onLongPress?     : Function;
         selectable?      : boolean; // only on android, windows
         testID?          : string;
 
@@ -160,6 +165,7 @@ declare module 'react-native' {
         accessibilityComponentType?    : string; //enum ( 'none', 'button', 'radiobutton_checked', 'radiobutton_unchecked' )
         accessibilityTraits?: string | string[]; //enum( 'none', 'button', 'link', 'header', 'search', 'image', 'selected', 'plays', 'key', 'text', 'summary', 'disabled', 'frequentUpdates', 'startsMedia', 'adjustable', 'allowsDirectInteraction', 'pageTurn' )
         accessible?: boolean;
+        importantForAccessibility? : string; //enum( 'auto', 'yes', 'no', 'no-hide-descendants' )
         delayLongPress?: number;
         delayPressIn?: number;
         delayPressOut?: number;
@@ -241,8 +247,8 @@ declare module 'react-native' {
 
         contentContainerStyle?: StyleRuleSet | StyleRuleSet[];
         horizontal?: boolean;
-        keyboardDismissMode?: string; // enum( 'none', 'interactive', 'on-drag' )
-        keyboardShouldPersistTaps?: boolean;
+        keyboardDismissMode?: 'none' | 'interactive' | 'on-drag';
+        keyboardShouldPersistTaps?: 'always' | 'never' | 'handled';
         onScroll?: Function;
         onScrollBeginDrag?: Function;
         onScrollEndDrag?: Function;
@@ -338,6 +344,7 @@ declare module 'react-native' {
         testID?: string;
         textAlign?: string; // enum('auto' | 'left' | 'right' | 'center' | 'justify')
         allowFontScaling?: boolean;
+        maxContentSizeMultiplier?: number;
         selection?: { start: number, end: number };
 
         //iOS and android
@@ -696,6 +703,7 @@ declare module 'react-native' {
         static addEventListener(type: string, handler: (event: any) => void): void;
         static removeEventListener(type: string, handler: (event: any) => void): void;
         static announceForAccessibility(announcement: string): void;
+        static setAccessibilityFocus(reactTag: number): void;
     }
 
     interface AlertButtonSpec {
@@ -811,6 +819,8 @@ declare module 'react-native' {
         dispatchViewManagerCommand: Function;
 
         getContentSizeMultiplier: Function;
+        getMaxContentSizeMultiplier: Function;
+        setMaxContentSizeMultiplier: Function;
 
         // ios
         takeSnapshot: (view: any, options?: SnapshotOptions) => Promise<string>;

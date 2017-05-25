@@ -10,7 +10,6 @@
 import React = require('react');
 import RN = require('react-native');
 
-import RX = require('../common/Interfaces');
 import Types= require('../common/Types');
 
 const _styles = {

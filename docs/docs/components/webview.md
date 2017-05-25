@@ -9,8 +9,25 @@ next: apis/alert
 
 This component displays HTML contents in an embedded browser control.
 
-## Classes
+To limit the functionality of the browser control, specify one or more sandbox options. For detailed definitions of sandbox flags, refer to the [HTML documentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe).
+
+
+## Types
 ``` javascript
+enum WebViewSandboxMode {
+    None = 0,
+    AllowForms = 1 << 0,
+    AllowModals = 1 << 1,
+    AllowOrientationLock = 1 << 2,
+    AllowPointerLock = 1 << 3,
+    AllowPopups = 1 << 4,
+    AllowPopupsToEscapeSandbox = 1 << 5,
+    AllowPresentation = 1 << 6,
+    AllowSameOrigin = 1 << 7,
+    AllowScripts = 1 << 8,
+    AllowTopNavigation = 1 << 9
+}
+
 interface WebViewNavigationState {
     canGoBack: boolean;
     canGoForward: boolean;

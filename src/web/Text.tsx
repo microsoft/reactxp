@@ -9,11 +9,24 @@
 
 import React = require('react');
 import ReactDOM = require('react-dom');
+import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
 import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
+
+// Adding a CSS rule to display non-selectable texts. Those texts
+// will be displayed as pseudo elements to prevent them from being copied
+// to clipboard. It's not possible to style pseudo elements with inline
+// styles, so, we're dynamically creating a <style> tag with the rule.
+if (typeof document !== 'undefined') {
+    const textAsPseudoElement = '[data-text-as-pseudo-element]::before { content: attr(data-text-as-pseudo-element); }';
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(textAsPseudoElement));
+    document.head.appendChild(style);
+}
 
 const _styles = {
     defaultStyle: {
@@ -37,7 +50,7 @@ const _styles = {
 
 export class Text extends RX.Text<void> {
     static childContextTypes: React.ValidationMap<any> = {
-        isRxParentAText: React.PropTypes.bool.isRequired
+        isRxParentAText: PropTypes.bool.isRequired
     };
 
     getChildContext() {
@@ -54,16 +67,30 @@ export class Text extends RX.Text<void> {
         }
 
         const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
-        
-        return (
-            <div
-                style={ this._getStyles() }
-                aria-hidden={ isAriaHidden }
-                onClick={ this.props.onPress }
-            >
-                { this.props.children }
-            </div>
-        );
+
+        if (this.props.selectable || typeof this.props.children !== 'string') {
+            return (
+                <div
+                    style={ this._getStyles() }
+                    aria-hidden={ isAriaHidden }
+                    onClick={ this.props.onPress }
+                >
+                    { this.props.children }
+                </div>
+            );
+        } else {
+            // user-select CSS property doesn't prevent the text from being copied to clipboard.
+            // To avoid getting to clipboard, the text from data-text-as-pseudo-element attribute
+            // will be displayed as pseudo element.
+            return (
+                <div
+                    style={ this._getStyles() }
+                    aria-hidden={ isAriaHidden }
+                    onClick={ this.props.onPress }
+                    data-text-as-pseudo-element={ this.props.children }
+                />
+            );
+        }
     }
 
     _getStyles(): Types.TextStyleRuleSet {
@@ -89,7 +116,7 @@ export class Text extends RX.Text<void> {
 
         return combinedStyles;
     }
-    
+
     blur() {
         let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
         if (el) {

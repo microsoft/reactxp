@@ -40,19 +40,17 @@ const _modalId = 'ErrorDialog';
 
 showDialog() {
     let dialog = (
-        <RX.Modal>
-            <RX.View style={ _styles.errorDialog }>
-                <RX.Text style={ _styles.descriptionText }>
-                    'An error occurred'
+        <RX.View style={ _styles.errorDialog }>
+            <RX.Text style={ _styles.descriptionText }>
+                'An error occurred'
+            </RX.Text>
+            <RX.Button style={ _styles.button }
+                    onPress={ this._onOkButtonPress }>
+                <RX.Text style={ _styles.buttonText }>
+                    'OK'
                 </RX.Text>
-                <RX.Button style={ _styles.button }
-                        onPress={ this._onOkButtonPress }>
-                    <RX.Text style={ _styles.buttonText }>
-                        'OK'
-                    </RX.Text>
-                </RX.Button>
-            </RX.View>
-        </RX.Modal>
+            </RX.Button>
+        </RX.View>
     );
 
     RX.Modal.show(dialog, _modalId);

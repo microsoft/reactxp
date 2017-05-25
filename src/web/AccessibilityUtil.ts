@@ -10,7 +10,7 @@
 
 import _ = require('./utils/lodashMini');
 
-import { AccessibilityUtil as CommonAccessibiltiyUtil, ImportantForAccessibilityMap } from '../common/AccessibilityUtil';
+import { AccessibilityUtil as CommonAccessibiltiyUtil } from '../common/AccessibilityUtil';
 import Types = require('../common/Types');
 
 // Map of accessibility trait to an aria role attribute.  
@@ -38,14 +38,14 @@ const roleMap = {
     [Types.AccessibilityTrait.Log]: 'log',
     [Types.AccessibilityTrait.Status]: 'status',
     [Types.AccessibilityTrait.Dialog]: 'dialog'
-} 
+}; 
 
 // Map of accesssibility live region to an aria-live property.
 const liveRegionMap = {
     [Types.AccessibilityLiveRegion.None]: 'off',
     [Types.AccessibilityLiveRegion.Assertive]: 'assertive',
     [Types.AccessibilityLiveRegion.Polite]: 'polite'
-}
+};
 
 export class AccessibilityUtil extends CommonAccessibiltiyUtil {
     // Web equivalent value for aria-live property.
@@ -64,7 +64,7 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
         let combinedTraits: Types.AccessibilityTrait[] = defaultTrait ? [defaultTrait] : [];
 
         if (traits) {
-            combinedTraits = _.union(combinedTraits, _.isArray(traits) ? traits : [traits])
+            combinedTraits = _.union(combinedTraits, _.isArray(traits) ? traits : [traits]);
         }
 
         // Max enum value in this array of traits is role for web. Return corresponding
@@ -76,7 +76,7 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
 
     accessibilityTraitToAriaSelected(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[]) {
         // Walk through each trait and check if there's a selected trait. Return if one is found.
-        if(traits && _.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.Tab) !== -1) {
+        if (traits && _.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.Tab) !== -1) {
             return traits.indexOf(Types.AccessibilityTrait.Selected) !== -1 ? true : undefined;
         }
         

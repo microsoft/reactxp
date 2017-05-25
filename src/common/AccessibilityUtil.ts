@@ -7,6 +7,8 @@
 * Common accessibility interface for platform-specific accessibility utilities.
 */
 
+import React = require('react');
+
 import Types = require('../common/Types');
 
 export const ImportantForAccessibilityMap = {
@@ -14,6 +16,11 @@ export const ImportantForAccessibilityMap = {
     [Types.ImportantForAccessibility.Yes]: 'yes',
     [Types.ImportantForAccessibility.No]: 'no',
     [Types.ImportantForAccessibility.NoHideDescendants]: 'no-hide-descendants'
+};
+
+// Platform specific helpers exposed through Native-Common AccessibilityUtil. 
+export abstract class AccessibilityPlatformUtil {
+    abstract setAccessibilityFocus(component: React.Component<any, any>): void;
 }
 
 export abstract class AccessibilityUtil {

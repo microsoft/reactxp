@@ -18,6 +18,8 @@ import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export class UserInterface extends RX.UserInterface {
+    private _layoutChangeAnimationFrame: number;
+
     measureLayoutRelativeToWindow(component: React.Component<any, any>) :
             SyncTasks.Promise<Types.LayoutInfo> {
 
@@ -81,6 +83,18 @@ export class UserInterface extends RX.UserInterface {
         return SyncTasks.Resolved(1);
     }
 
+    getMaxContentSizeMultiplier(): SyncTasks.Promise<number> {
+        // Browsers don't support font-specific scaling. They scale all of their
+        // UI elements the same.
+        return SyncTasks.Resolved(0);
+    }
+
+    setMaxContentSizeMultiplier(maxContentSizeMultiplier: number) {
+        // Browsers don't support font-specific scaling. They scale all of their
+        // UI elements the same.
+        // No-op.
+    }
+
     isHighPixelDensityScreen(): boolean {
         return this.getPixelRatio() > 1;
     }
@@ -92,7 +106,7 @@ export class UserInterface extends RX.UserInterface {
         }
 
         return pixelRatio;
-    }    
+    }
 
     setMainView(element: React.ReactElement<any>): void {
         FrontLayerViewManager.setMainView(element);

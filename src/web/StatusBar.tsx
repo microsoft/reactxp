@@ -33,6 +33,6 @@ export class StatusBar extends RX.StatusBar {
     setTranslucent(translucent: boolean): void {
         // Nothing to do on the web
     }
-};
+}
 
 export default new StatusBar();

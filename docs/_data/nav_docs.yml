@@ -18,6 +18,8 @@
       title: Animations
     - id: accessibility
       title: Accessibility
+    - id: extensions
+      title: Extensions
 - title: Components
   items:
     - id: components/activityindicator
@@ -68,8 +70,6 @@
       title: Platform
     - id: apis/popup
       title: Popup
-    - id: apis/profiling
-      title: Profiling
     - id: apis/statusbar
       title: StatusBar
     - id: apis/storage
@@ -78,3 +78,15 @@
       title: UserInterface
     - id: apis/userpresence
       title: UserPresence
+- title: Extensions
+  items:
+    - id: extensions/database
+      title: Database
+    - id: extensions/imagesvg
+      title: ImageSvg
+    - id: extensions/restclient
+      title: REST Client
+    - id: extensions/video
+      title: Video
+    - id: extensions/virtuallistview
+      title: VirtualListView

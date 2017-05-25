@@ -223,7 +223,7 @@ export class Scrollbar {
         var style = document.createElement('style') as any;
 
         style.type = 'text/css';
-        if (style.styleSheet){
+        if (style.styleSheet) {
             style.styleSheet.cssText = _customScrollbarCss;
         } else {
             style.appendChild(document.createTextNode(_customScrollbarCss));
@@ -483,12 +483,12 @@ export class Scrollbar {
     }
 
     init(options?: ScrollbarOptions) {
-        if (options) { 
+        if (options) {
             this._hasHorizontal = options.horizontal;
 
             // Only if vertical is explicitly false as opposed to null, set it to false (default is true)
             if (options.vertical === false) {
-                this._hasVertical = options.vertical; 
+                this._hasVertical = options.vertical;
             }
         }
         Scrollbar._installStyleSheet();
@@ -510,6 +510,6 @@ export class Scrollbar {
         this._verticalBar = null;
         this._horizontalBar = null;
     }
-};
+}
 
 export default Scrollbar;

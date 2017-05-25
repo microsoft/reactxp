@@ -11,8 +11,7 @@ import React = require('react');
 import ReactDOM = require('react-dom');
 
 import { RootView } from './RootView';
-import RX = require('../common/Interfaces');
-import ScrollViewConfig from './ScrollViewConfig';
+
 import Types = require('../common/Types');
 
 export class FrontLayerViewManager {
@@ -63,12 +62,12 @@ export class FrontLayerViewManager {
 
     private _shouldPopupBeDismissed = (options: Types.PopupOptions): boolean => {
         return this._activePopupOptions &&
-            this._activePopupOptions.getAnchor() == options.getAnchor();
+            this._activePopupOptions.getAnchor() === options.getAnchor();
     }
 
-
     showPopup(options: Types.PopupOptions, popupId: string, showDelay?: number): boolean {
-        // If options.dismissIfShown is true, calling this methos will behave like a toggle. On one call, it will open the popup. If it is called when pop up is seen, it will dismiss the popup.        
+        // If options.dismissIfShown is true, calling this methos will behave like a toggle. On one call, it will open the popup.
+        // If it is called when pop up is seen, it will dismiss the popup.
         // If options.dismissIfShown is false, we will simply show the popup always.
         if (options.dismissIfShown) {
             if (this._shouldPopupBeDismissed(options)) {
@@ -150,8 +149,8 @@ export class FrontLayerViewManager {
         let rootView = (
             <RootView
                 mainView={ this._mainView }
-                keyBoardFocusOutline={ this._mainView.props.keyBoardFocusOutline } 
-                mouseFocusOutline={ this._mainView.props.mouseFocusOutline }            
+                keyBoardFocusOutline={ this._mainView.props.keyBoardFocusOutline }
+                mouseFocusOutline={ this._mainView.props.mouseFocusOutline }
                 modal={ topModal }
                 activePopupOptions={ this._activePopupShowDelay > 0 ? null : this._activePopupOptions }
                 autoDismiss={ this._activePopupAutoDismiss }

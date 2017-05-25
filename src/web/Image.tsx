@@ -11,6 +11,7 @@ import _ = require('./utils/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
 import SyncTasks = require('synctasks');
+import PropTypes = require('prop-types');
 
 import restyleForInlineText = require('./utils/restyleForInlineText');
 import RX = require('../common/Interfaces');
@@ -41,7 +42,7 @@ export interface ImageState {
 
 export interface ImageContext {
     isRxParentAText?: boolean;
-};
+}
 
 interface XhrBlobUrlCacheEntry {
     xhrBlobUrl: string;
@@ -114,12 +115,12 @@ class XhrBlobUrlCache {
 
 export class Image extends RX.Image<ImageState> {
     static contextTypes: React.ValidationMap<any> = {
-        isRxParentAText: React.PropTypes.bool
+        isRxParentAText: PropTypes.bool
     };
     context: ImageContext;
 
     static childContextTypes: React.ValidationMap<any> = {
-        isRxParentAText: React.PropTypes.bool.isRequired
+        isRxParentAText: PropTypes.bool.isRequired
     };
     getChildContext() {
         // Let descendant RX components know that their nearest RX ancestor is not an RX.Text.
@@ -382,7 +383,7 @@ export class Image extends RX.Image<ImageState> {
         if (this.props.onLoad) {
             this.props.onLoad({ width: this._nativeImageWidth, height: this._nativeImageHeight });
         }
-    };
+    }
 
     private _imgOnError = () => {
         this._onError();
@@ -402,7 +403,7 @@ export class Image extends RX.Image<ImageState> {
         if (this.props.onError) {
             this.props.onError(err);
         }
-    };
+    }
 
     private _onMouseUp = (e: Types.MouseEvent) => {
         if (e.button === 0) {
@@ -413,7 +414,7 @@ export class Image extends RX.Image<ImageState> {
                 onClick(e);
             }
         }
-    };
+    }
 
     // Note: This works only if you have an onLoaded handler and wait for the image to load.
     getNativeWidth(): number {

@@ -725,7 +725,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         }
 
         // Update the component's display name for easy debugging in react devtools extension
-        static displayName = `Animated.${Component.displayName || Component.name || "Component"}`;
+        static displayName = `Animated.${Component.displayName || Component.name || 'Component'}`;
     }
 
     return AnimatedComponentGenerated;
