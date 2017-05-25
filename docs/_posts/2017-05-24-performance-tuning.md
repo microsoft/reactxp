@@ -3,7 +3,7 @@ title: Performance Tuning
 author: erictraut
 ---
 
-Performance tuning is an important part of any app development effort. In this article, I'll talk about some of the tools and techniques we used to identify and address performance bottlenecks within the ReacXP-based Skype app.
+Performance tuning is an important part of any app development effort. In this article, I'll talk about some of the tools and techniques we used to identify and address performance bottlenecks within the ReactXP-based Skype app.
 
 One of the benefits of a cross-platform code base is that many performance improvements benefit all platforms.
 
@@ -71,7 +71,7 @@ The way to fix this problem is through deferred initialization. Why pay the cost
 }
 ```
 
-What does this script do? It eliminates the require calls at the top of your modules. Whenever the imported variable is used within the file, it inserts a call to require. This means all modules are initialized immediately before their first use rather than at app startup time. For large apps, this can shave thousands of milliseconds from the app's startup time on slower devices.
+What does this script do? It eliminates the require calls at the top of your modules. Whenever the imported variable is used within the file, it inserts a call to require. This means all modules are initialized immediately before their first use rather than at app startup time. For large apps, this can shave seconds from the app's startup time on slower devices.
 
 #### Minification
 For production builds, it's important to "minify" your JavaScript. This process eliminates extraneous whitespace and shortens variable and method names where possible. It reduces the size of your JavaScript bundle on disk and in memory and speeds up parsing of your code.
