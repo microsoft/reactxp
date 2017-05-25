@@ -128,7 +128,7 @@ export class Value extends RX.AnimatedValue {
         if (input0 > input1) {
             throw 'The interpolation input values should be in ascending order.';
         }
-
+        
         this._interpolationConfig = {};
         _.each(config.inputRange, (value, index) => {
             this._interpolationConfig[value] = config.outputRange[index];

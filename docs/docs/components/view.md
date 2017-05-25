@@ -49,6 +49,8 @@ ignorePointerEvents: boolean = false; // web only
 // also desires for a restricted focus) inside this modal, the popup
 // will get the restriction, but when dismissed, the restriction will
 // be restored for the modal.
+// WARNING: For the sake of performance, this property is readonly and
+// changing it during the View life cycle will produce an error.
 restrictFocusWithin: boolean = false; // web only
 
 // Additional invisible DOM elements will be added inside the view

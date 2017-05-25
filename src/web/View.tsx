@@ -89,7 +89,10 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
     constructor(props: Types.ViewProps) {
         super(props);
-        this._focusManager = new FocusManager();
+
+        if (props.restrictFocusWithin) {
+            this._focusManager = new FocusManager();
+        }
     }
 
     private _renderResizeDetectorIfNeeded(containerStyles: any): React.ReactNode {
@@ -193,12 +196,16 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         // Let descendant Types components know that their nearest Types ancestor is not an Types.Text.
         // Because they're in an Types.View, they should use their normal styling rather than their
         // special styling for appearing inline with text.
-        //
-        // Provide the descendants with the focus manager.
-        return {
-            isRxParentAText: false,
-            focusManager: this._focusManager
+        let childContext: ViewContext = {
+            isRxParentAText: false
         };
+
+        // Provide the descendants with the focus manager (if any).
+        if (this._focusManager) {
+            childContext.focusManager = this._focusManager;
+        }
+
+        return childContext;
     }
 
     protected _getContainerRef(): React.Component<any, any> {
@@ -266,31 +273,27 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             reactElement;
     }
 
+    componentWillReceiveProps(nextProps: Types.ViewProps) {
+        super.componentWillReceiveProps(nextProps);
+
+        if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
+            console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
+        }
+    }
+
     componentDidMount() {
         super.componentDidMount();
 
-        this._focusManager.addToParentFocusManager(this.context.focusManager);
-
-        if (this.props.restrictFocusWithin) {
+        if (this._focusManager) {
             this._focusManager.restrictFocusWithin();
         }
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
-        this._focusManager.restoreFocusRestriction();
-        this._focusManager.removeFromParentFocusManager();
-    }
 
-    componentDidUpdate(prevProps: Types.ViewProps) {
-        super.componentDidUpdate(prevProps);
-
-        if (prevProps && (this.props.restrictFocusWithin !== prevProps.restrictFocusWithin)) {
-            if (this.props.restrictFocusWithin) {
-                this._focusManager.restrictFocusWithin();
-            } else {
-                this._focusManager.restoreFocusRestriction();
-            }
+        if (this._focusManager) {
+            this._focusManager.release();
         }
     }
 }

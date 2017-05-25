@@ -11,17 +11,12 @@ import React = require('react');
 import ReactDOM = require('react-dom');
 import PropTypes = require('prop-types');
 
-let _lastFocusManagerId: number = 0;
 let _lastComponentId: number = 0;
 
 interface StoredFocusableComponent {
     component: React.Component<any, any>;
     restricted?: boolean;
     origTabIndex?: number;
-}
-
-interface FocusableComponentsMap {
-    [id: string]: boolean;
 }
 
 export class FocusManager {
@@ -31,37 +26,13 @@ export class FocusManager {
 
     private static _allFocusableComponents: { [id: string]: StoredFocusableComponent } = {};
 
-    private _myFocusableComponentIds: FocusableComponentsMap = {};
+    private _myFocusableComponentIds: { [id: string]: boolean } = {};
 
-    private _id: string;
     private _isRoot: boolean;
-    private _parent: FocusManager;
-    private _children: { [id: string]: FocusManager } = {};
-
-    constructor() {
-        this._id = 'fm-' + ++_lastFocusManagerId;
-    }
 
     setAsRootFocusManager() {
         FocusManager._rootFocusManager = this;
         this._isRoot = true;
-    }
-
-    addToParentFocusManager(parent: FocusManager) {
-        if (!parent) {
-            console.error('FocusManager: parent FocusManager is not provided!');
-            return;
-        }
-
-        this._parent = parent;
-        this._parent._children[this._id] = this;
-    }
-
-    removeFromParentFocusManager() {
-        if (this._parent) {
-            delete this._parent._children[this._id];
-            this._parent = undefined;
-        }
     }
 
     // Whenever the focusable element is mounted, we let the application
@@ -78,7 +49,7 @@ export class FocusManager {
             this._myFocusableComponentIds[componentId] = true;
         }
 
-        if (!this._isInRestrictionOwner()) {
+        if (FocusManager._currentRestrictionOwner && (this !== FocusManager._currentRestrictionOwner)) {
             // New focusable element is mounted but it's not in the scope of the
             // current view with restrictFocusWithin property.
             FocusManager._restrictComponentFocus(componentId);
@@ -108,19 +79,16 @@ export class FocusManager {
         FocusManager._restrictionStack.push(this);
         FocusManager._currentRestrictionOwner = this;
 
-        let focusableComponents = this._flattenFocusableChildren();
-
         Object.keys(FocusManager._allFocusableComponents).forEach(componentId => {
-            if (!(componentId in focusableComponents)) {
+            if (!(componentId in this._myFocusableComponentIds)) {
                 FocusManager._restrictComponentFocus(componentId);
             }
         });
     }
 
-    restoreFocusRestriction() {
-        // When the view is unmounted or when restrictFocusWithin property is changed,
-        // restore the focus to the previous view with restrictFocusWithin or remove
-        // the restriction if there is no such view.
+    release() {
+        // When the view is unmounted, restore the focus to the previous view with
+        // restrictFocusWithin or remove the restriction if there is no such view.
         FocusManager._restrictionStack = FocusManager._restrictionStack.filter(focusManager => {
             return focusManager !== this;
         });
@@ -133,38 +101,6 @@ export class FocusManager {
                 FocusManager._currentRestrictionOwner.restrictFocusWithin();
             }
         }
-    }
-
-    private _isInRestrictionOwner(): boolean {
-        if (!FocusManager._currentRestrictionOwner) {
-            return true;
-        }
-
-        for (let ro: FocusManager = this; ro; ro = ro._parent) {
-            if (ro === FocusManager._currentRestrictionOwner) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private _flattenFocusableChildren(): FocusableComponentsMap {
-        let flattenedChildren: FocusableComponentsMap = {};
-
-        let traverse = (parent: FocusManager) => {
-            Object.keys(parent._myFocusableComponentIds).forEach(componentId => {
-                flattenedChildren[componentId] = true;
-            });
-
-            Object.keys(parent._children).forEach(focusManagerId => {
-                traverse(parent._children[focusManagerId]);
-            });
-        };
-
-        traverse(this);
-
-        return flattenedChildren;
     }
 
     private static _removeFocusRestriction() {
@@ -228,7 +164,7 @@ export function applyFocusableComponentMixin(Component: any) {
         focusManager.removeFocusableComponent(focusableComponentId);
     });
 
-    function inheritMethod(methodName: string, needsManagerOnly: boolean, action: Function) {
+    function inheritMethod(methodName: string, needsFocusManagerOnly: boolean, action: Function) {
         let origCallback = Component.prototype[methodName];
 
         Component.prototype[methodName] = function () {
@@ -237,11 +173,11 @@ export function applyFocusableComponentMixin(Component: any) {
             let success: boolean;
 
             if (focusManager) {
-                if (!needsManagerOnly) {
+                if (!needsFocusManagerOnly) {
                     focusableComponentId = this._focusableComponentId;
                 }
 
-                if (needsManagerOnly || (!needsManagerOnly && focusableComponentId)) {
+                if (needsFocusManagerOnly || focusableComponentId) {
                     action.call(this, focusManager, focusableComponentId);
                     success = true;
                 }
