@@ -38,7 +38,11 @@ export class FocusManager {
     // Whenever the focusable element is mounted, we let the application
     // know so that FocusManager could account for this element during the
     // focus restriction.
-    addFocusableComponent(component: React.Component<any, any>): string {
+    addFocusableComponent(component: React.Component<any, any>) {
+        if ((component as any)._focusableComponentId) {
+            return;
+        }
+
         let componentId: string = 'fc-' + ++_lastComponentId;
 
         FocusManager._allFocusableComponents[componentId] = {
@@ -55,13 +59,18 @@ export class FocusManager {
             FocusManager._restrictComponentFocus(componentId);
         }
 
-        return componentId;
+        (component as any)._focusableComponentId = componentId;
     }
 
-    removeFocusableComponent(componentId: string) {
-        FocusManager._removeComponentFocusRestriction(componentId);
-        delete this._myFocusableComponentIds[componentId];
-        delete FocusManager._allFocusableComponents[componentId];
+    removeFocusableComponent(component: React.Component<any, any>) {
+        let componentId: string = (component as any)._focusableComponentId;
+
+        if (componentId) {
+            FocusManager._removeComponentFocusRestriction(componentId);
+            delete this._myFocusableComponentIds[componentId];
+            delete FocusManager._allFocusableComponents[componentId];
+            delete (component as any)._focusableComponentId;
+        }
     }
 
     restrictFocusWithin() {
@@ -151,39 +160,46 @@ export class FocusManager {
 
 // A mixin for the focusable elements, to tell the views that
 // they exist and should be accounted during the focus restriction.
-export function applyFocusableComponentMixin(Component: any) {
+//
+// isConditionallyFocusable is an optional callback which will be
+// called for componentDidMount() or for componentWillUpdate() to
+// determine if the component is actually focusable.
+export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function) {
     let contextTypes = Component.contextTypes || {};
     contextTypes.focusManager = PropTypes.object;
     Component.contextTypes = contextTypes;
 
-    inheritMethod('componentDidMount', true, function (focusManager: FocusManager) {
-        this._focusableComponentId = focusManager.addFocusableComponent(this);
+    inheritMethod('componentDidMount', function (focusManager: FocusManager) {
+        if (!isConditionallyFocusable || isConditionallyFocusable.call(this)) {
+            focusManager.addFocusableComponent(this);
+        }
     });
 
-    inheritMethod('componentWillUnmount', false, function (focusManager: FocusManager, focusableComponentId: string) {
-        focusManager.removeFocusableComponent(focusableComponentId);
+    inheritMethod('componentWillUnmount', function (focusManager: FocusManager) {
+        focusManager.removeFocusableComponent(this);
     });
 
-    function inheritMethod(methodName: string, needsFocusManagerOnly: boolean, action: Function) {
+    inheritMethod('componentWillUpdate', function (focusManager: FocusManager, origArguments: IArguments) {
+        if (isConditionallyFocusable) {
+            let isFocusable = isConditionallyFocusable.apply(this, origArguments);
+
+            if (isFocusable && !this._focusableComponentId) {
+                focusManager.addFocusableComponent(this);
+            } else if (!isFocusable && this._focusableComponentId) {
+                focusManager.removeFocusableComponent(this);
+            }
+        }
+    });
+
+    function inheritMethod(methodName: string, action: Function) {
         let origCallback = Component.prototype[methodName];
 
         Component.prototype[methodName] = function () {
             let focusManager: FocusManager = this.context && this.context.focusManager;
-            let focusableComponentId: string;
-            let success: boolean;
 
             if (focusManager) {
-                if (!needsFocusManagerOnly) {
-                    focusableComponentId = this._focusableComponentId;
-                }
-
-                if (needsFocusManagerOnly || focusableComponentId) {
-                    action.call(this, focusManager, focusableComponentId);
-                    success = true;
-                }
-            }
-
-            if (!success) {
+                action.call(this, focusManager, arguments);
+            } else {
                 console.error('FocusableComponentMixin: context error!');
             }
 
