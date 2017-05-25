@@ -15,6 +15,7 @@ import AccessibilityUtil from './AccessibilityUtil';
 import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
+import { applyFocusableComponentMixin } from './utils/FocusManager';
 
 let _styles = {
     defaultButton: {
@@ -48,7 +49,7 @@ export class Button extends RX.Button<void> {
     private _blurDueToMouseEvent = false;
 
     render() {
-        const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits, 
+        const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits,
             _defaultAccessibilityTrait);
         const ariaSelected = AccessibilityUtil.accessibilityTraitToAriaSelected(this.props.accessibilityTraits);
         const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
@@ -135,7 +136,7 @@ export class Button extends RX.Button<void> {
         }
     }
 
-    private _onMouseDown = (e: Types.SyntheticEvent) => {        
+    private _onMouseDown = (e: Types.SyntheticEvent) => {
         if (this.props.onPressIn) {
             this.props.onPressIn(e);
         }
@@ -179,7 +180,7 @@ export class Button extends RX.Button<void> {
         }
     }
 
-    // When we get focus on an element, show the hover effect on the element. 
+    // When we get focus on an element, show the hover effect on the element.
     // This ensures that users using keyboard also get the similar experience as mouse users for accessibility.
     private _onFocus = (e: Types.FocusEvent) => {
         if (this.props.onHoverStart && !this._focusDueToMouseEvent) {
@@ -203,5 +204,7 @@ export class Button extends RX.Button<void> {
         }
     }
 }
+
+applyFocusableComponentMixin(Button);
 
 export default Button;

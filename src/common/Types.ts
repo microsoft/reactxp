@@ -523,7 +523,8 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
     viewLayerTypeAndroid?: ViewLayerType; // Android only property
     children?: ReactNode;
-    focusable?: boolean;
+
+    restrictFocusWithin?: boolean; // Web-only, during the keyboard navigation, the focus will not go outside this view
 
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
 
