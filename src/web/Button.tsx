@@ -10,7 +10,6 @@
 import _ = require('./utils/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
-import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
 import RX = require('../common/Interfaces');
