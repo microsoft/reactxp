@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.42.0_rc.10 of reactxp
+_Released 25 May 2017_
+
+Added new International API namespace for controlling right-to-left mirroring behavior.
+
+
 #### Version 0.1.2 of reactxp-virtualistview
 _Released 23 May 2017_
 
