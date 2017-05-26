@@ -4,7 +4,7 @@ title: Input
 layout: docs
 category: Interfaces
 permalink: docs/apis/input.html
-next: apis/linking
+next: apis/international
 ---
 
 This interface provides events that are triggered when specific user input events occur.

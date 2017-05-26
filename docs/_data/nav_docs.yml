@@ -58,6 +58,8 @@
       title: Clipboard
     - id: apis/input
       title: Input
+    - id: apis/international
+      title: International
     - id: apis/linking
       title: Linking
     - id: apis/location
