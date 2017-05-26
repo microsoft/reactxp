@@ -27,6 +27,7 @@ import { default as ImageImpl, Image as ImageType } from '../native-common/Image
 import { default as ClipboardImpl, Clipboard as ClipboardType } from '../native-common/Clipboard';
 import { default as GestureViewImpl, GestureView as GestureViewType } from './GestureView';
 import { default as InputImpl, Input as InputType } from '../native-common/Input';
+import { default as InternationalImpl, International as InternationalType } from '../native-common/International';
 import { default as LinkImpl, Link as LinkType } from '../native-common/Link';
 import { default as LinkingImpl, Linking as LinkingType } from './Linking';
 import { default as LocationImpl, Location as LocationType } from '../common/Location';
@@ -87,6 +88,8 @@ module ReactXP {
     export var Image = ImageImpl;
     export type Input = InputType;
     export var Input = InputImpl;
+    export type International = InternationalType;
+    export var International = InternationalImpl;
     export type Link = LinkType;
     export var Link = LinkImpl;
     export type Linking = LinkingType;
