@@ -18,12 +18,12 @@ interface TodoPanelProps {
 
 class EditTodoPanel extends RX.Component<TodoPanelProps, null> {
 
-    private newItem?: string;
+    private _newItem: string;
 
     render() {
         return (
             <RX.View style={ TodoStyles.styles.container }>
-                <RX.View style={ TodoStyles.styles.header }>
+                <RX.View style={ [TodoStyles.styles.header, RX.StatusBar.isOverlay() && TodoStyles.styles.headerWithStatusBar] }>
                     <RX.Button style={ TodoStyles.styles.defaultRoundButton } onPress={ this._onPressBack }>
                         <RX.Text style={ TodoStyles.styles.buttonText }>
                             Cancel
@@ -37,8 +37,10 @@ class EditTodoPanel extends RX.Component<TodoPanelProps, null> {
                     </RX.Button>
                 </RX.View>
 
-                <RX.TextInput style={ TodoStyles.styles.editTodoItem }
-                    placeholder={ "Enter your new todo item" }
+                <RX.TextInput
+                    style={ TodoStyles.styles.editTodoItem }
+                    value={ this._newItem }
+                    placeholder={ 'Enter your new todo item' }
                     placeholderTextColor={ TodoStyles.color.gray }
                     onChangeText={ this._onChangeText }
                     autoFocus={ true }
@@ -54,13 +56,15 @@ class EditTodoPanel extends RX.Component<TodoPanelProps, null> {
     }
 
     private _onChangeText = (newText: string) => {
-        this.newItem = newText
+        this._newItem = newText
     }
 
     private _onPressSave = () => {
-        if (this.newItem && this.newItem.length > 0) {
-            TodosStore.addTodo(this.newItem)
+        if (this._newItem) {
+            TodosStore.addTodo(this._newItem)
         }
+
+        this._newItem = null;
         this.props.onNavigateBack();
     }
 }

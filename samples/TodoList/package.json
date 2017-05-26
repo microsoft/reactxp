@@ -22,7 +22,8 @@
     "react-dom": "15.5.3",
     "react-native": "0.42.3",
     "react-native-windows": "^0.33.0",
-    "reactxp": "0.42.0-rc.9",
+    "reactxp": "0.42.0-rc.10",
+    "reactxp-virtuallistview": "^0.1.3",
     "resub": "^0.0.16"
   }
 }

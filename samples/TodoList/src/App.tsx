@@ -4,15 +4,13 @@
 
 import RX = require('reactxp');
 
-import MainPanel = require('./MainPanel');
-import SecondPanel = require('./SecondPanel');
+import TodoListPanel = require('./TodoListPanel');
 import EditTodoPanel = require('./EditTodoPanel');
 
 
 enum NavigationRouteId {
-    MainPanel,
-    SecondPanel,
-    TodoPanel
+    TodoListPanel,
+    EditTodoPanel
 }
 
 const styles = {
@@ -26,7 +24,7 @@ class App extends RX.Component<null, null> {
 
     componentDidMount() {
         this._navigator.immediatelyResetRouteStack([{
-            routeId: NavigationRouteId.MainPanel,
+            routeId: NavigationRouteId.TodoListPanel,
             sceneConfigType: RX.Types.NavigatorSceneConfigType.Fade
         }]);
     }
@@ -47,18 +45,23 @@ class App extends RX.Component<null, null> {
 
     private _renderScene = (navigatorRoute: RX.Types.NavigatorRoute) => {
         switch (navigatorRoute.routeId) {
-            case NavigationRouteId.MainPanel:
-                return <MainPanel onPressNavigate={ this._onPressNavigate } />
+            case NavigationRouteId.TodoListPanel:
+                return (
+                    <TodoListPanel
+                        onNavigateBack={ this._onPressBack }
+                        onShowTodoPanel={ this._onShowTodoPanel }
+                    />
+                );
 
-            case NavigationRouteId.SecondPanel:
-                return <SecondPanel onNavigateBack={ this._onPressBack } onShowTodoPanel={ this._onShowTodoPanel }/>
-
-            case NavigationRouteId.TodoPanel:
-                return <EditTodoPanel  onNavigateBack={ this._onPressBack }
-                                onCancelTodo={ this._onPressBack }
-                                onDeleteTodo={ this._onPressBack }
-                                onSaveTodo={ this._onPressBack}
-                  />
+            case NavigationRouteId.EditTodoPanel:
+                return (
+                    <EditTodoPanel 
+                        onNavigateBack={ this._onPressBack }
+                        onCancelTodo={ this._onPressBack }
+                        onDeleteTodo={ this._onPressBack }
+                        onSaveTodo={ this._onPressBack }
+                    />
+                );
         }
 
         return null;
@@ -66,7 +69,7 @@ class App extends RX.Component<null, null> {
 
     private _onPressNavigate = () => {
         this._navigator.push({
-            routeId: NavigationRouteId.SecondPanel,
+            routeId: NavigationRouteId.TodoListPanel,
             sceneConfigType: RX.Types.NavigatorSceneConfigType.FloatFromRight,
             customSceneConfig: {
                 hideShadow: true
@@ -76,7 +79,7 @@ class App extends RX.Component<null, null> {
 
     private _onShowTodoPanel = () => {
         this._navigator.push({
-            routeId: NavigationRouteId.TodoPanel,
+            routeId: NavigationRouteId.EditTodoPanel,
             sceneConfigType: RX.Types.NavigatorSceneConfigType.FloatFromRight,
             customSceneConfig: {
                 hideShadow: true

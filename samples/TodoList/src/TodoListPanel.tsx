@@ -1,11 +1,11 @@
 /**
-* SecondPanel.tsx
-* Copyright: Microsoft 2017
+* TodoListPanel.tsx
 *
-* Display the todo list of items.
+* Display first screen of the Todo application.
 */
 
 import RX = require('reactxp');
+
 import TodoStyles = require('./TodoStyles');
 import TodoList = require('./TodoList')
 
@@ -14,20 +14,11 @@ interface SecondPanelProps {
     onShowTodoPanel: () => void;
 }
 
-class SecondPanel extends RX.Component<SecondPanelProps, null> {
-
+class TodoListPanel extends RX.Component<SecondPanelProps, null> {
     render() {
         return (
             <RX.View style={ TodoStyles.styles.container }>
-
-                <RX.View style={ TodoStyles.styles.header }>
-
-                    <RX.Button style={ TodoStyles.styles.defaultRoundButton } onPress={ this._onPressBack }>
-                        <RX.Text style={ TodoStyles.styles.buttonText }>
-                            Go Back
-                        </RX.Text>
-                    </RX.Button>
-
+                <RX.View style={ [TodoStyles.styles.header, RX.StatusBar.isOverlay() && TodoStyles.styles.headerWithStatusBar] }>
                     <RX.Button style={ TodoStyles.styles.saveRoundButton } onPress={ this._onPressCreateNewTodo }>
                         <RX.Text style={ TodoStyles.styles.buttonText }>
                             Create new todo item
@@ -36,8 +27,7 @@ class SecondPanel extends RX.Component<SecondPanelProps, null> {
                 </RX.View>
 
                 <RX.View style={ TodoStyles.styles.todoListcontainer }>
-                    <TodoList
-                    />
+                    <TodoList />
                 </RX.View>
 
             </RX.View>
@@ -53,4 +43,4 @@ class SecondPanel extends RX.Component<SecondPanelProps, null> {
     }
 }
 
-export = SecondPanel;
+export = TodoListPanel;
