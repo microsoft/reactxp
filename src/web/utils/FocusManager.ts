@@ -115,6 +115,13 @@ export class FocusManager {
 
         this._prevFocusedComponent = FocusManager._currentFocusedComponent;
 
+        if (this._prevFocusedComponent) {
+            let el = ReactDOM.findDOMNode<HTMLElement>(this._prevFocusedComponent.component);
+            if (el && el.blur) {
+                el.blur();
+            }
+        }
+
         Object.keys(FocusManager._allFocusableComponents).forEach(componentId => {
             if (!(componentId in this._myFocusableComponentIds)) {
                 FocusManager._restrictComponentFocus(componentId);
