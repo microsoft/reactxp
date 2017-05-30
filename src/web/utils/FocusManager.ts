@@ -115,7 +115,7 @@ export class FocusManager {
 
         this._prevFocusedComponent = FocusManager._currentFocusedComponent;
 
-        if (this._prevFocusedComponent) {
+        if (this._prevFocusedComponent && !this._prevFocusedComponent.removed) {
             let el = ReactDOM.findDOMNode<HTMLElement>(this._prevFocusedComponent.component);
             if (el && el.blur) {
                 el.blur();
