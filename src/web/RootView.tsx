@@ -233,7 +233,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         let rootViewStyle = {
             width: '100%',
             height: '100%',
-            display: 'flex',
             cursor: 'default'
         };
 
