@@ -14,22 +14,32 @@ interface SecondPanelProps {
     onShowTodoPanel: () => void;
 }
 
+const _styles = {
+    listContainer: RX.Styles.createViewStyle({
+        padding: 0,
+        flex: 1,
+        justifyContent: 'center',
+        flexDirection: 'row',
+        alignSelf: 'stretch',
+        alignItems: 'stretch'
+    })
+};
+
 class TodoListPanel extends RX.Component<SecondPanelProps, null> {
     render() {
         return (
             <RX.View style={ TodoStyles.styles.container }>
                 <RX.View style={ [TodoStyles.styles.header, RX.StatusBar.isOverlay() && TodoStyles.styles.headerWithStatusBar] }>
-                    <RX.Button style={ TodoStyles.styles.saveRoundButton } onPress={ this._onPressCreateNewTodo }>
+                    <RX.Button style={ TodoStyles.styles.submitButton } onPress={ this._onPressCreateNewTodo }>
                         <RX.Text style={ TodoStyles.styles.buttonText }>
-                            Create new todo item
+                            Add reminder
                         </RX.Text>
                     </RX.Button>
                 </RX.View>
 
-                <RX.View style={ TodoStyles.styles.todoListcontainer }>
+                <RX.View style={ _styles.listContainer }>
                     <TodoList />
                 </RX.View>
-
             </RX.View>
         );
     }

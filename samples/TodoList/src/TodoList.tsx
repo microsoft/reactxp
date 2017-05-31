@@ -19,13 +19,34 @@ interface TodoListState {
     todos?: TodoListViewItemInfo[];
 }
 
+const _itemHeight = 32;
+
+const _styles = {
+    listScroll: RX.Styles.createViewStyle({
+        flexDirection: 'column',
+        alignSelf: 'stretch',
+        backgroundColor: TodoStyles.controlColors.contentBackground
+    }),
+    itemCell: RX.Styles.createViewStyle({
+        flex : 1,
+        height: _itemHeight,
+        justifyContent: 'center'
+    }),
+    itemText: RX.Styles.createTextStyle({
+        fontSize: TodoStyles.fontSizes.size20,
+        marginHorizontal: 8,
+        alignSelf: 'stretch',
+        color: '#666'
+    })
+};
+
 class TodoList extends ComponentBase<{}, TodoListState> {
     protected _buildState(props: {}, initialBuild: boolean): TodoListState {
         return {
             todos: TodosStore.getTodos().map((todoString, i) => {
                 return {
                     key: i.toString(),
-                    height: 28,
+                    height: _itemHeight,
                     template: 'todo',
                     text: todoString
                 };
@@ -38,15 +59,15 @@ class TodoList extends ComponentBase<{}, TodoListState> {
             <VirtualListView
                 itemList={ this.state.todos }
                 renderItem={ this._renderItem }
-                style={ TodoStyles.styles.todoListScroll }
+                style={ _styles.listScroll }
             />
         );
     }
 
     private _renderItem = (item: TodoListViewItemInfo, hasFocus?: boolean) => {
         return (
-            <RX.View style={ TodoStyles.styles.todoListItemCell }>
-                <RX.Text style={ TodoStyles.styles.todoListItemText }>
+            <RX.View style={ _styles.itemCell }>
+                <RX.Text style={ _styles.itemText }>
                     { item.text }
                 </RX.Text>
             </RX.View>

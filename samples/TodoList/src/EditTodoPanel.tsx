@@ -16,21 +16,43 @@ interface TodoPanelProps {
     onDeleteTodo: () => void;
 }
 
-class EditTodoPanel extends RX.Component<TodoPanelProps, null> {
+interface TodoPanelState {
+    todoText?: string;
+}
 
-    private _newItem: string;
+const _styles = {
+    editTodoItem: RX.Styles.createTextStyle({
+        padding: 8,
+        fontSize: TodoStyles.fontSizes.size20,
+        flex: 1,
+        alignSelf: 'stretch',
+        fontWeight: 'bold',
+        marginBottom: 28
+    })
+};
+
+class EditTodoPanel extends RX.Component<TodoPanelProps, TodoPanelState> {
+    constructor() {
+        super();
+
+        this.state = {};
+    }
 
     render() {
         return (
             <RX.View style={ TodoStyles.styles.container }>
                 <RX.View style={ [TodoStyles.styles.header, RX.StatusBar.isOverlay() && TodoStyles.styles.headerWithStatusBar] }>
-                    <RX.Button style={ TodoStyles.styles.defaultRoundButton } onPress={ this._onPressBack }>
+                    <RX.Button style={ TodoStyles.styles.cancelButton } onPress={ this._onPressBack }>
                         <RX.Text style={ TodoStyles.styles.buttonText }>
                             Cancel
                         </RX.Text>
                     </RX.Button>
 
-                    <RX.Button style={ TodoStyles.styles.saveRoundButton } onPress={ this._onPressSave }>
+                    <RX.Button
+                        style={ TodoStyles.styles.submitButton }
+                        onPress={ this._onPressSave }
+                        disabled={ !this.state.todoText }
+                    >
                         <RX.Text style={ TodoStyles.styles.buttonText }>
                             Save
                         </RX.Text>
@@ -38,10 +60,10 @@ class EditTodoPanel extends RX.Component<TodoPanelProps, null> {
                 </RX.View>
 
                 <RX.TextInput
-                    style={ TodoStyles.styles.editTodoItem }
-                    value={ this._newItem }
-                    placeholder={ 'Enter your new todo item' }
-                    placeholderTextColor={ TodoStyles.color.gray }
+                    style={ _styles.editTodoItem }
+                    value={ this.state.todoText }
+                    placeholder={ 'Enter reminder' }
+                    placeholderTextColor={ TodoStyles.controlColors.placeholderText }
                     onChangeText={ this._onChangeText }
                     autoFocus={ true }
                     multiline={ true }
@@ -56,16 +78,16 @@ class EditTodoPanel extends RX.Component<TodoPanelProps, null> {
     }
 
     private _onChangeText = (newText: string) => {
-        this._newItem = newText
+        this.setState({ todoText: newText });
     }
 
     private _onPressSave = () => {
-        if (this._newItem) {
-            TodosStore.addTodo(this._newItem)
+        if (this.state.todoText) {
+            TodosStore.addTodo(this.state.todoText)
+    
+            this.setState({ todoText: '' });
+            this.props.onNavigateBack();
         }
-
-        this._newItem = null;
-        this.props.onNavigateBack();
     }
 }
 

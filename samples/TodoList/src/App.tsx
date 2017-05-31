@@ -4,9 +4,9 @@
 
 import RX = require('reactxp');
 
-import TodoListPanel = require('./TodoListPanel');
 import EditTodoPanel = require('./EditTodoPanel');
-
+import TodoListPanel = require('./TodoListPanel');
+import TotoStyles = require('./TodoStyles');
 
 enum NavigationRouteId {
     TodoListPanel,
@@ -15,7 +15,7 @@ enum NavigationRouteId {
 
 const styles = {
     navCardStyle: RX.Styles.createViewStyle({
-        backgroundColor: '#f5fcff'
+        backgroundColor: TotoStyles.controlColors.contentBackground
     })
 };
 
