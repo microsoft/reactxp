@@ -132,6 +132,10 @@ export abstract class UserInterface {
 
     // On-screen Keyboard
     abstract dismissKeyboard(): void;
+
+    // Latency Warnings
+    abstract enableTouchLatencyEvents(latencyThresholdMs: number): void;
+    touchLatencyEvent = new SubscribableEvent.SubscribableEvent<(observedLatencyMs: number) => void>();
 }
 
 export abstract class Modal {
