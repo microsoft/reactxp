@@ -27,6 +27,7 @@ import { default as ImageImpl, Image as ImageType } from '../native-common/Image
 import { default as InputImpl, Input as InputType } from '../native-common/Input';
 import { default as ClipboardImpl, Clipboard as ClipboardType } from '../native-common/Clipboard';
 import { default as GestureViewImpl, GestureView as GestureViewType } from './GestureView';
+import { default as InternationalImpl, International as InternationalType } from '../native-common/International';
 import { default as LinkImpl, Link as LinkType } from '../native-common/Link';
 import { default as LinkingImpl, Linking as LinkingType } from './Linking';
 import { default as LocationImpl, Location as LocationType } from '../common/Location';
@@ -41,7 +42,6 @@ import { default as StorageImpl, Storage as StorageType } from '../native-common
 import { default as StylesImpl, Styles as StylesType } from '../native-common/Styles';
 import { default as TextImpl, Text as TextType } from '../native-common/Text';
 import { default as TextInputImpl, TextInput as TextInputType } from '../native-common/TextInput';
-import { default as ProfilingImpl, Profiling as ProfilingType } from '../native-common/Profiling';
 import { default as UserInterfaceImpl, UserInterface as UserInterfaceType } from '../native-common/UserInterface';
 import { default as UserPresenceImpl, UserPresence as UserPresenceType } from '../native-common/UserPresence';
 import { default as ViewImpl, View as ViewType } from '../native-common/View';
@@ -88,6 +88,8 @@ module ReactXP {
     export var Image = ImageImpl;
     export type Input = InputType;
     export var Input = InputImpl;
+    export type International = InternationalType;
+    export var International = InternationalImpl;
     export type Link = LinkType;
     export var Link = LinkImpl;
     export type Linking = LinkingType;
@@ -104,8 +106,6 @@ module ReactXP {
     export var Platform = PlatformImpl;
     export type Popup = PopupType;
     export var Popup = PopupImpl;
-    export type Profiling = ProfilingType;
-    export var Profiling = ProfilingImpl;
     export type ScrollView = ScrollViewType;
     export var ScrollView = ScrollViewImpl;
     export type StatusBar = StatusBarType;

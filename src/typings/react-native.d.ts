@@ -1337,6 +1337,14 @@ declare module 'react-native' {
      module InteractionManager {
          function setDeadline(deadline: number): void;
      }
+
+    interface I18nManager {
+        isRTL: boolean
+        allowRTL: (allowRTL: boolean) => {}
+        forceRTL: (forceRTL: boolean) => {}
+    }
+
+    export var I18nManager: I18nManager;
 }
 
 interface GeoConfiguration {
@@ -1347,3 +1355,4 @@ interface Geolocation {
     // React Native addition to navigator.geolocation
     setRNConfiguration(config: GeoConfiguration): void;
 }
+

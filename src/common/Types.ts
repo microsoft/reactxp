@@ -30,7 +30,8 @@ export type ReactInterface = {
 export interface FlexboxStyle {
     alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
     alignSelf?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
-
+    alignContent?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
+    
     borderWidth?: number;
     borderTopWidth?: number;
     borderRightWidth?: number;
@@ -276,8 +277,6 @@ export type LinkStyleRuleSet = StyleRuleSet<LinkStyle>;
 // ------------------------------------------------------------
 
 export interface ImageStyle extends ViewAndImageCommonStyle, FlexboxStyle {
-    resizeMode?: 'contain' | 'cover' | 'stretch';
-
     // This is an Android only style attribute that is used to fill the gap in the case of rounded corners
     // in gif images.
     overlayColor?: string;
@@ -524,7 +523,8 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
     viewLayerTypeAndroid?: ViewLayerType; // Android only property
     children?: ReactNode;
-    focusable?: boolean;
+
+    restrictFocusWithin?: boolean; // Web-only, during the keyboard navigation, the focus will not go outside this view
 
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
 
@@ -936,9 +936,10 @@ export interface NavigatorRoute {
 
 // NOTE: Experimental navigator only
 export type NavigationTransitionSpec = {
-    duration?: number,
+    duration?: number;
+
     // NOTE: Elastic and bounce easing will not work as expected due to how the navigator interpolates styles
-    easing?: Animated.EasingFunction
+    easing?: Animated.EasingFunction;
 };
 
 // NOTE: Experimental navigator only
@@ -967,7 +968,7 @@ export type CustomNavigatorSceneConfig = {
 };
 
 export interface NavigatorProps extends CommonProps {
-    renderScene?: (route: NavigatorRoute) => JSX.Element;
+    renderScene: (route: NavigatorRoute) => JSX.Element;
     navigateBackCompleted?: () => void;
     // NOTE: Arguments are only passed to transitionStarted by the experimental navigator
     transitionStarted?: (progress?: RX.AnimatedValue,
@@ -1177,14 +1178,3 @@ export interface LayoutInfo {
 // Platform
 // ----------------------------------------------------------------------
 export type PlatformType = 'web' | 'ios' | 'android' | 'windows';
-
-//
-// Profiling
-// ----------------------------------------------------------------------
-export interface ProfilingLoggingConfig {
-    printInclusive?: boolean;
-    printExclusive?: boolean;
-    printWasted?: boolean;
-    printOperations?: boolean;
-    printDOM?: boolean;
-}

@@ -16,6 +16,36 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.42.0_rc.10 of reactxp
+_Released 25 May 2017_
+
+Added new International API namespace for controlling right-to-left mirroring behavior.
+
+
+#### Version 0.1.2 of reactxp-virtualistview
+_Released 23 May 2017_
+
+Republished because index files were missing in previous publish.
+
+
+#### Version 0.42.0_rc.9 of reactxp
+_Released 17 May 2017_
+
+Fixed bug in Navigator that caused crash in hello-world sample.
+
+
+#### Version 0.42.0_rc.8 of reactxp
+_Released 16 May 2017_
+
+Removed Profiling API namespace and dependency on react-addons-perf.
+
+
+#### Version 0.1.1 of reactxp-virtualistview
+_Released 11 May 2017_
+
+Republished because "dist" directory was missing in previous publish.
+
+
 #### Version 0.1.2 of reactxp-video
 _Released 11 May 2017_
 

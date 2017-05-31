@@ -47,12 +47,6 @@ title: string = undefined;
 ```
 
 ## Styles
-
-``` javascript
-**Image Resizing**
-resizeMode: 'contain' | 'cover' | 'stretch';
-```
-
 [**Flexbox Styles**](/reactxp/docs/styles.html#flexbox-style-attributes)
 
 [**View Styles**](/reactxp/docs/styles.html#view-style-attributes)

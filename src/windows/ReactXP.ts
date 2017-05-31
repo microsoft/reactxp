@@ -17,6 +17,7 @@ import RXTypes = require('../common/Types');
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 
+import { default as AccessibilityImpl, Accessibility as AccessibilityType } from './Accessibility';
 import { default as ActivityIndicatorImpl, ActivityIndicator as ActivityIndicatorType } from '../native-common/ActivityIndicator';
 import { default as AlertImpl, Alert as AlertType } from '../native-common/Alert';
 import { default as AppImpl, App as AppType } from '../native-common/App';
@@ -26,6 +27,7 @@ import { default as ImageImpl, Image as ImageType } from '../native-common/Image
 import { default as ClipboardImpl, Clipboard as ClipboardType } from '../native-common/Clipboard';
 import { default as GestureViewImpl, GestureView as GestureViewType } from './GestureView';
 import { default as InputImpl, Input as InputType } from '../native-common/Input';
+import { default as InternationalImpl, International as InternationalType } from '../native-common/International';
 import { default as LinkImpl, Link as LinkType } from '../native-common/Link';
 import { default as LinkingImpl, Linking as LinkingType } from './Linking';
 import { default as LocationImpl, Location as LocationType } from '../common/Location';
@@ -40,7 +42,6 @@ import { default as StorageImpl, Storage as StorageType } from '../native-common
 import { default as StylesImpl, Styles as StylesType } from '../native-common/Styles';
 import { default as TextImpl, Text as TextType } from '../native-common/Text';
 import { default as TextInputImpl, TextInput as TextInputType } from '../native-common/TextInput';
-import { default as ProfilingImpl, Profiling as ProfilingType } from '../native-common/Profiling';
 import { default as UserInterfaceImpl, UserInterface as UserInterfaceType } from '../native-common/UserInterface';
 import { default as UserPresenceImpl, UserPresence as UserPresenceType } from '../native-common/UserPresence';
 import { default as ViewImpl, View as ViewType } from '../native-common/View';
@@ -66,6 +67,8 @@ AccessibilityUtil.setAccessibilityPlatformUtil(AccessibilityPlatformUtil);
 // See web/ReactXP.tsx for more details.
 
 module ReactXP {
+    export type Accessibility = AccessibilityType;
+    export var Accessibility = AccessibilityImpl;
     export import Animated = AnimatedImpl.Animated;
     export type ActivityIndicator = ActivityIndicatorImpl;
     export var ActivityIndicator = ActivityIndicatorType;
@@ -85,6 +88,8 @@ module ReactXP {
     export var Image = ImageImpl;
     export type Input = InputType;
     export var Input = InputImpl;
+    export type International = InternationalType;
+    export var International = InternationalImpl;
     export type Link = LinkType;
     export var Link = LinkImpl;
     export type Linking = LinkingType;
@@ -101,8 +106,6 @@ module ReactXP {
     export var Platform = PlatformImpl;
     export type Popup = PopupType;
     export var Popup = PopupImpl;
-    export type Profiling = ProfilingType;
-    export var Profiling = ProfilingImpl;
     export type ScrollView = ScrollViewType;
     export var ScrollView = ScrollViewImpl;
     export type Storage = StorageType;

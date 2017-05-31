@@ -78,6 +78,7 @@ alignSelf: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
 
 **Child layout**
 ```javascript
+alignContent: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
 alignItems: 'stretch' | 'flex-start' | 'flex-end' | 'center';
 flexWrap: 'wrap' | 'nowrap';
 flexDirection: 'column' | 'row' | 'column-reverse' | 'row-reverse';

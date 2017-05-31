@@ -58,6 +58,8 @@
       title: Clipboard
     - id: apis/input
       title: Input
+    - id: apis/international
+      title: International
     - id: apis/linking
       title: Linking
     - id: apis/location
@@ -70,8 +72,6 @@
       title: Platform
     - id: apis/popup
       title: Popup
-    - id: apis/profiling
-      title: Profiling
     - id: apis/statusbar
       title: StatusBar
     - id: apis/storage

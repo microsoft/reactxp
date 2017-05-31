@@ -1,0 +1,29 @@
+{
+  "name": "rxp-todo-list",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "web-watch": "webpack --progress --colors --watch",
+    "rn-watch": "tsc --watch",
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.12",
+    "@types/webpack": "^2.2.14",
+    "awesome-typescript-loader": "3.1.2",
+    "source-map-loader": "^0.1.6",
+    "ts-node": "^3.0.2",
+    "typescript": "2.1.6",
+    "webpack": "2.2.1"
+  },
+  "dependencies": {
+    "react": "15.5.3",
+    "react-dom": "15.5.3",
+    "react-native": "0.42.3",
+    "react-native-windows": "^0.33.0",
+    "reactxp": "0.42.0-rc.10",
+    "reactxp-virtuallistview": "^0.1.3",
+    "resub": "^0.0.16"
+  }
+}

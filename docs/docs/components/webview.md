@@ -12,7 +12,7 @@ This component displays HTML contents in an embedded browser control.
 To limit the functionality of the browser control, specify one or more sandbox options. For detailed definitions of sandbox flags, refer to the [HTML documentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe).
 
 
-## Constants
+## Types
 ``` javascript
 enum WebViewSandboxMode {
     None = 0,
@@ -27,10 +27,7 @@ enum WebViewSandboxMode {
     AllowScripts = 1 << 8,
     AllowTopNavigation = 1 << 9
 }
-```
 
-## Classes
-``` javascript
 interface WebViewNavigationState {
     canGoBack: boolean;
     canGoForward: boolean;
