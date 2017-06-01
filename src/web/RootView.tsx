@@ -284,16 +284,16 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 className={ this.state.focusClass }
                 style={ rootViewStyle }
             >
-                    { this.props.mainView }
-                    { optionalModal }
-                    { optionalPopup }
-                    <div
-                        style={ _styles.liveRegionContainer }
-                        aria-live={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
-                        aria-atomic={ 'true' }
-                    >
-                        { this.state.announcementText }
-                    </div>
+                { this.props.mainView }
+                { optionalModal }
+                { optionalPopup }
+                <div
+                    style={ _styles.liveRegionContainer }
+                    aria-live={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
+                    aria-atomic={ 'true' }
+                >
+                    { this.state.announcementText }
+                </div>
             </div>
         );
     }

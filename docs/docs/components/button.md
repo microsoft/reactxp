@@ -26,7 +26,7 @@ accessibilityHidden: boolean = false;
 accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 
 // Region for accessibility mechanisms
-accessibilityLiveRegion?: AccessibilityLiveRegion = undefined; // Android and web only
+accessibilityLiveRegion: AccessibilityLiveRegion = undefined; // Android and web only
 
 // Delay in ms before onLongPress is called
 delayLongPress: number = 1000;
@@ -64,13 +64,13 @@ title: string = undefined;
 
 // Visual touchfeedback properties
 // Disable default opacity animation on touch of buttons
-disableTouchOpacityAnimation?: boolean;  // iOS and Android only
+disableTouchOpacityAnimation: boolean = false;  // iOS and Android only
 
 // Opacity value the button should animate to on button touch
-activeOpacity?: number; // iOS and Android only
+activeOpacity: number = undefined; // iOS and Android only
 
 // Background color that will be visible on button touch
-underlayColor?: string; // iOS and Android only
+underlayColor: string = undefined; // iOS and Android only
 ```
 
 ## Styles
