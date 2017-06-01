@@ -13,9 +13,12 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "forceConsistentCasingInFileNames": true,
     "outDir": "./dist/",
-    "types": [
-      "node"
+    "typeRoots": [
+        "node_modules/@types"
     ]
   },
   "include": [

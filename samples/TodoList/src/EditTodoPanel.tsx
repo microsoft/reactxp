@@ -22,12 +22,11 @@ interface TodoPanelState {
 
 const _styles = {
     editTodoItem: RX.Styles.createTextStyle({
-        padding: 8,
+        margin: 8,
+        height: 32,
         fontSize: TodoStyles.fontSizes.size20,
-        flex: 1,
         alignSelf: 'stretch',
-        fontWeight: 'bold',
-        marginBottom: 28
+        backgroundColor: 'transparent'
     })
 };
 
@@ -66,7 +65,6 @@ class EditTodoPanel extends RX.Component<TodoPanelProps, TodoPanelState> {
                     placeholderTextColor={ TodoStyles.controlColors.placeholderText }
                     onChangeText={ this._onChangeText }
                     autoFocus={ true }
-                    multiline={ true }
                     textAlign={ 'left' }
                 />
             </RX.View>
@@ -74,6 +72,7 @@ class EditTodoPanel extends RX.Component<TodoPanelProps, TodoPanelState> {
     }
 
     private _onPressBack = () => {
+        this.setState({ todoText: '' });
         this.props.onNavigateBack();
     }
 

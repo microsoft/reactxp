@@ -43,12 +43,12 @@ const _styles = {
 class TodoList extends ComponentBase<{}, TodoListState> {
     protected _buildState(props: {}, initialBuild: boolean): TodoListState {
         return {
-            todos: TodosStore.getTodos().map((todoString, i) => {
+            todos: TodosStore.getTodos().map((todo, i) => {
                 return {
                     key: i.toString(),
                     height: _itemHeight,
                     template: 'todo',
-                    text: todoString
+                    text: todo.text
                 };
             })
         }
@@ -67,7 +67,7 @@ class TodoList extends ComponentBase<{}, TodoListState> {
     private _renderItem = (item: TodoListViewItemInfo, hasFocus?: boolean) => {
         return (
             <RX.View style={ _styles.itemCell }>
-                <RX.Text style={ _styles.itemText }>
+                <RX.Text style={ _styles.itemText } numberOfLines={ 1 }>
                     { item.text }
                 </RX.Text>
             </RX.View>

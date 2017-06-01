@@ -44,10 +44,6 @@ class TodoListPanel extends RX.Component<SecondPanelProps, null> {
         );
     }
 
-    private _onPressBack = () => {
-        this.props.onNavigateBack();
-    }
-
     private _onPressCreateNewTodo = () => {
         this.props.onShowTodoPanel();
     }

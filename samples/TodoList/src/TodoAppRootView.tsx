@@ -1,5 +1,5 @@
 /*
-* This file demonstrates a basic ReactXP app.
+* Top-level UI for sample to-do app.
 */
 
 import RX = require('reactxp');
@@ -19,7 +19,7 @@ const styles = {
     })
 };
 
-class App extends RX.Component<null, null> {
+class TodoAppRootView extends RX.Component<null, null> {
     private _navigator: RX.Navigator;
 
     componentDidMount() {
@@ -67,16 +67,6 @@ class App extends RX.Component<null, null> {
         return null;
     }
 
-    private _onPressNavigate = () => {
-        this._navigator.push({
-            routeId: NavigationRouteId.TodoListPanel,
-            sceneConfigType: RX.Types.NavigatorSceneConfigType.FloatFromRight,
-            customSceneConfig: {
-                hideShadow: true
-            }
-        });
-    }
-
     private _onShowTodoPanel = () => {
         this._navigator.push({
             routeId: NavigationRouteId.EditTodoPanel,
@@ -92,4 +82,4 @@ class App extends RX.Component<null, null> {
     }
 }
 
-export = App;
+export = TodoAppRootView;

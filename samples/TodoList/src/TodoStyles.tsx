@@ -46,10 +46,8 @@ class TodoStyles {
             backgroundColor: TodoStyles.controlColors.headerBackground
         }),
         container: RX.Styles.createViewStyle({
-            padding: 0,
             flex: 1,
-            justifyContent: 'flex-start',
-            alignItems: 'center',
+            alignSelf: 'stretch',
             backgroundColor: TodoStyles.controlColors.contentBackground
         }),
         cancelButton: RX.Styles.createViewStyle({
