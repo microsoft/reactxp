@@ -13,9 +13,9 @@ This component is a generic container for other components.
 In addition to the [common accessibility props](/reactxp/docs/accessibility.html), the following props are supported.
 
 ``` javascript
-// Alternate text to display if the image cannot be loaded
-// or by screen readers
-accessibilityHidden: boolean = false;
+// Alternate text for screen readers.
+// If not defined, title prop is used.
+accessibilityLabel?: string = undefined;
 
 // Hide the component from screen readers?
 accessibilityHidden: boolean = false;
