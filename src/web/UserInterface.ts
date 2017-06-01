@@ -108,8 +108,8 @@ export class UserInterface extends RX.UserInterface {
         return pixelRatio;
     }
 
-    setMainView(element: React.ReactElement<any>): void {
-        FrontLayerViewManager.setMainView(element);
+    setMainView(element: React.ReactElement<any>,config: {styles:any = ,element:any} = {styles:false,element:false}): void {
+        FrontLayerViewManager.setMainView(element,config);
     }
 
     useCustomScrollbars(enable = true) {

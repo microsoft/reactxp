@@ -25,6 +25,7 @@ import FocusManager from './utils/FocusManager';
 
 export interface RootViewProps {
     mainView?: React.ReactNode;
+    styles:any;
     modal?: React.ReactElement<Types.ViewProps>;
     activePopupOptions?: Types.PopupOptions;
     autoDismiss?: boolean;
@@ -230,9 +231,10 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     render() {
-        let rootViewStyle = {
+        let rootViewStyle = this.props.styles ||{
             width: '100%',
             height: '100%',
+            display:'flex',
             cursor: 'default'
         };
 
