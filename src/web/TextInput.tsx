@@ -213,6 +213,10 @@ export class TextInput extends RX.TextInput<TextInputState> {
         }
     }
 
+    clear() {
+        this.setValue('');
+    }
+
     isFocused() {
         let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
         if (el) {
