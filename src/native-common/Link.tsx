@@ -43,7 +43,9 @@ export class Link extends RX.Link<{}> {
 
         // The default action is to launch a browser.
         if (this.props.url) {
-            Linking.openUrl(this.props.url);
+            Linking.openUrl(this.props.url).catch(err => {
+                // Catch the exception so it doesn't propagate.
+            });
         }
     }
 
