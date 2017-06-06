@@ -96,6 +96,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
                     onPaste={ this._onPaste }
                     onScroll={ this._onScroll }
                     aria-label={ this.props.accessibilityLabel }
+                    className={ this.props.className }
                 />
             );
         } else {
@@ -120,6 +121,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
                     onPaste={ this._onPaste }
                     aria-label={ this.props.accessibilityLabel }
                     type={ this.props.secureTextEntry ? 'password' : 'text' }
+                    className={ this.props.className }
                 />
             );
         }

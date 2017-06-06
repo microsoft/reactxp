@@ -792,6 +792,9 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     // iOS and Android only property for controlling the text input selection color
     selectionColor?: string;
 
+    // web prop for adding class attribute to the input element
+    className?: string;
+
     onKeyPress?: (e: KeyboardEvent) => void;
     onFocus?: (e: FocusEvent) => void;
     onBlur?: (e: FocusEvent) => void;
