@@ -1,5 +1,5 @@
 /**
-* TodoList.tsx
+* EditTodoPanel.tsx
 * Copyright: Microsoft 2017
 *
 * The Todo item edit view.
