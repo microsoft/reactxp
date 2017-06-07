@@ -41,6 +41,7 @@ export class WebView extends RX.WebView<{}> {
                 scalesPageToFit={ this.props.scalesPageToFit }
                 onError={ this.props.onError }
                 onLoadStart={ this.props.onLoadStart }
+                onMessage={ this.props.onMessage }
             />
         );
     }
@@ -63,6 +64,13 @@ export class WebView extends RX.WebView<{}> {
         const webView : RN.WebView = this.refs[WEBVIEW_REF] as RN.WebView;
         if (webView) {
             webView.goForward();
+        }
+    }
+    
+    postMessage(message: string, targetOrigin?: string) {
+        const webView : RN.WebView = this.refs[WEBVIEW_REF] as RN.WebView;
+        if (webView) {
+            webView.postMessage(message,targetOrigin);
         }
     }
 }
