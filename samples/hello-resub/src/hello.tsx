@@ -23,7 +23,9 @@ class Hello extends ComponentBase<{}, HelloState> {
             <RX.View>
                 <RX.Button title="click here for show/hide text" 
                     onPress={() => HelloStore.switchShowTitle()}>
-                    {"click here to show/hide"}
+                    <RX.Text>
+                        {"click here to show/hide"}
+                    <RX.Text>
                 </RX.Button>
                 < RX.Text>
                     { this.state.showTitle? this.state.Hello :null }
