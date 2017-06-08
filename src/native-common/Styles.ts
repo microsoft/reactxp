@@ -17,7 +17,8 @@ import Types = require('../common/Types');
 const forbiddenProps: string[] = [
     'wordBreak',
     'appRegion',
-    'cursor'
+    'cursor',
+    'display'
 ];
 
 // React Native styles that ReactXP doesn't expose.
