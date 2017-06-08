@@ -17,7 +17,7 @@
         "timeEnd",
         "trace"
     ],
-    "no-consecutive-blank-lines":  true,
+    "no-consecutive-blank-lines": [true],
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-variable": true,
@@ -34,7 +34,7 @@
     ],
     "quotemark": [true, "single", "jsx-single"],
     "radix": true,
-    "semicolon": true,
+    "semicolon": [true, "always"],
     "triple-equals": [true, "allow-null-check"],
     "variable-name": false,
     "whitespace": [true,
