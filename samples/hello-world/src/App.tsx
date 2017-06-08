@@ -18,7 +18,7 @@ const styles = {
     })
 };
 
-class App extends RX.Component<null, null> {
+class App extends RX.Component<{}, null> {
     private _navigator: RX.Navigator;
 
     componentDidMount() {
