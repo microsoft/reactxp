@@ -16,6 +16,7 @@ import AccessibilityUtil from './AccessibilityUtil';
 import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
+import UserInterface from './UserInterface';
 
 const _styles = {
     defaultButton: Styles.createButtonStyle({
@@ -176,6 +177,7 @@ export class Button extends RX.Button<{}> {
     }
 
     touchableHandlePress = (e: Types.MouseEvent) => {
+        UserInterface.evaluateTouchLatency(e);
         if (!this.props.disabled && this.props.onPress) {
             this.props.onPress(e);
         }

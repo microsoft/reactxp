@@ -7,12 +7,33 @@
 
 import { StoreBase, AutoSubscribeStore, autoSubscribe } from 'resub';
 
+import LocalDb = require('./LocalDb');
+import TodoModels = require('./TodoModels');
+
 @AutoSubscribeStore
 class TodosStore extends StoreBase {
-    private _todos: string[] = [];
+    private _todos: TodoModels.Todo[] = [];
 
-    addTodo(todo: string) {
-        this._todos = this._todos.concat(todo);
+    init() {
+        return LocalDb.getAllTodos().then(todos => {
+            this._todos = todos;
+        });
+    }
+
+    addTodo(todoText: string) {
+        const now = Date.now().valueOf();
+        let newTodo: TodoModels.Todo = {
+            id: now.toString(),
+            creationTime: now,
+            text: todoText,
+            _searchTerms: todoText
+        }
+
+        this._todos = this._todos.concat(newTodo);
+
+        // Asynchronously write the new todo item to the DB.
+        LocalDb.putTodo(newTodo);
+
         this.trigger();
     }
 

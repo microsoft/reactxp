@@ -119,6 +119,14 @@ export class UserInterface extends RX.UserInterface {
     dismissKeyboard() {
         // Nothing to do
     }
+
+    enableTouchLatencyEvents(latencyThresholdMs: number): void {
+        // Nothing to do
+    }
+
+    evaluateTouchLatency(e: Types.MouseEvent) {
+        // Nothing to do
+    }
 }
 
 export default new UserInterface();

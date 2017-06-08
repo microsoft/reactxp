@@ -60,6 +60,11 @@ setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
 
 // Dismisses the on-screen keyboard (applies to mobile only)
 dismissKeyboard(): void;
+
+// Enables native -> script touch event latency diagnostic events.
+// When latency greater than latencyThresholdMs is observed, the
+// touchLatencyEvent will fire. (applies to mobile only)
+enableTouchLatencyEvents(latencyThresholdMs: number): void;
 ```
 
 ## Events
@@ -68,5 +73,11 @@ dismissKeyboard(): void;
 // app is running
 contentSizeMultiplierChangedEvent: SubscribableEvent<
     (multiplier: number) => void>();
+
+// Triggered when enableTouchLatencyEvents has been called and
+// native -> script touch latency exceeding the threshold has
+// been observed. (applies to mobile only)
+touchLatencyEvent: SubscribableEvent<
+    (observedLatencyMs: number) => void>();
 ```
 

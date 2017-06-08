@@ -32,7 +32,7 @@ It supports a special mode where items are re-rendered only if the corresponding
 
 ## Example
 ``` javascript
-import { VirtualListView, VirtualListViewItemInfo } from 'virtuallistview';
+import { VirtualListView, VirtualListViewItemInfo } from 'reactxp-virtuallistview';
 
 // Extend VirtualListViewItemInfo to include display text
 interface FruitListItemInfo extends VirtualListViewItemInfo {
