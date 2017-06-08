@@ -224,6 +224,12 @@ export class TextInput extends RX.TextInput<TextInputState> {
     setValue(value: string): void {
         this._onChangeText(value);
     }
+
+    clear() {
+        if (this.refs['nativeTextInput'] as TextInput) {
+            (this.refs['nativeTextInput'] as TextInput).clear();
+        }
+    }
 }
 
 export default TextInput;
