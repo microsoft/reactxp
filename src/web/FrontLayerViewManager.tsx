@@ -16,6 +16,7 @@ import Types = require('../common/Types');
 
 export class FrontLayerViewManager {
     private _mainView: React.ReactElement<any> = null;
+    private _mainViewConfig: {styles:any,element:string};
     private _modalStack: { modal: React.ReactElement<Types.ViewProps>, id: string }[] = [];
 
     private _activePopupOptions: Types.PopupOptions = null;
@@ -25,8 +26,9 @@ export class FrontLayerViewManager {
     private _activePopupShowDelay: number = 0;
     private _popupShowDelayTimer: any = null;
 
-    setMainView(element: React.ReactElement<any>): void {
+    setMainView(element: React.ReactElement<any>,config: {styles:any,element:string}): void {
         this._mainView = element;
+        this._mainViewConfig = config;
         this._renderRootView();
     }
 
@@ -149,6 +151,7 @@ export class FrontLayerViewManager {
         let rootView = (
             <RootView
                 mainView={ this._mainView }
+                styles={this._mainViewConfig.styles}
                 keyBoardFocusOutline={ this._mainView.props.keyBoardFocusOutline }
                 mouseFocusOutline={ this._mainView.props.mouseFocusOutline }
                 modal={ topModal }
@@ -159,7 +162,7 @@ export class FrontLayerViewManager {
             />
         );
 
-        const container = document.getElementsByClassName('app-container')[0];
+        const container = document.getElementsByClassName(this._mainViewConfig.element||'app-container')[0];
 
         ReactDOM.render(rootView, container);
     }

@@ -111,7 +111,7 @@ export abstract class App {
 }
 
 export abstract class UserInterface {
-    abstract setMainView(element: React.ReactElement<any>): void;
+    abstract setMainView(element: React.ReactElement<any>,config:{styles:any,element:string}): void;
 
     abstract useCustomScrollbars(enable: boolean): void;
 
