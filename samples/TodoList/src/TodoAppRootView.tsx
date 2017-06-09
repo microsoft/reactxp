@@ -19,7 +19,7 @@ const styles = {
     })
 };
 
-class TodoAppRootView extends RX.Component<null, null> {
+class TodoAppRootView extends RX.Component<{}, null> {
     private _navigator: RX.Navigator;
 
     componentDidMount() {
