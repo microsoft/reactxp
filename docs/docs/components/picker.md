@@ -48,62 +48,49 @@ color: 'string';
 
 No methods
 
+
 ## Sample Usage
 
-Below is an example of a `Picker` which stores the picked value in the `RX.Component`'s [`state`](/reactxp/docs/react_concepts.html#state) and updates based on the users selected choice. The code produce content visually similar to this HTML version:
-
-<!-- HTML version NOT the ReactRX compiled form -->
-<div style="margin: 20px">
-    <span>How do you feel about ReactXP? ;) Is it: </span>
-    <select>
-        <option value="Cool" selected>Cool</option>
-        <option value="Super Cool">Super Cool</option>
-        <option value="Great">Great</option>
-    </select>
-</div>
-
 ``` javascript
-import RX = require('reactxp');
-
-// Pickable items
 const pickerItems: RX.Types.PickerPropsItem[] = [
     {
-        label: "Cool",
-        value: "Cool",
+        label: 'Cool',
+        value: 'cool'
     },
     {
-        label: "Super Cool",
-        value: "Super Cool",
+        label: 'Super',
+        value: 'super'
     },
     {
-        label: "Great",
-        value: "Great",
+        label: 'Great',
+        value: 'great'
     }
 ];
 
-class App extends RX.Component<null, { selectedValue: string }> {
+class MyComponent extends RX.Component<null, { selectedValue: string }> {
     constructor() {
         super();
 
-        // Setup the starting state
         this.state = {
-            selectedValue: "Cool",
+            selectedValue: 'cool'
         }
     }
 
     render(): JSX.Element {
         return (
             <RX.Text numberOfLines={ 1 }>
-                <RX.Text> { 'How do you feel about ReactXP? ;) Is it: ' } </RX.Text>
-                <RX.Picker items={pickerItems}
-                    selectedValue={this.state.selectedValue}
-                    onValueChange={(itemValue, itemIndex) => {
-                        this.setState({ selectedValue: itemValue });
-                    }} />
+                <RX.Text> { 'How are you feeling? ' } </RX.Text>
+                <RX.Picker
+                    items={ pickerItems }
+                    selectedValue={ this.state.selectedValue }
+                    onValueChange={ this._onValueChange }
+                />
             </RX.Text>
         );
     }
-}
 
-export = App;
+    private _onValueChange = (itemValue: string, itemIndex: number) => {
+        this.setState({ selectedValue: itemValue });
+    }
+}
 ```
