@@ -1,12 +1,8 @@
 /*
-* This file demonstrates a basic ReactXP app.
-*/
-
-import RX = require('reactxp');
-
-interface MainPanelProps {
-    onPressNavigate: () => void;
-}
+ * This file demonstrates a basic ReactXP app.
+ */
+import React from 'react';
+import RX from 'reactxp';
 
 const styles = {
     scroll: RX.Styles.createScrollViewStyle({
@@ -50,13 +46,9 @@ const styles = {
     })
 };
 
-class MainPanel extends RX.Component<MainPanelProps, null> {
-    private _translationValue: RX.Animated.Value;
-    private _animatedStyle: RX.Types.AnimatedTextStyleRuleSet;
-
-    constructor() {
-        super();
-
+export default class MainPanel extends RX.Component{
+    constructor(props) {
+        super(props);
         this._translationValue = new RX.Animated.Value(-100);
         this._animatedStyle = RX.Styles.createAnimatedTextStyle({
             transform: [
@@ -69,9 +61,9 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
 
     componentDidMount() {
         let animation = RX.Animated.timing(this._translationValue, {
-              toValue: 0,
-              easing: RX.Animated.Easing.OutBack(),
-              duration: 500
+                toValue: 0,
+                easing: RX.Animated.Easing.OutBack(),
+                duration: 500
             }
         );
 
@@ -95,7 +87,7 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
                         View ReactXP documentation
                     </RX.Link>
 
-                    <RX.Button style={ styles.roundButton } onPress={ this._onPressNavigate }>
+                    <RX.Button style={ styles.roundButton } onPress={ this.props.onPressNavigate }>
                         <RX.Text style={ styles.buttonText }>
                             See More Examples
                         </RX.Text>
@@ -104,10 +96,4 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
             </RX.ScrollView>
         );
     }
-
-    private _onPressNavigate = () => {
-        this.props.onPressNavigate();
-    }
 }
-
-export = MainPanel;

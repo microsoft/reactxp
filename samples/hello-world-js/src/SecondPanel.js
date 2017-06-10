@@ -1,21 +1,12 @@
 /*
-* This file demonstrates a basic ReactXP app.
-*/
-
-import RX = require('reactxp');
-import { default as RXVideo } from 'reactxp-video';
+ * This file demonstrates a basic ReactXP app.
+ */
+import React from 'react';
+import RX from 'reactxp';
+import {default as RXVideo} from 'reactxp-video';
 
 import ProgressIndicator from './ProgressIndicator';
 import ToggleSwitch from './ToggleSwitch';
-
-interface SecondPanelProps {
-    onNavigateBack: () => void;
-}
-
-interface SecondPanelState {
-    toggleValue?: boolean;
-    progressValue?: number;
-}
 
 const styles = {
     scroll: RX.Styles.createScrollViewStyle({
@@ -56,31 +47,33 @@ const styles = {
     })
 };
 
-class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
-    private _progressTimerToken: number;
+export default class SecondPanel extends RX.Component {
 
-    constructor() {
-        super();
+    _progressTimerToken;
 
+    constructor(props){
+        super(props);
+        this._playVideo = this._playVideo.bind(this);
+        this._onChangeToggle = this._onChangeToggle.bind(this);
         this.state = {
             toggleValue: true,
             progressValue: 0
         };
     }
 
-    componentDidMount() {
+    componentDidMount(){
         this._startProgressIndicator();
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(){
         this._stopProgressIndicator();
     }
 
-    render() {
+    render(){
         return (
             <RX.ScrollView style={ styles.scroll }>
                 <RX.View style={ styles.container }>
-                    <RX.Button style={ styles.roundButton } onPress={ this._onPressBack }>
+                    <RX.Button style={ styles.roundButton } onPress={ this.props.onNavigateBack }>
                         <RX.Text style={ styles.buttonText }>
                             Go Back
                         </RX.Text>
@@ -119,26 +112,22 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
         );
     }
 
-    private _onPressBack = () => {
-        this.props.onNavigateBack();
-    }
-
-    private _playVideo = () => {
-        const video = this.refs['video'] as RXVideo;
+    _playVideo(){
+        const video = this.refs['video'];
         if (video) {
             video.mute(true);
             video.play();
         }
     }
 
-    private _startProgressIndicator() {
-        this._progressTimerToken = window.setInterval(() => {
+    _startProgressIndicator(){
+        this._progressTimerToken = window.setInterval(() =>{
             const newProgressValue = (this.state.progressValue + 0.02) % 1;
-            this.setState({ progressValue: newProgressValue });
+            this.setState({progressValue: newProgressValue});
         }, 1000 / 15);
     }
 
-    private _stopProgressIndicator() {
+    _stopProgressIndicator(){
         if (this._progressTimerToken) {
             window.clearInterval(this._progressTimerToken);
             this._progressTimerToken = undefined;
@@ -150,9 +139,7 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
     // that each time we pass the variable as a prop in the render function, it will
     // not change. We want to avoid unnecessary prop changes because this will trigger
     // extra work within React's virtual DOM diffing mechanism.
-    private _onChangeToggle = (newValue: boolean) => {
-        this.setState({ toggleValue: newValue });
+    _onChangeToggle(newValue){
+        this.setState({toggleValue: newValue});
     }
 }
-
-export = SecondPanel;
