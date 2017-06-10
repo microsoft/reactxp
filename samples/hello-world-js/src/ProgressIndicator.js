@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+
 import RX  from 'reactxp';
 import {default as RXImageSvg, SvgPath as RXSvgPath} from 'reactxp-imagesvg';
 

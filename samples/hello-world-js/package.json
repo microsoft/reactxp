@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "web-watch": "webpack --progress --colors --watch",
-    "rn-watch": "node_modules/.bin/babel src -d dist",
+    "rn-watch": "node_modules/.bin/babel src -d dist -w -s",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "android": "node node_modules/react-native/local-cli/cli.js run-android",
     "ios": "tsc --watch && node node_modules/react-native/local-cli/cli.js run-ios"
