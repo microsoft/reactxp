@@ -1,1 +1,1 @@
-require('./dist/index');
+require('./src/index');
