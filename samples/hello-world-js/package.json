@@ -8,7 +8,7 @@
     "rn-watch": "babel src -d dist -w -s",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "android": "node node_modules/react-native/local-cli/cli.js run-android",
-    "ios": "tsc --watch && node node_modules/react-native/local-cli/cli.js run-ios"
+    "ios": "node node_modules/react-native/local-cli/cli.js run-ios"
   },
   "devDependencies": {
     "babel-loader": "^7.0.0",
