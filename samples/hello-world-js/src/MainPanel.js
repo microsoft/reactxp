@@ -81,7 +81,7 @@ export default class MainPanel extends RX.Component{
                         Welcome to ReactXP
                     </RX.Text>
                     <RX.Text style={ styles.instructions }>
-                        Edit App.tsx to get started
+                        Edit App.js to get started
                     </RX.Text>
                     <RX.Link style={ styles.docLink } url={ 'https://microsoft.github.io/reactxp/docs' }>
                         View ReactXP documentation
