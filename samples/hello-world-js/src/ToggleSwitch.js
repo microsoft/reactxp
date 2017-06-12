@@ -1,5 +1,5 @@
 /**
- * ToggleSwitch.tsx
+ * ToggleSwitch.js
  * Copyright: Microsoft 2017
  *
  * A simple toggle control built in ReactXP that allows users to
@@ -72,7 +72,7 @@ export default class ToggleSwitch extends RX.Component {
         this._handleClick = this._handleClick.bind(this);
     }
 
-    componentWillUpdate(newProps){
+    componentWillUpdate(newProps) {
 
         // If the value of the toggle changes, animate the toggle sliding
         // from one side to the other. In parallel, animate the opacity change.
@@ -93,7 +93,7 @@ export default class ToggleSwitch extends RX.Component {
         }
     }
 
-    render(){
+    render() {
         const knobStyles = [_styles.toggleKnob, this._knobLeftAnimationStyle];
         const backgroundStyle = [_styles.toggleSwitchBackground, this._toggleColorAnimationStyle];
 
@@ -107,7 +107,7 @@ export default class ToggleSwitch extends RX.Component {
         );
     }
 
-    _handleClick(e){
+    _handleClick(e) {
         e.stopPropagation();
 
         if (this.props.onChange) {

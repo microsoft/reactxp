@@ -1,6 +1,7 @@
 /*
  * This file demonstrates a basic ReactXP app.
  */
+
 import React from 'react';
 import RX from 'reactxp';
 import {default as RXVideo} from 'reactxp-video';
@@ -51,7 +52,7 @@ export default class SecondPanel extends RX.Component {
 
     _progressTimerToken;
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this._playVideo = this._playVideo.bind(this);
         this._onChangeToggle = this._onChangeToggle.bind(this);
@@ -61,15 +62,15 @@ export default class SecondPanel extends RX.Component {
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this._startProgressIndicator();
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this._stopProgressIndicator();
     }
 
-    render(){
+    render() {
         return (
             <RX.ScrollView style={ styles.scroll }>
                 <RX.View style={ styles.container }>
@@ -112,7 +113,7 @@ export default class SecondPanel extends RX.Component {
         );
     }
 
-    _playVideo(){
+    _playVideo() {
         const video = this.refs['video'];
         if (video) {
             video.mute(true);
@@ -120,14 +121,14 @@ export default class SecondPanel extends RX.Component {
         }
     }
 
-    _startProgressIndicator(){
+    _startProgressIndicator() {
         this._progressTimerToken = window.setInterval(() =>{
             const newProgressValue = (this.state.progressValue + 0.02) % 1;
             this.setState({progressValue: newProgressValue});
         }, 1000 / 15);
     }
 
-    _stopProgressIndicator(){
+    _stopProgressIndicator() {
         if (this._progressTimerToken) {
             window.clearInterval(this._progressTimerToken);
             this._progressTimerToken = undefined;
@@ -139,7 +140,7 @@ export default class SecondPanel extends RX.Component {
     // that each time we pass the variable as a prop in the render function, it will
     // not change. We want to avoid unnecessary prop changes because this will trigger
     // extra work within React's virtual DOM diffing mechanism.
-    _onChangeToggle(newValue){
+    _onChangeToggle(newValue) {
         this.setState({toggleValue: newValue});
     }
 }

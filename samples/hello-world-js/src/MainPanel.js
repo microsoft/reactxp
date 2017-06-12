@@ -1,6 +1,7 @@
 /*
  * This file demonstrates a basic ReactXP app.
  */
+
 import React from 'react';
 import RX from 'reactxp';
 

@@ -1,5 +1,5 @@
 /**
- * ProgressIndicator.tsx
+ * ProgressIndicator.js
  * Copyright: Microsoft 2017
  *
  * Circular progress indicator that shows off the use of ImageSVG
@@ -12,7 +12,7 @@ import RX  from 'reactxp';
 import {default as RXImageSvg, SvgPath as RXSvgPath} from 'reactxp-imagesvg';
 
 export default class ProgressIndicator extends RX.Component {
-    render(){
+    render() {
         const size = this.props.size;
         const progress = this.props.progress;
         const radius = size / 2;
