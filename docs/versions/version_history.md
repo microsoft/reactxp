@@ -16,6 +16,15 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.42.0_rc.11 of reactxp
+_Released 13 June 2017_
+
+Fixed bugs in web implementation of focus manager.
+Added new API (enableTouchLatencyEvents) and event (touchLatencyEvent) in UserInterface namespace for detecting delays in touch event handling.
+Fixed crash in native implementation of Link component that resulted in uncaught exception for some types of links.
+Fixed flexDirection style default for web implementation in Image component.
+Fixed inconsistency in handling of borders between web and RN when borderStyle is not specified.
+
 #### Version 0.42.0_rc.10 of reactxp
 _Released 25 May 2017_
 
