@@ -206,7 +206,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         this.componentDidUpdate();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps?: Types.ViewProps, prevState?: S) {
         if (this.props.onLayout) {
             this._checkAndReportLayout();
         }

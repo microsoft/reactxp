@@ -128,7 +128,7 @@ export class Value extends RX.AnimatedValue {
         if (input0 > input1) {
             throw 'The interpolation input values should be in ascending order.';
         }
-        
+
         this._interpolationConfig = {};
         _.each(config.inputRange, (value, index) => {
             this._interpolationConfig[value] = config.outputRange[index];
@@ -683,8 +683,18 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             this.initializeComponent(this.props);
         }
 
-        componentDidUpdate() {
+        componentDidUpdate(prevProps: any, prevState: any) {
             this.initializeComponent(this.props);
+
+            if (this.refs[refName] instanceof RXView) {
+                const component = this.refs[refName] as RXView;
+                const thisState = this.state as any;
+
+                if (thisState && ('isFocusLimited' in thisState) &&
+                    (!prevState || (prevState.isFocusLimited !== thisState.isFocusLimited))) {
+                    component.setState({ isFocusLimited: thisState.isFocusLimited });
+                }
+            }
         }
 
         componentWillUnmount() {
