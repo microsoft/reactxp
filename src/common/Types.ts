@@ -320,6 +320,9 @@ export interface CommonAccessibilityProps {
     accessibilityLabel?: string;
     accessibilityTraits?: AccessibilityTrait | AccessibilityTrait[];
 
+    // iOS Only
+    onAccessibilityTap?: Function;
+
     // Desktop only.
     tabIndex?: number;
 }
