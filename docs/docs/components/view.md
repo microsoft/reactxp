@@ -57,7 +57,7 @@ restrictFocusWithin: boolean = false; // web only
 // and on all focusable elements inside this view unless the view has
 // isFocusLimited state set to false
 // (like viewInstance.setState({ isFocusLimited: false })), isFocusLimited
-// state is true by default when isFocusLimited property is true.
+// state is true by default when limitFocusWithin property is true.
 // Useful for the list items, allows to skip the consecutive focusing on
 // one list item (and item's internal focusable elements) after another
 // using the Tab key and implement the switching between the items using
