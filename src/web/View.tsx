@@ -70,12 +70,18 @@ export interface ViewContext {
     focusManager?: FocusManager;
 }
 
-export class View extends ViewBase<Types.ViewProps, {}> {
+export interface ViewState {
+    isFocusLimited?: boolean;
+}
+
+export class View extends ViewBase<Types.ViewProps, ViewState> {
     static contextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool,
         focusManager: PropTypes.object
     };
     context: ViewContext;
+
+    state: ViewState;
 
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired,
@@ -90,8 +96,12 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     constructor(props: Types.ViewProps) {
         super(props);
 
-        if (props.restrictFocusWithin) {
+        if (props.restrictFocusWithin || props.limitFocusWithin) {
             this._focusManager = new FocusManager();
+
+            if (props.limitFocusWithin) {
+                this.state = { isFocusLimited: true };
+            }
         }
     }
 
@@ -278,6 +288,8 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
         if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
             console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
+        } else if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
+            console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
         }
     }
 
@@ -285,7 +297,29 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         super.componentDidMount();
 
         if (this._focusManager) {
-            this._focusManager.restrictFocusWithin();
+            if (this.props.restrictFocusWithin) {
+                this._focusManager.restrictFocusWithin();
+            }
+
+            if (this.props.limitFocusWithin && this.state && this.state.isFocusLimited) {
+                this._focusManager.limitFocusWithin();
+            }
+        }
+    }
+
+    componentDidUpdate(prevProps: Types.ViewProps, prevState: ViewState) {
+        super.componentDidUpdate();
+
+        if (!prevState || !('isFocusLimited' in prevState) || !this.state || !('isFocusLimited' in this.state)) {
+            return;
+        }
+
+        if ((prevState.isFocusLimited !== this.state.isFocusLimited) && this.props.limitFocusWithin && this._focusManager) {
+            if (this.state.isFocusLimited) {
+                this._focusManager.limitFocusWithin();
+            } else {
+                this._focusManager.removeFocusLimitation();
+            }
         }
     }
 

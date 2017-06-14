@@ -31,7 +31,7 @@ export interface FlexboxStyle {
     alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
     alignSelf?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
     alignContent?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
-    
+
     borderWidth?: number;
     borderTopWidth?: number;
     borderRightWidth?: number;
@@ -525,6 +525,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     children?: ReactNode;
 
     restrictFocusWithin?: boolean; // Web-only, during the keyboard navigation, the focus will not go outside this view
+    limitFocusWithin?: boolean; // Web-only, make the view and all focusable subelements not focusable when isFocusLimited state is true
 
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
 

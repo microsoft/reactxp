@@ -40,7 +40,7 @@ blockPointerEvents: boolean = false; // iOS and Android only
 // components behind to receive them
 ignorePointerEvents: boolean = false; // web only
 
-// When keyboard navigation is happening, restrict the focusable
+// When the keyboard navigation is happening, restrict the focusable
 // elements within this view. Useful for popups and modals, you
 // might want to prevent the focus from going outside of the popup or
 // modal. The views with restrictFocusWithin are stacked and the last
@@ -52,6 +52,19 @@ ignorePointerEvents: boolean = false; // web only
 // WARNING: For the sake of performance, this property is readonly and
 // changing it during the View life cycle will produce an error.
 restrictFocusWithin: boolean = false; // web only
+
+// When the keyboard navigation is happening, do not focus on this view
+// and on all focusable elements inside this view unless the view has
+// isFocusLimited state set to false
+// (like viewInstance.setState({ isFocusLimited: false })), isFocusLimited
+// state is true by default when limitFocusWithin property is true.
+// Useful for the list items, allows to skip the consecutive focusing on
+// one list item (and item's internal focusable elements) after another
+// using the Tab key and implement the switching between the items using
+// the arrow keys (or using some other behaviour).
+// WARNING: For the sake of performance, this property is readonly and
+// changing it during the View life cycle will produce an error.
+limitFocusWithin: boolean = false; // web only
 
 // Additional invisible DOM elements will be added inside the view
 // to track the size changes that are performed behind our back by
