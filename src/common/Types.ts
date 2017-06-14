@@ -150,7 +150,7 @@ export interface AnimatedViewAndImageCommonStyle extends AnimatedFlexboxStyle, A
 // ------------------------------------------------------------
 
 export interface ViewStyle extends ViewAndImageCommonStyle {
-    borderStyle?: 'none' | 'solid' | 'dotted' | 'dashed';
+    borderStyle?: 'solid' | 'dotted' | 'dashed' | 'none';
     wordBreak?: 'break-all' | 'break-word'; // Web only
     appRegion?: 'drag' | 'no-drag'; // Web only
     cursor?: 'pointer' | 'default'; // Web only

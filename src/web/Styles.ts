@@ -40,6 +40,18 @@ export class Styles extends RX.Styles {
             delete combinedStyles.padding;
         }
 
+        if (combinedStyles.borderWidth) {
+            // If the caller specified a non-zero border width
+            // but no border color or style, set the defaults to
+            // match those of React Native platforms.
+            if (combinedStyles.borderColor === undefined) {
+                combinedStyles.borderColor = 'black';
+            }
+            if (combinedStyles.borderStyle === undefined) {
+                combinedStyles.borderStyle = 'solid';
+            }
+        }
+
         return combinedStyles;
     }
 

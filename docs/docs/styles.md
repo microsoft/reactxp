@@ -144,7 +144,7 @@ overflow: 'hidden' | 'visible';
 ```javascript
 borderWidth: number;
 borderColor: color;
-borderStyle: 'none' | 'solid' | 'dotted' | 'dashed';
+borderStyle: 'solid' | 'dotted' | 'dashed' | 'none';
 borderRadius: number;  // Sets all four border radius attributes; value is animatable
 borderTopRightRadius: number = 0;
 borderBottomRightRadius: number = 0;
