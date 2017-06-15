@@ -39,6 +39,14 @@ export class Linking extends CommonLinking {
         return SyncTasks.Resolved<void>();
     }
 
+    launchEmail(emailInfo: Types.EmailInfo): SyncTasks.Promise<void> {
+        // Format email info
+        const emailUrl = this._createEmailUrl(emailInfo);
+        window.location.href = emailUrl;
+        
+        return SyncTasks.Resolved<void>();
+    }
+
     getInitialUrl(): SyncTasks.Promise<string> {
         return SyncTasks.Resolved<string>(null);
     }

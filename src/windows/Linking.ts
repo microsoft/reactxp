@@ -10,6 +10,7 @@
 import SyncTasks = require('synctasks');
 
 import { Linking as CommonLinking } from '../common/Linking';
+import Types = require('../common/Types');
 
 export class Linking extends CommonLinking {
     protected _openUrl(url: string): SyncTasks.Promise<void> {
@@ -21,6 +22,11 @@ export class Linking extends CommonLinking {
     getInitialUrl(): SyncTasks.Promise<string> {
         // TODO: #694142 Not implemented
         return SyncTasks.Resolved<string>(null);
+    }
+
+    launchEmail(emailInfo: Types.EmailInfo): SyncTasks.Promise<void> {
+        // TODO: #694142 Not implemented
+        throw 'Not implemented';
     }
 }
 
