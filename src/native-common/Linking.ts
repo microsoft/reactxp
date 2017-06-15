@@ -61,6 +61,13 @@ export class Linking extends CommonLinking {
 
         return defer.promise();
     }
+    
+    // Launches Email app
+    launchEmail(emailInfo: Types.EmailInfo): SyncTasks.Promise<void> {
+        // Format email info
+        const emailUrl = this._createEmailUrl(emailInfo);
+        return this._openUrl(emailUrl);
+    }
 }
 
 export default new Linking();

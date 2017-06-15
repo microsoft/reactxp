@@ -161,6 +161,8 @@ export abstract class Linking {
     abstract openUrl(url: string): SyncTasks.Promise<void>;
     abstract launchSms(smsData: Types.SmsInfo): SyncTasks.Promise<void>;
     abstract launchEmail(emailData: Types.EmailInfo): SyncTasks.Promise<void>;
+
+    protected abstract _createEmailUrl(emailInfo: Types.EmailInfo): string;
 }
 
 export abstract class Accessibility {
