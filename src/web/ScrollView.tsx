@@ -23,7 +23,8 @@ let _styles = {
         position: 'relative',
         overflow: 'hidden',
         alignSelf: 'stretch',
-        flex: '1 1 auto',
+        flexGrow: 1,
+        flexShrink: 1,
 
         // This forces some browsers (like Chrome) to create a new render context,
         // which can significantly speed up scrolling.

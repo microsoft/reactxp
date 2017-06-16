@@ -26,7 +26,8 @@ let _styles = {
         display: 'flex',
         flexDirection: 'row',
         flexBasis: 'auto',
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
         overflowX: 'hidden',
         overflowY: 'auto',
         alignItems: 'stretch'

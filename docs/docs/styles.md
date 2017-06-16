@@ -60,10 +60,10 @@ ReactXP adopts the simplified flexbox rules and defaults defined by React Native
 
 + Widths, heights, and other measurements are assumed to be pixel values. Other units (including percentages) are not supported.
 
-+ There is no way to specify flexBasis, flexShrink or flexGrow attributes. A single flex attribute covers all of the common cases. It accepts an integer value.
++ While it is possible to specify flexGrow, flexShrink and flexBasis values independently, it is more common to specify the flex parameters using a shortcut called "flex". It accepts an integer value and covers the following common cases.
     * "flex: 0" implies "flex: 0 0 auto"
-    * "flex: -1" implies "flex: 0 1 auto"
-    * "flex: n" (where n is positive) implies "flex: n 0 0"
+    * "flex: n" (where n is negative) implies "flex: 0 n auto"
+    * "flex: p" (where p is positive) implies "flex: n 1 auto"
 
 + The default flexDirection is 'column' rather than 'row'.
 

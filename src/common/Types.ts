@@ -46,6 +46,9 @@ export interface FlexboxStyle {
     bottom?: number;
     left?: number;
 
+    flexGrow?: number;
+    flexShrink?: number;
+    flexBasis?: number;
     flex?: number;
 
     flexWrap?: 'wrap' | 'nowrap';

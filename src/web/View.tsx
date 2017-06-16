@@ -24,7 +24,8 @@ const _styles = {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
         overflow: 'hidden',
         alignItems: 'stretch'
     },
