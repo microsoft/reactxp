@@ -34,6 +34,9 @@ delayLongPress: number = 1000;
 // If disabled, touch and mouse input events are ignored
 disabled: boolean = false;
 
+// Called when VoiceOver is on and the user double tapped to activate a control
+onAccessibilityTap: (e: SyntheticEvent) => void; // iOS Only
+
 // Called when the user has pressed and held for a specified duration
 onLongPress: (e: SyntheticEvent) => void;
 
