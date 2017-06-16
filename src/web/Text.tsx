@@ -32,7 +32,8 @@ const _styles = {
     defaultStyle: {
         position: 'relative',
         display: 'inline',
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
         overflow: 'hidden',
         whiteSpace: 'pre-wrap',
         overflowWrap: 'break-word',
@@ -41,7 +42,8 @@ const _styles = {
     ellipsis: {
         position: 'relative',
         display: 'inline',
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
         overflow: 'hidden',
         whiteSpace: 'pre',
         textOverflow: 'ellipsis'

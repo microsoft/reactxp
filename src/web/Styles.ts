@@ -256,11 +256,17 @@ export class Styles extends RX.Styles {
             delete def.flex;
 
             if (flexValue > 0) {
-                def.flex = flexValue.toString() + ' 1 auto';
+                // p 1 auto
+                def.flexGrow = flexValue;
+                def.flexShrink = 1;
             } else if (flexValue < 0) {
-                def.flex = '0 1 auto';
+                // 0 -n auto
+                def.flexGrow = 0;
+                def.flexShrink = -flexValue;
             } else {
-                def.flex = '0 0 auto';
+                // 0 0 auto
+                def.flexGrow = 0;
+                def.flexShrink = 0;
             }
         }
 
