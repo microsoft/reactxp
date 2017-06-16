@@ -16,6 +16,14 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.42.0_rc.12 of reactxp
+_Released 16 June 2017_
+
+Added support for new limitFocusWidth prop for constraining keyboard focus.
+Fixed bug in handling of mailto URLs on web in the Link component.
+Added support for flexGrow, flexShrink, and flexBasis props.
+
+
 #### Version 0.42.0_rc.11 of reactxp
 _Released 13 June 2017_
 
@@ -24,6 +32,7 @@ Added new API (enableTouchLatencyEvents) and event (touchLatencyEvent) in UserIn
 Fixed crash in native implementation of Link component that resulted in uncaught exception for some types of links.
 Fixed flexDirection style default for web implementation in Image component.
 Fixed inconsistency in handling of borders between web and RN when borderStyle is not specified.
+
 
 #### Version 0.42.0_rc.10 of reactxp
 _Released 25 May 2017_
