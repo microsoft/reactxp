@@ -71,6 +71,9 @@ activeOpacity?: number; // iOS and Android only
 
 // Background color that will be visible on button touch
 underlayColor?: string; // iOS and Android only
+
+// Called when VoiceOver is on and the user double tapped to activate a control
+onAccessibilityTap: (e: SyntheticEvent) => void; // iOS Only
 ```
 
 ## Styles
