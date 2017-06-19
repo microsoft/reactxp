@@ -239,6 +239,7 @@ declare module 'react-native' {
         elevation?                     : number;
 
         // iOS
+        onAccessibilityTapIOS?: Function;
         shouldRasterizeIOS? : boolean;
     }
 

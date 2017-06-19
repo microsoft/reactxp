@@ -73,12 +73,7 @@ disableTouchOpacityAnimation: boolean = false;  // iOS and Android only
 activeOpacity: number = undefined; // iOS and Android only
 
 // Background color that will be visible on button touch
-<<<<<<< HEAD
 underlayColor: string = undefined; // iOS and Android only
-=======
-underlayColor?: string; // iOS and Android only
-
->>>>>>> Save work
 ```
 
 ## Styles
