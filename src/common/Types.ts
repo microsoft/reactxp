@@ -415,6 +415,7 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     delayLongPress?: number;
     cursor?: string;
 
+    onAccessibilityTapIOS?: Function; // iOS-only prop, call when a button is double tapped in accessibility mode
     onContextMenu?: (e: SyntheticEvent) => void;
     onPress?: (e: SyntheticEvent) => void;
     onPressIn?: (e: SyntheticEvent) => void;
@@ -539,6 +540,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     animateChildLeave?: boolean;
     animateChildMove?: boolean;
 
+    onAccessibilityTapIOS?: Function;
     onLayout?: (e: ViewOnLayoutEvent) => void;
     onMouseEnter?: (e: MouseEvent) => void;
     onMouseLeave?: (e: MouseEvent) => void;
