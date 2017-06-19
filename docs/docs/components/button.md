@@ -35,7 +35,7 @@ delayLongPress: number = 1000;
 disabled: boolean = false;
 
 // Called when VoiceOver is on and the user double tapped to activate a control
-onAccessibilityTap: (e: SyntheticEvent) => void; // iOS Only
+onAccessibilityTapIOS: (e: SyntheticEvent) => void; // iOS Only
 
 // Called when the user has pressed and held for a specified duration
 onLongPress: (e: SyntheticEvent) => void;
@@ -73,7 +73,12 @@ disableTouchOpacityAnimation: boolean = false;  // iOS and Android only
 activeOpacity: number = undefined; // iOS and Android only
 
 // Background color that will be visible on button touch
+<<<<<<< HEAD
 underlayColor: string = undefined; // iOS and Android only
+=======
+underlayColor?: string; // iOS and Android only
+
+>>>>>>> Save work
 ```
 
 ## Styles

@@ -415,6 +415,7 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     delayLongPress?: number;
     cursor?: string;
 
+    onAccessibilityTapIOS?:  Function; // iOS-only prop, when a button is double tapped in accessibility mode we have a chance to act on it
     onContextMenu?: (e: SyntheticEvent) => void;
     onPress?: (e: SyntheticEvent) => void;
     onPressIn?: (e: SyntheticEvent) => void;
@@ -427,7 +428,6 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     onBlur?: (e: FocusEvent) => void;
 
 
-    onAccessibilityTap?: Function; // iOS-only prop, when a button is double tapped in accessibility mode we have a chance to act on it
     shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
 
     // iOS and Android only. Visual touchfeedback properties

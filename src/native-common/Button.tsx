@@ -111,7 +111,7 @@ export class Button extends RX.Button<{}> {
                 onResponderRelease={ this.touchableHandleResponderRelease }
                 onResponderTerminate={ this.touchableHandleResponderTerminate }
                 shouldRasterizeIOS={ this.props.shouldRasterizeIOS }
-                onAccessibilityTap={ this.props.onAccessibilityTap }
+                onAccessibilityTapIOS={ this.props.onAccessibilityTapIOS }
             >
                 { this.props.children }
             </RN.Animated.View>
