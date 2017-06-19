@@ -240,7 +240,6 @@ declare module 'react-native' {
 
         // iOS
         shouldRasterizeIOS? : boolean;
-        onAccessibilityTap?: Function;
     }
 
     interface ScrollViewProps extends ViewProps {
