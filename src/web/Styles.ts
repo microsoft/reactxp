@@ -336,9 +336,9 @@ export class Styles extends RX.Styles {
             def['lineHeight'] = def.lineHeight + 'px';
         }
 
-        // Add default border width if border style was provided. Otherwise
-        // the browser will default to a one-pixel border.
-        if (def.borderStyle) {
+        // Add default border width if border style or some subset of border widths
+        // were provided. Otherwise the browser will default to a two-pixel border.
+        if (def.borderStyle || def.borderTopWidth || def.borderRightWidth || def.borderBottomWidth || def.borderLeftWidth) {
             if (def.borderWidth === undefined) {
                 if (def.borderTopWidth === undefined) {
                     def.borderTopWidth = 0;
