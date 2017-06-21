@@ -18,8 +18,6 @@ import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export class UserInterface extends RX.UserInterface {
-    private _layoutChangeAnimationFrame: number;
-
     measureLayoutRelativeToWindow(component: React.Component<any, any>) :
             SyncTasks.Promise<Types.LayoutInfo> {
 

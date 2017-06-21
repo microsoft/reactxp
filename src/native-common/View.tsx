@@ -100,6 +100,10 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     focus() {
         AccessibilityUtil.setAccessibilityFocus(this);
     }
+
+    setFocusLimited(limited: boolean) {
+        // Nothing to do.
+    }
 }
 
 export default View;

@@ -71,18 +71,12 @@ export interface ViewContext {
     focusManager?: FocusManager;
 }
 
-export interface ViewState {
-    isFocusLimited?: boolean;
-}
-
-export class View extends ViewBase<Types.ViewProps, ViewState> {
+export class View extends ViewBase<Types.ViewProps, {}> {
     static contextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool,
         focusManager: PropTypes.object
     };
     context: ViewContext;
-
-    state: ViewState;
 
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired,
@@ -90,6 +84,7 @@ export class View extends ViewBase<Types.ViewProps, ViewState> {
     };
 
     private _focusManager: FocusManager;
+    private _isFocusLimited: boolean;
 
     private _resizeDetectorAnimationFrame: number;
     private _resizeDetectorNodes: { grow?: HTMLElement, shrink?: HTMLElement } = {};
@@ -101,7 +96,7 @@ export class View extends ViewBase<Types.ViewProps, ViewState> {
             this._focusManager = new FocusManager();
 
             if (props.limitFocusWithin) {
-                this.state = { isFocusLimited: true };
+                this.setFocusLimited(true);
             }
         }
     }
@@ -223,6 +218,21 @@ export class View extends ViewBase<Types.ViewProps, ViewState> {
         return this;
     }
 
+    setFocusLimited(limited: boolean) {
+        if (!this._focusManager || !this.props.limitFocusWithin) {
+            console.error('View: setFocusLimited method requires limitFocusWithin property to be set to true');
+            return;
+        }
+
+        if (limited && !this._isFocusLimited) {
+            this._isFocusLimited = true;
+            this._focusManager.limitFocusWithin();
+        } else if (!limited && this._isFocusLimited) {
+            this._isFocusLimited = false;
+            this._focusManager.removeFocusLimitation();
+        }
+    }
+
     render() {
         let combinedStyles = Styles.combine(_styles.defaultStyle, this.props.style);
         const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
@@ -302,24 +312,8 @@ export class View extends ViewBase<Types.ViewProps, ViewState> {
                 this._focusManager.restrictFocusWithin();
             }
 
-            if (this.props.limitFocusWithin && this.state && this.state.isFocusLimited) {
+            if (this.props.limitFocusWithin && this._isFocusLimited) {
                 this._focusManager.limitFocusWithin();
-            }
-        }
-    }
-
-    componentDidUpdate(prevProps: Types.ViewProps, prevState: ViewState) {
-        super.componentDidUpdate();
-
-        if (!prevState || !('isFocusLimited' in prevState) || !this.state || !('isFocusLimited' in this.state)) {
-            return;
-        }
-
-        if ((prevState.isFocusLimited !== this.state.isFocusLimited) && this.props.limitFocusWithin && this._focusManager) {
-            if (this.state.isFocusLimited) {
-                this._focusManager.limitFocusWithin();
-            } else {
-                this._focusManager.removeFocusLimitation();
             }
         }
     }

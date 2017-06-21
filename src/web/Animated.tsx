@@ -683,18 +683,8 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             this.initializeComponent(this.props);
         }
 
-        componentDidUpdate(prevProps: any, prevState: any) {
+        componentDidUpdate() {
             this.initializeComponent(this.props);
-
-            if (this.refs[refName] instanceof RXView) {
-                const component = this.refs[refName] as RXView;
-                const thisState = this.state as any;
-
-                if (thisState && ('isFocusLimited' in thisState) &&
-                    (!prevState || (prevState.isFocusLimited !== thisState.isFocusLimited))) {
-                    component.setState({ isFocusLimited: thisState.isFocusLimited });
-                }
-            }
         }
 
         componentWillUnmount() {
@@ -719,6 +709,13 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                 if (component.blur) {
                     component.blur();
                 }
+            }
+        }
+
+        setFocusLimited(limited: boolean) {
+            if (this.refs[refName] instanceof RXView) {
+                const view = this.refs[refName] as RXView;
+                view.setFocusLimited(limited);
             }
         }
 
