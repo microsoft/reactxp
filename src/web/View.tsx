@@ -308,6 +308,8 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         super.componentDidMount();
 
         if (this._focusManager) {
+            this._focusManager.setParent(this.context && this.context.focusManager);
+
             if (this.props.restrictFocusWithin) {
                 this._focusManager.restrictFocusWithin();
             }

@@ -130,7 +130,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         // Initialize the root FocusManager which is aware of all
         // focusable elements.
         this._focusManager = new FocusManager();
-        this._focusManager.setAsRootFocusManager();
+        this._focusManager.setParent(null);
     }
 
     getChildContext() {
