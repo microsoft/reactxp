@@ -142,7 +142,7 @@ export class AnimatedView extends RX.AnimatedView {
 }
 
 var timing = function(
-    value: RX.AnimatedValue,
+    value: Types.AnimatedValue,
     config: Types.Animated.TimingAnimationConfig)
     : Types.Animated.CompositeAnimation {
 

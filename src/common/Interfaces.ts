@@ -82,18 +82,7 @@ export interface IAnimatedValue {
     addListener(callback: any): number;
     removeListener(id: string): void;
     removeAllListeners(): void;
-    interpolate(config: any): AnimatedValue;
-}
-
-export abstract class AnimatedValue implements IAnimatedValue {
-    constructor(val: number) {
-        // No-op
-    }
-    abstract setValue(value: number): void;
-    abstract addListener(callback: any): number;
-    abstract removeListener(id: string): void;
-    abstract removeAllListeners(): void;
-    abstract interpolate(config: any): AnimatedValue;
+    interpolate(config: any): IAnimatedValue;
 }
 
 export abstract class App {
@@ -317,7 +306,7 @@ export interface Animated {
     Image: typeof AnimatedImage;
     Text: typeof AnimatedText;
     View: typeof AnimatedView;
-    Value: typeof AnimatedValue;
+    Value: typeof Types.AnimatedValue;
     Easing: Types.Animated.Easing;
     timing: Types.Animated.TimingFunction;
     parallel: Types.Animated.ParallelFunction;

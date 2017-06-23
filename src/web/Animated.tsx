@@ -75,7 +75,7 @@ export abstract class Animation {
 var animatedValueUniqueId = 0;
 
 // The animated value object
-export class Value extends RX.AnimatedValue {
+export class Value extends Types.AnimatedValue {
     _value: number | string;
     _listenerId: number;
     _animationId: number;

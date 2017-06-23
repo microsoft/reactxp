@@ -79,14 +79,25 @@ export interface FlexboxStyle {
     position?: 'absolute' | 'relative';
 }
 
-export interface AnimatedFlexboxStyle {
-    height?: RX.AnimatedValue;
-    width?: RX.AnimatedValue;
+export abstract class AnimatedValue implements RX.IAnimatedValue {
+    constructor(val: number) {
+        // No-op
+    }
+    abstract setValue(value: number): void;
+    abstract addListener(callback: any): number;
+    abstract removeListener(id: string): void;
+    abstract removeAllListeners(): void;
+    abstract interpolate(config: any): AnimatedValue;
+}
 
-    top?: RX.AnimatedValue;
-    right?: RX.AnimatedValue;
-    bottom?: RX.AnimatedValue;
-    left?: RX.AnimatedValue;
+export interface AnimatedFlexboxStyle {
+    height?: AnimatedValue;
+    width?: AnimatedValue;
+
+    top?: AnimatedValue;
+    right?: AnimatedValue;
+    bottom?: AnimatedValue;
+    left?: AnimatedValue;
 }
 
 // ------------------------------------------------------------
@@ -110,16 +121,16 @@ export interface TransformStyle {
 
 export interface AnimatedTransformStyle {
     transform?: [{
-        perspective?: RX.AnimatedValue;
-        rotate?: RX.AnimatedValue;
-        rotateX?: RX.AnimatedValue;
-        rotateY?: RX.AnimatedValue;
-        rotateZ?: RX.AnimatedValue;
-        scale?: RX.AnimatedValue;
-        scaleX?: RX.AnimatedValue;
-        scaleY?: RX.AnimatedValue;
-        translateX?: RX.AnimatedValue;
-        translateY?: RX.AnimatedValue;
+        perspective?: AnimatedValue;
+        rotate?: AnimatedValue;
+        rotateX?: AnimatedValue;
+        rotateY?: AnimatedValue;
+        rotateZ?: AnimatedValue;
+        scale?: AnimatedValue;
+        scaleX?: AnimatedValue;
+        scaleY?: AnimatedValue;
+        translateX?: AnimatedValue;
+        translateY?: AnimatedValue;
     }];
 }
 
@@ -143,9 +154,9 @@ export interface ViewAndImageCommonStyle extends FlexboxStyle, TransformStyle {
 }
 
 export interface AnimatedViewAndImageCommonStyle extends AnimatedFlexboxStyle, AnimatedTransformStyle {
-    borderRadius?: RX.AnimatedValue;
-    backgroundColor?: RX.AnimatedValue;
-    opacity?: RX.AnimatedValue;
+    borderRadius?: AnimatedValue;
+    backgroundColor?: AnimatedValue;
+    opacity?: AnimatedValue;
 }
 
 // ------------------------------------------------------------
@@ -244,8 +255,8 @@ export interface TextStyle extends ViewStyle {
 export type TextStyleRuleSet = StyleRuleSet<TextStyle>;
 
 export interface AnimatedTextStyle extends AnimatedViewAndImageCommonStyle {
-    color?: RX.AnimatedValue;
-    fontSize?: RX.AnimatedValue;
+    color?: AnimatedValue;
+    fontSize?: AnimatedValue;
 }
 
 export type AnimatedTextStyleRuleSet = StyleRuleSet<AnimatedTextStyle>;
@@ -260,8 +271,8 @@ export interface TextInputStyle extends TextStyle {
 export type TextInputStyleRuleSet = StyleRuleSet<TextInputStyle>;
 
 export interface AnimatedTextInputStyle extends AnimatedViewAndImageCommonStyle {
-    color?: RX.AnimatedValue;
-    fontSize?: RX.AnimatedValue;
+    color?: AnimatedValue;
+    fontSize?: AnimatedValue;
 }
 
 export type AnimatedTextInputStyleRuleSet = StyleRuleSet<AnimatedTextInputStyle>;
@@ -977,7 +988,7 @@ export interface NavigatorProps extends CommonProps {
     renderScene: (route: NavigatorRoute) => JSX.Element;
     navigateBackCompleted?: () => void;
     // NOTE: Arguments are only passed to transitionStarted by the experimental navigator
-    transitionStarted?: (progress?: RX.AnimatedValue,
+    transitionStarted?: (progress?: RX.IAnimatedValue,
         toRouteId?: string, fromRouteId?: string,
         toIndex?: number, fromIndex?: number) => void;
     transitionCompleted?: () => void;
@@ -1046,7 +1057,7 @@ export module Animated {
         outputRange: (number | string)[];
     }
 
-    export type TimingFunction = (value: RX.AnimatedValue, config: TimingAnimationConfig) => CompositeAnimation;
+    export type TimingFunction = (value: RX.IAnimatedValue, config: TimingAnimationConfig) => CompositeAnimation;
     export var timing: TimingFunction;
 
     export type SequenceFunction = (animations: Array<CompositeAnimation>) => CompositeAnimation;

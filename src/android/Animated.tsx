@@ -38,7 +38,7 @@ export var Animated = {
     Text: AnimatedText as typeof RX.AnimatedText,
     TextInput: CommonAnimated.TextInput as typeof RX.AnimatedTextInput,
     View: CommonAnimated.View as typeof RX.AnimatedView,
-    Value: CommonAnimated.Value as typeof RX.AnimatedValue,
+    Value: CommonAnimated.Value as typeof Types.AnimatedValue,
     Easing: CommonAnimated.Easing as Types.Animated.Easing,
     timing: CommonAnimated.timing as Types.Animated.TimingFunction,
     delay: CommonAnimated.delay,
