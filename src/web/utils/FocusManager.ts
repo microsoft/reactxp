@@ -20,7 +20,10 @@ interface StoredFocusableComponent {
     limitedCount: number;
     origTabIndex?: number;
     removed?: boolean;
+    callbacks?: FocusableComponentStateCallback[];
 }
+
+export type FocusableComponentStateCallback = (restrictedOrLimited: boolean) => void;
 
 export class FocusManager {
     private _parent: FocusManager;
@@ -56,7 +59,7 @@ export class FocusManager {
             return;
         }
 
-        let componentId: string = 'fc-' + ++_lastComponentId;
+        const componentId: string = 'fc-' + ++_lastComponentId;
 
         let storedComponent: StoredFocusableComponent = {
             component: component,
@@ -90,19 +93,19 @@ export class FocusManager {
 
         FocusManager._updateComponentFocusRestriction(storedComponent);
 
-        let el = ReactDOM.findDOMNode<HTMLElement>(component);
+        const el = ReactDOM.findDOMNode<HTMLElement>(component);
         if (el) {
             el.addEventListener('focus', storedComponent.onFocus);
         }
     }
 
     removeFocusableComponent(component: React.Component<any, any>) {
-        let componentId: string = (component as any)._focusableComponentId;
+        const componentId: string = (component as any)._focusableComponentId;
 
         if (componentId) {
-            let storedComponent: StoredFocusableComponent = FocusManager._allFocusableComponents[componentId];
+            const storedComponent: StoredFocusableComponent = FocusManager._allFocusableComponents[componentId];
 
-            let el = ReactDOM.findDOMNode<HTMLElement>(component);
+            const el = ReactDOM.findDOMNode<HTMLElement>(component);
             if (storedComponent && el) {
                 el.removeEventListener('focus', storedComponent.onFocus);
             }
@@ -112,6 +115,8 @@ export class FocusManager {
             storedComponent.limitedCount = 0;
 
             FocusManager._updateComponentFocusRestriction(storedComponent);
+
+            delete storedComponent.callbacks;
 
             for (let parent: FocusManager = this; parent; parent = parent._parent) {
                 delete parent._myFocusableComponentIds[componentId];
@@ -140,7 +145,7 @@ export class FocusManager {
         this._prevFocusedComponent = FocusManager._currentFocusedComponent;
 
         if (this._prevFocusedComponent && !this._prevFocusedComponent.removed) {
-            let el = ReactDOM.findDOMNode<HTMLElement>(this._prevFocusedComponent.component);
+            const el = ReactDOM.findDOMNode<HTMLElement>(this._prevFocusedComponent.component);
             if (el && el.blur) {
                 el.blur();
             }
@@ -148,7 +153,7 @@ export class FocusManager {
 
         Object.keys(FocusManager._allFocusableComponents).forEach(componentId => {
             if (!(componentId in this._myFocusableComponentIds)) {
-                let storedComponent = FocusManager._allFocusableComponents[componentId];
+                const storedComponent = FocusManager._allFocusableComponents[componentId];
                 storedComponent.restricted = true;
                 FocusManager._updateComponentFocusRestriction(storedComponent);
             }
@@ -162,26 +167,26 @@ export class FocusManager {
             return focusManager !== this;
         });
 
-        let prevFocusedComponent = this._prevFocusedComponent;
+        const prevFocusedComponent = this._prevFocusedComponent;
         delete this._prevFocusedComponent;
 
         if (FocusManager._currentRestrictionOwner === this) {
             FocusManager._removeFocusRestriction();
 
-            let prevRestrictionOwner = FocusManager._restrictionStack.pop();
+            const prevRestrictionOwner = FocusManager._restrictionStack.pop();
             FocusManager._currentRestrictionOwner = undefined;
+
+            if (prevRestrictionOwner) {
+                prevRestrictionOwner.restrictFocusWithin();
+            }
 
             // If possible, focus the element which was focused before the restriction.
             if (prevFocusedComponent && !prevFocusedComponent.removed &&
                     !prevFocusedComponent.restricted && !prevFocusedComponent.limitedCount) {
-                let el = ReactDOM.findDOMNode<HTMLElement>(prevFocusedComponent.component);
+                const el = ReactDOM.findDOMNode<HTMLElement>(prevFocusedComponent.component);
                 if (el && el.focus) {
                     el.focus();
                 }
-            }
-
-            if (prevRestrictionOwner) {
-                prevRestrictionOwner.restrictFocusWithin();
             }
         }
     }
@@ -219,6 +224,53 @@ export class FocusManager {
         this.removeFocusLimitation();
     }
 
+    subscribe(component: React.Component<any, any>, callback: FocusableComponentStateCallback) {
+        const storedComponent = FocusManager._getStoredComponent(component);
+
+        if (storedComponent) {
+            if (!storedComponent.callbacks) {
+                storedComponent.callbacks = [];
+            }
+
+            storedComponent.callbacks.push(callback);
+        }
+    }
+
+    unsubscribe(component: React.Component<any, any>, callback: FocusableComponentStateCallback) {
+        const storedComponent = FocusManager._getStoredComponent(component);
+
+        if (storedComponent && storedComponent.callbacks) {
+            storedComponent.callbacks = storedComponent.callbacks.filter(cb => {
+                return cb !== callback;
+            });
+        }
+    }
+
+    isComponentFocusRestrictedOrLimited(component: React.Component<any, any>): boolean {
+        const storedComponent = FocusManager._getStoredComponent(component);
+        return storedComponent && (storedComponent.restricted || storedComponent.limitedCount > 0);
+    }
+
+    private static _getStoredComponent(component: React.Component<any, any>): StoredFocusableComponent {
+        const componentId: string = (component as any)._focusableComponentId;
+
+        if (componentId) {
+            return FocusManager._allFocusableComponents[componentId];
+        }
+
+        return null;
+    }
+
+    private static _callFocusableComponentStateChangeCallbacks(storedComponent: StoredFocusableComponent, restrictedOrLimited: boolean) {
+        if (!storedComponent.callbacks) {
+            return;
+        }
+
+        storedComponent.callbacks.forEach(callback => {
+            callback.call(storedComponent.component, restrictedOrLimited);
+        });
+    }
+
     private static _removeFocusRestriction() {
         Object.keys(FocusManager._allFocusableComponents).forEach(componentId => {
             let storedComponent = FocusManager._allFocusableComponents[componentId];
@@ -228,10 +280,10 @@ export class FocusManager {
     }
 
     private static _setTabIndex(component: React.Component<any, any>, value: number): number {
-        let el = ReactDOM.findDOMNode<HTMLElement>(component);
+        const el = ReactDOM.findDOMNode<HTMLElement>(component);
 
         if (el) {
-            let prev = el.hasAttribute('tabindex') ? el.tabIndex : undefined;
+            const prev = el.hasAttribute('tabindex') ? el.tabIndex : undefined;
 
             if (value === undefined) {
                 if (prev !== undefined) {
@@ -250,9 +302,11 @@ export class FocusManager {
     private static _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
         if ((storedComponent.restricted || (storedComponent.limitedCount > 0)) && !('origTabIndex' in storedComponent)) {
             storedComponent.origTabIndex = FocusManager._setTabIndex(storedComponent.component, -1);
+            FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, true);
         } else if (!storedComponent.restricted && !storedComponent.limitedCount && ('origTabIndex' in storedComponent)) {
             FocusManager._setTabIndex(storedComponent.component, storedComponent.origTabIndex);
             delete storedComponent.origTabIndex;
+            FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, false);
         }
     }
 }
