@@ -66,6 +66,7 @@ import { WebView as WebViewImpl } from './WebView';
 module ReactXP {
     export type Accessibility = AccessibilityType;
     export var Accessibility = AccessibilityImpl;
+    export type AnimatedValue = RXInterface.IAnimatedValue;
     export import Animated = AnimatedImpl;
     export type ActivityIndicator = ActivityIndicatorImpl;
     export var ActivityIndicator = ActivityIndicatorImpl;
