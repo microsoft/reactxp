@@ -712,6 +712,13 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             }
         }
 
+        setFocusRestricted(restricted: boolean) {
+            if (this.refs[refName] instanceof RXView) {
+                const view = this.refs[refName] as RXView;
+                view.setFocusRestricted(restricted);
+            }
+        }
+
         setFocusLimited(limited: boolean) {
             if (this.refs[refName] instanceof RXView) {
                 const view = this.refs[refName] as RXView;

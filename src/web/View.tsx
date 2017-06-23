@@ -89,11 +89,11 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     private _resizeDetectorAnimationFrame: number;
     private _resizeDetectorNodes: { grow?: HTMLElement, shrink?: HTMLElement } = {};
 
-    constructor(props: Types.ViewProps) {
-        super(props);
+    constructor(props: Types.ViewProps, context: ViewContext) {
+        super(props, context);
 
         if (props.restrictFocusWithin || props.limitFocusWithin) {
-            this._focusManager = new FocusManager();
+            this._focusManager = new FocusManager(context && context.focusManager);
 
             if (props.limitFocusWithin) {
                 this.setFocusLimited(true);
@@ -218,6 +218,19 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         return this;
     }
 
+    setFocusRestricted(restricted: boolean) {
+        if (!this._focusManager || !this.props.restrictFocusWithin) {
+            console.error('View: setFocusRestricted method requires restrictFocusWithin property to be set to true');
+            return;
+        }
+
+        if (restricted) {
+            this._focusManager.restrictFocusWithin();
+        } else {
+            this._focusManager.removeFocusRestriction();
+        }
+    }
+
     setFocusLimited(limited: boolean) {
         if (!this._focusManager || !this.props.limitFocusWithin) {
             console.error('View: setFocusLimited method requires limitFocusWithin property to be set to true');
@@ -308,8 +321,6 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         super.componentDidMount();
 
         if (this._focusManager) {
-            this._focusManager.setParent(this.context && this.context.focusManager);
-
             if (this.props.restrictFocusWithin) {
                 this._focusManager.restrictFocusWithin();
             }
