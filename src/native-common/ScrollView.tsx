@@ -49,7 +49,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         // NOTE: We are setting `automaticallyAdjustContentInsets` to false
         // (http://facebook.github.io/react-native/docs/scrollview.html#automaticallyadjustcontentinsets). The
         // 'automaticallyAdjustContentInsets' property is designed to offset the ScrollView's content to account for the
-        // navigation and tab bars in iOS. Although RX Navigator is using NavigatorIOS, it hides the navigation bar
+        // navigation and tab bars in iOS.
         // (navigationBarHidden={true}). We believe that React Native may not be calculating the content insets for the
         // ScrollView correctly in this situation. Disabling this calculation seems to fix the ScrollView inset issues.
         // Currently RX does not expose any components that would require `automaticallyAdjustContentInsets` to be
