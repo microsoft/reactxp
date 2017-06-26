@@ -75,6 +75,8 @@ export abstract class AnimatedTextInput extends AnimatedComponent<Types.Animated
 }
 
 export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewProps, {}> {
+    abstract setFocusRestricted(restricted: boolean): void;
+    abstract setFocusLimited(limited: boolean): void;
 }
 
 export interface IAnimatedValue {

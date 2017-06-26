@@ -128,6 +128,14 @@ export class AnimatedView extends RX.AnimatedView {
         // Native mobile platform doesn't have the notion of blur for AnimatedViews, so ignore
     }
 
+    setFocusRestricted(restricted: boolean) {
+        // Nothing to do.
+    }
+
+    setFocusLimited(limited: boolean) {
+        // Nothing to do.
+    }
+
     render() {
         return (
             <ReactNativeAnimatedClasses.View
