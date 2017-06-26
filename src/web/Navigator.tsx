@@ -374,7 +374,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
     // Push a scene below the others so they don't block touches sent to the presented scenes.
     private _disableScene(sceneIndex: number) {
         if (this.refs['scene_' + sceneIndex]) {
-            this._setNativeStyles(this.refs['scene_' + sceneIndex], {
+            this._setNativeStyles(this.refs['scene_' + sceneIndex] as View, {
                 opacity: 0,
                 zIndex: -10
             });
@@ -403,7 +403,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
         }
 
         if (this.refs['scene_' + sceneIndex]) {
-            this._setNativeStyles(this.refs['scene_' + sceneIndex], enabledSceneNativeProps.style);
+            this._setNativeStyles(this.refs['scene_' + sceneIndex] as View, enabledSceneNativeProps.style);
         }
     }
 
@@ -512,7 +512,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
     }
 
     private _transitionSceneStyle(fromIndex: number, toIndex: number, progress: number, index: number) {
-        const viewAtIndex = this.refs['scene_' + index];
+        const viewAtIndex = this.refs['scene_' + index] as View;
         if (viewAtIndex === undefined) {
             return;
         }

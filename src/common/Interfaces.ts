@@ -294,6 +294,8 @@ export abstract class ViewBase<P, S> extends React.Component<P, S> {
 }
 
 export abstract class View<S> extends ViewBase<Types.ViewProps, S> {
+    abstract setFocusRestricted(restricted: boolean): void;
+    abstract setFocusLimited(limited: boolean): void;
 }
 
 export abstract class GestureView<S> extends ViewBase<Types.GestureViewProps, S> {

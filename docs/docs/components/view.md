@@ -48,16 +48,15 @@ ignorePointerEvents: boolean = false; // web only
 // restricted the focus within some modal, and you have a popup (which
 // also desires for a restricted focus) inside this modal, the popup
 // will get the restriction, but when dismissed, the restriction will
-// be restored for the modal.
+// be restored for the modal. See also the companion method
+// setFocusRestricted() below.
 // WARNING: For the sake of performance, this property is readonly and
 // changing it during the View life cycle will produce an error.
 restrictFocusWithin: boolean = false; // web only
 
 // When the keyboard navigation is happening, do not focus on this view
-// and on all focusable elements inside this view unless the view has
-// isFocusLimited state set to false
-// (like viewInstance.setState({ isFocusLimited: false })), isFocusLimited
-// state is true by default when limitFocusWithin property is true.
+// and on all focusable elements inside this view. See also the companion
+// method setFocusLimited() below.
 // Useful for the list items, allows to skip the consecutive focusing on
 // one list item (and item's internal focusable elements) after another
 // using the Tab key and implement the switching between the items using
@@ -141,6 +140,13 @@ underlayColor: string = undefined; // ßiOS and Android only
 ``` javascript
 // Sets the accessibility focus to the component.
 focus(): void;
+
+// The focus does not go outside the view with restrictFocusWithin by default,
+// setFocusRestricted() allows to turn this restricton off and back on.
+setFocusRestricted(restricted: boolean): void; // web only
+
+
+// The focus does not go inside the view with limitFocusWithin by default,
+// setFocusLimited() allows to turn this limitation off and back on.
+setFocusLimited(limited: boolean): void; // web only
 ```
-
-
