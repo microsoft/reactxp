@@ -857,7 +857,7 @@ declare module 'react-native' {
          class Value {
             constructor(val: number);
             setValue(value: number): void;
-            addListener(callback: any): number;
+            addListener(callback: any): string;
             removeListener(id: string): void;
             removeAllListeners(): void;
             interpolate(config: any): Value;

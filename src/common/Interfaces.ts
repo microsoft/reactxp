@@ -9,10 +9,10 @@
 */
 
 import React = require('react');
+import SubscribableEvent from 'subscribableevent';
 import SyncTasks = require('synctasks');
 
 import AppConfig from './AppConfig';
-import SubscribableEvent = require('./SubscribableEvent');
 import Types = require('./Types');
 
 export import Types = Types;
@@ -85,7 +85,7 @@ export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewP
 
 export interface IAnimatedValue {
     setValue(value: number): void;
-    addListener(callback: any): number;
+    addListener(callback: any): string;
     removeListener(id: string): void;
     removeAllListeners(): void;
     interpolate(config: any): IAnimatedValue;
@@ -99,10 +99,10 @@ export abstract class App {
 
     // Activation State
     abstract getActivationState(): Types.AppActivationState;
-    activationStateChangedEvent = new SubscribableEvent.SubscribableEvent<(state: Types.AppActivationState) => void>();
+    activationStateChangedEvent = new SubscribableEvent<(state: Types.AppActivationState) => void>();
 
     // Memory Warnings
-    memoryWarningEvent = new SubscribableEvent.SubscribableEvent<() => void>();
+    memoryWarningEvent = new SubscribableEvent<() => void>();
 }
 
 export abstract class UserInterface {
@@ -123,18 +123,18 @@ export abstract class UserInterface {
 
     // Content Size Multiplier
     abstract getContentSizeMultiplier(): SyncTasks.Promise<number>;
-    contentSizeMultiplierChangedEvent = new SubscribableEvent.SubscribableEvent<(multiplier: number) => void>();
+    contentSizeMultiplierChangedEvent = new SubscribableEvent<(multiplier: number) => void>();
 
     // On-screen Keyboard
     abstract dismissKeyboard(): void;
 
     // Latency Warnings
     abstract enableTouchLatencyEvents(latencyThresholdMs: number): void;
-    touchLatencyEvent = new SubscribableEvent.SubscribableEvent<(observedLatencyMs: number) => void>();
+    touchLatencyEvent = new SubscribableEvent<(observedLatencyMs: number) => void>();
 
     // Keyboard navigation
     abstract isNavigatingWithKeyboard(): boolean;
-    keyboardNavigationEvent = new SubscribableEvent.SubscribableEvent<(isNavigatingWithKeyboard: boolean) => void>();
+    keyboardNavigationEvent = new SubscribableEvent<(isNavigatingWithKeyboard: boolean) => void>();
 }
 
 export abstract class Modal {
@@ -154,7 +154,7 @@ export abstract class Popup {
 export abstract class Linking {
     // Incoming deep links
     abstract getInitialUrl(): SyncTasks.Promise<string>;
-    deepLinkRequestEvent = new SubscribableEvent.SubscribableEvent<(url: string) => void>();
+    deepLinkRequestEvent = new SubscribableEvent<(url: string) => void>();
 
     // Outgoing deep links
     abstract openUrl(url: string): SyncTasks.Promise<void>;
@@ -167,7 +167,7 @@ export abstract class Linking {
 export abstract class Accessibility {
     abstract isScreenReaderEnabled(): boolean;
     abstract announceForAccessibility(announcement: string): void;
-    screenReaderChangedEvent = new SubscribableEvent.SubscribableEvent<(isEnabled: boolean) => void>();
+    screenReaderChangedEvent = new SubscribableEvent<(isEnabled: boolean) => void>();
 }
 
 export abstract class Button extends React.Component<Types.ButtonProps, any> {}
@@ -220,7 +220,7 @@ export abstract class Navigator extends React.Component<Types.NavigatorProps, an
 
 export abstract class Network {
     abstract isConnected(): SyncTasks.Promise<boolean>;
-    connectivityChangedEvent = new SubscribableEvent.SubscribableEvent<(isConnected: boolean) => void>();
+    connectivityChangedEvent = new SubscribableEvent<(isConnected: boolean) => void>();
 }
 
 export abstract class Platform {
@@ -228,9 +228,9 @@ export abstract class Platform {
 }
 
 export abstract class Input {
-    backButtonEvent = new SubscribableEvent.SubscribableEvent<() => boolean>();
-    keyDownEvent = new SubscribableEvent.SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
-    keyUpEvent = new SubscribableEvent.SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
+    backButtonEvent = new SubscribableEvent<() => boolean>();
+    keyDownEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
+    keyUpEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
 }
 
 export interface IScrollView {
@@ -291,7 +291,7 @@ export abstract class TextInput extends React.Component<Types.TextInputProps, an
 
 export abstract class UserPresence {
     abstract isUserPresent(): boolean;
-    userPresenceChangedEvent = new SubscribableEvent.SubscribableEvent<(isPresent: boolean) => void>();
+    userPresenceChangedEvent = new SubscribableEvent<(isPresent: boolean) => void>();
 }
 
 export abstract class ViewBase<P, S> extends React.Component<P, S> {

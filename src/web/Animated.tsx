@@ -80,7 +80,7 @@ export class Value extends Types.AnimatedValue {
     _listenerId: number;
     _animationId: number;
     _animations: { [key: number]: Animation };
-    _listeners: { [key: number]: Types.Animated.ValueListenerCallback };
+    _listeners: { [key: string]: Types.Animated.ValueListenerCallback };
     _animatedValueUniqueId: number;
     _cssProperties: { [key: string]: string } = {};
     _element: HTMLElement;
@@ -194,18 +194,18 @@ export class Value extends Types.AnimatedValue {
     }
 
     // Add listener for when the value gets updated.
-    addListener(callback: Types.Animated.ValueListenerCallback): number {
+    addListener(callback: Types.Animated.ValueListenerCallback): string {
         if (callback) {
             this._listenerId++;
-            this._listeners[this._listenerId] = callback;
+            this._listeners[String(this._listenerId)] = callback;
         }
 
-        return this._listenerId;
+        return String(this._listenerId);
     }
 
     // Remove a specific listner.
     removeListener(id: string): void {
-        delete this._listeners[id as any];
+        delete this._listeners[id];
     }
 
     // Remove all listeners.
@@ -305,7 +305,7 @@ export class Value extends Types.AnimatedValue {
 
         // Notify subscribers about the new value.
         for (var key in this._listeners) {
-            if (this._listeners[key]) {
+            if (typeof this._listeners[key] === 'function') {
                 this._listeners[key](this.getValue());
             }
         }

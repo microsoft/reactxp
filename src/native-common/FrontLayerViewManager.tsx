@@ -11,9 +11,9 @@
 import _ = require('./lodashMini');
 import React = require('react');
 import RN = require('react-native');
+import SubscribableEvent from 'subscribableevent';
 
 import { ModalContainer } from '../native-common/ModalContainer';
-import SubscribableEvent = require('../common/SubscribableEvent');
 import PopupContainerView from './PopupContainerView';
 import RootView from './RootView';
 import Types = require('../common/Types');
@@ -37,7 +37,7 @@ const _styles = {
 export class FrontLayerViewManager {
     private _overlayStack: (ModalStackContext | PopupStackContext)[] = [];
 
-    event_changed = new SubscribableEvent.SubscribableEvent<() => void>();
+    event_changed = new SubscribableEvent<() => void>();
 
     public showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string): void {
         const index = this._findIndexOfModal(modalId);
