@@ -18,6 +18,13 @@ import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export class UserInterface extends RX.UserInterface {
+    private _isNavigatingWithKeyboard: boolean = false;
+
+    constructor() {
+        super();
+        this.keyboardNavigationEvent.subscribe(this._keyboardNavigationStateChanged);
+    }
+
     measureLayoutRelativeToWindow(component: React.Component<any, any>) :
             SyncTasks.Promise<Types.LayoutInfo> {
 
@@ -124,6 +131,14 @@ export class UserInterface extends RX.UserInterface {
 
     evaluateTouchLatency(e: Types.MouseEvent) {
         // Nothing to do
+    }
+
+    isNavigatingWithKeyboard(): boolean {
+        return this._isNavigatingWithKeyboard;
+    }
+
+    private _keyboardNavigationStateChanged = (isNavigatingWithKeyboard: boolean) => {
+        this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
     }
 }
 

@@ -158,6 +158,10 @@ export class UserInterface extends RX.UserInterface {
             }
         }
     }
+
+    isNavigatingWithKeyboard(): boolean {
+        return false;
+    }
 }
 
 export default new UserInterface();
