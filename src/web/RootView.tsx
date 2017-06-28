@@ -22,6 +22,7 @@ import Styles from './Styles';
 import SubscribableEvent = require('../common/SubscribableEvent');
 import Types = require('../common/Types');
 import FocusManager from './utils/FocusManager';
+import UserInterface from './UserInterface';
 
 export interface RootViewProps {
     mainView?: React.ReactNode;
@@ -89,7 +90,8 @@ const _styles = {
     })
 };
 
-const ESC_KEY_CODE = 27;
+const KEY_CODE_TAB = 9;
+const KEY_CODE_ESC = 27;
 
 // Setting the expected default box-sizing for everything.
 if (typeof document !== 'undefined') {
@@ -113,6 +115,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _lockTimeout: number;
     private _newAnnouncementEventChangedSubscription: SubscribableEvent.SubscriptionToken = null;
     private _focusManager: FocusManager;
+    private _isNavigatingWithKeyboard: boolean = false;
+    private _isNavigatingWithKeyboardUpateTimer: number;
 
     constructor(props: RootViewProps) {
         super(props);
@@ -210,7 +214,10 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         if (!this._keyboardHandlerInstalled) {
             window.addEventListener('keydown', this._onKeyDown);
             window.addEventListener('keyup', this._onKeyUp);
-            window.addEventListener('mousedown', this._onMouseDown);
+
+            window.addEventListener('keydown', this._onKeyDownCapture, true); // Capture!
+            window.addEventListener('mousedown', this._onMouseDownCapture, true); // Capture!
+
             this._keyboardHandlerInstalled = true;
         }
     }
@@ -224,6 +231,10 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         if (this._keyboardHandlerInstalled) {
             window.removeEventListener('keydown', this._onKeyDown);
             window.removeEventListener('keyup', this._onKeyUp);
+
+            window.removeEventListener('keydown', this._onKeyDownCapture, true);
+            window.removeEventListener('mousedown', this._onMouseDownCapture, true);
+
             this._keyboardHandlerInstalled = false;
         }
     }
@@ -355,21 +366,59 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         return isClickOnElement;
     }
 
-    private _onMouseDown = (e: MouseEvent) => {
-        if (this.state.focusClass !== this.props.mouseFocusOutline) {
-            this.setState({ focusClass: this.props.mouseFocusOutline });
+    private _onMouseDownCapture = (e: MouseEvent) => {
+        this._updateKeyboardNavigationState(false);
+    }
+
+    private _onKeyDownCapture = (e: KeyboardEvent) => {
+        if (e.keyCode === KEY_CODE_TAB) {
+            this._updateKeyboardNavigationState(true);
+        }
+
+        if (e.keyCode === KEY_CODE_ESC) {
+            // If Esc is pressed and the focused element stays the same after some time,
+            // switch the keyboard navigation off to dismiss the outline.
+            const activeElement = document.activeElement;
+
+            if (this._isNavigatingWithKeyboardUpateTimer) {
+                window.clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
+            }
+
+            this._isNavigatingWithKeyboardUpateTimer = window.setTimeout(() => {
+                this._isNavigatingWithKeyboardUpateTimer = undefined;
+
+                if ((document.activeElement === activeElement) && activeElement && (activeElement !== document.body)) {
+                    this._updateKeyboardNavigationState(false);
+                }
+            }, 200);
+        }
+    }
+
+    private _updateKeyboardNavigationState(isNavigatingWithKeyboard: boolean) {
+        if (this._isNavigatingWithKeyboardUpateTimer) {
+            window.clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
+            this._isNavigatingWithKeyboardUpateTimer = undefined;
+        }
+
+        if (this._isNavigatingWithKeyboard !== isNavigatingWithKeyboard) {
+            this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
+
+            UserInterface.keyboardNavigationEvent.fire(isNavigatingWithKeyboard);
+
+            const focusClass = isNavigatingWithKeyboard ? this.props.keyBoardFocusOutline : this.props.mouseFocusOutline;
+
+            if (this.state.focusClass !== focusClass) {
+                this.setState({ focusClass: focusClass });
+            }
         }
     }
 
     private _onKeyDown = (e: KeyboardEvent) => {
-        if (this.state.focusClass !== this.props.keyBoardFocusOutline) {
-            this.setState({ focusClass: this.props.keyBoardFocusOutline });
-        }
         Input.dispatchKeyDown(e as any);
     }
 
     private _onKeyUp = (e: KeyboardEvent) => {
-        if (this.props.activePopupOptions && (e.keyCode === ESC_KEY_CODE)) {
+        if (this.props.activePopupOptions && (e.keyCode === KEY_CODE_ESC)) {
             if (e.stopPropagation) {
                 e.stopPropagation();
             }
