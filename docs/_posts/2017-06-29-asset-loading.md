@@ -93,7 +93,7 @@ import AppAssets = require('AppAssets');
 
 ### Aliasing
 
-Now that we have two implementations (one for web and a second for native), how do we "link" the correct version based on the platform that we're building? We do this through an lightweight "aliasing" step in our build process.
+Now that we have two implementations (one for web and a second for native), how do we "link" the correct version based on the platform that we're building? We do this through a lightweight "aliasing" step in our build process. This step replaces the ```require('AppAssets')``` with either ```require('./ts/AppAssetsWeb')``` or ```require('./ts/AppAssetsNative')``` depending on the platform being built.
 
 I'll provide examples in [gulp](http://gulpjs.com/) syntax, but the same technique can be used in [grunt](https://gruntjs.com/) or other task scripting runtimes.
 
