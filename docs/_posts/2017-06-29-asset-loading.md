@@ -1,11 +1,11 @@
 ---
-title: Asset Loading in Cross-Platform Code
+title: Asset Loading
 author: erictraut
 ---
 
 We've received questions about how we handle assets (images, videos, sounds) in a way that works for both React Native and React JS (web). 
 
-### Asset Loading
+### Specifying Asset Locations
 
 On the web, assets are simply referenced by URL and are loaded asynchronously by the browser. 
 
