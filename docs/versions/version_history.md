@@ -16,6 +16,14 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.42.0_rc.16 of reactxp
+_Released 30 June 2017_
+
+Fixed another bug in handling of default border width on web.
+Added setFocusRestricted and setFocusLimited methods and support for nested keyboard focus on web.
+Added isNavigatingWithKdyboard method and keyboardNavigationEvent.
+
+
 #### Version 0.42.0_rc.12 of reactxp
 _Released 16 June 2017_
 
