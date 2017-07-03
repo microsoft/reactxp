@@ -200,6 +200,13 @@ export class TextInput extends RX.TextInput<TextInputState> {
         }
     }
 
+    private _focus = () => {
+        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        if (el) {
+            el.focus();
+        }
+    }
+
     blur() {
         let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
         if (el) {
@@ -208,10 +215,11 @@ export class TextInput extends RX.TextInput<TextInputState> {
     }
 
     focus() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
-        if (el) {
-            el.focus();
-        }
+        this._focus();
+    }
+
+    setAccessibilityFocus() {
+        this._focus();
     }
 
     isFocused() {
