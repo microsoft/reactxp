@@ -124,6 +124,10 @@ blur(): void;
 // Gives the control focus
 focus(): void;
 
+// Gives the control accessibility-only focus
+// E.g. screen reader announcement of the focus is needed, but popping up of native keyboard is undesirable 
+setAccessibilityFocus(): void;
+
 // Does control currently have focus?
 isFocused(): boolean;
 

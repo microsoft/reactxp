@@ -281,6 +281,7 @@ export abstract class Text<S> extends React.Component<Types.TextProps, S> {}
 export abstract class TextInput<S> extends React.Component<Types.TextInputProps, S> {
     abstract blur(): void;
     abstract focus(): void;
+    abstract setAccessibilityFocus(): void;
     abstract isFocused(): boolean;
     abstract selectAll(): void;
     abstract selectRange(start: number, end: number): void;
