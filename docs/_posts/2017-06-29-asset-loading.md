@@ -98,7 +98,7 @@ Now that we have two implementations (one for web and a second for native), how 
 I'll provide examples in [gulp](http://gulpjs.com/) syntax, but the same technique can be used in [grunt](https://gruntjs.com/) or other task scripting runtimes.
 
 ``` javascript
-var config: {
+var config = {
     aliasify: {
         src: './.temp/' + argv.platform,
         dest: getBuildPath() + 'js/',
