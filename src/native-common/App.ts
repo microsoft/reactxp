@@ -17,6 +17,7 @@ const _rnStateToRxState: {[key: string]: Types.AppActivationState} = {
     'active': Types.AppActivationState.Active,
     'background': Types.AppActivationState.Background,
     'inactive': Types.AppActivationState.Inactive,
+    'extension': Types.AppActivationState.Extension,
     // uninitialized means in Background on android since last change I did
     'uninitialized': Types.AppActivationState.Background
 };
