@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.42.0_rc.17 of reactxp
+_Released 4 July 2017_
+
+Added ability to set accessibility focus for text input controls.
+Added support for iOS-specific ActivationState for RN extensions.
+
 #### Version 0.42.0_rc.16 of reactxp
 _Released 30 June 2017_
 
