@@ -141,13 +141,13 @@ export class Styles extends RX.Styles {
             var flexValue = def.flex;
             delete adaptedRuleSet.flex;
             if (flexValue > 0) {
-                // n 1 auto
+                // p 1 auto
                 adaptedRuleSet.flexGrow = flexValue;
                 adaptedRuleSet.flexShrink = 1;
             } else if (flexValue < 0) {
-                // 0 1 auto
+                // 0 -n auto
                 adaptedRuleSet.flexGrow = 0;
-                adaptedRuleSet.flexShrink = 1;
+                adaptedRuleSet.flexShrink = -flexValue;
             } else {
                 // 0 0 auto
                 adaptedRuleSet.flexGrow = 0;

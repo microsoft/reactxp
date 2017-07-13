@@ -191,6 +191,9 @@ export class TextInput extends RX.TextInput<TextInputState> {
 
     focus() {
         (this.refs['nativeTextInput'] as any).focus();
+    }
+
+    setAccessibilityFocus() {
         AccessibilityUtil.setAccessibilityFocus(this);
     }
 

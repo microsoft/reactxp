@@ -24,7 +24,8 @@ const _styles = {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
         overflow: 'hidden',
         alignItems: 'stretch'
     },
@@ -83,15 +84,20 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     };
 
     private _focusManager: FocusManager;
+    private _isFocusLimited: boolean;
 
     private _resizeDetectorAnimationFrame: number;
     private _resizeDetectorNodes: { grow?: HTMLElement, shrink?: HTMLElement } = {};
 
-    constructor(props: Types.ViewProps) {
-        super(props);
+    constructor(props: Types.ViewProps, context: ViewContext) {
+        super(props, context);
 
-        if (props.restrictFocusWithin) {
-            this._focusManager = new FocusManager();
+        if (props.restrictFocusWithin || props.limitFocusWithin) {
+            this._focusManager = new FocusManager(context && context.focusManager);
+
+            if (props.limitFocusWithin) {
+                this.setFocusLimited(true);
+            }
         }
     }
 
@@ -212,6 +218,34 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         return this;
     }
 
+    setFocusRestricted(restricted: boolean) {
+        if (!this._focusManager || !this.props.restrictFocusWithin) {
+            console.error('View: setFocusRestricted method requires restrictFocusWithin property to be set to true');
+            return;
+        }
+
+        if (restricted) {
+            this._focusManager.restrictFocusWithin();
+        } else {
+            this._focusManager.removeFocusRestriction();
+        }
+    }
+
+    setFocusLimited(limited: boolean) {
+        if (!this._focusManager || !this.props.limitFocusWithin) {
+            console.error('View: setFocusLimited method requires limitFocusWithin property to be set to true');
+            return;
+        }
+
+        if (limited && !this._isFocusLimited) {
+            this._isFocusLimited = true;
+            this._focusManager.limitFocusWithin();
+        } else if (!limited && this._isFocusLimited) {
+            this._isFocusLimited = false;
+            this._focusManager.removeFocusLimitation();
+        }
+    }
+
     render() {
         let combinedStyles = Styles.combine(_styles.defaultStyle, this.props.style);
         const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
@@ -278,6 +312,8 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
         if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
             console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
+        } else if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
+            console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
         }
     }
 
@@ -285,7 +321,13 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         super.componentDidMount();
 
         if (this._focusManager) {
-            this._focusManager.restrictFocusWithin();
+            if (this.props.restrictFocusWithin) {
+                this._focusManager.restrictFocusWithin();
+            }
+
+            if (this.props.limitFocusWithin && this._isFocusLimited) {
+                this._focusManager.limitFocusWithin();
+            }
         }
     }
 

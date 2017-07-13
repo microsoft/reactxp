@@ -40,6 +40,20 @@ export class Styles extends RX.Styles {
             delete combinedStyles.padding;
         }
 
+        if (combinedStyles.borderWidth || 
+                combinedStyles.borderTopWidth || combinedStyles.borderRightWidth ||
+                combinedStyles.borderBottomWidth || combinedStyles.borderLeftWidth) {
+            // If the caller specified a non-zero border width
+            // but no border color or style, set the defaults to
+            // match those of React Native platforms.
+            if (combinedStyles.borderColor === undefined) {
+                combinedStyles.borderColor = 'black';
+            }
+            if (combinedStyles.borderStyle === undefined) {
+                combinedStyles.borderStyle = 'solid';
+            }
+        }
+
         return combinedStyles;
     }
 
@@ -242,11 +256,17 @@ export class Styles extends RX.Styles {
             delete def.flex;
 
             if (flexValue > 0) {
-                def.flex = flexValue.toString() + ' 1 auto';
+                // p 1 auto
+                def.flexGrow = flexValue;
+                def.flexShrink = 1;
             } else if (flexValue < 0) {
-                def.flex = '0 1 auto';
+                // 0 -n auto
+                def.flexGrow = 0;
+                def.flexShrink = -flexValue;
             } else {
-                def.flex = '0 0 auto';
+                // 0 0 auto
+                def.flexGrow = 0;
+                def.flexShrink = 0;
             }
         }
 
@@ -316,9 +336,9 @@ export class Styles extends RX.Styles {
             def['lineHeight'] = def.lineHeight + 'px';
         }
 
-        // Add default border width if border style was provided. Otherwise
-        // the browser will default to a one-pixel border.
-        if (def.borderStyle) {
+        // Add default border width if border style or some subset of border widths
+        // were provided. Otherwise the browser will default to a two-pixel border.
+        if (def.borderStyle || def.borderTopWidth || def.borderRightWidth || def.borderBottomWidth || def.borderLeftWidth) {
             if (def.borderWidth === undefined) {
                 if (def.borderTopWidth === undefined) {
                     def.borderTopWidth = 0;

@@ -75,7 +75,7 @@ export abstract class Animation {
 var animatedValueUniqueId = 0;
 
 // The animated value object
-export class Value extends RX.AnimatedValue {
+export class Value extends Types.AnimatedValue {
     _value: number | string;
     _listenerId: number;
     _animationId: number;
@@ -128,7 +128,7 @@ export class Value extends RX.AnimatedValue {
         if (input0 > input1) {
             throw 'The interpolation input values should be in ascending order.';
         }
-        
+
         this._interpolationConfig = {};
         _.each(config.inputRange, (value, index) => {
             this._interpolationConfig[value] = config.outputRange[index];
@@ -709,6 +709,20 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                 if (component.blur) {
                     component.blur();
                 }
+            }
+        }
+
+        setFocusRestricted(restricted: boolean) {
+            if (this.refs[refName] instanceof RXView) {
+                const view = this.refs[refName] as RXView;
+                view.setFocusRestricted(restricted);
+            }
+        }
+
+        setFocusLimited(limited: boolean) {
+            if (this.refs[refName] instanceof RXView) {
+                const view = this.refs[refName] as RXView;
+                view.setFocusLimited(limited);
             }
         }
 

@@ -121,8 +121,12 @@ value: string = undefined;
 // Forces the control to give up focus
 blur(): void;
 
-// Gives the control focus
+// Gives the control focus. For mobile, use setAccessibilityFocus() for setting screen reader focus
 focus(): void;
+
+// Gives the control accessibility-only focus
+// E.g. screen reader focus is needed, but popping up of native keyboard is undesirable 
+setAccessibilityFocus(): void;
 
 // Does control currently have focus?
 isFocused(): boolean;

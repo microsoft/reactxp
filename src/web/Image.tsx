@@ -22,6 +22,7 @@ const _styles = {
     image: {
         position: 'absolute',
         display: 'flex',
+        flexDirection: 'column',
         opacity: 0,
         maxWidth: '100%',
         maxHeight: '100%'

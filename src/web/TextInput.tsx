@@ -26,7 +26,8 @@ let _styles = {
         display: 'flex',
         flexDirection: 'row',
         flexBasis: 'auto',
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
         overflowX: 'hidden',
         overflowY: 'auto',
         alignItems: 'stretch'
@@ -199,6 +200,13 @@ export class TextInput extends RX.TextInput<TextInputState> {
         }
     }
 
+    private _focus = () => {
+        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        if (el) {
+            el.focus();
+        }
+    }
+
     blur() {
         let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
         if (el) {
@@ -207,10 +215,11 @@ export class TextInput extends RX.TextInput<TextInputState> {
     }
 
     focus() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
-        if (el) {
-            el.focus();
-        }
+        this._focus();
+    }
+
+    setAccessibilityFocus() {
+        this._focus();
     }
 
     isFocused() {

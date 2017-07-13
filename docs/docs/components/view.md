@@ -40,7 +40,7 @@ blockPointerEvents: boolean = false; // iOS and Android only
 // components behind to receive them
 ignorePointerEvents: boolean = false; // web only
 
-// When keyboard navigation is happening, restrict the focusable
+// When the keyboard navigation is happening, restrict the focusable
 // elements within this view. Useful for popups and modals, you
 // might want to prevent the focus from going outside of the popup or
 // modal. The views with restrictFocusWithin are stacked and the last
@@ -48,10 +48,22 @@ ignorePointerEvents: boolean = false; // web only
 // restricted the focus within some modal, and you have a popup (which
 // also desires for a restricted focus) inside this modal, the popup
 // will get the restriction, but when dismissed, the restriction will
-// be restored for the modal.
+// be restored for the modal. See also the companion method
+// setFocusRestricted() below.
 // WARNING: For the sake of performance, this property is readonly and
 // changing it during the View life cycle will produce an error.
 restrictFocusWithin: boolean = false; // web only
+
+// When the keyboard navigation is happening, do not focus on this view
+// and on all focusable elements inside this view. See also the companion
+// method setFocusLimited() below.
+// Useful for the list items, allows to skip the consecutive focusing on
+// one list item (and item's internal focusable elements) after another
+// using the Tab key and implement the switching between the items using
+// the arrow keys (or using some other behaviour).
+// WARNING: For the sake of performance, this property is readonly and
+// changing it during the View life cycle will produce an error.
+limitFocusWithin: boolean = false; // web only
 
 // Additional invisible DOM elements will be added inside the view
 // to track the size changes that are performed behind our back by
@@ -128,6 +140,13 @@ underlayColor: string = undefined; // ßiOS and Android only
 ``` javascript
 // Sets the accessibility focus to the component.
 focus(): void;
+
+// The focus does not go outside the view with restrictFocusWithin by default,
+// setFocusRestricted() allows to turn this restricton off and back on.
+setFocusRestricted(restricted: boolean): void; // web only
+
+
+// The focus does not go inside the view with limitFocusWithin by default,
+// setFocusLimited() allows to turn this limitation off and back on.
+setFocusLimited(limited: boolean): void; // web only
 ```
-
-

@@ -26,13 +26,6 @@ const emailHostConstraintViolationRegex = /\.\.|^[.-]|[.-]$|\.-|-\./i;
 export abstract class Linking extends RX.Linking {
     protected abstract _openUrl(url: string): SyncTasks.Promise<void>;
 
-    // Launches Email app
-    launchEmail(emailInfo: Types.EmailInfo): SyncTasks.Promise<void> {
-        // Format email info
-        const emailUrl = this._createEmailUrl(emailInfo);
-        return this._openUrl(emailUrl);
-    }
-
     // Launches SMS app
     launchSms(phoneInfo: Types.SmsInfo): SyncTasks.Promise<void> {
         // Format phone info
@@ -46,7 +39,7 @@ export abstract class Linking extends RX.Linking {
     }
 
     // Escaped Email uri - mailto:[emailAddress]?subject=<emailSubject>&body=<emailBody>
-    private _createEmailUrl(emailInfo: Types.EmailInfo) {
+    protected _createEmailUrl(emailInfo: Types.EmailInfo) {
         let emailUrl: string = 'mailto:';
         let validEmails: string[];
 

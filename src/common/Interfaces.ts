@@ -75,6 +75,8 @@ export abstract class AnimatedTextInput extends AnimatedComponent<Types.Animated
 }
 
 export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewProps, {}> {
+    abstract setFocusRestricted(restricted: boolean): void;
+    abstract setFocusLimited(limited: boolean): void;
 }
 
 export interface IAnimatedValue {
@@ -82,18 +84,7 @@ export interface IAnimatedValue {
     addListener(callback: any): number;
     removeListener(id: string): void;
     removeAllListeners(): void;
-    interpolate(config: any): AnimatedValue;
-}
-
-export abstract class AnimatedValue implements IAnimatedValue {
-    constructor(val: number) {
-        // No-op
-    }
-    abstract setValue(value: number): void;
-    abstract addListener(callback: any): number;
-    abstract removeListener(id: string): void;
-    abstract removeAllListeners(): void;
-    abstract interpolate(config: any): AnimatedValue;
+    interpolate(config: any): IAnimatedValue;
 }
 
 export abstract class App {
@@ -136,6 +127,10 @@ export abstract class UserInterface {
     // Latency Warnings
     abstract enableTouchLatencyEvents(latencyThresholdMs: number): void;
     touchLatencyEvent = new SubscribableEvent.SubscribableEvent<(observedLatencyMs: number) => void>();
+
+    // Keyboard navigation
+    abstract isNavigatingWithKeyboard(): boolean;
+    keyboardNavigationEvent = new SubscribableEvent.SubscribableEvent<(isNavigatingWithKeyboard: boolean) => void>();
 }
 
 export abstract class Modal {
@@ -161,6 +156,8 @@ export abstract class Linking {
     abstract openUrl(url: string): SyncTasks.Promise<void>;
     abstract launchSms(smsData: Types.SmsInfo): SyncTasks.Promise<void>;
     abstract launchEmail(emailData: Types.EmailInfo): SyncTasks.Promise<void>;
+
+    protected abstract _createEmailUrl(emailInfo: Types.EmailInfo): string;
 }
 
 export abstract class Accessibility {
@@ -284,6 +281,7 @@ export abstract class Text<S> extends React.Component<Types.TextProps, S> {}
 export abstract class TextInput<S> extends React.Component<Types.TextInputProps, S> {
     abstract blur(): void;
     abstract focus(): void;
+    abstract setAccessibilityFocus(): void;
     abstract isFocused(): boolean;
     abstract selectAll(): void;
     abstract selectRange(start: number, end: number): void;
@@ -303,6 +301,8 @@ export abstract class ViewBase<P, S> extends React.Component<P, S> {
 }
 
 export abstract class View<S> extends ViewBase<Types.ViewProps, S> {
+    abstract setFocusRestricted(restricted: boolean): void;
+    abstract setFocusLimited(limited: boolean): void;
 }
 
 export abstract class GestureView<S> extends ViewBase<Types.GestureViewProps, S> {
@@ -315,7 +315,7 @@ export interface Animated {
     Image: typeof AnimatedImage;
     Text: typeof AnimatedText;
     View: typeof AnimatedView;
-    Value: typeof AnimatedValue;
+    Value: typeof Types.AnimatedValue;
     Easing: Types.Animated.Easing;
     timing: Types.Animated.TimingFunction;
     parallel: Types.Animated.ParallelFunction;

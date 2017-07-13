@@ -16,6 +16,38 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.42.0_rc.17 of reactxp
+_Released 4 July 2017_
+
+Added ability to set accessibility focus for text input controls.
+Added support for iOS-specific ActivationState for RN extensions.
+
+#### Version 0.42.0_rc.16 of reactxp
+_Released 30 June 2017_
+
+Fixed another bug in handling of default border width on web.
+Added setFocusRestricted and setFocusLimited methods and support for nested keyboard focus on web.
+Added isNavigatingWithKdyboard method and keyboardNavigationEvent.
+
+
+#### Version 0.42.0_rc.12 of reactxp
+_Released 16 June 2017_
+
+Added support for new limitFocusWidth prop for constraining keyboard focus.
+Fixed bug in handling of mailto URLs on web in the Link component.
+Added support for flexGrow, flexShrink, and flexBasis props.
+
+
+#### Version 0.42.0_rc.11 of reactxp
+_Released 13 June 2017_
+
+Fixed bugs in web implementation of focus manager.
+Added new API (enableTouchLatencyEvents) and event (touchLatencyEvent) in UserInterface namespace for detecting delays in touch event handling.
+Fixed crash in native implementation of Link component that resulted in uncaught exception for some types of links.
+Fixed flexDirection style default for web implementation in Image component.
+Fixed inconsistency in handling of borders between web and RN when borderStyle is not specified.
+
+
 #### Version 0.42.0_rc.10 of reactxp
 _Released 25 May 2017_
 

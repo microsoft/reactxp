@@ -47,15 +47,15 @@ measureWindow(): Types.Dimensions;
 // can be adjusted by users on some platforms; defaults to 1.0
 getContentSizeMultiplier(): SyncTasks.Promise<number>;
 
-// Indicates the default maximum "size multiplier" for text increase. 
+// Indicates the default maximum "size multiplier" for text increase.
 // Defaults to 0 which indicates there is no max.
-// Note: Older versions of React Native don’t support this interface. 
+// Note: Older versions of React Native don’t support this interface.
 getMaxContentSizeMultiplier(): SyncTasks.Promise<number>;
 
-// Sets the default maximum "size multiplier" for text increase. 
+// Sets the default maximum "size multiplier" for text increase.
 // Values must be 0 or >=1. The default is 0 which indicates that
 // there is no max.
-// Note: Older versions of React Native don’t support this interface. 
+// Note: Older versions of React Native don’t support this interface.
 setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
 
 // Dismisses the on-screen keyboard (applies to mobile only)
@@ -65,6 +65,11 @@ dismissKeyboard(): void;
 // When latency greater than latencyThresholdMs is observed, the
 // touchLatencyEvent will fire. (applies to mobile only)
 enableTouchLatencyEvents(latencyThresholdMs: number): void;
+
+// Returns true if the application is in the keyboard navigation state,
+// when the user is using Tab key to navigate through the focusable
+// elements. (applies to web only)
+isNavigatingWithKeyboard(): boolean;
 ```
 
 ## Events
@@ -79,5 +84,10 @@ contentSizeMultiplierChangedEvent: SubscribableEvent<
 // been observed. (applies to mobile only)
 touchLatencyEvent: SubscribableEvent<
     (observedLatencyMs: number) => void>();
+
+// Triggered when the keyboard navigation state is changed.
+// (applies to web only)
+keyboardNavigationEvent: SubscribableEvent<
+    (isNavigatingWithKeyboard: boolean) => void>();
 ```
 

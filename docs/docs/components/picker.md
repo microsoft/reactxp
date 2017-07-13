@@ -47,3 +47,50 @@ color: 'string';
 ## Methods
 
 No methods
+
+
+## Sample Usage
+
+``` javascript
+const pickerItems: RX.Types.PickerPropsItem[] = [
+    {
+        label: 'Cool',
+        value: 'cool'
+    },
+    {
+        label: 'Super',
+        value: 'super'
+    },
+    {
+        label: 'Great',
+        value: 'great'
+    }
+];
+
+class MyComponent extends RX.Component<null, { selectedValue: string }> {
+    constructor() {
+        super();
+
+        this.state = {
+            selectedValue: 'cool'
+        }
+    }
+
+    render(): JSX.Element {
+        return (
+            <RX.Text numberOfLines={ 1 }>
+                <RX.Text> { 'How are you feeling? ' } </RX.Text>
+                <RX.Picker
+                    items={ pickerItems }
+                    selectedValue={ this.state.selectedValue }
+                    onValueChange={ this._onValueChange }
+                />
+            </RX.Text>
+        );
+    }
+
+    private _onValueChange = (itemValue: string, itemIndex: number) => {
+        this.setState({ selectedValue: itemValue });
+    }
+}
+```
