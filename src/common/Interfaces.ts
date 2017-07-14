@@ -182,7 +182,7 @@ export abstract class Clipboard {
 export abstract class Link<S> extends React.Component<Types.LinkProps, S> {}
 
 export abstract class Storage {
-    abstract getItem(key: string): SyncTasks.Promise<string>;
+    abstract getItem(key: string): SyncTasks.Promise<string|undefined>;
     abstract setItem(key: string, value: string): SyncTasks.Promise<void>;
     abstract removeItem(key: string): SyncTasks.Promise<void>;
     abstract clear(): SyncTasks.Promise<void>;
