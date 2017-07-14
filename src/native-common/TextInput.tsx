@@ -18,6 +18,7 @@ import Types = require('../common/Types');
 
 const _styles = {
     defaultTextInput: Styles.createTextInputStyle({
+        borderWidth: 0,
         padding: 0
     })
 };
