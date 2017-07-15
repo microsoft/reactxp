@@ -16,6 +16,11 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.2.2 of reactxp-imagesvg
+_Released 15 July 2017_
+
+Updated to TypeScript 2.4 and made changes to work with latest ReactXP core.
+
 #### Version 0.42.0_rc.19 of reactxp
 _Released 15 July 2017_
 

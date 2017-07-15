@@ -20,10 +20,10 @@ export class ImageSvg extends React.Component<SvgTypes.ImageSvgProps, {}> {
         assert.ok(this.props.width && this.props.height, 'The width and height on imagesvg are mandatory.');
 
         if (this.props.width > 0 && this.props.height > 0) {
-            let combinedStyles = RXStyles.combine({
+            let combinedStyles = RXStyles.combine([{
                 display: 'flex',
                 position: 'relative'
-            }, this.props.style);
+            }, this.props.style]) as any;
 
             if (this.props.fillColor !== undefined) {
                 combinedStyles.fill = this.props.fillColor;
