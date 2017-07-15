@@ -9,8 +9,10 @@
 
 import React = require('react');
 import RN = require('react-native');
+import RX = require('reactxp');
 
 import Interfaces = require('../common/Interfaces');
+import Types = require('../common/Types');
 
 var _styles = RN.StyleSheet.create({
     bg: {
@@ -23,7 +25,7 @@ export interface VideoState {
     duration?: number;
 }
 
-class Video extends Interfaces.Video<VideoState> {
+class Video extends RX.Component<Types.VideoProps, VideoState> {
     // TODO(uwp): #694149 Not implemented
     render() {
         return (

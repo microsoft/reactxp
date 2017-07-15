@@ -24,9 +24,11 @@ Many base components share common subsets of style attributes. For example, almo
 
 ## Combining Styles
 
-All of the base components support a *style* prop that can accept a single style or an array of styles. If an array of styles is provided, the styles are combined in such a way that styles with larger indices override styles with smaller indices. Falsy values (false, null, undefined) can also be specified in a style array. This allows for the following common pattern.
+All of the base components support a *style* prop that can accept a single style or an array of styles. If an array of styles is provided, the styles are combined in such a way that styles with larger indices override styles with smaller indices. Falsy values (false, null, undefined) can also be specified in a style array. This allows for the following common pattern. 
 
+``` javascript
     let buttonTextStyles = [_styles.baseText, this.state.hovering && _styles.hoverText];
+```
 
 Here is another variant that does the same thing -- a little more verbose but arguably easier to read.
 
@@ -36,6 +38,15 @@ if (this.state.hovering) {
     buttonTextStyles.push(_styles.hoverText);
 }
 ```
+
+Within a style array, you can also pass nested arrays. This allows easy manipulation of composite styles.
+
+``` javascript
+// this.props.style might be undefined, a single style, or a (potentially-nested)
+// array of styles.
+<RX.View style={ [_styles.defaultStyle, this.props.style] } />
+```
+
 
 ## Style Caching
 

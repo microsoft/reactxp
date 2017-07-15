@@ -18,7 +18,7 @@ import Types = require('../common/Types');
 export class NavigatorStandardDelegate extends NavigatorDelegate {
     private _navigator: RN.Navigator;
 
-    constructor(navigator: RX.Navigator<NavigatorState>) {
+    constructor(navigator: RX.Navigator) {
         super(navigator);
     }
 

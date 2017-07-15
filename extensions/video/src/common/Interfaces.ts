@@ -12,7 +12,7 @@ import RX = require('reactxp');
 
 import Types = require('./Types');
 
-export abstract class Video<S> extends RX.Component<Types.VideoProps, S> {
+export abstract class Video extends RX.Component<Types.VideoProps, any> {
     abstract seek(position: number): void;
     abstract play(): void;
     abstract pause(): void;

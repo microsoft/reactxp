@@ -118,7 +118,7 @@ export interface NavigatorState {
     transitionFinished?: TransitionToCallback;
 }
 
-export class Navigator extends RX.Navigator<NavigatorState> {
+export class Navigator extends React.Component<Types.NavigatorProps, NavigatorState> {
     // Keep a map of all rendered scenes, keyed off their routeId
     private _renderedSceneMap: { [routeId: number]: JSX.Element } = {};
 
@@ -384,7 +384,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
     // Add styles on the scene - At this time, the scene should be mounted and sitting in the
     // DOM. We are just adding giving styles to this current scene.
     private _enableScene(sceneIndex: number) {
-        let sceneStyle = Styles.combine(undefined, [_styles.baseScene, _styles.sceneStyle, _styles.defaultSceneStyle]);
+        let sceneStyle = Styles.combine([_styles.baseScene, _styles.sceneStyle, _styles.defaultSceneStyle]) as any;
 
         // Then restore the top value for this scene.
         const enabledSceneNativeProps = {
@@ -607,7 +607,7 @@ export class Navigator extends RX.Navigator<NavigatorState> {
 
     // Manually override the styles in the DOM for the given component. This method is a hacky equivalent of React Native's
     // setNativeProps.
-    private _setNativeStyles(component: RX.View<Types.ViewProps>, currentStyles: any) {
+    private _setNativeStyles(component: RX.View, currentStyles: any) {
         // Grab the actual element from the DOM.
         let element = ReactDOM.findDOMNode(component) as HTMLElement;
         const flatStyles: Types.ViewStyleRuleSet = _.isArray(currentStyles) ? _.flatten(currentStyles) : currentStyles;

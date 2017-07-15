@@ -36,14 +36,14 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         this._nativeView = view;
     }
 
-    protected _getStyles(props: Types.ViewProps): Types.ViewStyleRuleSet {
+    protected _getStyles(props: Types.ViewProps): Types.StyleRuleSetOrArray<Types.ViewStyleRuleSet> {
         // If this platform uses an explicit default view style, push it on to
         // the front of the list of provided styles.
         if (ViewBase._defaultViewStyle) {
-            return Styles.combine(ViewBase._defaultViewStyle, props.style);
+            return Styles.combine<Types.ViewStyleRuleSet>([ViewBase._defaultViewStyle, props.style]);
         }
 
-        return props.style;
+        return Styles.combine(props.style);
     }
 
     protected _onLayout = (event: RN.ViewOnLayoutEvent) => {

@@ -11,6 +11,7 @@ import RN = require('react-native');
 import SyncTasks = require('synctasks');
 
 import RX = require('../common/Interfaces');
+import Types = require('../common/Types');
 
 export class Network extends RX.Network {
     constructor() {
@@ -33,7 +34,7 @@ export class Network extends RX.Network {
         return deferred.promise();
     }
 
-    fetchNetworkType(): SyncTasks.Promise<RX.DeviceNetworkType> {
+    getType(): SyncTasks.Promise<Types.DeviceNetworkType> {
         return SyncTasks.fromThenable(RN.NetInfo.fetch().then(networkType =>
             Network._NativeNetworkTypeToDeviceNetworkType(networkType)));
     }
@@ -42,23 +43,23 @@ export class Network extends RX.Network {
         this.connectivityChangedEvent.fire(isConnected);
     }
 
-    private static _NativeNetworkTypeToDeviceNetworkType(networkType: string): RX.DeviceNetworkType {
+    private static _NativeNetworkTypeToDeviceNetworkType(networkType: string): Types.DeviceNetworkType {
         switch (networkType) {
             case 'UNKNOWN':
-                return RX.DeviceNetworkType.UNKNOWN;
+                return Types.DeviceNetworkType.Unknown;
             case 'NONE':
-                return RX.DeviceNetworkType.NONE;
+                return Types.DeviceNetworkType.None;
             case 'WIFI':
-                return RX.DeviceNetworkType.WIFI;
+                return Types.DeviceNetworkType.Wifi;
             case 'MOBILE_2G':
-                return RX.DeviceNetworkType.MOBILE_2G;
+                return Types.DeviceNetworkType.Mobile2G;
             case 'MOBILE_3G':
-                return RX.DeviceNetworkType.MOBILE_3G;
+                return Types.DeviceNetworkType.Mobile3G;
             case 'MOBILE_4G':
-                return RX.DeviceNetworkType.MOBILE_4G;
+                return Types.DeviceNetworkType.Mobile4G;
         }
 
-        return RX.DeviceNetworkType.UNKNOWN;
+        return Types.DeviceNetworkType.Unknown;
     }
 }
 

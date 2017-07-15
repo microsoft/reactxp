@@ -305,7 +305,7 @@ export class Value extends Types.AnimatedValue {
 
         // Notify subscribers about the new value.
         for (var key in this._listeners) {
-            if (typeof this._listeners[key] === 'ValueListenerCallback') {
+            if (this._listeners[key]) {
                 this._listeners[key](this.getValue());
             }
         }
@@ -592,7 +592,7 @@ export var parallel: Types.Animated.ParallelFunction = function (
 };
 
 // Function for creating wrapper AnimatedComponent around passed in component
-function createAnimatedComponent<PropsType extends Types.CommonProps>(Component: any): typeof RX.AnimatedComponent {
+function createAnimatedComponent<PropsType extends Types.CommonProps>(Component: any): any {
     var refName = 'animatedNode';
 
     class AnimatedComponentGenerated extends React.Component<PropsType, void> implements RX.AnimatedComponent<PropsType, void> {
@@ -639,7 +639,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
 
             // Attempt to get static initial styles for the first build.  After the build,
             // initializeComponent will take over and apply styles dynamically.
-            let styles = Styles.combine(null, props.style) as any;
+            let styles = Styles.combine(props.style) as any;
 
             // Initialize the tricky properties here (e.g. transform).
             this._animatedValues = AnimatedTransform.initialize(styles);
@@ -745,7 +745,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
     return AnimatedComponentGenerated;
 }
 
-export var Image = createAnimatedComponent(RXImage) as typeof RX.AnimatedImage;
+export var Image = createAnimatedComponent<Types.ImageProps>(RXImage) as typeof RX.AnimatedImage;
 export var Text = createAnimatedComponent(RXText) as typeof RX.AnimatedText;
 export var TextInput = createAnimatedComponent(RXTextInput) as typeof RX.AnimatedTextInput;
 export var View = createAnimatedComponent(RXView) as typeof RX.AnimatedView;

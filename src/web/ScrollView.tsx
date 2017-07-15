@@ -111,7 +111,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 minWidth: 0
             };
 
-            _customStyles.bothStyle = Styles.combine(null, [_customStyles.verticalStyle, _customStyles.horizontalStyle]);
+            _customStyles.bothStyle = Styles.combine([_customStyles.verticalStyle, _customStyles.horizontalStyle]);
         }
     }
 
@@ -217,8 +217,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
             styles.push(sourceStyles.verticalStyle);
         }
 
-        let defaultStyle = Styles.combine(null, styles);
-        return Styles.combine(defaultStyle, this.props.style);
+        return Styles.combine([styles, this.props.style]);
     }
 
     private _renderNormal() {

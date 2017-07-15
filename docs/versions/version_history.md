@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.42.0_rc.18 of reactxp
+_Released 13 July 2017_
+
+Fixed runtime crash when running web implementation in Electron.
+Added a way to provide screen reader focus to TextInput on web.
+
 #### Version 0.42.0_rc.17 of reactxp
 _Released 4 July 2017_
 

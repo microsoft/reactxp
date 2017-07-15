@@ -70,8 +70,8 @@ module ReactXP {
     export type Accessibility = AccessibilityType;
     export var Accessibility = AccessibilityImpl;
     export import Animated = AnimatedImpl.Animated;
-    export type ActivityIndicator = ActivityIndicatorImpl;
-    export var ActivityIndicator = ActivityIndicatorType;
+    export type ActivityIndicator = ActivityIndicatorType;
+    export var ActivityIndicator = ActivityIndicatorImpl;
     export type Alert = AlertType;
     export var Alert = AlertImpl;
     export type App = AppType;
@@ -135,7 +135,6 @@ module ReactXP {
     export import createElement = React.createElement;
     export import Children = React.Children;
     export var __spread = (React as any).__spread;
-    export import DeviceNetworkType = RXInterface.DeviceNetworkType;
 }
 
 export = ReactXP;

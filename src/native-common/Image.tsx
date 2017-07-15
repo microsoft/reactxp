@@ -25,7 +25,7 @@ const _styles = {
     })
 };
 
-export class Image extends RX.Image<{}> {
+export class Image extends React.Component<Types.ImageProps, {}> {
     static prefetch(url: string): SyncTasks.Promise<boolean> {
         const defer = SyncTasks.Defer<boolean>();
 
@@ -105,8 +105,8 @@ export class Image extends RX.Image<{}> {
         (this.refs['nativeImage'] as RN.Image).setNativeProps(nativeProps);
     }
 
-    protected getStyles(): Types.ImageStyleRuleSet {
-        return Styles.combine(_styles.defaultImage, this.props.style);
+    protected getStyles(): Types.ImageStyleRuleSet | Types.ImageStyleRuleSet[] {
+        return Styles.combine<Types.ImageStyle>([_styles.defaultImage, this.props.style]);
     }
 
     private _onLoad = (e: React.SyntheticEvent) => {

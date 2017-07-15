@@ -8,7 +8,9 @@
 */
 
 import SyncTasks = require('synctasks');
+
 import RX = require('../common/Interfaces');
+import Types = require('../common/Types');
 
 export class Network extends RX.Network {
     constructor() {
@@ -27,8 +29,8 @@ export class Network extends RX.Network {
         return SyncTasks.Resolved(navigator.onLine);
     }
 
-    fetchNetworkType(): SyncTasks.Promise<RX.DeviceNetworkType> {
-        return SyncTasks.Resolved(RX.DeviceNetworkType.UNKNOWN);
+    getType(): SyncTasks.Promise<Types.DeviceNetworkType> {
+        return SyncTasks.Resolved(Types.DeviceNetworkType.Unknown);
     }
 
     private _onEventOccured() {

@@ -114,7 +114,7 @@ class XhrBlobUrlCache {
     }
 }
 
-export class Image extends RX.Image<ImageState> {
+export class Image extends React.Component<Types.ImageProps, ImageState> {
     static contextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool
     };
@@ -325,7 +325,7 @@ export class Image extends RX.Image<ImageState> {
     }
 
     private _getStyles() {
-        let combinedStyles = Styles.combine(_styles.defaultContainer, this.props.style);
+        let combinedStyles = Styles.combine([_styles.defaultContainer, this.props.style]) as any;
 
         combinedStyles['display'] = 'flex';
 

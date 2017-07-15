@@ -50,7 +50,7 @@ const _styles = {
     }
 };
 
-export class Text extends RX.Text<void> {
+export class Text extends React.Component<Types.TextProps, {}> {
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired
     };
@@ -98,8 +98,8 @@ export class Text extends RX.Text<void> {
     _getStyles(): Types.TextStyleRuleSet {
         // There's no way in HTML to properly handle numberOfLines > 1,
         // but we can correctly handle the common case where numberOfLines is 1.
-        let combinedStyles = Styles.combine(this.props.numberOfLines === 1 ?
-            _styles.ellipsis : _styles.defaultStyle, this.props.style);
+        let combinedStyles = Styles.combine([this.props.numberOfLines === 1 ?
+            _styles.ellipsis : _styles.defaultStyle, this.props.style]) as any;
 
         // Handle cursor styles
         if (this.props.selectable) {
