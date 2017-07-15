@@ -41,7 +41,7 @@ class Video extends RX.Component<Types.VideoProps, {}> {
     }
 
     render() {
-        let combinedStyles = RX.Styles.combine(_styles.defaultStyle, this.props.style);
+        let combinedStyles = RX.Styles.combine([_styles.defaultStyle, this.props.style]);
 
         if (this.props.resizeMode === 'cover') {
             combinedStyles = extend(combinedStyles, {
