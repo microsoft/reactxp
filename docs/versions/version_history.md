@@ -16,22 +16,22 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
-#### Version 0.1.4 of reactxp-video
-_Released 15 July 2017_
-
-Updated to TypeScript 2.4 and made changes to work with latest ReactXP core.
-
-#### Version 0.2.2 of reactxp-imagesvg
-_Released 15 July 2017_
-
-Updated to TypeScript 2.4 and made changes to work with latest ReactXP core.
-
-#### Version 0.42.0_rc.19 of reactxp
+#### Version 0.42.0_rc.20 of reactxp
 _Released 15 July 2017_
 
 Updated to TypeScript 2.4, which caught several bugs in the ReactXP code.
 Made Styles.combine much more flexible - it now supports arbitrarily nested arrays of styles.
 Changed Network API namespace for detecting network type so it's consistent with other ReactXP APIs. Added documentation.
+
+#### Version 0.1.6 of reactxp-video
+_Released 15 July 2017_
+
+Updated to TypeScript 2.4 and made changes to work with latest ReactXP core.
+
+#### Version 0.2.4 of reactxp-imagesvg
+_Released 15 July 2017_
+
+Updated to TypeScript 2.4 and made changes to work with latest ReactXP core.
 
 #### Version 0.42.0_rc.18 of reactxp
 _Released 13 July 2017_
