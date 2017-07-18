@@ -695,34 +695,30 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         }
 
         focus() {
-            if (this.refs[refName] instanceof RXView) {
-                const component = this.refs[refName] as RXView;
-                if (component.focus) {
-                    component.focus();
-                }
+            const component = this.refs[refName] as RXView;
+            if (component.focus) {
+                component.focus();
             }
         }
 
         blur() {
-            if (this.refs[refName] instanceof RXView) {
-                const component = this.refs[refName] as RXView;
-                if (component.blur) {
-                    component.blur();
-                }
+            const component = this.refs[refName] as RXView;
+            if (component.blur) {
+                component.blur();
             }
         }
 
         setFocusRestricted(restricted: boolean) {
-            if (this.refs[refName] instanceof RXView) {
-                const view = this.refs[refName] as RXView;
-                view.setFocusRestricted(restricted);
+            const component = this.refs[refName] as RXView;
+            if (component.setFocusRestricted) {
+                component.setFocusRestricted(restricted);
             }
         }
 
         setFocusLimited(limited: boolean) {
-            if (this.refs[refName] instanceof RXView) {
-                const view = this.refs[refName] as RXView;
-                view.setFocusLimited(limited);
+            const component = this.refs[refName] as RXView;
+            if (component.setFocusLimited) {
+                component.setFocusLimited(limited);
             }
         }
 
