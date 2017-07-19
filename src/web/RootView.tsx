@@ -12,14 +12,14 @@
 import _ = require('./utils/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
+import { SubscriptionToken } from 'subscribableevent';
 import PropTypes = require('prop-types');
 
 import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
-import { default as Input } from './Input';
+import Input from './Input';
 import ModalContainer from './ModalContainer';
 import Styles from './Styles';
-import SubscribableEvent = require('../common/SubscribableEvent');
 import Types = require('../common/Types');
 import FocusManager from './utils/FocusManager';
 import UserInterface from './UserInterface';
@@ -113,7 +113,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _lockForContextMenu = false;
     private _keyboardHandlerInstalled = false;
     private _lockTimeout: number;
-    private _newAnnouncementEventChangedSubscription: SubscribableEvent.SubscriptionToken = null;
+    private _newAnnouncementEventChangedSubscription: SubscriptionToken = null;
     private _focusManager: FocusManager;
     private _isNavigatingWithKeyboard: boolean = false;
     private _isNavigatingWithKeyboardUpateTimer: number;
