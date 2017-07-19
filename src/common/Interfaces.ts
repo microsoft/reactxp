@@ -228,7 +228,7 @@ export abstract class Platform {
 }
 
 export abstract class Input {
-    backButtonEvent = new SubscribableEvent<() => boolean>();
+    backButtonEvent = new SubscribableEvent<() => boolean>(true);
     keyDownEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
     keyUpEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
 }
