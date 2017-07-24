@@ -927,6 +927,11 @@ export interface PopupOptions {
     // Value = true  => Calling Popup.show will show the popup. A subsequent call, will hide the popup, and so on.
     // Value = false or undefined (default)  => Calling Popup.show will always show the popup.
      dismissIfShown?: boolean;
+
+     // Prevents the front-most popup from closing if the user clicks or taps
+     // outside of it. It will still close if the anchor is unmounted or if
+     // dismiss is explicitly called.
+     preventDismissOnPress?: boolean;
 }
 
 //
