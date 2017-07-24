@@ -63,10 +63,14 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     render() {
         let combinedStyles = Styles.combine([_styles.defaultStyle, this.props.style]) as any;
 
-        // Always hide the outline and border.
+        // Always hide the outline.
         combinedStyles.outline = 'none';
-        combinedStyles.border = 'none';
         combinedStyles.resize = 'none';
+
+        // Set the border to zero width if not otherwise specified.
+        if (combinedStyles.borderWidth === undefined) {
+            combinedStyles.borderWidth = 0;
+        }
 
         // By default, the control is editable.
         const editable = (this.props.editable !== undefined ? this.props.editable : true);
