@@ -338,6 +338,10 @@ export interface CommonAccessibilityProps {
 
     // Desktop only.
     tabIndex?: number;
+
+    // iOS only.
+    accessibilityActions?: string[];
+    onAccessibilityAction?: Function;
 }
 
 // Auto, Yes, No - iOS & Android.
