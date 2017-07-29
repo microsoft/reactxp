@@ -1132,6 +1132,7 @@ export interface KeyboardEvent extends SyntheticEvent {
     altKey: boolean;
     shiftKey: boolean;
     keyCode: number;
+    metaKey: boolean;
 }
 
 //
