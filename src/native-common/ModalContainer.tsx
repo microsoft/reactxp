@@ -22,7 +22,10 @@ const _styles = {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        // On Android, we need to provide some color to prevent
+        // removal of the view.
+        backgroundColor: 'transparent'
     }
 };
 
