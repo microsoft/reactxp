@@ -16,6 +16,14 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.42.0_rc.21 of reactxp
+_Released 30 July 2017_
+
+On RN platforms, initialProps is now passed to the main view.
+Added new PopupOptions field preventDismissOnPress that prevents the popup from being dismissed implicitly when the user clicks or taps outside of the popup or the anchor.
+Fixed bug in web implementation of TextInput where border styling was not honored.
+Fixed bug on Android that allowed presses to background of Modal to go through.
+
 #### Version 0.42.0_rc.20 of reactxp
 _Released 15 July 2017_
 
