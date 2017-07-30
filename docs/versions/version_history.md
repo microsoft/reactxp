@@ -16,7 +16,7 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
-#### Version 0.42.0_rc.21 of reactxp
+#### Version 0.42.0_rc.22 of reactxp
 _Released 30 July 2017_
 
 On RN platforms, initialProps is now passed to the main view.
