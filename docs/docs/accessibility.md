@@ -39,6 +39,9 @@ export enum ImportantForAccessibility {
 
 ## Props
 ``` javascript
+// Array of strings that will be added as custom actions on iOS
+accessibilityActions?: string[] = undefined;
+
 // Label that is read by the screen reader
 accessibilityLabel?: string = undefined;
 
@@ -47,6 +50,9 @@ accessibilityTraits?: AccessibilityTrait | AccessibilityTrait[] = undefined;
 
 // Screen reader focus behavior
 importantForAccessibility?: ImportantForAccessibility = Auto;
+
+// Callback function invoked for accessibility action events
+onAccessibilityAction?: (e: SyntheticEvent) => void;
 
 // Keyboard tab order
 tabIndex?: number = undefined; // web only

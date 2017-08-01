@@ -341,7 +341,7 @@ export interface CommonAccessibilityProps {
 
     // iOS only.
     accessibilityActions?: string[];
-    onAccessibilityAction?: Function;
+    onAccessibilityAction?: (e: SyntheticEvent) => void;
 }
 
 // Auto, Yes, No - iOS & Android.
