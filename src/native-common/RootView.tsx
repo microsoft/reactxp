@@ -115,7 +115,7 @@ export class RootView extends React.Component<{}, RootViewState> {
     private _getStateFromStore(): RootViewState {
         let mainView = MainViewStore.getMainView();
 
-        if (this.props) {
+        if (mainView && this.props) {
             mainView = React.cloneElement(mainView, this.props);
         }
 
