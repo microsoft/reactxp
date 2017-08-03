@@ -53,7 +53,7 @@ var animatedPropUnits: { [key: string]: string } = {
 
     // AnimatedTextStyleRules
     color: '',
-    fontSize: ''
+    fontSize: 'px'
  };
 
 // Every Animation subclass should extend this.
