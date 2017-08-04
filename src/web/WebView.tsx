@@ -34,7 +34,7 @@ export interface WebViewState {
     webFrameIdentifier?: string;
 }
 
-export class WebView extends RX.WebView<WebViewState> {
+export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> {
     private static _webFrameNumber = 1;
 
     constructor(props: Types.WebViewProps) {
@@ -66,7 +66,7 @@ export class WebView extends RX.WebView<WebViewState> {
     }
 
     render() {
-        let styles = Styles.combine(_styles.webViewDefault, this.props.style);
+        let styles = Styles.combine([_styles.webViewDefault, this.props.style]);
         let sandbox = this.props.sandbox !== undefined
             ? this.props.sandbox
             : (this.props.javaScriptEnabled ? Types.WebViewSandboxMode.AllowScripts : Types.WebViewSandboxMode.None);

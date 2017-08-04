@@ -43,7 +43,7 @@ enum GestureType {
 
 let _idCounter = 1;
 
-export class GestureView extends RX.GestureView<{}> {
+export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
 
     private _id: number;
 
@@ -119,7 +119,7 @@ export class GestureView extends RX.GestureView<{}> {
     }
 
     private _getStyles(): any {
-        let combinedStyles = Styles.combine(_styles.defaultView, this.props.style);
+        let combinedStyles = Styles.combine([_styles.defaultView, this.props.style]) as any;
 
         let cursorName: string = null;
         switch (this.props.mouseOverCursor) {

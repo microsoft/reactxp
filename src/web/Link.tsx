@@ -42,7 +42,7 @@ const _styles = {
 
 const _longPressTime = 1000;
 
-export class Link extends RX.Link<void> {
+export class Link extends React.Component<Types.LinkProps, {}> {
 
     private _longPressTimer: number;
 
@@ -72,8 +72,8 @@ export class Link extends RX.Link<void> {
         // There's no way in HTML to properly handle numberOfLines > 1,
         // but we can correctly handle the common case where numberOfLines is 1.
         let combinedStyles = Styles.combine(
-            this.props.numberOfLines === 1 ? _styles.ellipsis : _styles.defaultStyle,
-            this.props.style);
+            [this.props.numberOfLines === 1 ? _styles.ellipsis : _styles.defaultStyle,
+            this.props.style]) as any;
 
         // Handle cursor styles
         if (this.props.selectable) {

@@ -11,9 +11,9 @@
 import _ = require('./lodashMini');
 import React = require('react');
 import RN = require('react-native');
+import SubscribableEvent from 'subscribableevent';
 
 import { ModalContainer } from '../native-common/ModalContainer';
-import SubscribableEvent = require('../common/SubscribableEvent');
 import PopupContainerView from './PopupContainerView';
 import RootView from './RootView';
 import Types = require('../common/Types');
@@ -37,7 +37,7 @@ const _styles = {
 export class FrontLayerViewManager {
     private _overlayStack: (ModalStackContext | PopupStackContext)[] = [];
 
-    event_changed = new SubscribableEvent.SubscribableEvent<() => void>();
+    event_changed = new SubscribableEvent<() => void>();
 
     public showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string): void {
         const index = this._findIndexOfModal(modalId);
@@ -159,23 +159,33 @@ export class FrontLayerViewManager {
             return;
         }
 
-        if (activePopupContext.popupOptions && activePopupContext.popupOptions.onAnchorPressed) {
-            RN.NativeModules.UIManager.measureInWindow(
-                activePopupContext.anchorHandle,
-                (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
-                    const touchEvent = (e.nativeEvent as any) as Types.TouchEvent;
-                    let anchorRect: ClientRect = { left: x, top: y, right: x + width, bottom: y + height, width: width, height: height };
+        if (activePopupContext.popupOptions) {
+            if (activePopupContext.popupOptions.onAnchorPressed) {
+                RN.NativeModules.UIManager.measureInWindow(
+                    activePopupContext.anchorHandle,
+                    (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+                        const touchEvent = (e.nativeEvent as any) as Types.TouchEvent;
+                        let anchorRect: ClientRect = { left: x, top: y, right: x + width, 
+                                bottom: y + height, width: width, height: height };
 
-                    // Find out if the press event was on the anchor so we can notify the caller about it.
-                    if (touchEvent.pageX >= anchorRect.left && touchEvent.pageX < anchorRect.right
-                        && touchEvent.pageY >= anchorRect.top && touchEvent.pageY < anchorRect.bottom) {
-                        // Showing another animation while dimissing the popup creates a conflict in the UI making it not doing one of the
-                        // two animations (i.e.: Opening an actionsheet while dismissing a popup). We introduce this delay to make sure
-                        // the popup dimissing animation has finished before we call the event handler.
-                        setTimeout(() => { activePopupContext.popupOptions.onAnchorPressed(e); }, 500);
+                        // Find out if the press event was on the anchor so we can notify the caller about it.
+                        if (touchEvent.pageX >= anchorRect.left && touchEvent.pageX < anchorRect.right
+                            && touchEvent.pageY >= anchorRect.top && touchEvent.pageY < anchorRect.bottom) {
+                            // Showing another animation while dimissing the popup creates a conflict in the 
+                            // UI making it not doing one of the two animations (i.e.: Opening an actionsheet
+                            // while dismissing a popup). We introduce this delay to make sure the popup 
+                            // dimissing animation has finished before we call the event handler.
+                            setTimeout(() => { activePopupContext.popupOptions.onAnchorPressed(e); }, 500);
+                        }
                     }
-                }
-            );
+                );
+            }
+
+            // Avoid dismissing if the caller has explicitly asked to prevent
+            // dismissal on clicks.
+            if (activePopupContext.popupOptions.preventDismissOnPress) {
+                return;
+            }
         }
 
         this._dismissActivePopup();

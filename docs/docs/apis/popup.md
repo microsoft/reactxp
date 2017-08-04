@@ -31,10 +31,12 @@ interface PopupOptions {
         popupWidth: number, popupHeight: number) => ReactNode;
 
     // Returns a mounted component instance that controls the triggering of the popup.
-    // In majority of cases, "anchor" of popup has handlers to control when the popup will be seen and this function is not required. 
-    // In a few cases, where anchor is not the same as the whole component that triggers when the popup wil be seen, this can be used.
-    // For instance, a button combined with a chevron icon, which on click triggers a popup below the chevron icon. 
-    // In this example, getElementTriggeringPopup() can return the container with button and chevron icon.
+    // In the majority of cases, "anchor" of popup has handlers to control when the popup
+    // will be seen and this function is not required. In a few cases, where anchor is
+    // not the same as the whole component that triggers when the popup wil be seen,
+    // this can be used. For instance, a button combined with a chevron icon, which on
+    // click triggers a popup below the chevron icon. In this example,
+    // getElementTriggeringPopup() can return the container with button and chevron icon.
     getElementTriggeringPopup?: () => React.Component<any, any>;
 
     // Called when the popup is dismissed.
@@ -57,9 +59,15 @@ interface PopupOptions {
     onAnchorPressed?: (e: SyntheticEvent) => void;
 
     // Determines if the anchor invoking the popup should behave like a toggle. 
-    // Value = true  => Calling Popup.show will show the popup. A subsequent call, will hide the popup, and so on. 
-    // Value = false or undefined (default)  => Calling Popup.show will always show the popup.
+    // If true, calling Popup.show will show the popup. A subsequent call
+    // will hide the popup. If false or undefined (default), calling Popup.show 
+    // will always show the popup.
      dismissIfShown?: boolean;
+
+    // By default, clicks or taps outside of a popup (unless they are on the
+    // anchor) will not dismiss the active popup. If true, this overrides the
+    // default behavior, in which case the popup must be dismissed explicitly.
+     preventDismissOnPress?: boolean
 }
 ```
 

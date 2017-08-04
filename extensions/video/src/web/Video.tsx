@@ -21,7 +21,7 @@ let _styles = {
     }
 };
 
-class Video extends Interfaces.Video<{}> {
+class Video extends RX.Component<Types.VideoProps, {}> {
     componentDidMount() {
         // We need to manually install the onEnded handler because. React doesn't support this.
         let videoDOM = ReactDOM.findDOMNode<HTMLVideoElement>(this);
@@ -41,7 +41,7 @@ class Video extends Interfaces.Video<{}> {
     }
 
     render() {
-        let combinedStyles = RX.Styles.combine(_styles.defaultStyle, this.props.style);
+        let combinedStyles = RX.Styles.combine([_styles.defaultStyle, this.props.style]);
 
         if (this.props.resizeMode === 'cover') {
             combinedStyles = extend(combinedStyles, {

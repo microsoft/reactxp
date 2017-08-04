@@ -12,7 +12,7 @@ import React = require('react');
 // Use only for type data
 import RX = require('./Interfaces');
 
-export { SubscribableEvent, SubscriptionToken } from './SubscribableEvent';
+export { default as SubscribableEvent, SubscriptionToken } from 'subscribableevent';
 
 export type ReactNode = React.ReactNode;
 
@@ -84,7 +84,7 @@ export abstract class AnimatedValue implements RX.IAnimatedValue {
         // No-op
     }
     abstract setValue(value: number): void;
-    abstract addListener(callback: any): number;
+    abstract addListener(callback: any): string;
     abstract removeListener(id: string): void;
     abstract removeAllListeners(): void;
     abstract interpolate(config: any): AnimatedValue;
@@ -135,6 +135,9 @@ export interface AnimatedTransformStyle {
 }
 
 export type StyleRuleSet<T> = T | number;
+export type StyleRuleSetOrArray<T> = StyleRuleSet<T>|Array<StyleRuleSet<T>>;
+export interface StyleRuleSetRecursiveArray<T> extends Array<StyleRuleSetOrArray<T>|StyleRuleSetRecursiveArray<T>> {}
+export type StyleRuleSetRecursive<T> = StyleRuleSet<T> | StyleRuleSetRecursiveArray<T>;
 
 // ------------------------------------------------------------
 // Image and View common Style Rules
@@ -335,6 +338,10 @@ export interface CommonAccessibilityProps {
 
     // Desktop only.
     tabIndex?: number;
+
+    // iOS only.
+    accessibilityActions?: string[];
+    onAccessibilityAction?: (e: SyntheticEvent) => void;
 }
 
 // Auto, Yes, No - iOS & Android.
@@ -415,7 +422,7 @@ export enum AccessibilityTrait {
 }
 
 export interface CommonStyledProps<T> extends CommonProps {
-    style?: T | T[];
+    style?: StyleRuleSetRecursive<T>;
 }
 
 // Button
@@ -455,7 +462,7 @@ export interface PickerProps extends CommonProps {
     items: PickerPropsItem[];
     selectedValue: string;
     onValueChange: (itemValue: string, itemPosition: number) => void;
-    style?: PickerStyleRuleSet | PickerStyleRuleSet[];
+    style?: StyleRuleSetRecursive<PickerStyleRuleSet>;
 }
 
 // Image
@@ -476,11 +483,11 @@ export interface ImagePropsShared extends CommonProps {
 }
 
 export interface ImageProps extends ImagePropsShared {
-    style?: ImageStyleRuleSet | ImageStyleRuleSet[];
+    style?: StyleRuleSetRecursive<ImageStyleRuleSet>;
 }
 
 export interface AnimatedImageProps extends ImagePropsShared {
-    style?: AnimatedImageStyleRuleSet | (AnimatedImageStyleRuleSet | ImageStyleRuleSet)[];
+    style?: StyleRuleSetRecursive<AnimatedImageStyleRuleSet | ImageStyleRuleSet>;
 }
 
 // Text
@@ -521,11 +528,11 @@ export interface TextPropsShared extends CommonProps {
 }
 
 export interface TextProps extends TextPropsShared {
-    style?: TextStyleRuleSet | TextStyleRuleSet[];
+    style?: StyleRuleSetRecursive<TextStyleRuleSet>;
 }
 
 export interface AnimatedTextProps extends TextPropsShared {
-    style?: AnimatedTextStyleRuleSet | (AnimatedTextStyleRuleSet | TextStyleRuleSet)[];
+    style?: StyleRuleSetRecursive<AnimatedTextStyleRuleSet | TextStyleRuleSet>;
 }
 
 export type ViewLayerType = 'none' | 'software' | 'hardware';
@@ -575,7 +582,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
 }
 
 export interface ViewProps extends ViewPropsShared {
-    style?: ViewStyleRuleSet | ViewStyleRuleSet[];
+    style?:  StyleRuleSetRecursive<ViewStyleRuleSet>;
     onContextMenu?: (e: React.SyntheticEvent) => void;
     onStartShouldSetResponder?: (e: React.SyntheticEvent) => boolean;
     onMoveShouldSetResponder?: (e: React.SyntheticEvent) => boolean;
@@ -592,7 +599,7 @@ export interface ViewProps extends ViewPropsShared {
 }
 
 export interface AnimatedViewProps extends ViewPropsShared {
-    style?: AnimatedViewStyleRuleSet | (AnimatedViewStyleRuleSet | ViewStyleRuleSet)[];
+    style?: StyleRuleSetRecursive<AnimatedViewStyleRuleSet | ViewStyleRuleSet>;
 }
 
 // GestureView
@@ -696,7 +703,7 @@ export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet> {
 
 // ScrollView
 export interface ScrollViewProps extends ViewProps {
-    style?: ScrollViewStyleRuleSet | ScrollViewStyleRuleSet[];
+    style?: StyleRuleSetRecursive<ScrollViewStyleRuleSet>;
     children?: ReactNode;
 
     vertical?: boolean; // By default true
@@ -820,11 +827,11 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
 }
 
 export interface TextInputProps extends TextInputPropsShared {
-    style?: TextInputStyleRuleSet | TextInputStyleRuleSet[];
+    style?: StyleRuleSetRecursive<TextInputStyleRuleSet>;
 }
 
 export interface AnimatedTextInputProps extends TextInputPropsShared {
-    style?: AnimatedTextInputStyleRuleSet | (AnimatedTextInputStyleRuleSet | TextInputStyleRuleSet)[];
+    style?: StyleRuleSetRecursive<AnimatedTextInputStyleRuleSet | TextInputStyleRuleSet>;
 }
 
 // ActivityIndicator
@@ -924,6 +931,11 @@ export interface PopupOptions {
     // Value = true  => Calling Popup.show will show the popup. A subsequent call, will hide the popup, and so on.
     // Value = false or undefined (default)  => Calling Popup.show will always show the popup.
      dismissIfShown?: boolean;
+
+     // Prevents the front-most popup from closing if the user clicks or taps
+     // outside of it. It will still close if the anchor is unmounted or if
+     // dismiss is explicitly called.
+     preventDismissOnPress?: boolean;
 }
 
 //
@@ -1124,6 +1136,7 @@ export interface KeyboardEvent extends SyntheticEvent {
     altKey: boolean;
     shiftKey: boolean;
     keyCode: number;
+    metaKey: boolean;
 }
 
 //
@@ -1196,3 +1209,15 @@ export interface LayoutInfo {
 // Platform
 // ----------------------------------------------------------------------
 export type PlatformType = 'web' | 'ios' | 'android' | 'windows';
+
+//
+// Network
+// ----------------------------------------------------------------------
+export enum DeviceNetworkType {
+    Unknown,
+    None,
+    Wifi,
+    Mobile2G,
+    Mobile3G,
+    Mobile4G
+}

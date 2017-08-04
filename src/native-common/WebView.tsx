@@ -9,9 +9,10 @@
 
 import React = require('react');
 import RN = require('react-native');
-import RX = require('../common/Interfaces');
 
+import RX = require('../common/Interfaces');
 import Styles from './Styles';
+import Types = require('../common/Types');
 
 const _styles = {
     webViewDefault: Styles.createWebViewStyle({
@@ -22,9 +23,9 @@ const _styles = {
 
 const WEBVIEW_REF = 'webview';
 
-export class WebView extends RX.WebView<{}> {
+export class WebView extends RX.ViewBase<Types.WebViewProps, {}> {
     render() {
-        let styles = Styles.combine(_styles.webViewDefault, this.props.style);
+        let styles = Styles.combine([_styles.webViewDefault, this.props.style]);
 
         return (
             <RN.WebView

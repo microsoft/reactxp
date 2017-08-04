@@ -10,8 +10,9 @@
 import React = require('react');
 
 import SvgInterfaces = require('../common/Interfaces');
+import SvgTypes = require('../common/Types');
 
-export class SvgPath extends SvgInterfaces.SvgPath<{}> {
+export class SvgPath extends React.Component<SvgTypes.SvgPathProps, {}> {
     render() {
         return (
             <path

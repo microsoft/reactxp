@@ -9,13 +9,13 @@
 
 import React = require('react');
 import RN = require('react-native');
+import { SubscriptionToken } from 'subscribableevent';
 
 import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
 import { default as FrontLayerViewManager } from './FrontLayerViewManager';
 import MainViewStore from './MainViewStore';
 import Styles from './Styles';
-import SubscribableEvent = require('../common/SubscribableEvent');
 import Types = require('../common/Types');
 
 export interface RootViewState {
@@ -42,8 +42,8 @@ const _styles = {
 
 export class RootView extends React.Component<{}, RootViewState> {
     private _changeListener = this._onChange.bind(this);
-    private _frontLayerViewChangedSubscription: SubscribableEvent.SubscriptionToken = null;
-    private _newAnnouncementEventChangedSubscription: SubscribableEvent.SubscriptionToken = null;
+    private _frontLayerViewChangedSubscription: SubscriptionToken = null;
+    private _newAnnouncementEventChangedSubscription: SubscriptionToken = null;
 
     constructor() {
         super();
@@ -56,13 +56,13 @@ export class RootView extends React.Component<{}, RootViewState> {
     componentWillMount(): void {
         MainViewStore.subscribe(this._changeListener);
 
-        this._frontLayerViewChangedSubscription = FrontLayerViewManager.event_changed.subscribe(() => { 
+        this._frontLayerViewChangedSubscription = FrontLayerViewManager.event_changed.subscribe(() => {
             // Setting empty state will trigger a render.
             this.setState({});
         });
-       
-        // Update announcement text.  
-        this._newAnnouncementEventChangedSubscription = 
+
+        // Update announcement text.
+        this._newAnnouncementEventChangedSubscription =
             Accessibility.newAnnouncementReadyEvent.subscribe(announcement => {
                 this.setState({
                     announcementText: announcement
@@ -99,11 +99,11 @@ export class RootView extends React.Component<{}, RootViewState> {
                 </RN.View>
                 { modalLayerView }
                 { popupLayerView }
-                <RN.View 
-                    style={ _styles.liveRegionContainer } 
-                    accessibilityLabel={ this.state.announcementText } 
+                <RN.View
+                    style={ _styles.liveRegionContainer }
+                    accessibilityLabel={ this.state.announcementText }
                     accessibilityLiveRegion={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
-                /> 
+                />
             </RN.Animated.View>
         );
     }
@@ -113,8 +113,14 @@ export class RootView extends React.Component<{}, RootViewState> {
     }
 
     private _getStateFromStore(): RootViewState {
+        let mainView = MainViewStore.getMainView();
+
+        if (mainView && this.props) {
+            mainView = React.cloneElement(mainView, this.props);
+        }
+
         return {
-            mainView: MainViewStore.getMainView()
+            mainView: mainView
         };
     }
 }

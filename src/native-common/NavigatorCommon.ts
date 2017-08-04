@@ -8,9 +8,10 @@
 * We need this class to avoid circular references between Navigator and NavigatorDelegates.
 */
 
+import React = require('react');
 import RN = require('react-native');
-import RX = require('../common/Interfaces');
 
+import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export enum CommandType {
@@ -35,9 +36,9 @@ export interface NavigatorState {
 }
 
 export abstract class NavigatorDelegate {
-    protected _owner: RX.Navigator<NavigatorState>;
+    protected _owner: RX.Navigator;
 
-    constructor(navigator: RX.Navigator<NavigatorState>) {
+    constructor(navigator: RX.Navigator) {
         this._owner = navigator;
     }
 

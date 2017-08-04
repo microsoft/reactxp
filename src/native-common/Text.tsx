@@ -21,7 +21,7 @@ const _styles = {
     })
 };
 
-export class Text extends RX.Text<{}> {
+export class Text extends React.Component<Types.TextProps, {}> {
     // To be able to use Text inside TouchableHighlight/TouchableOpacity
     public setNativeProps(nativeProps: RN.TextProps) {
         (this.refs['nativeText'] as any).setNativeProps(nativeProps);
@@ -48,8 +48,8 @@ export class Text extends RX.Text<{}> {
         );
     }
 
-    protected _getStyles(): Types.TextStyleRuleSet {
-        return Styles.combine(_styles.defaultText, this.props.style);
+    protected _getStyles(): Types.TextStyleRuleSet | Types.TextStyleRuleSet[] {
+        return Styles.combine<Types.TextStyle>([_styles.defaultText, this.props.style]);
     }
 
     focus() {

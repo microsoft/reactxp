@@ -18,6 +18,7 @@ import Types = require('../common/Types');
 
 const _styles = {
     defaultTextInput: Styles.createTextInputStyle({
+        borderWidth: 0, // Needed for Windows UWP
         padding: 0
     })
 };
@@ -27,7 +28,7 @@ export interface TextInputState {
     isFocused?: boolean;
 }
 
-export class TextInput extends RX.TextInput<TextInputState> {
+export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
     private _selectionStart: number = 0;
     private _selectionEnd: number = 0;
 
@@ -55,7 +56,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
             <RN.TextInput
                 ref='nativeTextInput'
                 multiline={ this.props.multiline }
-                style={ Styles.combine(_styles.defaultTextInput, this.props.style) }
+                style={ Styles.combine([_styles.defaultTextInput, this.props.style]) }
                 value={ this.state.inputValue }
 
                 autoCorrect={ this.props.autoCorrect }
@@ -191,7 +192,6 @@ export class TextInput extends RX.TextInput<TextInputState> {
 
     focus() {
         (this.refs['nativeTextInput'] as any).focus();
-        AccessibilityUtil.setAccessibilityFocus(this);
     }
 
     setAccessibilityFocus() {

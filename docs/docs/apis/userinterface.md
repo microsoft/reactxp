@@ -40,7 +40,9 @@ measureLayoutRelativeToAncestor(component: React.Component<any, any>,
     ancestor: React.Component<any, any>): SyncTasks.Promise<LayoutInfo>;
 
 // Measures the dimension of the full window (or screen, in the case
-// of mobile devices)
+// of mobile devices); the dimensions can also be obtained for any
+// view (including your app's top-level view) using the onLayout
+// callback
 measureWindow(): Types.Dimensions;
 
 // Indicates the "size multiplier" for text increase or decrease, which
