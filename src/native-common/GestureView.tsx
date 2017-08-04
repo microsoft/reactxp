@@ -35,6 +35,8 @@ const _tapPixelThreshold = 4;
 const _doubleTapDurationThreshold = 250;
 const _doubleTapPixelThreshold = 20;
 
+const _defaultImportantForAccessibility = Types.ImportantForAccessibility.Yes;
+
 export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     private _panResponder: RN.PanResponder;
     private _doubleTapTimer: any = null;
@@ -511,13 +513,21 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     }
 
     render() {
+        const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
+            _defaultImportantForAccessibility);
+        const accessibilityTrait = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
+        const accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(this.props.accessibilityTraits);
+
         return (
             <RN.View
-                style={ this._getStyles(this.props) }
-                importantForAccessibility={ AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.Yes) }
+                style={this._getStyles(this.props)}
+                importantForAccessibility={importantForAccessibility}
+                accessibilityTraits={accessibilityTrait}
+                accessibilityComponentType={accessibilityComponentType}
+                accessibilityLabel={this.props.accessibilityLabel}
                 { ...this._panResponder.panHandlers }
             >
-                { this.props.children }
+                {this.props.children}
             </RN.View>
         );
     }
