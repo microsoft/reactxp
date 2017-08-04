@@ -11,7 +11,7 @@ ReactXP exposes a common way to implement accessibility features across platform
 
 A screen reader is an assistive technology available for visually-impaired users. It allows users to navigate through an application by focusing actionable components and announcing the purpose of those components.
 
-ReactXP components [View](components/view), [Button](components/button), and [TextInput](components/textinput) implement a common set of accessibility-related props described below. 
+ReactXP components [View](components/view), [Button](components/button), [GestureView](components/gestureview) and [TextInput](components/textinput) implement a common set of accessibility-related props described below. 
 
 Additional [Accessibility APIs](apis/accessibility) are provided for programmatically invoking the screen reader to announce events.
 

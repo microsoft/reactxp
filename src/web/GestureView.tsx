@@ -11,6 +11,7 @@
 import _ = require('./utils/lodashMini');
 import React = require('react');
 
+import AccessibilityUtil from './AccessibilityUtil';
 import MouseResponder, { MouseResponderSubscription } from './utils/MouseResponder';
 import RX = require('../common/Interfaces');
 import Styles from './Styles';
@@ -101,12 +102,18 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
     }
 
     render() {
+        const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
+        const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
+
         return (
             <div
                 style={ this._getStyles() }
                 ref={ this._setContainerRef }
                 onClick={ this._onClick }
                 onWheel={ this._onWheel }
+                role={ ariaRole }
+                aria-label={ this.props.accessibilityLabel }
+                aria-hidden={ isAriaHidden }
             >
                 { this.props.children }
             </div>
