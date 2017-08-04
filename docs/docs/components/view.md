@@ -26,6 +26,9 @@ accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 // Region for accessibility mechanisms
 accessibilityLiveRegion: AccessibilityLiveRegion = undefined; // Android and web only
 
+// Expose the element and/or its children as accessible to Screen readers
+importantForAccessibility?: ImportantForAccessibility = Auto;
+
 // Animation of children
 //   - Every child must have a `key`.
 //   - String refs aren't supported on children. Only callback refs are.

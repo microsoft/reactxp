@@ -17,7 +17,7 @@ In addition to the [common accessibility props](/reactxp/docs/accessibility.html
 ``` javascript
 // Alternate text to display if the image cannot be loaded
 // or by screen readers
-accessibilityHidden: boolean = false;
+accessibilityLabel: boolean = false;
 
 // Hide the component from screen readers?
 accessibilityHidden: boolean = false;
@@ -27,6 +27,9 @@ accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 
 // Region for accessibility mechanisms
 accessibilityLiveRegion: AccessibilityLiveRegion = undefined; // Android and web only
+
+// Expose the element and/or its children as accessible to Screen readers
+importantForAccessibility?: ImportantForAccessibility = ImportantForAccessibility.yes;
 
 // Delay in ms before onLongPress is called
 delayLongPress: number = 1000;

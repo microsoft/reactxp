@@ -520,11 +520,11 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
 
         return (
             <RN.View
-                style={this._getStyles(this.props)}
-                importantForAccessibility={importantForAccessibility}
-                accessibilityTraits={accessibilityTrait}
-                accessibilityComponentType={accessibilityComponentType}
-                accessibilityLabel={this.props.accessibilityLabel}
+                style={ this._getStyles(this.props) }
+                importantForAccessibility={ importantForAccessibility }
+                accessibilityTraits={ accessibilityTrait }
+                accessibilityComponentType={ accessibilityComponentType }
+                accessibilityLabel={ this.props.accessibilityLabel }
                 { ...this._panResponder.panHandlers }
             >
                 {this.props.children}
