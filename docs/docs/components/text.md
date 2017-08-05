@@ -27,7 +27,8 @@ accessibilityHidden: boolean = false;
 accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 
 // Region for accessibility mechanisms
-accessibilityLiveRegion: AccessibilityLiveRegion = undefined; // Android and web only
+accessibilityLiveRegion: AccessibilityLiveRegion =
+    undefined; // Android and web only
 
 // Should fonts be scaled according to system setting?
 allowFontScaling: boolean = true; // Android and iOS only

@@ -22,7 +22,8 @@ enum AppActivationState {
     // App is inactive (not actively running)
     Inactive = 3,
 
-    // iOS specific activation state for extensions implemented with react-native
+    // iOS specific activation state for extensions implemented 
+    // with react-native
     Extension = 4
 }
 ```

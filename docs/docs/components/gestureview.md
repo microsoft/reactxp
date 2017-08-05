@@ -35,8 +35,8 @@ preferredPan: PreferredPanGesture = undefined; // Horizontal or vertical
 // pan is recognized? Default is 10. Can be any value > 0.
 panPixelThreshold: number = undefined;
 
-// Something else wants to become responder. Should this view release the responder?
-// Setting true allows release
+// Something else wants to become responder. Should this view
+// release the responder? Setting true allows release.
 releaseOnRequest: boolean = false;
 
 // Alternate text for screen readers.
