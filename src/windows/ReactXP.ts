@@ -21,6 +21,7 @@ import { default as AccessibilityImpl, Accessibility as AccessibilityType } from
 import { default as ActivityIndicatorImpl, ActivityIndicator as ActivityIndicatorType } from '../native-common/ActivityIndicator';
 import { default as AlertImpl, Alert as AlertType } from '../native-common/Alert';
 import { default as AppImpl, App as AppType } from '../native-common/App';
+import { default as AppRegistryImpl, AppRegistry as AppRegistryType } from '../native-common/AppRegistry';
 import { default as PickerImpl, Picker as PickerType } from '../native-common/Picker';
 import { default as ButtonImpl, Button as ButtonType } from '../native-common/Button';
 import { default as ImageImpl, Image as ImageType } from '../native-common/Image';
@@ -76,6 +77,8 @@ module ReactXP {
     export var Alert = AlertImpl;
     export type App = AppType;
     export var App = AppImpl;
+    export type AppRegistry = AppRegistryType;
+    export var AppRegistry = AppRegistryImpl;
     export type Button = ButtonType;
     export var Button = ButtonImpl;
     export type Picker = PickerType;

@@ -25,6 +25,7 @@ export interface ReactXP {
     Alert: Alert;
     Animated: Animated;
     App: App;
+    AppRegistry: AppRegistry;
     Clipboard: Clipboard;
     Input: Input;
     Storage: Storage;
@@ -103,6 +104,10 @@ export abstract class App {
 
     // Memory Warnings
     memoryWarningEvent = new SubscribableEvent<() => void>();
+}
+
+export abstract class AppRegistry {
+    abstract registerComponent(appKey: string, getComponentFunc: Function): any;
 }
 
 export abstract class UserInterface {

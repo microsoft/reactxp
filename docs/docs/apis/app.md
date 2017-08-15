@@ -4,7 +4,7 @@ title: App
 layout: docs
 category: Interfaces
 permalink: docs/apis/app.html
-next: apis/clipboard
+next: apis/appregistry
 ---
 
 This interface provides core methods associated with the application. It also exposes events for low-memory conditions and activity state changes.

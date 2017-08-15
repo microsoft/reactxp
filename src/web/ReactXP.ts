@@ -30,6 +30,7 @@ import { default as AccessibilityImpl, Accessibility as AccessibilityType } from
 import { ActivityIndicator as ActivityIndicatorImpl } from './ActivityIndicator';
 import { default as AlertImpl, Alert as AlertType } from './Alert';
 import { default as AppImpl, App as AppType } from './App';
+import { default as AppRegistryImpl, AppRegistry as AppRegistryType } from './AppRegistry';
 import { Button as ButtonImpl } from './Button';
 import { Picker as PickerImpl } from './Picker';
 import { Image as ImageImpl } from './Image';
@@ -73,6 +74,8 @@ module ReactXP {
     export var Alert = AlertImpl;
     export type App = AppType;
     export var App = AppImpl;
+    export type AppRegistry = AppRegistryType;
+    export var AppRegistry = AppRegistryImpl;
     export type Button = ButtonImpl;
     export var Button = ButtonImpl;
     export type Picker = PickerImpl;
