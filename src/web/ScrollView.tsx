@@ -276,6 +276,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         if (!container) {
             return;
         }
+        this._onScroll.cancel();
         if (animate) {
             const start = container.scrollTop;
             const change = scrollTop - start;
@@ -304,6 +305,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         if (!container) {
             return;
         }
+        this._onScroll.cancel();
         if (animate) {
             const start = container.scrollLeft;
             const change = scrollLeft - start;
