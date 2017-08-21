@@ -66,9 +66,10 @@ export class FrontLayerViewManager {
     }
 
     showPopup(options: Types.PopupOptions, popupId: string, showDelay?: number): boolean {
-        // If options.dismissIfShown is true, calling this methos will behave like a toggle. On one call, it will open the popup.
-        // If it is called when pop up is seen, it will dismiss the popup.
-        // If options.dismissIfShown is false, we will simply show the popup always.
+        // If options.dismissIfShown is true, calling this method will behave like a toggle.
+        // On one call, it will open the popup. If it is called when pop up is seen, it will
+        // dismiss the popup. If options.dismissIfShown is false, we will simply show the
+        // popup always.
         if (options.dismissIfShown) {
             if (this._shouldPopupBeDismissed(options)) {
                 this.dismissPopup(popupId);

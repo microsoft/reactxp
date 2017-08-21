@@ -17,7 +17,7 @@ In addition to the [common accessibility props](/reactxp/docs/accessibility.html
 ``` javascript
 // Alternate text to display if the image cannot be loaded
 // or by screen readers
-accessibilityHidden: boolean = false;
+accessibilityLabel: boolean = false;
 
 // Hide the component from screen readers?
 accessibilityHidden: boolean = false;
@@ -26,7 +26,11 @@ accessibilityHidden: boolean = false;
 accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 
 // Region for accessibility mechanisms
-accessibilityLiveRegion: AccessibilityLiveRegion = undefined; // Android and web only
+accessibilityLiveRegion: AccessibilityLiveRegion =
+    undefined; // Android and web only
+
+// Expose the element and/or its children as accessible to Screen readers
+importantForAccessibility?: ImportantForAccessibility = ImportantForAccessibility.yes;
 
 // Delay in ms before onLongPress is called
 delayLongPress: number = 1000;
@@ -34,7 +38,8 @@ delayLongPress: number = 1000;
 // If disabled, touch and mouse input events are ignored
 disabled: boolean = false;
 
-// Called when VoiceOver is on and the user double tapped to activate a control
+// Called when VoiceOver is on and the user double tapped to
+// activate a control
 onAccessibilityTapIOS: (e: SyntheticEvent) => void; // iOS Only
 
 // Called when the user has pressed and held for a specified duration
@@ -44,13 +49,15 @@ onLongPress: (e: SyntheticEvent) => void;
 onHoverStart: (e: SyntheticEvent) => void;
 onHoverEnd: (e: SyntheticEvent) => void;
 
-// Called when the touch or mouse button is released within the bounds of the view and the press has not been canceled
+// Called when the touch or mouse button is released within the
+// bounds of the view and the press has not been canceled
 onPress: (e: SyntheticEvent) => void;
 
 // Called when touch is initiated or mouse button is pressed
 onPressIn: (e: SyntheticEvent) => void;
 
-// Called when touch or the mouse button is released or the user&apos;s finger or mouse cursor is no longer over the view
+// Called when touch or the mouse button is released or the
+// user's finger or mouse cursor is no longer over the view
 onPressOut: (e: SyntheticEvent) => void;
 
 // Rasterize contents using offscreen bitmap (perf optimization)

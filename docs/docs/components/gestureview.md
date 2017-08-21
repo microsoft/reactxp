@@ -35,9 +35,18 @@ preferredPan: PreferredPanGesture = undefined; // Horizontal or vertical
 // pan is recognized? Default is 10. Can be any value > 0.
 panPixelThreshold: number = undefined;
 
-// Something else wants to become responder. Should this view release the responder?
-// Setting true allows release
+// Something else wants to become responder. Should this view
+// release the responder? Setting true allows release.
 releaseOnRequest: boolean = false;
+
+// Alternate text for screen readers.
+accessibilityLabel: string = undefined;
+
+// Traits used to hint screen readers, etc.
+accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
+
+// Expose the element and/or its children as accessible to Screen readers
+importantForAccessibility?: ImportantForAccessibility = ImportantForAccessibility.Yes;
 ```
 
 ## Styles

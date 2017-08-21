@@ -18,7 +18,7 @@ export interface ActivityIndicatorState {
     isVisible?: boolean;
 }
 
-export class ActivityIndicator extends RX.ActivityIndicator<ActivityIndicatorState> {
+export class ActivityIndicator extends React.Component<Types.ActivityIndicatorProps, ActivityIndicatorState> {
     private _isMounted = false;
 
     constructor(props: Types.ActivityIndicatorProps) {

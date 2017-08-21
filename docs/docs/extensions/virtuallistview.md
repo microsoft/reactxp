@@ -32,7 +32,8 @@ It supports a special mode where items are re-rendered only if the corresponding
 
 ## Example
 ``` javascript
-import { VirtualListView, VirtualListViewItemInfo } from 'reactxp-virtuallistview';
+import { VirtualListView, VirtualListViewItemInfo }
+    from 'reactxp-virtuallistview';
 
 // Extend VirtualListViewItemInfo to include display text
 interface FruitListItemInfo extends VirtualListViewItemInfo {
@@ -86,7 +87,8 @@ class FruitListView extends RX.Component<null, FruitListState> {
     private _renderItem(item: FruitListItemInfo, hasFocus?: boolean) {
         const viewStyle = RX.Styles.createViewStyle({
             height: item.height,
-            backgroundColor: item.template === _headerItemTemplate ? '#ddd' : '#fff',
+            backgroundColor: item.template === _headerItemTemplate ?
+                '#ddd' : '#fff',
             alignItems: 'center'
         }, false);
         
@@ -145,25 +147,26 @@ interface VirtualListViewItemInfo {
     // Optional padding around the scrolling content within the list.
     padding?: number;
 
-    // If true, allows each item to overflow its visible cell boundaries; by default,
-    // item contents are clipped to cell boundaries.
+    // If true, allows each item to overflow its visible cell boundaries;
+    // by default, item contents are clipped to cell boundaries.
     showOverflow?: boolean;
 
     // Should the list animate additions, removals and moves within the list?
     animateChanges?: boolean;
 
-    // By default, VirtualListView re-renders every item during the render. Setting
-    // this flag to true allows the list view to re-render only items from itemList
-    // whose descriptor has changed, thus avoiding unnecessary rendering. It uses
-    // _.isEqual to perform this check. In this mode, renderItem should not depend
-    // on any external state, only on VirtualListViewItemInfo, to render item.
+    // By default, VirtualListView re-renders every item during the render.
+    // Setting this flag to true allows the list view to re-render only
+    // items from itemList whose descriptor has changed, thus avoiding
+    // unnecessary rendering. It uses _.isEqual to perform this check. In
+    // this mode, renderItem should not depend on any external state, only
+    // on VirtualListViewItemInfo, to render item.
     skipRenderIfItemUnchanged?: boolean;
 
     // Pass-through properties for scroll view.
     keyboardDismissMode?: 'none' | 'interactive' | 'on-drag';
     keyboardShouldPersistTaps?: boolean;
     disableScrolling?: boolean;
-    scrollsToTop?: boolean; // iOS only, scroll to top when user taps on status bar
+    scrollsToTop?: boolean; // iOS only, scroll to top on status bar tap
     disableBouncing?: boolean; // iOS only, bounce override
     scrollIndicatorInsets?: { top: number, left: number,
         bottom: number, right: number }; // iOS only

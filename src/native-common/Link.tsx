@@ -12,8 +12,9 @@ import RN = require('react-native');
 
 import Linking from '../native-common/Linking';
 import RX = require('../common/Interfaces');
+import Types = require('../common/Types');
 
-export class Link extends RX.Link<{}> {
+export class Link extends React.Component<Types.LinkProps, {}> {
     // To be able to use Link inside TouchableHighlight/TouchableOpacity
     public setNativeProps(nativeProps: RN.TextProps) {
         (this.refs['nativeLink'] as any).setNativeProps(nativeProps);

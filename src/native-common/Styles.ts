@@ -28,23 +28,43 @@ type ReactNativeViewAndImageCommonStyle<Style extends Types.ViewAndImageCommonSt
 };
 
 export class Styles extends RX.Styles {
-    combine<S>(defaultStyle: Types.StyleRuleSet<S>,
-            ruleSet: Types.StyleRuleSet<S> | Types.StyleRuleSet<S>[],
-            overrideStyle?: Types.StyleRuleSet<S>): Types.StyleRuleSet<S> | Types.StyleRuleSet<S>[] {
-        let styles = [defaultStyle];
-        if (ruleSet) {
-            if (ruleSet instanceof Array) {
-                styles = styles.concat(ruleSet);
-            } else {
-                styles.push(ruleSet);
+    combine<S>(ruleSet1: Types.StyleRuleSetRecursive<S>, ruleSet2?: Types.StyleRuleSetRecursive<S>): Types.StyleRuleSetOrArray<S> {
+        if (!ruleSet1 && !ruleSet2) {
+            return undefined;
+        }
+
+        let ruleSet = ruleSet1;
+        if (ruleSet2) {
+            ruleSet = [ruleSet1, ruleSet2];
+        }
+
+        if (ruleSet instanceof Array) {
+            let resultArray: Types.StyleRuleSet<S>[] = [];
+            for (let i = 0; i < ruleSet.length; i++) {
+                let subRuleSet: Types.StyleRuleSet<S> | Types.StyleRuleSet<S>[] = this.combine(ruleSet[i]);
+                    
+                if (subRuleSet instanceof Array) {
+                    resultArray = resultArray.concat(subRuleSet);
+                } else {
+                    resultArray.push(subRuleSet);
+                }
             }
+
+            if (resultArray.length === 0) {
+                return undefined;
+            }
+
+            // Elimiante the array if there's a single style.
+            if (resultArray.length === 1) {
+                return resultArray[0];
+            }
+
+            return resultArray;
         }
 
-        if (overrideStyle) {
-            styles.push(overrideStyle);
-        }
-
-        return styles;
+        // Handle the case where the input was either undefined
+        // or not an array (a single style).
+        return ruleSet;
     }
 
     // Creates opaque styles that can be used for View
@@ -103,7 +123,7 @@ export class Styles extends RX.Styles {
     }
 
     // Creates opaque styles that can be used for Link
-    createLinkStyle(ruleSet: Types.LinkStyleRuleSet, cacheStyle: boolean = true): Types.LinkStyleRuleSet {
+    createLinkStyle(ruleSet: Types.LinkStyle, cacheStyle: boolean = true): Types.LinkStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 

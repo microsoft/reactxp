@@ -53,7 +53,7 @@ function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, properti
     });
 }
 
-export class Button extends RX.Button<{}> {
+export class Button extends React.Component<Types.ButtonProps, {}> {
     private _mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount || noop;
     private _mixin_componentWillUnmount = RN.Touchable.Mixin.componentWillUnmount || noop;
 
@@ -70,7 +70,7 @@ export class Button extends RX.Button<{}> {
     private _buttonElement: RN.Animated.View = null;
     private _defaultOpacityValue: number = null;
     private _opacityAnimatedValue: RN.Animated.Value = null;
-    private _opacityAnimatedStyle: Types.AnimatedViewStyle = null;
+    private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet = null;
 
     constructor(props: Types.ButtonProps) {
         super(props);
@@ -98,8 +98,8 @@ export class Button extends RX.Button<{}> {
         return (
             <RN.Animated.View
                 ref={ this._onButtonRef }
-                style={ Styles.combine(_styles.defaultButton, [this.props.style, opacityStyle],
-                this.props.disabled && _styles.disabled) }
+                style={ Styles.combine([_styles.defaultButton, this.props.style, opacityStyle,
+                    this.props.disabled && _styles.disabled]) }
                 accessibilityLabel={ this.props.accessibilityLabel || this.props.title }
                 accessibilityTraits={ accessibilityTrait }
                 accessibilityComponentType={ accessibilityComponentType }
@@ -241,6 +241,7 @@ export class Button extends RX.Button<{}> {
 
         return flattenedStyles && (flattenedStyles as Types.ButtonStyle).opacity || 1;
     }
+
     /**
     * Animate the touchable to a new opacity.
     */

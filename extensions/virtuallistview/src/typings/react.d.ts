@@ -126,6 +126,9 @@ declare namespace __React {
         refs: {
             [key: string]: Component<any, any>
         };
+
+        // Needed to make TypeScript 2.4.x happy.
+        componentWillMount?(): void;
     }
 
     interface ClassicComponent<P, S> extends Component<P, S> {

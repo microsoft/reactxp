@@ -247,7 +247,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     }
 
     render() {
-        let combinedStyles = Styles.combine(_styles.defaultStyle, this.props.style);
+        let combinedStyles = Styles.combine([_styles.defaultStyle, this.props.style]) as any;
         const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
         const ariaSelected = AccessibilityUtil.accessibilityTraitToAriaSelected(this.props.accessibilityTraits);
         const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);

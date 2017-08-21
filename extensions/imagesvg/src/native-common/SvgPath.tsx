@@ -11,8 +11,9 @@ import React = require('react');
 import RNSvg = require('react-native-svg');
 
 import SvgInterfaces = require('../common/Interfaces');
+import SvgTypes = require('../common/Types');
 
-export class SvgPath extends SvgInterfaces.SvgPath<{}> {
+export class SvgPath extends React.Component<SvgTypes.SvgPathProps, {}> {
     render() {
         return (
             <RNSvg.Path

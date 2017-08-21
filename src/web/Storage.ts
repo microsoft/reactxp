@@ -12,9 +12,9 @@ import SyncTasks = require('synctasks');
 import RX = require('../common/Interfaces');
 
 export class Storage extends RX.Storage {
-    getItem(key: string): SyncTasks.Promise<string> {
-        var value = window.localStorage.getItem(key);
-        return SyncTasks.Resolved<string>(value);
+    getItem(key: string): SyncTasks.Promise<string|undefined> {
+        const value = window.localStorage.getItem(key);
+        return SyncTasks.Resolved<string|undefined>(value);
     }
 
     setItem(key: string, value: string): SyncTasks.Promise<void> {

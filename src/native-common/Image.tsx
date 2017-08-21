@@ -25,19 +25,15 @@ const _styles = {
     })
 };
 
-export class Image extends RX.Image<{}> {
+export class Image extends React.Component<Types.ImageProps, {}> {
     static prefetch(url: string): SyncTasks.Promise<boolean> {
         const defer = SyncTasks.Defer<boolean>();
 
-        // TODO: #694125 Remove conditional after RN UWP supports prefetch
-        //   https://github.com/ReactWindows/react-native-windows/issues/366
-        if (RN.Platform.OS !== 'windows') {
-            RN.Image.prefetch(url).then(value => {
-                defer.resolve(value);
-            }).catch(error => {
-                defer.reject(error);
-            });
-        }
+        RN.Image.prefetch(url).then(value => {
+            defer.resolve(value);
+        }).catch(error => {
+            defer.reject(error);
+        });
 
         return defer.promise();
     }
@@ -105,8 +101,8 @@ export class Image extends RX.Image<{}> {
         (this.refs['nativeImage'] as RN.Image).setNativeProps(nativeProps);
     }
 
-    protected getStyles(): Types.ImageStyleRuleSet {
-        return Styles.combine(_styles.defaultImage, this.props.style);
+    protected getStyles(): Types.ImageStyleRuleSet | Types.ImageStyleRuleSet[] {
+        return Styles.combine<Types.ImageStyle>([_styles.defaultImage, this.props.style]);
     }
 
     private _onLoad = (e: React.SyntheticEvent) => {

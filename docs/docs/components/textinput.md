@@ -9,6 +9,8 @@ next: components/view
 
 This component provides basic text input capabilities.
 
+It can be used in one of two modes. In the first mode, the contents of the text input are static and are specified by the `value` prop. Any attempt to modify the value will result in `onChangeText`, which allows the owning component to re-render with an updated `value`. In the second mode, `value` is unspecified, and the text input value is allowed to be modified as long as it remains mounted. In this mode, the caller can specify an optional `defaultValue` prop to specify the initial value.
+
 ## Props
 In addition to the [common accessibility props](/reactxp/docs/accessibility.html), the following props are supported.
 
@@ -43,8 +45,8 @@ keyboardAppearance: 'default' | 'light' | 'dark';
 // On-screen keyboard type to display
 keyboardType: 'default' | 'numeric' | 'email-address' | 'number-pad';
 
-// Should the scale multiplier be capped when allowFontScaling is set to true?
-// Possible values include the following:
+// Should the scale multiplier be capped when allowFontScaling is
+// set to true? Possible values include the following:
 // null/undefined (default) - inheret from parent/global default
 // 0 - no max
 // >= 1 - sets the maxContentSizeMultiplier of this node to this value
@@ -78,7 +80,8 @@ onScroll: (newScrollTop: number, newScrollLeft: number) => void = undefined;
 // Called when the selection range or insertion point location changes
 onSelectionChange: (start: number, end: number) => void = undefined;
 
-// Called when the text input submit button is pressed; invalid if multiline is true
+// Called when the text input submit button is pressed; invalid if 
+// multiline is true
 onSubmitEditing: () => void = undefined;
 
 // Placeholder text to dislpay when input is empty
@@ -103,7 +106,8 @@ style: TextInputStyleRuleSet | TextInputStyleRuleSet[] = [];
 textAlign: 'auto' | 'left' | 'right' | 'center' | 'justify';
 
 
-// If defined, the control value is forced to match this value; if undefined, control value can be modified by the user
+// If defined, the control value is forced to match this value;
+// if undefined, control value can be modified by the user
 value: string = undefined;
 ```
 
@@ -121,11 +125,13 @@ value: string = undefined;
 // Forces the control to give up focus
 blur(): void;
 
-// Gives the control focus. For mobile, use setAccessibilityFocus() for setting screen reader focus
+// Gives the control focus. For mobile, use setAccessibilityFocus()
+// for setting screen reader focus
 focus(): void;
 
 // Gives the control accessibility-only focus
-// E.g. screen reader focus is needed, but popping up of native keyboard is undesirable 
+// E.g. screen reader focus is needed, but popping up of native
+// keyboard is undesirable 
 setAccessibilityFocus(): void;
 
 // Does control currently have focus?

@@ -7,6 +7,7 @@
 * Common native implementation for Navigator on mobile.
 */
 
+import React = require('react');
 import RN = require('react-native');
 import RX = require('../common/Interfaces');
 
@@ -16,7 +17,7 @@ import NavigatorStandardDelegate from './NavigatorStandardDelegate';
 import NavigatorExperimentalDelegate from './NavigatorExperimentalDelegate';
 import Types = require('../common/Types');
 
-export class Navigator extends RX.Navigator<NavigatorState> {
+export class Navigator extends React.Component<Types.NavigatorProps, NavigatorState> {
     private _delegate: NavigatorDelegate;
     private _commandQueue: NavigationCommand[] = [];
 

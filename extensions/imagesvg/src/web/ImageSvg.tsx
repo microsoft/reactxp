@@ -13,16 +13,17 @@ import ReactDOM = require('react-dom');
 import { Styles as RXStyles } from 'reactxp';
 
 import SvgInterfaces = require('../common/Interfaces');
+import SvgTypes = require('../common/Types');
 
-export class ImageSvg extends SvgInterfaces.ImageSvg<{}> {
+export class ImageSvg extends React.Component<SvgTypes.ImageSvgProps, {}> {
     render() {
         assert.ok(this.props.width && this.props.height, 'The width and height on imagesvg are mandatory.');
 
         if (this.props.width > 0 && this.props.height > 0) {
-            let combinedStyles = RXStyles.combine({
+            let combinedStyles = RXStyles.combine([{
                 display: 'flex',
                 position: 'relative'
-            }, this.props.style);
+            }, this.props.style]) as any;
 
             if (this.props.fillColor !== undefined) {
                 combinedStyles.fill = this.props.fillColor;

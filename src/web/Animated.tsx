@@ -53,7 +53,7 @@ var animatedPropUnits: { [key: string]: string } = {
 
     // AnimatedTextStyleRules
     color: '',
-    fontSize: ''
+    fontSize: 'px'
  };
 
 // Every Animation subclass should extend this.
@@ -80,7 +80,7 @@ export class Value extends Types.AnimatedValue {
     _listenerId: number;
     _animationId: number;
     _animations: { [key: number]: Animation };
-    _listeners: { [key: number]: Types.Animated.ValueListenerCallback };
+    _listeners: { [key: string]: Types.Animated.ValueListenerCallback };
     _animatedValueUniqueId: number;
     _cssProperties: { [key: string]: string } = {};
     _element: HTMLElement;
@@ -194,18 +194,18 @@ export class Value extends Types.AnimatedValue {
     }
 
     // Add listener for when the value gets updated.
-    addListener(callback: Types.Animated.ValueListenerCallback): number {
+    addListener(callback: Types.Animated.ValueListenerCallback): string {
         if (callback) {
             this._listenerId++;
-            this._listeners[this._listenerId] = callback;
+            this._listeners[String(this._listenerId)] = callback;
         }
 
-        return this._listenerId;
+        return String(this._listenerId);
     }
 
     // Remove a specific listner.
     removeListener(id: string): void {
-        delete this._listeners[id as any];
+        delete this._listeners[id];
     }
 
     // Remove all listeners.
@@ -305,7 +305,7 @@ export class Value extends Types.AnimatedValue {
 
         // Notify subscribers about the new value.
         for (var key in this._listeners) {
-            if (typeof this._listeners[key] === 'ValueListenerCallback') {
+            if (typeof this._listeners[key] === 'function') {
                 this._listeners[key](this.getValue());
             }
         }
@@ -592,7 +592,7 @@ export var parallel: Types.Animated.ParallelFunction = function (
 };
 
 // Function for creating wrapper AnimatedComponent around passed in component
-function createAnimatedComponent<PropsType extends Types.CommonProps>(Component: any): typeof RX.AnimatedComponent {
+function createAnimatedComponent<PropsType extends Types.CommonProps>(Component: any): any {
     var refName = 'animatedNode';
 
     class AnimatedComponentGenerated extends React.Component<PropsType, void> implements RX.AnimatedComponent<PropsType, void> {
@@ -639,7 +639,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
 
             // Attempt to get static initial styles for the first build.  After the build,
             // initializeComponent will take over and apply styles dynamically.
-            let styles = Styles.combine(null, props.style) as any;
+            let styles = Styles.combine(props.style) as any;
 
             // Initialize the tricky properties here (e.g. transform).
             this._animatedValues = AnimatedTransform.initialize(styles);
@@ -695,34 +695,30 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         }
 
         focus() {
-            if (this.refs[refName] instanceof RXView) {
-                const component = this.refs[refName] as RXView;
-                if (component.focus) {
-                    component.focus();
-                }
+            const component = this.refs[refName] as RXView;
+            if (component.focus) {
+                component.focus();
             }
         }
 
         blur() {
-            if (this.refs[refName] instanceof RXView) {
-                const component = this.refs[refName] as RXView;
-                if (component.blur) {
-                    component.blur();
-                }
+            const component = this.refs[refName] as RXView;
+            if (component.blur) {
+                component.blur();
             }
         }
 
         setFocusRestricted(restricted: boolean) {
-            if (this.refs[refName] instanceof RXView) {
-                const view = this.refs[refName] as RXView;
-                view.setFocusRestricted(restricted);
+            const component = this.refs[refName] as RXView;
+            if (component.setFocusRestricted) {
+                component.setFocusRestricted(restricted);
             }
         }
 
         setFocusLimited(limited: boolean) {
-            if (this.refs[refName] instanceof RXView) {
-                const view = this.refs[refName] as RXView;
-                view.setFocusLimited(limited);
+            const component = this.refs[refName] as RXView;
+            if (component.setFocusLimited) {
+                component.setFocusLimited(limited);
             }
         }
 
@@ -745,7 +741,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
     return AnimatedComponentGenerated;
 }
 
-export var Image = createAnimatedComponent(RXImage) as typeof RX.AnimatedImage;
+export var Image = createAnimatedComponent<Types.ImageProps>(RXImage) as typeof RX.AnimatedImage;
 export var Text = createAnimatedComponent(RXText) as typeof RX.AnimatedText;
 export var TextInput = createAnimatedComponent(RXTextInput) as typeof RX.AnimatedTextInput;
 export var View = createAnimatedComponent(RXView) as typeof RX.AnimatedView;

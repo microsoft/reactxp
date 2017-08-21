@@ -16,6 +16,37 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.42.0_rc.22 of reactxp
+_Released 30 July 2017_
+
+On RN platforms, initialProps is now passed to the main view.
+Added new PopupOptions field preventDismissOnPress that prevents the popup from being dismissed implicitly when the user clicks or taps outside of the popup or the anchor.
+Fixed bug in web implementation of TextInput where border styling was not honored.
+Fixed bug on Android that allowed presses to background of Modal to go through.
+
+#### Version 0.42.0_rc.20 of reactxp
+_Released 15 July 2017_
+
+Updated to TypeScript 2.4, which caught several bugs in the ReactXP code.
+Made Styles.combine much more flexible - it now supports arbitrarily nested arrays of styles.
+Changed Network API namespace for detecting network type so it's consistent with other ReactXP APIs. Added documentation.
+
+#### Version 0.1.6 of reactxp-video
+_Released 15 July 2017_
+
+Updated to TypeScript 2.4 and made changes to work with latest ReactXP core.
+
+#### Version 0.2.4 of reactxp-imagesvg
+_Released 15 July 2017_
+
+Updated to TypeScript 2.4 and made changes to work with latest ReactXP core.
+
+#### Version 0.42.0_rc.18 of reactxp
+_Released 13 July 2017_
+
+Fixed runtime crash when running web implementation in Electron.
+Added a way to provide screen reader focus to TextInput on web.
+
 #### Version 0.42.0_rc.17 of reactxp
 _Released 4 July 2017_
 

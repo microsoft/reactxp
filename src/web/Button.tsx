@@ -41,7 +41,7 @@ let _styles = {
 const _longPressTime = 1000;
 const _defaultAccessibilityTrait = Types.AccessibilityTrait.Button;
 
-export class Button extends RX.Button<void> {
+export class Button extends React.Component<Types.ButtonProps, {}> {
     private _lastMouseDownTime: number = 0;
     private _lastMouseDownEvent: Types.SyntheticEvent;
     private _ignoreClick = false;
@@ -106,7 +106,7 @@ export class Button extends RX.Button<void> {
     }
 
     private _getStyles(): Types.ButtonStyleRuleSet {
-        let buttonStyles: any = _.extend.apply(_, [{}].concat(this.props.style));
+        let buttonStyles = Styles.combine(this.props.style) as any;
 
         // Specify default syle for padding only if padding is not already specified
         if (buttonStyles && buttonStyles.padding === undefined  &&
@@ -116,7 +116,7 @@ export class Button extends RX.Button<void> {
             buttonStyles['padding'] = '0';
         }
 
-        let combinedStyles = Styles.combine(_styles.defaultButton, buttonStyles);
+        let combinedStyles = Styles.combine([_styles.defaultButton, buttonStyles]);
 
         if (this.props.disabled) {
             combinedStyles.opacity = 0.5;

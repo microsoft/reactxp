@@ -24,7 +24,11 @@ accessibilityHidden: boolean = false;
 accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 
 // Region for accessibility mechanisms
-accessibilityLiveRegion: AccessibilityLiveRegion = undefined; // Android and web only
+accessibilityLiveRegion: AccessibilityLiveRegion =
+    undefined; // Android and web only
+
+// Expose the element and/or its children as accessible to Screen readers
+importantForAccessibility?: ImportantForAccessibility = Auto;
 
 // Animation of children
 //   - Every child must have a `key`.
@@ -87,8 +91,10 @@ onPress: (e: SyntheticEvent) => void = undefined;
 
 // Touch-specific Events
 onLongPress: (e: SyntheticEvent) => void = undefined;
-onMoveShouldSetResponder: (e: React.SyntheticEvent) => boolean = undefined;
-onMoveShouldSetResponderCapture: (e: React.SyntheticEvent) => boolean = undefined;
+onMoveShouldSetResponder: (e: React.SyntheticEvent) => boolean =
+    undefined;
+onMoveShouldSetResponderCapture: (e: React.SyntheticEvent) => boolean =
+    undefined;
 onResponderGrant: (e: React.SyntheticEvent) => void = undefined;
 onResponderReject: (e: React.SyntheticEvent) => void = undefined;
 onResponderRelease: (e: React.SyntheticEvent) => void = undefined;
@@ -96,9 +102,12 @@ onResponderStart: (e: React.TouchEvent) => void = undefined;
 onResponderMove: (e: React.TouchEvent) => void = undefined;
 onResponderEnd: (e: React.TouchEvent) => void = undefined;
 onResponderTerminate: (e: React.SyntheticEvent) => void = undefined;
-onResponderTerminationRequest: (e: React.SyntheticEvent) => boolean = undefined;
-onStartShouldSetResponder: (e: React.SyntheticEvent) => boolean = undefined;
-onStartShouldSetResponderCapture: (e: React.SyntheticEvent) => boolean = undefined;
+onResponderTerminationRequest: (e: React.SyntheticEvent) => boolean =
+    undefined;
+onStartShouldSetResponder: (e: React.SyntheticEvent) => boolean =
+    undefined;
+onStartShouldSetResponderCapture: (e: React.SyntheticEvent) => boolean =
+    undefined;
 
 // Other Events
 onLayout: (e: ViewOnLayoutEvent) => void = undefined;

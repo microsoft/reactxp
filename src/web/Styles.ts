@@ -17,44 +17,56 @@ type CssAliasMap = { [prop: string]: string };
 
 export class Styles extends RX.Styles {
     // Combines a set of styles
-    combine<S>(defaultStyle: any, ruleSet: Types.StyleRuleSet<S> | Types.StyleRuleSet<S>[]): any {
-        let combinedStyles: any = {};
-        if (defaultStyle) {
-            combinedStyles = _.extend(combinedStyles, defaultStyle);
-        }
-        if (ruleSet) {
-            combinedStyles = _.extend.apply(_, [combinedStyles].concat(ruleSet));
+    combine<S>(ruleSet1: Types.StyleRuleSetRecursive<S>, ruleSet2?: Types.StyleRuleSetRecursive<S>): Types.StyleRuleSetOrArray<S> {
+        if (!ruleSet1 && !ruleSet2) {
+            return undefined;
         }
 
-        if ((combinedStyles.marginLeft !== undefined || combinedStyles.marginRight !== undefined ||
-                combinedStyles.marginTop !== undefined || combinedStyles.marginBottom !== undefined) &&
-                combinedStyles.margin !== undefined) {
-            console.error('Conflicting rules for margin specified.');
-            delete combinedStyles.margin;
+        let ruleSet = ruleSet1;
+        if (ruleSet2) {
+            ruleSet = [ruleSet1, ruleSet2];
         }
 
-        if ((combinedStyles.paddingLeft !== undefined || combinedStyles.paddingRight !== undefined ||
-                combinedStyles.paddingTop !== undefined || combinedStyles.paddingBottom !== undefined) &&
-                combinedStyles.padding !== undefined) {
-            console.error('Conflicting rules for padding specified.');
-            delete combinedStyles.padding;
-        }
+        if (ruleSet instanceof Array) {
+            let combinedStyles: any = {};
 
-        if (combinedStyles.borderWidth || 
-                combinedStyles.borderTopWidth || combinedStyles.borderRightWidth ||
-                combinedStyles.borderBottomWidth || combinedStyles.borderLeftWidth) {
-            // If the caller specified a non-zero border width
-            // but no border color or style, set the defaults to
-            // match those of React Native platforms.
-            if (combinedStyles.borderColor === undefined) {
-                combinedStyles.borderColor = 'black';
+            for (let i = 0; i < ruleSet.length; i++) {
+                let subRuleSet = this.combine(ruleSet[i]);
+                combinedStyles = _.extend(combinedStyles, subRuleSet);
             }
-            if (combinedStyles.borderStyle === undefined) {
-                combinedStyles.borderStyle = 'solid';
+
+            if ((combinedStyles.marginLeft !== undefined || combinedStyles.marginRight !== undefined ||
+                    combinedStyles.marginTop !== undefined || combinedStyles.marginBottom !== undefined) &&
+                    combinedStyles.margin !== undefined) {
+                console.error('Conflicting rules for margin specified.');
+                delete combinedStyles.margin;
             }
+
+            if ((combinedStyles.paddingLeft !== undefined || combinedStyles.paddingRight !== undefined ||
+                    combinedStyles.paddingTop !== undefined || combinedStyles.paddingBottom !== undefined) &&
+                    combinedStyles.padding !== undefined) {
+                console.error('Conflicting rules for padding specified.');
+                delete combinedStyles.padding;
+            }
+
+            if (combinedStyles.borderWidth || 
+                    combinedStyles.borderTopWidth || combinedStyles.borderRightWidth ||
+                    combinedStyles.borderBottomWidth || combinedStyles.borderLeftWidth) {
+                // If the caller specified a non-zero border width
+                // but no border color or style, set the defaults to
+                // match those of React Native platforms.
+                if (combinedStyles.borderColor === undefined) {
+                    combinedStyles.borderColor = 'black';
+                }
+                if (combinedStyles.borderStyle === undefined) {
+                    combinedStyles.borderStyle = 'solid';
+                }
+            }
+
+            return combinedStyles as Types.StyleRuleSet<S>;
         }
 
-        return combinedStyles;
+        return ruleSet as Types.StyleRuleSet<S>;
     }
 
     // Creates opaque styles that can be used for View
@@ -150,7 +162,7 @@ export class Styles extends RX.Styles {
     }
 
     // Use memoize to cache the result after the first call.
-    private _createDummyElement = _.memoize(() => {
+    private _createDummyElement = _.memoize((): HTMLElement => {
         return document.createElement('testCss');
     });
 

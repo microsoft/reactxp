@@ -48,7 +48,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
     private _transitionSpec: TransitionSpec;
     private _navigationInProgress: boolean;
 
-    constructor(navigator: RX.Navigator<NavigatorState>) {
+    constructor(navigator: RX.Navigator) {
         super(navigator);
         const route: NavigationRouteState = { key: '0', route: { routeId: 0, sceneConfigType: 0 }};
         this._state = { index: 0, routes: [ route ] };

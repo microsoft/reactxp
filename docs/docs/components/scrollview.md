@@ -9,7 +9,7 @@ next: components/text
 
 Like a View, this component is a container for other components. However, it supports scrolling (panning) and zooming so it is possible to view larger contents. 
 
-ScrollViews must have a bounded height (or width, if it scrolls horizontally) since its children are of unbounded height (or width). To bound the dimensions of a ScrollView, either set the height/width directly or make sure that its parent&apos;s height/width is bounded.
+ScrollViews must have a bounded height (or width, if it scrolls horizontally) since its children are of unbounded height (or width). To bound the dimensions of a ScrollView, either set the height/width directly or make sure that its parent's height/width is bounded.
 
 ## Props
 ``` javascript
@@ -27,7 +27,8 @@ justifyEnd: boolean = false;
 // When the user scrolls the view, how should the on-screen keyboard react?
 keyboardDismissMode: 'none' | 'interactive' | 'on-drag'; // Native only
 
-// Should the on-screen keyboard remain visible when the user taps the scroll view?
+// Should the on-screen keyboard remain visible when the user taps
+// the scroll view?
 keyboardShouldPersistTaps: boolean = false; // Native only
 
 // Maximum scale factor
