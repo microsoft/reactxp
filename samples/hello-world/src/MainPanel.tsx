@@ -50,6 +50,12 @@ const styles = {
     })
 };
 
+const alertStyles = {
+    bodyStyle: RX.Styles.createViewStyle({ backgroundColor: '#f5fcff' }),
+    titleStyle: RX.Styles.createTextStyle({ fontSize: 22 }),
+    messageStyle: RX.Styles.createTextStyle({ marginVertical: 40 })
+};
+
 class MainPanel extends RX.Component<MainPanelProps, null> {
     private _translationValue: RX.Animated.Value;
     private _animatedStyle: RX.Types.AnimatedTextStyleRuleSet;
@@ -94,19 +100,51 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
                     <RX.Link style={ styles.docLink } url={ 'https://microsoft.github.io/reactxp/docs' }>
                         View ReactXP documentation
                     </RX.Link>
-
+                    
                     <RX.Button style={ styles.roundButton } onPress={ this._onPressNavigate }>
                         <RX.Text style={ styles.buttonText }>
                             See More Examples
+                        </RX.Text>
+                    </RX.Button>
+                    
+                    <RX.Button style={ styles.roundButton } onPress={ this._onPressAlert }>
+                        <RX.Text style={ styles.buttonText }>
+                            See an Alert
+                        </RX.Text>
+                    </RX.Button>
+
+                    <RX.Button style={ styles.roundButton } onPress={ this._onPressThemedAlert }>
+                        <RX.Text style={ styles.buttonText }>
+                            See a themed Alert
                         </RX.Text>
                     </RX.Button>
                 </RX.View>
             </RX.ScrollView>
         );
     }
-
+    
     private _onPressNavigate = () => {
         this.props.onPressNavigate();
+    }
+    
+    private _onPressAlert = () => {
+        RX.Alert.show('This is an Alert', 'Do you like it?', [
+            { onPress: ()=> console.log('Alert button clicked'), text: 'Print in the console' },
+            { style: 'cancel', text: 'Close this' }]);
+    }
+    
+    private _onPressThemedAlert = () => {
+        RX.Alert.show('This is a themed Alert', 'Do you like it as well?', [
+            { onPress: ()=> console.log('Themed alert button clicked'), text: 'Print in the console' },
+            { style: 'cancel', text: 'Close this' }], null, {
+                bodyStyle: alertStyles.bodyStyle,
+                buttonStyle: styles.roundButton,
+                buttonTextStyle: styles.buttonText,
+                titleStyle: alertStyles.titleStyle,
+                messageStyle: alertStyles.messageStyle,
+                defaultButtonColor: '#7d88a9',
+                cancelButtonColor: 'red'
+            });
     }
 }
 
