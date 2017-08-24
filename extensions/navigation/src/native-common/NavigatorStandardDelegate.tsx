@@ -13,10 +13,10 @@ import RN = require('react-native');
 
 // Navigator is deprecated and moved to separate package. But this version not compatible with rn 42
 let RNNavigator: typeof RN.Navigator;
-if (RN.Navigator === undefined) {
-    RNNavigator = require('react-native-deprecated-custom-components').Navigator;
-} else {
+try {
     RNNavigator = RN.Navigator;
+} catch (e) {
+    RNNavigator = require('react-native-deprecated-custom-components').Navigator;
 }
 
 import {
