@@ -62,7 +62,7 @@ export class ImageStore extends StoreBase {
                     return {
                         smallUrl: image.smallUrl,
                         originalUrl: image.originalUrl
-                    }
+                    };
                 });
 
                 this._isSearchPending = false;

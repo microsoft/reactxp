@@ -21,7 +21,7 @@ interface GiphySearchResponse {
             fixed_width_still: GiphyImageDescriptor;
             original: GiphyImageDescriptor;
         }
-    }[]
+    }[];
 }
 
 export interface GiphySearchResult {
@@ -57,5 +57,3 @@ export class GiphyClient extends GenericRestClient {
 }
 
 export default new GiphyClient(_giphyApiUrl);
-
-

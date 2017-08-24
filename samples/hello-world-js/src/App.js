@@ -5,6 +5,8 @@
 import React from 'react';
 import RX from 'reactxp';
 
+import { Navigator } from 'reactxp-navigation';
+
 import MainPanel from './MainPanel';
 import SecondPanel from './SecondPanel';
 
@@ -14,9 +16,10 @@ let NavigationRouteId = {
 };
 
 const styles = {
+    // Standard navigator style should be an object. So we have to disable caching here.
     navCardStyle: RX.Styles.createViewStyle({
         backgroundColor: '#f5fcff'
-    })
+    }, false)
 };
 
 export default class App extends RX.Component {
@@ -39,7 +42,7 @@ export default class App extends RX.Component {
 
     render() {
         return (
-            <RX.Navigator
+            <Navigator
                 ref={ this._onNavigatorRef }
                 renderScene={ this._renderScene }
                 cardStyle={ styles.navCardStyle }

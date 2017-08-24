@@ -26,6 +26,7 @@
     "react-native": "^0.42.0",
     "react-native-windows": "^0.33.0",
     "reactxp-imagesvg": "^0.2.4",
+    "reactxp-navigation": "^1.0.3",
     "reactxp-video": "^0.1.6"
   }
 }
