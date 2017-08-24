@@ -1,6 +1,6 @@
 {
   "name": "reactxp-navigation",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ReactXP cross-platform navigation framework",
   "scripts": {
     "build": "tsc",
@@ -22,7 +22,7 @@
     "lodash": "4.17.1",
     "rebound": "^0.0.13",
     "react-native-deprecated-custom-components": "0.1.1",
-    "reactxp-experimental-navigation": "1.0.4"
+    "reactxp-experimental-navigation": "1.0.5"
   },
   "peerDependencies": {
     "react": "^0.14.8",
