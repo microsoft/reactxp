@@ -27,7 +27,7 @@ import Types = require('../common/Types');
 
 export class DefaultDelegateSelector implements DelegateSelector {
     getNavigatorDelegate(navigator: BaseNavigator<NavigatorState>) {
-     if (RN.Platform.OS === 'ios' || RN.Platform.OS === 'android') {
+        if (RN.Platform.OS === 'ios' || RN.Platform.OS === 'android') {
             return new NavigatorExperimentalDelegate(navigator);
         } else {
             return new NavigatorStandardDelegate(navigator);

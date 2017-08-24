@@ -1,8 +1,10 @@
 /**
 * react-native.d.ts
-* Copyright: Microsoft 2017
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
-* Type definition file for React Native, based on the React.js definition file on https://github.com/borisyankov/DefinitelyTyped.
+* Type definition file for React Native, based on the React.js definition file
+* on https://github.com/borisyankov/DefinitelyTyped.
 */
 
 declare module 'react-native' {
@@ -395,6 +397,18 @@ declare module 'react-native' {
         source?: { uri: string; method?: string; headers?: Object; body?: string; } | { html: string; baseUrl?: string; };
     }
 
+    interface NavigatorProps extends ComponentPropsBase {
+        configureScene?: Function;
+        initialRoute?: any;
+        initialRouteStack?: any[];
+        navigatorBar?: any;
+        navigator?: Navigator;
+        onDidFocus?: Function; //deprecated
+        onWillFocus?: Function; //deprecated
+        renderScene: Function;
+        sceneStyle?: StyleRuleSet | StyleRuleSet[];
+    }
+
     interface DatePickerIOSProps extends ComponentPropsStyleBase {
         date?: Date;
         maximumDate?: Date;
@@ -478,6 +492,29 @@ declare module 'react-native' {
         reload() : void;
         goBack() : void;
         goForward() : void;
+    }
+    class Navigator extends ReactNativeBaseComponent<NavigatorProps, {}> {
+        static SceneConfigs: {
+            PushFromRight: any;
+            FloatFromRight: any;
+            FloatFromLeft: any;
+            FloatFromBottom: any;
+            FloatFromBottomAndroid: any;
+            FadeAndroid: any;
+            HorizontalSwipeJump:any;
+        };
+        getCurrentRoutes(): any[];
+        jumpBack(): void;
+        jumpForward(): void;
+        jumpTo(route: any): void;
+        push(route: any): void;
+        pop(): void;
+        replace(route: any): void;
+        replaceAtIndex(route: any, index: number): void;
+        replacePrevious(route: any): void;
+        immediatelyResetRouteStack(routeStack: any[]): void;
+        popToRoute(route: any): void;
+        popToTop(): void;
     }
 
     interface ActionSheetOptions {

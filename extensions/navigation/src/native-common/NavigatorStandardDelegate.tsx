@@ -10,7 +10,14 @@
 import _ = require('lodash');
 import React = require('react');
 import RN = require('react-native');
-import { Navigator as RNNavigator } from 'react-native-deprecated-custom-components';
+
+// Navigator is deprecated and moved to separate package. But this version not compatible with rn 42
+let RNNavigator: typeof RN.Navigator;
+if (RN.Navigator === undefined) {
+    RNNavigator = require('react-native-deprecated-custom-components').Navigator;
+} else {
+    RNNavigator = RN.Navigator;
+}
 
 import {
     CommandType,
@@ -23,7 +30,7 @@ import {
 } from '../common/Types';
 
 export class NavigatorStandardDelegate extends NavigatorDelegate {
-    private _navigator: RNNavigator;
+    private _navigator: RN.Navigator;
 
     constructor(navigator: Navigator<NavigatorState>) {
         super(navigator);
@@ -51,11 +58,11 @@ export class NavigatorStandardDelegate extends NavigatorDelegate {
         );
      }
 
-    private _ref = (navigator: RNNavigator): void => {
+    private _ref = (navigator: RN.Navigator): void => {
         this._navigator = navigator;
     }
 
-    private _renderScene = (route: NavigatorRoute, navigator?: RNNavigator): JSX.Element => {
+    private _renderScene = (route: NavigatorRoute, navigator?: RN.Navigator): JSX.Element => {
         // route exists?
         if (route) {
             // call the renderScene callback sent from SkypeXNavigator

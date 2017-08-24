@@ -1,6 +1,6 @@
 {
   "name": "reactxp-navigation",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ReactXP cross-platform navigation framework",
   "scripts": {
     "build": "tsc",
