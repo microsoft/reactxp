@@ -100,9 +100,10 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
         );
     }
 
-    private _convertCustomTransitionConfig(config: CustomNavigatorSceneConfig): Navigation.NavigationCustomTransitionConfig {
+    private _convertCustomTransitionConfig(config: CustomNavigatorSceneConfig | undefined):
+            Navigation.NavigationCustomTransitionConfig | undefined {
         if (!config) {
-            return null;
+            return undefined;
         }
 
         let nativeConfig: Navigation.NavigationCustomTransitionConfig = { 
@@ -128,13 +129,13 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
     private _buildTransitionSpec(state: Navigation.NavigationState): TransitionSpec {
         const route = (state.routes[state.index] as NavigationRouteState).route;
         let direction: Navigation.NavigationGestureDirection = 'horizontal';
-        let customSceneConfig: Navigation.NavigationCustomTransitionConfig = null;
-        let enableGesture: boolean = null;
-        let responseDistance: number = null;
+        let customSceneConfig: Navigation.NavigationCustomTransitionConfig | undefined = undefined;
+        let enableGesture: boolean = false;
+        let responseDistance: number = 0;
         let hideShadow = route && route.customSceneConfig && route.customSceneConfig.hideShadow;
-        let cardStyle: RX.Types.ViewStyleRuleSet = route && route.customSceneConfig 
+        let cardStyle: RX.Types.ViewStyleRuleSet | undefined = route && route.customSceneConfig 
             ? route.customSceneConfig.cardStyle
-            : null;
+            : undefined;
         let gestureDistanceSet = false;
 
         if (route) {
@@ -143,8 +144,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
                 responseDistance = route.gestureResponseDistance;
                 gestureDistanceSet = true;
             }
-
-            customSceneConfig = this._convertCustomTransitionConfig(route.customSceneConfig);
+            customSceneConfig = this._convertCustomTransitionConfig(route.customSceneConfig!!!);
             switch (route.sceneConfigType) {
                 case NavigatorSceneConfigType.FloatFromBottom:
                     direction = 'vertical';
@@ -199,10 +199,10 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
     private _onTransitionStart = (transitionProps: NavigationTransitionProps, prevTransitionProps?: NavigationTransitionProps) => {
         console.log('onTransitionStart', this._transitionSpec);
         if (this._owner.props.transitionStarted) {
-            const fromIndex = prevTransitionProps && prevTransitionProps.scene ? prevTransitionProps.scene.index : null;
-            const toIndex = transitionProps.scene ? transitionProps.scene.index : null;
-            const fromRouteId = prevTransitionProps && prevTransitionProps.scene ? prevTransitionProps.scene.route.key : null;
-            const toRouteId = transitionProps.scene ? transitionProps.scene.route.key : null;
+            const fromIndex = prevTransitionProps && prevTransitionProps.scene ? prevTransitionProps.scene.index : undefined;
+            const toIndex = transitionProps.scene ? transitionProps.scene.index : undefined;
+            const fromRouteId = prevTransitionProps && prevTransitionProps.scene ? prevTransitionProps.scene.route.key : undefined;
+            const toRouteId = transitionProps.scene ? transitionProps.scene.route.key : undefined;
             this._owner.props.transitionStarted(
                 transitionProps.position, 
                 toRouteId,
@@ -240,14 +240,14 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
 
         let  useNewStateAsScene = false;
 
-        let command = commandQueue.shift();
+        let command = commandQueue.shift()!!!;
         let route = command.param.route;
         let value = command.param.value;
         console.log('processing navigation command:', JSON.stringify(command), 'on stack:', JSON.stringify(this._state));
         switch (command.type) {
             case CommandType.Push:
                 useNewStateAsScene = true;
-                this._state = StateUtils.push(this._state, this._createState(route));
+                this._state = StateUtils.push(this._state, this._createState(route!!!));
                 break;
 
             case CommandType.Pop:
@@ -268,10 +268,10 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
             case CommandType.Replace:
                 if (value === -1) {
                     this._state = StateUtils.replaceAtIndex(this._state, this._state.routes.length - 2,
-                        this._createState(route));
+                        this._createState(route!!!));
                 } else {
                     this._state = StateUtils.replaceAtIndex(this._state, this._state.routes.length - 1,
-                        this._createState(route));
+                        this._createState(route!!!));
                 }
 
                 break;

@@ -148,7 +148,7 @@ export class NavigatorStandardDelegate extends NavigatorDelegate {
             return;
         }
 
-        let command = commandQueue.shift();
+        let command = commandQueue.shift()!!!;
         let route = command.param.route;
         let value = command.param.value;
 

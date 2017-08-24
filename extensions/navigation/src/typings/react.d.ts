@@ -117,7 +117,7 @@ declare namespace __React {
 
         constructor(props?: P, context?: any);
         setState(f: (prevState: S, props: P) => S, callback?: () => any): void;
-        setState(state: S, callback?: () => any): void;
+        setState(state: Partial<S>, callback?: () => any): void;
         forceUpdate(callBack?: () => any): void;
         render(): JSX.Element;
         props: P;
