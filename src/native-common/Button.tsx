@@ -100,10 +100,12 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
                 ref={ this._onButtonRef }
                 style={ Styles.combine([_styles.defaultButton, this.props.style, opacityStyle,
                     this.props.disabled && _styles.disabled]) }
+                accessibilityActions={ this.props.accessibilityActions }
                 accessibilityLabel={ this.props.accessibilityLabel || this.props.title }
                 accessibilityTraits={ accessibilityTrait }
                 accessibilityComponentType={ accessibilityComponentType }
                 importantForAccessibility={ importantForAccessibility }
+                onAccessibilityAction={ this.props.onAccessibilityAction }
                 onStartShouldSetResponder={ this.touchableHandleStartShouldSetResponder }
                 onResponderTerminationRequest={ this.touchableHandleResponderTerminationRequest }
                 onResponderGrant={ this.touchableHandleResponderGrant }
