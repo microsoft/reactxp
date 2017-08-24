@@ -41,7 +41,6 @@ import { Link as LinkImpl } from './Link';
 import { default as LinkingImpl, Linking as LinkingType } from './Linking';
 import { default as LocationImpl, Location as LocationType } from '../common/Location';
 import { default as ModalImpl, Modal as ModalType } from './Modal';
-import { Navigator as NavigatorImpl } from './Navigator';
 import { default as NetworkImpl, Network as NetworkType } from './Network';
 import { default as PlatformImpl, Platform as PlatformType } from './Platform';
 import { default as PopupImpl, Popup as PopupType } from '../web/Popup';
@@ -95,8 +94,6 @@ module ReactXP {
     export var Location = LocationImpl;
     export type Modal = ModalType;
     export var Modal = ModalImpl;
-    export type Navigator = NavigatorImpl;
-    export var Navigator = NavigatorImpl;
     export type Network = NetworkType;
     export var Network = NetworkImpl;
     export type Platform = PlatformType;

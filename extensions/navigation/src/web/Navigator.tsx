@@ -10,17 +10,24 @@
 * pop, which update the state and cause transitions.
 */
 
-import _ = require('./utils/lodashMini');
+import _ = require('../common/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
+import RX = require('reactxp');
+import { Styles, View } from 'reactxp';
 import rebound = require('rebound');
 
 import { NavigatorSceneConfigFactory } from './NavigatorSceneConfigFactory';
 import { NavigatorSceneConfig }  from './NavigatorSceneConfigFactory';
-import RX = require('../common/Interfaces');
-import Styles from './Styles';
+
+import {
+    Navigator as NavigatorBase,
+    NavigatorDelegateSelector as DelegateSelector,
+    NavigatorProps,
+    NavigatorState as BaseNavigatorState
+} from '../common/Types';
+
 import Types = require('../common/Types');
-import View from './View';
 
 // [Bug:506870] Move web navigator to RX animated API
 export interface SpringSystem {
@@ -97,7 +104,7 @@ export interface TransitionToQueueItem {
     velocity: number;
 }
 
-export interface NavigatorState {
+export interface NavigatorState extends BaseNavigatorState {
     // Current stack of animation configurations for a scene
     sceneConfigStack?: NavigatorSceneConfig[];
 
@@ -118,7 +125,7 @@ export interface NavigatorState {
     transitionFinished?: TransitionToCallback;
 }
 
-export class Navigator extends React.Component<Types.NavigatorProps, NavigatorState> {
+export class NavigatorImpl extends NavigatorBase<NavigatorState> {
     // Keep a map of all rendered scenes, keyed off their routeId
     private _renderedSceneMap: { [routeId: number]: JSX.Element } = {};
 
@@ -131,10 +138,10 @@ export class Navigator extends React.Component<Types.NavigatorProps, NavigatorSt
     spring: Spring;
 
     // Cache the dimensions of the navigator so scenes can transition with that size in mind.
-    private _dimensions: Types.Dimensions;
+    private _dimensions: RX.Types.Dimensions;
 
     // Receives initial props and sets initial state for Navigator
-    constructor(initialProps?: Types.NavigatorProps) {
+    constructor(initialProps?: NavigatorProps) {
         super(initialProps);
 
         // Default navigator state
@@ -351,7 +358,7 @@ export class Navigator extends React.Component<Types.NavigatorProps, NavigatorSt
 
     // Render a scene for the navigator
     private _renderNavigatorScene(route: Types.NavigatorRoute, index: number): JSX.Element {
-        let styles: Types.ViewStyleRuleSet[] = [_styles.baseScene, _styles.sceneStyle,
+        let styles: RX.Types.ViewStyleRuleSet[] = [_styles.baseScene, _styles.sceneStyle,
              _styles.defaultSceneStyle];
 
         if (index !== this.state.presentedIndex) {
@@ -374,7 +381,7 @@ export class Navigator extends React.Component<Types.NavigatorProps, NavigatorSt
     // Push a scene below the others so they don't block touches sent to the presented scenes.
     private _disableScene(sceneIndex: number) {
         if (this.refs['scene_' + sceneIndex]) {
-            this._setNativeStyles(this.refs['scene_' + sceneIndex] as View, {
+            this._setNativeStyles(this.refs['scene_' + sceneIndex], {
                 opacity: 0,
                 zIndex: -10
             });
@@ -403,7 +410,7 @@ export class Navigator extends React.Component<Types.NavigatorProps, NavigatorSt
         }
 
         if (this.refs['scene_' + sceneIndex]) {
-            this._setNativeStyles(this.refs['scene_' + sceneIndex] as View, enabledSceneNativeProps.style);
+            this._setNativeStyles(this.refs['scene_' + sceneIndex], enabledSceneNativeProps.style);
         }
     }
 
@@ -512,7 +519,7 @@ export class Navigator extends React.Component<Types.NavigatorProps, NavigatorSt
     }
 
     private _transitionSceneStyle(fromIndex: number, toIndex: number, progress: number, index: number) {
-        const viewAtIndex = this.refs['scene_' + index] as View;
+        const viewAtIndex = this.refs['scene_' + index];
         if (viewAtIndex === undefined) {
             return;
         }
@@ -526,7 +533,7 @@ export class Navigator extends React.Component<Types.NavigatorProps, NavigatorSt
             sceneConfig = this.state.sceneConfigStack[sceneConfigIndex - 1];
         }
 
-        let styleToUse: Types.ViewStyleRuleSet = {};
+        let styleToUse: RX.Types.ViewStyleRuleSet = {};
         const useFn = index < fromIndex || index < toIndex ?
             sceneConfig.animationInterpolators.out :
             sceneConfig.animationInterpolators.into;
@@ -607,14 +614,17 @@ export class Navigator extends React.Component<Types.NavigatorProps, NavigatorSt
 
     // Manually override the styles in the DOM for the given component. This method is a hacky equivalent of React Native's
     // setNativeProps.
-    private _setNativeStyles(component: RX.View, currentStyles: any) {
+    private _setNativeStyles(component: React.Component<any, any>, currentStyles: any) {
         // Grab the actual element from the DOM.
         let element = ReactDOM.findDOMNode(component) as HTMLElement;
-        const flatStyles: Types.ViewStyleRuleSet = _.isArray(currentStyles) ? _.flatten(currentStyles) : currentStyles;
+        const flatStyles: RX.Types.ViewStyleRuleSet = _.isArray(currentStyles) ? _.flatten(currentStyles) : currentStyles;
 
         // Modify styles
         _.assign(element.style, flatStyles);
     }
 }
 
-export default Navigator;
+export default NavigatorImpl;
+export const Navigator = NavigatorImpl;
+export const NavigatorDelegateSelector: DelegateSelector = undefined;
+export import Types = Types;

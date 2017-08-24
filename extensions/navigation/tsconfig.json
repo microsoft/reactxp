@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "noResolve": false,
+        "jsx": "react",
+        "module": "commonjs",
+        "target": "es5",
+        "experimentalDecorators": true,
+        "noImplicitAny": true,
+        "outDir": "dist/",
+        "lib": [
+            "es5",
+            "dom"
+        ]
+    },
+
+    "filesGlob": [
+        "src/**/*{ts,tsx}"
+    ],
+
+    "exclude": [
+        "dist",
+        "node_modules",
+        "website"
+    ]
+}

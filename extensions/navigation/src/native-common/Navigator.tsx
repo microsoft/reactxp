@@ -7,49 +7,66 @@
 * Common native implementation for Navigator on mobile.
 */
 
-import React = require('react');
 import RN = require('react-native');
-import RX = require('../common/Interfaces');
+import React = require('react');
+import RX = require('reactxp');
 
-import { default as Input } from './Input';
-import { NavigatorDelegate, NavigationCommand, NavigatorState, CommandType } from './NavigatorCommon';
+import {
+    Navigator as BaseNavigator,
+    NavigatorDelegate,
+    NavigatorDelegateSelector as DelegateSelector,
+    NavigationCommand,
+    NavigatorState,
+    CommandType
+} from '../common/Types';
+
 import NavigatorStandardDelegate from './NavigatorStandardDelegate';
 import NavigatorExperimentalDelegate from './NavigatorExperimentalDelegate';
+import { NavigatorProps, NavigatorRoute } from '../common/Types';
 import Types = require('../common/Types');
 
-export class Navigator extends React.Component<Types.NavigatorProps, NavigatorState> {
+export class DefaultDelegateSelector implements DelegateSelector {
+    getNavigatorDelegate(navigator: BaseNavigator<NavigatorState>) {
+        if (RN.Platform.OS === 'ios' || RN.Platform.OS === 'android') {
+            return new NavigatorExperimentalDelegate(navigator);
+        } else {
+            return new NavigatorStandardDelegate(navigator);
+        }
+    }
+}
+
+export class NavigatorImpl extends BaseNavigator<NavigatorState> {
     private _delegate: NavigatorDelegate;
     private _commandQueue: NavigationCommand[] = [];
 
-    constructor(initialProps: Types.NavigatorProps) {
+    constructor(initialProps: NavigatorProps) {
         super(initialProps);
-
-        if (RN.Platform.OS === 'android' || RN.Platform.OS === 'ios') {
-            this._delegate = new NavigatorExperimentalDelegate(this);
-        } else {
+        if (!initialProps.delegateSelector) {
             this._delegate = new NavigatorStandardDelegate(this);
+        } else {
+            this._delegate = initialProps.delegateSelector.getNavigatorDelegate(this);
         }
     }
 
     componentDidMount() {
-        Input.backButtonEvent.subscribe(this._delegate.onBackPress);
+        RX.Input.backButtonEvent.subscribe(this._delegate.onBackPress);
     }
 
     componentWillUnmount() {
-        Input.backButtonEvent.unsubscribe(this._delegate.onBackPress);
+        RX.Input.backButtonEvent.unsubscribe(this._delegate.onBackPress);
     }
 
-    protected componentDidUpdate() {
+    componentDidUpdate() {
         // Catch up with any pending commands
         this._processCommand();
     }
 
-    protected getRoutes(): Types.NavigatorRoute[] {
+    protected getRoutes(): NavigatorRoute[] {
        return this._delegate.getRoutes();
     }
 
     // Push a new route if initial route doesn't exist
-    public push(route: Types.NavigatorRoute): void {
+    public push(route: NavigatorRoute): void {
         this._enqueueCommand({
             type: CommandType.Push,
             param: {
@@ -65,7 +82,7 @@ export class Navigator extends React.Component<Types.NavigatorProps, NavigatorSt
         });
     }
 
-    public replace(route: Types.NavigatorRoute): void {
+    public replace(route: NavigatorRoute): void {
         this._enqueueCommand({
             type: CommandType.Replace,
             param: {
@@ -74,7 +91,7 @@ export class Navigator extends React.Component<Types.NavigatorProps, NavigatorSt
         });
     }
 
-    public replacePrevious(route: Types.NavigatorRoute): void {
+    public replacePrevious(route: NavigatorRoute): void {
         this._enqueueCommand({
             type: CommandType.Replace,
             param: {
@@ -85,7 +102,7 @@ export class Navigator extends React.Component<Types.NavigatorProps, NavigatorSt
     }
 
     // This method replaces the route at the given index of the stack and pops to that index.
-    public replaceAtIndex(route: Types.NavigatorRoute, index: number): void {
+    public replaceAtIndex(route: NavigatorRoute, index: number): void {
         let routes = this.getRoutes();
 
         // Pop to index route and then replace if not last one
@@ -99,11 +116,11 @@ export class Navigator extends React.Component<Types.NavigatorProps, NavigatorSt
     }
 
     // Reset route stack with default route stack
-    public immediatelyResetRouteStack(nextRouteStack: Types.NavigatorRoute[]): void {
+    public immediatelyResetRouteStack(nextRouteStack: NavigatorRoute[]): void {
        this._delegate.immediatelyResetRouteStack(nextRouteStack);
     }
 
-    public popToRoute(route: Types.NavigatorRoute): void {
+    public popToRoute(route: NavigatorRoute): void {
         this._enqueueCommand({
             type: CommandType.Pop,
             param: {
@@ -121,7 +138,7 @@ export class Navigator extends React.Component<Types.NavigatorProps, NavigatorSt
         });
     }
 
-    public getCurrentRoutes(): Types.NavigatorRoute[] {
+    public getCurrentRoutes(): NavigatorRoute[] {
         return this.getRoutes();
     }
 
@@ -140,4 +157,7 @@ export class Navigator extends React.Component<Types.NavigatorProps, NavigatorSt
     }
 }
 
-export default Navigator;
+export import Types = Types;
+export default NavigatorImpl;
+export const Navigator = NavigatorImpl;
+export const NavigatorDelegateSelector = new DefaultDelegateSelector();

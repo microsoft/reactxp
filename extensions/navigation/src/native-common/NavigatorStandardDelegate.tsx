@@ -7,45 +7,62 @@
 * Delegate which encapsulates standard react-native Navigator experience.
 */
 
-import _ = require('./lodashMini');
+import _ = require('../common/lodashMini');
 import React = require('react');
 import RN = require('react-native');
 
-import { CommandType, NavigationCommand, NavigatorDelegate, NavigatorState} from './NavigatorCommon';
-import RX = require('../common/Interfaces');
-import Types = require('../common/Types');
+// Navigator is deprecated and moved to separate package. But this version not compatible with rn 42
+let RNNavigator: typeof RN.Navigator;
+try {
+    RNNavigator = RN.Navigator;
+} catch (e) {
+    RNNavigator = require('react-native-deprecated-custom-components').Navigator;
+}
+
+import {
+    CommandType,
+    NavigationCommand,
+    Navigator,
+    NavigatorDelegate,
+    NavigatorRoute,
+    NavigatorSceneConfigType,
+    NavigatorState
+} from '../common/Types';
 
 export class NavigatorStandardDelegate extends NavigatorDelegate {
     private _navigator: RN.Navigator;
 
-    constructor(navigator: RX.Navigator) {
+    constructor(navigator: Navigator<NavigatorState>) {
         super(navigator);
     }
 
-    getRoutes(): Types.NavigatorRoute[] {
-        return (this._navigator && this._navigator.getCurrentRoutes() as Types.NavigatorRoute[]) || [];
+    getRoutes(): NavigatorRoute[] {
+        return (this._navigator && this._navigator.getCurrentRoutes() as NavigatorRoute[]) || [];
     }
 
     // Reset route stack with default route stack
-    immediatelyResetRouteStack(nextRouteStack: Types.NavigatorRoute[]): void {
+    immediatelyResetRouteStack(nextRouteStack: NavigatorRoute[]): void {
         this._navigator.immediatelyResetRouteStack(nextRouteStack);
     }
 
     render(): JSX.Element {
         return (
-            <RN.Navigator
+            <RNNavigator
                 renderScene={ this._renderScene }
                 configureScene={ this._configureNativeScene }
                 sceneStyle={ this._owner.props.cardStyle }
                 onWillFocus={ this._onRouteWillFocus }
                 onDidFocus={ this._onRouteDidFocus }
-                ref={ (navigator:  RN.Navigator) => this._navigator = navigator }
+                ref={ this._ref }
             />
         );
      }
 
-    // Callback from Navigator.js to RX.Navigator
-    private _renderScene = (route: Types.NavigatorRoute, navigator?: RN.Navigator): JSX.Element => {
+    private _ref = (navigator: RN.Navigator): void => {
+        this._navigator = navigator;
+    }
+
+    private _renderScene = (route: NavigatorRoute, navigator?: RN.Navigator): JSX.Element => {
         // route exists?
         if (route) {
             // call the renderScene callback sent from SkypeXNavigator
@@ -61,35 +78,35 @@ export class NavigatorStandardDelegate extends NavigatorDelegate {
     }
 
     // Returns object from RN.Navigator.SceneConfigs types (looks like NavigatorSceneConfig for web)
-    private _configureNativeScene = (route: Types.NavigatorRoute, routeStack?: Types.NavigatorRoute[]): any => {
+    private _configureNativeScene = (route: NavigatorRoute, routeStack?: NavigatorRoute[]): any => {
         // route exists?
         if (route) {
             switch (route.sceneConfigType) {
-                case Types.NavigatorSceneConfigType.FloatFromRight:
-                    return RN.Navigator.SceneConfigs.FloatFromRight;
+                case NavigatorSceneConfigType.FloatFromRight:
+                    return RNNavigator.SceneConfigs.FloatFromRight;
 
-                case Types.NavigatorSceneConfigType.FloatFromLeft:
-                    return RN.Navigator.SceneConfigs.FloatFromLeft;
+                case NavigatorSceneConfigType.FloatFromLeft:
+                    return RNNavigator.SceneConfigs.FloatFromLeft;
 
-                case Types.NavigatorSceneConfigType.FloatFromBottom:
-                    return RN.Navigator.SceneConfigs.FloatFromBottom;
+                case NavigatorSceneConfigType.FloatFromBottom:
+                    return RNNavigator.SceneConfigs.FloatFromBottom;
 
-                case Types.NavigatorSceneConfigType.Fade:
+                case NavigatorSceneConfigType.Fade:
                     // FadeAndroid is also supported on iOS.
-                    return RN.Navigator.SceneConfigs.FadeAndroid;
+                    return RNNavigator.SceneConfigs.FadeAndroid;
 
-                case Types.NavigatorSceneConfigType.FadeWithSlide:
+                case NavigatorSceneConfigType.FadeWithSlide:
                     // TODO: Task http://skype.vso.io/544843 - Implement the FadeWithSlide animation for RN
                     // FadeAndroid is also supported on iOS.
-                    return RN.Navigator.SceneConfigs.FadeAndroid;
+                    return RNNavigator.SceneConfigs.FadeAndroid;
 
                 default:
-                    return RN.Navigator.SceneConfigs.FloatFromRight;
+                    return RNNavigator.SceneConfigs.FloatFromRight;
             }
         }
     }
 
-    private _onRouteWillFocus = (route: Types.NavigatorRoute): void => {
+    private _onRouteWillFocus = (route: NavigatorRoute): void => {
         if (!this._navigator) {
             return;
         }
@@ -100,7 +117,7 @@ export class NavigatorStandardDelegate extends NavigatorDelegate {
             return;
         }
 
-        const currentRoutes = this._navigator.getCurrentRoutes() as Types.NavigatorRoute[];
+        const currentRoutes = this._navigator.getCurrentRoutes() as NavigatorRoute[];
         const focusIndex = _.findIndex(currentRoutes, currRoute => route.routeId === currRoute.routeId );
         if (focusIndex === -1) {
             // Not found, nothing to do
@@ -119,7 +136,7 @@ export class NavigatorStandardDelegate extends NavigatorDelegate {
         }
     }
 
-    private _onRouteDidFocus = (route: Types.NavigatorRoute): void => {
+    private _onRouteDidFocus = (): void => {
         if (this._owner.props.transitionCompleted) {
             this._owner.props.transitionCompleted();
         }
@@ -131,7 +148,7 @@ export class NavigatorStandardDelegate extends NavigatorDelegate {
             return;
         }
 
-        let command = commandQueue.shift();
+        let command = commandQueue.shift()!!!;
         let route = command.param.route;
         let value = command.param.value;
 

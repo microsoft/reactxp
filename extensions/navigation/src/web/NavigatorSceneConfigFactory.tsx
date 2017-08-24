@@ -1,4 +1,4 @@
-﻿/**
+/**
 * NavigatorSceneConfigFactory.ts
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -10,9 +10,9 @@
 * NavigatorSceneConfig are both exported.
 */
 
-import _ = require('./utils/lodashMini');
+import _ = require('../common/lodashMini');
 
-import Types = require('../common/Types');
+import { Types } from 'reactxp';
 
 // Interpolator type, which accepts a combination of these types and returns a interpolated/calculated result
 // Interpolator wrapper, which is given as a callback method to Navigator to call the animation interpolator

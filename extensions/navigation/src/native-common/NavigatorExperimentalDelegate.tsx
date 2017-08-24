@@ -12,15 +12,23 @@
 * That's why we need to have the ability to pick different implementations for different platforms.
 */
 
-import _ = require('./lodashMini');
+import _ = require('../common/lodashMini');
 import assert = require('assert');
+import Navigation = require('reactxp-experimental-navigation');
 import React = require('react');
+import RX = require('reactxp');
 import RN = require('react-native');
 
-import { CommandType, NavigationCommand, NavigatorDelegate, NavigatorState } from './NavigatorCommon';
-import Navigation = RN.NavigationExperimental;
-import RX = require('../common/Interfaces');
-import Types = require('../common/Types');
+import { 
+    CommandType,
+    CustomNavigatorSceneConfig,
+    Navigator,
+    NavigatorSceneConfigType,
+    NavigationCommand,
+    NavigatorDelegate,
+    NavigatorRoute,
+    NavigatorState 
+} from '../common/Types';
 
 type NavigationSceneRendererProps = Navigation.NavigationSceneRendererProps;
 type NavigationState = Navigation.NavigationState;
@@ -30,7 +38,7 @@ type NavigationTransitionProps = Navigation.NavigationTransitionProps;
 const StateUtils = Navigation.StateUtils;
 
 interface NavigationRouteState extends NavigationRoute {
-    route: Types.NavigatorRoute;
+    route: NavigatorRoute;
 }
 
 interface TransitionSpec {
@@ -38,17 +46,17 @@ interface TransitionSpec {
     direction: Navigation.NavigationGestureDirection;
     gestureResponseDistance: number;
     customTransitionConfig?: Navigation.NavigationCustomTransitionConfig;
-    cardStyle?: Types.ViewStyleRuleSet;
+    cardStyle?: RX.Types.ViewStyleRuleSet;
     hideShadow?: boolean;
 }
 
 export class NavigatorExperimentalDelegate extends NavigatorDelegate {
 
-    private _state: NavigationState;
+    private _state: Navigation.NavigationState;
     private _transitionSpec: TransitionSpec;
     private _navigationInProgress: boolean;
 
-    constructor(navigator: RX.Navigator) {
+    constructor(navigator: Navigator<NavigatorState>) {
         super(navigator);
         const route: NavigationRouteState = { key: '0', route: { routeId: 0, sceneConfigType: 0 }};
         this._state = { index: 0, routes: [ route ] };
@@ -56,7 +64,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
         console.log('initial transition spec is:', this._transitionSpec);
     }
 
-    getRoutes(): Types.NavigatorRoute[] {
+    getRoutes(): NavigatorRoute[] {
         return _.map(this._state.routes, element => {
             const routeState = element as NavigationRouteState;
             return routeState.route;
@@ -64,7 +72,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
     }
 
     // Reset route stack with default route stack
-    immediatelyResetRouteStack(nextRouteStack: Types.NavigatorRoute[]): void {
+    immediatelyResetRouteStack(nextRouteStack: NavigatorRoute[]): void {
         console.log('Stack state before reset:', this._state);
         const prevState = this._state;
         this._state = this._createParentState(nextRouteStack, prevState);
@@ -92,9 +100,10 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
         );
     }
 
-    private _convertCustomTransitionConfig(config: Types.CustomNavigatorSceneConfig): Navigation.NavigationCustomTransitionConfig {
+    private _convertCustomTransitionConfig(config: CustomNavigatorSceneConfig | undefined):
+            Navigation.NavigationCustomTransitionConfig | undefined {
         if (!config) {
-            return null;
+            return undefined;
         }
 
         let nativeConfig: Navigation.NavigationCustomTransitionConfig = { 
@@ -117,16 +126,16 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
         return nativeConfig;
     }
 
-    private _buildTransitionSpec(state: NavigationState): TransitionSpec {
+    private _buildTransitionSpec(state: Navigation.NavigationState): TransitionSpec {
         const route = (state.routes[state.index] as NavigationRouteState).route;
         let direction: Navigation.NavigationGestureDirection = 'horizontal';
-        let customSceneConfig: Navigation.NavigationCustomTransitionConfig = null;
-        let enableGesture: boolean = null;
-        let responseDistance: number = null;
+        let customSceneConfig: Navigation.NavigationCustomTransitionConfig | undefined = undefined;
+        let enableGesture: boolean = false;
+        let responseDistance: number = 0;
         let hideShadow = route && route.customSceneConfig && route.customSceneConfig.hideShadow;
-        let cardStyle: Types.ViewStyleRuleSet = route && route.customSceneConfig 
+        let cardStyle: RX.Types.ViewStyleRuleSet | undefined = route && route.customSceneConfig 
             ? route.customSceneConfig.cardStyle
-            : null;
+            : undefined;
         let gestureDistanceSet = false;
 
         if (route) {
@@ -135,18 +144,17 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
                 responseDistance = route.gestureResponseDistance;
                 gestureDistanceSet = true;
             }
-
-            customSceneConfig = this._convertCustomTransitionConfig(route.customSceneConfig);
+            customSceneConfig = this._convertCustomTransitionConfig(route.customSceneConfig!!!);
             switch (route.sceneConfigType) {
-                case Types.NavigatorSceneConfigType.FloatFromBottom:
+                case NavigatorSceneConfigType.FloatFromBottom:
                     direction = 'vertical';
                     if (!gestureDistanceSet) {
                         responseDistance = 150;
                         gestureDistanceSet = true;
                     }
                     break;
-                case Types.NavigatorSceneConfigType.Fade:
-                case Types.NavigatorSceneConfigType.FadeWithSlide:
+                case NavigatorSceneConfigType.Fade:
+                case NavigatorSceneConfigType.FadeWithSlide:
                     direction = 'fade';
                     if (!gestureDistanceSet) {
                         responseDistance = 0;
@@ -154,8 +162,8 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
                     }
                     break;
                 // Currently we support only right to left animation
-                //case Types.NavigatorSceneConfigType.FloatFromRight:
-                //case Types.NavigatorSceneConfigType.FloatFromLeft:
+                //case NavigatorSceneConfigType.FloatFromRight:
+                //case NavigatorSceneConfigType.FloatFromLeft:
                 default:
                     break;
             }
@@ -191,10 +199,10 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
     private _onTransitionStart = (transitionProps: NavigationTransitionProps, prevTransitionProps?: NavigationTransitionProps) => {
         console.log('onTransitionStart', this._transitionSpec);
         if (this._owner.props.transitionStarted) {
-            const fromIndex = prevTransitionProps && prevTransitionProps.scene ? prevTransitionProps.scene.index : null;
-            const toIndex = transitionProps.scene ? transitionProps.scene.index : null;
-            const fromRouteId = prevTransitionProps && prevTransitionProps.scene ? prevTransitionProps.scene.route.key : null;
-            const toRouteId = transitionProps.scene ? transitionProps.scene.route.key : null;
+            const fromIndex = prevTransitionProps && prevTransitionProps.scene ? prevTransitionProps.scene.index : undefined;
+            const toIndex = transitionProps.scene ? transitionProps.scene.index : undefined;
+            const fromRouteId = prevTransitionProps && prevTransitionProps.scene ? prevTransitionProps.scene.route.key : undefined;
+            const toRouteId = transitionProps.scene ? transitionProps.scene.route.key : undefined;
             this._owner.props.transitionStarted(
                 transitionProps.position, 
                 toRouteId,
@@ -205,7 +213,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
     }
 
     // Callback from Navigator.js to RX.Navigator
-    private _renderScene = (props: NavigationSceneRendererProps, navigator?: RN.Navigator): JSX.Element => {
+    private _renderScene = (props: NavigationSceneRendererProps): JSX.Element => {
         let parentState: NavigationState = props.navigationState;
         let sceneState: NavigationRouteState = parentState.routes[props.scene.index] as NavigationRouteState;
 
@@ -232,14 +240,14 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
 
         let  useNewStateAsScene = false;
 
-        let command = commandQueue.shift();
+        let command = commandQueue.shift()!!!;
         let route = command.param.route;
         let value = command.param.value;
         console.log('processing navigation command:', JSON.stringify(command), 'on stack:', JSON.stringify(this._state));
         switch (command.type) {
             case CommandType.Push:
                 useNewStateAsScene = true;
-                this._state = StateUtils.push(this._state, this._createState(route));
+                this._state = StateUtils.push(this._state, this._createState(route!!!));
                 break;
 
             case CommandType.Pop:
@@ -260,10 +268,10 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
             case CommandType.Replace:
                 if (value === -1) {
                     this._state = StateUtils.replaceAtIndex(this._state, this._state.routes.length - 2,
-                        this._createState(route));
+                        this._createState(route!!!));
                 } else {
                     this._state = StateUtils.replaceAtIndex(this._state, this._state.routes.length - 1,
-                        this._createState(route));
+                        this._createState(route!!!));
                 }
 
                 break;
@@ -290,15 +298,15 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
     /**
      * This method is going to be deprecated in later releases
     */
-    private _onNavigateBack = (action: any) => {
+    private _onNavigateBack = () => {
         this.onBackPress();
     }
 
-    private _createState(route: Types.NavigatorRoute): NavigationRouteState {
+    private _createState(route: NavigatorRoute): NavigationRouteState {
         return { key: route.routeId.toString(), route: route};
     }
 
-    private _createParentState(routes: Types.NavigatorRoute[], prevState: NavigationState): NavigationState {
+    private _createParentState(routes: NavigatorRoute[], prevState: NavigationState): NavigationState {
         const prevRoutes = prevState.routes as NavigationRouteState[];
         let children = _.map(routes, (element, index) => {
             if (prevRoutes.length > index) {
@@ -336,7 +344,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
         return result;
     }
 
-    private _popToRoute(state: NavigationState, route: Types.NavigatorRoute): NavigationState {
+    private _popToRoute(state: NavigationState, route: NavigatorRoute): NavigationState {
         let popCount: number = 0;
         for (let i = state.routes.length - 1; i >= 0; i--) {
             const child = state.routes[i] as NavigationRouteState;

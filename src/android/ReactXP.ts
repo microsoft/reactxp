@@ -31,7 +31,6 @@ import { default as LinkImpl, Link as LinkType } from '../native-common/Link';
 import { default as LinkingImpl, Linking as LinkingType } from '../native-common/Linking';
 import { default as LocationImpl, Location as LocationType } from '../common/Location';
 import { default as ModalImpl, Modal as ModalType } from '../native-common/Modal';
-import { default as NavigatorImpl, Navigator as NavigatorType } from '../native-common/Navigator';
 import { default as NetworkImpl, Network as NetworkType } from '../native-common/Network';
 import { default as PlatformImpl, Platform as PlatformType } from '../native-common/Platform';
 import { default as PopupImpl, Popup as PopupType } from '../native-common/Popup';
@@ -98,8 +97,6 @@ module ReactXP {
     export var Location = LocationImpl;
     export type Modal = ModalType;
     export var Modal = ModalImpl;
-    export type Navigator = NavigatorType;
-    export var Navigator = NavigatorImpl;
     export type Network = NetworkType;
     export var Network = NetworkImpl;
     export type Platform = PlatformType;

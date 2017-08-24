@@ -1,5 +1,4 @@
----
-id: components/navigator
+d: components/navigator
 title: Navigator
 layout: docs
 category: Components
@@ -230,4 +229,5 @@ transitionStarted: (progress?: RX.AnimatedValue,
     toRouteId?: string, fromRouteId?: string,
     toIndex?: number, fromIndex?: number) => void = undefined;
 ```
+
 

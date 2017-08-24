@@ -2,6 +2,7 @@
 * Top-level UI for sample to-do app.
 */
 
+import Navigator, { Types } from 'reactxp-navigation';
 import RX = require('reactxp');
 
 import EditTodoPanel = require('./EditTodoPanel');
@@ -14,24 +15,25 @@ enum NavigationRouteId {
 }
 
 const styles = {
+    // Standard navigator style should be an object. So we have to disable caching here.
     navCardStyle: RX.Styles.createViewStyle({
-        backgroundColor: TotoStyles.controlColors.contentBackground
-    })
+        backgroundColor: TotoStyles.controlColors.contentBackground,
+    }, false)
 };
 
 class TodoAppRootView extends RX.Component<{}, null> {
-    private _navigator: RX.Navigator;
+    private _navigator: Navigator;
 
     componentDidMount() {
         this._navigator.immediatelyResetRouteStack([{
             routeId: NavigationRouteId.TodoListPanel,
-            sceneConfigType: RX.Types.NavigatorSceneConfigType.Fade
+            sceneConfigType: Types.NavigatorSceneConfigType.Fade
         }]);
     }
 
     render() {
         return (
-            <RX.Navigator
+            <Navigator
                 ref={ this._onNavigatorRef }
                 renderScene={ this._renderScene }
                 cardStyle={ styles.navCardStyle }
@@ -39,11 +41,11 @@ class TodoAppRootView extends RX.Component<{}, null> {
         );
     }
 
-    private _onNavigatorRef = (navigator: RX.Navigator) => {
+    private _onNavigatorRef = (navigator: Navigator) => {
         this._navigator = navigator;
     }
 
-    private _renderScene = (navigatorRoute: RX.Types.NavigatorRoute) => {
+    private _renderScene = (navigatorRoute: Types.NavigatorRoute) => {
         switch (navigatorRoute.routeId) {
             case NavigationRouteId.TodoListPanel:
                 return (
@@ -70,7 +72,7 @@ class TodoAppRootView extends RX.Component<{}, null> {
     private _onShowTodoPanel = () => {
         this._navigator.push({
             routeId: NavigationRouteId.EditTodoPanel,
-            sceneConfigType: RX.Types.NavigatorSceneConfigType.FloatFromRight,
+            sceneConfigType: Types.NavigatorSceneConfigType.FloatFromRight,
             customSceneConfig: {
                 hideShadow: true
             }

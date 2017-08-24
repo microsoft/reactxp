@@ -112,10 +112,7 @@ class LocalDb {
                 console.error(`IDBStore: ${source.name}, ${source.keyPath}, indexes: ${source.indexNames.join()}`);
             }
         }
-    };
+    }
 }
 
-
 export = new LocalDb();
-
-

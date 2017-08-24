@@ -41,7 +41,6 @@ export interface ReactXP {
     Image: typeof Image;
     GestureView: typeof GestureView;
     Link: typeof Link;
-    Navigator: typeof Navigator;
     Picker: typeof Picker;
     ScrollView: typeof ScrollView;
     Text: typeof Text;
@@ -204,18 +203,6 @@ export abstract class Location {
 export interface LocationConfiguration {
     // if true, assumes permission is already granted
     skipPermissionRequests: boolean;
-}
-
-export abstract class Navigator extends React.Component<Types.NavigatorProps, any> {
-    abstract push(route: Types.NavigatorRoute): void;
-    abstract pop(): void;
-    abstract replace(route: Types.NavigatorRoute): void;
-    abstract replacePrevious(route: Types.NavigatorRoute): void;
-    abstract replaceAtIndex(route: Types.NavigatorRoute, index: number): void;
-    abstract immediatelyResetRouteStack(nextRouteStack: Types.NavigatorRoute[]): void;
-    abstract popToRoute(route: Types.NavigatorRoute): void;
-    abstract popToTop(): void;
-    abstract getCurrentRoutes(): Types.NavigatorRoute[];
 }
 
 export abstract class Network {
