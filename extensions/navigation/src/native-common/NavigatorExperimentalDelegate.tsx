@@ -34,7 +34,7 @@ type NavigationSceneRendererProps = Navigation.NavigationSceneRendererProps;
 type NavigationState = Navigation.NavigationState;
 type NavigationRoute = Navigation.NavigationRoute;
 type NavigationTransitionProps = Navigation.NavigationTransitionProps;
-    
+
 const StateUtils = Navigation.StateUtils;
 
 interface NavigationRouteState extends NavigationRoute {

@@ -13,12 +13,12 @@
 import _ = require('../common/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
+import RX = require('reactxp');
+import { Styles, View } from 'reactxp';
 import rebound = require('rebound');
 
 import { NavigatorSceneConfigFactory } from './NavigatorSceneConfigFactory';
 import { NavigatorSceneConfig }  from './NavigatorSceneConfigFactory';
-import RX = require('reactxp');
-import { Styles, View } from 'reactxp';
 
 import {
     Navigator as NavigatorBase,
