@@ -10,7 +10,7 @@
 * pop, which update the state and cause transitions.
 */
 
-import _ = require('lodash');
+import _ = require('../common/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
 import rebound = require('rebound');

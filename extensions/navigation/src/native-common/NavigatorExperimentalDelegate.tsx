@@ -12,7 +12,7 @@
 * That's why we need to have the ability to pick different implementations for different platforms.
 */
 
-import _ = require('lodash');
+import _ = require('../common/lodashMini');
 import assert = require('assert');
 import Navigation = require('reactxp-experimental-navigation');
 import React = require('react');

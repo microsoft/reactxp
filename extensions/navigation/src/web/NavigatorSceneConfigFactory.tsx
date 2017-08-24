@@ -10,7 +10,7 @@
 * NavigatorSceneConfig are both exported.
 */
 
-import _ = require('lodash');
+import _ = require('../common/lodashMini');
 
 import { Types } from 'reactxp';
 

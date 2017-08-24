@@ -7,7 +7,7 @@
 * Delegate which encapsulates standard react-native Navigator experience.
 */
 
-import _ = require('lodash');
+import _ = require('../common/lodashMini');
 import React = require('react');
 import RN = require('react-native');
 
