@@ -27,7 +27,7 @@
     "react-native-windows": "^0.33.0",
     "react-native-sqlite-storage": "^3.3.1",
     "reactxp": "0.42.0-rc.20",
-    "reactxp-navigation": "^1.0.5",
+    "reactxp-navigation": "^1.0.6",
     "reactxp-virtuallistview": "^0.1.3",
     "resub": "^0.0.16",
     "synctasks": "0.2.17"
