@@ -1,4 +1,5 @@
-d: components/navigator
+---
+id: components/navigator
 title: Navigator
 layout: docs
 category: Components
