@@ -4,7 +4,7 @@ title: ImageSvg
 layout: docs
 category: Extensions
 permalink: docs/extensions/imagesvg.html
-next: extensions/restclient
+next: extensions/navigator
 ---
 
 This component displays a vector image (SVG format), which can come from a local source or from the network. Props control the fill color, stroke color and stroke width.
