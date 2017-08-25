@@ -144,7 +144,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
                 responseDistance = route.gestureResponseDistance;
                 gestureDistanceSet = true;
             }
-            customSceneConfig = this._convertCustomTransitionConfig(route.customSceneConfig!!!);
+            customSceneConfig = this._convertCustomTransitionConfig(route.customSceneConfig);
             switch (route.sceneConfigType) {
                 case NavigatorSceneConfigType.FloatFromBottom:
                     direction = 'vertical';
