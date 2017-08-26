@@ -354,10 +354,10 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                             return;
                         }
                     }
-                }
-                
-                if (this.props.activePopupOptions.preventDismissOnPress) {
-                    return;
+
+                    if (this.props.activePopupOptions.preventDismissOnPress) {
+                        return;
+                    }
                 }
 
                 this._dismissPopup();
