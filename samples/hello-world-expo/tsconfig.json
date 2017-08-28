@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "lib": [
+      "dom",
+      "es2015",
+      "es2016"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmitHelpers": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noResolve": false,
+    "noUnusedLocals": true,
+    "outDir": "./dist/",
+    "reactNamespace": "RX",
+    "sourceMap": true,
+    "target": "es5",
+    "types": [
+      "node"
+    ]
+  },
+  "exclude": [
+    "acceptance-tests",
+    "jest",
+    "node_modules"
+  ],
+  "include": [
+    "./src/**/*"
+  ],
+  "types": [
+    "typePatches"
+  ]
+}
