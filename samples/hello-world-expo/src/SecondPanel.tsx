@@ -3,7 +3,7 @@
 */
 
 import RX = require('reactxp');
-// import { default as RXVideo } from 'reactxp-video';
+import { default as RXVideo } from 'reactxp-video';
 
 // import ProgressIndicator from './ProgressIndicator';
 import ToggleSwitch from './ToggleSwitch';
@@ -107,13 +107,13 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
                     <RX.Text style={ [styles.titleText, styles.videoTitleText] }>
                         Here is a video using the Video extension
                     </RX.Text>
-                    {/* <RXVideo
+                    <RXVideo
                         ref='video'
                         style={ styles.video }
                         source={ 'https://www.w3schools.com/html/mov_bbb.mp4' }
                         loop={ true }
                         onCanPlay={ this._playVideo }
-                    /> */}
+                    />  
                 </RX.View>
             </RX.ScrollView>
         );
@@ -123,13 +123,13 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
         this.props.onNavigateBack();
     }
 
-    // private _playVideo = () => {
-    //     const video = this.refs['video'] as RXVideo;
-    //     if (video) {
-    //         video.mute(true);
-    //         video.play();
-    //     }
-    // }
+    private _playVideo = () => {
+        const video = this.refs['video'] as RXVideo;
+        if (video) {
+            video.mute(true);
+            video.play();
+        }
+    }
 
     private _startProgressIndicator() {
         this._progressTimerToken = window.setInterval(() => {
