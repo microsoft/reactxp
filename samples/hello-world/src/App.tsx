@@ -1,8 +1,8 @@
 /*
 * This file demonstrates a basic ReactXP app.
 */
-
-import Navigator, { Types } from 'reactxp-navigation';
+// This example uses ExperimentalNavigation on iOS and Android
+import Navigator, { Types, NavigatorDelegateSelector as DelegateSelector } from 'reactxp-navigation';
 import RX = require('reactxp');
 
 import MainPanel = require('./MainPanel');
@@ -36,6 +36,7 @@ class App extends RX.Component<{}, null> {
                 ref={ this._onNavigatorRef }
                 renderScene={ this._renderScene }
                 cardStyle={ styles.navCardStyle }
+                delegateSelector={ DelegateSelector }
             />
         );
     }
@@ -59,10 +60,7 @@ class App extends RX.Component<{}, null> {
     private _onPressNavigate = () => {
         this._navigator.push({
             routeId: NavigationRouteId.SecondPanel,
-            sceneConfigType: Types.NavigatorSceneConfigType.FloatFromRight,
-            customSceneConfig: {
-                hideShadow: true
-            }
+            sceneConfigType: Types.NavigatorSceneConfigType.FloatFromRight
         });
     }
 
