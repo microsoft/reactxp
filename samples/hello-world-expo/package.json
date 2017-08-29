@@ -16,6 +16,7 @@
     "react-native-windows": "^0.33.0",
     "reactxp": "0.42.0-rc.20",
     "reactxp-navigation": "1.0.5",
+    "reactxp-video": "^0.2.0",
     "tslib": "^1.7.1"
   },
   "devDependencies": {
