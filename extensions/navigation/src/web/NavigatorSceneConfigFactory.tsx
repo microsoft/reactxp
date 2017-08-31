@@ -13,6 +13,7 @@
 import _ = require('../common/lodashMini');
 
 import { Types } from 'reactxp';
+import NavigationTypes = require('../common/Types');
 
 // Interpolator type, which accepts a combination of these types and returns a interpolated/calculated result
 // Interpolator wrapper, which is given as a callback method to Navigator to call the animation interpolator
@@ -195,21 +196,21 @@ export class NavigatorSceneConfig {
 export class NavigatorSceneConfigFactory {
 
     // Helper method that creates a new Animation config for a scene
-    public static createConfig (configType: Types.NavigatorSceneConfigType): NavigatorSceneConfig {
+    public static createConfig (configType: NavigationTypes.NavigatorSceneConfigType): NavigatorSceneConfig {
         switch (configType) {
-            case Types.NavigatorSceneConfigType.FloatFromRight:
+            case NavigationTypes.NavigatorSceneConfigType.FloatFromRight:
                  return new NavigatorSceneConfig(SceneConfigStyles.fromTheRight, SceneConfigStyles.fadeToTheLeft);
 
-            case Types.NavigatorSceneConfigType.FloatFromLeft:
+            case NavigationTypes.NavigatorSceneConfigType.FloatFromLeft:
                  return new NavigatorSceneConfig(SceneConfigStyles.fromTheLeft, SceneConfigStyles.fadeToTheRight);
 
-            case Types.NavigatorSceneConfigType.FloatFromBottom:
+            case NavigationTypes.NavigatorSceneConfigType.FloatFromBottom:
                 return new NavigatorSceneConfig(SceneConfigStyles.fromTheFront, SceneConfigStyles.toTheBack);
 
-            case Types.NavigatorSceneConfigType.Fade:
+            case NavigationTypes.NavigatorSceneConfigType.Fade:
                 return new NavigatorSceneConfig(SceneConfigStyles.fadeIn, SceneConfigStyles.fadeOut);
 
-            case Types.NavigatorSceneConfigType.FadeWithSlide:
+            case NavigationTypes.NavigatorSceneConfigType.FadeWithSlide:
                 return new NavigatorSceneConfig(SceneConfigStyles.fadeIn, SceneConfigStyles.fadeOutToTop);
 
             default:
