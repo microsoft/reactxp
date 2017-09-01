@@ -2,7 +2,7 @@
   "name": "desert-walk-expo-19",
   "version": "0.0.0",
   "description": "Hello Expo!",
-  "author": "Jan Aagaard <jan@aagaard.net>",
+  "author": "ReactXP Team <reactxp@microsoft.com>",
   "private": true,
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "expo": "19.0.1",
     "react": "16.0.0-alpha.12",
     "react-dom": "^16.0.0-alpha.12",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-19.0.0.tar.gz",
+    "react-native": "0.46.4",
     "react-native-windows": "^0.33.0",
     "reactxp": "0.42.0-rc.20",
     "reactxp-navigation": "1.0.5",
