@@ -21,7 +21,6 @@
     "assert": "^1.3.0",
     "lodash": "^4.17.1",
     "rebound": "^0.0.13",
-    "react-native-deprecated-custom-components": "^0.1.1",
     "reactxp-experimental-navigation": "^1.0.8"
   },
   "peerDependencies": {
