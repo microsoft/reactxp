@@ -11,6 +11,8 @@ import React = require('react');
 import ReactDOM = require('react-dom');
 import PropTypes = require('prop-types');
 
+import UserInterface from '../UserInterface';
+
 let _lastComponentId: number = 0;
 
 interface StoredFocusableComponent {
@@ -23,22 +25,66 @@ interface StoredFocusableComponent {
     callbacks?: FocusableComponentStateCallback[];
 }
 
+let _isNavigatingWithKeyboard: boolean;
+let _isShiftPressed: boolean;
+
+UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
+    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
+});
+
+if ((typeof document !== 'undefined') && (typeof window !== 'undefined')) {
+    // The default behaviour on Electron is to release the focus after the
+    // Tab key is pressed on a last focusable element in the page and focus
+    // the first focusable element on a consecutive Tab key press.
+    // We want to avoid losing this first Tab key press.
+    let _checkFocusTimer: number;
+
+    // Checking if Shift is pressed to move the focus into the right direction.
+    window.addEventListener('keydown', event => {
+        _isShiftPressed = event.shiftKey;
+    });
+    window.addEventListener('keyup', event => {
+        _isShiftPressed = event.shiftKey;
+    });
+
+    document.body.addEventListener('focusout', event => {
+        if (!_isNavigatingWithKeyboard || (event.target === document.body)) {
+            return;
+        }
+
+        if (_checkFocusTimer) {
+            clearTimeout(_checkFocusTimer);
+        }
+
+        _checkFocusTimer = setTimeout(() => {
+            _checkFocusTimer = undefined;
+
+            if (_isNavigatingWithKeyboard &&
+                    (!document.activeElement || (document.activeElement === document.body))) {
+                // This should work for Electron and the browser should
+                // send the focus to the address bar anyway.
+                FocusManager.focusFirst(_isShiftPressed);
+            }
+        }, 0);
+    });
+}
+
 export type FocusableComponentStateCallback = (restrictedOrLimited: boolean) => void;
 
 export class FocusManager {
-    private _parent: FocusManager;
-
     private static _rootFocusManager: FocusManager;
 
     private static _restrictionStack: FocusManager[] = [];
     private static _currentRestrictionOwner: FocusManager;
-    private _isFocusLimited: boolean;
-
+    private static _restoreRestrictionTimer: number;
+    private static _pendingPrevFocusedComponent: StoredFocusableComponent;
     private static _currentFocusedComponent: StoredFocusableComponent;
-    private _prevFocusedComponent: StoredFocusableComponent;
-
     private static _allFocusableComponents: { [id: string]: StoredFocusableComponent } = {};
+    private static _resetFocusTimer: number;
 
+    private _parent: FocusManager;
+    private _isFocusLimited: boolean;
+    private _prevFocusedComponent: StoredFocusableComponent;
     private _myFocusableComponentIds: { [id: string]: boolean } = {};
 
     constructor(parent: FocusManager) {
@@ -127,7 +173,7 @@ export class FocusManager {
         }
     }
 
-    restrictFocusWithin() {
+    restrictFocusWithin(noFocusReset?: boolean) {
         // Limit the focus received by the keyboard navigation to all
         // the descendant focusable elements by setting tabIndex of all
         // other elements to -1.
@@ -139,17 +185,14 @@ export class FocusManager {
             FocusManager._removeFocusRestriction();
         }
 
+        if (!this._prevFocusedComponent) {
+            this._prevFocusedComponent = FocusManager._pendingPrevFocusedComponent || FocusManager._currentFocusedComponent;
+        }
+
+        FocusManager._clearRestoreRestrictionTimeout();
+
         FocusManager._restrictionStack.push(this);
         FocusManager._currentRestrictionOwner = this;
-
-        this._prevFocusedComponent = FocusManager._currentFocusedComponent;
-
-        if (this._prevFocusedComponent && !this._prevFocusedComponent.removed) {
-            const el = ReactDOM.findDOMNode<HTMLElement>(this._prevFocusedComponent.component);
-            if (el && el.blur) {
-                el.blur();
-            }
-        }
 
         Object.keys(FocusManager._allFocusableComponents).forEach(componentId => {
             if (!(componentId in this._myFocusableComponentIds)) {
@@ -158,36 +201,56 @@ export class FocusManager {
                 FocusManager._updateComponentFocusRestriction(storedComponent);
             }
         });
+
+        if (!noFocusReset) {
+            FocusManager.resetFocus();
+        }
     }
 
     removeFocusRestriction() {
         // Restore the focus to the previous view with restrictFocusWithin or
         // remove the restriction if there is no such view.
-        FocusManager._restrictionStack = FocusManager._restrictionStack.filter(focusManager => {
-            return focusManager !== this;
-        });
-
-        const prevFocusedComponent = this._prevFocusedComponent;
-        delete this._prevFocusedComponent;
+        FocusManager._restrictionStack = FocusManager._restrictionStack.filter(focusManager => focusManager !== this);
 
         if (FocusManager._currentRestrictionOwner === this) {
-            FocusManager._removeFocusRestriction();
+            const prevFocusedComponent = this._prevFocusedComponent;
+            this._prevFocusedComponent = undefined;
 
-            const prevRestrictionOwner = FocusManager._restrictionStack.pop();
+            FocusManager._removeFocusRestriction();
             FocusManager._currentRestrictionOwner = undefined;
 
-            if (prevRestrictionOwner) {
-                prevRestrictionOwner.restrictFocusWithin();
-            }
+            // Defer the previous restriction restoration to wait for the current view
+            // to be unmounted, or for the next restricted view to be mounted (like
+            // showing a modal after a popup).
+            FocusManager._clearRestoreRestrictionTimeout();
+            FocusManager._pendingPrevFocusedComponent = prevFocusedComponent;
 
-            // If possible, focus the element which was focused before the restriction.
-            if (prevFocusedComponent && !prevFocusedComponent.removed &&
-                    !prevFocusedComponent.restricted && !prevFocusedComponent.limitedCount) {
-                const el = ReactDOM.findDOMNode<HTMLElement>(prevFocusedComponent.component);
-                if (el && el.focus) {
-                    el.focus();
+            FocusManager._restoreRestrictionTimer = setTimeout(() => {
+                FocusManager._restoreRestrictionTimer = undefined;
+                FocusManager._pendingPrevFocusedComponent = undefined;
+
+                const prevRestrictionOwner = FocusManager._restrictionStack.pop();
+
+                let needsFocusReset = true;
+
+                if (prevFocusedComponent && !prevFocusedComponent.removed &&
+                        !prevFocusedComponent.restricted && !prevFocusedComponent.limitedCount) {
+                    // If possible, focus the previously focused component.
+                    const el = ReactDOM.findDOMNode<HTMLElement>(prevFocusedComponent.component);
+                    if (el && el.focus) {
+                        el.focus();
+                        needsFocusReset = false;
+                    }
                 }
-            }
+
+                if (prevRestrictionOwner) {
+                    prevRestrictionOwner.restrictFocusWithin(true);
+                }
+
+                if (needsFocusReset) {
+                    FocusManager.resetFocus();
+                }
+            }, 0);
         }
     }
 
@@ -251,6 +314,65 @@ export class FocusManager {
         return storedComponent && (storedComponent.restricted || storedComponent.limitedCount > 0);
     }
 
+    static focusFirst(last?: boolean) {
+        const focusable = Object.keys(FocusManager._allFocusableComponents)
+            .map(componentId => FocusManager._allFocusableComponents[componentId])
+            .filter(storedComponent => !storedComponent.removed && !storedComponent.restricted && !storedComponent.limitedCount)
+            .map(storedComponent => ReactDOM.findDOMNode<HTMLElement>(storedComponent.component))
+            .filter(el => el && el.focus);
+
+        if (focusable.length) {
+            focusable.sort((a, b) => {
+                // Some element which is mounted later could come earlier in the DOM,
+                // so, we sort the elements by their appearance in the DOM.
+                if (a === b) {
+                    return 0;
+                }
+                return a.compareDocumentPosition(b) & document.DOCUMENT_POSITION_PRECEDING ? 1 : -1;
+            });
+
+            focusable[last ? focusable.length - 1 : 0].focus();
+        }
+    }
+
+    static resetFocus() {
+        if (FocusManager._resetFocusTimer) {
+            clearTimeout(FocusManager._resetFocusTimer);
+            FocusManager._resetFocusTimer = undefined;
+        }
+
+        if (_isNavigatingWithKeyboard) {
+            // When we're in the keyboard navigation mode, we want to have the
+            // first focusable component to be focused straight away, without the
+            // necessity to press Tab.
+
+            // Defer the focusing to let the view finish its initialization.
+            FocusManager._resetFocusTimer = setTimeout(() => {
+                FocusManager._resetFocusTimer = undefined;
+                FocusManager.focusFirst();
+            }, 0);
+        } else if ((typeof document !== 'undefined') && document.body && document.body.focus && document.body.blur) {
+            // An example to explain this part:
+            // We've shown a modal dialog which is higher in the DOM by clicking
+            // on a button which is lower in the DOM, we've applied the restrictions
+            // and only the elements from the modal dialog are focusable now.
+            // But internally the browser keeps the last focus position in the DOM
+            // (even if we do blur() for the button) and when Tab is pressed again,
+            // the browser will start searching for the next focusable element from
+            // this position.
+            // This means that the first Tab press will get us to the browser's address
+            // bar (or nowhere in case of Electron) and only the second Tab press will
+            // lead us to focusing the first focusable element in the modal dialog.
+            // In order to avoid losing this first Tab press, we're making <body>
+            // focusable, focusing it, removing the focus and making it unfocusable
+            // back again.
+            const prevTabIndex = FocusManager._setTabIndex(document.body, 0);
+            document.body.focus();
+            document.body.blur();
+            FocusManager._setTabIndex(document.body, prevTabIndex);
+        }
+    }
+
     private static _getStoredComponent(component: React.Component<any, any>): StoredFocusableComponent {
         const componentId: string = (component as any)._focusableComponentId;
 
@@ -279,32 +401,39 @@ export class FocusManager {
         });
     }
 
-    private static _setTabIndex(component: React.Component<any, any>, value: number): number {
+    private static _clearRestoreRestrictionTimeout() {
+        if (FocusManager._restoreRestrictionTimer) {
+            clearTimeout(FocusManager._restoreRestrictionTimer);
+            FocusManager._restoreRestrictionTimer = undefined;
+            FocusManager._pendingPrevFocusedComponent = undefined;
+        }
+    }
+
+    private static _setComponentTabIndex(component: React.Component<any, any>, value: number): number {
         const el = ReactDOM.findDOMNode<HTMLElement>(component);
+        return el ? FocusManager._setTabIndex(el, value) : null;
+    }
 
-        if (el) {
-            const prev = el.hasAttribute('tabindex') ? el.tabIndex : undefined;
+    private static _setTabIndex(element: HTMLElement, value: number): number {
+        const prev = element.hasAttribute('tabindex') ? element.tabIndex : undefined;
 
-            if (value === undefined) {
-                if (prev !== undefined) {
-                    el.removeAttribute('tabindex');
-                }
-            } else {
-                el.tabIndex = value;
+        if (value === undefined) {
+            if (prev !== undefined) {
+                element.removeAttribute('tabindex');
             }
-
-            return prev;
+        } else {
+            element.tabIndex = value;
         }
 
-        return null;
+        return prev;
     }
 
     private static _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
         if ((storedComponent.restricted || (storedComponent.limitedCount > 0)) && !('origTabIndex' in storedComponent)) {
-            storedComponent.origTabIndex = FocusManager._setTabIndex(storedComponent.component, -1);
+            storedComponent.origTabIndex = FocusManager._setComponentTabIndex(storedComponent.component, -1);
             FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, true);
         } else if (!storedComponent.restricted && !storedComponent.limitedCount && ('origTabIndex' in storedComponent)) {
-            FocusManager._setTabIndex(storedComponent.component, storedComponent.origTabIndex);
+            FocusManager._setComponentTabIndex(storedComponent.component, storedComponent.origTabIndex);
             delete storedComponent.origTabIndex;
             FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, false);
         }
