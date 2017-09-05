@@ -32,8 +32,6 @@
       title: Image
     - id: components/link
       title: Link
-    - id: components/navigator
-      title: Navigator
     - id: components/picker
       title: Picker
     - id: components/scrollview
@@ -86,6 +84,8 @@
       title: Database
     - id: extensions/imagesvg
       title: ImageSvg
+    - id: extensions/navigator
+      title: Navigator
     - id: extensions/restclient
       title: REST Client
     - id: extensions/video
