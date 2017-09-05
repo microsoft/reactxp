@@ -16,6 +16,8 @@ import { applyFocusableComponentMixin } from './utils/FocusManager';
 
 const _styles = {
     defaultStyle: {
+        border: 'none',
+        backgroundColor: 'transparent',
         position: 'relative',
         display: 'inline',
         flexDirection: 'column',
@@ -27,6 +29,8 @@ const _styles = {
         msHyphens: 'auto'
     },
     ellipsis: {
+        border: 'none',
+        backgroundColor: 'transparent',
         position: 'relative',
         display: 'inline',
         flexDirection: 'column',
@@ -47,11 +51,11 @@ export class Link extends React.Component<Types.LinkProps, {}> {
     private _longPressTimer: number;
 
     render() {
-       // SECURITY WARNING:
-       //   Note the use of rel='noreferrer'
-       //   Destroy the back-link to this window. Otherwise the (untrusted) URL we are about to load can redirect OUR window.
-       //   See: https://mathiasbynens.github.io/rel-noopener/
-        return (
+        // SECURITY WARNING:
+        //   Note the use of rel='noreferrer'
+        //   Destroy the back-link to this window. Otherwise the (untrusted) URL we are about to load can redirect OUR window.
+        //   See: https://mathiasbynens.github.io/rel-noopener/
+        return this.props.url ? (
             <a
                 style={ this._getStyles() }
                 title={ this.props.title }
@@ -62,9 +66,22 @@ export class Link extends React.Component<Types.LinkProps, {}> {
                 onMouseEnter={ this.props.onHoverStart }
                 onMouseLeave={ this.props.onHoverEnd }
                 onMouseDown={ this._onMouseDown }
+                tabIndex={ this.props.tabIndex }
             >
                 { this.props.children }
             </a>
+        ) : (
+            <button // When url is not set <a> will be unaccessible, so we make it a button.
+                style={ this._getStyles() }
+                title={ this.props.title }
+                onClick={ this._onClick }
+                onMouseEnter={ this.props.onHoverStart }
+                onMouseLeave={ this.props.onHoverEnd }
+                onMouseDown={ this._onMouseDown }
+                tabIndex={ this.props.tabIndex }
+            >
+                { this.props.children }
+            </button>
         );
     }
 

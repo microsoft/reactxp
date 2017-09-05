@@ -770,6 +770,7 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
     numberOfLines?: number;
     allowFontScaling?: boolean;
     maxContentSizeMultiplier?: number;
+    tabIndex?: number;
 
     onPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
     onLongPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
