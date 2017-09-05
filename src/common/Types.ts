@@ -764,7 +764,7 @@ export interface ScrollViewProps extends ViewProps {
 // Link
 export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
     title?: string;
-    url?: string;
+    url: string;
     children?: ReactNode;
     selectable?: boolean;
     numberOfLines?: number;
