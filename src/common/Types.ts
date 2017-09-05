@@ -27,10 +27,8 @@ export type ReactInterface = {
 // React Native Flexbox styles 0.14.2
 // ------------------------------------------------------------
 
-export interface FlexboxStyle {
-    alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
+export interface FlexboxParentStyle {
     alignSelf?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
-    alignContent?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
 
     borderWidth?: number;
     borderTopWidth?: number;
@@ -50,10 +48,6 @@ export interface FlexboxStyle {
     flexShrink?: number;
     flexBasis?: number;
     flex?: number;
-
-    flexWrap?: 'wrap' | 'nowrap';
-    flexDirection?: 'column' | 'row' | 'column-reverse' | 'row-reverse';
-    justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around';
 
     maxHeight?: number;
     maxWidth?: number;
@@ -77,6 +71,18 @@ export interface FlexboxStyle {
     paddingLeft?: number;
 
     position?: 'absolute' | 'relative';
+}
+
+export interface FlexboxChildrenStyle {
+    alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
+    alignContent?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
+
+    flexWrap?: 'wrap' | 'nowrap';
+    flexDirection?: 'column' | 'row' | 'column-reverse' | 'row-reverse';
+    justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around';
+}
+
+export interface FlexboxStyle extends FlexboxParentStyle, FlexboxChildrenStyle {
 }
 
 export abstract class AnimatedValue implements RX.IAnimatedValue {
@@ -192,7 +198,10 @@ export type AnimatedViewStyleRuleSet = StyleRuleSet<AnimatedViewStyle>;
 // ScrollView Style Rules
 // ------------------------------------------------------------
 
-export interface ScrollViewStyle extends ViewStyle {
+export interface ScrollViewStyle extends FlexboxParentStyle, TransformStyle {
+    overflow?: 'visible' | 'hidden';
+    backgroundColor?: string;
+    opacity?: number;
 }
 
 export type ScrollViewStyleRuleSet = StyleRuleSet<ScrollViewStyle>;
