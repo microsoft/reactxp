@@ -16,6 +16,11 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.42.0 of reactxp
+_Released 5 Sep 2017_
+
+Removed rc from version.
+
 #### Version 0.42.0_rc.25 of reactxp
 _Released 18 Aug 2017_
 

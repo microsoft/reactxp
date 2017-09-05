@@ -11,7 +11,7 @@
   "dependencies": {
     "assert": "^1.3.0",
     "lodash": "^4.17.1",
-    "reactxp": "0.42.0-rc.10"
+    "reactxp": "^0.42.0"
   },
   "devDependencies": {
     "typescript": "2.4.1",
