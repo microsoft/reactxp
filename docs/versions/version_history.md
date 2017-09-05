@@ -16,6 +16,17 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.42.0_rc.25 of reactxp
+_Released 18 Aug 2017_
+
+On web, if there's a queued onScroll event when the scroll position is manually set, cancel the onScroll.
+
+#### Version 0.42.0_rc.24 of reactxp
+_Released 9 Aug 2017_
+
+Added accessibility support for GestureView.
+Fixed bug in web version that prevented animated fontSize from working.
+
 #### Version 0.42.0_rc.22 of reactxp
 _Released 30 July 2017_
 
