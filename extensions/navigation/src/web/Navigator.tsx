@@ -489,8 +489,14 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
 
             // New setState
             this.setState(newState);
-        } else if (this.props.transitionCompleted) {
-            this.props.transitionCompleted();
+        } else {
+            if (this.props.transitionCompleted) {
+                this.props.transitionCompleted();
+            }
+
+            if (this.state.transitionFinished) {
+                this.state.transitionFinished();
+            }
         }
     }
 
