@@ -30,7 +30,7 @@
     "react-native": "^0.42.0"
   },
   "devDependencies": {
-    "reactxp": "^0.42.0-rc.25",
+    "reactxp": "^0.46.0-rc.1",
     "typescript": "2.4.1",
     "tslint": "^5.0.0"
   },

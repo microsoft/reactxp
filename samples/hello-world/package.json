@@ -20,7 +20,7 @@
     "webpack": "2.2.1"
   },
   "dependencies": {
-    "reactxp": "0.42.0-rc.20",
+    "reactxp": "^0.42.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-native": "^0.42.0",

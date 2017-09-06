@@ -9,6 +9,8 @@ next: extensions/virtuallistview
 
 This component provides video playback capabilities, presenting optional controls for play, pause, etc.
 
+To install: ```npm install reactxp-video```
+
 ## Types
 ``` javascript
 // Used to return progress information in the onProgress callback 

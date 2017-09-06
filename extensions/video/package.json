@@ -12,7 +12,7 @@
     "@types/lodash": "^4.14.62",
     "lodash": "^4.0.0",
     "react-native-video": "^2.0.0",
-    "reactxp": "0.42.0-rc.20"
+    "reactxp": "^0.42.0"
   },
   "peerDependencies": {
     "react-dom": "^15.4.1",

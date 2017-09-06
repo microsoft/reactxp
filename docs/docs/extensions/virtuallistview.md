@@ -18,7 +18,9 @@ It optionally supports animation of items when they are added, removed or moved 
 
 When items are added before or after the visible region, it attempts to maintain the current position of the visible items, adjusting the scroll position and list height as necessary.
 
-### Performance Techniques
+To install: ```npm install reactxp-virtuallistview```
+
+## Performance Techniques
 
 The VirtualListView employs a number of tricks to improve performance.
 

@@ -13,6 +13,7 @@ This extension provides a cross-platform mechanism for wrapping a simple REST AP
 
 For more details, refer to the [SimpleRestClients](https://github.com/Microsoft/SimpleRestClients) github site.
 
+To install: ```npm install simplerestclients```
 
 ### Sample Usage
 
