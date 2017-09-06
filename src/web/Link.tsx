@@ -47,10 +47,10 @@ export class Link extends React.Component<Types.LinkProps, {}> {
     private _longPressTimer: number;
 
     render() {
-       // SECURITY WARNING:
-       //   Note the use of rel='noreferrer'
-       //   Destroy the back-link to this window. Otherwise the (untrusted) URL we are about to load can redirect OUR window.
-       //   See: https://mathiasbynens.github.io/rel-noopener/
+        // SECURITY WARNING:
+        //   Note the use of rel='noreferrer'
+        //   Destroy the back-link to this window. Otherwise the (untrusted) URL we are about to load can redirect OUR window.
+        //   See: https://mathiasbynens.github.io/rel-noopener/
         return (
             <a
                 style={ this._getStyles() }
@@ -62,6 +62,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
                 onMouseEnter={ this.props.onHoverStart }
                 onMouseLeave={ this.props.onHoverEnd }
                 onMouseDown={ this._onMouseDown }
+                tabIndex={ this.props.tabIndex }
             >
                 { this.props.children }
             </a>
