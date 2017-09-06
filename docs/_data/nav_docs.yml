@@ -52,6 +52,8 @@
       title: Alert
     - id: apis/app
       title: App
+    - id: apis/appregistry
+      title: AppRegistry
     - id: apis/clipboard
       title: Clipboard
     - id: apis/input
