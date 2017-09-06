@@ -961,6 +961,21 @@ export interface AlertButtonSpec {
     style?: 'default' | 'cancel' | 'destructive';
 }
 
+// Web specific
+export interface AlertModalTheme {
+    bodyStyle?: StyleRuleSet<ViewStyle>;
+    titleTextStyle?: StyleRuleSet<TextStyle>;
+    messageTextStyle?: StyleRuleSet<TextStyle>;
+
+    buttonStyle?: StyleRuleSet<ButtonStyle>;
+    buttonHoverStyle?: StyleRuleSet<ButtonStyle>;
+    buttonTextStyle?: StyleRuleSet<TextStyle>;
+
+    cancelButtonStyle?: StyleRuleSet<ButtonStyle>;
+    cancelButtonHoverStyle?: StyleRuleSet<ButtonStyle>;
+    cancelButtonTextStyle?: StyleRuleSet<TextStyle>;
+}
+
 //
 // Location
 // ----------------------------------------------------------------------

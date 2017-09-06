@@ -23,10 +23,41 @@ interface AlertButtonSpec {
     // Alert style to use (supported on some platforms)
     style?: 'default' | 'cancel' | 'destructive';
 }
+
+interface AlertModalTheme {
+    // Modal background style
+    bodyStyle?: StyleRuleSet<ViewStyle>;
+    
+    // Style for title text
+    titleTextStyle?: StyleRuleSet<TextStyle>;
+    
+    // Style for message text
+    messageTextStyle?: StyleRuleSet<TextStyle>;
+    
+    // Style for button control
+    buttonStyle?: StyleRuleSet<ButtonStyle>;
+    
+    // Style applied when hovering over button
+    buttonHoverStyle?: StyleRuleSet<ButtonStyle>;
+
+    // Style for button text
+    buttonTextStyle?: StyleRuleSet<TextStyle>;
+    
+    // Override style for cancel button
+    cancelButtonStyle?: StyleRuleSet<ButtonStyle>;
+    
+    // Override style for cancel button hover state
+    cancelButtonHoverStyle?: StyleRuleSet<ButtonStyle>;
+
+    // Override style for cancel button
+    cancelButtonTextStyle?: StyleRuleSet<TextStyle>;;
+}
 ```
 
 ## Methods
 ``` javascript
-// Displays an alert over the top of the current screen
-show(title: string, message?: string, buttons? AlertButtonSpec[], icon?: string): void;
+// Displays an alert over the top of the current screen. Theming support is
+// provided for web only and is ignored on other platforms.
+show(title: string, message?: string, buttons? AlertButtonSpec[], icon?: string,
+    theme?: AlertModalTheme): void;
 ```

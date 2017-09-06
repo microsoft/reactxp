@@ -50,6 +50,25 @@ const styles = {
     })
 };
 
+const alertStyles = {
+    body: RX.Styles.createViewStyle({
+        backgroundColor: '#f5fcff'
+    }),
+    titleText: RX.Styles.createTextStyle({
+        fontSize: 20
+    }),
+    messageText: RX.Styles.createTextStyle({
+        marginVertical: 12
+    }),
+    defaultButton: RX.Styles.createViewStyle({
+        borderRadius: 12,
+        backgroundColor: '#7d88a9'
+    }),
+    cancelButton: RX.Styles.createButtonStyle({
+        backgroundColor: 'red'
+    })
+};
+
 class MainPanel extends RX.Component<MainPanelProps, null> {
     private _translationValue: RX.Animated.Value;
     private _animatedStyle: RX.Types.AnimatedTextStyleRuleSet;
@@ -94,19 +113,54 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
                     <RX.Link style={ styles.docLink } url={ 'https://microsoft.github.io/reactxp/docs' }>
                         View ReactXP documentation
                     </RX.Link>
-
+                    
                     <RX.Button style={ styles.roundButton } onPress={ this._onPressNavigate }>
                         <RX.Text style={ styles.buttonText }>
                             See More Examples
+                        </RX.Text>
+                    </RX.Button>
+                    
+                    <RX.Button style={ styles.roundButton } onPress={ this._onPressAlert }>
+                        <RX.Text style={ styles.buttonText }>
+                            See an Alert
+                        </RX.Text>
+                    </RX.Button>
+
+                    <RX.Button style={ styles.roundButton } onPress={ this._onPressThemedAlert }>
+                        <RX.Text style={ styles.buttonText }>
+                            See a themed Alert
                         </RX.Text>
                     </RX.Button>
                 </RX.View>
             </RX.ScrollView>
         );
     }
-
+    
     private _onPressNavigate = () => {
         this.props.onPressNavigate();
+    }
+    
+    private _onPressAlert = () => {
+        RX.Alert.show('This is an Alert', 'Do you like it?', [
+            { text: 'I like it!' },
+            { style: 'cancel', text: 'Close this' }
+        ]);
+    }
+    
+    private _onPressThemedAlert = () => {
+        let theme: RX.Types.AlertModalTheme = {
+            bodyStyle: alertStyles.body,
+            buttonStyle: alertStyles.defaultButton,
+            buttonTextStyle: styles.buttonText,
+            cancelButtonStyle: alertStyles.cancelButton,
+            titleTextStyle: alertStyles.titleText,
+            messageTextStyle: alertStyles.messageText
+        };
+
+        RX.Alert.show('This is a themed Alert', 'Do you like it as well?', [
+            { text: 'I like it!' },
+            { style: 'cancel', text: 'Close this' }
+        ], null, theme);
     }
 }
 
