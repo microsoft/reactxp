@@ -44,7 +44,7 @@ selectable: boolean = false;
 title: string = undefined;
 
 // URL to follow for hyperlink
-url: string;
+url: string = undefined;
 
 // See below for supported styles
 style: LinkStyleRuleSet | LinkStyleRuleSet[] = [];
