@@ -28,6 +28,8 @@ export type ReactInterface = {
 // ------------------------------------------------------------
 
 export interface FlexboxParentStyle {
+    flexDirection?: 'column' | 'row' | 'column-reverse' | 'row-reverse';
+
     alignSelf?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
 
     borderWidth?: number;
@@ -73,12 +75,12 @@ export interface FlexboxParentStyle {
     position?: 'absolute' | 'relative';
 }
 
+// These are supported by most views but not by ScrollView
 export interface FlexboxChildrenStyle {
     alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
     alignContent?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
 
     flexWrap?: 'wrap' | 'nowrap';
-    flexDirection?: 'column' | 'row' | 'column-reverse' | 'row-reverse';
     justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around';
 }
 
