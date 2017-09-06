@@ -13,7 +13,9 @@ When a new card is presented, the Navitator calls the renderScene method, allowi
 
 When a Navigator is first mounted, the stack is empty. The caller must wait for the mount to complete, then specify the list of routes to present.
 
-The current implementation of Navitator on React Native makes use of the soon-to-be-deprecated "Navigator Experimental". We will look at moving away from this implementation to the now-recommended "react-navigation" in the near future. Some of the more advanced interfaces may need to change. These are listed at the end of this article. Use these with caution.
+The current implementation of Navitator on React Native makes use of the deprecated "Navigator Experimental". We will look at moving away from this implementation to the now-recommended "react-navigation" in the near future. Some of the more advanced interfaces may need to change. These are listed at the end of this article. Use these with caution.
+
+To install: ```npm install reactxp-navigator```
 
 ## Types
 ``` javascript
