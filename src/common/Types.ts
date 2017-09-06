@@ -1024,12 +1024,16 @@ export interface AlertButtonSpec {
 // Web specific
 export interface AlertModalTheme {
     bodyStyle?: StyleRuleSet<ViewStyle>;
-    titleStyle?: StyleRuleSet<TextStyle>;
-    messageStyle?: StyleRuleSet<TextStyle>;
+    titleTextStyle?: StyleRuleSet<TextStyle>;
+    messageTextStyle?: StyleRuleSet<TextStyle>;
+
     buttonStyle?: StyleRuleSet<ButtonStyle>;
+    buttonHoverStyle?: StyleRuleSet<ButtonStyle>;
     buttonTextStyle?: StyleRuleSet<TextStyle>;
-    defaultButtonColor?: string;
-    cancelButtonColor?: string;
+
+    cancelButtonStyle?: StyleRuleSet<ButtonStyle>;
+    cancelButtonHoverStyle?: StyleRuleSet<ButtonStyle>;
+    cancelButtonTextStyle?: StyleRuleSet<TextStyle>;
 }
 
 //

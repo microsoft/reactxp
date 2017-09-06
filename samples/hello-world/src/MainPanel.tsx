@@ -51,9 +51,22 @@ const styles = {
 };
 
 const alertStyles = {
-    bodyStyle: RX.Styles.createViewStyle({ backgroundColor: '#f5fcff' }),
-    titleStyle: RX.Styles.createTextStyle({ fontSize: 22 }),
-    messageStyle: RX.Styles.createTextStyle({ marginVertical: 40 })
+    body: RX.Styles.createViewStyle({
+        backgroundColor: '#f5fcff'
+    }),
+    titleText: RX.Styles.createTextStyle({
+        fontSize: 20
+    }),
+    messageText: RX.Styles.createTextStyle({
+        marginVertical: 12
+    }),
+    defaultButton: RX.Styles.createViewStyle({
+        borderRadius: 12,
+        backgroundColor: '#7d88a9'
+    }),
+    cancelButton: RX.Styles.createButtonStyle({
+        backgroundColor: 'red'
+    })
 };
 
 class MainPanel extends RX.Component<MainPanelProps, null> {
@@ -129,22 +142,25 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
     
     private _onPressAlert = () => {
         RX.Alert.show('This is an Alert', 'Do you like it?', [
-            { onPress: ()=> console.log('Alert button clicked'), text: 'Print in the console' },
-            { style: 'cancel', text: 'Close this' }]);
+            { text: 'I like it!' },
+            { style: 'cancel', text: 'Close this' }
+        ]);
     }
     
     private _onPressThemedAlert = () => {
+        let theme: RX.Types.AlertModalTheme = {
+            bodyStyle: alertStyles.body,
+            buttonStyle: alertStyles.defaultButton,
+            buttonTextStyle: styles.buttonText,
+            cancelButtonStyle: alertStyles.cancelButton,
+            titleTextStyle: alertStyles.titleText,
+            messageTextStyle: alertStyles.messageText
+        };
+
         RX.Alert.show('This is a themed Alert', 'Do you like it as well?', [
-            { onPress: ()=> console.log('Themed alert button clicked'), text: 'Print in the console' },
-            { style: 'cancel', text: 'Close this' }], null, {
-                bodyStyle: alertStyles.bodyStyle,
-                buttonStyle: styles.roundButton,
-                buttonTextStyle: styles.buttonText,
-                titleStyle: alertStyles.titleStyle,
-                messageStyle: alertStyles.messageStyle,
-                defaultButtonColor: '#7d88a9',
-                cancelButtonColor: 'red'
-            });
+            { text: 'I like it!' },
+            { style: 'cancel', text: 'Close this' }
+        ], null, theme);
     }
 }
 

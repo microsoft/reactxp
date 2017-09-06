@@ -26,10 +26,14 @@ export interface AppModalContentProps extends ViewProps {
     theme?: Types.AlertModalTheme;
 }
 
-const modalStyles = {
+export interface AppModalContentState {
+    hoverIndex: number;
+}
+
+const _styles = {
     background: Styles.createViewStyle({
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.1)',
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
         alignItems: 'center',
         alignSelf: 'stretch'
     }),
@@ -38,85 +42,142 @@ const modalStyles = {
         flexDirection: 'row',
         alignItems: 'center'
     }),
-    defaultBodyStyle: Styles.createViewStyle({
+    defaultBody: Styles.createViewStyle({
         width: 300,
-        backgroundColor: '#FFF',
-        borderColor: '#333',
+        backgroundColor: '#fff',
+        borderColor: '#bbb',
         borderWidth: 1,
-        alignItems: 'stretch'
+        alignItems: 'stretch',
+        paddingHorizontal: 8,
+        paddingVertical: 4
     }),
-    defaultTitleStyle: Styles.createTextStyle({
-        fontSize: 24,
+    defaultTitleText: Styles.createTextStyle({
+        fontSize: 20,
         fontWeight: 'bold',
         alignSelf: 'center',
-        padding: 20,
+        padding: 12,
         flex: 1
     }),
-    defaultMessageStyle: Styles.createTextStyle({
-        fontSize: 18,
+    defaultMessageText: Styles.createTextStyle({
+        fontSize: 16,
         alignSelf: 'center',
-        padding: 10,
+        padding: 12,
         flex: 1
     }),
-    defaultButtonContainerStyle: Styles.createButtonStyle({
-        padding: 10,
+    defaultButtonContainer: Styles.createButtonStyle({
+        padding: 8,
         flex: 1
     }),
-    defaultButtonStyle: Styles.createButtonStyle({
-        padding: 5,
+    defaultButton: Styles.createButtonStyle({
         alignItems: 'center',
-        flex: 1
+        flex: 1,
+        borderWidth: 1,
+        borderRadius: 8,
+        borderColor: '#bbb'
     }),
-    defaultBtnTextStyle: Styles.createTextStyle({
-        padding: 5,
+    defaultButtonHover: Styles.createButtonStyle({
+        backgroundColor: '#eee'
+    }),
+    defaultCancelButton: Styles.createButtonStyle({
+        borderColor: 'red'
+    }),
+    defaultBtnText: Styles.createTextStyle({
+        fontSize: 14,
+        padding: 8,
         color: '#333'
+    }),
+    defaultCancelBtnText: Styles.createTextStyle({
+        color: 'red'
     })
 };
 
-export class AlertModalContent extends RX.Component<AppModalContentProps, {}> {
+export class AlertModalContent extends RX.Component<AppModalContentProps, AppModalContentState> {
+    constructor(props: AppModalContentProps) {
+        super(props);
+        this.state = {
+            hoverIndex: -1
+        };
+    }
+
     public render() {
         const theme = this.props.theme;
-        return <View style={modalStyles.background} onPress={(e) => this.backgroundClicked(e)}>
-                <View style={modalStyles.verticalRoot}>
-                    <View style={[modalStyles.defaultBodyStyle, (theme ? theme.bodyStyle : null)]}
-                        onPress={(e) => this.bodyClicked(e)}>
+
+        var buttons = this.props.buttons.map((btnSpec, i) => {
+            let isCancel = btnSpec.style === 'cancel';
+            let buttonStyle = [_styles.defaultButton, isCancel && _styles.defaultCancelButton];
+            let buttonTextStyle = [_styles.defaultBtnText, isCancel && _styles.defaultCancelBtnText];
+
+            // Is the mouse pointer currently hovering over this button?
+            if (this.state.hoverIndex === i) {
+                buttonStyle.push(_styles.defaultButtonHover);
+            }
+
+            if (theme) {
+                buttonStyle.push(theme.buttonStyle);
+                buttonTextStyle.push(theme.buttonTextStyle);
+                if (isCancel) {
+                    buttonStyle.push(theme.cancelButtonStyle);
+                    buttonTextStyle.push(theme.cancelButtonTextStyle);
+                }
+
+                if (this.state.hoverIndex === i) {
+                    buttonStyle.push(isCancel ? theme.cancelButtonHoverStyle : theme.buttonHoverStyle);
+                }
+            }
+
+            return (
+                <View key={ 'button_' + i } style={ _styles.defaultButtonContainer }>
+                    <Button
+                        onPress={ e => this._onPressButton(btnSpec) }
+                        onHoverStart={ () => this.setState({ hoverIndex: i }) }
+                        onHoverEnd={ () => this.setState({ hoverIndex: -1 }) }
+                        style={ buttonStyle }
+                    >
+                        <Text style={ buttonTextStyle }>
+                            { btnSpec.text }
+                        </Text>
+                    </Button>
+                </View>
+            );
+        });
+
+        return (
+            <View style={ _styles.background } onPress={ this._onPressBackground }>
+                <View style={ _styles.verticalRoot }>
+                    <View
+                        style={ [_styles.defaultBody, theme && theme.bodyStyle] }
+                        onPress={ this._onPressBody }
+                    >
                         <View>
-                            <Text style={[modalStyles.defaultTitleStyle, (theme ? theme.titleStyle : null)]}>
-                                {this.props.title}
+                            <Text style={ [_styles.defaultTitleText, theme && theme.titleTextStyle] }>
+                                { this.props.title }
                             </Text>
                         </View>
                         <View>
-                            <Text style={[modalStyles.defaultMessageStyle, (theme ? theme.messageStyle : null)]}>
-                                {this.props.message}
+                            <Text style={ [_styles.defaultMessageText, theme && theme.messageTextStyle] }>
+                                { this.props.message }
                             </Text>
                         </View>
-                        {this.props.buttons.map((btnSpec) =>
-                            <View key={btnSpec.text} style={modalStyles.defaultButtonContainerStyle}>
-                                <Button onPress={(e) => btnSpec.style === 'cancel' ? Modal.dismiss(this.props.modalId) : btnSpec.onPress()}
-                                    style={[
-                                        modalStyles.defaultButtonStyle
-                                        , (theme ? theme.buttonStyle : null)
-                                        , {backgroundColor: btnSpec.style === 'cancel' ?
-                                            (theme && theme.cancelButtonColor ?
-                                                theme.cancelButtonColor : '#00BFFF') : 
-                                            (theme && theme.defaultButtonColor ?
-                                                theme.defaultButtonColor : '#DDD')
-                                        }
-                                    ]}>
-                                    <Text style={[modalStyles.defaultBtnTextStyle, (theme ? theme.buttonTextStyle : null)]}>
-                                        {btnSpec.text}
-                                    </Text>
-                                </Button>
-                            </View>
-                        )}
+                        { buttons }
                     </View>
                 </View>
-            </View>;
+            </View>
+        );
     }
-    private bodyClicked(e: Types.SyntheticEvent) {
+
+    private _onPressButton(btnSpec: Types.AlertButtonSpec) {
+        if (btnSpec.style === 'cancel') {
+            Modal.dismiss(this.props.modalId);
+        } else if (btnSpec.onPress) {
+            btnSpec.onPress();
+        }
+    }
+
+    private _onPressBody = (e: Types.SyntheticEvent) => {
         e.stopPropagation();
     }
-    private backgroundClicked(e: Types.SyntheticEvent) {
+    
+    private _onPressBackground = (e: Types.SyntheticEvent) => {
         Modal.dismiss(this.props.modalId);
     }
 }

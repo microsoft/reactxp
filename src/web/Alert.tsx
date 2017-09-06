@@ -16,11 +16,20 @@ import { default as Modal } from './Modal';
 
 // Web/HTML implementation for alert dialog boxes
 export class Alert extends RX.Alert {
-    private _ModalId: string = 'RX.Alert_WebModal';
-    public show(title: string, message?: string, buttons?: Types.AlertButtonSpec[], icon?: string, theme?: Types.AlertModalTheme): void {
+    private _modalId = 'RX.Alert_WebModal';
+
+    public show(title: string, message?: string, buttons?: Types.AlertButtonSpec[], 
+            icon?: string, theme?: Types.AlertModalTheme): void {
         Modal.show(
-            <AlertModalContent modalId={this._ModalId} buttons={buttons} title={title} message={message} theme={theme} />
-            , this._ModalId
+            (
+                <AlertModalContent
+                    modalId={ this._modalId }
+                    buttons={ buttons}
+                    title={ title }
+                    message={ message }
+                    theme={ theme }
+                />
+            ), this._modalId
         );
     }
 }
