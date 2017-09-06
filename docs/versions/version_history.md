@@ -16,6 +16,13 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.46.0_rc.1 of reactxp
+_Released 5 Sep 2017_
+
+First pre-release version of 0.46.
+Removed Navigator component and moved to an extension.
+Fixed style definition for ScrollView so it doesn't include child-related flexbox styles, which aren't supported.
+
 #### Version 0.42.0 of reactxp
 _Released 5 Sep 2017_
 
