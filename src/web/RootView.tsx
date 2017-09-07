@@ -394,8 +394,9 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
                 if ((document.activeElement === activeElement) && activeElement && (activeElement !== document.body)) {
                     this._updateKeyboardNavigationState(false);
+                    FocusManager.resetFocus();
                 }
-            }, 200);
+            }, 500);
         }
     }
 
