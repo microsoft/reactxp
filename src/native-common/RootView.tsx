@@ -7,6 +7,7 @@
 * The top-most view that's used for proper layering or modals and popups.
 */
 
+import _ = require('lodash');
 import React = require('react');
 import RN = require('react-native');
 import { SubscriptionToken } from 'subscribableevent';
@@ -17,6 +18,12 @@ import { default as FrontLayerViewManager } from './FrontLayerViewManager';
 import MainViewStore from './MainViewStore';
 import Styles from './Styles';
 import Types = require('../common/Types');
+
+// Fields should be prefixed with 'reactxp' to help avoid naming collisions.
+// All fields should be removed from this.props before passing to main view (see _getPropsForMainView).
+export interface RootViewProps {
+    reactxp_initialViewType?: string;
+}
 
 export interface RootViewState {
     mainView?: RN.ReactElement<any>;
@@ -40,15 +47,19 @@ const _styles = {
     })
 };
 
-export class RootView extends React.Component<{}, RootViewState> {
+export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _changeListener = this._onChange.bind(this);
     private _frontLayerViewChangedSubscription: SubscriptionToken = null;
     private _newAnnouncementEventChangedSubscription: SubscriptionToken = null;
+    private _mainViewProps: {};
 
-    constructor() {
-        super();
+    constructor(props: RootViewProps) {
+        super(props);
+
+        this._mainViewProps = this._getPropsForMainView();
+
         this.state = {
-            mainView: null,
+            mainView: props.reactxp_initialViewType && React.createElement(props.reactxp_initialViewType, this._mainViewProps),
             announcementText: ''
         };
     }
@@ -115,13 +126,21 @@ export class RootView extends React.Component<{}, RootViewState> {
     private _getStateFromStore(): RootViewState {
         let mainView = MainViewStore.getMainView();
 
-        if (mainView && this.props) {
-            mainView = React.cloneElement(mainView, this.props);
+        if (mainView && !_.isEqual(mainView.props, this._mainViewProps)) {
+            mainView = React.cloneElement(mainView, this._mainViewProps);
         }
 
         return {
-            mainView: mainView
+            mainView: mainView || this.state.mainView
         };
+    }
+
+    private _getPropsForMainView(): {} {
+        const mainViewProps = {...this.props};
+
+        delete mainViewProps.reactxp_initialViewType;
+
+        return mainViewProps;
     }
 }
 

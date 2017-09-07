@@ -117,6 +117,10 @@ export class UserInterface extends RX.UserInterface {
         FrontLayerViewManager.setMainView(element);
     }
 
+    registerRootView(viewKey: string, getComponentFunc: Function) {
+        // Nothing to do
+    }
+
     useCustomScrollbars(enable = true) {
         ScrollViewConfig.setUseCustomScrollbars(enable);
     }
