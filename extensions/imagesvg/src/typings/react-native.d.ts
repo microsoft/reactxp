@@ -735,8 +735,6 @@ declare module 'react-native' {
         measureLayoutRelativeToParent: Function;
         dispatchViewManagerCommand: Function;
 
-        getContentSizeMultiplier: Function;
-
         // ios
         takeSnapshot: (view: any, options?: SnapshotOptions) => Promise<string>;
     }
@@ -934,6 +932,56 @@ declare module 'react-native' {
         function addListener(eventType: string, listener: Function, context?: any): EmitterSubscription;
         function removeAllListeners(eventType: string): void;
         function removeSubscription(subscription: EmitterSubscription): void;
+    }
+
+    module PixelRatio {
+        /**
+         * Returns the device pixel density. Some examples:
+         *
+         *   - PixelRatio.get() === 1
+         *     - mdpi Android devices (160 dpi)
+         *   - PixelRatio.get() === 1.5
+         *     - hdpi Android devices (240 dpi)
+         *   - PixelRatio.get() === 2
+         *     - iPhone 4, 4S
+         *     - iPhone 5, 5c, 5s
+         *     - iPhone 6
+         *     - xhdpi Android devices (320 dpi)
+         *   - PixelRatio.get() === 3
+         *     - iPhone 6 plus
+         *     - xxhdpi Android devices (480 dpi)
+         *   - PixelRatio.get() === 3.5
+         *     - Nexus 6
+        **/
+        function get(): number;
+
+        /**
+         * Returns the scaling factor for font sizes. This is the ratio that is used to calculate the
+         * absolute font size, so any elements that heavily depend on that should use this to do
+         * calculations.
+         *
+         * If a font scale is not set, this returns the device pixel ratio.
+         *
+         * Currently this is only implemented on Android and reflects the user preference set in
+         * Settings > Display > Font size, on iOS it will always return the default pixel ratio.
+         * @platform android
+        **/
+        function getFontScale(): number;
+
+        /**
+         * Converts a layout size (dp) to pixel size (px).
+         *
+         * Guaranteed to return an integer number.
+        **/
+        function getPixelSizeForLayoutSize(layoutSize: number): number;
+
+        /**
+         * Rounds a layout size (dp) to the nearest layout size that corresponds to
+         * an integer number of pixels. For example, on a device with a PixelRatio
+         * of 3, `PixelRatio.roundToNearestPixel(8.4) = 8.33`, which corresponds to
+         * exactly (8.33 * 3) = 25 pixels.
+        **/
+        function roundToNearestPixel(layoutSize: number): number;
     }
 
      interface IncrementalProps extends ComponentPropsStyleBase {
