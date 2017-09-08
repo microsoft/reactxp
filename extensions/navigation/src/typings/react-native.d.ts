@@ -1,5 +1,6 @@
 /**
 * react-native.d.ts
+*
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
 *
@@ -397,18 +398,6 @@ declare module 'react-native' {
         source?: { uri: string; method?: string; headers?: Object; body?: string; } | { html: string; baseUrl?: string; };
     }
 
-    interface NavigatorProps extends ComponentPropsBase {
-        configureScene?: Function;
-        initialRoute?: any;
-        initialRouteStack?: any[];
-        navigatorBar?: any;
-        navigator?: Navigator;
-        onDidFocus?: Function; //deprecated
-        onWillFocus?: Function; //deprecated
-        renderScene: Function;
-        sceneStyle?: StyleRuleSet | StyleRuleSet[];
-    }
-
     interface DatePickerIOSProps extends ComponentPropsStyleBase {
         date?: Date;
         maximumDate?: Date;
@@ -492,29 +481,6 @@ declare module 'react-native' {
         reload() : void;
         goBack() : void;
         goForward() : void;
-    }
-    class Navigator extends ReactNativeBaseComponent<NavigatorProps, {}> {
-        static SceneConfigs: {
-            PushFromRight: any;
-            FloatFromRight: any;
-            FloatFromLeft: any;
-            FloatFromBottom: any;
-            FloatFromBottomAndroid: any;
-            FadeAndroid: any;
-            HorizontalSwipeJump:any;
-        };
-        getCurrentRoutes(): any[];
-        jumpBack(): void;
-        jumpForward(): void;
-        jumpTo(route: any): void;
-        push(route: any): void;
-        pop(): void;
-        replace(route: any): void;
-        replaceAtIndex(route: any, index: number): void;
-        replacePrevious(route: any): void;
-        immediatelyResetRouteStack(routeStack: any[]): void;
-        popToRoute(route: any): void;
-        popToTop(): void;
     }
 
     interface ActionSheetOptions {
@@ -1067,243 +1033,6 @@ declare module 'react-native' {
     }
 
     export var I18nManager: I18nManager;
-
-    /**
-     * Interfaces added for compatibility with react-navigation
-     */
-
-    type FlexAlignType = "flex-start" | "flex-end" | "center" | "stretch" | "baseline";
-
-    export interface FlexStyle {
-        alignContent?: "flex-start" | "flex-end" | "center" | "stretch" | "space-between" | "space-around"
-        alignItems?: FlexAlignType
-        alignSelf?: "auto" | FlexAlignType
-        aspectRatio?: number
-        borderBottomWidth?: number
-        borderLeftWidth?: number
-        borderRightWidth?: number
-        borderTopWidth?: number
-        borderWidth?: number
-        bottom?: number | string
-        flex?: number
-        flexBasis?: number | string
-        flexDirection?: "row" | "column" | "row-reverse" | "column-reverse"
-        flexGrow?: number
-        flexShrink?: number
-        flexWrap?: "wrap" | "nowrap"
-        height?: number | string
-        justifyContent?: "flex-start" | "flex-end" | "center" | "space-between" | "space-around"
-        left?: number | string
-        margin?: number | string
-        marginBottom?: number | string
-        marginHorizontal?: number | string
-        marginLeft?: number | string
-        marginRight?: number | string
-        marginTop?: number | string
-        marginVertical?: number | string
-        maxHeight?: number | string
-        maxWidth?: number | string
-        minHeight?: number | string
-        minWidth?: number | string
-        overflow?: "visible" | "hidden" | "scroll"
-        padding?: number | string
-        paddingBottom?: number | string
-        paddingHorizontal?: number | string
-        paddingLeft?: number | string
-        paddingRight?: number | string
-        paddingTop?: number | string
-        paddingVertical?: number | string
-        position?: "absolute" | "relative"
-        right?: number | string
-        top?: number | string
-        width?: number | string
-        zIndex?: number
-
-        /**
-         * @platform ios
-         */
-        direction?: 'inherit' | 'ltr' | 'rtl'
-    }
-
-    interface PerpectiveTransform {
-        perspective: number;
-    }
-
-    interface RotateTransform {
-        rotate: string;
-    }
-
-    interface RotateXTransform {
-        rotateX: string;
-    }
-
-    interface RotateYTransform {
-        rotateY: string;
-    }
-
-    interface RotateZTransform {
-        rotateZ: string;
-    }
-
-    interface ScaleTransform {
-        scale: number;
-    }
-
-    interface ScaleXTransform {
-        scaleX: number;
-    }
-
-    interface ScaleYTransform {
-        scaleY: number;
-    }
-
-    interface TranslateXTransform {
-        translateX: number;
-    }
-
-    interface TranslateYTransform {
-        translateY: number;
-    }
-
-    interface SkewXTransform {
-        skewX: string;
-    }
-
-    interface SkewYTransform {
-        skewY: string;
-    }
-
-    export interface TransformsStyle {
-        transform?: (
-            PerpectiveTransform |
-            RotateTransform |
-            RotateXTransform |
-            RotateYTransform |
-            RotateZTransform |
-            ScaleTransform |
-            ScaleXTransform |
-            ScaleYTransform |
-            TranslateXTransform |
-            TranslateYTransform |
-            SkewXTransform |
-            SkewYTransform
-        )[]
-        transformMatrix?: Array<number>
-        rotation?: number
-        scaleX?: number
-        scaleY?: number
-        translateX?: number
-        translateY?: number
-    }
-
-    export interface ViewStyle extends FlexStyle, TransformsStyle {
-        backfaceVisibility?: "visible" | "hidden"
-        backgroundColor?: string;
-        borderBottomColor?: string;
-        borderBottomLeftRadius?: number;
-        borderBottomRightRadius?: number;
-        borderBottomWidth?: number;
-        borderColor?: string;
-        borderLeftColor?: string;
-        borderRadius?: number;
-        borderRightColor?: string;
-        borderRightWidth?: number;
-        borderStyle?: "solid" | "dotted" | "dashed"
-        borderTopColor?: string;
-        borderTopLeftRadius?: number;
-        borderTopRightRadius?: number;
-        borderTopWidth?: number
-        opacity?: number;
-        overflow?: "visible" | "hidden"
-        shadowColor?: string;
-        shadowOffset?: { width: number, height: number };
-        shadowOpacity?: number;
-        shadowRadius?: number;
-        elevation?: number;
-        testID?: string;
-    }
-    export interface TextStyleIOS extends ViewStyle {
-        letterSpacing?: number
-        textDecorationColor?: string
-        textDecorationStyle?: "solid" | "double" | "dotted" | "dashed"
-        writingDirection?: "auto" | "ltr" | "rtl"
-    }
-
-    export interface TextStyleAndroid extends ViewStyle {
-        textAlignVertical?: "auto" | "top" | "bottom" | "center"
-        includeFontPadding?: boolean
-    }
-
-    // @see https://facebook.github.io/react-native/docs/text.html#style
-    export interface TextStyle extends TextStyleIOS, TextStyleAndroid, ViewStyle {
-        color?: string
-        fontFamily?: string
-        fontSize?: number
-        fontStyle?: "normal" | "italic"
-        /**
-         * Specifies font weight. The values 'normal' and 'bold' are supported
-         * for most fonts. Not all fonts have a variant for each of the numeric
-         * values, in that case the closest one is chosen.
-         */
-        fontWeight?: "normal" | "bold" | "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900"
-        letterSpacing?: number
-        lineHeight?: number
-        /**
-         * Specifies text alignment.
-         * The value 'justify' is only supported on iOS.
-         */
-        textAlign?: "auto" | "left" | "right" | "center"
-        textDecorationLine?: "none" | "underline" | "line-through" | "underline line-through"
-        textDecorationStyle?: "solid" | "double" | "dotted" | "dashed"
-        textDecorationColor?: string
-        textShadowColor?: string
-        textShadowOffset?: { width: number, height: number }
-        textShadowRadius?: number
-        testID?: string
-    }
-
-    export interface TextPropertiesIOS {
-        /**
-         * Specifies whether fonts should scale to respect Text Size accessibility setting on iOS. The
-         * default is `true`.
-         */
-        allowFontScaling?: boolean
-
-        /**
-         * Specifies whether font should be scaled down automatically to fit given style constraints.
-         */
-        adjustsFontSizeToFit?: boolean
-
-        /**
-         * Specifies smallest possible scale a font can reach when adjustsFontSizeToFit is enabled. (values 0.01-1.0).
-         */
-        minimumFontScale?: number
-
-        /**
-         * When `true`, no visual change is made when text is pressed down. By
-         * default, a gray oval highlights the text on press down.
-         */
-        suppressHighlighting?: boolean
-    }
-
-    export interface TextPropertiesAndroid {
-        /**
-         * Lets the user select text, to use the native copy and paste functionality.
-         */
-        selectable?: boolean
-
-        /**
-         * The highlight color of the text.
-         */
-        selectionColor?: string
-
-        /**
-         * Set text break strategy on Android API Level 23+
-         * default is `highQuality`.
-         */
-        textBreakStrategy?: "simple" | "highQuality" | "balanced"
-    }
-
 }
 
 interface GeoConfiguration {
@@ -1314,3 +1043,4 @@ interface Geolocation {
     // React Native addition to navigator.geolocation
     setRNConfiguration(config: GeoConfiguration): void;
 }
+
