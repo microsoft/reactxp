@@ -84,6 +84,17 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
         // as we dont want to pollute the dom with "aria-selected = false" for every falsy condition
         return undefined;
     }
+
+    accessibilityTraitToAriaChecked(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[]) {
+        // Walk through each trait and check if there's a checked trait. Return if one is found.
+        if (traits && _.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.CheckBox) !== -1) {
+            return traits.indexOf(Types.AccessibilityTrait.Checked) !== -1 ? true : false;
+        }
+
+        // Here we are returning undefined if the above condtion is not met
+        // as we dont want to pollute the dom with "aria-checked = false" for every falsy condition
+        return undefined;
+    }
 }
 
 export default new AccessibilityUtil();
