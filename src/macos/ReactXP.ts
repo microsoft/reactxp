@@ -24,7 +24,7 @@ import { default as AppImpl, App as AppType } from '../native-common/App';
 import { default as ButtonImpl, Button as ButtonType } from '../native-common/Button';
 import { default as PickerImpl, Picker as PickerType } from '../native-common/Picker';
 import { default as ImageImpl, Image as ImageType } from '../native-common/Image';
-import { default as InputImpl, Input as InputType } from '../native-common/Input';
+import { default as InputImpl, Input as InputType } from './Input';
 import { default as ClipboardImpl, Clipboard as ClipboardType } from '../native-common/Clipboard';
 import { default as GestureViewImpl, GestureView as GestureViewType } from './GestureView';
 import { default as InternationalImpl, International as InternationalType } from '../native-common/International';
