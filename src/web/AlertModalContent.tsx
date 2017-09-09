@@ -31,7 +31,7 @@ export interface AppModalContentState {
 }
 
 const _styles = {
-    background: Styles.createViewStyle({
+    overlayStyle: Styles.createViewStyle({
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.1)',
         alignItems: 'center',
@@ -42,51 +42,71 @@ const _styles = {
         flexDirection: 'row',
         alignItems: 'center'
     }),
-    defaultBody: Styles.createViewStyle({
+    bodyStyle: Styles.createViewStyle({
         width: 300,
         backgroundColor: '#fff',
         borderColor: '#bbb',
         borderWidth: 1,
         alignItems: 'stretch',
-        paddingHorizontal: 8,
-        paddingVertical: 4
+        paddingTop: 4,
+        paddingRight: 8,
+        paddingBottom: 4,
+        paddingLeft: 8
     }),
-    defaultTitleText: Styles.createTextStyle({
+    titleTextStyle: Styles.createTextStyle({
         fontSize: 20,
         fontWeight: 'bold',
         alignSelf: 'center',
-        padding: 12,
+        paddingTop: 12,
+        paddingRight: 12,
+        paddingBottom: 12,
+        paddingLeft: 12,
         flex: 1
     }),
-    defaultMessageText: Styles.createTextStyle({
+    messageTextStyle: Styles.createTextStyle({
         fontSize: 16,
         alignSelf: 'center',
-        padding: 12,
+        paddingTop: 12,
+        paddingRight: 12,
+        paddingBottom: 12,
+        paddingLeft: 12,
         flex: 1
     }),
-    defaultButtonContainer: Styles.createButtonStyle({
-        padding: 8,
+    buttonContainer: Styles.createButtonStyle({
+        paddingTop: 8,
+        paddingRight: 8,
+        paddingBottom: 8,
+        paddingLeft: 8,
         flex: 1
     }),
-    defaultButton: Styles.createButtonStyle({
+    buttonStyle: Styles.createButtonStyle({
         alignItems: 'center',
         flex: 1,
         borderWidth: 1,
         borderRadius: 8,
-        borderColor: '#bbb'
+        borderColor: 'blue'
     }),
-    defaultButtonHover: Styles.createButtonStyle({
+    buttonTextStyle: Styles.createTextStyle({
+        fontSize: 14,
+        paddingTop: 8,
+        paddingRight: 8,
+        paddingBottom: 8,
+        paddingLeft: 8,
+        color: 'blue'
+    }),
+    buttonHoverStyle: Styles.createButtonStyle({
         backgroundColor: '#eee'
     }),
-    defaultCancelButton: Styles.createButtonStyle({
+    cancelButtonStyle: Styles.createButtonStyle({
+        borderColor: 'green'
+    }),
+    cancelButtonTextStyle: Styles.createTextStyle({
+        color: 'green'
+    }),
+    destructiveButtonStyle: Styles.createButtonStyle({
         borderColor: 'red'
     }),
-    defaultBtnText: Styles.createTextStyle({
-        fontSize: 14,
-        padding: 8,
-        color: '#333'
-    }),
-    defaultCancelBtnText: Styles.createTextStyle({
+    destructiveButtonTextStyle: Styles.createTextStyle({
         color: 'red'
     })
 };
@@ -104,12 +124,17 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
 
         var buttons = this.props.buttons.map((btnSpec, i) => {
             let isCancel = btnSpec.style === 'cancel';
-            let buttonStyle = [_styles.defaultButton, isCancel && _styles.defaultCancelButton];
-            let buttonTextStyle = [_styles.defaultBtnText, isCancel && _styles.defaultCancelBtnText];
+            let isDestructive = btnSpec.style === 'destructive';
+            let buttonStyle = [_styles.buttonStyle,
+                               isCancel && _styles.cancelButtonStyle,
+                               isDestructive && _styles.destructiveButtonStyle];
+            let buttonTextStyle = [_styles.buttonTextStyle,
+                                   isCancel && _styles.cancelButtonTextStyle,
+                                   isDestructive && _styles.destructiveButtonTextStyle];
 
             // Is the mouse pointer currently hovering over this button?
             if (this.state.hoverIndex === i) {
-                buttonStyle.push(_styles.defaultButtonHover);
+                buttonStyle.push(_styles.buttonHoverStyle);
             }
 
             if (theme) {
@@ -119,14 +144,21 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
                     buttonStyle.push(theme.cancelButtonStyle);
                     buttonTextStyle.push(theme.cancelButtonTextStyle);
                 }
+                if (isDestructive) {
+                    buttonStyle.push(theme.destructiveButtonStyle);
+                    buttonTextStyle.push(theme.destructiveButtonTextStyle);
+                }
 
                 if (this.state.hoverIndex === i) {
-                    buttonStyle.push(isCancel ? theme.cancelButtonHoverStyle : theme.buttonHoverStyle);
+                    let buttonHoverStyle = theme.buttonHoverStyle;
+                    if (isCancel) { buttonHoverStyle = theme.cancelButtonHoverStyle; }
+                    if (isDestructive) { buttonHoverStyle = theme.destructiveButtonHoverStyle; }
+                    buttonStyle.push(buttonHoverStyle);
                 }
             }
 
             return (
-                <View key={ 'button_' + i } style={ _styles.defaultButtonContainer }>
+                <View key={ 'button_' + i } style={ _styles.buttonContainer }>
                     <Button
                         onPress={ e => this._onPressButton(btnSpec) }
                         onHoverStart={ () => this.setState({ hoverIndex: i }) }
@@ -142,19 +174,19 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
         });
 
         return (
-            <View style={ _styles.background } onPress={ this._onPressBackground }>
+            <View style={ [_styles.overlayStyle, theme && theme.overlayStyle] } onPress={ this._onPressBackground }>
                 <View style={ _styles.verticalRoot }>
                     <View
-                        style={ [_styles.defaultBody, theme && theme.bodyStyle] }
+                        style={ [_styles.bodyStyle, theme && theme.bodyStyle] }
                         onPress={ this._onPressBody }
                     >
                         <View>
-                            <Text style={ [_styles.defaultTitleText, theme && theme.titleTextStyle] }>
+                            <Text style={ [_styles.titleTextStyle, theme && theme.titleTextStyle] }>
                                 { this.props.title }
                             </Text>
                         </View>
                         <View>
-                            <Text style={ [_styles.defaultMessageText, theme && theme.messageTextStyle] }>
+                            <Text style={ [_styles.messageTextStyle, theme && theme.messageTextStyle] }>
                                 { this.props.message }
                             </Text>
                         </View>
@@ -166,9 +198,8 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
     }
 
     private _onPressButton(btnSpec: Types.AlertButtonSpec) {
-        if (btnSpec.style === 'cancel') {
-            Modal.dismiss(this.props.modalId);
-        } else if (btnSpec.onPress) {
+        Modal.dismiss(this.props.modalId);
+        if (btnSpec.onPress) {
             btnSpec.onPress();
         }
     }
@@ -176,7 +207,7 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
     private _onPressBody = (e: Types.SyntheticEvent) => {
         e.stopPropagation();
     }
-    
+
     private _onPressBackground = (e: Types.SyntheticEvent) => {
         Modal.dismiss(this.props.modalId);
     }
