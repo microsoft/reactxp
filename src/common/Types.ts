@@ -965,6 +965,7 @@ export interface AlertButtonSpec {
 
 // Web specific
 export interface AlertModalTheme {
+    overlayStyle?: StyleRuleSet<ViewStyle>;
     bodyStyle?: StyleRuleSet<ViewStyle>;
     titleTextStyle?: StyleRuleSet<TextStyle>;
     messageTextStyle?: StyleRuleSet<TextStyle>;
@@ -976,6 +977,10 @@ export interface AlertModalTheme {
     cancelButtonStyle?: StyleRuleSet<ButtonStyle>;
     cancelButtonHoverStyle?: StyleRuleSet<ButtonStyle>;
     cancelButtonTextStyle?: StyleRuleSet<TextStyle>;
+
+    destructiveButtonStyle?: StyleRuleSet<ButtonStyle>;
+    destructiveButtonHoverStyle?: StyleRuleSet<ButtonStyle>;
+    destructiveButtonTextStyle?: StyleRuleSet<TextStyle>;
 }
 
 //

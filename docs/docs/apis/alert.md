@@ -25,6 +25,9 @@ interface AlertButtonSpec {
 }
 
 interface AlertModalTheme {
+    // Overlay background style
+    overlayStyle?: StyleRuleSet<ViewStyle>;
+
     // Modal background style
     bodyStyle?: StyleRuleSet<ViewStyle>;
     
@@ -50,7 +53,16 @@ interface AlertModalTheme {
     cancelButtonHoverStyle?: StyleRuleSet<ButtonStyle>;
 
     // Override style for cancel button
-    cancelButtonTextStyle?: StyleRuleSet<TextStyle>;;
+    cancelButtonTextStyle?: StyleRuleSet<TextStyle>;
+    
+    // Override style for destructive button
+    destructiveButtonStyle?: StyleRuleSet<ButtonStyle>;
+    
+    // Override style for destructive button hover state
+    destructiveButtonHoverStyle?: StyleRuleSet<ButtonStyle>;
+
+    // Override style for destructive button
+    destructiveButtonTextStyle?: StyleRuleSet<TextStyle>;
 }
 ```
 
