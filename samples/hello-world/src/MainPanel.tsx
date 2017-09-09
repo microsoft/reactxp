@@ -51,8 +51,12 @@ const styles = {
 };
 
 const alertStyles = {
+    overlay: RX.Styles.createViewStyle({
+        backgroundColor: 'rgba(255, 0, 0, 0.5)'
+    }),
     body: RX.Styles.createViewStyle({
-        backgroundColor: '#f5fcff'
+        backgroundColor: '#f5fcff',
+        width: 700
     }),
     titleText: RX.Styles.createTextStyle({
         fontSize: 20
@@ -60,12 +64,20 @@ const alertStyles = {
     messageText: RX.Styles.createTextStyle({
         marginVertical: 12
     }),
-    defaultButton: RX.Styles.createViewStyle({
-        borderRadius: 12,
-        backgroundColor: '#7d88a9'
+    button: RX.Styles.createViewStyle({
+        borderRadius: 0,
+        backgroundColor: '#7d88a9',
+        borderWidth: 0
     }),
     cancelButton: RX.Styles.createButtonStyle({
-        backgroundColor: 'red'
+        backgroundColor: 'rgba(0, 255, 0, 0.7)',
+        borderRadius: 25
+    }),
+    cancelButtonText: RX.Styles.createTextStyle({
+        color: 'black'
+    }),
+    destructiveButton: RX.Styles.createButtonStyle({
+        backgroundColor: '#7d88a9'
     })
 };
 
@@ -143,22 +155,27 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
     private _onPressAlert = () => {
         RX.Alert.show('This is an Alert', 'Do you like it?', [
             { text: 'I like it!' },
+            { style: 'destructive', text: 'I don\'t like it!' },
             { style: 'cancel', text: 'Close this' }
         ]);
     }
     
     private _onPressThemedAlert = () => {
         let theme: RX.Types.AlertModalTheme = {
+            overlayStyle: alertStyles.overlay,
             bodyStyle: alertStyles.body,
-            buttonStyle: alertStyles.defaultButton,
+            titleTextStyle: alertStyles.titleText,
+            messageTextStyle: alertStyles.messageText,
+            buttonStyle: alertStyles.button,
             buttonTextStyle: styles.buttonText,
             cancelButtonStyle: alertStyles.cancelButton,
-            titleTextStyle: alertStyles.titleText,
-            messageTextStyle: alertStyles.messageText
+            cancelButtonTextStyle: alertStyles.cancelButtonText,
+            destructiveButtonStyle: alertStyles.destructiveButton
         };
 
         RX.Alert.show('This is a themed Alert', 'Do you like it as well?', [
             { text: 'I like it!' },
+            { style: 'destructive', text: 'I don\'t like it!' },
             { style: 'cancel', text: 'Close this' }
         ], null, theme);
     }
