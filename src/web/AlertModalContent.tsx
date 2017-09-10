@@ -166,9 +166,9 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
     }
 
     private _onPressButton(btnSpec: Types.AlertButtonSpec) {
-        if (btnSpec.style === 'cancel') {
-            Modal.dismiss(this.props.modalId);
-        } else if (btnSpec.onPress) {
+        Modal.dismiss(this.props.modalId);
+
+        if (btnSpec.onPress) {
             btnSpec.onPress();
         }
     }
