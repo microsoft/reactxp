@@ -411,6 +411,7 @@ export enum AccessibilityTrait {
     ListBox,
     Group,
     CheckBox,
+    Checked,
     ComboBox,
     Log,
     Status,
