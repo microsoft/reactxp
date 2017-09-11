@@ -53,6 +53,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits,
             _defaultAccessibilityTrait);
         const ariaSelected = AccessibilityUtil.accessibilityTraitToAriaSelected(this.props.accessibilityTraits);
+        const ariaChecked = AccessibilityUtil.accessibilityTraitToAriaChecked(this.props.accessibilityTraits);
         const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
 
         // NOTE: We use tabIndex=0 to support focus.
@@ -66,6 +67,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
                 aria-disabled={ this.props.disabled }
                 aria-hidden={ isAriaHidden }
                 aria-selected={ ariaSelected }
+                aria-checked={ ariaChecked }
                 onClick={ this.onClick }
                 onContextMenu={ this._onContextMenu }
                 onMouseDown={ this._onMouseDown }
