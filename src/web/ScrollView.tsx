@@ -357,13 +357,17 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
     private _onTouchStart = () => {
         if (!this._dragging) {
             this._dragging = true;
-            this.props.onScrollBeginDrag();
+            if (this.props.onScrollBeginDrag) {
+                this.props.onScrollBeginDrag();
+            }
         }
     }
 
     private _onTouchEnd = () => {
         this._dragging = false;
-        this.props.onScrollEndDrag();
+        if (this.props.onScrollEndDrag) {
+            this.props.onScrollEndDrag();
+        }
     }
 }
 
