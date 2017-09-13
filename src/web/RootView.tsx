@@ -129,7 +129,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                     // we will apapend a ' ' to it. This ensures that the text in DOM of aria-live region changes 
                     // and  will be read by screen Reader
 
-                    announcement += ' '
+                    announcement += ' ';
                 }
 
                 this.setState({
