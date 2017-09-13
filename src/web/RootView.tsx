@@ -124,6 +124,14 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         // Update announcement text.
         this._newAnnouncementEventChangedSubscription =
             Accessibility.newAnnouncementReadyEvent.subscribe(announcement => {
+                if (this.state.announcementText === announcement) {
+                    // If the previous announcement is the same as the current announcement
+                    // we will apapend a ' ' to it. This ensures that the text in DOM of aria-live region changes 
+                    // and  will be read by screen Reader
+
+                    announcement += ' '
+                }
+
                 this.setState({
                     announcementText: announcement
                 });
