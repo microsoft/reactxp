@@ -113,15 +113,8 @@ export class Image extends React.Component<Types.ImageProps, {}> {
         let nativeEvent = e.nativeEvent as any;
 
         if (nativeEvent) {
-            // TODO: #727561 Remove conditional after UWP includes width and height
-            //   with image load event.
-            if (RN.Platform.OS === 'windows') {
-                this._nativeImageWidth = 0;
-                this._nativeImageHeight = 0;
-            } else {
-                this._nativeImageWidth = nativeEvent.source.width;
-                this._nativeImageHeight = nativeEvent.source.height;
-            }
+            this._nativeImageWidth = nativeEvent.source.width;
+            this._nativeImageHeight = nativeEvent.source.height;
         }
 
         if (this.props.onLoad) {
