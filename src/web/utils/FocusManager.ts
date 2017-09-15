@@ -13,6 +13,9 @@ import PropTypes = require('prop-types');
 
 import UserInterface from '../UserInterface';
 
+const ATTR_NAME_TAB_INDEX = 'tabindex';
+const ATTR_NAME_ARIA_HIDDEN = 'aria-hidden';
+
 let _lastComponentId: number = 0;
 
 interface StoredFocusableComponent {
@@ -21,8 +24,14 @@ interface StoredFocusableComponent {
     restricted: boolean;
     limitedCount: number;
     origTabIndex?: number;
+    origAriaHidden?: string;
     removed?: boolean;
     callbacks?: FocusableComponentStateCallback[];
+}
+
+interface OriginalAttributeValues {
+    tabIndex: number;
+    ariaHidden: string;
 }
 
 let _isNavigatingWithKeyboard: boolean;
@@ -409,17 +418,25 @@ export class FocusManager {
         }
     }
 
-    private static _setComponentTabIndex(component: React.Component<any, any>, value: number): number {
+    private static _setComponentTabIndexAndAriaHidden(
+            component: React.Component<any, any>, tabIndex: number, ariaHidden: string): OriginalAttributeValues {
+
         const el = ReactDOM.findDOMNode<HTMLElement>(component);
-        return el ? FocusManager._setTabIndex(el, value) : null;
+        return el ?
+            {
+                tabIndex: FocusManager._setTabIndex(el, tabIndex),
+                ariaHidden: FocusManager._setAriaHidden(el, ariaHidden)
+            }
+            :
+            null;
     }
 
     private static _setTabIndex(element: HTMLElement, value: number): number {
-        const prev = element.hasAttribute('tabindex') ? element.tabIndex : undefined;
+        const prev = element.hasAttribute(ATTR_NAME_TAB_INDEX) ? element.tabIndex : undefined;
 
         if (value === undefined) {
             if (prev !== undefined) {
-                element.removeAttribute('tabindex');
+                element.removeAttribute(ATTR_NAME_TAB_INDEX);
             }
         } else {
             element.tabIndex = value;
@@ -428,13 +445,31 @@ export class FocusManager {
         return prev;
     }
 
+    private static _setAriaHidden(element: HTMLElement, value: string): string {
+        const prev = element.hasAttribute(ATTR_NAME_ARIA_HIDDEN) ? element.getAttribute(ATTR_NAME_ARIA_HIDDEN) : undefined;
+
+        if (value === undefined) {
+            if (prev !== undefined) {
+                element.removeAttribute(ATTR_NAME_ARIA_HIDDEN);
+            }
+        } else {
+            element.setAttribute(ATTR_NAME_ARIA_HIDDEN, value);
+        }
+
+        return prev;
+    }
+
     private static _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
         if ((storedComponent.restricted || (storedComponent.limitedCount > 0)) && !('origTabIndex' in storedComponent)) {
-            storedComponent.origTabIndex = FocusManager._setComponentTabIndex(storedComponent.component, -1);
+            const origValues = FocusManager._setComponentTabIndexAndAriaHidden(storedComponent.component, -1, 'true');
+            storedComponent.origTabIndex = origValues ? origValues.tabIndex : undefined;
+            storedComponent.origAriaHidden = origValues ? origValues.ariaHidden : undefined;
             FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, true);
         } else if (!storedComponent.restricted && !storedComponent.limitedCount && ('origTabIndex' in storedComponent)) {
-            FocusManager._setComponentTabIndex(storedComponent.component, storedComponent.origTabIndex);
+            FocusManager._setComponentTabIndexAndAriaHidden(storedComponent.component,
+                    storedComponent.origTabIndex, storedComponent.origAriaHidden);
             delete storedComponent.origTabIndex;
+            delete storedComponent.origAriaHidden;
             FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, false);
         }
     }
