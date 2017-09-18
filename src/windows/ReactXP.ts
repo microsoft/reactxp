@@ -11,7 +11,7 @@
 import React = require('react');
 
 import AnimatedImpl = require('../native-common/Animated');
-import RXInterface = require('../common/Interfaces');
+import RXModuleInterface = require('../common/ModuleInterface');
 import RXTypes = require('../common/Types');
 
 // -- STRANGE THINGS GOING ON HERE --
@@ -136,7 +136,7 @@ module ReactXP {
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 
-var _rxImplementsRxInterface: RXInterface.ReactXP = ReactXP;
+var _rxImplementsRxInterface: typeof RXModuleInterface.ReactXP = ReactXP;
 export = _rxImplementsRxInterface;
 
 /*

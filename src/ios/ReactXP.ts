@@ -10,7 +10,7 @@
 
 import React = require('react');
 
-import RXInterface = require('../common/Interfaces');
+import RXModuleInterface = require('../common/ModuleInterface');
 import RXTypes = require('../common/Types');
 import AnimatedImpl = require('../native-common/Animated');
 
@@ -137,8 +137,9 @@ module ReactXP {
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 
-var _rxImplementsRxInterface: RXInterface.ReactXP = ReactXP;
-export = _rxImplementsRxInterface;
+var _rxImplementsRxInterface: typeof RXModuleInterface.ReactXP = ReactXP;
+_rxImplementsRxInterface = _rxImplementsRxInterface;
+export = ReactXP;
 
 /*
 var rx = module.exports;

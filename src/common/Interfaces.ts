@@ -17,47 +17,6 @@ import Types = require('./Types');
 
 export import Types = Types;
 
-export interface ReactXP {
-    // Components
-
-    // API namespaces
-    Accessibility: Accessibility;
-    Alert: Alert;
-    Animated: Animated;
-    App: App;
-    Clipboard: Clipboard;
-    Input: Input;
-    Storage: Storage;
-    Location: Location;
-    Modal: Modal;
-    Network: Network;
-    Platform: Platform;
-    Popup: Popup;
-    StatusBar: StatusBar;
-    Styles: Styles;
-
-    ActivityIndicator: typeof ActivityIndicator;
-    Button: typeof Button;
-    Image: typeof Image;
-    GestureView: typeof GestureView;
-    Link: typeof Link;
-    Picker: typeof Picker;
-    ScrollView: typeof ScrollView;
-    Text: typeof Text;
-    TextInput: typeof TextInput;
-    UserInterface: UserInterface;
-    UserPresence: UserPresence;
-    View: typeof View;
-    WebView: typeof WebView;
-
-    Component: typeof Component;
-    Children: typeof React.Children;
-    Types: typeof Types;
-
-    createElement: any;
-    __spread: any;
-}
-
 export abstract class ActivityIndicator extends React.Component<Types.ActivityIndicatorProps, any> {}
 
 export abstract class Alert {
@@ -124,6 +83,7 @@ export abstract class UserInterface {
     // Content Size Multiplier
     abstract getContentSizeMultiplier(): SyncTasks.Promise<number>;
     contentSizeMultiplierChangedEvent = new SubscribableEvent<(multiplier: number) => void>();
+    abstract setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
 
     // On-screen Keyboard
     abstract dismissKeyboard(): void;
@@ -307,4 +267,10 @@ export interface Animated {
     timing: Types.Animated.TimingFunction;
     parallel: Types.Animated.ParallelFunction;
     sequence: Types.Animated.SequenceFunction;
+}
+
+export interface International {
+    allowRTL(allow: boolean): void;
+    forceRTL(force: boolean): void;
+    isRTL(): boolean;
 }

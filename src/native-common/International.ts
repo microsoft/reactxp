@@ -9,7 +9,9 @@
 
 import RN = require('react-native');
 
-export class International {
+import RXInterfaces = require('../common/Interfaces');
+
+export class International implements RXInterfaces.International {
     allowRTL(allow: boolean): void {
         RN.I18nManager.allowRTL(allow);
     }

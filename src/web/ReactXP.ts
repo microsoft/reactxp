@@ -11,7 +11,7 @@
 import React = require('react');
 
 import AnimatedImpl = require('./Animated');
-import RXInterface = require('../common/Interfaces');
+import RXModuleInterface = require('../common/ModuleInterface');
 import RXTypes = require('../common/Types');
 
 // -- STRANGE THINGS GOING ON HERE --
@@ -143,8 +143,9 @@ AppImpl.activationStateChangedEvent.subscribe(newState => {
 //    Note: RX must be a module so 'RX.Foo' can be a valid value ('new RX.Foo') and valid type ('var k: RX.Foo'), but modules cannot
 //    implement an interface. If RX was a class or variable then it could directly check this, but then 'RX.Foo' would not be a valid type.
 
-var _rxImplementsRxInterface: RXInterface.ReactXP = ReactXP;
-export = _rxImplementsRxInterface;
+var _rxImplementsRxInterface: typeof RXModuleInterface.ReactXP = ReactXP;
+_rxImplementsRxInterface = _rxImplementsRxInterface;
+export = ReactXP;
 
 /*
 
