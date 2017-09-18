@@ -7,6 +7,11 @@
         "target": "es5",
         "experimentalDecorators": true,
         "noImplicitAny": true,
+        "noImplicitReturns": false,
+        "noImplicitThis": false,
+        "noUnusedLocals": false,
+        "strictNullChecks": false,
+        "forceConsistentCasingInFileNames": true,
         "outDir": "dist/",
         "lib": [
             "es5",
