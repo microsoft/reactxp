@@ -7,7 +7,6 @@
 * Android-specific implementation of Text component.
 */
 
-import _ = require('../native-common/lodashMini');
 import React = require('react');
 import RN = require('react-native');
 
@@ -25,7 +24,7 @@ var _styles = {
 
 export class Text extends CommonText {
     protected _getStyles(): Types.StyleRuleSetRecursiveArray<Types.TextStyleRuleSet> {
-        return _.compact([_styles.defaultText, this.props.style]);
+        return [_styles.defaultText, this.props.style];
     }
 
     // We override the render method to work around a couple of Android-specific

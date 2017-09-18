@@ -378,10 +378,13 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         this._nativeImageWidth = undefined;
         this._nativeImageHeight = undefined;
         let imageDOM = ReactDOM.findDOMNode<HTMLImageElement>(this.refs['image']);
-        if (imageDOM) {
-            this._nativeImageWidth = imageDOM.naturalWidth;
-            this._nativeImageHeight = imageDOM.naturalHeight;
+        if (!imageDOM) {
+            // No idea why this might happen, but check anyway...
+            return;
         }
+
+        this._nativeImageWidth = imageDOM.naturalWidth;
+        this._nativeImageHeight = imageDOM.naturalHeight;
 
         // We can hide the img now. We assume that if the img. URL resolved without error,
         // then the background img. URL also did.

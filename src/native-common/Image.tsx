@@ -38,8 +38,8 @@ export class Image extends React.Component<Types.ImageProps, {}> {
     }
 
     private _isMounted = false;
-    private _nativeImageWidth: number;
-    private _nativeImageHeight: number;
+    private _nativeImageWidth: number|undefined;
+    private _nativeImageHeight: number|undefined;
 
     protected _getAdditionalProps(): RN.ImageProps {
         return {};
@@ -109,15 +109,12 @@ export class Image extends React.Component<Types.ImageProps, {}> {
             return;
         }
 
-        let nativeEvent = e.nativeEvent as any;
-
-        if (nativeEvent) {
-            this._nativeImageWidth = nativeEvent.source.width;
-            this._nativeImageHeight = nativeEvent.source.height;
-        }
+        const nativeEvent = e.nativeEvent as any;
+        this._nativeImageWidth = nativeEvent.source.width;
+        this._nativeImageHeight = nativeEvent.source.height;
 
         if (this.props.onLoad) {
-            this.props.onLoad({ width: this._nativeImageWidth, height: this._nativeImageHeight });
+            this.props.onLoad({ width: this._nativeImageWidth!!!, height: this._nativeImageHeight!!! });
         }
     }
 
@@ -133,11 +130,11 @@ export class Image extends React.Component<Types.ImageProps, {}> {
     }
 
     // Note: This works only if you have an onLoaded handler and wait for the image to load.
-    getNativeWidth(): number {
+    getNativeWidth(): number|undefined {
         return this._nativeImageWidth;
     }
 
-    getNativeHeight(): number {
+    getNativeHeight(): number|undefined {
         return this._nativeImageHeight;
     }
 }

@@ -10,6 +10,7 @@
 */
 
 import assert = require('assert');
+import _ = require('./lodashMini');
 import React = require('react');
 import RN = require('react-native');
 
@@ -207,13 +208,13 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         }
 
         const initialTimeStamp = this._getEventTimestamp(this._lastGestureStartEvent);
-        const initialPageX = this._lastGestureStartEvent.pageX || 0;
-        const initialPageY = this._lastGestureStartEvent.pageY || 0;
+        const initialPageX = this._lastGestureStartEvent.pageX!!!;
+        const initialPageY = this._lastGestureStartEvent.pageY!!!;
 
         const timeStamp = this._getEventTimestamp(e);
 
         return (timeStamp - initialTimeStamp <= _tapDurationThreshold &&
-            this._calcDistance(initialPageX - (e.pageX || 0), initialPageY - (e.pageY || 0)) <= _tapPixelThreshold);
+            this._calcDistance(initialPageX - e.pageX!!!, initialPageY - e.pageY!!!) <= _tapPixelThreshold);
     }
 
     // This method assumes that the caller has already determined that two
@@ -298,7 +299,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         }
 
         // Has the user started to pan?
-        const panThreshold = (this.props.panPixelThreshold && this.props.panPixelThreshold > 0) ?
+        const panThreshold = (!_.isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
             this.props.panPixelThreshold : _panPixelThreshold;
         return (this._calcDistance(gestureState.dx, gestureState.dy) >= panThreshold);
     }
@@ -309,7 +310,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         }
 
         // Has the user started to pan?
-        const panThreshold = (this.props.panPixelThreshold && this.props.panPixelThreshold > 0) ?
+        const panThreshold = (!_.isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
             this.props.panPixelThreshold : _panPixelThreshold;
         const isPan = Math.abs(gestureState.dy) >= panThreshold;
 
@@ -325,7 +326,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         }
 
         // Has the user started to pan?
-        const panThreshold = (this.props.panPixelThreshold && this.props.panPixelThreshold > 0) ?
+        const panThreshold = (!_.isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
             this.props.panPixelThreshold : _panPixelThreshold;
         const isPan = Math.abs(gestureState.dx) >= panThreshold;
 

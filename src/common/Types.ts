@@ -142,7 +142,7 @@ export interface AnimatedTransformStyle {
     }];
 }
 
-export type StyleRuleSet<T> = T | number;
+export type StyleRuleSet<T> = T | number | undefined;
 export type StyleRuleSetOrArray<T> = StyleRuleSet<T>|Array<StyleRuleSet<T>>;
 export interface StyleRuleSetRecursiveArray<T> extends Array<StyleRuleSetOrArray<T>|StyleRuleSetRecursiveArray<T>> {}
 export type StyleRuleSetRecursive<T> = StyleRuleSet<T> | StyleRuleSetRecursiveArray<T>;
@@ -488,7 +488,7 @@ export interface ImagePropsShared extends CommonProps {
     resizeMethod?: 'auto' | 'resize' | 'scale'; // Android only
     title?: string;
 
-    onLoad?: (size: OptionalDimensions) => void;
+    onLoad?: (size: Dimensions) => void;
     onError?: (err?: Error) => void;
 
     shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
@@ -1103,21 +1103,12 @@ export interface KeyboardEvent extends SyntheticEvent {
 // ----------------------------------------------------------------------
 export var Children: React.ReactChildren;
 
-// interface Element<P> {
-//     type: React.ComponentClass<P>;
-//     props: P;
-// }
-
 //
 // Dimensions
 // ----------------------------------------------------------------------
 export type Dimensions = {
     width: number;
     height: number;
-};
-export type OptionalDimensions = {
-    width?: number;
-    height?: number;
 };
 
 //
@@ -1145,7 +1136,7 @@ export enum LinkingErrorCode {
 
 export interface LinkingErrorInfo {
     code: LinkingErrorCode;
-    url: string|undefined;
+    url: string;
     description?: string;
 }
 

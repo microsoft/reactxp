@@ -350,7 +350,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                         if (this.props.activePopupOptions.onAnchorPressed) {
                             setTimeout(() => {
                                 // We can't pass through the DOM event argument to the anchor event handler as the event we have at this
-                                // point is a DOM Event and the anchor expect a Syntethic event. There doesn't seem to be any way to convert
+                                // point is a DOM Event and the anchor expect a Synthetic event. There doesn't seem to be any way to convert
                                 // between them. Passing null for now.
                                 this.props.activePopupOptions!!!.onAnchorPressed!!!(undefined);
                             }, 500);
@@ -463,7 +463,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _startHidePopupTimer() {
         if (this.props.autoDismiss) {
             // Should we immediately hide it, or did the caller request a delay?
-            if (this.props.autoDismissDelay && this.props.autoDismissDelay > 0) {
+            if (!_.isUndefined(this.props.autoDismissDelay) && this.props.autoDismissDelay > 0) {
                 this._hidePopupTimer = window.setTimeout(() => {
                     this._hidePopupTimer = undefined;
                     this._dismissPopup();

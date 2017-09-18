@@ -14,7 +14,7 @@ import RX = require('../common/Interfaces');
 export class Storage extends RX.Storage {
     getItem(key: string): SyncTasks.Promise<string|undefined> {
         const value = window.localStorage.getItem(key);
-        return SyncTasks.Resolved<string|undefined>(value || undefined);
+        return SyncTasks.Resolved<string|undefined>(value === null ? undefined : value);
     }
 
     setItem(key: string, value: string): SyncTasks.Promise<void> {

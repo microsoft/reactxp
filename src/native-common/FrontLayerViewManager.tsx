@@ -169,7 +169,7 @@ export class FrontLayerViewManager {
                                 bottom: y + height, width: width, height: height };
 
                         // Find out if the press event was on the anchor so we can notify the caller about it.
-                        if (touchEvent.pageX && touchEvent.pageY &&
+                        if (!_.isUndefined(touchEvent.pageX) && !_.isUndefined(touchEvent.pageY) &&
                                 touchEvent.pageX >= anchorRect.left && touchEvent.pageX < anchorRect.right
                                 && touchEvent.pageY >= anchorRect.top && touchEvent.pageY < anchorRect.bottom) {
                             // Showing another animation while dimissing the popup creates a conflict in the 

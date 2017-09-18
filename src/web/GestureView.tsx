@@ -188,7 +188,8 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
     }
 
     private _getPanPixelThreshold = () => {
-        return (this.props.panPixelThreshold && this.props.panPixelThreshold > 0) ? this.props.panPixelThreshold : _panPixelThreshold;
+        return (!_.isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
+            this.props.panPixelThreshold : _panPixelThreshold;
     }
 
     private _shouldRespondToPan(gestureState: Types.PanGestureState): boolean {

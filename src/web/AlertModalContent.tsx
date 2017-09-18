@@ -7,7 +7,6 @@
 * Web Alert dialog boxes modal content.
 */
 
-import _ = require('../common/lodashMini');
 import React = require('react');
 
 import RX = require('../common/Interfaces');
@@ -132,9 +131,9 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
                         onPress={ e => this._onPressButton(btnSpec) }
                         onHoverStart={ () => this.setState({ hoverIndex: i }) }
                         onHoverEnd={ () => this.setState({ hoverIndex: -1 }) }
-                        style={ _.compact(buttonStyle) }
+                        style={ buttonStyle }
                     >
-                        <Text style={ _.compact(buttonTextStyle) }>
+                        <Text style={ buttonTextStyle }>
                             { btnSpec.text }
                         </Text>
                     </Button>
@@ -146,16 +145,16 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
             <View style={ _styles.background } onPress={ this._onPressBackground }>
                 <View style={ _styles.verticalRoot }>
                     <View
-                        style={ _.compact([_styles.defaultBody, theme && theme.bodyStyle]) }
+                        style={ [_styles.defaultBody, theme && theme.bodyStyle] }
                         onPress={ this._onPressBody }
                     >
                         <View>
-                            <Text style={ _.compact([_styles.defaultTitleText, theme && theme.titleTextStyle]) }>
+                            <Text style={ [_styles.defaultTitleText, theme && theme.titleTextStyle] }>
                                 { this.props.title }
                             </Text>
                         </View>
                         <View>
-                            <Text style={ _.compact([_styles.defaultMessageText, theme && theme.messageTextStyle]) }>
+                            <Text style={ [_styles.defaultMessageText, theme && theme.messageTextStyle] }>
                                 { this.props.message }
                             </Text>
                         </View>
