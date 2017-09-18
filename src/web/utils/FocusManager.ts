@@ -486,23 +486,23 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
     contextTypes.focusManager = PropTypes.object;
     Component.contextTypes = contextTypes;
 
-    inheritMethod('componentDidMount', function (focusManager: FocusManager) {
+    inheritMethod('componentDidMount', function (this: React.Component<any, any>, focusManager: FocusManager) {
         if (!isConditionallyFocusable || isConditionallyFocusable.call(this)) {
             focusManager.addFocusableComponent(this);
         }
     });
 
-    inheritMethod('componentWillUnmount', function (focusManager: FocusManager) {
+    inheritMethod('componentWillUnmount', function (this: React.Component<any, any>, focusManager: FocusManager) {
         focusManager.removeFocusableComponent(this);
     });
 
-    inheritMethod('componentWillUpdate', function (focusManager: FocusManager, origArguments: IArguments) {
+    inheritMethod('componentWillUpdate', function (this: React.Component<any, any>, focusManager: FocusManager, origArguments: IArguments) {
         if (isConditionallyFocusable) {
             let isFocusable = isConditionallyFocusable.apply(this, origArguments);
 
-            if (isFocusable && !this._focusableComponentId) {
+            if (isFocusable && !(this as any)._focusableComponentId) {
                 focusManager.addFocusableComponent(this);
-            } else if (!isFocusable && this._focusableComponentId) {
+            } else if (!isFocusable && (this as any)._focusableComponentId) {
                 focusManager.removeFocusableComponent(this);
             }
         }

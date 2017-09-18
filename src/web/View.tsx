@@ -340,7 +340,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     }
 }
 
-applyFocusableComponentMixin(View, function (nextProps?: Types.ViewProps) {
+applyFocusableComponentMixin(View, function (this: View, nextProps?: Types.ViewProps) {
     let tabIndex: number = nextProps && ('tabIndex' in nextProps) ? nextProps.tabIndex : this.props.tabIndex;
     return tabIndex !== undefined && tabIndex !== -1;
 });
