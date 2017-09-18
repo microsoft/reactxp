@@ -537,6 +537,7 @@ export interface TextPropsShared extends CommonProps {
     elevation?: number;
 
     onPress?: (e: SyntheticEvent) => void;
+    onContextMenu?: (e: React.SyntheticEvent) => void;
 }
 
 export interface TextProps extends TextPropsShared {
