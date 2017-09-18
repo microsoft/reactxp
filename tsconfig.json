@@ -7,7 +7,7 @@
         "target": "es5",
         "experimentalDecorators": true,
         "noImplicitAny": true,
-        "noImplicitReturns": false,
+        "noImplicitReturns": true,
         "noImplicitThis": false,
         "noUnusedLocals": false,
         "strictNullChecks": false,

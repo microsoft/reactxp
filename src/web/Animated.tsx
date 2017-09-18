@@ -365,6 +365,7 @@ class TimingAnimation extends Animation {
                 value = trimmedValue.substr(0, trimmedValue.length - units.length);
                 return false;
             }
+            return undefined;
         });
 
         return value;

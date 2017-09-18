@@ -33,7 +33,11 @@ export class Linking extends CommonLinking {
                     description: 'No app found to handle url: ' + url
                 } as Types.LinkingErrorInfo);
             } else {
-                return RN.Linking.openURL(url);
+                RN.Linking.openURL(url).then(() => {
+                    defer.resolve();
+                }, err => {
+                    defer.reject(err);
+                });
             }
         }).catch(error => {
             defer.reject({
