@@ -10,7 +10,7 @@
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noUnusedLocals": true,
-        "strictNullChecks": false,
+        "strictNullChecks": true,
         "forceConsistentCasingInFileNames": true,
         "outDir": "dist/",
         "lib": [

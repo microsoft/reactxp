@@ -158,9 +158,9 @@ var timing = function(
     return {
         start: function(callback?: Types.Animated.EndCallback): void {
             function animate() : void {
-                let timingConfig: RN.AnimatedTimingConfig = {
+                const timingConfig: RN.AnimatedTimingConfig = {
                     toValue: config.toValue,
-                    easing: config.easing ? config.easing.function : null,
+                    easing: config.easing ? config.easing.function : undefined,
                     duration: config.duration,
                     delay: config.delay,
                     isInteraction: config.isInteraction,
@@ -173,7 +173,7 @@ var timing = function(
                     }
 
                     if (isLooping) {
-                        value.setValue(config.loop.restartFrom);
+                        value.setValue(config.loop!!!.restartFrom);
                         // Hack to get into the loop
                         animate();
                     }

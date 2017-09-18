@@ -169,13 +169,14 @@ export class FrontLayerViewManager {
                                 bottom: y + height, width: width, height: height };
 
                         // Find out if the press event was on the anchor so we can notify the caller about it.
-                        if (touchEvent.pageX >= anchorRect.left && touchEvent.pageX < anchorRect.right
-                            && touchEvent.pageY >= anchorRect.top && touchEvent.pageY < anchorRect.bottom) {
+                        if (touchEvent.pageX && touchEvent.pageY &&
+                                touchEvent.pageX >= anchorRect.left && touchEvent.pageX < anchorRect.right
+                                && touchEvent.pageY >= anchorRect.top && touchEvent.pageY < anchorRect.bottom) {
                             // Showing another animation while dimissing the popup creates a conflict in the 
                             // UI making it not doing one of the two animations (i.e.: Opening an actionsheet
                             // while dismissing a popup). We introduce this delay to make sure the popup 
                             // dimissing animation has finished before we call the event handler.
-                            setTimeout(() => { activePopupContext.popupOptions.onAnchorPressed(e); }, 500);
+                            setTimeout(() => { activePopupContext.popupOptions.onAnchorPressed!!!(e); }, 500);
                         }
                     }
                 );

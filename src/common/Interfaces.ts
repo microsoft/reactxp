@@ -153,7 +153,7 @@ export abstract class Popup {
 
 export abstract class Linking {
     // Incoming deep links
-    abstract getInitialUrl(): SyncTasks.Promise<string>;
+    abstract getInitialUrl(): SyncTasks.Promise<string|undefined>;
     deepLinkRequestEvent = new SubscribableEvent<(url: string) => void>();
 
     // Outgoing deep links
@@ -245,7 +245,8 @@ export abstract class StatusBar {
 }
 
 export abstract class Styles {
-    abstract combine<T>(ruleSet1: Types.StyleRuleSetRecursive<T>, ruleSet2?: Types.StyleRuleSetRecursive<T>): Types.StyleRuleSetOrArray<T>;
+    abstract combine<T>(ruleSet1: Types.StyleRuleSetRecursive<T>|undefined, ruleSet2?: Types.StyleRuleSetRecursive<T>)
+        : Types.StyleRuleSetOrArray<T>|undefined;
     abstract createViewStyle(ruleSet: Types.ViewStyle, cacheStyle?: boolean): Types.ViewStyleRuleSet;
     abstract createAnimatedViewStyle(ruleSet: Types.AnimatedViewStyle): Types.AnimatedViewStyleRuleSet;
     abstract createScrollViewStyle(ruleSet: Types.ScrollViewStyle, cacheStyle?: boolean): Types.ScrollViewStyleRuleSet;

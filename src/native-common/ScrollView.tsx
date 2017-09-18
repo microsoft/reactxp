@@ -17,7 +17,7 @@ import ViewBase from './ViewBase';
 export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements RX.IScrollView {
     private _scrollTop = 0;
     private _scrollLeft = 0;
-    protected _nativeView: RN.ScrollView = null;
+    protected _nativeView: RN.ScrollView|undefined;
 
     render() {
         let scrollThrottle = this.props.scrollEventThrottle || 16;
@@ -30,12 +30,12 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         var layoutCallback = this.props.onLayout ?
                 // We have a callback function, call the wrapper
                 this._onLayout :
-                null;
+                undefined;
 
         var scrollCallback = this.props.onScroll ?
                 // We have a callback function, call the wrapper
                 this._onScroll :
-                null;
+                undefined;
 
         // TODO: #737970 Remove special case for UWP when this bug is fixed. The bug
         //   causes you to have to click twice instead of once on some pieces of UI in

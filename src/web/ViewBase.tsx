@@ -22,7 +22,7 @@ const _layoutTimerActiveDuration = 1000;
 const _layoutTimerInactiveDuration = 10000;
 
 export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase<P, S> {
-    private static _viewCheckingTimer: number = null;
+    private static _viewCheckingTimer: number|undefined;
     private static _isResizeHandlerInstalled = false;
     private static _viewCheckingList: ViewBase<Types.ViewProps, {}>[] = [];
     private static _appActivationState = Types.AppActivationState.Active;
@@ -30,7 +30,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
     abstract render(): JSX.Element;
     protected abstract _getContainerRef(): React.Component<any, any>;
     private _isMounted = false;
-    private _container: HTMLElement;
+    private _container: HTMLElement|undefined;
 
     protected _getContainer(): HTMLElement {
         // Perf: Don't prefetch this since we might never need it
@@ -38,7 +38,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         if (!this._container && containerRef) {
             this._container = ReactDOM.findDOMNode<HTMLElement>(containerRef);
         }
-        return this._container;
+        return this._container!!!;
     }
 
     // Sets the activation state so we can stop our periodic timer
@@ -50,7 +50,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
             // Cancel any existing timers.
             if (ViewBase._viewCheckingTimer) {
                 window.clearInterval(ViewBase._viewCheckingTimer);
-                ViewBase._viewCheckingTimer = null;
+                ViewBase._viewCheckingTimer = undefined;
             }
 
             if (ViewBase._viewCheckingList.length > 0) {
@@ -85,13 +85,13 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
     }
 
     private static _layoutReportList: Function[] = [];
-    private static _layoutReportingTimer: number = null;
+    private static _layoutReportingTimer: number|undefined;
     private static _reportLayoutChange(func: Function) {
         this._layoutReportList.push(func);
 
         if (!ViewBase._layoutReportingTimer) {
             ViewBase._layoutReportingTimer = window.setTimeout(() => {
-                ViewBase._layoutReportingTimer = null;
+                ViewBase._layoutReportingTimer = undefined;
                 ViewBase._reportDeferredLayoutChanges();
             }, 0);
         }
@@ -185,7 +185,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         if (ViewBase._viewCheckingList.length === 0) {
             if (ViewBase._viewCheckingTimer) {
                 clearInterval(ViewBase._viewCheckingTimer);
-                ViewBase._viewCheckingTimer = null;
+                ViewBase._viewCheckingTimer = undefined;
             }
 
             if (ViewBase._isResizeHandlerInstalled) {
@@ -223,7 +223,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
 
         // Don't retain a reference to a DOM object. This can cause memory leaks
         // because the GC may not be able to clean them up.
-        this._container = null;
+        this._container = undefined;
 
         if (this.props.onLayout) {
             this._checkViewCheckerUnbuild();

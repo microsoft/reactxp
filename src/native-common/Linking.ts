@@ -58,7 +58,7 @@ export class Linking extends CommonLinking {
         }).catch(error => {
             defer.reject({
                 code: Types.LinkingErrorCode.InitialUrlNotFound,
-                url: null,
+                url: '',
                 description: error
             } as Types.LinkingErrorInfo);
         });

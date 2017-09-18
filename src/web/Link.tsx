@@ -43,7 +43,7 @@ const _longPressTime = 1000;
 
 export class Link extends React.Component<Types.LinkProps, {}> {
 
-    private _longPressTimer: number;
+    private _longPressTimer: number|undefined;
 
     render() {
         // SECURITY WARNING:

@@ -23,8 +23,8 @@ const _styles = {
 };
 
 export interface TextInputState {
-    inputValue?: string;
-    isFocused?: boolean;
+    inputValue: string;
+    isFocused: boolean;
 }
 
 export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {

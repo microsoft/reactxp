@@ -488,7 +488,7 @@ export interface ImagePropsShared extends CommonProps {
     resizeMethod?: 'auto' | 'resize' | 'scale'; // Android only
     title?: string;
 
-    onLoad?: (size: Dimensions) => void;
+    onLoad?: (size: OptionalDimensions) => void;
     onError?: (err?: Error) => void;
 
     shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
@@ -938,7 +938,7 @@ export interface PopupOptions {
     // anchor has been pressed.
     // IMPORTANT NOTE: This handler may be called when the component is
     // already unmounted as it uses a time delay to accommodate a fade-out animation.
-    onAnchorPressed?: (e: RX.Types.SyntheticEvent) => void;
+    onAnchorPressed?: (e?: RX.Types.SyntheticEvent) => void;
 
     // Determines if the anchor invoking the popup should behave like a toggle.
     // Value = true  => Calling Popup.show will show the popup. A subsequent call, will hide the popup, and so on.
@@ -1115,6 +1115,10 @@ export type Dimensions = {
     width: number;
     height: number;
 };
+export type OptionalDimensions = {
+    width?: number;
+    height?: number;
+};
 
 //
 // Linking
@@ -1141,7 +1145,7 @@ export enum LinkingErrorCode {
 
 export interface LinkingErrorInfo {
     code: LinkingErrorCode;
-    url: string;
+    url: string|undefined;
     description?: string;
 }
 

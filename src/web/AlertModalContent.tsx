@@ -7,16 +7,17 @@
 * Web Alert dialog boxes modal content.
 */
 
+import _ = require('../common/lodashMini');
 import React = require('react');
 
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 import { ViewProps } from '../common/Types';
-import { default as Button } from './Button';
-import { default as Modal } from './Modal';
-import { default as Styles } from './Styles';
-import { default as Text } from './Text';
-import { default as View } from './View';
+import Button from './Button';
+import Modal from './Modal';
+import Styles from './Styles';
+import Text from './Text';
+import View from './View';
 
 export interface AppModalContentProps extends ViewProps {
     buttons?: Types.AlertButtonSpec[];
@@ -102,10 +103,10 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
     public render() {
         const theme = this.props.theme;
 
-        var buttons = this.props.buttons.map((btnSpec, i) => {
+        var buttons = this.props.buttons && this.props.buttons.map((btnSpec, i) => {
             let isCancel = btnSpec.style === 'cancel';
-            let buttonStyle = [_styles.defaultButton, isCancel && _styles.defaultCancelButton];
-            let buttonTextStyle = [_styles.defaultBtnText, isCancel && _styles.defaultCancelBtnText];
+            let buttonStyle = [_styles.defaultButton, isCancel ? _styles.defaultCancelButton : undefined];
+            let buttonTextStyle = [_styles.defaultBtnText, isCancel ? _styles.defaultCancelBtnText : undefined];
 
             // Is the mouse pointer currently hovering over this button?
             if (this.state.hoverIndex === i) {
@@ -131,9 +132,9 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
                         onPress={ e => this._onPressButton(btnSpec) }
                         onHoverStart={ () => this.setState({ hoverIndex: i }) }
                         onHoverEnd={ () => this.setState({ hoverIndex: -1 }) }
-                        style={ buttonStyle }
+                        style={ _.compact(buttonStyle) }
                     >
-                        <Text style={ buttonTextStyle }>
+                        <Text style={ _.compact(buttonTextStyle) }>
                             { btnSpec.text }
                         </Text>
                     </Button>
@@ -145,16 +146,16 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
             <View style={ _styles.background } onPress={ this._onPressBackground }>
                 <View style={ _styles.verticalRoot }>
                     <View
-                        style={ [_styles.defaultBody, theme && theme.bodyStyle] }
+                        style={ _.compact([_styles.defaultBody, theme && theme.bodyStyle]) }
                         onPress={ this._onPressBody }
                     >
                         <View>
-                            <Text style={ [_styles.defaultTitleText, theme && theme.titleTextStyle] }>
+                            <Text style={ _.compact([_styles.defaultTitleText, theme && theme.titleTextStyle]) }>
                                 { this.props.title }
                             </Text>
                         </View>
                         <View>
-                            <Text style={ [_styles.defaultMessageText, theme && theme.messageTextStyle] }>
+                            <Text style={ _.compact([_styles.defaultMessageText, theme && theme.messageTextStyle]) }>
                                 { this.props.message }
                             </Text>
                         </View>

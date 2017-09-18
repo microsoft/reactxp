@@ -24,25 +24,25 @@ export abstract class AccessibilityPlatformUtil {
 }
 
 export abstract class AccessibilityUtil {
-    isHidden(importantForAccessibility: Types.ImportantForAccessibility): boolean {
+    isHidden(importantForAccessibility: Types.ImportantForAccessibility|undefined): boolean {
         if (importantForAccessibility) {
             const importantForAccessibilityString = this.importantForAccessibilityToString(importantForAccessibility);
             return importantForAccessibilityString === ImportantForAccessibilityMap[Types.ImportantForAccessibility.NoHideDescendants];
         }
-        return undefined;
+        return false;
     }
 
-    importantForAccessibilityToString(importantForAccessibility: Types.ImportantForAccessibility, 
-        defaultImportantForAccessibility?: Types.ImportantForAccessibility): string {
+    importantForAccessibilityToString(importantForAccessibility: Types.ImportantForAccessibility|undefined, 
+        defaultImportantForAccessibility?: Types.ImportantForAccessibility): string|undefined {
         importantForAccessibility = importantForAccessibility || defaultImportantForAccessibility; 
         
-        if (ImportantForAccessibilityMap[importantForAccessibility]) {
+        if (importantForAccessibility && ImportantForAccessibilityMap[importantForAccessibility]) {
             return ImportantForAccessibilityMap[importantForAccessibility];
         }
         return undefined;
     }
 
-    protected abstract accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): string;
+    protected abstract accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): string|undefined;
     protected abstract accessibilityTraitToString(trait: Types.AccessibilityTrait | Types.AccessibilityTrait[], 
-        defaultTrait?: Types.AccessibilityTrait): string | string[]; 
+        defaultTrait?: Types.AccessibilityTrait): string | string[] | undefined; 
 }

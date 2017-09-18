@@ -86,7 +86,7 @@ export class Image extends React.Component<Types.ImageProps, {}> {
                 resizeMode={ resizeMode }
                 resizeMethod= { this.props.resizeMethod }
                 accessibilityLabel={ this.props.accessibilityLabel }
-                onLoad={ this.props.onLoad ? this._onLoad : null }
+                onLoad={ this.props.onLoad ? this._onLoad : undefined }
                 onError={ this._onError }
                 shouldRasterizeIOS= { this.props.shouldRasterizeIOS }
                 { ...additionalProps }
@@ -100,8 +100,8 @@ export class Image extends React.Component<Types.ImageProps, {}> {
         (this.refs['nativeImage'] as RN.Image).setNativeProps(nativeProps);
     }
 
-    protected getStyles(): Types.ImageStyleRuleSet | Types.ImageStyleRuleSet[] {
-        return Styles.combine<Types.ImageStyle>([_styles.defaultImage, this.props.style]);
+    protected getStyles() {
+        return [_styles.defaultImage, this.props.style];
     }
 
     private _onLoad = (e: React.SyntheticEvent) => {

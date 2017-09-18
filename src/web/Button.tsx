@@ -43,7 +43,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     private _lastMouseDownTime: number = 0;
     private _lastMouseDownEvent: Types.SyntheticEvent;
     private _ignoreClick = false;
-    private _longPressTimer: number;
+    private _longPressTimer: number|undefined;
     private _focusDueToMouseEvent = false;
     private _blurDueToMouseEvent = false;
 

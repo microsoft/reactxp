@@ -66,7 +66,7 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
     // Converts an AccessibilityTrait to a string, but the returned value is only needed for iOS. Other platforms ignore it. Presence
     // of an AccessibilityTrait.None can make an element non-accessible on Android. We use the override traits if they are present, else
     // use the deafult trait.
-    accessibilityTraitToString(overrideTraits: Types.AccessibilityTrait | Types.AccessibilityTrait[],
+    accessibilityTraitToString(overrideTraits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined,
         defaultTrait?: Types.AccessibilityTrait): string[] {
         // Check if there are valid override traits. Use them or else fallback to default traits.
         if (!overrideTraits && !defaultTrait) {
@@ -74,13 +74,13 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
         }
 
         const traits = _.isArray(overrideTraits) ? overrideTraits : [overrideTraits || defaultTrait];
-        return _.compact(_.map(traits, t  => traitsMap[t]));
+        return _.compact(_.map(traits, t  => t ? traitsMap[t] : undefined));
     }
 
     // Converts an AccessibilityTrait to an accessibilityComponentType string, but the returned value is only needed for Android. Other
     // platforms ignore it.
-    accessibilityComponentTypeToString(overrideTraits: Types.AccessibilityTrait | Types.AccessibilityTrait[],
-        defaultTrait?: Types.AccessibilityTrait): string {
+    accessibilityComponentTypeToString(overrideTraits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined,
+        defaultTrait?: Types.AccessibilityTrait): string|undefined {
         // Check if there are valid override traits. Use them or else fallback to default traits.
         // Max enum value in this array is the componentType for android.
         if (!overrideTraits && !defaultTrait) {
@@ -88,11 +88,12 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
         }
 
         const combinedTraits = _.isArray(overrideTraits) ? overrideTraits : [overrideTraits || defaultTrait];
-        return componentTypeMap[_.max(_.filter(combinedTraits, t => componentTypeMap.hasOwnProperty(t as any)))];
+        const maxTrait = _.max(_.filter(combinedTraits, t => componentTypeMap.hasOwnProperty(t as any)));
+        return maxTrait ? componentTypeMap[maxTrait] : undefined;
     }
 
     // Converts an AccessibilityLiveRegion to a string, but the return value is only needed for Android. Other platforms ignore it.
-    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): string {
+    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): string|undefined {
         if (liveRegionMap[liveRegion]) {
             return liveRegionMap[liveRegion];
         }

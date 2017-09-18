@@ -7,6 +7,7 @@
 * Android-specific implementation of Text component.
 */
 
+import _ = require('../native-common/lodashMini');
 import React = require('react');
 import RN = require('react-native');
 
@@ -23,8 +24,8 @@ var _styles = {
 };
 
 export class Text extends CommonText {
-    protected _getStyles(): Types.TextStyleRuleSet | Types.TextStyleRuleSet[] {
-        return Styles.combine<Types.TextStyle>([_styles.defaultText, this.props.style]);
+    protected _getStyles(): Types.StyleRuleSetRecursiveArray<Types.TextStyleRuleSet> {
+        return _.compact([_styles.defaultText, this.props.style]);
     }
 
     // We override the render method to work around a couple of Android-specific
@@ -38,7 +39,7 @@ export class Text extends CommonText {
                 style={ this._getStyles() }
                 ref='nativeText'
                 importantForAccessibility={ importantForAccessibility }
-                numberOfLines={ this.props.numberOfLines === 0 ? null : this.props.numberOfLines }
+                numberOfLines={ this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
                 maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
                 ellipsizeMode={ this.props.ellipsizeMode }

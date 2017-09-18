@@ -42,13 +42,13 @@ const _styles = {
 
 export class RootView extends React.Component<{}, RootViewState> {
     private _changeListener = this._onChange.bind(this);
-    private _frontLayerViewChangedSubscription: SubscriptionToken = null;
-    private _newAnnouncementEventChangedSubscription: SubscriptionToken = null;
+    private _frontLayerViewChangedSubscription: SubscriptionToken|undefined;
+    private _newAnnouncementEventChangedSubscription: SubscriptionToken|undefined;
 
     constructor() {
         super();
         this.state = {
-            mainView: null,
+            mainView: undefined,
             announcementText: ''
         };
     }
@@ -73,10 +73,16 @@ export class RootView extends React.Component<{}, RootViewState> {
     }
 
     componentWillUnmount(): void {
-        this._frontLayerViewChangedSubscription.unsubscribe();
-        this._frontLayerViewChangedSubscription = null;
-        this._newAnnouncementEventChangedSubscription.unsubscribe();
-        this._newAnnouncementEventChangedSubscription = null;
+        if (this._frontLayerViewChangedSubscription) {
+            this._frontLayerViewChangedSubscription.unsubscribe();
+            this._frontLayerViewChangedSubscription = undefined;
+        }
+
+        if (this._newAnnouncementEventChangedSubscription) {
+            this._newAnnouncementEventChangedSubscription.unsubscribe();
+            this._newAnnouncementEventChangedSubscription = undefined;
+        }
+
         MainViewStore.unsubscribe(this._changeListener);
     }
 

@@ -25,7 +25,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
             <RN.Text
                 style={ this.props.style }
                 ref='nativeLink'
-                numberOfLines={ this.props.numberOfLines === 0 ? null : this.props.numberOfLines }
+                numberOfLines={ this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines }
                 onPress={ this._onPress }
                 onLongPress={ this._onLongPress }
                 allowFontScaling={ this.props.allowFontScaling }

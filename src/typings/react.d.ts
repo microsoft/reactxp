@@ -109,26 +109,24 @@ declare namespace __React {
     // ----------------------------------------------------------------------
 
     // Base component for plain JS classes
-    class Component<P, S> implements ComponentLifecycle<P, S> {
+    interface Component<P = {}, S = {}> extends ComponentLifecycle<P, S> { }
+    class Component<P = {}, S = {}> implements ComponentLifecycle<P, S> {
         static propTypes: ValidationMap<any>;
         static contextTypes: ValidationMap<any>;
         static childContextTypes: ValidationMap<any>;
         static defaultProps: Props<any>;
 
         constructor(props?: P, context?: any);
-        setState(f: (prevState: S, props: P) => S, callback?: () => any): void;
-        setState(state: S, callback?: () => any): void;
+        setState(f: (prevState: S, props: P) => Partial<S>|undefined, callback?: () => any): void;
+        setState(state: Partial<S>, callback?: () => any): void;
         forceUpdate(callBack?: () => any): void;
-        render(): JSX.Element;
+        render(): JSX.Element|null;
         props: P;
         state: S;
         context: {};
         refs: {
             [key: string]: Component<any, any>
         };
-
-        // Needed to make TypeScript 2.4.x happy.
-        componentWillMount?(): void;
     }
 
     interface ClassicComponent<P, S> extends Component<P, S> {
@@ -530,13 +528,9 @@ declare namespace __React {
         onLoadedData?: EventHandler<SyntheticEvent>;
         onError?: EventHandler<SyntheticEvent>;
 
-        onLoadStart?: () => void;
         onCanPlay?: () => void;
         onCanPlayThrough?: () => void;
         onEnded?: () => void;
-        onWaiting?: () => void;
-        onPlaying?: () => void;
-        onTimeUpdate?: () => void;
     }
 
     interface IframeHTMLAttributes extends HTMLAttributes {
@@ -601,6 +595,33 @@ declare namespace __React {
         y1?: number | string;
         y2?: number | string
         y?: number | string;
+    }
+
+    interface SVGAnimateAttributes extends DOMAttributes {
+        attributeName: string;
+        dur: string;
+        repeatCount: string;
+        from?: number;
+        to?: number;
+        values?: string;
+    }
+
+    interface WebViewHTMLAttributes extends HTMLAttributes {
+        is?: any
+        src?: string
+        autosize?: boolean
+        disablewebsecurity?: boolean
+        httpreferrer?: string
+        nodeintegration?: boolean
+        plugins?: boolean
+        preload?: string
+        useragent?: string
+        partition?: string
+        allowpopups?: boolean
+        webpreferences?: string
+        blinkfeatures?: string
+        disableblinkfeatures?: string
+        guestinstance?: string
     }
 
     //
@@ -747,7 +768,7 @@ declare namespace __React {
     // ----------------------------------------------------------------------
 
     interface Validator<T> {
-        (object: T, key: string, componentName: string): Error;
+        (object: T, key: string, componentName: string): Error | null;
     }
 
     interface Requireable<T> extends Validator<T> {
@@ -803,9 +824,12 @@ declare namespace __React {
         target: EventTarget;
         locationX: number;
         locationY: number;
+        screenX: number;
+        screenY: number;
+        clientX: number;
+        clientY: number;
         pageX: number;
         pageY: number;
-        timestamp: number;
     }
 
     interface TouchList {
@@ -825,7 +849,7 @@ declare namespace JSX {
 
     interface Element extends React.ReactElement<any> { }
     interface ElementClass extends React.Component<any, any> {
-        render(): JSX.Element;
+        render(): JSX.Element|null;
     }
     interface ElementAttributesProperty { props: {}; }
 
@@ -943,10 +967,12 @@ declare namespace JSX {
         "var": React.HTMLAttributes;
         video: React.VideoHTMLAttributes;
         wbr: React.HTMLAttributes;
+        webview: React.WebViewHTMLAttributes;
 
         // SVG
         svg: React.SVGElementAttributes;
 
+        animate: React.SVGAnimateAttributes;
         circle: React.SVGAttributes;
         defs: React.SVGAttributes;
         ellipse: React.SVGAttributes;

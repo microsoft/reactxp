@@ -86,7 +86,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     private _focusManager: FocusManager;
     private _isFocusLimited: boolean;
 
-    private _resizeDetectorAnimationFrame: number;
+    private _resizeDetectorAnimationFrame: number|undefined;
     private _resizeDetectorNodes: { grow?: HTMLElement, shrink?: HTMLElement } = {};
 
     constructor(props: Types.ViewProps, context: ViewContext) {
@@ -101,7 +101,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
     }
 
-    private _renderResizeDetectorIfNeeded(containerStyles: any): React.ReactNode {
+    private _renderResizeDetectorIfNeeded(containerStyles: any): React.ReactNode|null {
         // If needed, additional invisible DOM elements will be added inside the
         // view to track the size changes that are performed behind our back by
         // the browser's layout engine faster (ViewBase checks for the layout
@@ -125,7 +125,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
 
         let initResizer = (key: 'grow' | 'shrink', ref: React.DOMComponent<React.HTMLAttributes>) => {
-            const cur: HTMLElement = this._resizeDetectorNodes[key];
+            const cur: HTMLElement|undefined = this._resizeDetectorNodes[key];
             const element = ReactDOM.findDOMNode<HTMLElement>(ref);
 
             if (cur) {
@@ -341,7 +341,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 }
 
 applyFocusableComponentMixin(View, function (this: View, nextProps?: Types.ViewProps) {
-    let tabIndex: number = nextProps && ('tabIndex' in nextProps) ? nextProps.tabIndex : this.props.tabIndex;
+    let tabIndex = nextProps && ('tabIndex' in nextProps) ? nextProps.tabIndex : this.props.tabIndex;
     return tabIndex !== undefined && tabIndex !== -1;
 });
 
