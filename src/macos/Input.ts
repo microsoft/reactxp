@@ -7,7 +7,7 @@
 * MacOS implementation of Input interface.
 */
 
-import RN = require('react-native');
+//import RN = require('react-native');
 
 import RX = require('../common/Interfaces');
 

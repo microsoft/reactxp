@@ -7,8 +7,6 @@
 * Web-specific implementation for i18n.
 */
 
-import Types = require('../common/Types');
-
 export class International {
     allowRTL(allow: boolean): void {
         // Need to implement

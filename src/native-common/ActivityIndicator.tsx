@@ -11,7 +11,6 @@ import React = require('react');
 /* tslint:disable:no-unused-variable */
 import RN = require('react-native');
 /* tslint:enable:no-unused-variable */
-import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export interface ActivityIndicatorState {

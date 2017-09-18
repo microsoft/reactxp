@@ -9,7 +9,6 @@
 
 import React = require('react');
 
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
@@ -62,6 +61,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
                 onMouseEnter={ this.props.onHoverStart }
                 onMouseLeave={ this.props.onHoverEnd }
                 onMouseDown={ this._onMouseDown }
+                onMouseUp={ this._onMouseUp }
                 tabIndex={ this.props.tabIndex }
             >
                 { this.props.children }

@@ -134,14 +134,11 @@ module ReactXP {
     export var __spread = (React as any).__spread;
 }
 
-export = ReactXP;
-
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 
-/* tslint:disable:no-unused-variable */
 var _rxImplementsRxInterface: RXInterface.ReactXP = ReactXP;
-/* tslint:enable:no-unused-variable */
+export = _rxImplementsRxInterface;
 
 /*
 var rx = module.exports;

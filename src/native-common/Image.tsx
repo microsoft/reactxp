@@ -12,7 +12,6 @@ import RN = require('react-native');
 import SyncTasks = require('synctasks');
 import _ = require('./lodashMini');
 
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 

@@ -18,8 +18,6 @@ export class Clipboard extends RX.Clipboard  {
     }
 
     public getText(): SyncTasks.Promise<string> {
-        let defer = SyncTasks.Defer<string>();
-
         return SyncTasks.fromThenable(RN.Clipboard.getString());
     }
 }

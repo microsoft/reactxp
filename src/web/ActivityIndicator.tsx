@@ -9,7 +9,6 @@
 
 import React = require('react');
 
-import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 const _activityIndicatorCss = `

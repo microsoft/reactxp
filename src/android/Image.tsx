@@ -9,8 +9,6 @@
 import RN = require('react-native');
 
 import { Image as CommonImage } from '../native-common/Image';
-import Styles from '../native-common/Styles';
-import Types = require('../common/Types');
 
 export class Image extends CommonImage {
     // Overwrite the style for android since native Image has a fade in animation when an image loads

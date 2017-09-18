@@ -1103,10 +1103,10 @@ export interface KeyboardEvent extends SyntheticEvent {
 // ----------------------------------------------------------------------
 export var Children: React.ReactChildren;
 
-interface Element<P> {
-    type: React.ComponentClass<P>;
-    props: P;
-}
+// interface Element<P> {
+//     type: React.ComponentClass<P>;
+//     props: P;
+// }
 
 //
 // Dimensions

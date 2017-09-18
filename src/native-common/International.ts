@@ -9,8 +9,6 @@
 
 import RN = require('react-native');
 
-import Types = require('../common/Types');
-
 export class International {
     allowRTL(allow: boolean): void {
         RN.I18nManager.allowRTL(allow);

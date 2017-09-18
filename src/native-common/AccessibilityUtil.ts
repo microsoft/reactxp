@@ -9,9 +9,7 @@
 */
 
 import _ = require('./lodashMini');
-import assert = require('assert');
 import React = require('react');
-import RN = require('react-native');
 
 import { AccessibilityUtil as CommonAccessibilityUtil, AccessibilityPlatformUtil } from '../common/AccessibilityUtil';
 

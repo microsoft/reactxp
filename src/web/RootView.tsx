@@ -110,9 +110,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _hidePopupTimer: number = null;
     private _respositionPopupTimer: number = null;
     private _clickHandlerInstalled = false;
-    private _lockForContextMenu = false;
     private _keyboardHandlerInstalled = false;
-    private _lockTimeout: number;
     private _newAnnouncementEventChangedSubscription: SubscriptionToken = null;
     private _focusManager: FocusManager;
     private _isNavigatingWithKeyboard: boolean = false;

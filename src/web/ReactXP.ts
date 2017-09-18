@@ -131,8 +131,6 @@ module ReactXP {
     export var __spread = (React as any).__spread;
 }
 
-export = ReactXP;
-
 ViewBase.setActivationState(AppImpl.getActivationState());
 AppImpl.activationStateChangedEvent.subscribe(newState => {
     ViewBase.setActivationState(newState);
@@ -145,9 +143,8 @@ AppImpl.activationStateChangedEvent.subscribe(newState => {
 //    Note: RX must be a module so 'RX.Foo' can be a valid value ('new RX.Foo') and valid type ('var k: RX.Foo'), but modules cannot
 //    implement an interface. If RX was a class or variable then it could directly check this, but then 'RX.Foo' would not be a valid type.
 
-/* tslint:disable:no-unused-variable */
 var _rxImplementsRxInterface: RXInterface.ReactXP = ReactXP;
-/* tslint:enable:no-unused-variable */
+export = _rxImplementsRxInterface;
 
 /*
 

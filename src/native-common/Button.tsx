@@ -13,7 +13,6 @@ import RN = require('react-native');
 
 import Animated from './Animated';
 import AccessibilityUtil from './AccessibilityUtil';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 import UserInterface from './UserInterface';

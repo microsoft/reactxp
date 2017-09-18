@@ -14,7 +14,6 @@ import SyncTasks = require('synctasks');
 import PropTypes = require('prop-types');
 
 import restyleForInlineText = require('./utils/restyleForInlineText');
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 

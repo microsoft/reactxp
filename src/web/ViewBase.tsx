@@ -21,7 +21,7 @@ import Types = require('../common/Types');
 const _layoutTimerActiveDuration = 1000;
 const _layoutTimerInactiveDuration = 10000;
 
-export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase<P, {}> {
+export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase<P, S> {
     private static _viewCheckingTimer: number = null;
     private static _isResizeHandlerInstalled = false;
     private static _viewCheckingList: ViewBase<Types.ViewProps, {}>[] = [];

@@ -191,10 +191,6 @@ export class FrontLayerViewManager {
         this._dismissActivePopup();
     }
 
-    private _onRequestClose = () => {
-        this._dismissActivePopup();
-    }
-
     private _dismissActivePopup(): void {
         // Dismiss any currently visible popup:
         const activePopupContext = this._getActiveOverlay();
