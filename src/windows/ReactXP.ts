@@ -124,7 +124,7 @@ module ReactXP {
     export type WebView = RXInterfaces.WebView;
     export var WebView: RXInterfaces.WebViewConstructor = WebViewImpl;
 
-    export import Animated = AnimatedImpl;
+    export import Animated = AnimatedImpl.Animated;
     export import CommonProps = RXTypes.CommonProps;
     export import CommonStyledProps = RXTypes.CommonStyledProps;
     export import Types = RXTypes;
@@ -139,7 +139,8 @@ module ReactXP {
 // See web/ReactXP.tsx for more details.
 
 var _rxImplementsRxInterface: typeof RXModuleInterface.ReactXP = ReactXP;
-export = _rxImplementsRxInterface;
+_rxImplementsRxInterface = _rxImplementsRxInterface;
+export = ReactXP;
 
 /*
 var rx = module.exports;

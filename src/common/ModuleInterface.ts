@@ -15,10 +15,7 @@ import RXTypes = require('../common/Types');
 
 export declare module ReactXP {
     export type Accessibility = Interfaces.Accessibility;
-    export var Accessibility: Interfaces.Accessibility;
-
-    export import Animated = Interfaces.Animated;
-    
+    export var Accessibility: Interfaces.Accessibility;    
     export type ActivityIndicator = Interfaces.ActivityIndicator;
     export var ActivityIndicator: typeof Interfaces.ActivityIndicator;
     export type Alert = Interfaces.Alert;
@@ -73,6 +70,9 @@ export declare module ReactXP {
     export var View: typeof Interfaces.View;
     export type WebView = Interfaces.WebView;
     export var WebView: Interfaces.WebViewConstructor;
+
+    export type Animated = Interfaces.Animated;
+    export var Animated: Interfaces.Animated;
 
     export import CommonProps = RXTypes.CommonProps;
     export import CommonStyledProps = RXTypes.CommonStyledProps;
