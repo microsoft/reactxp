@@ -34,7 +34,7 @@ export declare module ReactXP {
     export type GestureView = Interfaces.GestureView;
     export var GestureView: typeof Interfaces.GestureView;
     export type Image = Interfaces.Image;
-    export var Image: typeof Interfaces.Image;
+    export var Image: Interfaces.ImageConstructor;
     export type Input = Interfaces.Input;
     export var Input: Interfaces.Input;
     export type International = Interfaces.International;
@@ -54,7 +54,7 @@ export declare module ReactXP {
     export type Popup = Interfaces.Popup;
     export var Popup: Interfaces.Popup;
     export type ScrollView = Interfaces.ScrollView;
-    export var ScrollView: typeof Interfaces.ScrollView;
+    export var ScrollView: Interfaces.ScrollViewConstructor;
     export type StatusBar = Interfaces.StatusBar;
     export var StatusBar: Interfaces.StatusBar;
     export type Storage = Interfaces.Storage;
@@ -72,7 +72,7 @@ export declare module ReactXP {
     export type View = Interfaces.View;
     export var View: typeof Interfaces.View;
     export type WebView = Interfaces.WebView;
-    export var WebView: typeof Interfaces.WebView;
+    export var WebView: Interfaces.WebViewConstructor;
 
     export import CommonProps = RXTypes.CommonProps;
     export import CommonStyledProps = RXTypes.CommonStyledProps;

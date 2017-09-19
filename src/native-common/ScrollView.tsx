@@ -14,7 +14,7 @@ import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 import ViewBase from './ViewBase';
 
-export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements RX.IScrollView {
+export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements RX.ScrollView {
     private _scrollTop = 0;
     private _scrollLeft = 0;
     protected _nativeView: RN.ScrollView|undefined;

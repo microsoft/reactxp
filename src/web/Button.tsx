@@ -89,7 +89,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         }
     }
 
-     blur() {
+    blur() {
         let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
         if (el) {
             el.blur();
