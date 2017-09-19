@@ -12,7 +12,6 @@ import React = require('react');
 import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -24,8 +23,8 @@ const _styles = {
 };
 
 export interface TextInputState {
-    inputValue?: string;
-    isFocused?: boolean;
+    inputValue: string;
+    isFocused: boolean;
 }
 
 export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {

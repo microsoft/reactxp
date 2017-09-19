@@ -49,7 +49,7 @@ const liveRegionMap = {
 
 export class AccessibilityUtil extends CommonAccessibiltiyUtil {
     // Web equivalent value for aria-live property.
-    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): string {
+    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): string|undefined {
         if (liveRegion) {
             return liveRegionMap[liveRegion];
         }
@@ -58,8 +58,8 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
 
     // Web equivalent value for role property. 
     // NOTE: Web only supports a single aria-role on a component.
-    accessibilityTraitToString(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[], 
-        defaultTrait?: Types.AccessibilityTrait): string {
+    accessibilityTraitToString(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined, 
+            defaultTrait?: Types.AccessibilityTrait): string|undefined {
         // Combine & remove duplicate traits.
         let combinedTraits: Types.AccessibilityTrait[] = defaultTrait ? [defaultTrait] : [];
 
@@ -70,11 +70,11 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
         // Max enum value in this array of traits is role for web. Return corresponding
         // role string from roleMap.
         return combinedTraits.length > 0 ? 
-            roleMap[_.max(_.filter(combinedTraits, t => roleMap.hasOwnProperty(t as any)))] 
+            roleMap[_.max(_.filter(combinedTraits, t => roleMap.hasOwnProperty(t as any)))!!!] 
             : undefined;
     }
 
-    accessibilityTraitToAriaSelected(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[]) {
+    accessibilityTraitToAriaSelected(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined) {
         // Walk through each trait and check if there's a selected trait. Return if one is found.
         if (traits && _.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.Tab) !== -1) {
             return traits.indexOf(Types.AccessibilityTrait.Selected) !== -1 ? true : undefined;
@@ -85,7 +85,7 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
         return undefined;
     }
 
-    accessibilityTraitToAriaChecked(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[]) {
+    accessibilityTraitToAriaChecked(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[]|undefined) {
         // Walk through each trait and check if there's a checked trait. Return if one is found.
         if (traits && _.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.CheckBox) !== -1) {
             return traits.indexOf(Types.AccessibilityTrait.Checked) !== -1;

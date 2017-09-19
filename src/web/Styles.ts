@@ -17,16 +17,14 @@ type CssAliasMap = { [prop: string]: string };
 
 export class Styles extends RX.Styles {
     // Combines a set of styles
-    combine<S>(ruleSet1: Types.StyleRuleSetRecursive<S>, ruleSet2?: Types.StyleRuleSetRecursive<S>): Types.StyleRuleSetOrArray<S> {
+    combine<S>(ruleSet1: Types.StyleRuleSetRecursive<S>|undefined, ruleSet2?: Types.StyleRuleSetRecursive<S>)
+            : Types.StyleRuleSetOrArray<S>|undefined {
         if (!ruleSet1 && !ruleSet2) {
             return undefined;
         }
 
-        let ruleSet = ruleSet1;
-        if (ruleSet2) {
-            ruleSet = [ruleSet1, ruleSet2];
-        }
-
+        let ruleSet = ruleSet1 ? (ruleSet2 ? [ruleSet1, ruleSet2] : ruleSet1) : ruleSet2;
+        
         if (ruleSet instanceof Array) {
             let combinedStyles: any = {};
 
@@ -134,11 +132,11 @@ export class Styles extends RX.Styles {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
-    // Returns the name of a CSS property or its alias. Returns null if the property is not supported.
+    // Returns the name of a CSS property or its alias. Returns undefined if the property is not supported.
     private _getCssPropertyAlias(name: string) {
         // If we're inside unit tests, document may not be defined yet. We don't need prefixes for tests
         if (typeof document === 'undefined') {
-            return null;
+            return undefined;
         }
 
         let upperName = name.charAt(0).toUpperCase() + name.slice(1);
@@ -158,7 +156,7 @@ export class Styles extends RX.Styles {
             }
         }
 
-        return null;
+        return undefined;
     }
 
     // Use memoize to cache the result after the first call.
@@ -191,7 +189,7 @@ export class Styles extends RX.Styles {
 
         props.forEach(prop => {
             let alias = this._getCssPropertyAlias(prop);
-            if (prop !== alias) {
+            if (alias && prop !== alias) {
                 aliases[prop] = alias;
             }
         });

@@ -22,18 +22,20 @@ function getPosition(el: HTMLElement): { left: number; top: number; } {
 }
 
 type ChildKey = string | number;
-function extractChildrenKeys(children: React.ReactNode): ChildKey[] {
+function extractChildrenKeys(children: React.ReactNode|undefined): ChildKey[] {
     var keys: ChildKey[] = [];
-    React.Children.forEach(children, function (child, index) {
-        if (child) {
-            let childReactElement = child as React.ReactElement<any>;
-            assert(
-                childReactElement.key !== undefined && childReactElement.key !== null,
-                'Children passed to a `View` with child animations enabled must have a `key`'
-            );
-            keys.push(childReactElement.key);
-        }
-    });
+    if (children) {
+        React.Children.forEach(children, function (child, index) {
+            if (child) {
+                let childReactElement = child as React.ReactElement<any>;
+                assert(
+                    childReactElement.key !== undefined && childReactElement.key !== null,
+                    'Children passed to a `View` with child animations enabled must have a `key`'
+                );
+                keys.push(childReactElement.key);
+            }
+        });
+    }
     return keys;
 }
 
@@ -45,18 +47,20 @@ function childrenEdited(prevChildrenKeys: ChildKey[], nextChildrenKeys: ChildKey
 }
 
 type ChildrenMap = { [key: string]: React.ReactElement<any> };
-function createChildrenMap(children: React.ReactNode): ChildrenMap {
+function createChildrenMap(children: React.ReactNode|undefined): ChildrenMap {
     var map: ChildrenMap = {};
-    React.Children.forEach(children, function (child, index) {
-        if (child) {
-            let childReactElement = child as React.ReactElement<any>;
-            assert(
-                'key' in childReactElement,
-                'Children passed to a `View` with child animations enabled must have a `key`'
-            );
-            map[childReactElement['key']] = childReactElement;
-        }
-    });
+    if (children) {
+        React.Children.forEach(children, function (child, index) {
+            if (child) {
+                let childReactElement = child as React.ReactElement<any>;
+                assert(
+                    'key' in childReactElement,
+                    'Children passed to a `View` with child animations enabled must have a `key`'
+                );
+                map[childReactElement['key']] = childReactElement;
+            }
+        });
+    }
     return map;
 }
 
@@ -140,7 +144,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
     private _childrenToRender: JSX.Element[];
 
     private _phase: ComponentPhaseEnum = ComponentPhaseEnum.rest;
-    private _willAnimatePhaseInfo: IWillAnimatePhaseInfo = null;
+    private _willAnimatePhaseInfo: IWillAnimatePhaseInfo|undefined;
 
     componentWillMount() {
         this._childrenKeys = extractChildrenKeys(this.props.children);
@@ -223,7 +227,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
         });
 
         if (this._phase === ComponentPhaseEnum.willAnimate) {
-            _.each(this._willAnimatePhaseInfo.removed, childElement => {
+            _.each(this._willAnimatePhaseInfo!!!.removed, childElement => {
                 if (childElement) {
                     this._childrenToRender.push(React.cloneElement(childElement, {
                         ref: (refValue: React.Component<any, any>) => {
@@ -248,7 +252,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
         );
 
         if (this._phase === ComponentPhaseEnum.willAnimate) {
-            let phaseInfo = this._willAnimatePhaseInfo;
+            let phaseInfo = this._willAnimatePhaseInfo!!!;
             let prevPositions = phaseInfo.prevPositions;
             let nextPositions = computePositions(this._itemRefs);
 
@@ -285,7 +289,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
             });
 
             this._phase = ComponentPhaseEnum.animating;
-            this._willAnimatePhaseInfo = null;
+            this._willAnimatePhaseInfo = undefined;
             this.props.componentWillAnimate({
                 added: added,
                 moved: moved,

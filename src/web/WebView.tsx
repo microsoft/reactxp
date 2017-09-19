@@ -34,7 +34,7 @@ export interface WebViewState {
     webFrameIdentifier?: string;
 }
 
-export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> {
+export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> implements RX.WebView {
     private static _webFrameNumber = 1;
 
     constructor(props: Types.WebViewProps) {

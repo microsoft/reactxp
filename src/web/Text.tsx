@@ -12,7 +12,6 @@ import ReactDOM = require('react-dom');
 import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 

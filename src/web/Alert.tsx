@@ -24,7 +24,7 @@ export class Alert extends RX.Alert {
             (
                 <AlertModalContent
                     modalId={ this._modalId }
-                    buttons={ buttons}
+                    buttons={ buttons }
                     title={ title }
                     message={ message }
                     theme={ theme }

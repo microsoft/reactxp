@@ -12,11 +12,11 @@ import React = require('react');
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 import { ViewProps } from '../common/Types';
-import { default as Button } from './Button';
-import { default as Modal } from './Modal';
-import { default as Styles } from './Styles';
-import { default as Text } from './Text';
-import { default as View } from './View';
+import Button from './Button';
+import Modal from './Modal';
+import Styles from './Styles';
+import Text from './Text';
+import View from './View';
 
 export interface AppModalContentProps extends ViewProps {
     buttons?: Types.AlertButtonSpec[];
@@ -102,10 +102,10 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
     public render() {
         const theme = this.props.theme;
 
-        var buttons = this.props.buttons.map((btnSpec, i) => {
+        var buttons = this.props.buttons && this.props.buttons.map((btnSpec, i) => {
             let isCancel = btnSpec.style === 'cancel';
-            let buttonStyle = [_styles.defaultButton, isCancel && _styles.defaultCancelButton];
-            let buttonTextStyle = [_styles.defaultBtnText, isCancel && _styles.defaultCancelBtnText];
+            let buttonStyle = [_styles.defaultButton, isCancel ? _styles.defaultCancelButton : undefined];
+            let buttonTextStyle = [_styles.defaultBtnText, isCancel ? _styles.defaultCancelBtnText : undefined];
 
             // Is the mouse pointer currently hovering over this button?
             if (this.state.hoverIndex === i) {

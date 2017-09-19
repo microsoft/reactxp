@@ -12,14 +12,13 @@ import RN = require('react-native');
 import RX = require('../common/Interfaces');
 
 import Types = require('../common/Types');
-import Styles from './Styles';
 
 export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase<P, S> {
-    private static _defaultViewStyle: Types.ViewStyleRuleSet = null;
-    private _layoutEventValues: Types.ViewOnLayoutEvent = null;
+    private static _defaultViewStyle: Types.ViewStyleRuleSet|undefined;
+    private _layoutEventValues: Types.ViewOnLayoutEvent|undefined;
 
     abstract render(): JSX.Element;
-    protected _nativeView: RN.View = null;
+    protected _nativeView: RN.View|undefined;
 
     static setDefaultViewStyle(defaultViewStyle: Types.ViewStyleRuleSet) {
         ViewBase._defaultViewStyle = defaultViewStyle;
@@ -36,14 +35,14 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         this._nativeView = view;
     }
 
-    protected _getStyles(props: Types.ViewProps): Types.StyleRuleSetOrArray<Types.ViewStyleRuleSet> {
+    protected _getStyles(props: Types.ViewProps) {
         // If this platform uses an explicit default view style, push it on to
         // the front of the list of provided styles.
         if (ViewBase._defaultViewStyle) {
-            return Styles.combine<Types.ViewStyleRuleSet>([ViewBase._defaultViewStyle, props.style]);
+            return [ViewBase._defaultViewStyle, props.style];
         }
 
-        return Styles.combine(props.style);
+        return props.style;
     }
 
     protected _onLayout = (event: RN.ViewOnLayoutEvent) => {

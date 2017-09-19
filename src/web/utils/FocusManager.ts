@@ -30,8 +30,8 @@ interface StoredFocusableComponent {
 }
 
 interface OriginalAttributeValues {
-    tabIndex: number;
-    ariaHidden: string;
+    tabIndex: number|undefined;
+    ariaHidden: string|undefined;
 }
 
 let _isNavigatingWithKeyboard: boolean;
@@ -46,7 +46,7 @@ if ((typeof document !== 'undefined') && (typeof window !== 'undefined')) {
     // Tab key is pressed on a last focusable element in the page and focus
     // the first focusable element on a consecutive Tab key press.
     // We want to avoid losing this first Tab key press.
-    let _checkFocusTimer: number;
+    let _checkFocusTimer: number|undefined;
 
     // Checking if Shift is pressed to move the focus into the right direction.
     window.addEventListener('keydown', event => {
@@ -84,19 +84,19 @@ export class FocusManager {
     private static _rootFocusManager: FocusManager;
 
     private static _restrictionStack: FocusManager[] = [];
-    private static _currentRestrictionOwner: FocusManager;
-    private static _restoreRestrictionTimer: number;
-    private static _pendingPrevFocusedComponent: StoredFocusableComponent;
-    private static _currentFocusedComponent: StoredFocusableComponent;
+    private static _currentRestrictionOwner: FocusManager|undefined;
+    private static _restoreRestrictionTimer: number|undefined;
+    private static _pendingPrevFocusedComponent: StoredFocusableComponent|undefined;
+    private static _currentFocusedComponent: StoredFocusableComponent|undefined;
     private static _allFocusableComponents: { [id: string]: StoredFocusableComponent } = {};
-    private static _resetFocusTimer: number;
+    private static _resetFocusTimer: number|undefined;
 
-    private _parent: FocusManager;
+    private _parent: FocusManager|undefined;
     private _isFocusLimited: boolean;
-    private _prevFocusedComponent: StoredFocusableComponent;
+    private _prevFocusedComponent: StoredFocusableComponent|undefined;
     private _myFocusableComponentIds: { [id: string]: boolean } = {};
 
-    constructor(parent: FocusManager) {
+    constructor(parent: FocusManager|undefined) {
         if (parent) {
             this._parent = parent;
         } else if (FocusManager._rootFocusManager) {
@@ -130,7 +130,7 @@ export class FocusManager {
 
         let withinRestrictionOwner: boolean = false;
 
-        for (let parent: FocusManager = this; parent; parent = parent._parent) {
+        for (let parent: FocusManager|undefined = this; parent; parent = parent._parent) {
             parent._myFocusableComponentIds[componentId] = true;
 
             if (FocusManager._currentRestrictionOwner === parent) {
@@ -173,7 +173,7 @@ export class FocusManager {
 
             delete storedComponent.callbacks;
 
-            for (let parent: FocusManager = this; parent; parent = parent._parent) {
+            for (let parent: FocusManager|undefined = this; parent; parent = parent._parent) {
                 delete parent._myFocusableComponentIds[componentId];
             }
 
@@ -320,7 +320,7 @@ export class FocusManager {
 
     isComponentFocusRestrictedOrLimited(component: React.Component<any, any>): boolean {
         const storedComponent = FocusManager._getStoredComponent(component);
-        return storedComponent && (storedComponent.restricted || storedComponent.limitedCount > 0);
+        return !!storedComponent && (storedComponent.restricted || storedComponent.limitedCount > 0);
     }
 
     static focusFirst(last?: boolean) {
@@ -382,14 +382,14 @@ export class FocusManager {
         }
     }
 
-    private static _getStoredComponent(component: React.Component<any, any>): StoredFocusableComponent {
+    private static _getStoredComponent(component: React.Component<any, any>): StoredFocusableComponent|undefined {
         const componentId: string = (component as any)._focusableComponentId;
 
         if (componentId) {
             return FocusManager._allFocusableComponents[componentId];
         }
 
-        return null;
+        return undefined;
     }
 
     private static _callFocusableComponentStateChangeCallbacks(storedComponent: StoredFocusableComponent, restrictedOrLimited: boolean) {
@@ -419,7 +419,8 @@ export class FocusManager {
     }
 
     private static _setComponentTabIndexAndAriaHidden(
-            component: React.Component<any, any>, tabIndex: number, ariaHidden: string): OriginalAttributeValues {
+            component: React.Component<any, any>, tabIndex: number|undefined, ariaHidden: string|undefined)
+            : OriginalAttributeValues|undefined {
 
         const el = ReactDOM.findDOMNode<HTMLElement>(component);
         return el ?
@@ -428,10 +429,10 @@ export class FocusManager {
                 ariaHidden: FocusManager._setAriaHidden(el, ariaHidden)
             }
             :
-            null;
+            undefined;
     }
 
-    private static _setTabIndex(element: HTMLElement, value: number): number {
+    private static _setTabIndex(element: HTMLElement, value: number|undefined): number|undefined {
         const prev = element.hasAttribute(ATTR_NAME_TAB_INDEX) ? element.tabIndex : undefined;
 
         if (value === undefined) {
@@ -445,8 +446,8 @@ export class FocusManager {
         return prev;
     }
 
-    private static _setAriaHidden(element: HTMLElement, value: string): string {
-        const prev = element.hasAttribute(ATTR_NAME_ARIA_HIDDEN) ? element.getAttribute(ATTR_NAME_ARIA_HIDDEN) : undefined;
+    private static _setAriaHidden(element: HTMLElement, value: string|undefined): string|undefined {
+        const prev = element.hasAttribute(ATTR_NAME_ARIA_HIDDEN) ? element.getAttribute(ATTR_NAME_ARIA_HIDDEN) || undefined : undefined;
 
         if (value === undefined) {
             if (prev !== undefined) {
@@ -486,23 +487,23 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
     contextTypes.focusManager = PropTypes.object;
     Component.contextTypes = contextTypes;
 
-    inheritMethod('componentDidMount', function (focusManager: FocusManager) {
+    inheritMethod('componentDidMount', function (this: React.Component<any, any>, focusManager: FocusManager) {
         if (!isConditionallyFocusable || isConditionallyFocusable.call(this)) {
             focusManager.addFocusableComponent(this);
         }
     });
 
-    inheritMethod('componentWillUnmount', function (focusManager: FocusManager) {
+    inheritMethod('componentWillUnmount', function (this: React.Component<any, any>, focusManager: FocusManager) {
         focusManager.removeFocusableComponent(this);
     });
 
-    inheritMethod('componentWillUpdate', function (focusManager: FocusManager, origArguments: IArguments) {
+    inheritMethod('componentWillUpdate', function (this: React.Component<any, any>, focusManager: FocusManager, origArguments: IArguments) {
         if (isConditionallyFocusable) {
             let isFocusable = isConditionallyFocusable.apply(this, origArguments);
 
-            if (isFocusable && !this._focusableComponentId) {
+            if (isFocusable && !(this as any)._focusableComponentId) {
                 focusManager.addFocusableComponent(this);
-            } else if (!isFocusable && this._focusableComponentId) {
+            } else if (!isFocusable && (this as any)._focusableComponentId) {
                 focusManager.removeFocusableComponent(this);
             }
         }

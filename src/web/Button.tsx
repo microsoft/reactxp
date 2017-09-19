@@ -7,12 +7,10 @@
 * Web-specific implementation of the cross-platform Button abstraction.
 */
 
-import _ = require('./utils/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
@@ -45,7 +43,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     private _lastMouseDownTime: number = 0;
     private _lastMouseDownEvent: Types.SyntheticEvent;
     private _ignoreClick = false;
-    private _longPressTimer: number;
+    private _longPressTimer: number|undefined;
     private _focusDueToMouseEvent = false;
     private _blurDueToMouseEvent = false;
 
@@ -91,7 +89,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         }
     }
 
-     blur() {
+    blur() {
         let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
         if (el) {
             el.blur();

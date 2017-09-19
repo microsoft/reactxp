@@ -11,40 +11,41 @@
 import React = require('react');
 
 import AnimatedImpl = require('../native-common/Animated');
-import RXInterface = require('../common/Interfaces');
+import RXInterfaces = require('../common/Interfaces');
+import RXModuleInterface = require('../common/ModuleInterface');
 import RXTypes = require('../common/Types');
 
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 
-import { default as AccessibilityImpl, Accessibility as AccessibilityType } from './Accessibility';
-import { default as ActivityIndicatorImpl, ActivityIndicator as ActivityIndicatorType } from '../native-common/ActivityIndicator';
-import { default as AlertImpl, Alert as AlertType } from '../native-common/Alert';
-import { default as AppImpl, App as AppType } from '../native-common/App';
-import { default as PickerImpl, Picker as PickerType } from '../native-common/Picker';
-import { default as ButtonImpl, Button as ButtonType } from '../native-common/Button';
-import { default as ImageImpl, Image as ImageType } from '../native-common/Image';
-import { default as ClipboardImpl, Clipboard as ClipboardType } from '../native-common/Clipboard';
-import { default as GestureViewImpl, GestureView as GestureViewType } from './GestureView';
-import { default as InputImpl, Input as InputType } from '../native-common/Input';
-import { default as InternationalImpl, International as InternationalType } from '../native-common/International';
-import { default as LinkImpl, Link as LinkType } from '../native-common/Link';
-import { default as LinkingImpl, Linking as LinkingType } from './Linking';
-import { default as LocationImpl, Location as LocationType } from '../common/Location';
-import { default as ModalImpl, Modal as ModalType } from '../native-common/Modal';
-import { default as NetworkImpl, Network as NetworkType } from '../native-common/Network';
-import { default as PlatformImpl, Platform as PlatformType } from '../native-common/Platform';
-import { default as PopupImpl, Popup as PopupType } from '../native-common/Popup';
-import { default as ScrollViewImpl, ScrollView as ScrollViewType } from '../native-common/ScrollView';
-import { default as StatusBarImpl, StatusBar as StatusBarType } from './StatusBar';
-import { default as StorageImpl, Storage as StorageType } from '../native-common/Storage';
-import { default as StylesImpl, Styles as StylesType } from '../native-common/Styles';
-import { default as TextImpl, Text as TextType } from '../native-common/Text';
-import { default as TextInputImpl, TextInput as TextInputType } from '../native-common/TextInput';
-import { default as UserInterfaceImpl, UserInterface as UserInterfaceType } from '../native-common/UserInterface';
-import { default as UserPresenceImpl, UserPresence as UserPresenceType } from '../native-common/UserPresence';
-import { default as ViewImpl, View as ViewType } from '../native-common/View';
-import { default as WebViewImpl, WebView as WebViewType } from '../native-common/WebView';
+import AccessibilityImpl from './Accessibility';
+import ActivityIndicatorImpl from '../native-common/ActivityIndicator';
+import AlertImpl from '../native-common/Alert';
+import AppImpl from '../native-common/App';
+import ButtonImpl from '../native-common/Button';
+import PickerImpl from '../native-common/Picker';
+import ImageImpl from '../native-common/Image';
+import ClipboardImpl from '../native-common/Clipboard';
+import GestureViewImpl from './GestureView';
+import InputImpl from '../native-common/Input';
+import InternationalImpl from '../native-common/International';
+import LinkImpl from '../native-common/Link';
+import LinkingImpl from './Linking';
+import LocationImpl from '../common/Location';
+import ModalImpl from '../native-common/Modal';
+import NetworkImpl from '../native-common/Network';
+import PlatformImpl from '../native-common/Platform';
+import PopupImpl from '../native-common/Popup';
+import ScrollViewImpl from '../native-common/ScrollView';
+import StatusBarImpl from './StatusBar';
+import StorageImpl from '../native-common/Storage';
+import StylesImpl from '../native-common/Styles';
+import TextImpl from '../native-common/Text';
+import TextInputImpl from '../native-common/TextInput';
+import UserInterfaceImpl from '../native-common/UserInterface';
+import UserPresenceImpl from '../native-common/UserPresence';
+import ViewImpl from '../native-common/View';
+import WebViewImpl from '../native-common/WebView';
 import ViewBase from '../native-common/ViewBase';
 
 // Initialize the Windows default view style. This is required because on RN for Windows, the default
@@ -66,65 +67,66 @@ AccessibilityUtil.setAccessibilityPlatformUtil(AccessibilityPlatformUtil);
 // See web/ReactXP.tsx for more details.
 
 module ReactXP {
-    export type Accessibility = AccessibilityType;
-    export var Accessibility = AccessibilityImpl;
-    export import Animated = AnimatedImpl.Animated;
-    export type ActivityIndicator = ActivityIndicatorType;
-    export var ActivityIndicator = ActivityIndicatorImpl;
-    export type Alert = AlertType;
-    export var Alert = AlertImpl;
-    export type App = AppType;
-    export var App = AppImpl;
-    export type Button = ButtonType;
-    export var Button = ButtonImpl;
-    export type Picker = PickerType;
-    export var Picker = PickerImpl;
-    export type Clipboard = ClipboardType;
-    export var Clipboard = ClipboardImpl;
-    export type GestureView = GestureViewType;
-    export var GestureView = GestureViewImpl;
-    export type Image = ImageType;
-    export var Image = ImageImpl;
-    export type Input = InputType;
-    export var Input = InputImpl;
-    export type International = InternationalType;
-    export var International = InternationalImpl;
-    export type Link = LinkType;
-    export var Link = LinkImpl;
-    export type Linking = LinkingType;
-    export var Linking = LinkingImpl;
-    export type Location = LocationType;
-    export var Location = LocationImpl;
-    export type Modal = ModalType;
-    export var Modal = ModalImpl;
-    export type Network = NetworkType;
-    export var Network = NetworkImpl;
-    export type Platform = PlatformType;
-    export var Platform = PlatformImpl;
-    export type Popup = PopupType;
-    export var Popup = PopupImpl;
-    export type ScrollView = ScrollViewType;
-    export var ScrollView = ScrollViewImpl;
-    export type Storage = StorageType;
-    export var Storage = StorageImpl;
-    export type StatusBar = StatusBarType;
-    export var StatusBar = StatusBarImpl;
-    export type Styles = StylesType;
-    export var Styles = StylesImpl;
-    export type Text = TextType;
-    export var Text = TextImpl;
-    export type TextInput = TextInputType;
-    export var TextInput = TextInputImpl;
-    export type UserInterface = UserInterfaceType;
-    export var UserInterface = UserInterfaceImpl;
-    export type UserPresence = UserPresenceType;
-    export var UserPresence = UserPresenceImpl;
-    export type View = ViewType;
-    export var View = ViewImpl;
-    export type WebView = WebViewType;
-    export var WebView = WebViewImpl;
+    export type Accessibility = RXInterfaces.Accessibility;
+    export var Accessibility: RXInterfaces.Accessibility = AccessibilityImpl;
+    export type ActivityIndicator = RXInterfaces.ActivityIndicator;
+    export var ActivityIndicator: typeof RXInterfaces.ActivityIndicator = ActivityIndicatorImpl;
+    export type Alert = RXInterfaces.Alert;
+    export var Alert: RXInterfaces.Alert = AlertImpl;
+    export type App = RXInterfaces.App;
+    export var App: RXInterfaces.App = AppImpl;
+    export type Button = RXInterfaces.Button;
+    export var Button: typeof RXInterfaces.Button = ButtonImpl;
+    export type Picker = RXInterfaces.Picker;
+    export var Picker: typeof RXInterfaces.Picker = PickerImpl;
+    export type Clipboard = RXInterfaces.Clipboard;
+    export var Clipboard: RXInterfaces.Clipboard = ClipboardImpl;
+    export type GestureView = RXInterfaces.GestureView;
+    export var GestureView: typeof RXInterfaces.GestureView = GestureViewImpl;
+    export type Image = RXInterfaces.Image;
+    export var Image: RXInterfaces.ImageConstructor = ImageImpl;
+    export type Input = RXInterfaces.Input;
+    export var Input: RXInterfaces.Input = InputImpl;
+    export type International = RXInterfaces.International;
+    export var International: RXInterfaces.International = InternationalImpl;
+    export type Link = RXInterfaces.Link;
+    export var Link: typeof RXInterfaces.Link = LinkImpl;
+    export type Linking = RXInterfaces.Linking;
+    export var Linking: RXInterfaces.Linking = LinkingImpl;
+    export type Location = RXInterfaces.Location;
+    export var Location: RXInterfaces.Location = LocationImpl;
+    export type Modal = RXInterfaces.Modal;
+    export var Modal: RXInterfaces.Modal = ModalImpl;
+    export type Network = RXInterfaces.Network;
+    export var Network: RXInterfaces.Network = NetworkImpl;
+    export type Platform = RXInterfaces.Platform;
+    export var Platform: RXInterfaces.Platform = PlatformImpl;
+    export type Popup = RXInterfaces.Popup;
+    export var Popup: RXInterfaces.Popup = PopupImpl;
+    export type ScrollView = RXInterfaces.ScrollView;
+    export var ScrollView: RXInterfaces.ScrollViewConstructor = ScrollViewImpl;
+    export type StatusBar = RXInterfaces.StatusBar;
+    export var StatusBar: RXInterfaces.StatusBar = StatusBarImpl;
+    export type Storage = RXInterfaces.Storage;
+    export var Storage: RXInterfaces.Storage = StorageImpl;
+    export type Styles = RXInterfaces.Styles;
+    export var Styles: RXInterfaces.Styles = StylesImpl;
+    export type Text = RXInterfaces.Text;
+    export var Text: typeof RXInterfaces.Text = TextImpl;
+    export type TextInput = RXInterfaces.TextInput;
+    export var TextInput: typeof RXInterfaces.TextInput = TextInputImpl;
+    export type UserInterface = RXInterfaces.UserInterface;
+    export var UserInterface: RXInterfaces.UserInterface = UserInterfaceImpl;
+    export type UserPresence = RXInterfaces.UserPresence;
+    export var UserPresence: RXInterfaces.UserPresence = UserPresenceImpl;
+    export type View = RXInterfaces.View;
+    export var View: typeof RXInterfaces.View = ViewImpl;
+    export type WebView = RXInterfaces.WebView;
+    export var WebView: RXInterfaces.WebViewConstructor = WebViewImpl;
 
+    export import Animated = AnimatedImpl;
     export import CommonProps = RXTypes.CommonProps;
+    export import CommonStyledProps = RXTypes.CommonStyledProps;
     export import Types = RXTypes;
 
     export import Component = React.Component;
@@ -133,14 +135,11 @@ module ReactXP {
     export var __spread = (React as any).__spread;
 }
 
-export = ReactXP;
-
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 
-/* tslint:disable:no-unused-variable */
-var _rxImplementsRxInterface: RXInterface.ReactXP = ReactXP;
-/* tslint:enable:no-unused-variable */
+var _rxImplementsRxInterface: typeof RXModuleInterface.ReactXP = ReactXP;
+export = _rxImplementsRxInterface;
 
 /*
 var rx = module.exports;

@@ -17,47 +17,6 @@ import Types = require('./Types');
 
 export import Types = Types;
 
-export interface ReactXP {
-    // Components
-
-    // API namespaces
-    Accessibility: Accessibility;
-    Alert: Alert;
-    Animated: Animated;
-    App: App;
-    Clipboard: Clipboard;
-    Input: Input;
-    Storage: Storage;
-    Location: Location;
-    Modal: Modal;
-    Network: Network;
-    Platform: Platform;
-    Popup: Popup;
-    StatusBar: StatusBar;
-    Styles: Styles;
-
-    ActivityIndicator: typeof ActivityIndicator;
-    Button: typeof Button;
-    Image: typeof Image;
-    GestureView: typeof GestureView;
-    Link: typeof Link;
-    Picker: typeof Picker;
-    ScrollView: typeof ScrollView;
-    Text: typeof Text;
-    TextInput: typeof TextInput;
-    UserInterface: UserInterface;
-    UserPresence: UserPresence;
-    View: typeof View;
-    WebView: typeof WebView;
-
-    Component: typeof Component;
-    Children: typeof React.Children;
-    Types: typeof Types;
-
-    createElement: any;
-    __spread: any;
-}
-
 export abstract class ActivityIndicator extends React.Component<Types.ActivityIndicatorProps, any> {}
 
 export abstract class Alert {
@@ -108,7 +67,7 @@ export abstract class App {
 export abstract class UserInterface {
     abstract setMainView(element: React.ReactElement<any>): void;
 
-    abstract useCustomScrollbars(enable: boolean): void;
+    abstract useCustomScrollbars(enable?: boolean): void;
 
     // Screen Information
     abstract isHighPixelDensityScreen(): boolean;
@@ -124,6 +83,7 @@ export abstract class UserInterface {
     // Content Size Multiplier
     abstract getContentSizeMultiplier(): SyncTasks.Promise<number>;
     contentSizeMultiplierChangedEvent = new SubscribableEvent<(multiplier: number) => void>();
+    abstract setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
 
     // On-screen Keyboard
     abstract dismissKeyboard(): void;
@@ -153,7 +113,7 @@ export abstract class Popup {
 
 export abstract class Linking {
     // Incoming deep links
-    abstract getInitialUrl(): SyncTasks.Promise<string>;
+    abstract getInitialUrl(): SyncTasks.Promise<string|undefined>;
     deepLinkRequestEvent = new SubscribableEvent<(url: string) => void>();
 
     // Outgoing deep links
@@ -170,13 +130,25 @@ export abstract class Accessibility {
     screenReaderChangedEvent = new SubscribableEvent<(isEnabled: boolean) => void>();
 }
 
-export abstract class Button extends React.Component<Types.ButtonProps, any> {}
+export abstract class Button extends React.Component<Types.ButtonProps, any> {
+    abstract focus(): void;
+    abstract blur(): void;
+}
 
 export abstract class Picker extends React.Component<Types.PickerProps, {}> {}
 
 export class Component<P, T> extends React.Component<P, T> {}
 
-export abstract class Image extends React.Component<Types.ImageProps, any> {}
+export interface ImageConstructor {
+    new (props: Types.ImageProps): Image;
+
+    prefetch(url: string): SyncTasks.Promise<boolean>;
+}
+
+export abstract class Image extends React.Component<Types.ImageProps, any> {
+    abstract getNativeWidth(): number|undefined;
+    abstract getNativeHeight(): number|undefined;
+}
 
 export abstract class Clipboard {
     abstract setText(text: string): void;
@@ -208,6 +180,7 @@ export interface LocationConfiguration {
 
 export abstract class Network {
     abstract isConnected(): SyncTasks.Promise<boolean>;
+    abstract getType(): SyncTasks.Promise<Types.DeviceNetworkType>;
     connectivityChangedEvent = new SubscribableEvent<(isConnected: boolean) => void>();
 }
 
@@ -221,19 +194,23 @@ export abstract class Input {
     keyUpEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
 }
 
-export interface IScrollView {
-    setScrollTop(scrollTop: number, animate: boolean): void;
-    setScrollLeft(scrollLeft: number, animate: boolean): void;
-    addToScrollTop(deltaTop: number, animate: boolean): void;
-    addToScrollLeft(deltaLeft: number, animate: boolean): void;
+export interface ScrollViewConstructor {
+    new(props: Types.ScrollViewProps): ScrollView;
+}
+    
+export interface ScrollView extends React.Component<Types.ScrollViewProps, any> {
+    setScrollTop(scrollTop: number, animate?: boolean): void;
+    setScrollLeft(scrollLeft: number, animate?: boolean): void;
+    addToScrollTop(deltaTop: number, animate?: boolean): void;
+    addToScrollLeft(deltaLeft: number, animate?: boolean): void;
 }
 
-export abstract class ScrollView extends React.Component<Types.ScrollViewProps, any> implements IScrollView {
-    abstract setScrollTop(scrollTop: number, animate: boolean): void;
-    abstract setScrollLeft(scrollLeft: number, animate: boolean): void;
-    abstract addToScrollTop(deltaTop: number, animate: boolean): void;
-    abstract addToScrollLeft(deltaLeft: number, animate: boolean): void;
-}
+// export abstract class ScrollView extends React.Component<Types.ScrollViewProps, any> implements IScrollView {
+//     abstract setScrollTop(scrollTop: number, animate: boolean): void;
+//     abstract setScrollLeft(scrollLeft: number, animate: boolean): void;
+//     abstract addToScrollTop(deltaTop: number, animate: boolean): void;
+//     abstract addToScrollLeft(deltaLeft: number, animate: boolean): void;
+// }
 
 export abstract class StatusBar {
     abstract isOverlay(): boolean;
@@ -245,7 +222,8 @@ export abstract class StatusBar {
 }
 
 export abstract class Styles {
-    abstract combine<T>(ruleSet1: Types.StyleRuleSetRecursive<T>, ruleSet2?: Types.StyleRuleSetRecursive<T>): Types.StyleRuleSetOrArray<T>;
+    abstract combine<T>(ruleSet1: Types.StyleRuleSetRecursive<T>|undefined, ruleSet2?: Types.StyleRuleSetRecursive<T>)
+        : Types.StyleRuleSetOrArray<T>|undefined;
     abstract createViewStyle(ruleSet: Types.ViewStyle, cacheStyle?: boolean): Types.ViewStyleRuleSet;
     abstract createAnimatedViewStyle(ruleSet: Types.AnimatedViewStyle): Types.AnimatedViewStyleRuleSet;
     abstract createScrollViewStyle(ruleSet: Types.ScrollViewStyle, cacheStyle?: boolean): Types.ScrollViewStyleRuleSet;
@@ -261,7 +239,10 @@ export abstract class Styles {
     abstract createPickerStyle(ruleSet: Types.PickerStyle, cacheStyle?: boolean): Types.PickerStyleRuleSet;
 }
 
-export abstract class Text extends React.Component<Types.TextProps, any> {}
+export abstract class Text extends React.Component<Types.TextProps, any> {
+    abstract focus(): void;
+    abstract blur(): void;
+}
 
 export abstract class TextInput extends React.Component<Types.TextInputProps, any> {
     abstract blur(): void;
@@ -286,6 +267,7 @@ export abstract class ViewBase<P, S> extends React.Component<P, S> {
 }
 
 export abstract class View extends ViewBase<Types.ViewProps, any> {
+    abstract focus(): void;
     abstract setFocusRestricted(restricted: boolean): void;
     abstract setFocusLimited(limited: boolean): void;
 }
@@ -293,7 +275,15 @@ export abstract class View extends ViewBase<Types.ViewProps, any> {
 export abstract class GestureView extends ViewBase<Types.GestureViewProps, any> {
 }
 
-export abstract class WebView extends ViewBase<Types.WebViewProps, any> {
+export interface WebViewConstructor {
+    new(props: Types.WebViewProps): WebView;
+}
+
+export interface WebView extends ViewBase<Types.WebViewProps, any> {
+    postMessage(message: string, targetOrigin?: string): void;
+    reload(): void;
+    goBack(): void;
+    goForward(): void;
 }
 
 export interface Animated {
@@ -306,4 +296,10 @@ export interface Animated {
     timing: Types.Animated.TimingFunction;
     parallel: Types.Animated.ParallelFunction;
     sequence: Types.Animated.SequenceFunction;
+}
+
+export interface International {
+    allowRTL(allow: boolean): void;
+    forceRTL(force: boolean): void;
+    isRTL(): boolean;
 }

@@ -23,9 +23,9 @@ const _styles = {
 
 const WEBVIEW_REF = 'webview';
 
-export class WebView extends RX.ViewBase<Types.WebViewProps, {}> {
+export class WebView extends RX.ViewBase<Types.WebViewProps, {}> implements RX.WebView {
     render() {
-        let styles = Styles.combine([_styles.webViewDefault, this.props.style]);
+        let styles = [_styles.webViewDefault, this.props.style];
 
         return (
             <RN.WebView
@@ -46,6 +46,10 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, {}> {
         );
     }
 
+    postMessage(message: string, targetOrigin: string = '*') {
+        // Not Implemented...
+    }
+        
     reload() {
         const webView : RN.WebView = this.refs[WEBVIEW_REF] as RN.WebView;
         if (webView) {

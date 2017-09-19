@@ -142,7 +142,7 @@ export interface AnimatedTransformStyle {
     }];
 }
 
-export type StyleRuleSet<T> = T | number;
+export type StyleRuleSet<T> = T | number | undefined;
 export type StyleRuleSetOrArray<T> = StyleRuleSet<T>|Array<StyleRuleSet<T>>;
 export interface StyleRuleSetRecursiveArray<T> extends Array<StyleRuleSetOrArray<T>|StyleRuleSetRecursiveArray<T>> {}
 export type StyleRuleSetRecursive<T> = StyleRuleSet<T> | StyleRuleSetRecursiveArray<T>;
@@ -938,7 +938,7 @@ export interface PopupOptions {
     // anchor has been pressed.
     // IMPORTANT NOTE: This handler may be called when the component is
     // already unmounted as it uses a time delay to accommodate a fade-out animation.
-    onAnchorPressed?: (e: RX.Types.SyntheticEvent) => void;
+    onAnchorPressed?: (e?: RX.Types.SyntheticEvent) => void;
 
     // Determines if the anchor invoking the popup should behave like a toggle.
     // Value = true  => Calling Popup.show will show the popup. A subsequent call, will hide the popup, and so on.
@@ -1102,11 +1102,6 @@ export interface KeyboardEvent extends SyntheticEvent {
 // Component
 // ----------------------------------------------------------------------
 export var Children: React.ReactChildren;
-
-interface Element<P> {
-    type: React.ComponentClass<P>;
-    props: P;
-}
 
 //
 // Dimensions

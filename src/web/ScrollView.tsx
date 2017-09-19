@@ -77,7 +77,7 @@ let _customStyles = {
 // Default to once per frame.
 const _defaultScrollThrottleValue = 1000 / 60;
 
-export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements RX.IScrollView {
+export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements RX.ScrollView {
     constructor(props: Types.ScrollViewProps) {
         super(props);
 
@@ -111,7 +111,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 minWidth: 0
             };
 
-            _customStyles.bothStyle = Styles.combine([_customStyles.verticalStyle, _customStyles.horizontalStyle]);
+            _customStyles.bothStyle = Styles.combine([_customStyles.verticalStyle, _customStyles.horizontalStyle])!!!;
         }
     }
 
@@ -194,7 +194,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 if (!container) {
                     return;
                 }
-                this.props.onScroll(container.scrollTop, container.scrollLeft);
+                this.props.onScroll!!!(container.scrollTop, container.scrollLeft);
             });
         }
     }, (this.props.scrollEventThrottle || _defaultScrollThrottleValue), { leading: true, trailing: true });

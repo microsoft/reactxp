@@ -19,9 +19,9 @@ export class Linking extends CommonLinking {
         // return SyncTasks.Resolved<boolean>(false);
     }
 
-    getInitialUrl(): SyncTasks.Promise<string> {
+    getInitialUrl(): SyncTasks.Promise<string|undefined> {
         // TODO: #694142 Not implemented
-        return SyncTasks.Resolved<string>(null);
+        return SyncTasks.Resolved<string>(undefined);
     }
 
     launchEmail(emailInfo: Types.EmailInfo): SyncTasks.Promise<void> {
