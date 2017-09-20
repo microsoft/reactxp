@@ -260,6 +260,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             'aria-label': this.props.accessibilityLabel,
             'aria-hidden': isAriaHidden,
             'aria-selected': ariaSelected,
+            'aria-labelledby': this.props.ariaLabelledby,
             onContextMenu: this.props.onContextMenu,
             onMouseEnter: this.props.onMouseEnter,
             onMouseLeave: this.props.onMouseLeave,
@@ -273,6 +274,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             onFocus: this.props.onFocus,
             onBlur: this.props.onBlur,
             onKeyDown: this.props.onKeyPress,
+            id: this.props.id
         };
 
         if (this.props.ignorePointerEvents) {

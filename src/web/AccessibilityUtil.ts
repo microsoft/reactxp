@@ -77,7 +77,7 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
     accessibilityTraitToAriaSelected(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined) {
         // Walk through each trait and check if there's a selected trait. Return if one is found.
         if (traits && _.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.Tab) !== -1) {
-            return traits.indexOf(Types.AccessibilityTrait.Selected) !== -1 ? true : undefined;
+            return traits.indexOf(Types.AccessibilityTrait.Selected) !== -1;
         }
         
         // Here we are returning undefined if the above condition is not met
@@ -89,6 +89,17 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
         // Walk through each trait and check if there's a checked trait. Return if one is found.
         if (traits && _.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.CheckBox) !== -1) {
             return traits.indexOf(Types.AccessibilityTrait.Checked) !== -1;
+        }
+
+        // Here we are returning undefined if the above condition is not met
+        // as we dont want to pollute the dom with "aria-checked = false" for every falsy condition
+        return undefined;
+    }
+
+    accessibilityTraitToAriaHasPopup(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[]|undefined) {
+        // Walk through each trait and check if there's a hasPopup trait. Return if one is found.
+        if (traits && _.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.HasPopup) !== -1) {
+            return traits.indexOf(Types.AccessibilityTrait.HasPopup) !== -1;
         }
 
         // Here we are returning undefined if the above condition is not met

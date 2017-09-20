@@ -370,6 +370,10 @@ export interface AccessibilityHtmlAttributes extends React.HTMLAttributes {
     'aria-hidden'?: boolean;
     'aria-disabled'?: boolean;
     'aria-selected'?: boolean;
+    'aria-checked'?: boolean;
+    'aria-haspopups'?: boolean;
+    'aria-controls'?: string;
+    'aria-labelledby'?: string;
 }
 
 // Android & Desktop supported prop, which allows screen-reader to inform its users when a
@@ -427,6 +431,7 @@ export enum AccessibilityTrait {
     Log,
     Status,
     Dialog,
+    HasPopup,
 
     // Desktop & mobile. This is at the end because this
     // is the highest priority trait.
@@ -463,6 +468,10 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     disableTouchOpacityAnimation?: boolean;
     activeOpacity?: number;
     underlayColor?: string;
+
+    // Web only.
+    id?: string; // Needed for accessibility to be able to use labelledBy attribute.
+    ariaControls?: string; // Needed for accessibility.
 }
 
 // Picker
@@ -562,6 +571,8 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     limitFocusWithin?: boolean; // Web-only, make the view and all focusable subelements not focusable when isFocusLimited state is true
 
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
+    id?: string; // Web-only. Needed for accessibility.
+    ariaLabelledby?: string; // Web-only. Needed for accessibility.
 
     // There are a couple of constraints when child animations are enabled:
     //   - Every child must have a `key`.
