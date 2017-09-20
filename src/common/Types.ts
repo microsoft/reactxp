@@ -547,6 +547,8 @@ export interface TextPropsShared extends CommonProps {
     elevation?: number;
 
     onPress?: (e: SyntheticEvent) => void;
+
+    id?: string; // Web only. Needed for accessibility.
 }
 
 export interface TextProps extends TextPropsShared {

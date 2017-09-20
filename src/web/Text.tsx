@@ -75,6 +75,7 @@ export class Text extends React.Component<Types.TextProps, {}> {
                     style={ this._getStyles() }
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
+                    id={ this.props.id }
                 >
                     { this.props.children }
                 </div>
