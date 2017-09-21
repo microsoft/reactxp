@@ -204,12 +204,11 @@ export var Animated = {
     sequence: RN.Animated.sequence,
 
     // NOTE: Direct access to "Value" will be going away in the near future.
-    // Please move to createValue and createInterpolatedValue instead.
+    // Please move to createValue and interpolate instead.
     Value: RN.Animated.Value,
     createValue: (initialValue: number) => new RN.Animated.Value(initialValue),
-    createInterpolatedValue: (initialValue: number, inputRange: number[], outputRange: string[]) => {
-        let value = new RN.Animated.Value(initialValue);
-        return value.interpolate({
+    interpolate: (animatedValue: RN.Animated.Value, inputRange: number[], outputRange: string[]) => {
+        return animatedValue.interpolate({
             inputRange: inputRange,
             outputRange: outputRange
         });

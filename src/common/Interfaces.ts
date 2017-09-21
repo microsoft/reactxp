@@ -45,7 +45,7 @@ export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewP
 export interface IAnimatedValue {
     setValue(value: number): void;
 
-    // NOTE: interpolate is deprecated. Use RX.Animated.createInterpolatedValue instead.
+    // NOTE: interpolate is deprecated. Use RX.Animated.interpolate instead.
     interpolate(config: any): IAnimatedValue;
 }
 
@@ -296,10 +296,10 @@ export interface Animated {
     sequence: Types.Animated.SequenceFunction;
 
     // Note: Access to Value is deprecated. Move to createValue
-    // and createInterpolatedValue instead.
+    // and interpolate instead.
     Value: typeof Types.AnimatedValue;
     createValue: (initialValue: number) => Types.AnimatedValue;
-    createInterpolatedValue: (initialValue: number, inputRange: number[], outputRange: string[]) => Types.AnimatedValue;
+    interpolate: (value: Types.AnimatedValue, inputRange: number[], outputRange: string[]) => Types.AnimatedValue;
 }
 
 export interface International {

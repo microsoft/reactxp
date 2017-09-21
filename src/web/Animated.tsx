@@ -109,7 +109,7 @@ export class Value extends Types.AnimatedValue {
     }
 
     // Note: public access to interpolate will be going away. Use
-    // RX.Animated.createInterpolatedValue instead.
+    // RX.Animated.interpolate instead.
     interpolate(config: Types.Animated.InterpolationConfigType) {
         // TODO: This is a temporary implementation in order to keep parity with RN's API.
         // In reallity we should support string values as well string tovalues in the animations.
@@ -750,14 +750,14 @@ export var TextInput = createAnimatedComponent(RXTextInput) as typeof RX.Animate
 export var View = createAnimatedComponent(RXView) as typeof RX.AnimatedView;
 
 // NOTE: Direct access to "Value" will be going away in the near future.
-// Please move to createValue and createInterpolatedValue instead.
+// Please move to createValue and interpolate instead.
 export var createValue: (initialValue: number) => Value = function(initialValue: number) {
     return new Value(initialValue);
 };
 
-export var createInterpolatedValue: (initialValue: number, inputRange: number[], outputRange: string[]) => 
-        Value = function(initialValue: number, inputRange: number[], outputRange: string[]) {
-    return new Value(initialValue).interpolate({ inputRange: inputRange, outputRange: outputRange });
+export var interpolate: (value: Value, inputRange: number[], outputRange: string[]) => 
+        Value = function(value: Value, inputRange: number[], outputRange: string[]) {
+    return value.interpolate({ inputRange: inputRange, outputRange: outputRange });
 };
 
 export { Easing };

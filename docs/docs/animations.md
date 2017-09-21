@@ -34,7 +34,8 @@ let animatedScaleValue = RX.Animated.createValue(1.0);
 For animated color values, it is possible to create interpolated values that map from a numeric range to a color range. In this example, the value smoothly transitions from white to red to black as the value increases from 0 to 1.
 
 ``` javascript
-let animatedColorValue = RX.Animated.createInterpolatedValue(0.0,
+let animatedColorValue = RX.Animated.createValue(0.0);
+let interpolatedValue = RX.Animated.interpolate(animatedColorValue,
     [0.0, 0.5, 1.0], ['white', 'red', 'black']);
 ```
 
