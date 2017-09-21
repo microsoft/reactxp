@@ -33,6 +33,9 @@ accessibilityLiveRegion: AccessibilityLiveRegion =
 // Should fonts be scaled according to system setting?
 allowFontScaling: boolean = true; // Android and iOS only
 
+// Specifies a unique id for an HTML element
+id: string = undefined; // Web only
+
 // Should the scale multiplier be capped when allowFontScaling is set to true?
 // Possible values include the following:
 // null/undefined (default) - inheret from parent/global default
