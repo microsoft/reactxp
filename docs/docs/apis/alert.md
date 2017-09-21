@@ -52,12 +52,20 @@ interface AlertModalTheme {
     // Override style for cancel button
     cancelButtonTextStyle?: StyleRuleSet<TextStyle>;;
 }
+
+interface AlertOptions {
+    // Optional icon (web only)
+    icon?: string;
+
+    // Optional theme (web only)
+    theme?: AlertModalTheme;
+}
+
 ```
 
 ## Methods
 ``` javascript
 // Displays an alert over the top of the current screen. Theming support is
 // provided for web only and is ignored on other platforms.
-show(title: string, message?: string, buttons? AlertButtonSpec[], icon?: string,
-    theme?: AlertModalTheme): void;
+show(title: string, message?: string, buttons? AlertButtonSpec[], options?: AlertOptions): void;
 ```

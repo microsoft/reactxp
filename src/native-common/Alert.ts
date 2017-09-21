@@ -14,7 +14,8 @@ import Types = require('../common/Types');
 
 // Native implementation for alert dialog boxes
 export class Alert implements RX.Alert {
-    public show(title: string, message?: string, buttons?: Types.AlertButtonSpec[], icon?: string): void {
+    public show(title: string, message?: string, buttons?: Types.AlertButtonSpec[],
+            options?: RX.Types.AlertOptions): void {
         RN.Alert.alert(title, message, buttons);
     }
 }

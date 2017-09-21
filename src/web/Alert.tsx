@@ -19,7 +19,7 @@ export class Alert extends RX.Alert {
     private _modalId = 'RX.Alert_WebModal';
 
     public show(title: string, message?: string, buttons?: Types.AlertButtonSpec[], 
-            icon?: string, theme?: Types.AlertModalTheme): void {
+            options?: Types.AlertOptions): void {
         Modal.show(
             (
                 <AlertModalContent
@@ -27,7 +27,7 @@ export class Alert extends RX.Alert {
                     buttons={ buttons }
                     title={ title }
                     message={ message }
-                    theme={ theme }
+                    theme={ options && options.theme }
                 />
             ), this._modalId
         );

@@ -994,6 +994,11 @@ export interface AlertModalTheme {
     cancelButtonTextStyle?: StyleRuleSet<TextStyle>;
 }
 
+export interface AlertOptions {
+    icon?: string;
+    theme?: AlertModalTheme;
+}
+
 //
 // Location
 // ----------------------------------------------------------------------

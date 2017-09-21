@@ -21,7 +21,7 @@ export abstract class ActivityIndicator extends React.Component<Types.ActivityIn
 
 export abstract class Alert {
     abstract show(title: string, message?: string, buttons?: Types.AlertButtonSpec[],
-        icon?: string, theme?: Types.AlertModalTheme): void;
+        options?: Types.AlertOptions): void;
 }
 
 export abstract class AnimatedComponent<P extends Types.CommonProps, T> extends React.Component<P, T> {
