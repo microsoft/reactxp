@@ -549,6 +549,7 @@ export interface TextPropsShared extends CommonProps {
     onPress?: (e: SyntheticEvent) => void;
 
     id?: string; // Web only. Needed for accessibility.
+    onContextMenu?: (e: SyntheticEvent) => void;
 }
 
 export interface TextProps extends TextPropsShared {
