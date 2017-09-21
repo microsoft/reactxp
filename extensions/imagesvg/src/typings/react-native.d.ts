@@ -15,6 +15,7 @@ declare module 'react-native' {
 
     import React = require('react');
 
+    // BT: Adding ProgressBarAndroid. It's not part of the DefinitelyTyped definitions.
     class ProgressBarAndroid extends React.Component<any, any> {}
 
     type ReactElement<T> = React.ReactElement<T>;
@@ -100,6 +101,9 @@ declare module 'react-native' {
         onLoadEnd?: (e: SyntheticEvent) => void;
         onLoadStart?: Function;
         onProgress?: Function;
+
+        // Android
+        fadeDuration?: number;
     }
 
     interface ActivityIndicatorProps extends ComponentPropsBase {
@@ -110,17 +114,24 @@ declare module 'react-native' {
     }
 
     interface TextProps extends ComponentPropsStyleBase {
+        importantForAccessibility?: string; // 'auto' | 'yes' | 'no' | 'no-hide-descendants';
         allowFontScaling?: boolean;
+        maxContentSizeMultiplier?: number;
         children?        : React.ReactNode;
         numberOfLines?   : number;
         ellipsizeMode?   : 'head' | 'middle' | 'tail' // There's also 'clip' but it is iOS only
         onLayout?        : Function;
         onPress?         : Function;
+        onLongPress?     : Function;
         selectable?      : boolean; // only on android, windows
         testID?          : string;
 
         // iOS
         suppressHighlighting?: boolean;
+
+        // Android
+        textBreakStrategy?: 'highQuality' | 'simple'| 'balanced';
+        elevation?: number;
     }
 
     export interface PickerProps extends ComponentPropsStyleBase {
@@ -155,6 +166,7 @@ declare module 'react-native' {
         accessibilityComponentType?    : string; //enum ( 'none', 'button', 'radiobutton_checked', 'radiobutton_unchecked' )
         accessibilityTraits?: string | string[]; //enum( 'none', 'button', 'link', 'header', 'search', 'image', 'selected', 'plays', 'key', 'text', 'summary', 'disabled', 'frequentUpdates', 'startsMedia', 'adjustable', 'allowsDirectInteraction', 'pageTurn' )
         accessible?: boolean;
+        importantForAccessibility? : string; //enum( 'auto', 'yes', 'no', 'no-hide-descendants' )
         delayLongPress?: number;
         delayPressIn?: number;
         delayPressOut?: number;
@@ -196,11 +208,24 @@ declare module 'react-native' {
         }
     }
 
-    interface ViewProps extends ComponentPropsBase, ResponderProps, ComponentPropsStyleBase {
+    type ViewLayerType = 'none' | 'software' | 'hardware';
+
+    interface CommonAccessibilityProps {
         accessibilityLabel?              : string;
         accessible?                      : boolean;
-        children?                        : any;
         onAcccessibilityTap?             : Function;
+
+        // android
+        accessibilityComponentType?    : string; //enum ( 'none', 'button', 'radiobutton_checked', 'radiobutton_unchecked' )
+        accessibilityLiveRegion?       : string; //enum ( 'none', 'polite', 'assertive' )
+        importantForAccessibility?     : string; //enum( 'auto', 'yes', 'no', 'no-hide-descendants' )
+
+        // iOS
+        accessibilityTraits?: string | string[]; //enum( 'none', 'button', 'link', 'header', 'search', 'image', 'selected', 'plays', 'key', 'text', 'summary', 'disabled', 'frequentUpdates', 'startsMedia', 'adjustable', 'allowsDirectInteraction', 'pageTurn' )
+    }
+
+    interface ViewProps extends ComponentPropsBase, ResponderProps, ComponentPropsStyleBase, CommonAccessibilityProps {
+        children?                        : any;
         onLayout?                        : ((ev: ViewOnLayoutEvent) => void);
         onMagicTap?                      : Function;
         pointerEvents?                   : string; //enum( 'box-none', 'none', 'box-only', 'auto' );
@@ -208,15 +233,14 @@ declare module 'react-native' {
         testID?                          : string;
 
         // android
-        accessibilityComponentType?    : string; //enum ( 'none', 'button', 'radiobutton_checked', 'radiobutton_unchecked' )
-        accessibilityLiveRegion?       : string; //enum ( 'none', 'polite', 'assertive' )
         collapsable?                   : boolean;
-        importantForAccessibility?     : string; //enum( 'auto', 'yes', 'no', 'no-hide-descendants' )
         needsOffscreenAlphaCompositing?: boolean;
         renderToHardwareTextureAndroid?: boolean;
+        viewLayerTypeAndroid?          : ViewLayerType;
+        elevation?                     : number;
 
         // iOS
-        accessibilityTraits?: string | string[]; //enum( 'none', 'button', 'link', 'header', 'search', 'image', 'selected', 'plays', 'key', 'text', 'summary', 'disabled', 'frequentUpdates', 'startsMedia', 'adjustable', 'allowsDirectInteraction', 'pageTurn' )
+        onAccessibilityTapIOS?: Function;
         shouldRasterizeIOS? : boolean;
     }
 
@@ -225,9 +249,11 @@ declare module 'react-native' {
 
         contentContainerStyle?: StyleRuleSet | StyleRuleSet[];
         horizontal?: boolean;
-        keyboardDismissMode?: string; // enum( 'none', 'interactive', 'on-drag' )
-        keyboardShouldPersistTaps?: boolean;
+        keyboardDismissMode?: 'none' | 'interactive' | 'on-drag';
+        keyboardShouldPersistTaps?: 'always' | 'never' | 'handled';
         onScroll?: Function;
+        onScrollBeginDrag?: Function;
+        onScrollEndDrag?: Function;
         onContentSizeChange?: (width: number, height: number) => void;
         showsHorizontalScrollIndicator?: boolean;
         showsVerticalScrollIndicator?: boolean;
@@ -251,12 +277,14 @@ declare module 'react-native' {
         pagingEnabled?: boolean;
         scrollEnabled?: boolean;
         scrollEventThrottle?: number;
-        //scrollIndicatorInsets?: EdgeInsetsPropType;
         scrollsToTop?: boolean;
         stickyHeaderIndices?: [number];
         snapToInterval?: number;
         snapToAlignment?: string; // enum( 'start', 'center', 'end' )
         zoomScale?: number;
+        overScrollMode?: string; //enum( 'always', 'always-if-content-scrolls', 'never' )
+        // iOS
+        scrollIndicatorInsets?: {top: number, left: number, bottom: number, right: number };
     }
 
     interface ListViewDataSourceCallback {
@@ -292,7 +320,7 @@ declare module 'react-native' {
         onRequestClose: () => void;
     }
 
-    interface TextInputProps extends ComponentPropsStyleBase {
+    interface TextInputProps extends ComponentPropsStyleBase, CommonAccessibilityProps {
         autoCapitalize?: string; // enum('none', 'sentences', 'words', 'characters')
         autoCorrect?: boolean;
         autoFocus?: boolean;
@@ -310,12 +338,20 @@ declare module 'react-native' {
         onFocus?: ((e: React.FocusEvent) => void);
         onLayout?: ((props: { x: number, y: number, width: number, height: number }) => void);
         onSubmitEditing?: Function;
+        onScroll?: Function;
         placeholder?: string;
         placeholderTextColor?: string;
         returnKeyType?: string; // enum('default', 'go', 'google', 'join', 'next', 'route', 'search', 'send', 'yahoo', 'done', 'emergency-call')
         secureTextEntry?: boolean;
         testID?: string;
-        textAlign?: string; // enum('start', 'center', 'end')
+        textAlign?: string; // enum('auto' | 'left' | 'right' | 'center' | 'justify')
+        allowFontScaling?: boolean;
+        maxContentSizeMultiplier?: number;
+        selection?: { start: number, end: number };
+
+        //iOS and android
+        selectionColor?: string;
+
         value: string;
         //iOS
         clearButtonMode?: string; // enum('never', 'while-editing', 'unless-editing', 'always')
@@ -326,12 +362,14 @@ declare module 'react-native' {
         numberOfLines?: number;
         selectTextOnFocus?: boolean;
         selectionState?: any; // see DocumentSelectionState.js
+        spellCheck?: boolean;
         //android
         textAlignVertical?: string; // enum('top', 'center', 'bottom')
         textAlignVerticalAndroid?: string; // enum('top', 'center', 'bottom')
         textAlignAndroid?: string;
         underlineColorAndroid?: string;
-        disableExtractUI?: boolean;
+        disableFullscreenUI?: boolean;
+        textBreakStrategy?: 'highQuality' | 'simple' | 'balanced';
     }
 
     interface TextInputState {
@@ -347,6 +385,7 @@ declare module 'react-native' {
         injectedJavaScript?: string;
         javaScriptEnabled?: boolean;
         domStorageEnabled?: boolean;
+        onShouldStartLoadWithRequest?: Function;
         onNavigationStateChange?: Function;
         onLoad?: (e: SyntheticEvent) => void;
         onLoadStart?: Function;
@@ -415,7 +454,7 @@ declare module 'react-native' {
     }
 
     class Image extends ReactNativeBaseComponent<ImageProps, {}> {
-        static prefetch(url: string): void;
+        static prefetch(url: string): Promise<boolean>;
     }
     class ActivityIndicator extends ReactNativeBaseComponent<ActivityIndicatorProps, {}> { }
     class Text extends ReactNativeBaseComponent<TextProps, {}> { }
@@ -429,6 +468,7 @@ declare module 'react-native' {
         getInnerViewNode(): number;
         // TODO: Define ScrollResponder type
         scrollTo(val: { x?: number; y?: number; animated?: boolean; }): void;
+        scrollBy(val: { deltaX?: number; deltaY?: number; animated?: boolean; }): void;
      }
     class ListView extends ReactNativeBaseComponent<ListViewProps, {}> {
         static DataSource: ListViewDataSource;
@@ -464,8 +504,8 @@ declare module 'react-native' {
     }
 
     class BackAndroid {
-        static addEventListener(eventName: string, callback: () => void): void;
-        static removeEventListener(eventName: string, callback: () => void): void;
+        static addEventListener(eventName: string, callback: () => boolean): void;
+        static removeEventListener(eventName: string, callback: () => boolean): void;
     }
 
     interface NavigatorIOSRoute {
@@ -539,6 +579,7 @@ declare module 'react-native' {
     // StyleSheet
     class StyleSheet {
         static create(obj: { [key: string]: any }): any;
+        static flatten: (s: StyleSheet) => { [key: string]: any };
     }
 
     class AppRegistry {
@@ -608,6 +649,7 @@ declare module 'react-native' {
 
     class Clipboard {
         static setString(content: string): void;
+        static getString(): Promise<string>;
     }
 
     class CameraRoll {
@@ -617,10 +659,18 @@ declare module 'react-native' {
 
     class Linking {
         static getInitialURL(): Promise<string>;
-        static openURL(url: string): Promise<boolean>;
+        static openURL(url: string): Promise<void>;
         static canOpenURL(url: string): Promise<boolean>;
         static addEventListener(type: string, handler: (event: any) => void): void;
         static removeEventListener(type: string, handler: (event: any) => void): void;
+    }
+
+    class AccessibilityInfo {
+        static fetch: () => Promise<boolean>;
+        static addEventListener(type: string, handler: (event: any) => void): void;
+        static removeEventListener(type: string, handler: (event: any) => void): void;
+        static announceForAccessibility(announcement: string): void;
+        static setAccessibilityFocus(reactTag: number): void;
     }
 
     interface AlertButtonSpec {
@@ -724,7 +774,7 @@ declare module 'react-native' {
     type SnapshotOptions = {
         width?: number;
         height?: number;
-        format?: string; // enum { 'png', 'jpeg' }
+        format?: 'png' | 'jpeg';
         quality?: number;
     }
 
@@ -735,12 +785,19 @@ declare module 'react-native' {
         measureLayoutRelativeToParent: Function;
         dispatchViewManagerCommand: Function;
 
+        getMaxContentSizeMultiplier: Function;
+        setMaxContentSizeMultiplier: Function;
+
         // ios
         takeSnapshot: (view: any, options?: SnapshotOptions) => Promise<string>;
+
+        // Android
+        sendAccessibilityEvent: Function;
     }
 
     type AccessibilityManager = {
         getMultiplier: Function;
+        announceForAccessibility (announcement: string): void;
     }
 
     // We don't use this module, but need to be able to check its existance
@@ -758,6 +815,7 @@ declare module 'react-native' {
         static AppState: RCTAppState;
         static FileInput: FileInput;
         static UIManager: UIManager;
+        static AccessibilityManager: AccessibilityManager;
         static ImagePickerManager: ImagePickerManager;
         static Networking: {
             clearCookies(callback: (success: boolean) => void): void;
@@ -779,12 +837,9 @@ declare module 'react-native' {
          static isConnected: {
              addEventListener: (eventName: string, handler: (isConnected: boolean) => void) => void;
              removeEventListener: (eventName: string, handler: (isConnected: boolean) => void) => void;
-             fetch: () => void;
+             fetch: () => Promise<boolean>;
          }
-     }
-
-     class PixelRatio {
-         static get(): number;
+         static fetch(): Promise<string>;
      }
 
      class Easing {
@@ -813,7 +868,7 @@ declare module 'react-native' {
     type AnimatedEndCallback = (result: AnimatedEndResult) => void;
 
      module Animated {
-         function createAnimatedComponent(Component: any): any;
+         function createAnimatedComponent(Component: any, notCollapsable?: boolean): any;
          function delay(time: number): CompositeAnimation;
          function timing(value: Animated.Value, config: AnimatedTimingConfig): CompositeAnimation;
          function parallel(animations: CompositeAnimation[]): CompositeAnimation
@@ -1015,4 +1070,22 @@ declare module 'react-native' {
      module InteractionManager {
          function setDeadline(deadline: number): void;
      }
+
+    interface I18nManager {
+        isRTL: boolean
+        allowRTL: (allowRTL: boolean) => {}
+        forceRTL: (forceRTL: boolean) => {}
+    }
+
+    export var I18nManager: I18nManager;
 }
+
+interface GeoConfiguration {
+    skipPermissionRequests: boolean;
+}
+
+interface Geolocation {
+    // React Native addition to navigator.geolocation
+    setRNConfiguration(config: GeoConfiguration): void;
+}
+
