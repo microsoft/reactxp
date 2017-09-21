@@ -19,6 +19,7 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 #### Version 0.2.1 of reactxp-video
 #### Version 1.0.12 of reactxp-navigator
 #### Version 0.2.6 of reactxp-imagesvg
+#### Version 0.1.5 of reactxp-virtuallistview
 _Released 21 Sep 2017_
 
 Updated for RN 0.46 compatibility.
