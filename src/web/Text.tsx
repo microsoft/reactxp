@@ -90,6 +90,7 @@ export class Text extends React.Component<Types.TextProps, {}> {
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
                     data-text-as-pseudo-element={ this.props.children }
+                    id={ this.props.id }
                 />
             );
         }
