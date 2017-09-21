@@ -371,7 +371,7 @@ export interface AccessibilityHtmlAttributes extends React.HTMLAttributes {
     'aria-disabled'?: boolean;
     'aria-selected'?: boolean;
     'aria-checked'?: boolean;
-    'aria-haspopups'?: boolean;
+    'aria-haspopup'?: boolean;
     'aria-controls'?: string;
     'aria-labelledby'?: string;
 }
@@ -575,7 +575,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
 
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
     id?: string; // Web-only. Needed for accessibility.
-    ariaLabelledby?: string; // Web-only. Needed for accessibility.
+    ariaLabelledBy?: string; // Web-only. Needed for accessibility.
 
     // There are a couple of constraints when child animations are enabled:
     //   - Every child must have a `key`.

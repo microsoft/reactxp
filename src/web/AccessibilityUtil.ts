@@ -85,7 +85,7 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
         return undefined;
     }
 
-    accessibilityTraitToAriaChecked(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[]|undefined) {
+    accessibilityTraitToAriaChecked(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined) {
         // Walk through each trait and check if there's a checked trait. Return if one is found.
         if (traits && _.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.CheckBox) !== -1) {
             return traits.indexOf(Types.AccessibilityTrait.Checked) !== -1;
@@ -96,7 +96,7 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
         return undefined;
     }
 
-    accessibilityTraitToAriaHasPopup(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[]|undefined) {
+    accessibilityTraitToAriaHasPopup(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined) {
         // Walk through each trait and check if there's a hasPopup trait. Return if one is found.
         if (traits && _.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.HasPopup) !== -1) {
             return traits.indexOf(Types.AccessibilityTrait.HasPopup) !== -1;
