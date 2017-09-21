@@ -66,10 +66,10 @@ class ToggleSwitch extends RX.Component<ToggleSwitchProps, null> {
 
         // This value controls the background color of the control. Here we make
         // use of the interpolate method to smoothly transition between two colors.
-        this._toggleColorAnimationValue = RX.Animated.createInterpolatedValue(this.props.value ? 1 : 0,
-            [0, 1], ['#66f', '#ddd']);
+        this._toggleColorAnimationValue = RX.Animated.createValue(this.props.value ? 1 : 0);
         this._toggleColorAnimationStyle = RX.Styles.createAnimatedTextInputStyle({
-            backgroundColor: this._toggleColorAnimationValue
+            backgroundColor: RX.Animated.interpolate(this._toggleColorAnimationValue,
+                [0, 1], ['#66f', '#ddd'])
         });
     }
 
