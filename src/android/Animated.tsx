@@ -38,12 +38,23 @@ export var Animated = {
     Text: AnimatedText as typeof RX.AnimatedText,
     TextInput: CommonAnimated.TextInput as typeof RX.AnimatedTextInput,
     View: CommonAnimated.View as typeof RX.AnimatedView,
-    Value: CommonAnimated.Value as typeof Types.AnimatedValue,
     Easing: CommonAnimated.Easing as Types.Animated.Easing,
     timing: CommonAnimated.timing as Types.Animated.TimingFunction,
     delay: CommonAnimated.delay,
     parallel: CommonAnimated.parallel,
-    sequence: CommonAnimated.sequence
+    sequence: CommonAnimated.sequence,
+
+    // NOTE: Direct access to "Value" will be going away in the near future.
+    // Please move to createValue and createInterpolatedValue instead.
+    Value: RN.Animated.Value,
+    createValue: (initialValue: number) => new RN.Animated.Value(initialValue),
+    createInterpolatedValue: (initialValue: number, inputRange: number[], outputRange: string[]) => {
+        let value = new RN.Animated.Value(initialValue);
+        return value.interpolate({
+            inputRange: inputRange,
+            outputRange: outputRange
+        });
+    }
 };
 
 export default Animated;

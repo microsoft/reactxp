@@ -196,12 +196,24 @@ export var Animated = {
     Text: AnimatedText,
     TextInput: AnimatedTextInput,
     View: AnimatedView,
-    Value: RN.Animated.Value,
     Easing: Easing as Types.Animated.Easing,
+
     timing: timing,
     delay: RN.Animated.delay,
     parallel: RN.Animated.parallel,
-    sequence: RN.Animated.sequence
+    sequence: RN.Animated.sequence,
+
+    // NOTE: Direct access to "Value" will be going away in the near future.
+    // Please move to createValue and createInterpolatedValue instead.
+    Value: RN.Animated.Value,
+    createValue: (initialValue: number) => new RN.Animated.Value(initialValue),
+    createInterpolatedValue: (initialValue: number, inputRange: number[], outputRange: string[]) => {
+        let value = new RN.Animated.Value(initialValue);
+        return value.interpolate({
+            inputRange: inputRange,
+            outputRange: outputRange
+        });
+    }
 };
 
 export default Animated;
