@@ -75,6 +75,7 @@ export class Text extends React.Component<Types.TextProps, {}> {
                     style={ this._getStyles() }
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
+                    onContextMenu={ this.props.onContextMenu }
                 >
                     { this.props.children }
                 </div>
@@ -88,6 +89,7 @@ export class Text extends React.Component<Types.TextProps, {}> {
                     style={ this._getStyles() }
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
+                    onContextMenu={ this.props.onContextMenu }
                     data-text-as-pseudo-element={ this.props.children }
                 />
             );
