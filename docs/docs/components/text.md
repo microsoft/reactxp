@@ -48,8 +48,8 @@ numberOfLines: number = 0;
 selectable: boolean = false;
 
 // Mouse & Touch Events
-onPress?: (e: SyntheticEvent) => void;
-onContextMenu?: (e: SyntheticEvent) => void;
+onPress?: (e: SyntheticEvent) => void = undefined;
+onContextMenu?: (e: SyntheticEvent) => void = undefined;
 
 // See below for supported styles
 style: TextStyleRuleSet | TextStyleRuleSet[] = [];
