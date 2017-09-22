@@ -38,6 +38,7 @@ export abstract class AnimatedTextInput extends AnimatedComponent<Types.Animated
 }
 
 export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewProps, {}> {
+    abstract focus(): void;
     abstract setFocusRestricted(restricted: boolean): void;
     abstract setFocusLimited(limited: boolean): void;
 }
