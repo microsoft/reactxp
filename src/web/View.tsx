@@ -251,7 +251,9 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
         const ariaSelected = AccessibilityUtil.accessibilityTraitToAriaSelected(this.props.accessibilityTraits);
         const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
-        const ariaLive = AccessibilityUtil.accessibilityLiveRegionToString(this.props.accessibilityLiveRegion);
+        const ariaLive = this.props.accessibilityLiveRegion ? 
+            AccessibilityUtil.accessibilityLiveRegionToString(this.props.accessibilityLiveRegion) :
+            undefined;
 
         let props: Types.AccessibilityHtmlAttributes = {
             role: ariaRole,
