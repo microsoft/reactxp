@@ -749,10 +749,10 @@ export var Text = createAnimatedComponent(RXText) as typeof RX.AnimatedText;
 export var TextInput = createAnimatedComponent(RXTextInput) as typeof RX.AnimatedTextInput;
 export var View = createAnimatedComponent(RXView) as typeof RX.AnimatedView;
 
-export type Image = typeof RX.AnimatedImage;
-export type Text = typeof RX.AnimatedText;
-export type TextInput = typeof RX.AnimatedTextInput;
-export type View = typeof RX.AnimatedView;
+export type Image = RX.AnimatedImage;
+export type Text = RX.AnimatedText;
+export type TextInput = RX.AnimatedTextInput;
+export type View = RX.AnimatedView;
 
 // NOTE: Direct access to "Value" will be going away in the near future.
 // Please move to createValue and interpolate instead.
