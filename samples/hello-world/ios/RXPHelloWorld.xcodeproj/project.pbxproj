@@ -71,6 +71,13 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = RXPHelloWorld;
 		};
+		079DE2501F74882C001D9E60 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 07C03DEC1EC381C500E549B0 /* RNSVG.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 079DE22D1F74882B001D9E60;
+			remoteInfo = "RNSVG-tvOS";
+		};
 		07AE0CEA1F74268D0035D6C1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3DCA89A6E37C4159BA853305 /* RCTVideo.xcodeproj */;
@@ -381,10 +388,19 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		079DE22E1F74882B001D9E60 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				74E34242ADFA4988B886EDF7 /* libRCTVideo.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		07C03DED1EC381C500E549B0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				07C03DF11EC381C500E549B0 /* libRNSVG.a */,
+				079DE2511F74882C001D9E60 /* libRNSVG-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -453,7 +469,7 @@
 			isa = PBXGroup;
 			children = (
 				5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */,
-				5E9157351DD0AC6500FF2AA8 /* libRCTAnimation-tvOS.a */,
+				5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -503,6 +519,7 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* RXPHelloWorldTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
+				079DE22E1F74882B001D9E60 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -684,6 +701,13 @@
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		079DE2511F74882C001D9E60 /* libRNSVG-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNSVG-tvOS.a";
+			remoteRef = 079DE2501F74882C001D9E60 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		07AE0CEB1F74268D0035D6C1 /* libRCTVideo.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -852,7 +876,7 @@
 			remoteRef = 5E9157321DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5E9157351DD0AC6500FF2AA8 /* libRCTAnimation-tvOS.a */ = {
+		5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRCTAnimation.a;
