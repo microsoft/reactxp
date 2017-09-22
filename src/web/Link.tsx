@@ -52,7 +52,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
         //   See: https://mathiasbynens.github.io/rel-noopener/
         return (
             <a
-                style={ this._getStyles() }
+                style={ this._getStyles() as any }
                 title={ this.props.title }
                 href={ this.props.url }
                 target='_blank'
@@ -89,7 +89,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
         return combinedStyles;
     }
 
-    private _onClick = (e: React.MouseEvent) => {
+    private _onClick = (e: React.MouseEvent<any>) => {
         e.stopPropagation();
 
         if (this.props.onPress) {

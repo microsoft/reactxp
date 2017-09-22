@@ -104,7 +104,7 @@ export class Image extends React.Component<Types.ImageProps, {}> {
         return [_styles.defaultImage, this.props.style];
     }
 
-    private _onLoad = (e: React.SyntheticEvent) => {
+    private _onLoad = (e: React.SyntheticEvent<Image>) => {
         if (!this._isMounted) {
             return;
         }
@@ -118,7 +118,7 @@ export class Image extends React.Component<Types.ImageProps, {}> {
         }
     }
 
-    private _onError = (e: React.SyntheticEvent) => {
+    private _onError = (e: React.SyntheticEvent<Image>) => {
         if (!this._isMounted) {
             return;
         }

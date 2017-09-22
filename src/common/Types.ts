@@ -364,7 +364,7 @@ export enum ImportantForAccessibility {
     NoHideDescendants
 }
 
-export interface AccessibilityHtmlAttributes extends React.HTMLAttributes {
+export interface AccessibilityHtmlAttributes extends React.HTMLAttributes<any> {
     'aria-label'?: string;
     'aria-live'?: string;
     'aria-hidden'?: boolean;
@@ -610,19 +610,19 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
 
 export interface ViewProps extends ViewPropsShared {
     style?:  StyleRuleSetRecursive<ViewStyleRuleSet>;
-    onContextMenu?: (e: React.SyntheticEvent) => void;
-    onStartShouldSetResponder?: (e: React.SyntheticEvent) => boolean;
-    onMoveShouldSetResponder?: (e: React.SyntheticEvent) => boolean;
-    onStartShouldSetResponderCapture?: (e: React.SyntheticEvent) => boolean;
-    onMoveShouldSetResponderCapture?: (e: React.SyntheticEvent) => boolean;
-    onResponderGrant?: (e: React.SyntheticEvent) => void;
-    onResponderReject?: (e: React.SyntheticEvent) => void;
-    onResponderRelease?: (e: React.SyntheticEvent) => void;
-    onResponderStart?: (e: React.TouchEvent) => void;
-    onResponderMove?: (e: React.TouchEvent) => void;
-    onResponderEnd?: (e: React.TouchEvent) => void;
-    onResponderTerminate?: (e: React.SyntheticEvent) => void;
-    onResponderTerminationRequest?: (e: React.SyntheticEvent) => boolean;
+    onContextMenu?: (e: React.SyntheticEvent<any>) => void;
+    onStartShouldSetResponder?: (e: React.SyntheticEvent<any>) => boolean;
+    onMoveShouldSetResponder?: (e: React.SyntheticEvent<any>) => boolean;
+    onStartShouldSetResponderCapture?: (e: React.SyntheticEvent<any>) => boolean;
+    onMoveShouldSetResponderCapture?: (e: React.SyntheticEvent<any>) => boolean;
+    onResponderGrant?: (e: React.SyntheticEvent<any>) => void;
+    onResponderReject?: (e: React.SyntheticEvent<any>) => void;
+    onResponderRelease?: (e: React.SyntheticEvent<any>) => void;
+    onResponderStart?: (e: React.TouchEvent<any>) => void;
+    onResponderMove?: (e: React.TouchEvent<any>) => void;
+    onResponderEnd?: (e: React.TouchEvent<any>) => void;
+    onResponderTerminate?: (e: React.SyntheticEvent<any>) => void;
+    onResponderTerminationRequest?: (e: React.SyntheticEvent<any>) => boolean;
 }
 
 export interface AnimatedViewProps extends ViewPropsShared {
@@ -631,7 +631,7 @@ export interface AnimatedViewProps extends ViewPropsShared {
 
 // GestureView
 export interface GestureState {
-    timeStamp: Date;
+    timeStamp: number;
 }
 
 export interface MultiTouchGestureState extends GestureState {
@@ -1080,16 +1080,52 @@ export module Animated {
 //
 // Events
 // ----------------------------------------------------------------------
-export type SyntheticEvent = React.SyntheticEvent;
+export type SyntheticEvent = React.SyntheticEvent<any>;
 
-export type DragEvent = React.DragEvent;
-export type ClipboardEvent = React.ClipboardEvent;
-export type FocusEvent = React.FocusEvent;
-export type FormEvent = React.FormEvent;
-export type MouseEvent = React.MouseEvent;
-export type TouchEvent = React.TouchEvent;
-export type UIEvent = React.UIEvent;
-export type WheelEvent = React.WheelEvent;
+export type DragEvent = React.DragEvent<any>;
+export type ClipboardEvent = React.ClipboardEvent<any>;
+export type FocusEvent = React.FocusEvent<any>;
+export type FormEvent = React.FormEvent<any>;
+export type MouseEvent = React.MouseEvent<any>;
+
+export interface Touch {
+    identifier: number;
+    target: EventTarget;
+    locationX: number;
+    locationY: number;
+    screenX: number;
+    screenY: number;
+    clientX: number;
+    clientY: number;
+    pageX: number;
+    pageY: number;
+}
+
+export interface TouchList {
+    [index: number]: Touch;
+    length: number;
+    item(index: number): Touch;
+    identifiedTouch(identifier: number): Touch;
+}
+
+export interface TouchEvent extends React.SyntheticEvent<any> {
+    // We override this definition because the public
+    // type excludes location and page fields.
+    altKey: boolean;
+    changedTouches: TouchList;
+    ctrlKey: boolean;
+    getModifierState(key: string): boolean;
+    metaKey: boolean;
+    shiftKey: boolean;
+    targetTouches: TouchList;
+    locationX?: number;
+    locationY?: number;
+    pageX?: number;
+    pageY?: number;
+    touches: TouchList;
+}
+export type UIEvent = React.UIEvent<any>;
+export type WheelEvent = React.WheelEvent<any>;
 
 export interface WebViewShouldStartLoadEvent extends SyntheticEvent {
     url: string;

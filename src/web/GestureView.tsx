@@ -120,9 +120,9 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
         );
     }
 
-    private _setContainerRef = (container: React.DOMComponent<React.HTMLAttributes>) => {
+    private _setContainerRef = (container: any) => {
         // safe since div refs resolve into HTMLElement and not react element.
-        this._container = container as any as HTMLElement;
+        this._container = container as HTMLElement;
     }
 
     private _getStyles(): any {
@@ -246,7 +246,7 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
         return isPan;
     }
 
-    private _onWheel = (e: React.WheelEvent) => {
+    private _onWheel = (e: React.WheelEvent<any>) => {
         if (this.props.onScrollWheel) {
             const clientRect = this._getGestureViewClientRect();
             const scrollWheelEvent: Types.ScrollWheelGestureState = {

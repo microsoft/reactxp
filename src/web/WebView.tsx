@@ -75,10 +75,10 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> imple
         return (
             <View style={ _styles.webViewContainer }>
                 <iframe
-                    ref='iframe'
+                    ref={ 'iframe' }
                     name={ this.state.webFrameIdentifier }
                     id={ this.state.webFrameIdentifier }
-                    style={ styles }
+                    style={ styles as any }
                     src={ this.props.url }
                     onLoad={ this._onLoad }
                     sandbox={ this._sandboxToStringValue(sandbox) }

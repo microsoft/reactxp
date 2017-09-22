@@ -136,7 +136,7 @@ export default class MouseResponder {
             pageY: event.pageY,
             velocityX: 0,
             velocityY: 0,
-            timeStamp: new Date(),
+            timeStamp: Date.now(),
             isComplete: false
         };
 
@@ -209,7 +209,7 @@ export default class MouseResponder {
     }
 
     private static _calcVelocity = (e: MouseEvent, gestureState: Types.PanGestureState) => {
-        const time = Date.now() - gestureState.timeStamp.getTime();
+        const time = Date.now() - gestureState.timeStamp;
 
         const velocityX = (e.clientX - gestureState.initialClientX) / time;
         const velocityY = (e.clientY - gestureState.initialClientY) / time;

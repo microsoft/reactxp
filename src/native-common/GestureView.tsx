@@ -72,8 +72,8 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     private _setUpPanResponder(): void {
         this._panResponder = RN.PanResponder.create({
             onStartShouldSetPanResponder: (e, gestureState) => {
-                const event = (e.nativeEvent as any) as Types.TouchEvent;
-                UserInterface.evaluateTouchLatency(e);
+                const event = (e as any).nativeEvent as Types.TouchEvent;
+                UserInterface.evaluateTouchLatency(e as any);
 
                 this._lastGestureStartEvent = event;
                 // If we're trying to detect a tap, set this as the responder immediately.
@@ -84,8 +84,8 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
             },
 
             onMoveShouldSetPanResponder: (e, gestureState) => {
-                const event = (e.nativeEvent as any) as Types.TouchEvent;
-                UserInterface.evaluateTouchLatency(e);
+                const event = (e as any).nativeEvent as Types.TouchEvent;
+                UserInterface.evaluateTouchLatency(e as any);
 
                 this._lastGestureStartEvent = event;
                 this._pendingGestureType = this._detectMoveGesture(event, gestureState);
@@ -115,8 +115,8 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
             },
 
             onPanResponderMove: (e, gestureState) => {
-                const event = (e.nativeEvent as any) as Types.TouchEvent;
-                UserInterface.evaluateTouchLatency(e);
+                const event = (e as any).nativeEvent as Types.TouchEvent;
+                UserInterface.evaluateTouchLatency(e as any);
 
                 let initializeFromEvent = false;
 
@@ -145,7 +145,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     }
 
     private _onPanResponderEnd(e: RN.ResponderSyntheticEvent, gestureState: RN.PanResponderGestureState) {
-        const event = (e.nativeEvent as any) as Types.TouchEvent;
+        const event = (e as any).nativeEvent as Types.TouchEvent;
 
         // Close out any of the pending move gestures.
         if (this._pendingGestureType === GestureType.MultiTouch) {

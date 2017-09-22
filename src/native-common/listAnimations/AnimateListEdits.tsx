@@ -33,7 +33,9 @@ function extractChildrenKeys(children: React.ReactNode): ChildKey[] {
                 childReactElement.key !== undefined && childReactElement.key !== null,
                 'Children passed to a `View` with child animations enabled must have a `key`'
             );
-            keys.push(childReactElement.key);
+            if (childReactElement.key !== null) {
+                keys.push(childReactElement.key);
+            }
         }
     });
     return keys;
@@ -43,7 +45,7 @@ function findInvalidRefs(children: React.ReactNode) {
     let invalidRefs: string[] = [];
     React.Children.forEach(children, function (child) {
         if (child) {
-            let childElement = child as React.ReactElement<any>;
+            let childElement = child as any;
             if (typeof childElement.ref !== 'function' && childElement.ref !== undefined && childElement.ref !== null) {
                 invalidRefs.push(childElement.ref as string);
             }

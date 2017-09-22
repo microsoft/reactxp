@@ -58,7 +58,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         // we use are virtualized anyway.
         return (
             <RN.ScrollView
-                ref={this._setNativeView}
+                ref={ this._setNativeView }
                 style={ this.props.style }
                 onScroll={ scrollCallback }
                 automaticallyAdjustContentInsets={ false }
@@ -87,7 +87,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         );
     }
 
-    private _onScroll = (event: React.SyntheticEvent) => {
+    private _onScroll = (event: React.SyntheticEvent<ScrollView>) => {
         const nativeEvent = event.nativeEvent as any;
         this._scrollTop = nativeEvent.contentOffset.y;
         this._scrollLeft = nativeEvent.contentOffset.x;

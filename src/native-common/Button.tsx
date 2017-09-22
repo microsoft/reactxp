@@ -59,10 +59,10 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     touchableGetInitialState: () => RN.Touchable.State;
     touchableHandleStartShouldSetResponder: () => boolean;
     touchableHandleResponderTerminationRequest: () => boolean;
-    touchableHandleResponderGrant: (e: React.SyntheticEvent) => void;
-    touchableHandleResponderMove: (e: React.SyntheticEvent) => void;
-    touchableHandleResponderRelease: (e: React.SyntheticEvent) => void;
-    touchableHandleResponderTerminate: (e: React.SyntheticEvent) => void;
+    touchableHandleResponderGrant: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderMove: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderRelease: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderTerminate: (e: React.SyntheticEvent<any>) => void;
 
     private _isMounted = false;
     private _hideTimeout: number|undefined;

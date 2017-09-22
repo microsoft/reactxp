@@ -14,7 +14,7 @@ import ReactDOM = require('react-dom');
 import MonitorListEdits = require('./MonitorListEdits');
 import executeTransition from '../animated/executeTransition';
 
-export interface AnimateListEditsProps extends React.HTMLAttributes {
+export interface AnimateListEditsProps {
     animateChildEnter?: boolean;
     animateChildLeave?: boolean;
     animateChildMove?: boolean;

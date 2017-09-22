@@ -43,7 +43,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     componentWillReceiveProps(nextProps: Types.TextInputProps) {
         if (nextProps.value !== this.state.inputValue) {
             this.setState({
-                inputValue: nextProps.value
+                inputValue: nextProps.value || ''
             });
         }
     }
@@ -53,7 +53,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         const blurOnSubmit = this.props.blurOnSubmit || !this.props.multiline;
         return (
             <RN.TextInput
-                ref='nativeTextInput'
+                ref={ 'nativeTextInput' }
                 multiline={ this.props.multiline }
                 style={ Styles.combine([_styles.defaultTextInput, this.props.style]) }
                 value={ this.state.inputValue }
@@ -70,9 +70,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 defaultValue={ this.props.value }
                 placeholderTextColor={ this.props.placeholderTextColor }
                 onSubmitEditing={this.props.onSubmitEditing }
-                onKeyPress={ this._onKeyPress }
+                onKeyPress={ this._onKeyPress as any }
                 onChangeText={ this._onChangeText }
-                onSelectionChange={ this._onSelectionChange }
+                onSelectionChange={ this._onSelectionChange as any }
                 onFocus={ this._onFocus }
                 onBlur={ this._onBlur }
                 onScroll={ this._onScroll }
@@ -117,7 +117,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    private _onSelectionChange = (selEvent: React.SyntheticEvent) => {
+    private _onSelectionChange = (selEvent: React.SyntheticEvent<TextInput>) => {
         let selection: { start: number, end: number } =
             (selEvent.nativeEvent as any).selection;
 
@@ -135,7 +135,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         this.forceUpdate();
     }
 
-    private _onKeyPress = (e: React.KeyboardEvent) => {
+    private _onKeyPress = (e: React.KeyboardEvent<TextInput>) => {
         if (this.props.onKeyPress) {
             let keyName: string = (e.nativeEvent as any).key;
             let keyCode: number = 0;
@@ -178,7 +178,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    private _onScroll = (e: React.UIEvent) => {
+    private _onScroll = (e: React.UIEvent<TextInput>) => {
         if (this.props.onScroll) {
             const { contentOffset } = (e.nativeEvent as any);
             this.props.onScroll(contentOffset.x, contentOffset.y);

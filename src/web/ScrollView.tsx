@@ -168,12 +168,12 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         }
     }
 
-    protected _getContainerRef(): React.Component<any, any> {
+    protected _getContainerRef(): React.ReactInstance {
         return this.refs['scrollView'];
     }
 
     // Throttled scroll handler
-    private _onScroll = _.throttle((e: React.SyntheticEvent) => {
+    private _onScroll = _.throttle((e: React.SyntheticEvent<any>) => {
         if (this._customScrollbarEnabled) {
             this._customScrollbar.update();
         }
@@ -227,7 +227,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 onScroll={ this._onScroll }
                 onTouchStart={ this._onTouchStart }
                 onTouchEnd={ this._onTouchEnd }
-                style={ this._getContainerStyle() }
+                style={ this._getContainerStyle() as any }
             >
                 { this.props.children }
             </div>
@@ -258,7 +258,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                     ref='scrollView'
                     className={ scrollComponentClassNames.join(' ') }
                     onScroll={ this._onScroll }
-                    style={ this._getContainerStyle() }
+                    style={ this._getContainerStyle() as any }
                     onKeyDown={ this.props.onKeyPress }
                     onFocus={ this.props.onFocus }
                     onBlur={ this.props.onBlur }

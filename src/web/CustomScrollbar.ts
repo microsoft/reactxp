@@ -265,7 +265,7 @@ export class Scrollbar {
         this._container.removeChild(rtlbox);
     }
 
-    private _prevent(e: React.SyntheticEvent) {
+    private _prevent(e: React.SyntheticEvent<any>) {
         e.preventDefault();
     }
 
@@ -287,7 +287,7 @@ export class Scrollbar {
         }
     }
 
-    private _handleDrag(e: React.MouseEvent) {
+    private _handleDrag(e: React.MouseEvent<any>) {
         if (this._dragIsVertical) {
             this._viewport.scrollTop = (e.pageY - this._verticalBar.dragOffset!!!) * this._verticalBar.slider2Scroll!!!;
         } else {
@@ -295,7 +295,7 @@ export class Scrollbar {
         }
     }
 
-    private _startDrag(dragIsVertical: boolean, e: React.MouseEvent) {
+    private _startDrag(dragIsVertical: boolean, e: React.MouseEvent<any>) {
         if (!this._dragging) {
             window.addEventListener('mouseup', this._stopDragCallback);
             window.addEventListener('mousemove', this._handleDragCallback);
@@ -319,7 +319,7 @@ export class Scrollbar {
         this._dragging = false;
     }
 
-    private _handleWheel(e: React.WheelEvent) {
+    private _handleWheel(e: React.WheelEvent<any>) {
         // Always prefer the vertical axis if present. User can override with the control key.
         if (this._hasVertical) {
             this._viewport.scrollTop = this._normalizeDelta(e) + this._viewport.scrollTop;
@@ -328,11 +328,11 @@ export class Scrollbar {
         }
     }
 
-    private _handleMouseDown(e: React.MouseEvent) {
+    private _handleMouseDown(e: React.MouseEvent<any>) {
         this._prevent(e);
     }
 
-    private _normalizeDelta(e: React.WheelEvent) {
+    private _normalizeDelta(e: React.WheelEvent<any>) {
         if (e.deltaY) {
             return e.deltaY > 0 ? 100 : -100;
         }

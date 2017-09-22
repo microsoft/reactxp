@@ -124,7 +124,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             return null;
         }
 
-        let initResizer = (key: 'grow' | 'shrink', ref: React.DOMComponent<React.HTMLAttributes>) => {
+        let initResizer = (key: 'grow' | 'shrink', ref: any) => {
             const cur: HTMLElement|undefined = this._resizeDetectorNodes[key];
             const element = ReactDOM.findDOMNode<HTMLElement>(ref);
 
@@ -143,21 +143,21 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             (
                 <div
                     key={ 'grow' }
-                    style={ _styles.resizeDetectorContainerStyles }
+                    style={ _styles.resizeDetectorContainerStyles as any }
                     ref={ (ref) => initResizer('grow', ref) }
                     onScroll={ () => this._resizeDetectorOnScroll() }>
 
-                    <div style={ _styles.resizeGrowDetectorStyles }></div>
+                    <div style={ _styles.resizeGrowDetectorStyles as any } />
                 </div>
             ),
             (
                 <div
                     key={ 'shrink' }
-                    style={ _styles.resizeDetectorContainerStyles }
+                    style={ _styles.resizeDetectorContainerStyles as any }
                     ref={ (ref) => initResizer('shrink', ref) }
                     onScroll={ () => this._resizeDetectorOnScroll() }>
 
-                    <div style={ _styles.resizeShrinkDetectorStyles }></div>
+                    <div style={ _styles.resizeShrinkDetectorStyles as any } />
                 </div>
             )
         ];
@@ -214,7 +214,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         return childContext;
     }
 
-    protected _getContainerRef(): React.Component<any, any> {
+    protected _getContainerRef(): React.ReactInstance {
         return this;
     }
 

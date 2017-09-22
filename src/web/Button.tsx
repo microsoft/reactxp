@@ -58,7 +58,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         // NOTE: We use tabIndex=0 to support focus.
         return (
             <button
-                style={ this._getStyles() }
+                style={ this._getStyles() as any }
                 role={ ariaRole }
                 title={ this.props.title }
                 tabIndex={ this.props.tabIndex }

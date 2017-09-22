@@ -78,10 +78,10 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         if (this.props.multiline) {
             return (
                 <textarea
-                    style={ combinedStyles }
+                    style={ combinedStyles as any }
                     value={ this.state.inputValue }
 
-                    autoCorrect={ this.props.autoCorrect }
+                    autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
                     disabled={ !editable }
                     maxLength={ this.props.maxLength }
@@ -102,10 +102,10 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         } else {
             return (
                 <input
-                    style={ combinedStyles }
+                    style={ combinedStyles as any }
                     value={ this.state.inputValue }
 
-                    autoCorrect={ this.props.autoCorrect }
+                    autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
                     disabled={ !editable }
                     maxLength={ this.props.maxLength }
@@ -134,7 +134,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         this._checkSelectionChanged();
     }
 
-    private _onInput = (e: React.FormEvent) => {
+    private _onInput = (e: React.FormEvent<any>) => {
         if (!e.defaultPrevented) {
             let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
             if (el) {

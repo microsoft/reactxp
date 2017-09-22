@@ -307,7 +307,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 { optionalModal }
                 { optionalPopup }
                 <div
-                    style={ _styles.liveRegionContainer }
+                    style={ _styles.liveRegionContainer as any }
                     aria-live={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
                     aria-atomic={ 'true' }
                 >
@@ -444,7 +444,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         Input.dispatchKeyUp(e as any);
     }
 
-    private _onMouseEnter(e: React.MouseEvent) {
+    private _onMouseEnter(e: React.MouseEvent<any>) {
         this.setState({
             isMouseInPopup: true
         });
@@ -452,7 +452,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         this._stopHidePopupTimer();
     }
 
-    private _onMouseLeave(e: React.MouseEvent) {
+    private _onMouseLeave(e: React.MouseEvent<any>) {
         this.setState({
             isMouseInPopup: false
         });

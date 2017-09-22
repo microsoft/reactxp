@@ -72,7 +72,7 @@ export class Text extends React.Component<Types.TextProps, {}> {
         if (this.props.selectable || typeof this.props.children !== 'string') {
             return (
                 <div
-                    style={ this._getStyles() }
+                    style={ this._getStyles() as any }
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
                     id={ this.props.id }
@@ -87,7 +87,7 @@ export class Text extends React.Component<Types.TextProps, {}> {
             // will be displayed as pseudo element.
             return (
                 <div
-                    style={ this._getStyles() }
+                    style={ this._getStyles() as any }
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
                     onContextMenu={ this.props.onContextMenu }

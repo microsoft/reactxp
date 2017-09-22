@@ -28,7 +28,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
     private static _appActivationState = Types.AppActivationState.Active;
 
     abstract render(): JSX.Element;
-    protected abstract _getContainerRef(): React.Component<any, any>;
+    protected abstract _getContainerRef(): React.ReactInstance;
     private _isMounted = false;
     private _container: HTMLElement|undefined;
 

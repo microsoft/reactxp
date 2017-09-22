@@ -31,7 +31,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         }
     }
 
-    protected _setNativeView = (view: RN.View) => {
+    protected _setNativeView = (view: any | undefined) => {
         this._nativeView = view;
     }
 
