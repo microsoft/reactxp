@@ -215,7 +215,7 @@ export class Styles extends RX.Styles {
         return cssString;
     }
 
-    getCssPropertyAliasesCssStyle = memoize(() => {
+    _cssPropertyAliasesCssStyle = memoize(() => {
         let jsStyleAliases = this._getCssPropertyAliasesJsStyle();
 
         let aliases: CssAliasMap = {};
@@ -226,6 +226,10 @@ export class Styles extends RX.Styles {
 
         return aliases;
     });
+
+    getCssPropertyAliasesCssStyle(): {[key: string]: string} {
+        return this._cssPropertyAliasesCssStyle();
+    }
 
     getParentComponentName(component: any): string {
         let parentConstructor: any;

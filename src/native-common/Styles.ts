@@ -132,6 +132,11 @@ export class Styles extends RX.Styles {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
+    getCssPropertyAliasesCssStyle(): {[key: string]: string} {
+        // Nothing to do in native; this is for web only
+        return {};
+    }
+
     private _adaptStyles<S extends Types.ViewAndImageCommonStyle>(def: S, cacheStyle: boolean): Types.StyleRuleSet<S> {
         let adaptedRuleSet = def as ReactNativeViewAndImageCommonStyle<S>;
         if (cacheStyle) {

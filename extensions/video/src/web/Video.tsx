@@ -72,7 +72,6 @@ class Video extends RX.Component<Types.VideoProps, {}> {
                 ref='video'
                 style={ combinedStyles }
                 src={ this.props.source }
-                alt={ this.props.accessibilityLabel }
                 controls={ this.props.showControls }
                 loop={ this.props.loop }
                 onLoadedData={ this._onLoadedData }

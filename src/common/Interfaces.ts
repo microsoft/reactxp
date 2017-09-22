@@ -236,6 +236,7 @@ export abstract class Styles {
     abstract createAnimatedImageStyle(ruleSet: Types.AnimatedImageStyle): Types.AnimatedImageStyleRuleSet;
     abstract createLinkStyle(ruleSet: Types.LinkStyleRuleSet, cacheStyle?: boolean): Types.LinkStyleRuleSet;
     abstract createPickerStyle(ruleSet: Types.PickerStyle, cacheStyle?: boolean): Types.PickerStyleRuleSet;
+    abstract getCssPropertyAliasesCssStyle(): {[key: string]: string};
 }
 
 export abstract class Text extends React.Component<Types.TextProps, any> {

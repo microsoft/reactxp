@@ -31,7 +31,7 @@ declare module 'react-native' {
         props ?: any
     ): React.ReactElement<P>;
 
-    interface SyntheticEvent extends React.SyntheticEvent {}
+    interface SyntheticEvent<T> extends React.SyntheticEvent<T> {}
 
     function isValidElement(object: {}): boolean;
     function findNodeHandle(componentOrHandle: any): number;
@@ -98,7 +98,7 @@ declare module 'react-native' {
         defaultSource?: Object;
         onError?: Function;
         onLoad?: Function;
-        onLoadEnd?: (e: SyntheticEvent) => void;
+        onLoadEnd?: (e: SyntheticEvent<Image>) => void;
         onLoadStart?: Function;
         onProgress?: Function;
 
@@ -301,7 +301,7 @@ declare module 'react-native' {
         renderSeparator?: Function;
         renderRow: Function;
         initialListSize?: number;
-        onEndReached?: (e: React.SyntheticEvent) => void;
+        onEndReached?: (e: React.SyntheticEvent<ListView>) => void;
         onEndReachedThreshold?: number;
         pageSize?: number;
         renderFooter?: Function;
@@ -329,13 +329,13 @@ declare module 'react-native' {
         editable?: boolean;
         keyboardType?: string; // enum("default", 'numeric', 'email-address', "ascii-capable", 'numbers-and-punctuation', 'url', 'number-pad', 'phone-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search')
         multiline?: boolean;
-        onBlur?: ((e: React.FocusEvent) => void);
-        onKeyPress?: (e: SyntheticEvent) => void;
+        onBlur?: ((e: React.FocusEvent<TextInput>) => void);
+        onKeyPress?: (e: SyntheticEvent<TextInput>) => void;
         onChange?: Function;
         onChangeText?: ((changedText: string) => void);
-        onSelectionChange?: ((selection: SyntheticEvent) => void);
+        onSelectionChange?: ((selection: SyntheticEvent<TextInput>) => void);
         onEndEditing?: Function;
-        onFocus?: ((e: React.FocusEvent) => void);
+        onFocus?: ((e: React.FocusEvent<TextInput>) => void);
         onLayout?: ((props: { x: number, y: number, width: number, height: number }) => void);
         onSubmitEditing?: Function;
         onScroll?: Function;
@@ -387,7 +387,7 @@ declare module 'react-native' {
         domStorageEnabled?: boolean;
         onShouldStartLoadWithRequest?: Function;
         onNavigationStateChange?: Function;
-        onLoad?: (e: SyntheticEvent) => void;
+        onLoad?: (e: SyntheticEvent<WebView>) => void;
         onLoadStart?: Function;
         renderError?: Function;
         onError?: Function;
@@ -723,7 +723,7 @@ declare module 'react-native' {
         numberActiveTouches: number;
     }
 
-    interface ResponderSyntheticEvent extends React.SyntheticEvent {
+    interface ResponderSyntheticEvent extends React.SyntheticEvent<any> {
         touchHistory: Function;
     }
 
@@ -964,14 +964,14 @@ declare module 'react-native' {
             touchableGetInitialState: () => State
             touchableHandleStartShouldSetResponder: () => {}
             touchableHandleResponderTerminationRequest: () => {}
-            touchableHandleResponderGrant: (e: React.SyntheticEvent, dispatchID: string) => {}
-            touchableHandleResponderMove: (e: React.SyntheticEvent) => {}
-            touchableHandleResponderRelease: (e: React.SyntheticEvent) => {}
-            touchableHandleResponderTerminate: (e: React.SyntheticEvent) => {}
-            touchableHandleActivePressIn?: (e: React.SyntheticEvent) => {}
-            touchableHandleActivePressOut?: (e: React.SyntheticEvent) => {}
-            touchableHandlePress?: (e: React.SyntheticEvent) => {}
-            touchableHandleLongPress?: (e: React.SyntheticEvent) => {}
+            touchableHandleResponderGrant: (e: React.SyntheticEvent<any>, dispatchID: string) => {}
+            touchableHandleResponderMove: (e: React.SyntheticEvent<any>) => {}
+            touchableHandleResponderRelease: (e: React.SyntheticEvent<any>) => {}
+            touchableHandleResponderTerminate: (e: React.SyntheticEvent<any>) => {}
+            touchableHandleActivePressIn?: (e: React.SyntheticEvent<any>) => {}
+            touchableHandleActivePressOut?: (e: React.SyntheticEvent<any>) => {}
+            touchableHandlePress?: (e: React.SyntheticEvent<any>) => {}
+            touchableHandleLongPress?: (e: React.SyntheticEvent<any>) => {}
             touchableGetHighlightDelayMS?: () => number
             touchableGetPressRectOffset?: () => RectOffset
         }
