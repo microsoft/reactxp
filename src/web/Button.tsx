@@ -55,6 +55,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         const ariaSelected = AccessibilityUtil.accessibilityTraitToAriaSelected(this.props.accessibilityTraits);
         const ariaChecked = AccessibilityUtil.accessibilityTraitToAriaChecked(this.props.accessibilityTraits);
         const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
+        const ariaHasPopup = AccessibilityUtil.accessibilityTraitToAriaHasPopup(this.props.accessibilityTraits);
 
         // NOTE: We use tabIndex=0 to support focus.
         return (
@@ -78,6 +79,9 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
                 onBlur={ this._onBlur }
                 onKeyDown={ this.props.onKeyPress }
                 disabled={ this.props.disabled }
+                aria-haspopup={ ariaHasPopup }
+                aria-controls={ this.props.ariaControls }
+                id={ this.props.id }
             >
                 { this.props.children }
             </button>

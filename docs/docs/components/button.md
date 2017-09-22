@@ -29,6 +29,12 @@ accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 accessibilityLiveRegion: AccessibilityLiveRegion =
     undefined; // Android and web only
 
+// Id of an expandable element revealed by the button. Describes a relation between button and element to screen reader.
+ariaControls: string = undefined; // Web only
+
+// Specifies a unique id for an HTML element
+id: string = undefined; // Web only
+
 // Expose the element and/or its children as accessible to Screen readers
 importantForAccessibility?: ImportantForAccessibility = ImportantForAccessibility.yes;
 
