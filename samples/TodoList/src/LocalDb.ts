@@ -84,7 +84,7 @@ class LocalDb {
         return this._db.openTransaction([Stores.todoItems], false).then(tx => {
             return tx.getStore(Stores.todoItems);
         }).then(store => {
-            return store.openPrimaryKey().getAll();
+            return store.openPrimaryKey().getAll<TodoModels.Todo>();
         }).fail(this._handleDbFail);
     }
 
