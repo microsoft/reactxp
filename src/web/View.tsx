@@ -251,6 +251,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
         const ariaSelected = AccessibilityUtil.accessibilityTraitToAriaSelected(this.props.accessibilityTraits);
         const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
+        const ariaLive = AccessibilityUtil.accessibilityLiveRegionToString(this.props.accessibilityLiveRegion);
 
         let props: Types.AccessibilityHtmlAttributes = {
             role: ariaRole,
@@ -261,6 +262,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             'aria-hidden': isAriaHidden,
             'aria-selected': ariaSelected,
             'aria-labelledby': this.props.ariaLabelledBy,
+            'aria-live': ariaLive,
             onContextMenu: this.props.onContextMenu,
             onMouseEnter: this.props.onMouseEnter,
             onMouseLeave: this.props.onMouseLeave,
