@@ -174,12 +174,17 @@ export interface AnimatedViewAndImageCommonStyle extends AnimatedFlexboxStyle, A
 // View Style Rules
 // ------------------------------------------------------------
 
+export interface ShadowOffset {
+    width: number;
+    height: number;
+}
+
 export interface ViewStyle extends ViewAndImageCommonStyle {
     borderStyle?: 'solid' | 'dotted' | 'dashed' | 'none';
     wordBreak?: 'break-all' | 'break-word'; // Web only
     appRegion?: 'drag' | 'no-drag'; // Web only
     cursor?: 'pointer' | 'default'; // Web only
-    shadowOffset?: { width: number; height: number };
+    shadowOffset?: ShadowOffset;
     shadowOpacity?: number;
     shadowRadius?: number;
     shadowColor?: string;
@@ -729,6 +734,13 @@ export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet>, C
     releaseOnRequest?: boolean;
 }
 
+export interface ScrollIndicatorInsets {
+    top: number;
+    left: number;
+    bottom: number;
+    right: number;
+}
+
 // ScrollView
 export interface ScrollViewProps extends ViewProps {
     style?: StyleRuleSetRecursive<ScrollViewStyleRuleSet>;
@@ -786,7 +798,7 @@ export interface ScrollViewProps extends ViewProps {
     overScrollMode?: 'always' | 'always-if-content-scrolls' | 'never';
 
     // iOS-only property to control scroll indicator insets
-    scrollIndicatorInsets?:  {top: number, left: number, bottom: number, right: number };
+    scrollIndicatorInsets?: ScrollIndicatorInsets;
 }
 
 // Link
