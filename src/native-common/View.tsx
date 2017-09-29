@@ -56,6 +56,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             this._internalProps.accessibilityTraits = AccessibilityUtil.accessibilityTraitToString(props.accessibilityTraits);
             this._internalProps.accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(
                 props.accessibilityTraits);
+            this._internalProps.accessibilityLiveRegion = AccessibilityUtil.accessibilityLiveRegionToString(props.accessibilityLiveRegion);
         }
 
         if (props.onLayout) {

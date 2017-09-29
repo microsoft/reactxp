@@ -566,6 +566,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
     id?: string; // Web-only. Needed for accessibility.
     ariaLabelledBy?: string; // Web-only. Needed for accessibility.
+    accessibilityLiveRegion?: AccessibilityLiveRegion; // Android and web only
 
     // There are a couple of constraints when child animations are enabled:
     //   - Every child must have a `key`.
