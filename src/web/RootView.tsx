@@ -519,8 +519,16 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         }
 
         // Get the anchor element.
+        let anchorComponent = this.props.activePopupOptions!!!.getAnchor();
+        // if the anchor is unmounted, dismiss the popup. 
+        // Prevents app crash when we try to get dom node from unmounted Component
+        if (!anchorComponent) {
+            this._dismissPopup();
+            return;
+        }
+
         let anchor = ReactDOM.findDOMNode<HTMLElement>(
-            this.props.activePopupOptions!!!.getAnchor());
+            anchorComponent);
 
         // If the anchor has disappeared, dismiss the popup.
         if (!anchor) {
