@@ -613,11 +613,11 @@ function createAnimatedComponent<PropsType extends Types.CommonProps<any>>(Compo
             throw 'Called setNativeProps on web AnimatedComponent';
         }
 
-        componentWillReceiveProps(props: Types.CommonStyledProps<Types.StyleRuleSet<Object>>) {
+        componentWillReceiveProps(props: Types.CommonStyledProps<Types.StyleRuleSet<Object>, RX.Animated>) {
             this._updateStyles(props);
         }
 
-        private _updateStyles(props: Types.CommonStyledProps<Types.StyleRuleSet<Object>>) {
+        private _updateStyles(props: Types.CommonStyledProps<Types.StyleRuleSet<Object>, RX.Animated>) {
             this._propsWithoutStyle = _.omit(props, 'style');
 
             if (!props.style) {

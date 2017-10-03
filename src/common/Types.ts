@@ -444,12 +444,12 @@ export enum AccessibilityTrait {
     None
 }
 
-export interface CommonStyledProps<T> extends CommonProps<T> {
-    style?: StyleRuleSetRecursive<T>;
+export interface CommonStyledProps<S, T> extends CommonProps<T> {
+    style?: StyleRuleSetRecursive<S>;
 }
 
 // Button
-export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, CommonAccessibilityProps {
+export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet, RX.Button>, CommonAccessibilityProps {
     title?: string;
     children?: ReactNode;
     disabled?: boolean;
@@ -710,7 +710,7 @@ export enum PreferredPanGesture {
     Vertical
 }
 
-export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet>, CommonAccessibilityProps {
+export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet, RX.GestureView>, CommonAccessibilityProps {
     // Gestures and attributes that apply only to touch inputs
     onPinchZoom?: (gestureState: MultiTouchGestureState) => void;
     onRotate?: (gestureState: MultiTouchGestureState) => void;
@@ -806,7 +806,7 @@ export interface ScrollViewProps extends ViewPropsBase<RX.ScrollView> {
 }
 
 // Link
-export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
+export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet, RX.Link> {
     title?: string;
     url: string;
     children?: ReactNode;
@@ -880,7 +880,7 @@ export interface AnimatedTextInputProps extends TextInputPropsShared {
 }
 
 // ActivityIndicator
-export interface ActivityIndicatorProps extends CommonStyledProps<ActivityIndicatorStyleRuleSet> {
+export interface ActivityIndicatorProps extends CommonStyledProps<ActivityIndicatorStyleRuleSet, RX.ActivityIndicator> {
     color: string;
     size?: 'large' | 'medium' | 'small' | 'tiny';
     deferTime?: number; // Number of ms to wait before displaying
@@ -915,7 +915,7 @@ export enum WebViewSandboxMode {
     AllowTopNavigation = 1 << 9
 }
 
-export interface WebViewProps extends CommonStyledProps<WebViewStyleRuleSet> {
+export interface WebViewProps extends CommonStyledProps<WebViewStyleRuleSet, RX.WebView> {
     url: string;
     headers?: { [key: string]: string };
     onLoad?: (e: SyntheticEvent) => void;
