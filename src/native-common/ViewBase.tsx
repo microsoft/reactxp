@@ -13,7 +13,7 @@ import RX = require('../common/Interfaces');
 
 import Types = require('../common/Types');
 
-export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase<P, S> {
+export abstract class ViewBase<P extends Types.ViewPropsBase<any>, S> extends RX.ViewBase<P, S> {
     private static _defaultViewStyle: Types.ViewStyleRuleSet|undefined;
     private _layoutEventValues: Types.ViewOnLayoutEvent|undefined;
 

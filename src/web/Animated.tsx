@@ -595,7 +595,7 @@ export var parallel: Types.Animated.ParallelFunction = function (
 };
 
 // Function for creating wrapper AnimatedComponent around passed in component
-function createAnimatedComponent<PropsType extends Types.CommonProps>(Component: any): any {
+function createAnimatedComponent<PropsType extends Types.CommonProps<any>>(Component: any): any {
     var refName = 'animatedNode';
 
     class AnimatedComponentGenerated extends React.Component<PropsType, void> implements RX.AnimatedComponent<PropsType, void> {
@@ -672,7 +672,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             });
         }
 
-        initializeComponent(props: Types.CommonProps) {
+        initializeComponent(props: Types.CommonProps<any>) {
             // Conclude the initialization setting the element.
             const element = ReactDOM.findDOMNode<HTMLElement>(this.refs[refName]);
             if (element) {
@@ -744,7 +744,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
     return AnimatedComponentGenerated;
 }
 
-export var Image = createAnimatedComponent<Types.ImageProps>(RXImage) as typeof RX.AnimatedImage;
+export var Image = createAnimatedComponent(RXImage) as typeof RX.AnimatedImage;
 export var Text = createAnimatedComponent(RXText) as typeof RX.AnimatedText;
 export var TextInput = createAnimatedComponent(RXTextInput) as typeof RX.AnimatedTextInput;
 export var View = createAnimatedComponent(RXView) as typeof RX.AnimatedView;

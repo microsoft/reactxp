@@ -335,8 +335,8 @@ export type PickerStyleRuleSet = StyleRuleSet<PickerStyle>;
 //
 // Components
 // ----------------------------------------------------------------------
-export interface CommonProps {
-    ref?: string | ((obj: React.Component<any, any>) => void);
+export interface CommonProps<T> {
+    ref?: React.Ref<T>;
     key?: string | number;
     type?: any;
     children?: React.ReactNode | React.ReactNode[];
@@ -444,7 +444,7 @@ export enum AccessibilityTrait {
     None
 }
 
-export interface CommonStyledProps<T> extends CommonProps {
+export interface CommonStyledProps<T> extends CommonProps<T> {
     style?: StyleRuleSetRecursive<T>;
 }
 
@@ -485,7 +485,7 @@ export interface PickerPropsItem {
     label: string;
     value: string;
 }
-export interface PickerProps extends CommonProps {
+export interface PickerProps extends CommonProps<RX.Picker> {
     items: PickerPropsItem[];
     selectedValue: string;
     onValueChange: (itemValue: string, itemPosition: number) => void;
@@ -493,7 +493,7 @@ export interface PickerProps extends CommonProps {
 }
 
 // Image
-export interface ImagePropsShared extends CommonProps {
+export interface ImagePropsShared extends CommonProps<RX.Image> {
     source: string;
     headers?: { [headerName: string]: string };
     accessibilityLabel?: string;
@@ -526,7 +526,7 @@ export interface AnimatedImageProps extends ImagePropsShared {
 // | I am a very |
 // | important   |
 // | example     |
-export interface TextPropsShared extends CommonProps {
+export interface TextPropsShared extends CommonProps<RX.Text> {
     children?: ReactNode;
     selectable?: boolean;
     numberOfLines?: number;
@@ -568,7 +568,7 @@ export interface AnimatedTextProps extends TextPropsShared {
 export type ViewLayerType = 'none' | 'software' | 'hardware';
 
 // View
-export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
+export interface ViewPropsShared<T> extends CommonProps<T>, CommonAccessibilityProps {
     title?: string;
     ignorePointerEvents?: boolean;
     blockPointerEvents?: boolean; // Native-only prop for disabling touches on self and all child views
@@ -614,7 +614,11 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     underlayColor?: string;
 }
 
-export interface ViewProps extends ViewPropsShared {
+// Interface for the ViewProps
+export interface ViewProps extends ViewPropsBase<RX.View> { }
+
+// Base interface for inheritance (ScrollView and other Views sharing the same set of props)
+export interface ViewPropsBase<T> extends ViewPropsShared<T> {
     style?:  StyleRuleSetRecursive<ViewStyleRuleSet>;
     onContextMenu?: (e: React.SyntheticEvent<any>) => void;
     onStartShouldSetResponder?: (e: React.SyntheticEvent<any>) => boolean;
@@ -631,7 +635,7 @@ export interface ViewProps extends ViewPropsShared {
     onResponderTerminationRequest?: (e: React.SyntheticEvent<any>) => boolean;
 }
 
-export interface AnimatedViewProps extends ViewPropsShared {
+export interface AnimatedViewProps extends ViewPropsShared<RX.View> {
     style?: StyleRuleSetRecursive<AnimatedViewStyleRuleSet | ViewStyleRuleSet>;
 }
 
@@ -742,7 +746,7 @@ export interface ScrollIndicatorInsets {
 }
 
 // ScrollView
-export interface ScrollViewProps extends ViewProps {
+export interface ScrollViewProps extends ViewPropsBase<RX.ScrollView> {
     style?: StyleRuleSetRecursive<ScrollViewStyleRuleSet>;
     children?: ReactNode;
 
@@ -819,7 +823,7 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
 }
 
 // TextInput
-export interface TextInputPropsShared extends CommonProps, CommonAccessibilityProps {
+export interface TextInputPropsShared extends CommonProps<RX.TextInput>, CommonAccessibilityProps {
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
     autoCorrect?: boolean;
     autoFocus?: boolean;
