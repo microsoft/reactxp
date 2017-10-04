@@ -1,4 +1,4 @@
-﻿/**
+/**
 * Button.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -14,8 +14,9 @@ import AccessibilityUtil from './AccessibilityUtil';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
+import UserInterface from './UserInterface';
 
-let _styles = {
+const _styles = {
     defaultButton: {
         position: 'relative',
         display: 'flex',
@@ -39,13 +40,20 @@ let _styles = {
 const _longPressTime = 1000;
 const _defaultAccessibilityTrait = Types.AccessibilityTrait.Button;
 
+let _isNavigatingWithKeyboard = false;
+
+UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
+    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
+});
+
 export class Button extends React.Component<Types.ButtonProps, {}> {
     private _lastMouseDownTime: number = 0;
     private _lastMouseDownEvent: Types.SyntheticEvent;
     private _ignoreClick = false;
     private _longPressTimer: number|undefined;
-    private _focusDueToMouseEvent = false;
-    private _blurDueToMouseEvent = false;
+    private _isMouseOver = false;
+    private _isFocusedWithKeyboard = false;
+    private _isHoverStarted = false;
 
     render() {
         const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits,
@@ -172,40 +180,52 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     }
 
     private _onMouseEnter = (e: Types.SyntheticEvent) => {
-        if (this.props.onHoverStart) {
-            this._focusDueToMouseEvent = true;
-            this.props.onHoverStart(e);
-        }
+        this._isMouseOver = true;
+        this._onHoverStart(e);
     }
 
     private _onMouseLeave = (e: Types.SyntheticEvent) => {
-        if (this.props.onHoverEnd) {
-            this._blurDueToMouseEvent = true;
-            this.props.onHoverEnd(e);
-        }
+        this._isMouseOver = false;
+        this._onHoverEnd(e);
     }
 
     // When we get focus on an element, show the hover effect on the element.
     // This ensures that users using keyboard also get the similar experience as mouse users for accessibility.
     private _onFocus = (e: Types.FocusEvent) => {
-        if (this.props.onHoverStart && !this._focusDueToMouseEvent) {
-            this.props.onHoverStart(e);
-        }
+        this._isFocusedWithKeyboard = _isNavigatingWithKeyboard;
+        this._onHoverStart(e);
 
-        this._focusDueToMouseEvent = false;
         if (this.props.onFocus) {
             this.props.onFocus(e);
         }
     }
 
     private _onBlur = (e: Types.FocusEvent) => {
-        if (this.props.onHoverEnd && !this._blurDueToMouseEvent) {
-            this.props.onHoverEnd(e);
-        }
+        this._isFocusedWithKeyboard = false;
+        this._onHoverEnd(e);
 
-        this._blurDueToMouseEvent = false;
         if (this.props.onBlur) {
             this.props.onBlur(e);
+        }
+    }
+
+    private _onHoverStart = (e: Types.SyntheticEvent) => {
+        if (!this._isHoverStarted && (this._isMouseOver || this._isFocusedWithKeyboard)) {
+            this._isHoverStarted = true;
+
+            if (this.props.onHoverStart) {
+                this.props.onHoverStart(e);
+            }
+        }
+    }
+
+    private _onHoverEnd = (e: Types.SyntheticEvent) => {
+        if (this._isHoverStarted && !this._isMouseOver && !this._isFocusedWithKeyboard) {
+            this._isHoverStarted = false;
+
+            if (this.props.onHoverEnd) {
+                this.props.onHoverEnd(e);
+            }
         }
     }
 }
