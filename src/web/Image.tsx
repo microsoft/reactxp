@@ -158,7 +158,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
     constructor(props: Types.ImageProps) {
         super(props);
 
-        const performXhrRequest = this._initializeAndSetState(props);
+        const performXhrRequest = this._initializeAndSetState(props, true);
 
         if (performXhrRequest) {
             this._startXhrImageFetch(props);
@@ -170,7 +170,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
             !_.isEqual(nextProps.headers || {}, this.props.headers || {}));
 
         if (!nextProps.onLoad !== !this.props.onLoad || !nextProps.onError !== !this.props.onError || sourceOrHeaderChanged) {
-            const performXhrRequest = this._initializeAndSetState(nextProps);
+            const performXhrRequest = this._initializeAndSetState(nextProps, false);
 
             if (sourceOrHeaderChanged && performXhrRequest) {
                 this._startXhrImageFetch(nextProps);
@@ -189,7 +189,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         }
     }
 
-    private _initializeAndSetState(props: Types.ImageProps): boolean {
+    private _initializeAndSetState(props: Types.ImageProps, initial: boolean): boolean {
         // Retrieve the xhr blob url from the cache if it exists. This is a performance optimization as we've seen xhr
         // requests take some time and cause flicker during rendering. Even when we're hitting the browser cache, we've
         // seen it stall and take some time.
@@ -202,11 +202,16 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
 
         // We normally don't show an img tag because we use background images. However, if the caller has supplied an
         // onLoad or onError callback, we'll use the img tag until we receive an onLoad or onError.
-        this.state = {
+        const newState: ImageState = {
             showImgTag: (!performXhrRequest || !!cachedXhrBlobUrl) && (!!props.onLoad || !!props.onError),
             xhrRequest: !!props.headers,
             displayUrl: displayUrl
         };
+        if (initial) {
+            this.state = newState;
+        } else {
+            this.setState(newState);
+        }
 
         return performXhrRequest;
     }
