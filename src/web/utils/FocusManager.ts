@@ -259,7 +259,7 @@ export class FocusManager {
                 if (needsFocusReset) {
                     FocusManager.resetFocus();
                 }
-            }, 0);
+            }, 100);
         }
     }
 
