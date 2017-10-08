@@ -16,6 +16,16 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.46.3 of reactxp
+_Released 7 Oct 2017_
+
+Added missing focus() method to RX.Animated.View interface.
+Exported RX.AnimatedImage, RX.AnimatedText, RX.AnimatedTextInput, and RX.AnimatedView.
+Added accessibilityLiveRegion prop to ViewProps for Android and web.
+Exported explicit types for ShadowOffset, ScrollIndicatorInsets.
+Fixed crash in web RootView when clicking on a popup anchor.
+Fixed race condition in hover of Button on web.
+
 #### Version 0.2.2 of reactxp-video
 #### Version 1.0.13 of reactxp-navigator
 #### Version 0.2.7 of reactxp-imagesvg
