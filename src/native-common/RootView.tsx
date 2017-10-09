@@ -20,12 +20,15 @@ import Styles from './Styles';
 import Types = require('../common/Types');
 
 // Fields should be prefixed with 'reactxp' to help avoid naming collisions.
-// All fields should be removed from this.props before passing to main view (see _getPropsForMainView).
-export interface RootViewProps {
-    reactxp_initialViewType?: string;
+// All fields should be removed from this.props before passing to downwards.
+interface BaseRootViewProps {
 }
 
-export interface RootViewState {
+interface RootViewPropsWithMainViewType extends BaseRootViewProps {
+    reactxp_mainViewType: string;
+}
+
+interface RootViewState {
     mainView?: RN.ReactElement<any>;
     announcementText?: string;
 }
@@ -47,32 +50,21 @@ const _styles = {
     })
 };
 
-export class RootView extends React.Component<RootViewProps, RootViewState> {
-    private _changeListener = this._onChange.bind(this);
+// Abstract RootView class which handles rendering, front layer view changes and announcement
+// changes. Subclasses must set the mainView state value.
+abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component<P, RootViewState> {
     private _frontLayerViewChangedSubscription: SubscriptionToken|undefined;
     private _newAnnouncementEventChangedSubscription: SubscriptionToken|undefined;
-    private _mainViewProps: {};
+    protected _mainViewProps: {};
 
-    constructor(props: RootViewProps) {
+    protected abstract _getPropsForMainView(): {};
+
+    constructor(props: P) {
         super(props);
-
         this._mainViewProps = this._getPropsForMainView();
-
-        let mainView: RN.ReactElement<any> | undefined;
-
-        if (props.reactxp_initialViewType) {
-            mainView = React.createElement(props.reactxp_initialViewType, this._mainViewProps);
-        }
-
-        this.state = {
-            mainView: mainView,
-            announcementText: ''
-        };
     }
 
     componentWillMount(): void {
-        MainViewStore.subscribe(this._changeListener);
-
         this._frontLayerViewChangedSubscription = FrontLayerViewManager.event_changed.subscribe(() => {
             // Setting empty state will trigger a render.
             this.setState({});
@@ -85,8 +77,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                     announcementText: announcement
                 });
         });
-
-        this.setState(this._getStateFromStore());
     }
 
     componentWillUnmount(): void {
@@ -99,8 +89,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             this._newAnnouncementEventChangedSubscription.unsubscribe();
             this._newAnnouncementEventChangedSubscription = undefined;
         }
-
-        MainViewStore.unsubscribe(this._changeListener);
     }
 
     render() {
@@ -130,6 +118,31 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             </RN.Animated.View>
         );
     }
+}
+
+// BaseRootView implementation that uses MainStore to set the main view.
+class RootViewUsingStore extends BaseRootView<BaseRootViewProps> {
+    private _changeListener = this._onChange.bind(this);
+
+    constructor(props: BaseRootViewProps) {
+        super(props);
+
+        this.state = {
+            mainView: undefined,
+            announcementText: ''
+        };
+    }
+
+    componentWillMount(): void {
+        super.componentWillMount();
+
+        MainViewStore.subscribe(this._changeListener);
+        this.setState(this._getStateFromStore());
+    }
+
+    componentWillUnmount(): void {
+        MainViewStore.unsubscribe(this._changeListener);
+    }
 
     private _onChange() {
         this.setState(this._getStateFromStore());
@@ -147,13 +160,35 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         };
     }
 
-    private _getPropsForMainView(): {} {
-        const mainViewProps = {...this.props};
+    protected _getPropsForMainView(): {} {
+        return this.props;
+    }
+}
 
-        delete mainViewProps.reactxp_initialViewType;
+// BaseRootView implementation that uses the value in props to set main view.
+class RootViewUsingProps extends BaseRootView<RootViewPropsWithMainViewType> {
+    constructor(props: RootViewPropsWithMainViewType) {
+        super(props);
 
+        this.state = {
+            mainView: React.createElement(props.reactxp_mainViewType, this._mainViewProps),
+            announcementText: ''
+        };
+    }
+
+    protected _getPropsForMainView(): {} {
+        const { reactxp_mainViewType, ...mainViewProps } = this.props;
         return mainViewProps;
     }
 }
 
-export default RootView;
+export {
+    BaseRootViewProps,
+    RootViewPropsWithMainViewType,
+    RootViewState,
+    BaseRootView,
+    RootViewUsingStore as RootView,
+    RootViewUsingProps,
+};
+
+export default RootViewUsingStore;

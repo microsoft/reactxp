@@ -14,7 +14,7 @@ import RN = require('react-native');
 import SyncTasks = require('synctasks');
 
 import MainViewStore from './MainViewStore';
-import RootView from './RootView';
+import { RootViewUsingProps } from './RootView';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
@@ -145,7 +145,7 @@ export class UserInterface extends RX.UserInterface {
         RN.AppRegistry.registerComponent(viewKey, () => {
             class RootViewWrapper extends React.Component<any, any> {
                 render() {
-                    return <RootView reactxp_initialViewType={ getComponentFunc() } {...this.props} />;
+                    return <RootViewUsingProps reactxp_mainViewType={ getComponentFunc() } {...this.props} />;
                 }
             }
 

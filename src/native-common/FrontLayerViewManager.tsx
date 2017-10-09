@@ -15,7 +15,7 @@ import SubscribableEvent from 'subscribableevent';
 
 import { ModalContainer } from '../native-common/ModalContainer';
 import PopupContainerView from './PopupContainerView';
-import RootView from './RootView';
+import { BaseRootView } from './RootView';
 import Types = require('../common/Types');
 
 class ModalStackContext {
@@ -112,7 +112,7 @@ export class FrontLayerViewManager {
         }
     }
 
-    public getModalLayerView(rootView: RootView): any {
+    public getModalLayerView(rootView: BaseRootView<any>): any {
         const overlayContext = _.findLast(this._overlayStack, context => context instanceof ModalStackContext) as ModalStackContext;
 
         if (overlayContext) {
@@ -126,7 +126,7 @@ export class FrontLayerViewManager {
         return null;
     }
 
-    public getPopupLayerView(rootView: RootView): any {
+    public getPopupLayerView(rootView: BaseRootView<any>): any {
         const overlayContext = _.findLast(this._overlayStack, context => context instanceof PopupStackContext) as PopupStackContext;
 
         if (overlayContext) {
