@@ -83,8 +83,12 @@ autoDismiss(popupId: string, dismissDelay: number = 0): void;
 // Dismisses an already-displayed popup immediately
 dismiss(popupId: string): void;
 
-// Displays a popup
-show(options: PopupOptions, popupId: string, showDelay: number = 0);
+// Dismisses all popups immediately
+dismissAll(): void;
+
+// Displays a popup. Returns true if successful, false if there was 
+// an error (see console.erro())
+show(options: PopupOptions, popupId: string, showDelay: number = 0): boolean;
 ```
 
 ## Sample Usage
