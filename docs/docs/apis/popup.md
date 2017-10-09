@@ -86,8 +86,8 @@ dismiss(popupId: string): void;
 // Dismisses all popups immediately
 dismissAll(): void;
 
-// Displays a popup. Returns true if successful, false if there was 
-// an error (see console.error())
+// Displays a popup. Returns true if successful, false if the popup is
+// already displayed or there was an error (see console.error())
 show(options: PopupOptions, popupId: string, showDelay: number = 0): boolean;
 ```
 
