@@ -170,7 +170,7 @@ export class VirtualListView extends RX.Component<VirtualListViewProps, VirtualL
 
     // Controls the full height of the scrolling view, independent of the view port height
     private _containerHeight = 0;
-    private _containerHeightValue = new RX.Animated.Value(this._containerHeight);
+    private _containerHeightValue = RX.Animated.createValue(this._containerHeight);
     private _containerAnimatedStyle = RX.Styles.createAnimatedViewStyle({
         height: this._containerHeightValue
     });

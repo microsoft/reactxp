@@ -7,8 +7,6 @@
 * MacOS implementation of Input interface.
 */
 
-import RN = require('react-native');
-
 import RX = require('../common/Interfaces');
 
 export class Input extends RX.Input {

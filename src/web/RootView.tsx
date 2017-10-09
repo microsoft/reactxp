@@ -37,34 +37,34 @@ export interface RootViewProps {
 
 export interface RootViewState {
     // We need to measure the popup before it can be positioned. This indicates that we're in the "measuring" phase.
-    isMeasuringPopup?: boolean;
+    isMeasuringPopup: boolean;
 
     // Measured (unconstrained) dimensions of the popup; not valid if isMeasuringPopup is false.
-    popupWidth?: number;
-    popupHeight?: number;
+    popupWidth: number;
+    popupHeight: number;
 
     // Position of popup relative to its anchor (top, bottom, left, right)
-    anchorPosition?: Types.PopupPosition;
+    anchorPosition: Types.PopupPosition;
 
     // Top or left offset of the popup relative to the center of the anchor
-    anchorOffset?: number;
+    anchorOffset: number;
 
     // Absolute window location of the popup
-    popupTop?: number;
-    popupLeft?: number;
+    popupTop: number;
+    popupLeft: number;
 
     // Constrained dimensions of the popup once it is placed
-    constrainedPopupWidth?: number;
-    constrainedPopupHeight?: number;
+    constrainedPopupWidth: number;
+    constrainedPopupHeight: number;
 
     // Are we currently hovering over the popup?
-    isMouseInPopup?: boolean;
+    isMouseInPopup: boolean;
 
     // Assign css focus class if focus is due to Keyboard or mouse
-    focusClass?: string;
+    focusClass: string|undefined;
 
     // Screen Reader text to be announced.
-    announcementText?: string;
+    announcementText: string;
 }
 
 // Width of the "alley" around popups so they don't get too close to the boundary of the window.
@@ -107,16 +107,14 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         focusManager: PropTypes.object
     };
 
-    private _hidePopupTimer: number = null;
-    private _respositionPopupTimer: number = null;
+    private _hidePopupTimer: number|undefined;
+    private _respositionPopupTimer: number|undefined;
     private _clickHandlerInstalled = false;
-    private _lockForContextMenu = false;
     private _keyboardHandlerInstalled = false;
-    private _lockTimeout: number;
-    private _newAnnouncementEventChangedSubscription: SubscriptionToken = null;
+    private _newAnnouncementEventChangedSubscription: SubscriptionToken|undefined;
     private _focusManager: FocusManager;
     private _isNavigatingWithKeyboard: boolean = false;
-    private _isNavigatingWithKeyboardUpateTimer: number;
+    private _isNavigatingWithKeyboardUpateTimer: number|undefined;
 
     constructor(props: RootViewProps) {
         super(props);
@@ -124,6 +122,14 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         // Update announcement text.
         this._newAnnouncementEventChangedSubscription =
             Accessibility.newAnnouncementReadyEvent.subscribe(announcement => {
+                if (this.state.announcementText === announcement) {
+                    // If the previous announcement is the same as the current announcement
+                    // we will apapend a ' ' to it. This ensures that the text in DOM of aria-live region changes 
+                    // and  will be read by screen Reader
+
+                    announcement += ' ';
+                }
+
                 this.setState({
                     announcementText: announcement
                 });
@@ -133,7 +139,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
         // Initialize the root FocusManager which is aware of all
         // focusable elements.
-        this._focusManager = new FocusManager(null);
+        this._focusManager = new FocusManager(undefined);
     }
 
     getChildContext() {
@@ -225,8 +231,11 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     componentWillUnmount() {
         this._stopHidePopupTimer();
         this._stopRepositionPopupTimer();
-        this._newAnnouncementEventChangedSubscription.unsubscribe();
-        this._newAnnouncementEventChangedSubscription = null;
+        
+        if (this._newAnnouncementEventChangedSubscription) {
+            this._newAnnouncementEventChangedSubscription.unsubscribe();
+            this._newAnnouncementEventChangedSubscription = undefined;
+        }
 
         if (this._keyboardHandlerInstalled) {
             window.removeEventListener('keydown', this._onKeyDown);
@@ -247,7 +256,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             cursor: 'default'
         };
 
-        let optionalPopup: JSX.Element = null;
+        let optionalPopup: JSX.Element|null = null;
         if (this.props.activePopupOptions) {
             let popupContainerStyle: React.CSSProperties = {
                 display: 'flex',
@@ -280,7 +289,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             );
         }
 
-        let optionalModal: JSX.Element = null;
+        let optionalModal: JSX.Element|null = null;
         if (this.props.modal) {
             optionalModal = (
                 <ModalContainer>
@@ -298,7 +307,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 { optionalModal }
                 { optionalPopup }
                 <div
-                    style={ _styles.liveRegionContainer }
+                    style={ _styles.liveRegionContainer as any }
                     aria-live={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
                     aria-atomic={ 'true' }
                 >
@@ -312,13 +321,13 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         // Dismiss a visible popup if there's a click outside.
         let popupContainer = ReactDOM.findDOMNode(this.refs['popupContainer']);
         let clickInPopup = false;
-        let el = e.target as HTMLElement;
+        let el = e.target as HTMLElement|undefined;
         while (el) {
             if (el === popupContainer) {
                 clickInPopup = true;
                 break;
             }
-            el = el.parentElement;
+            el = el.parentElement || undefined;
         }
 
         if (!clickInPopup && e.button !== _rightClickButtonCode ) {
@@ -327,7 +336,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                     const anchorReference = this.props.activePopupOptions.getAnchor();
                     const isClickOnAnchor = this._determineIfClickOnElement(anchorReference, e.srcElement);
 
-                    let isClickOnContainer: boolean;
+                    let isClickOnContainer = false;
                     if (!isClickOnAnchor && this.props.activePopupOptions.getElementTriggeringPopup) {
                         const containerRef = this.props.activePopupOptions.getElementTriggeringPopup();
                         isClickOnContainer = this._determineIfClickOnElement(containerRef, e.srcElement);
@@ -341,9 +350,9 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                         if (this.props.activePopupOptions.onAnchorPressed) {
                             setTimeout(() => {
                                 // We can't pass through the DOM event argument to the anchor event handler as the event we have at this
-                                // point is a DOM Event and the anchor expect a Syntethic event. There doesn't seem to be any way to convert
+                                // point is a DOM Event and the anchor expect a Synthetic event. There doesn't seem to be any way to convert
                                 // between them. Passing null for now.
-                                this.props.activePopupOptions.onAnchorPressed(null);
+                                this.props.activePopupOptions!!!.onAnchorPressed!!!(undefined);
                             }, 500);
                         }
 
@@ -365,9 +374,9 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         }
     }
 
-    private _determineIfClickOnElement(elementReference: React.Component<any, any>, eventSource: Element): boolean {
+    private _determineIfClickOnElement(elementReference: React.Component<any, any>, eventSource: Element|null|undefined): boolean {
         const element = ReactDOM.findDOMNode<HTMLElement>(elementReference);
-        const isClickOnElement = element && element.contains(eventSource);
+        const isClickOnElement = element && !!eventSource && element.contains(eventSource);
         return isClickOnElement;
     }
 
@@ -435,7 +444,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         Input.dispatchKeyUp(e as any);
     }
 
-    private _onMouseEnter(e: React.MouseEvent) {
+    private _onMouseEnter(e: React.MouseEvent<any>) {
         this.setState({
             isMouseInPopup: true
         });
@@ -443,7 +452,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         this._stopHidePopupTimer();
     }
 
-    private _onMouseLeave(e: React.MouseEvent) {
+    private _onMouseLeave(e: React.MouseEvent<any>) {
         this.setState({
             isMouseInPopup: false
         });
@@ -454,9 +463,9 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _startHidePopupTimer() {
         if (this.props.autoDismiss) {
             // Should we immediately hide it, or did the caller request a delay?
-            if (this.props.autoDismissDelay > 0) {
+            if (!_.isUndefined(this.props.autoDismissDelay) && this.props.autoDismissDelay > 0) {
                 this._hidePopupTimer = window.setTimeout(() => {
-                    this._hidePopupTimer = null;
+                    this._hidePopupTimer = undefined;
                     this._dismissPopup();
                 }, this.props.autoDismissDelay) as any as number;
             } else {
@@ -468,7 +477,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _stopHidePopupTimer() {
         if (this._hidePopupTimer) {
             clearTimeout(this._hidePopupTimer);
-            this._hidePopupTimer = null;
+            this._hidePopupTimer = undefined;
         }
     }
 
@@ -487,7 +496,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _stopRepositionPopupTimer() {
         if (this._respositionPopupTimer) {
             clearInterval(this._respositionPopupTimer);
-            this._respositionPopupTimer = null;
+            this._respositionPopupTimer = undefined;
         }
     }
 
@@ -510,8 +519,16 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         }
 
         // Get the anchor element.
+        let anchorComponent = this.props.activePopupOptions!!!.getAnchor();
+        // if the anchor is unmounted, dismiss the popup. 
+        // Prevents app crash when we try to get dom node from unmounted Component
+        if (!anchorComponent) {
+            this._dismissPopup();
+            return;
+        }
+
         let anchor = ReactDOM.findDOMNode<HTMLElement>(
-            this.props.activePopupOptions.getAnchor());
+            anchorComponent);
 
         // If the anchor has disappeared, dismiss the popup.
         if (!anchor) {
@@ -537,12 +554,12 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             return;
         }
 
-        let positionsToTry: Types.PopupPosition[] = this.props.activePopupOptions.positionPriorities;
+        let positionsToTry = this.props.activePopupOptions!!!.positionPriorities;
         if (!positionsToTry || positionsToTry.length === 0) {
             positionsToTry = ['bottom', 'right', 'top', 'left'];
         }
 
-        if (this.props.activePopupOptions.useInnerPositioning) {
+        if (this.props.activePopupOptions!!!.useInnerPositioning) {
             // If the popup is meant to be shown inside the anchor we need to recalculate
             // the position differently.
             this._recalcInnerPosition(anchorRect, newState);
@@ -669,7 +686,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
     private _recalcInnerPosition(anchorRect: ClientRect, newState: RootViewState) {
         // For inner popups we only accept the first position of the priorities since there should always be room for the bubble.
-        const pos = this.props.activePopupOptions.positionPriorities[0];
+        const pos = this.props.activePopupOptions!!!.positionPriorities!!![0];
 
         switch (pos) {
             case 'top':

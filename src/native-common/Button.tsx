@@ -13,7 +13,6 @@ import RN = require('react-native');
 
 import Animated from './Animated';
 import AccessibilityUtil from './AccessibilityUtil';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 import UserInterface from './UserInterface';
@@ -60,17 +59,17 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     touchableGetInitialState: () => RN.Touchable.State;
     touchableHandleStartShouldSetResponder: () => boolean;
     touchableHandleResponderTerminationRequest: () => boolean;
-    touchableHandleResponderGrant: (e: React.SyntheticEvent) => void;
-    touchableHandleResponderMove: (e: React.SyntheticEvent) => void;
-    touchableHandleResponderRelease: (e: React.SyntheticEvent) => void;
-    touchableHandleResponderTerminate: (e: React.SyntheticEvent) => void;
+    touchableHandleResponderGrant: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderMove: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderRelease: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderTerminate: (e: React.SyntheticEvent<any>) => void;
 
     private _isMounted = false;
-    private _hideTimeout: number = null;
-    private _buttonElement: RN.Animated.View = null;
-    private _defaultOpacityValue: number = null;
-    private _opacityAnimatedValue: RN.Animated.Value = null;
-    private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet = null;
+    private _hideTimeout: number|undefined;
+    private _buttonElement: RN.Animated.View|undefined;
+    private _defaultOpacityValue: number|undefined;
+    private _opacityAnimatedValue: RN.Animated.Value|undefined;
+    private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet|undefined;
 
     constructor(props: Types.ButtonProps) {
         super(props);
@@ -144,8 +143,10 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     touchableHandleActivePressIn = (e: Types.SyntheticEvent) => {
         if (this._isTouchFeedbackApplicable()) {
             if (this.props.underlayColor) {
-                clearTimeout(this._hideTimeout);
-                this._hideTimeout = undefined;
+                if (this._hideTimeout) {
+                    clearTimeout(this._hideTimeout);
+                    this._hideTimeout = undefined;
+                }
                 this._showUnderlay();
             }
 
@@ -163,7 +164,9 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     touchableHandleActivePressOut = (e: Types.SyntheticEvent) => {
         if (this._isTouchFeedbackApplicable()) {
             if (this.props.underlayColor) {
-                clearTimeout(this._hideTimeout);
+                if (this._hideTimeout) {
+                    clearTimeout(this._hideTimeout);
+                }
                 this._hideTimeout = setTimeout(this._hideUnderlay, _hideUnderlayTimeout);
             }
 
@@ -230,11 +233,11 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     }
 
     private _opacityInactive(duration: number) {
-        this.setOpacityTo(this._defaultOpacityValue, duration);
+        this.setOpacityTo(this._defaultOpacityValue!!!, duration);
     }
 
     private _getDefaultOpacityValue(props: Types.ButtonProps): number {
-        let flattenedStyles: { [key: string]: any } = null;
+        let flattenedStyles: { [key: string]: any }|undefined;
         if (props && props.style) {
             flattenedStyles = RN.StyleSheet.flatten(props.style);
         }
@@ -247,7 +250,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     */
     setOpacityTo(value: number, duration: number) {
        Animated.timing(
-            this._opacityAnimatedValue,
+            this._opacityAnimatedValue!!!,
             {
                 toValue: value,
                 duration: duration,

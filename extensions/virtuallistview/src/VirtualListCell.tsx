@@ -113,10 +113,10 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
         this._itemKey = props.itemKey;
 
         const topValue = this._isVisible ? this._top : VirtualListCell._hiddenTopValue;
-        this._topValue = new RX.Animated.Value(topValue);
+        this._topValue = RX.Animated.createValue(topValue);
 
         const leftValue = props.left || 0;
-        this._leftValue = new RX.Animated.Value(leftValue);
+        this._leftValue = RX.Animated.createValue(leftValue);
 
         if (!props.isScreenReaderModeEnabled) {
             // On native platforms, we'll stick with translate[X|Y] because it has a performance advantage.
@@ -136,7 +136,7 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
             });
         }
 
-        this._widthValue = new RX.Animated.Value(props.width || 0);
+        this._widthValue = RX.Animated.createValue(props.width || 0);
 
         this._animatedStyleWidth = RX.Styles.createAnimatedViewStyle({
             width: this._widthValue

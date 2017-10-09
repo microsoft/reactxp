@@ -12,7 +12,6 @@ import ReactDOM = require('react-dom');
 import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -73,9 +72,11 @@ export class Text extends React.Component<Types.TextProps, {}> {
         if (this.props.selectable || typeof this.props.children !== 'string') {
             return (
                 <div
-                    style={ this._getStyles() }
+                    style={ this._getStyles() as any }
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
+                    id={ this.props.id }
+                    onContextMenu={ this.props.onContextMenu }
                 >
                     { this.props.children }
                 </div>
@@ -86,10 +87,12 @@ export class Text extends React.Component<Types.TextProps, {}> {
             // will be displayed as pseudo element.
             return (
                 <div
-                    style={ this._getStyles() }
+                    style={ this._getStyles() as any }
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
+                    onContextMenu={ this.props.onContextMenu }
                     data-text-as-pseudo-element={ this.props.children }
+                    id={ this.props.id }
                 />
             );
         }

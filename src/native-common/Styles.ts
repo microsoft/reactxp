@@ -28,25 +28,25 @@ type ReactNativeViewAndImageCommonStyle<Style extends Types.ViewAndImageCommonSt
 };
 
 export class Styles extends RX.Styles {
-    combine<S>(ruleSet1: Types.StyleRuleSetRecursive<S>, ruleSet2?: Types.StyleRuleSetRecursive<S>): Types.StyleRuleSetOrArray<S> {
+    combine<S>(ruleSet1: Types.StyleRuleSetRecursive<S>|undefined, ruleSet2?: Types.StyleRuleSetRecursive<S>)
+            : Types.StyleRuleSetOrArray<S>|undefined {
         if (!ruleSet1 && !ruleSet2) {
             return undefined;
         }
 
-        let ruleSet = ruleSet1;
-        if (ruleSet2) {
-            ruleSet = [ruleSet1, ruleSet2];
-        }
+        let ruleSet = ruleSet1 ? (ruleSet2 ? [ruleSet1, ruleSet2] : ruleSet1) : ruleSet2;
 
         if (ruleSet instanceof Array) {
             let resultArray: Types.StyleRuleSet<S>[] = [];
             for (let i = 0; i < ruleSet.length; i++) {
-                let subRuleSet: Types.StyleRuleSet<S> | Types.StyleRuleSet<S>[] = this.combine(ruleSet[i]);
-                    
-                if (subRuleSet instanceof Array) {
-                    resultArray = resultArray.concat(subRuleSet);
-                } else {
-                    resultArray.push(subRuleSet);
+                let subRuleSet = this.combine(ruleSet[i]);
+                
+                if (subRuleSet) {
+                    if (subRuleSet instanceof Array) {
+                        resultArray = resultArray.concat(subRuleSet);
+                    } else {
+                        resultArray.push(subRuleSet);
+                    }
                 }
             }
 
@@ -130,6 +130,11 @@ export class Styles extends RX.Styles {
     // Creates opaque styles that can be used for Picker
     createPickerStyle(ruleSet: Types.PickerStyle, cacheStyle: boolean = true): Types.PickerStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
+    }
+
+    getCssPropertyAliasesCssStyle(): {[key: string]: string} {
+        // Nothing to do in native; this is for web only
+        return {};
     }
 
     private _adaptStyles<S extends Types.ViewAndImageCommonStyle>(def: S, cacheStyle: boolean): Types.StyleRuleSet<S> {

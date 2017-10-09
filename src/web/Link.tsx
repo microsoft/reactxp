@@ -9,7 +9,6 @@
 
 import React = require('react');
 
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
@@ -44,7 +43,7 @@ const _longPressTime = 1000;
 
 export class Link extends React.Component<Types.LinkProps, {}> {
 
-    private _longPressTimer: number;
+    private _longPressTimer: number|undefined;
 
     render() {
         // SECURITY WARNING:
@@ -53,7 +52,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
         //   See: https://mathiasbynens.github.io/rel-noopener/
         return (
             <a
-                style={ this._getStyles() }
+                style={ this._getStyles() as any }
                 title={ this.props.title }
                 href={ this.props.url }
                 target='_blank'
@@ -62,6 +61,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
                 onMouseEnter={ this.props.onHoverStart }
                 onMouseLeave={ this.props.onHoverEnd }
                 onMouseDown={ this._onMouseDown }
+                onMouseUp={ this._onMouseUp }
                 tabIndex={ this.props.tabIndex }
             >
                 { this.props.children }
@@ -89,7 +89,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
         return combinedStyles;
     }
 
-    private _onClick = (e: React.MouseEvent) => {
+    private _onClick = (e: React.MouseEvent<any>) => {
         e.stopPropagation();
 
         if (this.props.onPress) {

@@ -72,10 +72,7 @@ class TodoAppRootView extends RX.Component<{}, null> {
     private _onShowTodoPanel = () => {
         this._navigator.push({
             routeId: NavigationRouteId.EditTodoPanel,
-            sceneConfigType: Types.NavigatorSceneConfigType.FloatFromRight,
-            customSceneConfig: {
-                hideShadow: true
-            }
+            sceneConfigType: Types.NavigatorSceneConfigType.FloatFromRight            
         });
     }
 

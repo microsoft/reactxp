@@ -34,7 +34,7 @@ export interface WebViewState {
     webFrameIdentifier?: string;
 }
 
-export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> {
+export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> implements RX.WebView {
     private static _webFrameNumber = 1;
 
     constructor(props: Types.WebViewProps) {
@@ -75,10 +75,10 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> {
         return (
             <View style={ _styles.webViewContainer }>
                 <iframe
-                    ref='iframe'
+                    ref={ 'iframe' }
                     name={ this.state.webFrameIdentifier }
                     id={ this.state.webFrameIdentifier }
-                    style={ styles }
+                    style={ styles as any }
                     src={ this.props.url }
                     onLoad={ this._onLoad }
                     sandbox={ this._sandboxToStringValue(sandbox) }

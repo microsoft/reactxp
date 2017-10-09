@@ -22,18 +22,22 @@ function getPosition(el: HTMLElement): { left: number; top: number; } {
 }
 
 type ChildKey = string | number;
-function extractChildrenKeys(children: React.ReactNode): ChildKey[] {
+function extractChildrenKeys(children: React.ReactNode|undefined): ChildKey[] {
     var keys: ChildKey[] = [];
-    React.Children.forEach(children, function (child, index) {
-        if (child) {
-            let childReactElement = child as React.ReactElement<any>;
-            assert(
-                childReactElement.key !== undefined && childReactElement.key !== null,
-                'Children passed to a `View` with child animations enabled must have a `key`'
-            );
-            keys.push(childReactElement.key);
-        }
-    });
+    if (children) {
+        React.Children.forEach(children, function (child, index) {
+            if (child) {
+                let childReactElement = child as React.ReactElement<any>;
+                assert(
+                    childReactElement.key !== undefined && childReactElement.key !== null,
+                    'Children passed to a `View` with child animations enabled must have a `key`'
+                );
+                if (childReactElement.key !== null) {
+                    keys.push(childReactElement.key);
+                }
+            }
+        });
+    }
     return keys;
 }
 
@@ -45,18 +49,23 @@ function childrenEdited(prevChildrenKeys: ChildKey[], nextChildrenKeys: ChildKey
 }
 
 type ChildrenMap = { [key: string]: React.ReactElement<any> };
-function createChildrenMap(children: React.ReactNode): ChildrenMap {
+function createChildrenMap(children: React.ReactNode|undefined): ChildrenMap {
     var map: ChildrenMap = {};
-    React.Children.forEach(children, function (child, index) {
-        if (child) {
-            let childReactElement = child as React.ReactElement<any>;
-            assert(
-                'key' in childReactElement,
-                'Children passed to a `View` with child animations enabled must have a `key`'
-            );
-            map[childReactElement['key']] = childReactElement;
-        }
-    });
+    if (children) {
+        React.Children.forEach(children, function (child, index) {
+            if (child) {
+                let childReactElement = child as React.ReactElement<any>;
+                assert(
+                    'key' in childReactElement,
+                    'Children passed to a `View` with child animations enabled must have a `key`'
+                );
+                let index = childReactElement['key'];
+                if (index !== null) {
+                    map[index] = childReactElement;
+                }
+            }
+        });
+    }
     return map;
 }
 
@@ -117,7 +126,7 @@ interface MountedChildrenRef {
     domElement: HTMLElement;
 }
 
-export interface MonitorListEditsProps extends React.HTMLAttributes {
+export interface MonitorListEditsProps extends React.HTMLAttributes<any> {
     // Called when list edits are detected. Gives you an opportunity to animate them.
     // Call `done` when the animations are finished. Until `done` is called, the component
     // will refuse to rerender.
@@ -140,7 +149,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
     private _childrenToRender: JSX.Element[];
 
     private _phase: ComponentPhaseEnum = ComponentPhaseEnum.rest;
-    private _willAnimatePhaseInfo: IWillAnimatePhaseInfo = null;
+    private _willAnimatePhaseInfo: IWillAnimatePhaseInfo|undefined;
 
     componentWillMount() {
         this._childrenKeys = extractChildrenKeys(this.props.children);
@@ -206,7 +215,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
         this._childrenToRender = [];
         _.each(this.props.children, child => {
             if (child) {
-                let childElement = child as React.ReactElement<any>;
+                let childElement = child as any;
                 let refData = this._refReplacementCache[childElement.key];
 
                 // Reuse the cached replacement ref function instead of recreating it every render, unless the child's ref changes.
@@ -223,7 +232,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
         });
 
         if (this._phase === ComponentPhaseEnum.willAnimate) {
-            _.each(this._willAnimatePhaseInfo.removed, childElement => {
+            _.each(this._willAnimatePhaseInfo!!!.removed, childElement => {
                 if (childElement) {
                     this._childrenToRender.push(React.cloneElement(childElement, {
                         ref: (refValue: React.Component<any, any>) => {
@@ -248,18 +257,18 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
         );
 
         if (this._phase === ComponentPhaseEnum.willAnimate) {
-            let phaseInfo = this._willAnimatePhaseInfo;
+            let phaseInfo = this._willAnimatePhaseInfo!!!;
             let prevPositions = phaseInfo.prevPositions;
             let nextPositions = computePositions(this._itemRefs);
 
             let added: IAddEdit[] = phaseInfo.added.map(child => {
                 return {
-                    element: this._itemRefs[child.key].reactElement
+                    element: this._itemRefs[(child as any).key].reactElement
                 };
             });
 
             let removed: IRemoveEdit[] = phaseInfo.removed.map(child => {
-                let key = child.key;
+                let key = child.key as any;
                 let prevPos = prevPositions[key];
                 let nextPos = nextPositions[key];
 
@@ -272,7 +281,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
 
             let moved: IMoveEdit[] = [];
             phaseInfo.other.map(child => {
-                let key = child.key;
+                let key = child.key as any;
                 let prevPos = prevPositions[key];
                 let nextPos = nextPositions[key];
                 if (prevPos.left !== nextPos.left || prevPos.top !== nextPos.top) {
@@ -285,7 +294,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
             });
 
             this._phase = ComponentPhaseEnum.animating;
-            this._willAnimatePhaseInfo = null;
+            this._willAnimatePhaseInfo = undefined;
             this.props.componentWillAnimate({
                 added: added,
                 moved: moved,
@@ -296,13 +305,14 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
                     this.forceUpdate();
                 }
                 phaseInfo.removed.forEach(child => {
-                    delete this._refReplacementCache[child.key];
+                    let key = child.key as any;
+                    delete this._refReplacementCache[key];
                 });
             });
         }
     }
 
-    private _saveRef(reactElement: React.ReactElement<any>, refValue: React.Component<any, any>) {
+    private _saveRef(reactElement: any, refValue: React.Component<any, any>) {
         if (refValue === null) {
             delete this._itemRefs[reactElement.key];
         } else {
@@ -320,7 +330,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
 
         // If the creator of the reactElement also provided a ref, call it.
         if (typeof reactElement.ref === 'function') {
-            (reactElement as any).ref(refValue);
+            reactElement.ref(refValue);
         }
     }
 }

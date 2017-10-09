@@ -24,8 +24,8 @@ export class UserInterface extends RX.UserInterface {
     constructor() {
         super();
 
-        RN.DeviceEventEmitter.addListener('didUpdateContentSizeMultiplier', (newValue: number) => {
-            this.contentSizeMultiplierChangedEvent.fire(newValue);
+        RN.DeviceEventEmitter.addListener('didUpdateDimensions', (newValue: RN.DimensionType) => {
+            this.contentSizeMultiplierChangedEvent.fire(newValue.fontScale);
         });
     }
 
@@ -91,9 +91,7 @@ export class UserInterface extends RX.UserInterface {
         if (RN.Platform.OS === 'windows') {
             deferred.resolve(1);
         } else {
-            RN.NativeModules.UIManager.getContentSizeMultiplier((value: number) => {
-                deferred.resolve(value);
-            });
+            deferred.resolve(RN.PixelRatio.getFontScale());
         }
 
         return deferred.promise();

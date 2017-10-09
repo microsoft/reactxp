@@ -16,6 +16,46 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.46.3 of reactxp
+_Released 7 Oct 2017_
+
+Added missing focus() method to RX.Animated.View interface.
+Exported RX.AnimatedImage, RX.AnimatedText, RX.AnimatedTextInput, and RX.AnimatedView.
+Added accessibilityLiveRegion prop to ViewProps for Android and web.
+Exported explicit types for ShadowOffset, ScrollIndicatorInsets.
+Fixed crash in web RootView when clicking on a popup anchor.
+Fixed race condition in hover of Button on web.
+
+#### Version 0.2.2 of reactxp-video
+#### Version 1.0.13 of reactxp-navigator
+#### Version 0.2.7 of reactxp-imagesvg
+#### Version 0.1.6 of reactxp-virtuallistview
+_Released 21 Sep 2017_
+
+Updated for RN 0.46 compatibility.
+Removed custom react.d.ts and react-dom.d.ts files in favor of public versions.
+
+#### Version 0.46.2 of reactxp
+_Released 21 Sep 2017_
+
+Added onContextMenu support on web for Text components.
+Exposed attributes to make menus and listboxes accessible on web.
+Added new RX.Animated.createValue and RX.Animated.interpolate methods. The old way of instantiating a value and creating an interpolation will be deprecated going forward.
+Made a breaking change to Alert.show interface - combined optional parameters into an AlertOptions interface. This will allow for better extensibility in the future.
+Updated RN dependency to 0.46.
+Removed custom react.d.ts and react-dom.d.ts files in favor of public versions.
+
+#### Version 0.46.0_rc.2 of reactxp
+_Released 19 Sep 2017_
+
+Changed RX.Link props to make url mandatory.
+Added new Alert implementation for web. It now presents a modal-based themable dialog box.
+Fixed bug in ScrollView styles from previous release.
+Exposed aria-checked property on button type for web.
+Added key attribute to KeyboardEvent.
+Fixed bug in web code where onScrollBeginDrag and onScrollEndDrag were called unconditionally even if they were undefined.
+Enabled strict null checks in TS compiler and fixed a number of bugs that were exposed.
+
 #### Version 0.46.0_rc.1 of reactxp
 _Released 5 Sep 2017_
 

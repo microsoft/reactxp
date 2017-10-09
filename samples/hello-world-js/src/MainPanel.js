@@ -50,7 +50,7 @@ const styles = {
 export default class MainPanel extends RX.Component{
     constructor(props) {
         super(props);
-        this._translationValue = new RX.Animated.Value(-100);
+        this._translationValue = RX.Animated.createValue(-100);
         this._animatedStyle = RX.Styles.createAnimatedTextStyle({
             transform: [
                 {

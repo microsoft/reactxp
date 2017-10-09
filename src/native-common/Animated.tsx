@@ -158,9 +158,9 @@ var timing = function(
     return {
         start: function(callback?: Types.Animated.EndCallback): void {
             function animate() : void {
-                let timingConfig: RN.AnimatedTimingConfig = {
+                const timingConfig: RN.AnimatedTimingConfig = {
                     toValue: config.toValue,
-                    easing: config.easing ? config.easing.function : null,
+                    easing: config.easing ? config.easing.function : undefined,
                     duration: config.duration,
                     delay: config.delay,
                     isInteraction: config.isInteraction,
@@ -173,7 +173,7 @@ var timing = function(
                     }
 
                     if (isLooping) {
-                        value.setValue(config.loop.restartFrom);
+                        value.setValue(config.loop!!!.restartFrom);
                         // Hack to get into the loop
                         animate();
                     }
@@ -196,12 +196,23 @@ export var Animated = {
     Text: AnimatedText,
     TextInput: AnimatedTextInput,
     View: AnimatedView,
-    Value: RN.Animated.Value,
     Easing: Easing as Types.Animated.Easing,
+
     timing: timing,
     delay: RN.Animated.delay,
     parallel: RN.Animated.parallel,
-    sequence: RN.Animated.sequence
+    sequence: RN.Animated.sequence,
+
+    // NOTE: Direct access to "Value" will be going away in the near future.
+    // Please move to createValue and interpolate instead.
+    Value: RN.Animated.Value,
+    createValue: (initialValue: number) => new RN.Animated.Value(initialValue),
+    interpolate: (animatedValue: RN.Animated.Value, inputRange: number[], outputRange: string[]) => {
+        return animatedValue.interpolate({
+            inputRange: inputRange,
+            outputRange: outputRange
+        });
+    }
 };
 
 export default Animated;

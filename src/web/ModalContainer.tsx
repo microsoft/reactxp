@@ -36,7 +36,7 @@ export class ModalContainer extends React.Component<Types.CommonProps, {}> {
 
     render() {
         return (
-            <div style={ _styles.modalContainerStyle }>
+            <div style={ _styles.modalContainerStyle as any }>
                 { this.props.children }
             </div>
         );

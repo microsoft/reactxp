@@ -77,7 +77,7 @@ let _customStyles = {
 // Default to once per frame.
 const _defaultScrollThrottleValue = 1000 / 60;
 
-export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements RX.IScrollView {
+export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements RX.ScrollView {
     constructor(props: Types.ScrollViewProps) {
         super(props);
 
@@ -111,7 +111,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 minWidth: 0
             };
 
-            _customStyles.bothStyle = Styles.combine([_customStyles.verticalStyle, _customStyles.horizontalStyle]);
+            _customStyles.bothStyle = Styles.combine([_customStyles.verticalStyle, _customStyles.horizontalStyle])!!!;
         }
     }
 
@@ -168,12 +168,12 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         }
     }
 
-    protected _getContainerRef(): React.Component<any, any> {
+    protected _getContainerRef(): React.ReactInstance {
         return this.refs['scrollView'];
     }
 
     // Throttled scroll handler
-    private _onScroll = _.throttle((e: React.SyntheticEvent) => {
+    private _onScroll = _.throttle((e: React.SyntheticEvent<any>) => {
         if (this._customScrollbarEnabled) {
             this._customScrollbar.update();
         }
@@ -194,7 +194,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 if (!container) {
                     return;
                 }
-                this.props.onScroll(container.scrollTop, container.scrollLeft);
+                this.props.onScroll!!!(container.scrollTop, container.scrollLeft);
             });
         }
     }, (this.props.scrollEventThrottle || _defaultScrollThrottleValue), { leading: true, trailing: true });
@@ -227,7 +227,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 onScroll={ this._onScroll }
                 onTouchStart={ this._onTouchStart }
                 onTouchEnd={ this._onTouchEnd }
-                style={ this._getContainerStyle() }
+                style={ this._getContainerStyle() as any }
             >
                 { this.props.children }
             </div>
@@ -258,7 +258,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                     ref='scrollView'
                     className={ scrollComponentClassNames.join(' ') }
                     onScroll={ this._onScroll }
-                    style={ this._getContainerStyle() }
+                    style={ this._getContainerStyle() as any }
                     onKeyDown={ this.props.onKeyPress }
                     onFocus={ this.props.onFocus }
                     onBlur={ this.props.onBlur }
@@ -357,13 +357,17 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
     private _onTouchStart = () => {
         if (!this._dragging) {
             this._dragging = true;
-            this.props.onScrollBeginDrag();
+            if (this.props.onScrollBeginDrag) {
+                this.props.onScrollBeginDrag();
+            }
         }
     }
 
     private _onTouchEnd = () => {
         this._dragging = false;
-        this.props.onScrollEndDrag();
+        if (this.props.onScrollEndDrag) {
+            this.props.onScrollEndDrag();
+        }
     }
 }
 

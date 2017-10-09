@@ -49,8 +49,8 @@ const _styles = {
 
 export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _changeListener = this._onChange.bind(this);
-    private _frontLayerViewChangedSubscription: SubscriptionToken = null;
-    private _newAnnouncementEventChangedSubscription: SubscriptionToken = null;
+    private _frontLayerViewChangedSubscription: SubscriptionToken|undefined;
+    private _newAnnouncementEventChangedSubscription: SubscriptionToken|undefined;
     private _mainViewProps: {};
 
     constructor(props: RootViewProps) {
@@ -58,8 +58,14 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
         this._mainViewProps = this._getPropsForMainView();
 
+        let mainView: RN.ReactElement<any> | undefined;
+
+        if (props.reactxp_initialViewType) {
+            mainView = React.createElement(props.reactxp_initialViewType, this._mainViewProps);
+        }
+
         this.state = {
-            mainView: props.reactxp_initialViewType && React.createElement(props.reactxp_initialViewType, this._mainViewProps),
+            mainView: mainView,
             announcementText: ''
         };
     }
@@ -84,10 +90,16 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     componentWillUnmount(): void {
-        this._frontLayerViewChangedSubscription.unsubscribe();
-        this._frontLayerViewChangedSubscription = null;
-        this._newAnnouncementEventChangedSubscription.unsubscribe();
-        this._newAnnouncementEventChangedSubscription = null;
+        if (this._frontLayerViewChangedSubscription) {
+            this._frontLayerViewChangedSubscription.unsubscribe();
+            this._frontLayerViewChangedSubscription = undefined;
+        }
+
+        if (this._newAnnouncementEventChangedSubscription) {
+            this._newAnnouncementEventChangedSubscription.unsubscribe();
+            this._newAnnouncementEventChangedSubscription = undefined;
+        }
+
         MainViewStore.unsubscribe(this._changeListener);
     }
 

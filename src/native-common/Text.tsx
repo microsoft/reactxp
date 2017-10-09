@@ -7,11 +7,11 @@
 * RN-specific implementation of the cross-platform Text abstraction.
 */
 
+import _ = require('./lodashMini');
 import React = require('react');
 import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -48,8 +48,8 @@ export class Text extends React.Component<Types.TextProps, {}> {
         );
     }
 
-    protected _getStyles(): Types.TextStyleRuleSet | Types.TextStyleRuleSet[] {
-        return Styles.combine<Types.TextStyle>([_styles.defaultText, this.props.style]);
+    protected _getStyles(): Types.StyleRuleSetRecursiveArray<Types.TextStyleRuleSet> {
+        return _.compact([_styles.defaultText, this.props.style]);
     }
 
     focus() {

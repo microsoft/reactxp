@@ -59,19 +59,17 @@ class ToggleSwitch extends RX.Component<ToggleSwitchProps, null> {
 
         // This value controls the left offset of the knob, which we will
         // animate when the user toggles the control.
-        this._knobLeftAnimationValue = new RX.Animated.Value(this.props.value ? _knobLeftOn : _knobLeftOff);
+        this._knobLeftAnimationValue = RX.Animated.createValue(this.props.value ? _knobLeftOn : _knobLeftOff);
         this._knobLeftAnimationStyle = RX.Styles.createAnimatedViewStyle({
             left: this._knobLeftAnimationValue
         });
 
         // This value controls the background color of the control. Here we make
         // use of the interpolate method to smoothly transition between two colors.
-        this._toggleColorAnimationValue = new RX.Animated.Value(this.props.value ? 1 : 0);
+        this._toggleColorAnimationValue = RX.Animated.createValue(this.props.value ? 1 : 0);
         this._toggleColorAnimationStyle = RX.Styles.createAnimatedTextInputStyle({
-            backgroundColor: this._toggleColorAnimationValue.interpolate({
-                inputRange: [0, 1],
-                outputRange: ['#66f', '#ddd']
-            })
+            backgroundColor: RX.Animated.interpolate(this._toggleColorAnimationValue,
+                [0, 1], ['#66f', '#ddd'])
         });
     }
 

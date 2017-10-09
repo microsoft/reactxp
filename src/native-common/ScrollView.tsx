@@ -14,10 +14,10 @@ import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 import ViewBase from './ViewBase';
 
-export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements RX.IScrollView {
+export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements RX.ScrollView {
     private _scrollTop = 0;
     private _scrollLeft = 0;
-    protected _nativeView: RN.ScrollView = null;
+    protected _nativeView: RN.ScrollView|undefined;
 
     render() {
         let scrollThrottle = this.props.scrollEventThrottle || 16;
@@ -30,12 +30,12 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         var layoutCallback = this.props.onLayout ?
                 // We have a callback function, call the wrapper
                 this._onLayout :
-                null;
+                undefined;
 
         var scrollCallback = this.props.onScroll ?
                 // We have a callback function, call the wrapper
                 this._onScroll :
-                null;
+                undefined;
 
         // TODO: #737970 Remove special case for UWP when this bug is fixed. The bug
         //   causes you to have to click twice instead of once on some pieces of UI in
@@ -58,7 +58,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         // we use are virtualized anyway.
         return (
             <RN.ScrollView
-                ref={this._setNativeView}
+                ref={ this._setNativeView }
                 style={ this.props.style }
                 onScroll={ scrollCallback }
                 automaticallyAdjustContentInsets={ false }
@@ -87,7 +87,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         );
     }
 
-    private _onScroll = (event: React.SyntheticEvent) => {
+    private _onScroll = (event: React.SyntheticEvent<ScrollView>) => {
         const nativeEvent = event.nativeEvent as any;
         this._scrollTop = nativeEvent.contentOffset.y;
         this._scrollLeft = nativeEvent.contentOffset.x;

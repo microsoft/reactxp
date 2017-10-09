@@ -68,8 +68,6 @@ export class ImageSvg extends React.Component<SvgTypes.ImageSvgProps, {}> {
                     style={ combinedStyles }
                     height={ this.props.height  }
                     width={ this.props.width }
-                    alt={ this.props.accessibilityLabel }
-                    title={ this.props.title }
                 >
                     { this.props.children }
                 </svg>

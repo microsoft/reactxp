@@ -37,8 +37,14 @@ animateChildEnter: boolean = false;
 animateChildLeave: boolean = false;
 animateChildMove: boolean = false;
 
+// Id of an element that describes the view for screenreader.
+ariaLabelledBy: string = undefined; // Web only
+
 // Block touches for this component and all of its children
 blockPointerEvents: boolean = false; // iOS and Android only
+
+// Specifies a unique id for an HTML element
+id: string = undefined; // Web only
 
 // Ignore clicks and other mouse events, allowing children or
 // components behind to receive them

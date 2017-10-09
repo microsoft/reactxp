@@ -19,14 +19,24 @@ Three base RX classes can have animatable styles:
 
 * Animated.Text
 
+* Animated.TextInput
+
 These component types should be used in place of the normal [View](components/view), [Image](components/image), [Text](components/text) or [TextInput](components/textinput) in the render method. In general, style properties expressed as numeric values or colors can be animated. Properties with text values (e.g. flexDirection or fontWeight) cannot be animated. 
 
 ## Animated Values
 The following example shows how to create animated values with an initial value. Animated values are typically stored as instance variables within a component class. They can also be stored in the state structure.
 
 ``` javascript
-let animatedOpacityValue = new RX.Animated.Value(1.0);
-let animatedScaleValue = new RX.Animated.Value(1.0);
+let animatedOpacityValue = RX.Animated.createValue(1.0);
+let animatedScaleValue = RX.Animated.createValue(1.0);
+```
+
+For animated color values, it is possible to create interpolated values that map from a numeric range to a color range. In this example, the value smoothly transitions from white to red to black as the value increases from 0 to 1.
+
+``` javascript
+let animatedColorValue = RX.Animated.createValue(0.0);
+let interpolatedValue = RX.Animated.interpolate(animatedColorValue,
+    [0.0, 0.5, 1.0], ['white', 'red', 'black']);
 ```
 
 ## Animated Styles

@@ -79,11 +79,11 @@ export class Value extends Types.AnimatedValue {
     _value: number | string;
     _listenerId: number;
     _animationId: number;
-    _animations: { [key: number]: Animation };
+    _animations: { [key: number]: Animation|undefined };
     _listeners: { [key: string]: Types.Animated.ValueListenerCallback };
     _animatedValueUniqueId: number;
     _cssProperties: { [key: string]: string } = {};
-    _element: HTMLElement;
+    _element: HTMLElement|undefined;
     _isInitialized: boolean = false;
     _interpolationConfig: { [key: number]: (number | string) };
 
@@ -108,6 +108,8 @@ export class Value extends Types.AnimatedValue {
         return this._value;
     }
 
+    // Note: public access to interpolate will be going away. Use
+    // RX.Animated.interpolate instead.
     interpolate(config: Types.Animated.InterpolationConfigType) {
         // TODO: This is a temporary implementation in order to keep parity with RN's API.
         // In reallity we should support string values as well string tovalues in the animations.
@@ -138,13 +140,13 @@ export class Value extends Types.AnimatedValue {
     }
 
     // Gets animation reference by id. An animated value may be referenced in multiple animations.
-    getAnimation(id: number): Animation {
+    getAnimation(id: number): Animation|undefined {
         // Return CSS key (transition/animation) string from animation object if available.
         if (this._animations) {
             return this._animations[id];
         }
 
-        return null;
+        return undefined;
     }
 
     // Adds a new associated css property to this animated value.
@@ -190,7 +192,7 @@ export class Value extends Types.AnimatedValue {
     // Clears the HTML element reference and marks the value as uninitialized
     destroy(): void {
         this._isInitialized = false;
-        this._element = null;
+        this._element = undefined;
     }
 
     // Add listener for when the value gets updated.
@@ -254,7 +256,7 @@ export class Value extends Types.AnimatedValue {
 
         // Make sure the reference for this animation is destroyed.
         // This will avoid problems where timing animations are shared across multiple states.
-        this._animations[id] = null;
+        this._animations[id] = undefined;
     }
 
      private _startPendingAnimations() {
@@ -270,7 +272,7 @@ export class Value extends Types.AnimatedValue {
      private _updateElementStyles(): void {
        // Update the style of the element.
        if (this._isInitialized) {
-           this.updateElementStylesOnto(this._element.style);
+           this.updateElementStylesOnto(this._element!!!.style);
         }
     }
 
@@ -337,7 +339,7 @@ class TimingAnimation extends Animation {
     _duration: number;
     _delay: number;
     _easing: Types.Animated.EasingFunction;
-    _onEnd: Types.Animated.EndCallback;
+    _onEnd: Types.Animated.EndCallback|undefined;
     _timeout: any;
     _animatedValue: Value;
     _loop: boolean;
@@ -365,6 +367,7 @@ class TimingAnimation extends Animation {
                 value = trimmedValue.substr(0, trimmedValue.length - units.length);
                 return false;
             }
+            return undefined;
         });
 
         return value;
@@ -409,7 +412,7 @@ class TimingAnimation extends Animation {
 
             this.resetAnimation();
 
-            executeTransition(this._animatedValue._element, properties, () => {
+            executeTransition(this._animatedValue._element!!!, properties, () => {
                 if (this._triggerAnimation) {
                     if (!this._loop) {
                         this._animatedValue.setValue(this._toValue);
@@ -425,7 +428,7 @@ class TimingAnimation extends Animation {
 
     resetAnimation() {
         if (this._animatedValue.isInitialized()) {
-            this._animatedValue._element.style.transition = 'none';
+            this._animatedValue._element!!!.style.transition = 'none';
         }
     }
 
@@ -467,7 +470,7 @@ export var timing: Types.Animated.TimingFunction = function(
         start: function(callback?: Types.Animated.EndCallback): void {
             function animate() : void {
                 if (isLooping) {
-                    (value as Value).setValue(config.loop.restartFrom);
+                    (value as Value).setValue(config.loop!!!.restartFrom);
                 }
 
                 (value as Value).startAnimation(id, (r) => {
@@ -596,7 +599,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
     var refName = 'animatedNode';
 
     class AnimatedComponentGenerated extends React.Component<PropsType, void> implements RX.AnimatedComponent<PropsType, void> {
-        private _initialStyle: Object;
+        private _initialStyle: Object|undefined;
         private _propsWithoutStyle: Object;
         private _animatedValues: Value[];
 
@@ -665,7 +668,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
 
             // Add the complicated styles
             _.each(this._animatedValues, value => {
-                value.updateElementStylesOnto(this._initialStyle);
+                value.updateElementStylesOnto(this._initialStyle!!!);
             });
         }
 
@@ -745,5 +748,21 @@ export var Image = createAnimatedComponent<Types.ImageProps>(RXImage) as typeof 
 export var Text = createAnimatedComponent(RXText) as typeof RX.AnimatedText;
 export var TextInput = createAnimatedComponent(RXTextInput) as typeof RX.AnimatedTextInput;
 export var View = createAnimatedComponent(RXView) as typeof RX.AnimatedView;
+
+export type Image = RX.AnimatedImage;
+export type Text = RX.AnimatedText;
+export type TextInput = RX.AnimatedTextInput;
+export type View = RX.AnimatedView;
+
+// NOTE: Direct access to "Value" will be going away in the near future.
+// Please move to createValue and interpolate instead.
+export var createValue: (initialValue: number) => Value = function(initialValue: number) {
+    return new Value(initialValue);
+};
+
+export var interpolate: (value: Value, inputRange: number[], outputRange: string[]) => 
+        Value = function(value: Value, inputRange: number[], outputRange: string[]) {
+    return value.interpolate({ inputRange: inputRange, outputRange: outputRange });
+};
 
 export { Easing };

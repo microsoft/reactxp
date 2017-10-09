@@ -32,7 +32,7 @@ const _styles = {
 export interface ModalContainerProps extends Types.CommonProps {
 }
 
-export class ModalContainer extends React.Component<ModalContainerProps, null> {
+export class ModalContainer extends React.Component<ModalContainerProps, {}> {
     constructor(props: ModalContainerProps) {
         super(props);
     }

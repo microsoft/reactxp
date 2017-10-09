@@ -434,9 +434,11 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
         }
 
         // Set new state values.
-        this.state.transitionFromIndex = this.state.presentedIndex;
-        this.state.presentedIndex = destIndex;
-        this.state.transitionFinished = cb;
+        this.setState({
+            transitionFromIndex: this.state.presentedIndex,
+            presentedIndex: destIndex,
+            transitionFinished: cb
+        });
 
         // Grab the scene config from the route we're leaving.
         const sceneConfig = this.state.sceneConfigStack[this.state.transitionFromIndex] ||
@@ -461,7 +463,9 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
     private _completeTransition() {
         let newState: NavigatorState = {};
 
-        this.state.transitionFromIndex = undefined;
+        this.setState({
+            transitionFromIndex: undefined
+        });
         this.spring.setCurrentValue(0).setAtRest();
         this._hideScenes();
 
@@ -620,7 +624,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
 
     // Manually override the styles in the DOM for the given component. This method is a hacky equivalent of React Native's
     // setNativeProps.
-    private _setNativeStyles(component: React.Component<any, any>, currentStyles: any) {
+    private _setNativeStyles(component: React.ReactInstance, currentStyles: any) {
         // Grab the actual element from the DOM.
         let element = ReactDOM.findDOMNode(component) as HTMLElement;
         const flatStyles: RX.Types.ViewStyleRuleSet = _.isArray(currentStyles) ? _.flatten(currentStyles) : currentStyles;

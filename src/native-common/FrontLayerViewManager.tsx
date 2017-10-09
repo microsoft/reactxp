@@ -164,18 +164,19 @@ export class FrontLayerViewManager {
                 RN.NativeModules.UIManager.measureInWindow(
                     activePopupContext.anchorHandle,
                     (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
-                        const touchEvent = (e.nativeEvent as any) as Types.TouchEvent;
+                        const touchEvent = e.nativeEvent as any;
                         let anchorRect: ClientRect = { left: x, top: y, right: x + width, 
                                 bottom: y + height, width: width, height: height };
 
                         // Find out if the press event was on the anchor so we can notify the caller about it.
-                        if (touchEvent.pageX >= anchorRect.left && touchEvent.pageX < anchorRect.right
-                            && touchEvent.pageY >= anchorRect.top && touchEvent.pageY < anchorRect.bottom) {
+                        if (!_.isUndefined(touchEvent.pageX) && !_.isUndefined(touchEvent.pageY) &&
+                                touchEvent.pageX >= anchorRect.left && touchEvent.pageX < anchorRect.right
+                                && touchEvent.pageY >= anchorRect.top && touchEvent.pageY < anchorRect.bottom) {
                             // Showing another animation while dimissing the popup creates a conflict in the 
                             // UI making it not doing one of the two animations (i.e.: Opening an actionsheet
                             // while dismissing a popup). We introduce this delay to make sure the popup 
                             // dimissing animation has finished before we call the event handler.
-                            setTimeout(() => { activePopupContext.popupOptions.onAnchorPressed(e); }, 500);
+                            setTimeout(() => { activePopupContext.popupOptions.onAnchorPressed!!!(e); }, 500);
                         }
                     }
                 );
@@ -188,10 +189,6 @@ export class FrontLayerViewManager {
             }
         }
 
-        this._dismissActivePopup();
-    }
-
-    private _onRequestClose = () => {
         this._dismissActivePopup();
     }
 
