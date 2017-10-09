@@ -33,7 +33,7 @@ style: PickerStyleRuleSet | PickerStyleRuleSet[] = [];
 // Android only.
 // 'dialog': Show a modal dialog. This is the default.
 // 'dropdown': Shows a dropdown anchored to the picker view
-mode: string;
+mode: 'dialog' | 'dropdown';
 ```
 
 ## Styles
