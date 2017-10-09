@@ -160,6 +160,13 @@ declare module 'react-native' {
         testId?: string
 
         ref?: string | ((obj: ReactNativeBaseComponent<any, any>) => void);
+
+        /**
+         * Android only.
+         * 'dialog': Show a modal dialog. This is the default.
+         * 'dropdown': Shows a dropdown anchored to the picker view
+         */
+        mode?: string;
     }
 
     interface TouchableWithoutFeedbackProps extends ComponentPropsBase {

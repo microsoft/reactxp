@@ -20,6 +20,7 @@ export class Picker extends RX.Picker {
                 selectedValue={ this.props.selectedValue }
                 onValueChange={ this.onValueChange }
                 style={ this.props.style }
+                mode={ this.props.mode }
             >
                 { _.map(this.props.items, (i, idx) => <RN.Picker.Item { ...i } key={ idx } /> ) }
             </RN.Picker>
