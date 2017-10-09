@@ -29,6 +29,11 @@ selectedValue: string;
 onValueChange: (itemValue: string, itemPosition: number) => void;
 
 style: PickerStyleRuleSet | PickerStyleRuleSet[] = [];
+
+// Android only.
+// 'dialog': Show a modal dialog. This is the default.
+// 'dropdown': Shows a dropdown anchored to the picker view
+mode: 'dialog' | 'dropdown';
 ```
 
 ## Styles
