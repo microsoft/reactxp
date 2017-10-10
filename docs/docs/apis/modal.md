@@ -17,6 +17,16 @@ A modal can be displayed and dismissed using methods within the ReactXP.App name
 
 A modal covers the entire screen but is transparent. Its children define the visible contents and their position on the screen.
 
+## Types
+``` javascript
+interface ModalOptions {
+    // Android & iOS only.
+    // The id of the root view this modal is associated with.
+    // Defaults to the view set by UserInterface.setMainView();
+    rootViewId?: string;
+}
+```
+
 ## Methods
 ``` javascript
 // Removes the modal from the modal stack, unmounting it if it's currently
@@ -30,7 +40,7 @@ dismissAll();
 isDisplayed(modalId: string): boolean;
 
 // Pushes the modal onto the modal stack.
-show(modal: React.ReactElement<ViewProps>, modalId: string);
+show(modal: React.ReactElement<ViewProps>, modalId: string, options?: ModalOptions);
 ```
 
 ## Sample Usage

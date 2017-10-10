@@ -971,12 +971,25 @@ export interface PopupOptions {
     // Determines if the anchor invoking the popup should behave like a toggle.
     // Value = true  => Calling Popup.show will show the popup. A subsequent call, will hide the popup, and so on.
     // Value = false or undefined (default)  => Calling Popup.show will always show the popup.
-     dismissIfShown?: boolean;
+    dismissIfShown?: boolean;
 
-     // Prevents the front-most popup from closing if the user clicks or taps
-     // outside of it. It will still close if the anchor is unmounted or if
-     // dismiss is explicitly called.
-     preventDismissOnPress?: boolean;
+    // Prevents the front-most popup from closing if the user clicks or taps
+    // outside of it. It will still close if the anchor is unmounted or if
+    // dismiss is explicitly called.
+    preventDismissOnPress?: boolean;
+
+    // Android & iOS only.
+    // The id of the root view this popup is associated with.
+    // Defaults to the view set by UserInterface.setMainView();
+    rootViewId?: string;
+}
+
+// Modal
+export interface ModalOptions {
+    // Android & iOS only.
+    // The id of the root view this modal is associated with.
+    // Defaults to the view set by UserInterface.setMainView();
+    rootViewId?: string;
 }
 
 //

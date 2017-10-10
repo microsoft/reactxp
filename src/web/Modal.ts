@@ -18,8 +18,8 @@ export class Modal extends RX.Modal {
         return FrontLayerViewManager.isModalDisplayed(modalId);
     }
 
-    show(modal: React.ReactElement<Types.ViewProps>, modalId: string): void {
-         FrontLayerViewManager.showModal(modal, modalId);
+    show(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions): void {
+         FrontLayerViewManager.showModal(modal, modalId, options);
     }
 
     dismiss(modalId: string): void {

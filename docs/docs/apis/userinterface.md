@@ -25,6 +25,12 @@ interface LayoutInfo {
 // screen beneath any open modals or popups
 setMainView(element: React.ReactElement<any>): void;
 
+// Android & iOS only.
+// Wrapper around RN.AppRegistry.registerComponent();
+// IMPORTANT: Some APIs, e.g. Popup & Modal, require a string `reactxp_rootViewId`
+// prop to be set on the component from the native-side.
+registerRootView(viewKey: string, getComponentFunc: Function);
+
 // Specifies whether custom scrollbars should be enabled (applies
 // to web only)
 useCustomScrollbars(enable: boolean): void;

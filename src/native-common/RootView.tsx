@@ -22,6 +22,7 @@ import Types = require('../common/Types');
 // Fields should be prefixed with 'reactxp' to help avoid naming collisions.
 // All fields should be removed from this.props before passing to downwards.
 interface BaseRootViewProps {
+    reactxp_rootViewId?: string;
 }
 
 interface RootViewPropsWithMainViewType extends BaseRootViewProps {
@@ -56,6 +57,7 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
     private _frontLayerViewChangedSubscription: SubscriptionToken|undefined;
     private _newAnnouncementEventChangedSubscription: SubscriptionToken|undefined;
     protected _mainViewProps: {};
+    protected _rootViewId?: string | null;
 
     protected abstract _getPropsForMainView(): {};
 
@@ -92,8 +94,8 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
     }
 
     render() {
-        const modalLayerView = FrontLayerViewManager.getModalLayerView(this);
-        const popupLayerView = FrontLayerViewManager.getPopupLayerView(this);
+        const modalLayerView = FrontLayerViewManager.getModalLayerView(this._rootViewId);
+        const popupLayerView = FrontLayerViewManager.getPopupLayerView(this._rootViewId);
 
         // When showing a modal/popup we want to hide the mainView shown behind from an accessibility
         // standpoint to ensure that it won't get the focus and the screen reader's attention.
@@ -161,7 +163,8 @@ class RootViewUsingStore extends BaseRootView<BaseRootViewProps> {
     }
 
     protected _getPropsForMainView(): {} {
-        return this.props;
+        const { reactxp_rootViewId, ...mainViewProps } = this.props;
+        return mainViewProps;
     }
 }
 
@@ -170,6 +173,13 @@ class RootViewUsingProps extends BaseRootView<RootViewPropsWithMainViewType> {
     constructor(props: RootViewPropsWithMainViewType) {
         super(props);
 
+        if (!props.reactxp_rootViewId) {
+            console.warn('Some APIs require a value for reactxp_rootViewId');
+            this._rootViewId = null;
+        } else {
+            this._rootViewId = props.reactxp_rootViewId;
+        }
+
         this.state = {
             mainView: React.createElement(props.reactxp_mainViewType, this._mainViewProps),
             announcementText: ''
@@ -177,7 +187,7 @@ class RootViewUsingProps extends BaseRootView<RootViewPropsWithMainViewType> {
     }
 
     protected _getPropsForMainView(): {} {
-        const { reactxp_mainViewType, ...mainViewProps } = this.props;
+        const { reactxp_mainViewType, reactxp_rootViewId, ...mainViewProps } = this.props;
         return mainViewProps;
     }
 }
