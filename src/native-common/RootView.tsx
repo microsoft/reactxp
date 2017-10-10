@@ -7,10 +7,10 @@
 * The top-most view that's used for proper layering or modals and popups.
 */
 
-import _ = require('lodash');
 import React = require('react');
 import RN = require('react-native');
 import { SubscriptionToken } from 'subscribableevent';
+import { isEqual } from 'lodash';
 
 import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
@@ -20,7 +20,7 @@ import Styles from './Styles';
 import Types = require('../common/Types');
 
 // Fields should be prefixed with 'reactxp' to help avoid naming collisions.
-// All fields should be removed from this.props before passing to downwards.
+// All fields should be removed from this.props before passing downwards.
 interface BaseRootViewProps {
     reactxp_rootViewId?: string;
 }
@@ -153,12 +153,12 @@ class RootViewUsingStore extends BaseRootView<BaseRootViewProps> {
     private _getStateFromStore(): RootViewState {
         let mainView = MainViewStore.getMainView();
 
-        if (mainView && !_.isEqual(mainView.props, this._mainViewProps)) {
+        if (mainView && !isEqual(mainView.props, this._mainViewProps)) {
             mainView = React.cloneElement(mainView, this._mainViewProps);
         }
 
         return {
-            mainView: mainView || this.state.mainView
+            mainView: mainView
         };
     }
 
