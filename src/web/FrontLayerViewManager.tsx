@@ -35,10 +35,6 @@ export class FrontLayerViewManager {
     }
 
     showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string) {
-        if (!modalId) {
-            console.error('modal must have valid ID');
-        }
-
         // Dismiss any active popups.
         if (this._activePopupOptions) {
             this.dismissPopup(this._activePopupId!!!);
