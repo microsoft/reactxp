@@ -490,6 +490,7 @@ export interface PickerProps extends CommonProps {
     selectedValue: string;
     onValueChange: (itemValue: string, itemPosition: number) => void;
     style?: StyleRuleSetRecursive<PickerStyleRuleSet>;
+    mode?: 'dialog' | 'dropdown';
 }
 
 // Image
