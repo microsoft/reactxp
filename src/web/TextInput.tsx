@@ -100,29 +100,55 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 />
             );
         } else {
-            return (
-                <input
-                    style={ combinedStyles as any }
-                    value={ this.state.inputValue }
+            if(this.props.defaultValue) {
+                return (
+                    <input
+                        style={ combinedStyles as any }
+                        defaultValue={ this.state.inputValue }
 
-                    autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
-                    spellCheck={ spellCheck }
-                    disabled={ !editable }
-                    maxLength={ this.props.maxLength }
-                    placeholder={ this.props.placeholder }
+                        autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
+                        spellCheck={ spellCheck }
+                        disabled={ !editable }
+                        maxLength={ this.props.maxLength }
+                        placeholder={ this.props.placeholder }
 
-                    onInput={ this._onInput }
-                    onKeyDown={ this._onKeyDown }
-                    onKeyUp={ this._checkSelectionChanged }
-                    onFocus={ this.props.onFocus }
-                    onBlur={ this.props.onBlur }
-                    onMouseDown={ this._checkSelectionChanged }
-                    onMouseUp={ this._checkSelectionChanged }
-                    onPaste={ this._onPaste }
-                    aria-label={ this.props.accessibilityLabel }
-                    type={ this.props.secureTextEntry ? 'password' : 'text' }
-                />
-            );
+                        onInput={ this._onInput }
+                        onKeyDown={ this._onKeyDown }
+                        onKeyUp={ this._checkSelectionChanged }
+                        onFocus={ this.props.onFocus }
+                        onBlur={ this.props.onBlur }
+                        onMouseDown={ this._checkSelectionChanged }
+                        onMouseUp={ this._checkSelectionChanged }
+                        onPaste={ this._onPaste }
+                        aria-label={ this.props.accessibilityLabel }
+                        type={ this.props.secureTextEntry ? 'password' : 'text' }
+                    />
+                );
+            } else {
+                return (
+                    <input
+                        style={ combinedStyles as any }
+                        value={ this.state.inputValue }
+
+                        autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
+                        spellCheck={ spellCheck }
+                        disabled={ !editable }
+                        maxLength={ this.props.maxLength }
+                        placeholder={ this.props.placeholder }
+
+                        onInput={ this._onInput }
+                        onKeyDown={ this._onKeyDown }
+                        onKeyUp={ this._checkSelectionChanged }
+                        onFocus={ this.props.onFocus }
+                        onBlur={ this.props.onBlur }
+                        onMouseDown={ this._checkSelectionChanged }
+                        onMouseUp={ this._checkSelectionChanged }
+                        onPaste={ this._onPaste }
+                        aria-label={ this.props.accessibilityLabel }
+                        type={ this.props.secureTextEntry ? 'password' : 'text' }
+                    />
+                );
+            }
         }
     }
 
