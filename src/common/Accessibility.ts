@@ -14,6 +14,10 @@ import RX = require('../common/Interfaces');
 export abstract class Accessibility extends RX.Accessibility {
     abstract isScreenReaderEnabled(): boolean;
 
+    isHighContrastEnabled(): boolean {
+        return false;
+    }
+
     newAnnouncementReadyEvent = new SubscribableEvent<(announcement: string) => void>();
     announceForAccessibility(announcement: string): void {
        this.newAnnouncementReadyEvent.fire(announcement);
