@@ -27,8 +27,6 @@ type NavigationState = Navigation.NavigationState;
 type NavigationRoute = Navigation.NavigationRoute;
 type NavigationTransitionProps = Navigation.NavigationTransitionProps;
 
-const StateUtils = Navigation.StateUtils;
-
 interface NavigationRouteState extends NavigationRoute {
     route: Types.NavigatorRoute;
 }
@@ -239,7 +237,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
         switch (command.type) {
             case CommandType.Push:
                 useNewStateAsScene = true;
-                this._state = StateUtils.push(this._state, this._createState(route));
+                this._state = Navigation.StateUtils.push(this._state, this._createState(route));
                 break;
 
             case CommandType.Pop:
@@ -252,17 +250,17 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
                         this._state = this._popToTop(this._state);
                     }
                 } else {
-                    this._state = StateUtils.pop(this._state);
+                    this._state = Navigation.StateUtils.pop(this._state);
                 }
 
                 break;
 
             case CommandType.Replace:
                 if (value === -1) {
-                    this._state = StateUtils.replaceAtIndex(this._state, this._state.routes.length - 2,
+                    this._state = Navigation.StateUtils.replaceAtIndex(this._state, this._state.routes.length - 2,
                         this._createState(route));
                 } else {
-                    this._state = StateUtils.replaceAtIndex(this._state, this._state.routes.length - 1,
+                    this._state = Navigation.StateUtils.replaceAtIndex(this._state, this._state.routes.length - 1,
                         this._createState(route));
                 }
 
