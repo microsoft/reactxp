@@ -332,15 +332,19 @@ export interface PickerStyle extends ViewStyle {
 
 export type PickerStyleRuleSet = StyleRuleSet<PickerStyle>;
 
+export type ComponentBase = React.Component<any, any>;
+
 //
 // Components
 // ----------------------------------------------------------------------
 export interface CommonProps {
-    ref?: string | ((obj: React.Component<any, any>) => void);
+    ref?: string | ((obj: ComponentBase) => void);
     key?: string | number;
     type?: any;
     children?: React.ReactNode | React.ReactNode[];
 }
+
+export interface Stateless {}
 
 //
 // Accessibility
