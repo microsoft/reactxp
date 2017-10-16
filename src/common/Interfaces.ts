@@ -24,7 +24,7 @@ export abstract class Alert {
         options?: Types.AlertOptions): void;
 }
 
-export abstract class AnimatedComponent<P extends Types.CommonProps, T> extends React.Component<P, T> {
+export abstract class AnimatedComponent<P extends Types.CommonProps<any>, T> extends React.Component<P, T> {
     abstract setNativeProps(props: P): void;
 }
 
