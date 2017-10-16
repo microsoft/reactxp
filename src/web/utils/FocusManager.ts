@@ -19,6 +19,7 @@ const ATTR_NAME_ARIA_HIDDEN = 'aria-hidden';
 let _lastComponentId: number = 0;
 
 interface StoredFocusableComponent {
+    id: string;
     component: React.Component<any, any>;
     onFocus: EventListener;
     restricted: boolean;
@@ -40,6 +41,8 @@ let _isShiftPressed: boolean;
 UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
     _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 });
+
+let _skipFocusCheck = false;
 
 if ((typeof document !== 'undefined') && (typeof window !== 'undefined')) {
     // The default behaviour on Electron is to release the focus after the
@@ -63,6 +66,14 @@ if ((typeof document !== 'undefined') && (typeof window !== 'undefined')) {
 
         if (_checkFocusTimer) {
             clearTimeout(_checkFocusTimer);
+        }
+
+        if (_skipFocusCheck) {
+            // When in between the FocusManager restrictions,
+            // don't check for the focus change here, FocusManager
+            // will take care of it.
+            _skipFocusCheck = false;
+            return;
         }
 
         _checkFocusTimer = setTimeout(() => {
@@ -117,6 +128,7 @@ export class FocusManager {
         const componentId: string = 'fc-' + ++_lastComponentId;
 
         let storedComponent: StoredFocusableComponent = {
+            id: componentId,
             component: component,
             restricted: false,
             limitedCount: 0,
@@ -222,7 +234,11 @@ export class FocusManager {
         FocusManager._restrictionStack = FocusManager._restrictionStack.filter(focusManager => focusManager !== this);
 
         if (FocusManager._currentRestrictionOwner === this) {
-            const prevFocusedComponent = this._prevFocusedComponent;
+            // We'll take care of setting the proper focus below,
+            // no need to do a regular check for focusout.
+            _skipFocusCheck = true;
+
+            let prevFocusedComponent = this._prevFocusedComponent;
             this._prevFocusedComponent = undefined;
 
             FocusManager._removeFocusRestriction();
@@ -241,6 +257,16 @@ export class FocusManager {
                 const prevRestrictionOwner = FocusManager._restrictionStack.pop();
 
                 let needsFocusReset = true;
+
+                const currentFocusedComponent = FocusManager._currentFocusedComponent;
+                if (currentFocusedComponent && !currentFocusedComponent.removed &&
+                        !(currentFocusedComponent.id in this._myFocusableComponentIds)) {
+                    // The focus has been manually moved to something outside of the current
+                    // restriction scope, we should skip focusing the component which was
+                    // focused before the restriction and keep the focus as it is.
+                    prevFocusedComponent = undefined;
+                    needsFocusReset = false;
+                }
 
                 if (prevFocusedComponent && !prevFocusedComponent.removed &&
                         !prevFocusedComponent.restricted && !prevFocusedComponent.limitedCount) {
