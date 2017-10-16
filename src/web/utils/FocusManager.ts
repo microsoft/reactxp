@@ -148,7 +148,7 @@ export class FocusManager {
 
         FocusManager._updateComponentFocusRestriction(storedComponent);
 
-        const el = ReactDOM.findDOMNode<HTMLElement>(component);
+        const el = ReactDOM.findDOMNode(component) as HTMLElement;
         if (el) {
             el.addEventListener('focus', storedComponent.onFocus);
         }
@@ -160,7 +160,7 @@ export class FocusManager {
         if (componentId) {
             const storedComponent: StoredFocusableComponent = FocusManager._allFocusableComponents[componentId];
 
-            const el = ReactDOM.findDOMNode<HTMLElement>(component);
+            const el = ReactDOM.findDOMNode(component) as HTMLElement;
             if (storedComponent && el) {
                 el.removeEventListener('focus', storedComponent.onFocus);
             }
@@ -245,7 +245,7 @@ export class FocusManager {
                 if (prevFocusedComponent && !prevFocusedComponent.removed &&
                         !prevFocusedComponent.restricted && !prevFocusedComponent.limitedCount) {
                     // If possible, focus the previously focused component.
-                    const el = ReactDOM.findDOMNode<HTMLElement>(prevFocusedComponent.component);
+                    const el = ReactDOM.findDOMNode(prevFocusedComponent.component) as HTMLElement;
                     if (el && el.focus) {
                         el.focus();
                         needsFocusReset = false;
@@ -327,7 +327,7 @@ export class FocusManager {
         const focusable = Object.keys(FocusManager._allFocusableComponents)
             .map(componentId => FocusManager._allFocusableComponents[componentId])
             .filter(storedComponent => !storedComponent.removed && !storedComponent.restricted && !storedComponent.limitedCount)
-            .map(storedComponent => ReactDOM.findDOMNode<HTMLElement>(storedComponent.component))
+            .map(storedComponent => ReactDOM.findDOMNode(storedComponent.component) as HTMLElement)
             .filter(el => el && el.focus);
 
         if (focusable.length) {
@@ -422,7 +422,7 @@ export class FocusManager {
             component: React.Component<any, any>, tabIndex: number|undefined, ariaHidden: string|undefined)
             : OriginalAttributeValues|undefined {
 
-        const el = ReactDOM.findDOMNode<HTMLElement>(component);
+        const el = ReactDOM.findDOMNode(component) as HTMLElement;
         return el ?
             {
                 tabIndex: FocusManager._setTabIndex(el, tabIndex),

@@ -33,7 +33,7 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, {}>
         let delay = 0;
         if (edits.removed.length > 0 && this.props.animateChildLeave) {
             edits.removed.forEach(function (move) {
-                let domNode = ReactDOM.findDOMNode<HTMLElement>(move.element);
+                let domNode = ReactDOM.findDOMNode(move.element) as HTMLElement;
                 if (domNode) {
                     domNode.style.transform = 'translateY(' + -move.topDelta + 'px)';
 
@@ -54,7 +54,7 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, {}>
         if (edits.moved.length > 0 && this.props.animateChildMove) {
             edits.moved.forEach(function (move) {
                 counter++;
-                let domNode = ReactDOM.findDOMNode<HTMLElement>(move.element);
+                let domNode = ReactDOM.findDOMNode(move.element) as HTMLElement;
                 if (domNode) {
                     executeTransition(domNode, [{
                         property: 'transform',
@@ -72,7 +72,7 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, {}>
         if (edits.added.length > 0 && this.props.animateChildEnter) {
             edits.added.forEach(function (move) {
                 counter++;
-                executeTransition(ReactDOM.findDOMNode<HTMLElement>(move.element), [{
+                executeTransition(ReactDOM.findDOMNode(move.element) as HTMLElement, [{
                     property: 'opacity',
                     from: 0,
                     to: 1,

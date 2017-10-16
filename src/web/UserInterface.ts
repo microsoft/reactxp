@@ -30,7 +30,7 @@ export class UserInterface extends RX.UserInterface {
 
         let deferred = SyncTasks.Defer<Types.LayoutInfo>();
 
-        const componentDomNode = ReactDOM.findDOMNode<HTMLElement>(component);
+        const componentDomNode = ReactDOM.findDOMNode(component) as HTMLElement;
 
         if (!componentDomNode) {
             deferred.reject('measureLayoutRelativeToWindow failed');
@@ -53,8 +53,8 @@ export class UserInterface extends RX.UserInterface {
 
         let deferred = SyncTasks.Defer<Types.LayoutInfo>();
 
-        const componentDomNode = ReactDOM.findDOMNode<HTMLElement>(component);
-        const ancestorDomNode = ReactDOM.findDOMNode<HTMLElement>(ancestor);
+        const componentDomNode = ReactDOM.findDOMNode(component) as HTMLElement;
+        const ancestorDomNode = ReactDOM.findDOMNode(ancestor) as HTMLElement;
 
         if (!componentDomNode || !ancestorDomNode) {
             deferred.reject('measureLayoutRelativeToAncestor failed');

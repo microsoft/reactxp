@@ -375,7 +375,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     private _determineIfClickOnElement(elementReference: React.Component<any, any>, eventSource: Element|null|undefined): boolean {
-        const element = ReactDOM.findDOMNode<HTMLElement>(elementReference);
+        const element = ReactDOM.findDOMNode(elementReference) as HTMLElement;
         const isClickOnElement = element && !!eventSource && element.contains(eventSource);
         return isClickOnElement;
     }
@@ -508,7 +508,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
         if (this.state.isMeasuringPopup) {
             // Get the width/height of the popup.
-            let popup = ReactDOM.findDOMNode<HTMLElement>(this.refs['popupContainer']);
+            let popup = ReactDOM.findDOMNode(this.refs['popupContainer']) as HTMLElement;
             if (!popup) {
                 return;
             }
@@ -527,8 +527,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             return;
         }
 
-        let anchor = ReactDOM.findDOMNode<HTMLElement>(
-            anchorComponent);
+        let anchor = ReactDOM.findDOMNode(anchorComponent) as HTMLElement;
 
         // If the anchor has disappeared, dismiss the popup.
         if (!anchor) {

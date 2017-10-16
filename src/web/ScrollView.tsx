@@ -148,7 +148,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         super.componentDidMount();
 
         if (this._customScrollbarEnabled) {
-            let element = ReactDOM.findDOMNode<HTMLElement>(this);
+            let element = ReactDOM.findDOMNode(this) as HTMLElement;
             if (element) {
                 this._customScrollbar = new CustomScrollbar(element);
                 this._customScrollbar.init({ horizontal: this.props.horizontal, vertical: this.props.vertical });

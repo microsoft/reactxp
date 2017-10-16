@@ -36,7 +36,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         // Perf: Don't prefetch this since we might never need it
         const containerRef = this._getContainerRef();
         if (!this._container && containerRef) {
-            this._container = ReactDOM.findDOMNode<HTMLElement>(containerRef);
+            this._container = ReactDOM.findDOMNode(containerRef) as HTMLElement;
         }
         return this._container!!!;
     }
@@ -231,14 +231,14 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
     }
 
     blur() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             el.blur();
         }
     }
 
     focus() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             el.focus();
         }
