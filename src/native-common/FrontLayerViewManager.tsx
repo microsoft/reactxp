@@ -69,18 +69,8 @@ export class FrontLayerViewManager {
 
     public showPopup(
         popupOptions: Types.PopupOptions, popupId: string, delay?: number): boolean {
-
-        if (!popupId || popupId === '') {
-            console.error('FrontLayerViewManager: popupId must be valid!');
-            return false;
-        }
-
-        if (!popupOptions.getAnchor()) {
-            console.error('FrontLayerViewManager: getAnchor() must be valid!');
-            return false;
-        }
-
         const index = this._findIndexOfPopup(popupId);
+        
         if (index === -1) {
             this._overlayStack.push(new PopupStackContext(popupId, popupOptions, RN.findNodeHandle(popupOptions.getAnchor())));
 

@@ -13,16 +13,32 @@ import Types = require('../common/Types');
 
 export class Popup extends RX.Popup {
     show(options: Types.PopupOptions, popupId: string, delay?: number): boolean {
+        if (!popupId || popupId === '') {
+            throw new Error(`popupId must be a non-empty string. Actual: ${popupId}`);
+        }
+
+        if (!options || !options.getAnchor || !options.getAnchor()) {
+            throw new Error(`options must have a valid getAnchor().`);
+        }
+
         return FrontLayerViewManager.showPopup(options, popupId, delay);
     }
 
     autoDismiss(popupId: string, delay?: number): void {
+        if (!popupId || popupId === '') {
+            throw new Error(`popupId must be a non-empty string. Actual: ${popupId}`);
+        }
+
         setTimeout(() => {
             FrontLayerViewManager.dismissPopup(popupId);
         }, delay || 0);
     }
 
     dismiss(popupId: string): void {
+        if (!popupId || popupId === '') {
+            throw new Error(`popupId must be a non-empty string. Actual: ${popupId}`);
+        }
+
         FrontLayerViewManager.dismissPopup(popupId);
     }
 
