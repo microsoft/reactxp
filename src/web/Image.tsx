@@ -377,7 +377,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         // Measure the natural width & height of the image.
         this._nativeImageWidth = undefined;
         this._nativeImageHeight = undefined;
-        let imageDOM = ReactDOM.findDOMNode<HTMLImageElement>(this.refs['image']);
+        let imageDOM = ReactDOM.findDOMNode(this.refs['image']) as HTMLImageElement;
         if (!imageDOM) {
             // No idea why this might happen, but check anyway...
             return;

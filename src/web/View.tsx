@@ -126,7 +126,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
         let initResizer = (key: 'grow' | 'shrink', ref: any) => {
             const cur: HTMLElement|undefined = this._resizeDetectorNodes[key];
-            const element = ReactDOM.findDOMNode<HTMLElement>(ref);
+            const element = ReactDOM.findDOMNode(ref) as HTMLElement;
 
             if (cur) {
                 delete this._resizeDetectorNodes[key];

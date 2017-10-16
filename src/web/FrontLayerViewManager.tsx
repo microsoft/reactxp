@@ -34,7 +34,7 @@ export class FrontLayerViewManager {
         return this._modalStack.some(d => d.id === modalId);
     }
 
-    showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string) {
+    showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions) {
         // Dismiss any active popups.
         if (this._activePopupOptions) {
             this.dismissPopup(this._activePopupId!!!);

@@ -132,28 +132,28 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> imple
     }
 
     postMessage(message: string, targetOrigin: string = '*') {
-        const iframeDOM = ReactDOM.findDOMNode<HTMLFrameElement>(this.refs['iframe']);
+        const iframeDOM = ReactDOM.findDOMNode(this.refs['iframe']) as HTMLFrameElement;
         if (iframeDOM && iframeDOM.contentWindow) {
             iframeDOM.contentWindow.postMessage(message, targetOrigin);
         }
     }
 
     reload() {
-        const iframeDOM = ReactDOM.findDOMNode<HTMLFrameElement>(this.refs['iframe']);
+        const iframeDOM = ReactDOM.findDOMNode(this.refs['iframe']) as HTMLFrameElement;
         if (iframeDOM && iframeDOM.contentWindow) {
             iframeDOM.contentWindow.location.reload(true);
         }
     }
 
     goBack() {
-        const iframeDOM = ReactDOM.findDOMNode<HTMLFrameElement>(this.refs['iframe']);
+        const iframeDOM = ReactDOM.findDOMNode(this.refs['iframe']) as HTMLFrameElement;
         if (iframeDOM && iframeDOM.contentWindow) {
             iframeDOM.contentWindow.history.back();
         }
     }
 
     goForward() {
-        const iframeDOM = ReactDOM.findDOMNode<HTMLFrameElement>(this.refs['iframe']);
+        const iframeDOM = ReactDOM.findDOMNode(this.refs['iframe']) as HTMLFrameElement;
         if (iframeDOM && iframeDOM.contentWindow) {
             iframeDOM.contentWindow.history.forward();
         }

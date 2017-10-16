@@ -123,14 +123,14 @@ export class Text extends React.Component<Types.TextProps, {}> {
     }
 
     blur() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             el.blur();
         }
     }
 
     focus() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             el.focus();
         }

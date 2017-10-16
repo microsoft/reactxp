@@ -97,28 +97,28 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         }
     }
 
-    setScrollTop(scrollTop: number, animate: boolean): void {
+    setScrollTop(scrollTop: number, animate?: boolean): void {
         if (this._nativeView) {
             this._nativeView.scrollTo(
                 { x: this._scrollLeft, y: scrollTop, animated: animate });
         }
     }
 
-    setScrollLeft(scrollLeft: number, animate: boolean): void {
+    setScrollLeft(scrollLeft: number, animate?: boolean): void {
         if (this._nativeView) {
             this._nativeView.scrollTo(
                 { x: scrollLeft, y: this._scrollTop, animated: animate });
         }
     }
 
-    addToScrollTop(deltaTop: number, animate: boolean): void {
+    addToScrollTop(deltaTop: number, animate?: boolean): void {
         if (this._nativeView) {
             this._nativeView.scrollBy(
                 { deltaX: 0, deltaY: deltaTop, animated: animate });
         }
     }
 
-    addToScrollLeft(deltaLeft: number, animate: boolean): void {
+    addToScrollLeft(deltaLeft: number, animate?: boolean): void {
         if (this._nativeView) {
             this._nativeView.scrollBy(
                 { deltaX: deltaLeft, deltaY: 0, animated: animate });

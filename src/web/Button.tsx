@@ -95,14 +95,14 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     }
 
     focus() {
-        let el = ReactDOM.findDOMNode<HTMLElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLElement;
         if (el) {
             el.focus();
         }
     }
 
     blur() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             el.blur();
         }

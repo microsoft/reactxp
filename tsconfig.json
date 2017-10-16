@@ -16,7 +16,8 @@
         "lib": [
             "es5",
             "dom"
-        ]
+        ],
+        "types" : ["lodash", "react", "react-dom"]
     },
 
     "filesGlob": [

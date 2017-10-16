@@ -15,11 +15,10 @@ import SubscribableEvent from 'subscribableevent';
 
 import { ModalContainer } from '../native-common/ModalContainer';
 import PopupContainerView from './PopupContainerView';
-import RootView from './RootView';
 import Types = require('../common/Types');
 
 class ModalStackContext {
-    constructor(public modalId: string, public modal: React.ReactElement<Types.ViewProps>) {}
+    constructor(public modalId: string, public modal: React.ReactElement<Types.ViewProps>, public modalOptions?: Types.ModalOptions) {}
 }
 
 class PopupStackContext {
@@ -39,11 +38,11 @@ export class FrontLayerViewManager {
 
     event_changed = new SubscribableEvent<() => void>();
 
-    public showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string): void {
+    public showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions): void {
         const index = this._findIndexOfModal(modalId);
 
         if (index === -1) {
-            this._overlayStack.push(new ModalStackContext(modalId, modal));
+            this._overlayStack.push(new ModalStackContext(modalId, modal, options));
             this.event_changed.fire();
         }
     }
@@ -102,8 +101,18 @@ export class FrontLayerViewManager {
         }
     }
 
-    public getModalLayerView(rootView: RootView): any {
-        const overlayContext = _.findLast(this._overlayStack, context => context instanceof ModalStackContext) as ModalStackContext;
+    public getModalLayerView(rootViewId?: string | null): React.ReactElement<any> | null {
+        if (rootViewId === null) {
+            // The Modal layer is only supported on root views that have set an id, or
+            // the default root view (which has an undefined id)
+            return null;
+        }
+
+        const overlayContext = 
+            _.findLast(
+                this._overlayStack, 
+                context => context instanceof ModalStackContext && this.modalOptionsMatchesRootViewId(context.modalOptions, rootViewId)
+            ) as ModalStackContext;
 
         if (overlayContext) {
             return (
@@ -116,8 +125,23 @@ export class FrontLayerViewManager {
         return null;
     }
 
-    public getPopupLayerView(rootView: RootView): any {
-        const overlayContext = _.findLast(this._overlayStack, context => context instanceof PopupStackContext) as PopupStackContext;
+    // Returns true if both are undefined, or if there are options and the rootViewIds are equal.
+    private modalOptionsMatchesRootViewId(options?: Types.ModalOptions, rootViewId?: string): boolean {
+        return !!(options === rootViewId || options && options.rootViewId === rootViewId);
+    }
+
+    public getPopupLayerView(rootViewId?: string | null): React.ReactElement<any> | null {
+        if (rootViewId === null) {
+            // The Popup layer is only supported on root views that have set an id, or
+            // the default root view (which has an undefined id)
+            return null;
+        }
+
+        const overlayContext = 
+            _.findLast(
+                this._overlayStack, 
+                context => context instanceof PopupStackContext && context.popupOptions.rootViewId === rootViewId
+            ) as PopupStackContext;
 
         if (overlayContext) {
             return (

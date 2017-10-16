@@ -674,7 +674,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
 
         initializeComponent(props: Types.CommonProps) {
             // Conclude the initialization setting the element.
-            const element = ReactDOM.findDOMNode<HTMLElement>(this.refs[refName]);
+            const element = ReactDOM.findDOMNode(this.refs[refName]) as HTMLElement;
             if (element) {
                 this._animatedValues.forEach(Value => {
                     Value.setAsInitialized(element);

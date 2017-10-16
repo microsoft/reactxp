@@ -128,9 +128,11 @@ module ReactXP {
     export import Animated = AnimatedImpl.Animated;
     export import CommonProps = RXTypes.CommonProps;
     export import CommonStyledProps = RXTypes.CommonStyledProps;
+    export import Stateless = RXTypes.Stateless;
     export import Types = RXTypes;
 
     export import Component = React.Component;
+    export import ComponentBase = RXTypes.ComponentBase;
     export import createElement = React.createElement;
     export import Children = React.Children;
     export var __spread = (React as any).__spread;
