@@ -124,7 +124,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             Accessibility.newAnnouncementReadyEvent.subscribe(announcement => {
                 if (this.state.announcementText === announcement) {
                     // If the previous announcement is the same as the current announcement
-                    // we will apapend a ' ' to it. This ensures that the text in DOM of aria-live region changes 
+                    // we will append a ' ' to it. This ensures that the text in DOM of aria-live region changes
                     // and  will be read by screen Reader
 
                     announcement += ' ';
@@ -231,7 +231,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     componentWillUnmount() {
         this._stopHidePopupTimer();
         this._stopRepositionPopupTimer();
-        
+
         if (this._newAnnouncementEventChangedSubscription) {
             this._newAnnouncementEventChangedSubscription.unsubscribe();
             this._newAnnouncementEventChangedSubscription = undefined;
@@ -403,7 +403,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
                 if ((document.activeElement === activeElement) && activeElement && (activeElement !== document.body)) {
                     this._updateKeyboardNavigationState(false);
-                    FocusManager.resetFocus();
                 }
             }, 500);
         }
@@ -520,7 +519,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
         // Get the anchor element.
         let anchorComponent = this.props.activePopupOptions!!!.getAnchor();
-        // if the anchor is unmounted, dismiss the popup. 
+        // if the anchor is unmounted, dismiss the popup.
         // Prevents app crash when we try to get dom node from unmounted Component
         if (!anchorComponent) {
             this._dismissPopup();
