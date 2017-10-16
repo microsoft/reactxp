@@ -332,15 +332,19 @@ export interface PickerStyle extends ViewStyle {
 
 export type PickerStyleRuleSet = StyleRuleSet<PickerStyle>;
 
+export type ComponentBase = React.Component<any, any>;
+
 //
 // Components
 // ----------------------------------------------------------------------
-export interface CommonProps<T> {
-    ref?: React.Ref<T>;
+export interface CommonProps {
+    ref?: string | ((obj: ComponentBase) => void);
     key?: string | number;
     type?: any;
     children?: React.ReactNode | React.ReactNode[];
 }
+
+export interface Stateless {}
 
 //
 // Accessibility
@@ -490,6 +494,7 @@ export interface PickerProps extends CommonProps<RX.Picker> {
     selectedValue: string;
     onValueChange: (itemValue: string, itemPosition: number) => void;
     style?: StyleRuleSetRecursive<PickerStyleRuleSet>;
+    mode?: 'dialog' | 'dropdown';
 }
 
 // Image
