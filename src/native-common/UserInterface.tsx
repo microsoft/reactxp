@@ -1,5 +1,5 @@
 /**
-* UserInterface.ts
+* UserInterface.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
@@ -14,6 +14,7 @@ import RN = require('react-native');
 import SyncTasks = require('synctasks');
 
 import MainViewStore from './MainViewStore';
+import { RootViewUsingProps } from './RootView';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
@@ -138,6 +139,18 @@ export class UserInterface extends RX.UserInterface {
 
     setMainView(element: React.ReactElement<any>) {
         MainViewStore.setMainView(element);
+    }
+
+    registerRootView(viewKey: string, getComponentFunc: Function) {
+        RN.AppRegistry.registerComponent(viewKey, () => {
+            class RootViewWrapper extends React.Component<any, any> {
+                render() {
+                    return <RootViewUsingProps reactxp_mainViewType={ getComponentFunc() } {...this.props} />;
+                }
+            }
+
+            return RootViewWrapper;
+        });
     }
 
     renderMainView() {

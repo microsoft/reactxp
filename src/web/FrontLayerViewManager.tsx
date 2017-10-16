@@ -34,7 +34,7 @@ export class FrontLayerViewManager {
         return this._modalStack.some(d => d.id === modalId);
     }
 
-    showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string) {
+    showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions) {
         if (!modalId) {
             console.error('modal must have valid ID');
         }

@@ -64,12 +64,17 @@ interface PopupOptions {
     // If true, calling Popup.show will show the popup. A subsequent call
     // will hide the popup. If false or undefined (default), calling Popup.show 
     // will always show the popup.
-     dismissIfShown?: boolean;
+    dismissIfShown?: boolean;
 
     // By default, clicks or taps outside of a popup (unless they are on the
     // anchor) will not dismiss the active popup. If true, this overrides the
     // default behavior, in which case the popup must be dismissed explicitly.
-     preventDismissOnPress?: boolean
+    preventDismissOnPress?: boolean;
+
+    // Android & iOS only.
+    // The id of the root view this popup is associated with.
+    // Defaults to the view set by UserInterface.setMainView();
+    rootViewId?: string;
 }
 ```
 
