@@ -166,8 +166,10 @@ export abstract class Linking {
 
 export abstract class Accessibility {
     abstract isScreenReaderEnabled(): boolean;
+    abstract isHighContrastEnabled(): boolean;
     abstract announceForAccessibility(announcement: string): void;
     screenReaderChangedEvent = new SubscribableEvent<(isEnabled: boolean) => void>();
+    highContrastChangedEvent = new SubscribableEvent<(isEnabled: boolean) => void>();
 }
 
 export abstract class Button extends React.Component<Types.ButtonProps, any> {}
