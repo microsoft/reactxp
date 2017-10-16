@@ -2,7 +2,6 @@
   "name": "reactxp",
   "version": "0.46.4",
   "description": "Cross-platform abstraction layer for writing React-based applications a single time that work identically across web, React Native, and Electron distribution",
-  "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
   "scripts": {
     "build": "npm run tslint && tsc",

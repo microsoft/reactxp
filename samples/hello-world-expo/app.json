@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "Expo and TypeScript",
+    "description": "An empty new project demonstrating how to combine React Native and TypeScript.",
+    "slug": "expo-and-typescript",
+    "privacy": "public",
+    "sdkVersion": "19.0.0",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "primaryColor": "#cccccc",
+    "icon": "./assets/icons/app-icon.png",
+    "loading": {
+      "icon": "./assets/icons/loading-icon.png",
+      "hideExponentText": false
+    },
+    "packagerOpts": {
+      "assetExts": [
+        "mp4",
+        "ttf"
+      ],
+      "sourceExts": [
+        "ts",
+        "tsx"
+      ],
+      "transformer": "node_modules/react-native-typescript-transformer/index.js"
+    },
+    "ios": {
+      "supportsTablet": true
+    }
+  }
+}

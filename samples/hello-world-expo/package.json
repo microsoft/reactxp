@@ -1,0 +1,34 @@
+{
+  "name": "desert-walk-expo-19",
+  "version": "0.0.0",
+  "description": "Hello Expo!",
+  "author": "ReactXP Team <reactxp@microsoft.com>",
+  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "web-watch": "webpack --progress --colors --watch"
+  },
+  "dependencies": {
+    "expo": "19.0.1",
+    "react": "16.0.0-alpha.12",
+    "react-dom": "^16.0.0-alpha.12",
+    "react-native": "0.46.4",
+    "react-native-windows": "^0.33.0",
+    "reactxp": "0.42.0-rc.20",
+    "reactxp-navigation": "1.0.5",
+    "reactxp-video": "^0.2.0",
+    "tslib": "^1.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.12",
+    "@types/react": "15.0.39",
+    "@types/react-native": "0.46.7",
+    "@types/webpack": "^2.2.14",
+    "awesome-typescript-loader": "3.1.2",
+    "react-native-typescript-transformer": "1.1.3",
+    "source-map-loader": "^0.1.6",
+    "ts-node": "^3.0.2",
+    "typescript": "2.4.2",
+    "webpack": "2.4.1"
+  }
+}
