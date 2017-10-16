@@ -9,7 +9,6 @@
 
 import React = require('react');
 
-import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 const _styles = {
@@ -30,7 +29,7 @@ const _styles = {
     }
 };
 
-export class ModalContainer extends React.Component<Types.CommonProps<RX.View>, {}> {
+export class ModalContainer extends React.Component<Types.CommonProps, {}> {
     constructor() {
         super();
     }

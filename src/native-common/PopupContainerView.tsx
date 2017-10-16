@@ -14,7 +14,6 @@ import assert = require('assert');
 import React = require('react');
 import RN = require('react-native');
 
-import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 // Width of the "alley" around popups so they don't get too close to the boundary of the screen boundary.
@@ -24,7 +23,7 @@ const ALLEY_WIDTH = 2;
 // attempting a different position?
 const MIN_ANCHOR_OFFSET = 16;
 
-export interface PopupContainerViewProps extends Types.CommonProps<RX.View> {
+export interface PopupContainerViewProps extends Types.CommonProps {
     activePopupOptions: Types.PopupOptions;
     anchorHandle: number;
     onDismissPopup?: () => void;

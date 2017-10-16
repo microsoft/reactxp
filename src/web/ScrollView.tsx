@@ -156,7 +156,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         }
     }
 
-    componentWillReceiveProps(newProps: Types.ViewPropsBase<any>) {
+    componentWillReceiveProps(newProps: Types.ScrollViewProps) {
         super.componentWillReceiveProps(newProps);
         this._onPropsChange(newProps);
     }
