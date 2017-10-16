@@ -10,6 +10,7 @@
 import clone = require('lodash/clone');
 import compact = require('lodash/compact');
 import filter = require('lodash/filter');
+import isEqual = require('lodash/isEqual');
 import pull = require('lodash/pull');
 import sortBy = require('lodash/sortBy');
 
@@ -21,6 +22,7 @@ export {
     clone,
     compact,
     filter,
+    isEqual,
     pull,
     sortBy
 };

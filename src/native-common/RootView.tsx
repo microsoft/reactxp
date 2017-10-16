@@ -10,7 +10,7 @@
 import React = require('react');
 import RN = require('react-native');
 import { SubscriptionToken } from 'subscribableevent';
-import { isEqual } from 'lodash';
+import _ = require('./lodashMini');
 
 import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
@@ -153,7 +153,7 @@ class RootViewUsingStore extends BaseRootView<BaseRootViewProps> {
     private _getStateFromStore(): RootViewState {
         let mainView = MainViewStore.getMainView();
 
-        if (mainView && !isEqual(mainView.props, this._mainViewProps)) {
+        if (mainView && _.isEqual(mainView.props, this._mainViewProps)) {
             mainView = React.cloneElement(mainView, this._mainViewProps);
         }
 
