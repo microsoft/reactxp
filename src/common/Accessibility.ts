@@ -16,6 +16,10 @@ export abstract class Accessibility extends RX.Accessibility {
 
     screenReaderChangedEvent = new SubscribableEvent<(isEnabled: boolean) => void>();
 
+    isHighContrastEnabled(): boolean {
+        return false;
+    }
+
     newAnnouncementReadyEvent = new SubscribableEvent<(announcement: string) => void>();
     announceForAccessibility(announcement: string): void {
        this.newAnnouncementReadyEvent.fire(announcement);
