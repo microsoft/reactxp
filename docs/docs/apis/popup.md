@@ -92,7 +92,7 @@ dismiss(popupId: string): void;
 dismissAll(): void;
 
 // Displays a popup. Returns true if successful, false if the popup is
-// already displayed or there was an error (see console.error())
+// already displayed
 show(options: PopupOptions, popupId: string, showDelay: number = 0): boolean;
 ```
 
