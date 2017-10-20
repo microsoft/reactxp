@@ -120,11 +120,11 @@ class SceneConfigStyles {
                     case 'rotateX':
                     case 'rotateY':
                     case 'rotateZ':
-                        transforms[name] = _.get<string|number>(styles, name);
+                        transforms[name] = _.get(styles, name) as (string | number);
                         break;
 
                     default:
-                        remaining[name] = _.get<string|number>(styles, name);
+                        remaining[name] = _.get(styles, name) as (string | number);
                         break;
                 }
             }
