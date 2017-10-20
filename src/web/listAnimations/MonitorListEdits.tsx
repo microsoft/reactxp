@@ -213,9 +213,13 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
 
     render() {
         this._childrenToRender = [];
-        _.each(this.props.children, child => {
+
+        // We need to cast this to "any" because of a recent bug introduced
+        // into React @types where children is redfined as ReactNode rather
+        // than ReactNode[].
+        _.each(this.props.children as any, child => {
             if (child) {
-                let childElement = child as any;
+                let childElement = child;
                 let refData = this._refReplacementCache[childElement.key];
 
                 // Reuse the cached replacement ref function instead of recreating it every render, unless the child's ref changes.

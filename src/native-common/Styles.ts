@@ -144,7 +144,7 @@ export class Styles extends RX.Styles {
 
             // Forbidden props are not allowed in uncached styles. Perform the
             // omit only in the cached path.
-            adaptedRuleSet = _.omit<S, S>(adaptedRuleSet, forbiddenProps);
+            adaptedRuleSet = _.omit<S>(adaptedRuleSet, forbiddenProps) as ReactNativeViewAndImageCommonStyle<S>;
         }
 
         // Convert text styling
@@ -188,7 +188,7 @@ export class Styles extends RX.Styles {
     }
 
     private _adaptAnimatedStyles<T extends Types.AnimatedViewAndImageCommonStyle>(def: T): T {
-        return _.omit<T, T>(def, forbiddenProps);
+        return _.omit<T>(def, forbiddenProps) as T;
     }
 }
 

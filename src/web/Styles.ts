@@ -431,7 +431,7 @@ export class Styles extends RX.Styles {
     }
 }
 
-export function memoize<T extends Function>(func: T, resolver?: Function): T { 
+export function memoize<T extends (...args: any[]) => any>(func: T, resolver?: (...args: any[]) => any): T { 
     return _.memoize(func, resolver);
 }
  
