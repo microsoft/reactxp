@@ -94,8 +94,8 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
     }
 
     // Converts an AccessibilityLiveRegion to a string, but the return value is only needed for Android. Other platforms ignore it.
-    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): string {
-        if (liveRegionMap[liveRegion]) {
+    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion|undefined): string|undefined {
+        if (liveRegion && liveRegionMap[liveRegion]) {
             return liveRegionMap[liveRegion];
         }
         return undefined;
