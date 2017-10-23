@@ -515,6 +515,12 @@ declare module 'react-native' {
         static removeEventListener(eventName: string, callback: () => boolean): void;
     }
 
+    class BackHandler {
+        static exitApp(): void;
+        static addEventListener(eventName: string, handler: () => void): void;
+        static removeEventListener(eventName: string, handler: () => void): void;
+    }
+
     interface NavigatorIOSRoute {
         component: any;
         title: string;
