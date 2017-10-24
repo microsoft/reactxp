@@ -372,6 +372,13 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     private _onMouseDownCapture = (e: MouseEvent) => {
+        if (e &&
+                (e.clientX === 0) && (e.clientY === 0) &&
+                (e.screenX === 0) && (e.screenY === 0)) {
+            // This is most likely an event triggered by NVDA when Enter or
+            // Space is pressed, do not dismiss the keyboard navigation mode.
+            return;
+        }
         this._updateKeyboardNavigationState(false);
     }
 
