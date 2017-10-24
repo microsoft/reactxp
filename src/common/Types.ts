@@ -619,7 +619,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     underlayColor?: string;
 }
 
-export interface ViewProps extends ViewPropsShared {    
+export interface ViewProps extends ViewPropsShared {
     style?:  StyleRuleSetRecursive<ViewStyleRuleSet>;
     onContextMenu?: (e: React.SyntheticEvent<any>) => void;
     onStartShouldSetResponder?: (e: React.SyntheticEvent<any>) => boolean;
