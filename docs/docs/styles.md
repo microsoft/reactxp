@@ -192,8 +192,9 @@ transform: {
     scale: number = 0;
     scaleX: number = 0;
     scaleY: number = 0;
-    translateX: string = 0;
-    translateY: string = 0;
+    scaleY: number = 0;
+    translateX: number = 0;
+    translateY: number = 0;
 }
 ```
 
