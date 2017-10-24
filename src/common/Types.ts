@@ -194,9 +194,9 @@ export interface ViewStyle extends ViewAndImageCommonStyle {
     elevation?: number; // Android only
     // Windows 10 RS3 supports acrylic brushes. In earlier versions these properties are ignored.
     // The tint opacity can be set either with acrylicOpacity or with acrylicTintColor, e.g. #f002.
-    acrylicOpacity?: number; // UWP only; default = 1
-    acrylicSource?: 'host' | 'app'; // UWP only; default = "host"
-    acrylicTintColor?: string; // UWP only; default = backgroundColor
+    acrylicOpacityUWP?: number; // UWP only; default = 1
+    acrylicSourceUWP?: 'host' | 'app'; // UWP only; default = "host"
+    acrylicTintColorUWP?: string; // UWP only; default = backgroundColor
 }
 
 export type ViewStyleRuleSet = StyleRuleSet<ViewStyle>;

@@ -144,6 +144,9 @@ paddingLeft: number = 0;
 ```javascript
 backgroundColor: color = undefined; // Value is animatable
 opacity: number = 1.0; // Value is animatable
+acrylicOpacityUWP: number = 1.0; // UWP only
+acrylicSourceUWP: 'host' | 'app'; // UWP only
+acrylicTintColorUWP: string = undefined; // UWP only; default = backgroundColor
 ```
 
 **Overflow**
