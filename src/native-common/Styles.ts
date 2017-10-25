@@ -12,6 +12,7 @@ import RN = require('react-native');
 
 import RX = require('../common/Interfaces');
 import StyleLeakDetector from './StyleLeakDetector';
+import Platform from './Platform';
 import Types = require('../common/Types');
 
 const forbiddenProps: string[] = [
@@ -19,6 +20,15 @@ const forbiddenProps: string[] = [
     'appRegion',
     'cursor'
 ];
+
+// RN would crash if it gets an undeclared property.
+// The properties below are declared only in RN UWP.
+if (Platform.getType() !== 'windows') {
+    forbiddenProps.push(
+        'acrylicOpacityUWP',
+        'acrylicSourceUWP',
+        'acrylicTintColorUWP');
+}
 
 // React Native styles that ReactXP doesn't expose.
 type ReactNativeViewAndImageCommonStyle<Style extends Types.ViewAndImageCommonStyle> = Style & {
