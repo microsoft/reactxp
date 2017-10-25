@@ -192,6 +192,11 @@ export interface ViewStyle extends ViewAndImageCommonStyle {
     // http://facebook.github.io/react-native/releases/0.30/docs/shadow-props.html (iOS only)
     // http://facebook.github.io/react-native/releases/0.30/docs/view.html#style (see elevation property)
     elevation?: number; // Android only
+    // Windows 10 RS3 supports acrylic brushes. In earlier versions these properties are ignored.
+    // The tint opacity can be set either with acrylicOpacity or with acrylicTintColor, e.g. #f002.
+    acrylicOpacityUWP?: number; // UWP only; default = 1
+    acrylicSourceUWP?: 'host' | 'app'; // UWP only; default = "host"
+    acrylicTintColorUWP?: string; // UWP only; default = backgroundColor
 }
 
 export type ViewStyleRuleSet = StyleRuleSet<ViewStyle>;
