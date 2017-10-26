@@ -131,7 +131,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     componentWillReceiveProps(nextProps: Types.ButtonProps) {
         if (nextProps !== this.props) {
             // If opacity got updated as a part of props update, we need to reflect that in the opacity animation value
-           this._setOpacityStyles(nextProps);
+           this._setOpacityStyles(nextProps, this.props);
         }
     }
 
@@ -206,10 +206,10 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
          // native mobile platforms doesn't have the notion of blur for buttons, so ignore.
     }
 
-    private _setOpacityStyles(props: Types.ButtonProps) {
-        const currentOpacityValue = this._getDefaultOpacityValue(props);
-        if (this._defaultOpacityValue !== currentOpacityValue) {
-            this._defaultOpacityValue = currentOpacityValue;
+    private _setOpacityStyles(props: Types.ButtonProps, prevProps?: Types.ButtonProps) {
+        const opacityValueFromProps = this._getDefaultOpacityValue(props);
+        if (this._defaultOpacityValue !== opacityValueFromProps || (prevProps && props.disabled !== prevProps.disabled)) {
+            this._defaultOpacityValue = opacityValueFromProps;
             this._opacityAnimatedValue = new Animated.Value(this._defaultOpacityValue);
             this._opacityAnimatedStyle = Styles.createAnimatedViewStyle({
                 opacity: this._opacityAnimatedValue
