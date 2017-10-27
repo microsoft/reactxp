@@ -80,6 +80,7 @@ ReactXP adopts the simplified flexbox rules and defaults defined by React Native
 
 + The default position for all elements is 'relative' rather than 'auto'.
 
++ The default justifyContent for buttons is 'center' rather than 'flex-start'.
 
 **Container layout**
 ```javascript
