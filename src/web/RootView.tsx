@@ -1,4 +1,4 @@
-﻿ /**
+ /**
 * RootView.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -310,7 +310,14 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
     private _tryClosePopup = (e: MouseEvent) => {
         // Dismiss a visible popup if there's a click outside.
-        let popupContainer = ReactDOM.findDOMNode(this.refs['popupContainer']);
+        const reactPopupContainer = this.refs['popupContainer'];
+        if (!reactPopupContainer) {
+            return;
+        }
+        let popupContainer = ReactDOM.findDOMNode(reactPopupContainer);
+        if (!popupContainer) {
+            return;
+        }
         let clickInPopup = false;
         let el = e.target as HTMLElement;
         while (el) {
@@ -504,8 +511,12 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         let newState: RootViewState = _.extend({}, this.state);
 
         if (this.state.isMeasuringPopup) {
+            const popupContainer = this.refs['popupContainer'];
+            if (!popupContainer) {
+                return;
+            }
             // Get the width/height of the popup.
-            let popup = ReactDOM.findDOMNode<HTMLElement>(this.refs['popupContainer']);
+            let popup = ReactDOM.findDOMNode<HTMLElement>(popupContainer);
             if (!popup) {
                 return;
             }
