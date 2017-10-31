@@ -16,6 +16,17 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.46.5 of reactxp
+_Released 31 Oct 2017_
+
+Added Android "mode" prop to Picker.
+Added type definitions for RX.Stateless and RX.ComponentBase.
+Updated to React 16.0.0 and React-Dom 16.0.0.
+Added RX.UserInterface.registerRootView API to allow registration of secondary views. Also added rootViewId option to RX.Modal and RX.Popup so they can be displayed on secondary views.
+Fixed bug in focus restoration on web implementation.
+Replaced use of deprecated BackAndroid with BackHandler, avoiding deprecation warnings.
+Fixed bug in RX.Button RN implementation where opacity was not property restored after changing disabled prop.
+
 #### Version 0.46.3 of reactxp
 _Released 7 Oct 2017_
 
