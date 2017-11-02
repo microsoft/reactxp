@@ -115,8 +115,9 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         }
     }
 
+    private _mounted = false;
     private _customScrollbar: CustomScrollbar;
-    private _customScrollbarEnabled: boolean = true;
+    private _customScrollbarEnabled = true;
     private _dragging = false;
 
     componentDidUpdate() {
@@ -146,6 +147,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
 
     componentDidMount() {
         super.componentDidMount();
+        this._mounted = true;
 
         if (this._customScrollbarEnabled) {
             let element = ReactDOM.findDOMNode(this) as HTMLElement;
@@ -163,6 +165,8 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
 
     componentWillUnmount() {
         super.componentWillUnmount();
+        this._mounted = false;
+
         if (this._customScrollbarEnabled) {
             this._customScrollbar.dispose();
         }
@@ -174,6 +178,10 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
 
     // Throttled scroll handler
     private _onScroll = _.throttle((e: React.SyntheticEvent<any>) => {
+        if (!this._mounted) {
+            return;
+        }
+
         if (this._customScrollbarEnabled) {
             this._customScrollbar.update();
         }
