@@ -16,13 +16,17 @@ import Types = require('../common/Types');
 export class Picker extends RX.Picker {
     render() {
         return (
-            <select value={ this.props.selectedValue } onChange={ this.onValueChange } style={ this.props.style }>
+            <select
+                style={ this.props.style as any }
+                value={ this.props.selectedValue }
+                onChange={ this._onValueChange }
+            >
                 { _.map(this.props.items, (i, idx) => <option value={ i.value } key={ idx }>{ i.label }</option> ) }
             </select>
         );
     }
 
-    onValueChange = (e: Types.SyntheticEvent) => {
+    private _onValueChange = (e: Types.SyntheticEvent) => {
         const selectEl = e.target as HTMLSelectElement;
         const selectedValue = selectEl.value;
         const selectedItemPosition = _.findIndex(this.props.items, i => i.value === selectedValue);

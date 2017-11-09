@@ -1,6 +1,6 @@
 # RXPTodoList
 
-This app works on React Native (iOS, Android) and web. Most of the app's code is contained in `App.tsx`.
+This app works on React Native (iOS, Android) and web.
 
 The commands in the instructions below assume you are in the root of this repo.
 

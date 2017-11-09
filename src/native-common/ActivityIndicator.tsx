@@ -11,14 +11,13 @@ import React = require('react');
 /* tslint:disable:no-unused-variable */
 import RN = require('react-native');
 /* tslint:enable:no-unused-variable */
-import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export interface ActivityIndicatorState {
     isVisible?: boolean;
 }
 
-export class ActivityIndicator extends RX.ActivityIndicator<ActivityIndicatorState> {
+export class ActivityIndicator extends React.Component<Types.ActivityIndicatorProps, ActivityIndicatorState> {
     private _isMounted = false;
 
     constructor(props: Types.ActivityIndicatorProps) {

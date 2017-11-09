@@ -1,0 +1,39 @@
+{
+  "name": "reactxp-navigation",
+  "version": "1.0.14",
+  "description": "Plugin for ReactXP that provides a navigation framework",
+  "scripts": {
+    "build": "tsc",
+    "tslint": "tslint --project tsconfig.json -r tslint.json --fix || true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Microsoft/reactxp/tree/master/extensions/navigation"
+  },
+  "keywords": [
+    "react-native",
+    "reactxp",
+    "react"
+  ],
+  "dependencies": {
+    "@types/lodash": "^4.14.62",
+    "@types/node": "^6.0.65",
+    "assert": "^1.3.0",
+    "lodash": "^4.17.1",
+    "rebound": "^0.0.13",
+    "reactxp-experimental-navigation": "^1.0.11"
+  },
+  "peerDependencies": {
+    "react": "^0.14.8",
+    "react-dom": "^15.4.1",
+    "react-native": "^0.46.0"
+  },
+  "devDependencies": {
+    "reactxp": "^0.46.2",
+    "typescript": "2.4.1",
+    "tslint": "^5.0.0"
+  },
+  "author": "ReactXP Team <reactxp@microsoft.com>",
+  "license": "MIT",
+  "types": "dist/web/Navigator.d.ts"
+}

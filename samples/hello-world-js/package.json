@@ -1,0 +1,28 @@
+{
+  "name": "rxp-hello-world-js",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "web-watch": "webpack --progress --colors --watch",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "android": "node node_modules/react-native/local-cli/cli.js run-android",
+    "ios": "node node_modules/react-native/local-cli/cli.js run-ios"
+  },
+  "devDependencies": {
+    "babel-loader": "^7.0.0",
+    "babel-preset-react-native": "1.9.2",
+    "source-map-loader": "^0.1.6",
+    "webpack": "2.2.1"
+  },
+  "dependencies": {
+    "reactxp": "^0.46.1",
+    "react": "16.0.0-rc.3",
+    "react-dom": "16.0.0-rc.3",
+    "react-native": "^0.46.0",
+    "react-native-windows": "^0.33.0",
+    "reactxp-imagesvg": "^0.2.6",
+    "reactxp-navigation": "^1.0.14",
+    "reactxp-video": "^0.2.1"
+  }
+}

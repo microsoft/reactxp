@@ -1,4 +1,4 @@
-﻿/**
+/**
 * Button.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -7,22 +7,22 @@
 * Web-specific implementation of the cross-platform Button abstraction.
 */
 
-import _ = require('./utils/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
+import UserInterface from './UserInterface';
 
-let _styles = {
+const _styles = {
     defaultButton: {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
         overflow: 'hidden',
         alignItems: 'stretch',
         justifyContent: 'center',
@@ -40,24 +40,33 @@ let _styles = {
 const _longPressTime = 1000;
 const _defaultAccessibilityTrait = Types.AccessibilityTrait.Button;
 
-export class Button extends RX.Button<void> {
+let _isNavigatingWithKeyboard = false;
+
+UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
+    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
+});
+
+export class Button extends React.Component<Types.ButtonProps, {}> {
     private _lastMouseDownTime: number = 0;
     private _lastMouseDownEvent: Types.SyntheticEvent;
     private _ignoreClick = false;
-    private _longPressTimer: number;
-    private _focusDueToMouseEvent = false;
-    private _blurDueToMouseEvent = false;
+    private _longPressTimer: number|undefined;
+    private _isMouseOver = false;
+    private _isFocusedWithKeyboard = false;
+    private _isHoverStarted = false;
 
     render() {
         const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits,
             _defaultAccessibilityTrait);
         const ariaSelected = AccessibilityUtil.accessibilityTraitToAriaSelected(this.props.accessibilityTraits);
+        const ariaChecked = AccessibilityUtil.accessibilityTraitToAriaChecked(this.props.accessibilityTraits);
         const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
+        const ariaHasPopup = AccessibilityUtil.accessibilityTraitToAriaHasPopup(this.props.accessibilityTraits);
 
         // NOTE: We use tabIndex=0 to support focus.
         return (
             <button
-                style={ this._getStyles() }
+                style={ this._getStyles() as any }
                 role={ ariaRole }
                 title={ this.props.title }
                 tabIndex={ this.props.tabIndex }
@@ -65,6 +74,7 @@ export class Button extends RX.Button<void> {
                 aria-disabled={ this.props.disabled }
                 aria-hidden={ isAriaHidden }
                 aria-selected={ ariaSelected }
+                aria-checked={ ariaChecked }
                 onClick={ this.onClick }
                 onContextMenu={ this._onContextMenu }
                 onMouseDown={ this._onMouseDown }
@@ -75,6 +85,9 @@ export class Button extends RX.Button<void> {
                 onBlur={ this._onBlur }
                 onKeyDown={ this.props.onKeyPress }
                 disabled={ this.props.disabled }
+                aria-haspopup={ ariaHasPopup }
+                aria-controls={ this.props.ariaControls }
+                id={ this.props.id }
             >
                 { this.props.children }
             </button>
@@ -82,14 +95,14 @@ export class Button extends RX.Button<void> {
     }
 
     focus() {
-        let el = ReactDOM.findDOMNode<HTMLElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLElement;
         if (el) {
             el.focus();
         }
     }
 
-     blur() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+    blur() {
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             el.blur();
         }
@@ -105,7 +118,7 @@ export class Button extends RX.Button<void> {
     }
 
     private _getStyles(): Types.ButtonStyleRuleSet {
-        let buttonStyles: any = _.extend.apply(_, [{}].concat(this.props.style));
+        let buttonStyles = Styles.combine(this.props.style) as any;
 
         // Specify default syle for padding only if padding is not already specified
         if (buttonStyles && buttonStyles.padding === undefined  &&
@@ -115,7 +128,7 @@ export class Button extends RX.Button<void> {
             buttonStyles['padding'] = '0';
         }
 
-        let combinedStyles = Styles.combine(_styles.defaultButton, buttonStyles);
+        let combinedStyles = Styles.combine([_styles.defaultButton, buttonStyles]);
 
         if (this.props.disabled) {
             combinedStyles.opacity = 0.5;
@@ -167,40 +180,52 @@ export class Button extends RX.Button<void> {
     }
 
     private _onMouseEnter = (e: Types.SyntheticEvent) => {
-        if (this.props.onHoverStart) {
-            this._focusDueToMouseEvent = true;
-            this.props.onHoverStart(e);
-        }
+        this._isMouseOver = true;
+        this._onHoverStart(e);
     }
 
     private _onMouseLeave = (e: Types.SyntheticEvent) => {
-        if (this.props.onHoverEnd) {
-            this._blurDueToMouseEvent = true;
-            this.props.onHoverEnd(e);
-        }
+        this._isMouseOver = false;
+        this._onHoverEnd(e);
     }
 
     // When we get focus on an element, show the hover effect on the element.
     // This ensures that users using keyboard also get the similar experience as mouse users for accessibility.
     private _onFocus = (e: Types.FocusEvent) => {
-        if (this.props.onHoverStart && !this._focusDueToMouseEvent) {
-            this.props.onHoverStart(e);
-        }
+        this._isFocusedWithKeyboard = _isNavigatingWithKeyboard;
+        this._onHoverStart(e);
 
-        this._focusDueToMouseEvent = false;
         if (this.props.onFocus) {
             this.props.onFocus(e);
         }
     }
 
     private _onBlur = (e: Types.FocusEvent) => {
-        if (this.props.onHoverEnd && !this._blurDueToMouseEvent) {
-            this.props.onHoverEnd(e);
-        }
+        this._isFocusedWithKeyboard = false;
+        this._onHoverEnd(e);
 
-        this._blurDueToMouseEvent = false;
         if (this.props.onBlur) {
             this.props.onBlur(e);
+        }
+    }
+
+    private _onHoverStart = (e: Types.SyntheticEvent) => {
+        if (!this._isHoverStarted && (this._isMouseOver || this._isFocusedWithKeyboard)) {
+            this._isHoverStarted = true;
+
+            if (this.props.onHoverStart) {
+                this.props.onHoverStart(e);
+            }
+        }
+    }
+
+    private _onHoverEnd = (e: Types.SyntheticEvent) => {
+        if (this._isHoverStarted && !this._isMouseOver && !this._isFocusedWithKeyboard) {
+            this._isHoverStarted = false;
+
+            if (this.props.onHoverEnd) {
+                this.props.onHoverEnd(e);
+            }
         }
     }
 }

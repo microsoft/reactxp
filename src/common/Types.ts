@@ -12,7 +12,7 @@ import React = require('react');
 // Use only for type data
 import RX = require('./Interfaces');
 
-export { SubscribableEvent, SubscriptionToken } from './SubscribableEvent';
+export { default as SubscribableEvent, SubscriptionToken } from 'subscribableevent';
 
 export type ReactNode = React.ReactNode;
 
@@ -27,11 +27,11 @@ export type ReactInterface = {
 // React Native Flexbox styles 0.14.2
 // ------------------------------------------------------------
 
-export interface FlexboxStyle {
-    alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
+export interface FlexboxParentStyle {
+    flexDirection?: 'column' | 'row' | 'column-reverse' | 'row-reverse';
+
     alignSelf?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
-    alignContent?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
-    
+
     borderWidth?: number;
     borderTopWidth?: number;
     borderRightWidth?: number;
@@ -46,11 +46,10 @@ export interface FlexboxStyle {
     bottom?: number;
     left?: number;
 
+    flexGrow?: number;
+    flexShrink?: number;
+    flexBasis?: number;
     flex?: number;
-
-    flexWrap?: 'wrap' | 'nowrap';
-    flexDirection?: 'column' | 'row' | 'column-reverse' | 'row-reverse';
-    justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around';
 
     maxHeight?: number;
     maxWidth?: number;
@@ -76,14 +75,37 @@ export interface FlexboxStyle {
     position?: 'absolute' | 'relative';
 }
 
-export interface AnimatedFlexboxStyle {
-    height?: RX.AnimatedValue;
-    width?: RX.AnimatedValue;
+// These are supported by most views but not by ScrollView
+export interface FlexboxChildrenStyle {
+    alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
+    alignContent?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
 
-    top?: RX.AnimatedValue;
-    right?: RX.AnimatedValue;
-    bottom?: RX.AnimatedValue;
-    left?: RX.AnimatedValue;
+    flexWrap?: 'wrap' | 'nowrap';
+    justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around';
+}
+
+export interface FlexboxStyle extends FlexboxParentStyle, FlexboxChildrenStyle {
+}
+
+export abstract class AnimatedValue implements RX.IAnimatedValue {
+    constructor(val: number) {
+        // No-op
+    }
+    abstract setValue(value: number): void;
+    abstract addListener(callback: any): string;
+    abstract removeListener(id: string): void;
+    abstract removeAllListeners(): void;
+    abstract interpolate(config: any): AnimatedValue;
+}
+
+export interface AnimatedFlexboxStyle {
+    height?: AnimatedValue;
+    width?: AnimatedValue;
+
+    top?: AnimatedValue;
+    right?: AnimatedValue;
+    bottom?: AnimatedValue;
+    left?: AnimatedValue;
 }
 
 // ------------------------------------------------------------
@@ -107,20 +129,23 @@ export interface TransformStyle {
 
 export interface AnimatedTransformStyle {
     transform?: [{
-        perspective?: RX.AnimatedValue;
-        rotate?: RX.AnimatedValue;
-        rotateX?: RX.AnimatedValue;
-        rotateY?: RX.AnimatedValue;
-        rotateZ?: RX.AnimatedValue;
-        scale?: RX.AnimatedValue;
-        scaleX?: RX.AnimatedValue;
-        scaleY?: RX.AnimatedValue;
-        translateX?: RX.AnimatedValue;
-        translateY?: RX.AnimatedValue;
+        perspective?: AnimatedValue;
+        rotate?: AnimatedValue;
+        rotateX?: AnimatedValue;
+        rotateY?: AnimatedValue;
+        rotateZ?: AnimatedValue;
+        scale?: AnimatedValue;
+        scaleX?: AnimatedValue;
+        scaleY?: AnimatedValue;
+        translateX?: AnimatedValue;
+        translateY?: AnimatedValue;
     }];
 }
 
-export type StyleRuleSet<T> = T | number;
+export type StyleRuleSet<T> = T | number | undefined;
+export type StyleRuleSetOrArray<T> = StyleRuleSet<T>|Array<StyleRuleSet<T>>;
+export interface StyleRuleSetRecursiveArray<T> extends Array<StyleRuleSetOrArray<T>|StyleRuleSetRecursiveArray<T>> {}
+export type StyleRuleSetRecursive<T> = StyleRuleSet<T> | StyleRuleSetRecursiveArray<T>;
 
 // ------------------------------------------------------------
 // Image and View common Style Rules
@@ -140,21 +165,26 @@ export interface ViewAndImageCommonStyle extends FlexboxStyle, TransformStyle {
 }
 
 export interface AnimatedViewAndImageCommonStyle extends AnimatedFlexboxStyle, AnimatedTransformStyle {
-    borderRadius?: RX.AnimatedValue;
-    backgroundColor?: RX.AnimatedValue;
-    opacity?: RX.AnimatedValue;
+    borderRadius?: AnimatedValue;
+    backgroundColor?: AnimatedValue;
+    opacity?: AnimatedValue;
 }
 
 // ------------------------------------------------------------
 // View Style Rules
 // ------------------------------------------------------------
 
+export interface ShadowOffset {
+    width: number;
+    height: number;
+}
+
 export interface ViewStyle extends ViewAndImageCommonStyle {
-    borderStyle?: 'none' | 'solid' | 'dotted' | 'dashed';
+    borderStyle?: 'solid' | 'dotted' | 'dashed' | 'none';
     wordBreak?: 'break-all' | 'break-word'; // Web only
     appRegion?: 'drag' | 'no-drag'; // Web only
     cursor?: 'pointer' | 'default'; // Web only
-    shadowOffset?: { width: number; height: number };
+    shadowOffset?: ShadowOffset;
     shadowOpacity?: number;
     shadowRadius?: number;
     shadowColor?: string;
@@ -162,6 +192,11 @@ export interface ViewStyle extends ViewAndImageCommonStyle {
     // http://facebook.github.io/react-native/releases/0.30/docs/shadow-props.html (iOS only)
     // http://facebook.github.io/react-native/releases/0.30/docs/view.html#style (see elevation property)
     elevation?: number; // Android only
+    // Windows 10 RS3 supports acrylic brushes. In earlier versions these properties are ignored.
+    // The tint opacity can be set either with acrylicOpacity or with acrylicTintColor, e.g. #f002.
+    acrylicOpacityUWP?: number; // UWP only; default = 1
+    acrylicSourceUWP?: 'host' | 'app'; // UWP only; default = "host"
+    acrylicTintColorUWP?: string; // UWP only; default = backgroundColor
 }
 
 export type ViewStyleRuleSet = StyleRuleSet<ViewStyle>;
@@ -175,7 +210,10 @@ export type AnimatedViewStyleRuleSet = StyleRuleSet<AnimatedViewStyle>;
 // ScrollView Style Rules
 // ------------------------------------------------------------
 
-export interface ScrollViewStyle extends ViewStyle {
+export interface ScrollViewStyle extends FlexboxParentStyle, TransformStyle {
+    overflow?: 'visible' | 'hidden';
+    backgroundColor?: string;
+    opacity?: number;
 }
 
 export type ScrollViewStyleRuleSet = StyleRuleSet<ScrollViewStyle>;
@@ -241,8 +279,8 @@ export interface TextStyle extends ViewStyle {
 export type TextStyleRuleSet = StyleRuleSet<TextStyle>;
 
 export interface AnimatedTextStyle extends AnimatedViewAndImageCommonStyle {
-    color?: RX.AnimatedValue;
-    fontSize?: RX.AnimatedValue;
+    color?: AnimatedValue;
+    fontSize?: AnimatedValue;
 }
 
 export type AnimatedTextStyleRuleSet = StyleRuleSet<AnimatedTextStyle>;
@@ -257,8 +295,8 @@ export interface TextInputStyle extends TextStyle {
 export type TextInputStyleRuleSet = StyleRuleSet<TextInputStyle>;
 
 export interface AnimatedTextInputStyle extends AnimatedViewAndImageCommonStyle {
-    color?: RX.AnimatedValue;
-    fontSize?: RX.AnimatedValue;
+    color?: AnimatedValue;
+    fontSize?: AnimatedValue;
 }
 
 export type AnimatedTextInputStyleRuleSet = StyleRuleSet<AnimatedTextInputStyle>;
@@ -299,15 +337,19 @@ export interface PickerStyle extends ViewStyle {
 
 export type PickerStyleRuleSet = StyleRuleSet<PickerStyle>;
 
+export type ComponentBase = React.Component<any, any>;
+
 //
 // Components
 // ----------------------------------------------------------------------
 export interface CommonProps {
-    ref?: string | ((obj: React.Component<any, any>) => void);
+    ref?: string | ((obj: ComponentBase) => void);
     key?: string | number;
     type?: any;
     children?: React.ReactNode | React.ReactNode[];
 }
+
+export interface Stateless {}
 
 //
 // Accessibility
@@ -321,6 +363,10 @@ export interface CommonAccessibilityProps {
 
     // Desktop only.
     tabIndex?: number;
+
+    // iOS only.
+    accessibilityActions?: string[];
+    onAccessibilityAction?: (e: SyntheticEvent) => void;
 }
 
 // Auto, Yes, No - iOS & Android.
@@ -332,12 +378,16 @@ export enum ImportantForAccessibility {
     NoHideDescendants
 }
 
-export interface AccessibilityHtmlAttributes extends React.HTMLAttributes {
+export interface AccessibilityHtmlAttributes extends React.HTMLAttributes<any> {
     'aria-label'?: string;
     'aria-live'?: string;
     'aria-hidden'?: boolean;
     'aria-disabled'?: boolean;
     'aria-selected'?: boolean;
+    'aria-checked'?: boolean;
+    'aria-haspopup'?: boolean;
+    'aria-controls'?: string;
+    'aria-labelledby'?: string;
 }
 
 // Android & Desktop supported prop, which allows screen-reader to inform its users when a
@@ -390,10 +440,13 @@ export enum AccessibilityTrait {
     ListBox,
     Group,
     CheckBox,
+    Checked,
     ComboBox,
     Log,
     Status,
     Dialog,
+    HasPopup,
+    Option,
 
     // Desktop & mobile. This is at the end because this
     // is the highest priority trait.
@@ -401,7 +454,7 @@ export enum AccessibilityTrait {
 }
 
 export interface CommonStyledProps<T> extends CommonProps {
-    style?: T | T[];
+    style?: StyleRuleSetRecursive<T>;
 }
 
 // Button
@@ -412,6 +465,7 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     delayLongPress?: number;
     cursor?: string;
 
+    onAccessibilityTapIOS?: Function; // iOS-only prop, call when a button is double tapped in accessibility mode
     onContextMenu?: (e: SyntheticEvent) => void;
     onPress?: (e: SyntheticEvent) => void;
     onPressIn?: (e: SyntheticEvent) => void;
@@ -429,6 +483,10 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     disableTouchOpacityAnimation?: boolean;
     activeOpacity?: number;
     underlayColor?: string;
+
+    // Web only.
+    id?: string; // Needed for accessibility to be able to use labelledBy attribute.
+    ariaControls?: string; // Needed for accessibility.
 }
 
 // Picker
@@ -440,7 +498,8 @@ export interface PickerProps extends CommonProps {
     items: PickerPropsItem[];
     selectedValue: string;
     onValueChange: (itemValue: string, itemPosition: number) => void;
-    style?: PickerStyleRuleSet | PickerStyleRuleSet[];
+    style?: StyleRuleSetRecursive<PickerStyleRuleSet>;
+    mode?: 'dialog' | 'dropdown';
 }
 
 // Image
@@ -461,11 +520,11 @@ export interface ImagePropsShared extends CommonProps {
 }
 
 export interface ImageProps extends ImagePropsShared {
-    style?: ImageStyleRuleSet | ImageStyleRuleSet[];
+    style?: StyleRuleSetRecursive<ImageStyleRuleSet>;
 }
 
 export interface AnimatedImageProps extends ImagePropsShared {
-    style?: AnimatedImageStyleRuleSet | (AnimatedImageStyleRuleSet | ImageStyleRuleSet)[];
+    style?: StyleRuleSetRecursive<AnimatedImageStyleRuleSet | ImageStyleRuleSet>;
 }
 
 // Text
@@ -503,14 +562,17 @@ export interface TextPropsShared extends CommonProps {
     elevation?: number;
 
     onPress?: (e: SyntheticEvent) => void;
+
+    id?: string; // Web only. Needed for accessibility.
+    onContextMenu?: (e: SyntheticEvent) => void;
 }
 
 export interface TextProps extends TextPropsShared {
-    style?: TextStyleRuleSet | TextStyleRuleSet[];
+    style?: StyleRuleSetRecursive<TextStyleRuleSet>;
 }
 
 export interface AnimatedTextProps extends TextPropsShared {
-    style?: AnimatedTextStyleRuleSet | (AnimatedTextStyleRuleSet | TextStyleRuleSet)[];
+    style?: StyleRuleSetRecursive<AnimatedTextStyleRuleSet | TextStyleRuleSet>;
 }
 
 export type ViewLayerType = 'none' | 'software' | 'hardware';
@@ -525,8 +587,12 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     children?: ReactNode;
 
     restrictFocusWithin?: boolean; // Web-only, during the keyboard navigation, the focus will not go outside this view
+    limitFocusWithin?: boolean; // Web-only, make the view and all focusable subelements not focusable when isFocusLimited state is true
 
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
+    id?: string; // Web-only. Needed for accessibility.
+    ariaLabelledBy?: string; // Web-only. Needed for accessibility.
+    accessibilityLiveRegion?: AccessibilityLiveRegion; // Android and web only
 
     // There are a couple of constraints when child animations are enabled:
     //   - Every child must have a `key`.
@@ -535,6 +601,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     animateChildLeave?: boolean;
     animateChildMove?: boolean;
 
+    onAccessibilityTapIOS?: Function;
     onLayout?: (e: ViewOnLayoutEvent) => void;
     onMouseEnter?: (e: MouseEvent) => void;
     onMouseLeave?: (e: MouseEvent) => void;
@@ -558,29 +625,29 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
 }
 
 export interface ViewProps extends ViewPropsShared {
-    style?: ViewStyleRuleSet | ViewStyleRuleSet[];
-    onContextMenu?: (e: React.SyntheticEvent) => void;
-    onStartShouldSetResponder?: (e: React.SyntheticEvent) => boolean;
-    onMoveShouldSetResponder?: (e: React.SyntheticEvent) => boolean;
-    onStartShouldSetResponderCapture?: (e: React.SyntheticEvent) => boolean;
-    onMoveShouldSetResponderCapture?: (e: React.SyntheticEvent) => boolean;
-    onResponderGrant?: (e: React.SyntheticEvent) => void;
-    onResponderReject?: (e: React.SyntheticEvent) => void;
-    onResponderRelease?: (e: React.SyntheticEvent) => void;
-    onResponderStart?: (e: React.TouchEvent) => void;
-    onResponderMove?: (e: React.TouchEvent) => void;
-    onResponderEnd?: (e: React.TouchEvent) => void;
-    onResponderTerminate?: (e: React.SyntheticEvent) => void;
-    onResponderTerminationRequest?: (e: React.SyntheticEvent) => boolean;
+    style?:  StyleRuleSetRecursive<ViewStyleRuleSet>;
+    onContextMenu?: (e: React.SyntheticEvent<any>) => void;
+    onStartShouldSetResponder?: (e: React.SyntheticEvent<any>) => boolean;
+    onMoveShouldSetResponder?: (e: React.SyntheticEvent<any>) => boolean;
+    onStartShouldSetResponderCapture?: (e: React.SyntheticEvent<any>) => boolean;
+    onMoveShouldSetResponderCapture?: (e: React.SyntheticEvent<any>) => boolean;
+    onResponderGrant?: (e: React.SyntheticEvent<any>) => void;
+    onResponderReject?: (e: React.SyntheticEvent<any>) => void;
+    onResponderRelease?: (e: React.SyntheticEvent<any>) => void;
+    onResponderStart?: (e: React.TouchEvent<any>) => void;
+    onResponderMove?: (e: React.TouchEvent<any>) => void;
+    onResponderEnd?: (e: React.TouchEvent<any>) => void;
+    onResponderTerminate?: (e: React.SyntheticEvent<any>) => void;
+    onResponderTerminationRequest?: (e: React.SyntheticEvent<any>) => boolean;
 }
 
 export interface AnimatedViewProps extends ViewPropsShared {
-    style?: AnimatedViewStyleRuleSet | (AnimatedViewStyleRuleSet | ViewStyleRuleSet)[];
+    style?: StyleRuleSetRecursive<AnimatedViewStyleRuleSet | ViewStyleRuleSet>;
 }
 
 // GestureView
 export interface GestureState {
-    timeStamp: Date;
+    timeStamp: number;
 }
 
 export interface MultiTouchGestureState extends GestureState {
@@ -649,7 +716,7 @@ export enum PreferredPanGesture {
     Vertical
 }
 
-export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet> {
+export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet>, CommonAccessibilityProps {
     // Gestures and attributes that apply only to touch inputs
     onPinchZoom?: (gestureState: MultiTouchGestureState) => void;
     onRotate?: (gestureState: MultiTouchGestureState) => void;
@@ -677,9 +744,16 @@ export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet> {
     releaseOnRequest?: boolean;
 }
 
+export interface ScrollIndicatorInsets {
+    top: number;
+    left: number;
+    bottom: number;
+    right: number;
+}
+
 // ScrollView
 export interface ScrollViewProps extends ViewProps {
-    style?: ScrollViewStyleRuleSet | ScrollViewStyleRuleSet[];
+    style?: StyleRuleSetRecursive<ScrollViewStyleRuleSet>;
     children?: ReactNode;
 
     vertical?: boolean; // By default true
@@ -734,18 +808,19 @@ export interface ScrollViewProps extends ViewProps {
     overScrollMode?: 'always' | 'always-if-content-scrolls' | 'never';
 
     // iOS-only property to control scroll indicator insets
-    scrollIndicatorInsets?:  {top: number, left: number, bottom: number, right: number };
+    scrollIndicatorInsets?: ScrollIndicatorInsets;
 }
 
 // Link
 export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
     title?: string;
-    url?: string;
+    url: string;
     children?: ReactNode;
     selectable?: boolean;
     numberOfLines?: number;
     allowFontScaling?: boolean;
     maxContentSizeMultiplier?: number;
+    tabIndex?: number;
 
     onPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
     onLongPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
@@ -803,11 +878,11 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
 }
 
 export interface TextInputProps extends TextInputPropsShared {
-    style?: TextInputStyleRuleSet | TextInputStyleRuleSet[];
+    style?: StyleRuleSetRecursive<TextInputStyleRuleSet>;
 }
 
 export interface AnimatedTextInputProps extends TextInputPropsShared {
-    style?: AnimatedTextInputStyleRuleSet | (AnimatedTextInputStyleRuleSet | TextInputStyleRuleSet)[];
+    style?: StyleRuleSetRecursive<AnimatedTextInputStyleRuleSet | TextInputStyleRuleSet>;
 }
 
 // ActivityIndicator
@@ -901,82 +976,30 @@ export interface PopupOptions {
     // anchor has been pressed.
     // IMPORTANT NOTE: This handler may be called when the component is
     // already unmounted as it uses a time delay to accommodate a fade-out animation.
-    onAnchorPressed?: (e: RX.Types.SyntheticEvent) => void;
+    onAnchorPressed?: (e?: RX.Types.SyntheticEvent) => void;
 
     // Determines if the anchor invoking the popup should behave like a toggle.
     // Value = true  => Calling Popup.show will show the popup. A subsequent call, will hide the popup, and so on.
     // Value = false or undefined (default)  => Calling Popup.show will always show the popup.
-     dismissIfShown?: boolean;
+    dismissIfShown?: boolean;
+
+    // Prevents the front-most popup from closing if the user clicks or taps
+    // outside of it. It will still close if the anchor is unmounted or if
+    // dismiss is explicitly called.
+    preventDismissOnPress?: boolean;
+
+    // Android & iOS only.
+    // The id of the root view this popup is associated with.
+    // Defaults to the view set by UserInterface.setMainView();
+    rootViewId?: string;
 }
 
-//
-// Navigator
-// ----------------------------------------------------------------------
-export enum NavigatorSceneConfigType {
-    FloatFromRight,
-    FloatFromLeft,
-    FloatFromBottom,
-    Fade,
-    FadeWithSlide
-}
-
-export interface NavigatorRoute {
-    routeId: number;
-    // Route's animation configuration
-    sceneConfigType: NavigatorSceneConfigType;
-
-    // NOTE: The following props are for the experimental navigator.
-    // They aren't considered when working with the standard navigator.
-    // Optional gesture response distance override
-    // 0 is equivalent to disabling gestures
-    gestureResponseDistance?: number;
-    // Optional custom scene config
-    customSceneConfig?: CustomNavigatorSceneConfig;
-}
-
-// NOTE: Experimental navigator only
-export type NavigationTransitionSpec = {
-    duration?: number;
-
-    // NOTE: Elastic and bounce easing will not work as expected due to how the navigator interpolates styles
-    easing?: Animated.EasingFunction;
-};
-
-// NOTE: Experimental navigator only
-export type NavigationTransitionStyleConfig = {
-  // By default input range is defined as [index - 1, index, index + 1];
-  // Input and output ranges must contain the same number of elements
-  inputRange?: number[];
-  opacityOutput: number | number[];
-  scaleOutput: number | number[];
-  translateXOutput: number | number[];
-  translateYOutput: number | number[];
-};
-
-// NOTE: Experimental navigator only
-export type CustomNavigatorSceneConfig = {
-  // Optional transition styles
-  transitionStyle?: (sceneIndex: number, sceneDimensions: Dimensions) => NavigationTransitionStyleConfig;
-  // Optional overrides for duration, easing, and timing
-  transitionSpec?: NavigationTransitionSpec;
-  // Optional cardStyle override
-  cardStyle?: ViewStyleRuleSet;
-  // Optionally hide drop shadow
-  hideShadow?: boolean;
-  // Optionally flip the visual order of the last two scenes
-  presentBelowPrevious?: boolean;
-};
-
-export interface NavigatorProps extends CommonProps {
-    renderScene: (route: NavigatorRoute) => JSX.Element;
-    navigateBackCompleted?: () => void;
-    // NOTE: Arguments are only passed to transitionStarted by the experimental navigator
-    transitionStarted?: (progress?: RX.AnimatedValue,
-        toRouteId?: string, fromRouteId?: string,
-        toIndex?: number, fromIndex?: number) => void;
-    transitionCompleted?: () => void;
-    cardStyle?: ViewStyleRuleSet;
-    children?: ReactNode;
+// Modal
+export interface ModalOptions {
+    // Android & iOS only.
+    // The id of the root view this modal is associated with.
+    // Defaults to the view set by UserInterface.setMainView();
+    rootViewId?: string;
 }
 
 //
@@ -990,6 +1013,26 @@ export interface AlertButtonSpec {
     text?: string;
     onPress?: () => void;
     style?: 'default' | 'cancel' | 'destructive';
+}
+
+// Web specific
+export interface AlertModalTheme {
+    bodyStyle?: StyleRuleSet<ViewStyle>;
+    titleTextStyle?: StyleRuleSet<TextStyle>;
+    messageTextStyle?: StyleRuleSet<TextStyle>;
+
+    buttonStyle?: StyleRuleSet<ButtonStyle>;
+    buttonHoverStyle?: StyleRuleSet<ButtonStyle>;
+    buttonTextStyle?: StyleRuleSet<TextStyle>;
+
+    cancelButtonStyle?: StyleRuleSet<ButtonStyle>;
+    cancelButtonHoverStyle?: StyleRuleSet<ButtonStyle>;
+    cancelButtonTextStyle?: StyleRuleSet<TextStyle>;
+}
+
+export interface AlertOptions {
+    icon?: string;
+    theme?: AlertModalTheme;
 }
 
 //
@@ -1040,7 +1083,7 @@ export module Animated {
         outputRange: (number | string)[];
     }
 
-    export type TimingFunction = (value: RX.AnimatedValue, config: TimingAnimationConfig) => CompositeAnimation;
+    export type TimingFunction = (value: RX.IAnimatedValue, config: TimingAnimationConfig) => CompositeAnimation;
     export var timing: TimingFunction;
 
     export type SequenceFunction = (animations: Array<CompositeAnimation>) => CompositeAnimation;
@@ -1073,16 +1116,52 @@ export module Animated {
 //
 // Events
 // ----------------------------------------------------------------------
-export type SyntheticEvent = React.SyntheticEvent;
+export type SyntheticEvent = React.SyntheticEvent<any>;
 
-export type DragEvent = React.DragEvent;
-export type ClipboardEvent = React.ClipboardEvent;
-export type FocusEvent = React.FocusEvent;
-export type FormEvent = React.FormEvent;
-export type MouseEvent = React.MouseEvent;
-export type TouchEvent = React.TouchEvent;
-export type UIEvent = React.UIEvent;
-export type WheelEvent = React.WheelEvent;
+export type DragEvent = React.DragEvent<any>;
+export type ClipboardEvent = React.ClipboardEvent<any>;
+export type FocusEvent = React.FocusEvent<any>;
+export type FormEvent = React.FormEvent<any>;
+export type MouseEvent = React.MouseEvent<any>;
+
+export interface Touch {
+    identifier: number;
+    target: EventTarget;
+    locationX: number;
+    locationY: number;
+    screenX: number;
+    screenY: number;
+    clientX: number;
+    clientY: number;
+    pageX: number;
+    pageY: number;
+}
+
+export interface TouchList {
+    [index: number]: Touch;
+    length: number;
+    item(index: number): Touch;
+    identifiedTouch(identifier: number): Touch;
+}
+
+export interface TouchEvent extends React.SyntheticEvent<any> {
+    // We override this definition because the public
+    // type excludes location and page fields.
+    altKey: boolean;
+    changedTouches: TouchList;
+    ctrlKey: boolean;
+    getModifierState(key: string): boolean;
+    metaKey: boolean;
+    shiftKey: boolean;
+    targetTouches: TouchList;
+    locationX?: number;
+    locationY?: number;
+    pageX?: number;
+    pageY?: number;
+    touches: TouchList;
+}
+export type UIEvent = React.UIEvent<any>;
+export type WheelEvent = React.WheelEvent<any>;
 
 export interface WebViewShouldStartLoadEvent extends SyntheticEvent {
     url: string;
@@ -1107,17 +1186,14 @@ export interface KeyboardEvent extends SyntheticEvent {
     altKey: boolean;
     shiftKey: boolean;
     keyCode: number;
+    metaKey: boolean;
+    key: string;
 }
 
 //
 // Component
 // ----------------------------------------------------------------------
 export var Children: React.ReactChildren;
-
-interface Element<P> {
-    type: React.ComponentClass<P>;
-    props: P;
-}
 
 //
 // Dimensions
@@ -1162,7 +1238,8 @@ export interface LinkingErrorInfo {
 export enum AppActivationState {
     Active = 1,
     Background = 2,
-    Inactive = 3
+    Inactive = 3,
+    Extension = 4
 }
 
 // UserInterface
@@ -1178,3 +1255,15 @@ export interface LayoutInfo {
 // Platform
 // ----------------------------------------------------------------------
 export type PlatformType = 'web' | 'ios' | 'android' | 'windows';
+
+//
+// Network
+// ----------------------------------------------------------------------
+export enum DeviceNetworkType {
+    Unknown,
+    None,
+    Wifi,
+    Mobile2G,
+    Mobile3G,
+    Mobile4G
+}

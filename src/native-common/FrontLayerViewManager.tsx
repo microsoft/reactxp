@@ -11,15 +11,14 @@
 import _ = require('./lodashMini');
 import React = require('react');
 import RN = require('react-native');
+import SubscribableEvent from 'subscribableevent';
 
 import { ModalContainer } from '../native-common/ModalContainer';
-import SubscribableEvent = require('../common/SubscribableEvent');
 import PopupContainerView from './PopupContainerView';
-import RootView from './RootView';
 import Types = require('../common/Types');
 
 class ModalStackContext {
-    constructor(public modalId: string, public modal: React.ReactElement<Types.ViewProps>) {}
+    constructor(public modalId: string, public modal: React.ReactElement<Types.ViewProps>, public modalOptions?: Types.ModalOptions) {}
 }
 
 class PopupStackContext {
@@ -37,13 +36,13 @@ const _styles = {
 export class FrontLayerViewManager {
     private _overlayStack: (ModalStackContext | PopupStackContext)[] = [];
 
-    event_changed = new SubscribableEvent.SubscribableEvent<() => void>();
+    event_changed = new SubscribableEvent<() => void>();
 
-    public showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string): void {
+    public showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions): void {
         const index = this._findIndexOfModal(modalId);
 
         if (index === -1) {
-            this._overlayStack.push(new ModalStackContext(modalId, modal));
+            this._overlayStack.push(new ModalStackContext(modalId, modal, options));
             this.event_changed.fire();
         }
     }
@@ -70,18 +69,8 @@ export class FrontLayerViewManager {
 
     public showPopup(
         popupOptions: Types.PopupOptions, popupId: string, delay?: number): boolean {
-
-        if (!popupId || popupId === '') {
-            console.error('FrontLayerViewManager: popupId must be valid!');
-            return false;
-        }
-
-        if (!popupOptions.getAnchor()) {
-            console.error('FrontLayerViewManager: getAnchor() must be valid!');
-            return false;
-        }
-
         const index = this._findIndexOfPopup(popupId);
+        
         if (index === -1) {
             this._overlayStack.push(new PopupStackContext(popupId, popupOptions, RN.findNodeHandle(popupOptions.getAnchor())));
 
@@ -112,8 +101,18 @@ export class FrontLayerViewManager {
         }
     }
 
-    public getModalLayerView(rootView: RootView): any {
-        const overlayContext = _.findLast(this._overlayStack, context => context instanceof ModalStackContext) as ModalStackContext;
+    public getModalLayerView(rootViewId?: string | null): React.ReactElement<any> | null {
+        if (rootViewId === null) {
+            // The Modal layer is only supported on root views that have set an id, or
+            // the default root view (which has an undefined id)
+            return null;
+        }
+
+        const overlayContext = 
+            _.findLast(
+                this._overlayStack, 
+                context => context instanceof ModalStackContext && this.modalOptionsMatchesRootViewId(context.modalOptions, rootViewId)
+            ) as ModalStackContext;
 
         if (overlayContext) {
             return (
@@ -126,8 +125,23 @@ export class FrontLayerViewManager {
         return null;
     }
 
-    public getPopupLayerView(rootView: RootView): any {
-        const overlayContext = _.findLast(this._overlayStack, context => context instanceof PopupStackContext) as PopupStackContext;
+    // Returns true if both are undefined, or if there are options and the rootViewIds are equal.
+    private modalOptionsMatchesRootViewId(options?: Types.ModalOptions, rootViewId?: string): boolean {
+        return !!(options === rootViewId || options && options.rootViewId === rootViewId);
+    }
+
+    public getPopupLayerView(rootViewId?: string | null): React.ReactElement<any> | null {
+        if (rootViewId === null) {
+            // The Popup layer is only supported on root views that have set an id, or
+            // the default root view (which has an undefined id)
+            return null;
+        }
+
+        const overlayContext = 
+            _.findLast(
+                this._overlayStack, 
+                context => context instanceof PopupStackContext && context.popupOptions.rootViewId === rootViewId
+            ) as PopupStackContext;
 
         if (overlayContext) {
             return (
@@ -159,29 +173,36 @@ export class FrontLayerViewManager {
             return;
         }
 
-        if (activePopupContext.popupOptions && activePopupContext.popupOptions.onAnchorPressed) {
-            RN.NativeModules.UIManager.measureInWindow(
-                activePopupContext.anchorHandle,
-                (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
-                    const touchEvent = (e.nativeEvent as any) as Types.TouchEvent;
-                    let anchorRect: ClientRect = { left: x, top: y, right: x + width, bottom: y + height, width: width, height: height };
+        if (activePopupContext.popupOptions) {
+            if (activePopupContext.popupOptions.onAnchorPressed) {
+                RN.NativeModules.UIManager.measureInWindow(
+                    activePopupContext.anchorHandle,
+                    (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+                        const touchEvent = e.nativeEvent as any;
+                        let anchorRect: ClientRect = { left: x, top: y, right: x + width, 
+                                bottom: y + height, width: width, height: height };
 
-                    // Find out if the press event was on the anchor so we can notify the caller about it.
-                    if (touchEvent.pageX >= anchorRect.left && touchEvent.pageX < anchorRect.right
-                        && touchEvent.pageY >= anchorRect.top && touchEvent.pageY < anchorRect.bottom) {
-                        // Showing another animation while dimissing the popup creates a conflict in the UI making it not doing one of the
-                        // two animations (i.e.: Opening an actionsheet while dismissing a popup). We introduce this delay to make sure
-                        // the popup dimissing animation has finished before we call the event handler.
-                        setTimeout(() => { activePopupContext.popupOptions.onAnchorPressed(e); }, 500);
+                        // Find out if the press event was on the anchor so we can notify the caller about it.
+                        if (!_.isUndefined(touchEvent.pageX) && !_.isUndefined(touchEvent.pageY) &&
+                                touchEvent.pageX >= anchorRect.left && touchEvent.pageX < anchorRect.right
+                                && touchEvent.pageY >= anchorRect.top && touchEvent.pageY < anchorRect.bottom) {
+                            // Showing another animation while dimissing the popup creates a conflict in the 
+                            // UI making it not doing one of the two animations (i.e.: Opening an actionsheet
+                            // while dismissing a popup). We introduce this delay to make sure the popup 
+                            // dimissing animation has finished before we call the event handler.
+                            setTimeout(() => { activePopupContext.popupOptions.onAnchorPressed!!!(e); }, 500);
+                        }
                     }
-                }
-            );
+                );
+            }
+
+            // Avoid dismissing if the caller has explicitly asked to prevent
+            // dismissal on clicks.
+            if (activePopupContext.popupOptions.preventDismissOnPress) {
+                return;
+            }
         }
 
-        this._dismissActivePopup();
-    }
-
-    private _onRequestClose = () => {
         this._dismissActivePopup();
     }
 

@@ -9,7 +9,6 @@
 
 import React = require('react');
 
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
@@ -19,7 +18,8 @@ const _styles = {
         position: 'relative',
         display: 'inline',
         flexDirection: 'column',
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
         overflow: 'hidden',
         alignItems: 'stretch',
         overflowWrap: 'break-word',
@@ -29,7 +29,8 @@ const _styles = {
         position: 'relative',
         display: 'inline',
         flexDirection: 'column',
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
         overflow: 'hidden',
         alignItems: 'stretch',
 
@@ -40,18 +41,18 @@ const _styles = {
 
 const _longPressTime = 1000;
 
-export class Link extends RX.Link<void> {
+export class Link extends React.Component<Types.LinkProps, {}> {
 
-    private _longPressTimer: number;
+    private _longPressTimer: number|undefined;
 
     render() {
-       // SECURITY WARNING:
-       //   Note the use of rel='noreferrer'
-       //   Destroy the back-link to this window. Otherwise the (untrusted) URL we are about to load can redirect OUR window.
-       //   See: https://mathiasbynens.github.io/rel-noopener/
+        // SECURITY WARNING:
+        //   Note the use of rel='noreferrer'
+        //   Destroy the back-link to this window. Otherwise the (untrusted) URL we are about to load can redirect OUR window.
+        //   See: https://mathiasbynens.github.io/rel-noopener/
         return (
             <a
-                style={ this._getStyles() }
+                style={ this._getStyles() as any }
                 title={ this.props.title }
                 href={ this.props.url }
                 target='_blank'
@@ -60,6 +61,8 @@ export class Link extends RX.Link<void> {
                 onMouseEnter={ this.props.onHoverStart }
                 onMouseLeave={ this.props.onHoverEnd }
                 onMouseDown={ this._onMouseDown }
+                onMouseUp={ this._onMouseUp }
+                tabIndex={ this.props.tabIndex }
             >
                 { this.props.children }
             </a>
@@ -70,8 +73,8 @@ export class Link extends RX.Link<void> {
         // There's no way in HTML to properly handle numberOfLines > 1,
         // but we can correctly handle the common case where numberOfLines is 1.
         let combinedStyles = Styles.combine(
-            this.props.numberOfLines === 1 ? _styles.ellipsis : _styles.defaultStyle,
-            this.props.style);
+            [this.props.numberOfLines === 1 ? _styles.ellipsis : _styles.defaultStyle,
+            this.props.style]) as any;
 
         // Handle cursor styles
         if (this.props.selectable) {
@@ -86,7 +89,7 @@ export class Link extends RX.Link<void> {
         return combinedStyles;
     }
 
-    private _onClick = (e: React.MouseEvent) => {
+    private _onClick = (e: React.MouseEvent<any>) => {
         e.stopPropagation();
 
         if (this.props.onPress) {

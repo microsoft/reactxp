@@ -9,56 +9,19 @@
 */
 
 import React = require('react');
+import SubscribableEvent from 'subscribableevent';
 import SyncTasks = require('synctasks');
 
 import AppConfig from './AppConfig';
-import SubscribableEvent = require('./SubscribableEvent');
 import Types = require('./Types');
 
 export import Types = Types;
 
-export interface ReactXP {
-    ActivityIndicator: typeof ActivityIndicator;
-    Alert: Alert;
-    App: App;
-    Button: typeof Button;
-    Picker: typeof Picker;
-    Clipboard: Clipboard;
-    DeviceNetworkType: typeof DeviceNetworkType;
-    Image: typeof Image;
-    GestureView: typeof GestureView;
-    Input: Input;
-    Link: typeof Link;
-    Storage: Storage;
-    Location: Location;
-    Modal: Modal;
-    Navigator: typeof Navigator;
-    Network: Network;
-    Platform: Platform;
-    Popup: Popup;
-    ScrollView: typeof ScrollView;
-    StatusBar: StatusBar;
-    Styles: Styles;
-    Text: typeof Text;
-    TextInput: typeof TextInput;
-    UserInterface: UserInterface;
-    UserPresence: UserPresence;
-    View: typeof View;
-    WebView: typeof WebView;
-
-    Component: typeof Component;
-    createElement: any;
-    Children: typeof React.Children;
-    Types: typeof Types;
-    __spread: any;
-
-    Animated: Animated;
-}
-
-export class ActivityIndicator<S> extends React.Component<Types.ActivityIndicatorProps, S> {}
+export abstract class ActivityIndicator extends React.Component<Types.ActivityIndicatorProps, any> {}
 
 export abstract class Alert {
-    abstract show(title: string, message?: string, buttons?: Types.AlertButtonSpec[], icon?: string): void;
+    abstract show(title: string, message?: string, buttons?: Types.AlertButtonSpec[],
+        options?: Types.AlertOptions): void;
 }
 
 export abstract class AnimatedComponent<P extends Types.CommonProps, T> extends React.Component<P, T> {
@@ -75,25 +38,16 @@ export abstract class AnimatedTextInput extends AnimatedComponent<Types.Animated
 }
 
 export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewProps, {}> {
+    abstract focus(): void;
+    abstract setFocusRestricted(restricted: boolean): void;
+    abstract setFocusLimited(limited: boolean): void;
 }
 
 export interface IAnimatedValue {
     setValue(value: number): void;
-    addListener(callback: any): number;
-    removeListener(id: string): void;
-    removeAllListeners(): void;
-    interpolate(config: any): AnimatedValue;
-}
 
-export abstract class AnimatedValue implements IAnimatedValue {
-    constructor(val: number) {
-        // No-op
-    }
-    abstract setValue(value: number): void;
-    abstract addListener(callback: any): number;
-    abstract removeListener(id: string): void;
-    abstract removeAllListeners(): void;
-    abstract interpolate(config: any): AnimatedValue;
+    // NOTE: interpolate is deprecated. Use RX.Animated.interpolate instead.
+    interpolate(config: any): IAnimatedValue;
 }
 
 export abstract class App {
@@ -104,16 +58,17 @@ export abstract class App {
 
     // Activation State
     abstract getActivationState(): Types.AppActivationState;
-    activationStateChangedEvent = new SubscribableEvent.SubscribableEvent<(state: Types.AppActivationState) => void>();
+    activationStateChangedEvent = new SubscribableEvent<(state: Types.AppActivationState) => void>();
 
     // Memory Warnings
-    memoryWarningEvent = new SubscribableEvent.SubscribableEvent<() => void>();
+    memoryWarningEvent = new SubscribableEvent<() => void>();
 }
 
 export abstract class UserInterface {
     abstract setMainView(element: React.ReactElement<any>): void;
+    abstract registerRootView(viewKey: string, getComponentFunc: Function): void;
 
-    abstract useCustomScrollbars(enable: boolean): void;
+    abstract useCustomScrollbars(enable?: boolean): void;
 
     // Screen Information
     abstract isHighPixelDensityScreen(): boolean;
@@ -128,15 +83,24 @@ export abstract class UserInterface {
 
     // Content Size Multiplier
     abstract getContentSizeMultiplier(): SyncTasks.Promise<number>;
-    contentSizeMultiplierChangedEvent = new SubscribableEvent.SubscribableEvent<(multiplier: number) => void>();
+    contentSizeMultiplierChangedEvent = new SubscribableEvent<(multiplier: number) => void>();
+    abstract setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
 
     // On-screen Keyboard
     abstract dismissKeyboard(): void;
+
+    // Latency Warnings
+    abstract enableTouchLatencyEvents(latencyThresholdMs: number): void;
+    touchLatencyEvent = new SubscribableEvent<(observedLatencyMs: number) => void>();
+
+    // Keyboard navigation
+    abstract isNavigatingWithKeyboard(): boolean;
+    keyboardNavigationEvent = new SubscribableEvent<(isNavigatingWithKeyboard: boolean) => void>();
 }
 
 export abstract class Modal {
     abstract isDisplayed(modalId: string): boolean;
-    abstract show(modal: React.ReactElement<Types.ViewProps>, modalId: string): void;
+    abstract show(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions): void;
     abstract dismiss(modalId: string): void;
     abstract dismissAll(): void;
 }
@@ -150,38 +114,54 @@ export abstract class Popup {
 
 export abstract class Linking {
     // Incoming deep links
-    abstract getInitialUrl(): SyncTasks.Promise<string>;
-    deepLinkRequestEvent = new SubscribableEvent.SubscribableEvent<(url: string) => void>();
+    abstract getInitialUrl(): SyncTasks.Promise<string|undefined>;
+    deepLinkRequestEvent = new SubscribableEvent<(url: string) => void>();
 
     // Outgoing deep links
     abstract openUrl(url: string): SyncTasks.Promise<void>;
     abstract launchSms(smsData: Types.SmsInfo): SyncTasks.Promise<void>;
     abstract launchEmail(emailData: Types.EmailInfo): SyncTasks.Promise<void>;
+
+    protected abstract _createEmailUrl(emailInfo: Types.EmailInfo): string;
 }
 
 export abstract class Accessibility {
     abstract isScreenReaderEnabled(): boolean;
+    abstract isHighContrastEnabled(): boolean;
     abstract announceForAccessibility(announcement: string): void;
-    screenReaderChangedEvent = new SubscribableEvent.SubscribableEvent<(isEnabled: boolean) => void>();
+    screenReaderChangedEvent = new SubscribableEvent<(isEnabled: boolean) => void>();
+    highContrastChangedEvent = new SubscribableEvent<(isEnabled: boolean) => void>();
 }
 
-export abstract class Button<S> extends React.Component<Types.ButtonProps, S> {}
+export abstract class Button extends React.Component<Types.ButtonProps, any> {
+    abstract focus(): void;
+    abstract blur(): void;
+}
 
 export abstract class Picker extends React.Component<Types.PickerProps, {}> {}
 
 export class Component<P, T> extends React.Component<P, T> {}
 
-export abstract class Image<S> extends React.Component<Types.ImageProps, S> {}
+export interface ImageConstructor {
+    new (props: Types.ImageProps): Image;
+
+    prefetch(url: string): SyncTasks.Promise<boolean>;
+}
+
+export abstract class Image extends React.Component<Types.ImageProps, any> {
+    abstract getNativeWidth(): number|undefined;
+    abstract getNativeHeight(): number|undefined;
+}
 
 export abstract class Clipboard {
     abstract setText(text: string): void;
     abstract getText(): SyncTasks.Promise<string>;
 }
 
-export abstract class Link<S> extends React.Component<Types.LinkProps, S> {}
+export abstract class Link extends React.Component<Types.LinkProps, any> {}
 
 export abstract class Storage {
-    abstract getItem(key: string): SyncTasks.Promise<string>;
+    abstract getItem(key: string): SyncTasks.Promise<string|undefined>;
     abstract setItem(key: string, value: string): SyncTasks.Promise<void>;
     abstract removeItem(key: string): SyncTasks.Promise<void>;
     abstract clear(): SyncTasks.Promise<void>;
@@ -201,30 +181,10 @@ export interface LocationConfiguration {
     skipPermissionRequests: boolean;
 }
 
-export abstract class Navigator<S> extends React.Component<Types.NavigatorProps, S> {
-    abstract push(route: Types.NavigatorRoute): void;
-    abstract pop(): void;
-    abstract replace(route: Types.NavigatorRoute): void;
-    abstract replacePrevious(route: Types.NavigatorRoute): void;
-    abstract replaceAtIndex(route: Types.NavigatorRoute, index: number): void;
-    abstract immediatelyResetRouteStack(nextRouteStack: Types.NavigatorRoute[]): void;
-    abstract popToRoute(route: Types.NavigatorRoute): void;
-    abstract popToTop(): void;
-    abstract getCurrentRoutes(): Types.NavigatorRoute[];
-}
-
-export enum DeviceNetworkType {
-    UNKNOWN,
-    NONE,
-    WIFI,
-    MOBILE_2G,
-    MOBILE_3G,
-    MOBILE_4G
-}
-
 export abstract class Network {
     abstract isConnected(): SyncTasks.Promise<boolean>;
-    connectivityChangedEvent = new SubscribableEvent.SubscribableEvent<(isConnected: boolean) => void>();
+    abstract getType(): SyncTasks.Promise<Types.DeviceNetworkType>;
+    connectivityChangedEvent = new SubscribableEvent<(isConnected: boolean) => void>();
 }
 
 export abstract class Platform {
@@ -232,24 +192,28 @@ export abstract class Platform {
 }
 
 export abstract class Input {
-    backButtonEvent = new SubscribableEvent.SubscribableEvent<() => boolean>();
-    keyDownEvent = new SubscribableEvent.SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
-    keyUpEvent = new SubscribableEvent.SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
+    backButtonEvent = new SubscribableEvent<() => boolean>(true);
+    keyDownEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
+    keyUpEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
 }
 
-export interface IScrollView {
-    setScrollTop(scrollTop: number, animate: boolean): void;
-    setScrollLeft(scrollLeft: number, animate: boolean): void;
-    addToScrollTop(deltaTop: number, animate: boolean): void;
-    addToScrollLeft(deltaLeft: number, animate: boolean): void;
+export interface ScrollViewConstructor {
+    new(props: Types.ScrollViewProps): ScrollView;
+}
+    
+export interface ScrollView extends React.Component<Types.ScrollViewProps, any> {
+    setScrollTop(scrollTop: number, animate?: boolean): void;
+    setScrollLeft(scrollLeft: number, animate?: boolean): void;
+    addToScrollTop(deltaTop: number, animate?: boolean): void;
+    addToScrollLeft(deltaLeft: number, animate?: boolean): void;
 }
 
-export abstract class ScrollView<S> extends React.Component<Types.ScrollViewProps, S> implements IScrollView {
-    abstract setScrollTop(scrollTop: number, animate: boolean): void;
-    abstract setScrollLeft(scrollLeft: number, animate: boolean): void;
-    abstract addToScrollTop(deltaTop: number, animate: boolean): void;
-    abstract addToScrollLeft(deltaLeft: number, animate: boolean): void;
-}
+// export abstract class ScrollView extends React.Component<Types.ScrollViewProps, any> implements IScrollView {
+//     abstract setScrollTop(scrollTop: number, animate: boolean): void;
+//     abstract setScrollLeft(scrollLeft: number, animate: boolean): void;
+//     abstract addToScrollTop(deltaTop: number, animate: boolean): void;
+//     abstract addToScrollLeft(deltaLeft: number, animate: boolean): void;
+// }
 
 export abstract class StatusBar {
     abstract isOverlay(): boolean;
@@ -261,6 +225,8 @@ export abstract class StatusBar {
 }
 
 export abstract class Styles {
+    abstract combine<T>(ruleSet1: Types.StyleRuleSetRecursive<T>|undefined, ruleSet2?: Types.StyleRuleSetRecursive<T>)
+        : Types.StyleRuleSetOrArray<T>|undefined;
     abstract createViewStyle(ruleSet: Types.ViewStyle, cacheStyle?: boolean): Types.ViewStyleRuleSet;
     abstract createAnimatedViewStyle(ruleSet: Types.AnimatedViewStyle): Types.AnimatedViewStyleRuleSet;
     abstract createScrollViewStyle(ruleSet: Types.ScrollViewStyle, cacheStyle?: boolean): Types.ScrollViewStyleRuleSet;
@@ -269,17 +235,23 @@ export abstract class Styles {
     abstract createTextStyle(ruleSet: Types.TextStyle, cacheStyle?: boolean): Types.TextStyleRuleSet;
     abstract createAnimatedTextStyle(ruleSet: Types.AnimatedTextStyle): Types.AnimatedTextStyleRuleSet;
     abstract createTextInputStyle(ruleSet: Types.TextInputStyle, cacheStyle?: boolean): Types.TextInputStyleRuleSet;
+    abstract createAnimatedTextInputStyle(ruleSet: Types.AnimatedTextInputStyle): Types.AnimatedTextInputStyleRuleSet;
     abstract createImageStyle(ruleSet: Types.ImageStyle, cacheStyle?: boolean): Types.ImageStyleRuleSet;
     abstract createAnimatedImageStyle(ruleSet: Types.AnimatedImageStyle): Types.AnimatedImageStyleRuleSet;
     abstract createLinkStyle(ruleSet: Types.LinkStyleRuleSet, cacheStyle?: boolean): Types.LinkStyleRuleSet;
     abstract createPickerStyle(ruleSet: Types.PickerStyle, cacheStyle?: boolean): Types.PickerStyleRuleSet;
+    abstract getCssPropertyAliasesCssStyle(): {[key: string]: string};
 }
 
-export abstract class Text<S> extends React.Component<Types.TextProps, S> {}
+export abstract class Text extends React.Component<Types.TextProps, any> {
+    abstract focus(): void;
+    abstract blur(): void;
+}
 
-export abstract class TextInput<S> extends React.Component<Types.TextInputProps, S> {
+export abstract class TextInput extends React.Component<Types.TextInputProps, any> {
     abstract blur(): void;
     abstract focus(): void;
+    abstract setAccessibilityFocus(): void;
     abstract isFocused(): boolean;
     abstract selectAll(): void;
     abstract selectRange(start: number, end: number): void;
@@ -292,28 +264,51 @@ export abstract class TextInput<S> extends React.Component<Types.TextInputProps,
 
 export abstract class UserPresence {
     abstract isUserPresent(): boolean;
-    userPresenceChangedEvent = new SubscribableEvent.SubscribableEvent<(isPresent: boolean) => void>();
+    userPresenceChangedEvent = new SubscribableEvent<(isPresent: boolean) => void>();
 }
 
 export abstract class ViewBase<P, S> extends React.Component<P, S> {
 }
 
-export abstract class View<S> extends ViewBase<Types.ViewProps, S> {
+export abstract class View extends ViewBase<Types.ViewProps, any> {
+    abstract focus(): void;
+    abstract setFocusRestricted(restricted: boolean): void;
+    abstract setFocusLimited(limited: boolean): void;
 }
 
-export abstract class GestureView<S> extends ViewBase<Types.GestureViewProps, S> {
+export abstract class GestureView extends ViewBase<Types.GestureViewProps, any> {
 }
 
-export abstract class WebView<S> extends ViewBase<Types.WebViewProps, S> {
+export interface WebViewConstructor {
+    new(props: Types.WebViewProps): WebView;
+}
+
+export interface WebView extends ViewBase<Types.WebViewProps, any> {
+    postMessage(message: string, targetOrigin?: string): void;
+    reload(): void;
+    goBack(): void;
+    goForward(): void;
 }
 
 export interface Animated {
     Image: typeof AnimatedImage;
     Text: typeof AnimatedText;
+    TextInput: typeof AnimatedTextInput;
     View: typeof AnimatedView;
-    Value: typeof AnimatedValue;
     Easing: Types.Animated.Easing;
     timing: Types.Animated.TimingFunction;
     parallel: Types.Animated.ParallelFunction;
     sequence: Types.Animated.SequenceFunction;
+
+    // Note: Access to Value is deprecated. Move to createValue
+    // and interpolate instead.
+    Value: typeof Types.AnimatedValue;
+    createValue: (initialValue: number) => Types.AnimatedValue;
+    interpolate: (value: Types.AnimatedValue, inputRange: number[], outputRange: string[]) => Types.AnimatedValue;
+}
+
+export interface International {
+    allowRTL(allow: boolean): void;
+    forceRTL(force: boolean): void;
+    isRTL(): boolean;
 }

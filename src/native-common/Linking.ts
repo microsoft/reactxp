@@ -33,7 +33,11 @@ export class Linking extends CommonLinking {
                     description: 'No app found to handle url: ' + url
                 } as Types.LinkingErrorInfo);
             } else {
-                return RN.Linking.openURL(url);
+                RN.Linking.openURL(url).then(() => {
+                    defer.resolve(void 0);
+                }, err => {
+                    defer.reject(err);
+                });
             }
         }).catch(error => {
             defer.reject({
@@ -54,12 +58,19 @@ export class Linking extends CommonLinking {
         }).catch(error => {
             defer.reject({
                 code: Types.LinkingErrorCode.InitialUrlNotFound,
-                url: null,
+                url: '',
                 description: error
             } as Types.LinkingErrorInfo);
         });
 
         return defer.promise();
+    }
+    
+    // Launches Email app
+    launchEmail(emailInfo: Types.EmailInfo): SyncTasks.Promise<void> {
+        // Format email info
+        const emailUrl = this._createEmailUrl(emailInfo);
+        return this._openUrl(emailUrl);
     }
 }
 

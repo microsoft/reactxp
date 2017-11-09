@@ -10,10 +10,11 @@
 import React = require('react');
 
 import SvgInterfaces = require('../common/Interfaces');
+import SvgTypes = require('../common/Types');
 
 // TODO: #694092 Not implemented
 
-export class SvgPath extends SvgInterfaces.SvgPath<{}> {
+export class SvgPath extends React.Component<SvgTypes.SvgPathProps, {}> {
     render(): any {
         return null;
     }

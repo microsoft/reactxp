@@ -12,7 +12,6 @@ import RN = require('react-native');
 import SyncTasks = require('synctasks');
 import _ = require('./lodashMini');
 
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -25,26 +24,22 @@ const _styles = {
     })
 };
 
-export class Image extends RX.Image<{}> {
+export class Image extends React.Component<Types.ImageProps, {}> {
     static prefetch(url: string): SyncTasks.Promise<boolean> {
         const defer = SyncTasks.Defer<boolean>();
 
-        // TODO: #694125 Remove conditional after RN UWP supports prefetch
-        //   https://github.com/ReactWindows/react-native-windows/issues/366
-        if (RN.Platform.OS !== 'windows') {
-            RN.Image.prefetch(url).then(value => {
-                defer.resolve(value);
-            }).catch(error => {
-                defer.reject(error);
-            });
-        }
+        RN.Image.prefetch(url).then(value => {
+            defer.resolve(value);
+        }).catch(error => {
+            defer.reject(error);
+        });
 
         return defer.promise();
     }
 
     private _isMounted = false;
-    private _nativeImageWidth: number;
-    private _nativeImageHeight: number;
+    private _nativeImageWidth: number|undefined;
+    private _nativeImageHeight: number|undefined;
 
     protected _getAdditionalProps(): RN.ImageProps {
         return {};
@@ -91,7 +86,7 @@ export class Image extends RX.Image<{}> {
                 resizeMode={ resizeMode }
                 resizeMethod= { this.props.resizeMethod }
                 accessibilityLabel={ this.props.accessibilityLabel }
-                onLoad={ this.props.onLoad ? this._onLoad : null }
+                onLoad={ this.props.onLoad ? this._onLoad : undefined }
                 onError={ this._onError }
                 shouldRasterizeIOS= { this.props.shouldRasterizeIOS }
                 { ...additionalProps }
@@ -105,35 +100,25 @@ export class Image extends RX.Image<{}> {
         (this.refs['nativeImage'] as RN.Image).setNativeProps(nativeProps);
     }
 
-    protected getStyles(): Types.ImageStyleRuleSet {
-        return Styles.combine(_styles.defaultImage, this.props.style);
+    protected getStyles() {
+        return [_styles.defaultImage, this.props.style];
     }
 
-    private _onLoad = (e: React.SyntheticEvent) => {
+    private _onLoad = (e: React.SyntheticEvent<Image>) => {
         if (!this._isMounted) {
             return;
         }
 
-        let nativeEvent = e.nativeEvent as any;
-
-        if (nativeEvent) {
-            // TODO: #727561 Remove conditional after UWP includes width and height
-            //   with image load event.
-            if (RN.Platform.OS === 'windows') {
-                this._nativeImageWidth = 0;
-                this._nativeImageHeight = 0;
-            } else {
-                this._nativeImageWidth = nativeEvent.source.width;
-                this._nativeImageHeight = nativeEvent.source.height;
-            }
-        }
+        const nativeEvent = e.nativeEvent as any;
+        this._nativeImageWidth = nativeEvent.source.width;
+        this._nativeImageHeight = nativeEvent.source.height;
 
         if (this.props.onLoad) {
-            this.props.onLoad({ width: this._nativeImageWidth, height: this._nativeImageHeight });
+            this.props.onLoad({ width: this._nativeImageWidth!!!, height: this._nativeImageHeight!!! });
         }
     }
 
-    private _onError = (e: React.SyntheticEvent) => {
+    private _onError = (e: React.SyntheticEvent<Image>) => {
         if (!this._isMounted) {
             return;
         }
@@ -145,11 +130,11 @@ export class Image extends RX.Image<{}> {
     }
 
     // Note: This works only if you have an onLoaded handler and wait for the image to load.
-    getNativeWidth(): number {
+    getNativeWidth(): number|undefined {
         return this._nativeImageWidth;
     }
 
-    getNativeHeight(): number {
+    getNativeHeight(): number|undefined {
         return this._nativeImageHeight;
     }
 }

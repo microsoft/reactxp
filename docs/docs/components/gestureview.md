@@ -14,30 +14,39 @@ Information about pending gestures is returned through event handlers. A caller 
 ## Props
 ``` javascript
 // Gestures and attributes that apply only to touch inputs
-onPinchZoom?: (gestureState: MultiTouchGestureState) => void = undefined;
-onRotate?: (gestureState: MultiTouchGestureState) => void = undefined;
+onPinchZoom: (gestureState: MultiTouchGestureState) => void = undefined;
+onRotate: (gestureState: MultiTouchGestureState) => void = undefined;
 
 // Gestures and attributes that apply only to mouse inputs
-onScrollWheel?: (gestureState: ScrollWheelGestureState) => void = undefined;
-mouseOverCursor?: GestureMouseCursor = undefined;
+onScrollWheel: (gestureState: ScrollWheelGestureState) => void = undefined;
+mouseOverCursor: GestureMouseCursor = undefined;
 
 // Gestures and attributes that apply to either touch or mouse inputs
-onPan?: (gestureState: PanGestureState) => void = undefined;
-onPanVertical?: (gestureState: PanGestureState) => void = undefined;
-onPanHorizontal?: (gestureState: PanGestureState) => void = undefined;
-onTap?: (gestureState: TapGestureState) => void = undefined;
-onDoubleTap?: (gestureState: TapGestureState) => void = undefined;
+onPan: (gestureState: PanGestureState) => void = undefined;
+onPanVertical: (gestureState: PanGestureState) => void = undefined;
+onPanHorizontal: (gestureState: PanGestureState) => void = undefined;
+onTap: (gestureState: TapGestureState) => void = undefined;
+onDoubleTap: (gestureState: TapGestureState) => void = undefined;
 
 // We can set vertical or horizontal as preferred
-preferredPan?: PreferredPanGesture; // Horizontal or vertical
+preferredPan: PreferredPanGesture = undefined; // Horizontal or vertical
 
 // How many pixels (in either horizontal or vertical direction) until
 // pan is recognized? Default is 10. Can be any value > 0.
-panPixelThreshold?: number = undefined;
+panPixelThreshold: number = undefined;
 
-// Something else wants to become responder. Should this view release the responder?
-// Setting true allows release
-releaseOnRequest?: boolean = false;
+// Something else wants to become responder. Should this view
+// release the responder? Setting true allows release.
+releaseOnRequest: boolean = false;
+
+// Alternate text for screen readers.
+accessibilityLabel: string = undefined;
+
+// Traits used to hint screen readers, etc.
+accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
+
+// Expose the element and/or its children as accessible to Screen readers
+importantForAccessibility?: ImportantForAccessibility = ImportantForAccessibility.Yes;
 ```
 
 ## Styles

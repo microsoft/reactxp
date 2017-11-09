@@ -15,7 +15,7 @@ export class Input extends RX.Input {
     constructor() {
         super();
 
-        RN.BackAndroid.addEventListener('BackButton', () => {
+        RN.BackHandler.addEventListener('hardwareBackPress', () => {
             return this.backButtonEvent.fire();
         });
     }

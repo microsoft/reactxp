@@ -10,10 +10,10 @@ import React = require('react');
 
 import Types = require('./Types');
 
-export abstract class ImageSvg<S> extends React.Component<Types.ImageSvgProps, S> {
+export abstract class ImageSvg extends React.Component<Types.ImageSvgProps, any> {
 }
 
-export abstract class SvgPath<S> extends React.Component<Types.SvgPathProps, S> {
+export abstract class SvgPath extends React.Component<Types.SvgPathProps, any> {
 }
 
 export interface PluginInterface {

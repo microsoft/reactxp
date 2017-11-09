@@ -12,22 +12,22 @@ import React = require('react');
 import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 
 const _styles = {
     defaultTextInput: Styles.createTextInputStyle({
+        borderWidth: 0, // Needed for Windows UWP
         padding: 0
     })
 };
 
 export interface TextInputState {
-    inputValue?: string;
-    isFocused?: boolean;
+    inputValue: string;
+    isFocused: boolean;
 }
 
-export class TextInput extends RX.TextInput<TextInputState> {
+export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
     private _selectionStart: number = 0;
     private _selectionEnd: number = 0;
 
@@ -43,7 +43,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
     componentWillReceiveProps(nextProps: Types.TextInputProps) {
         if (nextProps.value !== this.state.inputValue) {
             this.setState({
-                inputValue: nextProps.value
+                inputValue: nextProps.value || ''
             });
         }
     }
@@ -53,9 +53,9 @@ export class TextInput extends RX.TextInput<TextInputState> {
         const blurOnSubmit = this.props.blurOnSubmit || !this.props.multiline;
         return (
             <RN.TextInput
-                ref='nativeTextInput'
+                ref={ 'nativeTextInput' }
                 multiline={ this.props.multiline }
-                style={ Styles.combine(_styles.defaultTextInput, this.props.style) }
+                style={ Styles.combine([_styles.defaultTextInput, this.props.style]) }
                 value={ this.state.inputValue }
 
                 autoCorrect={ this.props.autoCorrect }
@@ -70,9 +70,9 @@ export class TextInput extends RX.TextInput<TextInputState> {
                 defaultValue={ this.props.value }
                 placeholderTextColor={ this.props.placeholderTextColor }
                 onSubmitEditing={this.props.onSubmitEditing }
-                onKeyPress={ this._onKeyPress }
+                onKeyPress={ this._onKeyPress as any }
                 onChangeText={ this._onChangeText }
-                onSelectionChange={ this._onSelectionChange }
+                onSelectionChange={ this._onSelectionChange as any }
                 onFocus={ this._onFocus }
                 onBlur={ this._onBlur }
                 onScroll={ this._onScroll }
@@ -117,7 +117,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
         }
     }
 
-    private _onSelectionChange = (selEvent: React.SyntheticEvent) => {
+    private _onSelectionChange = (selEvent: React.SyntheticEvent<TextInput>) => {
         let selection: { start: number, end: number } =
             (selEvent.nativeEvent as any).selection;
 
@@ -135,7 +135,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
         this.forceUpdate();
     }
 
-    private _onKeyPress = (e: React.KeyboardEvent) => {
+    private _onKeyPress = (e: React.KeyboardEvent<TextInput>) => {
         if (this.props.onKeyPress) {
             let keyName: string = (e.nativeEvent as any).key;
             let keyCode: number = 0;
@@ -178,7 +178,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
         }
     }
 
-    private _onScroll = (e: React.UIEvent) => {
+    private _onScroll = (e: React.UIEvent<TextInput>) => {
         if (this.props.onScroll) {
             const { contentOffset } = (e.nativeEvent as any);
             this.props.onScroll(contentOffset.x, contentOffset.y);
@@ -191,6 +191,9 @@ export class TextInput extends RX.TextInput<TextInputState> {
 
     focus() {
         (this.refs['nativeTextInput'] as any).focus();
+    }
+
+    setAccessibilityFocus() {
         AccessibilityUtil.setAccessibilityFocus(this);
     }
 

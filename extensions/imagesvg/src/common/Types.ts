@@ -23,7 +23,6 @@ export interface SvgCommonProps {
 
 export interface ImageSvgProps extends SvgCommonProps, RXTypes.CommonStyledProps<ImageSvgStyleRuleSet> {
     children?: RXTypes.ReactNode;
-    style?: RXTypes.ViewStyleRuleSet|RXTypes.ViewStyleRuleSet[];
     height: number;
     width: number;
     accessibilityLabel?: string;

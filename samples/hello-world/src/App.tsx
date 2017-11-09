@@ -1,7 +1,8 @@
 /*
 * This file demonstrates a basic ReactXP app.
 */
-
+// This example uses ExperimentalNavigation on iOS and Android
+import Navigator, { Types, NavigatorDelegateSelector as DelegateSelector } from 'reactxp-navigation';
 import RX = require('reactxp');
 
 import MainPanel = require('./MainPanel');
@@ -13,42 +14,44 @@ enum NavigationRouteId {
 }
 
 const styles = {
+    // Standard navigator style should be an object. So we have to disable caching here.
     navCardStyle: RX.Styles.createViewStyle({
         backgroundColor: '#f5fcff'
-    })
+    }, false)
 };
 
-class App extends RX.Component<null, null> {
-    private _navigator: RX.Navigator;
+class App extends RX.Component<{}, null> {
+    private _navigator: Navigator;
 
     componentDidMount() {
         this._navigator.immediatelyResetRouteStack([{
             routeId: NavigationRouteId.MainPanel,
-            sceneConfigType: RX.Types.NavigatorSceneConfigType.Fade
+            sceneConfigType: Types.NavigatorSceneConfigType.Fade
         }]);
     }
 
     render() {
         return (
-            <RX.Navigator
+            <Navigator
                 ref={ this._onNavigatorRef }
                 renderScene={ this._renderScene }
                 cardStyle={ styles.navCardStyle }
+                delegateSelector={ DelegateSelector }
             />
         );
     }
 
-    private _onNavigatorRef = (navigator: RX.Navigator) => {
+    private _onNavigatorRef = (navigator: Navigator) => {
         this._navigator = navigator;
     }
 
-    private _renderScene = (navigatorRoute: RX.Types.NavigatorRoute) => {
+    private _renderScene = (navigatorRoute: Types.NavigatorRoute) => {
         switch (navigatorRoute.routeId) {
             case NavigationRouteId.MainPanel:
-                return <MainPanel onPressNavigate={ this._onPressNavigate } />
+                return <MainPanel onPressNavigate={ this._onPressNavigate } />;
 
             case NavigationRouteId.SecondPanel:
-                return <SecondPanel onNavigateBack={ this._onPressBack } />
+                return <SecondPanel onNavigateBack={ this._onPressBack } />;
         }
 
         return null;
@@ -57,10 +60,7 @@ class App extends RX.Component<null, null> {
     private _onPressNavigate = () => {
         this._navigator.push({
             routeId: NavigationRouteId.SecondPanel,
-            sceneConfigType: RX.Types.NavigatorSceneConfigType.FloatFromRight,
-            customSceneConfig: {
-                hideShadow: true
-            }
+            sceneConfigType: Types.NavigatorSceneConfigType.FloatFromRight
         });
     }
 

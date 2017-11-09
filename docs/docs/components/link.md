@@ -4,7 +4,7 @@ title: Link
 layout: docs
 category: Components
 permalink: docs/components/link.html
-next: components/navigator
+next: components/picker
 ---
 
 This component displays a hyperlink. On the web, it translates to an &lt;a&gt; tag.
@@ -44,7 +44,7 @@ selectable: boolean = false;
 title: string = undefined;
 
 // URL to follow for hyperlink
-url: string = undefined;
+url: string;
 
 // See below for supported styles
 style: LinkStyleRuleSet | LinkStyleRuleSet[] = [];

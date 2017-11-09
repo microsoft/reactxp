@@ -22,14 +22,17 @@ const _styles = {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        // On Android, we need to provide some color to prevent
+        // removal of the view.
+        backgroundColor: 'transparent'
     }
 };
 
 export interface ModalContainerProps extends Types.CommonProps {
 }
 
-export class ModalContainer extends React.Component<ModalContainerProps, null> {
+export class ModalContainer extends React.Component<ModalContainerProps, {}> {
     constructor(props: ModalContainerProps) {
         super(props);
     }

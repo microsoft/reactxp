@@ -11,6 +11,7 @@
 import _ = require('./utils/lodashMini');
 import React = require('react');
 
+import AccessibilityUtil from './AccessibilityUtil';
 import MouseResponder, { MouseResponderSubscription } from './utils/MouseResponder';
 import RX = require('../common/Interfaces');
 import Styles from './Styles';
@@ -21,7 +22,8 @@ const _styles = {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
         overflow: 'hidden',
         alignItems: 'stretch',
         justifyContent: 'center'
@@ -42,14 +44,14 @@ enum GestureType {
 
 let _idCounter = 1;
 
-export class GestureView extends RX.GestureView<{}> {
+export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
 
     private _id: number;
 
     private _container: HTMLElement;
     // State for tracking double taps
-    private _doubleTapTimer: any = null;
-    private _lastTapEvent: Types.MouseEvent = null;
+    private _doubleTapTimer: number|undefined;
+    private _lastTapEvent: Types.MouseEvent|undefined;
 
     private _responder: MouseResponderSubscription;
 
@@ -100,27 +102,33 @@ export class GestureView extends RX.GestureView<{}> {
     }
 
     render() {
+        const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
+        const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
+
         return (
             <div
                 style={ this._getStyles() }
                 ref={ this._setContainerRef }
                 onClick={ this._onClick }
                 onWheel={ this._onWheel }
+                role={ ariaRole }
+                aria-label={ this.props.accessibilityLabel }
+                aria-hidden={ isAriaHidden }
             >
                 { this.props.children }
             </div>
         );
     }
 
-    private _setContainerRef = (container: React.DOMComponent<React.HTMLAttributes>) => {
+    private _setContainerRef = (container: any) => {
         // safe since div refs resolve into HTMLElement and not react element.
-        this._container = container as any as HTMLElement;
+        this._container = container as HTMLElement;
     }
 
     private _getStyles(): any {
-        let combinedStyles = Styles.combine(_styles.defaultView, this.props.style);
+        let combinedStyles = Styles.combine([_styles.defaultView, this.props.style]) as any;
 
-        let cursorName: string = null;
+        let cursorName: string|undefined;
         switch (this.props.mouseOverCursor) {
             case Types.GestureMouseCursor.Grab:
                 cursorName = 'grab';
@@ -150,7 +158,7 @@ export class GestureView extends RX.GestureView<{}> {
             // This is a double-tap, so swallow the previous single tap.
             this._cancelDoubleTapTimer();
             this._sendDoubleTapEvent(e);
-            this._lastTapEvent = null;
+            this._lastTapEvent = undefined;
         } else {
             // This wasn't a double-tap. Report any previous single tap and start the double-tap
             // timer so we can determine whether the current tap is a single or double.
@@ -180,7 +188,8 @@ export class GestureView extends RX.GestureView<{}> {
     }
 
     private _getPanPixelThreshold = () => {
-        return this.props.panPixelThreshold > 0 ? this.props.panPixelThreshold : _panPixelThreshold;
+        return (!_.isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
+            this.props.panPixelThreshold : _panPixelThreshold;
     }
 
     private _shouldRespondToPan(gestureState: Types.PanGestureState): boolean {
@@ -237,7 +246,7 @@ export class GestureView extends RX.GestureView<{}> {
         return isPan;
     }
 
-    private _onWheel = (e: React.WheelEvent) => {
+    private _onWheel = (e: React.WheelEvent<any>) => {
         if (this.props.onScrollWheel) {
             const clientRect = this._getGestureViewClientRect();
             const scrollWheelEvent: Types.ScrollWheelGestureState = {
@@ -280,7 +289,7 @@ export class GestureView extends RX.GestureView<{}> {
 
         this._doubleTapTimer = window.setTimeout(() => {
             this._reportDelayedTap();
-            this._doubleTapTimer = null;
+            this._doubleTapTimer = undefined;
         }, _doubleTapDurationThreshold);
     }
 
@@ -288,7 +297,7 @@ export class GestureView extends RX.GestureView<{}> {
     private _cancelDoubleTapTimer() {
         if (this._doubleTapTimer) {
             clearTimeout(this._doubleTapTimer);
-            this._doubleTapTimer = null;
+            this._doubleTapTimer = undefined;
         }
     }
 
@@ -297,7 +306,7 @@ export class GestureView extends RX.GestureView<{}> {
     private _reportDelayedTap() {
         if (this._lastTapEvent && this.props.onTap) {
             this._sendTapEvent(this._lastTapEvent);
-            this._lastTapEvent = null;
+            this._lastTapEvent = undefined;
         }
     }
 
@@ -341,13 +350,13 @@ export class GestureView extends RX.GestureView<{}> {
     private _sendPanEvent = (gestureState: Types.PanGestureState) => {
         switch (this._pendingGestureType) {
             case GestureType.Pan:
-                this.props.onPan(gestureState);
+                this.props.onPan!!!(gestureState);
                 break;
             case GestureType.PanVertical:
-                this.props.onPanVertical(gestureState);
+                this.props.onPanVertical!!!(gestureState);
                 break;
             case GestureType.PanHorizontal:
-                this.props.onPanHorizontal(gestureState);
+                this.props.onPanHorizontal!!!(gestureState);
                 break;
 
             default:
@@ -356,7 +365,7 @@ export class GestureView extends RX.GestureView<{}> {
 
         // we need to clean taps in case there was a pan event in the meantime
         if (this._pendingGestureType !== GestureType.None) {
-            this._lastTapEvent = null;
+            this._lastTapEvent = undefined;
             this._cancelDoubleTapTimer();
             this._skipNextTap = true;
         }

@@ -30,11 +30,15 @@ interface PopupOptions {
     renderPopup: (anchorPosition: PopupPosition, anchorOffset: number,
         popupWidth: number, popupHeight: number) => ReactNode;
 
-    // Returns a mounted component instance that controls the triggering of the popup.
-    // In majority of cases, "anchor" of popup has handlers to control when the popup will be seen and this function is not required. 
-    // In a few cases, where anchor is not the same as the whole component that triggers when the popup wil be seen, this can be used.
-    // For instance, a button combined with a chevron icon, which on click triggers a popup below the chevron icon. 
-    // In this example, getElementTriggeringPopup() can return the container with button and chevron icon.
+    // Returns a mounted component instance that controls the triggering
+    // of the popup. In the majority of cases, "anchor" of popup has
+    // handlers to control when the popup will be seen and this function
+    // is not required. In a few cases, where anchor is not the same as
+    // the whole component that triggers when the popup wil be seen,
+    // this can be used. For instance, a button combined with a chevron
+    // icon, which on click triggers a popup below the chevron icon. In
+    // this example, getElementTriggeringPopup() can return the container
+    // with button and chevron icon.
     getElementTriggeringPopup?: () => React.Component<any, any>;
 
     // Called when the popup is dismissed.
@@ -49,31 +53,47 @@ interface PopupOptions {
     // In this mode only the first position priority will be used.
     useInnerPositioning?: boolean;
 
-    // On pressed handler to notify whoever wanted to create the popup that its
-    // anchor has been pressed.
+    // On pressed handler to notify whoever wanted to create the popup
+    // that its anchor has been pressed.
     // IMPORTANT NOTE: This handler may be called when the component is
     // already unmounted as it uses a time delay accommodate 
     // fade-out animations.
     onAnchorPressed?: (e: SyntheticEvent) => void;
 
     // Determines if the anchor invoking the popup should behave like a toggle. 
-    // Value = true  => Calling Popup.show will show the popup. A subsequent call, will hide the popup, and so on. 
-    // Value = false or undefined (default)  => Calling Popup.show will always show the popup.
-     dismissIfShown?: boolean;
+    // If true, calling Popup.show will show the popup. A subsequent call
+    // will hide the popup. If false or undefined (default), calling Popup.show 
+    // will always show the popup.
+    dismissIfShown?: boolean;
+
+    // By default, clicks or taps outside of a popup (unless they are on the
+    // anchor) will not dismiss the active popup. If true, this overrides the
+    // default behavior, in which case the popup must be dismissed explicitly.
+    preventDismissOnPress?: boolean;
+
+    // Android & iOS only.
+    // The id of the root view this popup is associated with.
+    // Defaults to the view set by UserInterface.setMainView();
+    rootViewId?: string;
 }
 ```
 
 ## Methods
 
 ``` javascript
-// Dismisses an already-displayed popup after a specified number of milliseconds
+// Dismisses an already-displayed popup after a specified number
+// of milliseconds
 autoDismiss(popupId: string, dismissDelay: number = 0): void;
 
 // Dismisses an already-displayed popup immediately
 dismiss(popupId: string): void;
 
-// Displays a popup
-show(options: PopupOptions, popupId: string, showDelay: number = 0);
+// Dismisses all popups immediately
+dismissAll(): void;
+
+// Displays a popup. Returns true if successful, false if the popup is
+// already displayed
+show(options: PopupOptions, popupId: string, showDelay: number = 0): boolean;
 ```
 
 ## Sample Usage

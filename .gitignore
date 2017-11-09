@@ -48,3 +48,5 @@ node_modules
 .vscode
 .DS_STORE
 
+
+.idea/*

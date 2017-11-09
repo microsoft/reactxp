@@ -42,20 +42,20 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         this._internalProps.style = this._getStyles(props);
         this._internalProps.ref = this._setNativeView;
 
-        const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(props.importantForAccessibility);
-        const accessibilityLabel = props.accessibilityLabel || props.title;
-        // Set accessibility props on Native only if we have valid importantForAccessibility value or accessibility label or
-        // if this view is not a button.
-        // For a button, we let the Button component compute its own accessibility props.
-        const shouldSetAccessibilityProps = this._internalProps && !this._isButton(props) &&
-            !!(importantForAccessibility || accessibilityLabel);
+        // Translate accessibilityProps from RX to RN, there are type diferrences for example:
+        // accessibilityLiveRegion prop is number (RX.Types.AccessibilityLiveRegion) in RX, but
+        // string is expected by RN.View.
+        const accessibilityProps = {
+            importantForAccessibility: AccessibilityUtil.importantForAccessibilityToString(props.importantForAccessibility),
+            accessibilityLabel: props.accessibilityLabel || props.title,
+            accessibilityTraits: AccessibilityUtil.accessibilityTraitToString(props.accessibilityTraits),
+            accessibilityComponentType: AccessibilityUtil.accessibilityComponentTypeToString(props.accessibilityTraits),
+            accessibilityLiveRegion: AccessibilityUtil.accessibilityLiveRegionToString(props.accessibilityLiveRegion),
+        };
 
-        if (shouldSetAccessibilityProps) {
-            this._internalProps.importantForAccessibility = importantForAccessibility;
-            this._internalProps.accessibilityLabel = accessibilityLabel;
-            this._internalProps.accessibilityTraits = AccessibilityUtil.accessibilityTraitToString(props.accessibilityTraits);
-            this._internalProps.accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(
-                props.accessibilityTraits);
+        // Don't merge accessibilityProps for Button, which translates them for RN on it's own.
+        if (!this._isButton(props)) {
+            this._internalProps = _.extend(this._internalProps, accessibilityProps);
         }
 
         if (props.onLayout) {
@@ -99,6 +99,14 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
     focus() {
         AccessibilityUtil.setAccessibilityFocus(this);
+    }
+
+    setFocusRestricted(restricted: boolean) {
+        // Nothing to do.
+    }
+
+    setFocusLimited(limited: boolean) {
+        // Nothing to do.
     }
 }
 

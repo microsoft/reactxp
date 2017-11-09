@@ -34,7 +34,7 @@ export interface WebViewState {
     webFrameIdentifier?: string;
 }
 
-export class WebView extends RX.WebView<WebViewState> {
+export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> implements RX.WebView {
     private static _webFrameNumber = 1;
 
     constructor(props: Types.WebViewProps) {
@@ -66,7 +66,7 @@ export class WebView extends RX.WebView<WebViewState> {
     }
 
     render() {
-        let styles = Styles.combine(_styles.webViewDefault, this.props.style);
+        let styles = Styles.combine([_styles.webViewDefault, this.props.style]);
         let sandbox = this.props.sandbox !== undefined
             ? this.props.sandbox
             : (this.props.javaScriptEnabled ? Types.WebViewSandboxMode.AllowScripts : Types.WebViewSandboxMode.None);
@@ -75,10 +75,10 @@ export class WebView extends RX.WebView<WebViewState> {
         return (
             <View style={ _styles.webViewContainer }>
                 <iframe
-                    ref='iframe'
+                    ref={ 'iframe' }
                     name={ this.state.webFrameIdentifier }
                     id={ this.state.webFrameIdentifier }
-                    style={ styles }
+                    style={ styles as any }
                     src={ this.props.url }
                     onLoad={ this._onLoad }
                     sandbox={ this._sandboxToStringValue(sandbox) }
@@ -132,28 +132,28 @@ export class WebView extends RX.WebView<WebViewState> {
     }
 
     postMessage(message: string, targetOrigin: string = '*') {
-        const iframeDOM = ReactDOM.findDOMNode<HTMLFrameElement>(this.refs['iframe']);
+        const iframeDOM = ReactDOM.findDOMNode(this.refs['iframe']) as HTMLFrameElement;
         if (iframeDOM && iframeDOM.contentWindow) {
             iframeDOM.contentWindow.postMessage(message, targetOrigin);
         }
     }
 
     reload() {
-        const iframeDOM = ReactDOM.findDOMNode<HTMLFrameElement>(this.refs['iframe']);
+        const iframeDOM = ReactDOM.findDOMNode(this.refs['iframe']) as HTMLFrameElement;
         if (iframeDOM && iframeDOM.contentWindow) {
             iframeDOM.contentWindow.location.reload(true);
         }
     }
 
     goBack() {
-        const iframeDOM = ReactDOM.findDOMNode<HTMLFrameElement>(this.refs['iframe']);
+        const iframeDOM = ReactDOM.findDOMNode(this.refs['iframe']) as HTMLFrameElement;
         if (iframeDOM && iframeDOM.contentWindow) {
             iframeDOM.contentWindow.history.back();
         }
     }
 
     goForward() {
-        const iframeDOM = ReactDOM.findDOMNode<HTMLFrameElement>(this.refs['iframe']);
+        const iframeDOM = ReactDOM.findDOMNode(this.refs['iframe']) as HTMLFrameElement;
         if (iframeDOM && iframeDOM.contentWindow) {
             iframeDOM.contentWindow.history.forward();
         }

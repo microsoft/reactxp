@@ -17,30 +17,54 @@ type CssAliasMap = { [prop: string]: string };
 
 export class Styles extends RX.Styles {
     // Combines a set of styles
-    combine<S>(defaultStyle: any, ruleSet: Types.StyleRuleSet<S> | Types.StyleRuleSet<S>[]): any {
-        let combinedStyles: any = {};
-        if (defaultStyle) {
-            combinedStyles = _.extend(combinedStyles, defaultStyle);
-        }
-        if (ruleSet) {
-            combinedStyles = _.extend.apply(_, [combinedStyles].concat(ruleSet));
+    combine<S>(ruleSet1: Types.StyleRuleSetRecursive<S>|undefined, ruleSet2?: Types.StyleRuleSetRecursive<S>)
+            : Types.StyleRuleSetOrArray<S>|undefined {
+        if (!ruleSet1 && !ruleSet2) {
+            return undefined;
         }
 
-        if ((combinedStyles.marginLeft !== undefined || combinedStyles.marginRight !== undefined ||
-                combinedStyles.marginTop !== undefined || combinedStyles.marginBottom !== undefined) &&
-                combinedStyles.margin !== undefined) {
-            console.error('Conflicting rules for margin specified.');
-            delete combinedStyles.margin;
+        let ruleSet = ruleSet1 ? (ruleSet2 ? [ruleSet1, ruleSet2] : ruleSet1) : ruleSet2;
+        
+        if (ruleSet instanceof Array) {
+            let combinedStyles: any = {};
+
+            for (let i = 0; i < ruleSet.length; i++) {
+                let subRuleSet = this.combine(ruleSet[i]);
+                combinedStyles = _.extend(combinedStyles, subRuleSet);
+            }
+
+            if ((combinedStyles.marginLeft !== undefined || combinedStyles.marginRight !== undefined ||
+                    combinedStyles.marginTop !== undefined || combinedStyles.marginBottom !== undefined) &&
+                    combinedStyles.margin !== undefined) {
+                console.error('Conflicting rules for margin specified.');
+                delete combinedStyles.margin;
+            }
+
+            if ((combinedStyles.paddingLeft !== undefined || combinedStyles.paddingRight !== undefined ||
+                    combinedStyles.paddingTop !== undefined || combinedStyles.paddingBottom !== undefined) &&
+                    combinedStyles.padding !== undefined) {
+                console.error('Conflicting rules for padding specified.');
+                delete combinedStyles.padding;
+            }
+
+            if (combinedStyles.borderWidth || 
+                    combinedStyles.borderTopWidth || combinedStyles.borderRightWidth ||
+                    combinedStyles.borderBottomWidth || combinedStyles.borderLeftWidth) {
+                // If the caller specified a non-zero border width
+                // but no border color or style, set the defaults to
+                // match those of React Native platforms.
+                if (combinedStyles.borderColor === undefined) {
+                    combinedStyles.borderColor = 'black';
+                }
+                if (combinedStyles.borderStyle === undefined) {
+                    combinedStyles.borderStyle = 'solid';
+                }
+            }
+
+            return combinedStyles as Types.StyleRuleSet<S>;
         }
 
-        if ((combinedStyles.paddingLeft !== undefined || combinedStyles.paddingRight !== undefined ||
-                combinedStyles.paddingTop !== undefined || combinedStyles.paddingBottom !== undefined) &&
-                combinedStyles.padding !== undefined) {
-            console.error('Conflicting rules for padding specified.');
-            delete combinedStyles.padding;
-        }
-
-        return combinedStyles;
+        return ruleSet as Types.StyleRuleSet<S>;
     }
 
     // Creates opaque styles that can be used for View
@@ -108,11 +132,11 @@ export class Styles extends RX.Styles {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
-    // Returns the name of a CSS property or its alias. Returns null if the property is not supported.
+    // Returns the name of a CSS property or its alias. Returns undefined if the property is not supported.
     private _getCssPropertyAlias(name: string) {
         // If we're inside unit tests, document may not be defined yet. We don't need prefixes for tests
         if (typeof document === 'undefined') {
-            return null;
+            return undefined;
         }
 
         let upperName = name.charAt(0).toUpperCase() + name.slice(1);
@@ -132,11 +156,11 @@ export class Styles extends RX.Styles {
             }
         }
 
-        return null;
+        return undefined;
     }
 
     // Use memoize to cache the result after the first call.
-    private _createDummyElement = _.memoize(() => {
+    private _createDummyElement = _.memoize((): HTMLElement => {
         return document.createElement('testCss');
     });
 
@@ -165,7 +189,7 @@ export class Styles extends RX.Styles {
 
         props.forEach(prop => {
             let alias = this._getCssPropertyAlias(prop);
-            if (prop !== alias) {
+            if (alias && prop !== alias) {
                 aliases[prop] = alias;
             }
         });
@@ -191,7 +215,7 @@ export class Styles extends RX.Styles {
         return cssString;
     }
 
-    getCssPropertyAliasesCssStyle = memoize(() => {
+    _cssPropertyAliasesCssStyle = memoize(() => {
         let jsStyleAliases = this._getCssPropertyAliasesJsStyle();
 
         let aliases: CssAliasMap = {};
@@ -202,6 +226,10 @@ export class Styles extends RX.Styles {
 
         return aliases;
     });
+
+    getCssPropertyAliasesCssStyle(): {[key: string]: string} {
+        return this._cssPropertyAliasesCssStyle();
+    }
 
     getParentComponentName(component: any): string {
         let parentConstructor: any;
@@ -242,11 +270,17 @@ export class Styles extends RX.Styles {
             delete def.flex;
 
             if (flexValue > 0) {
-                def.flex = flexValue.toString() + ' 1 auto';
+                // p 1 auto
+                def.flexGrow = flexValue;
+                def.flexShrink = 1;
             } else if (flexValue < 0) {
-                def.flex = '0 1 auto';
+                // 0 -n auto
+                def.flexGrow = 0;
+                def.flexShrink = -flexValue;
             } else {
-                def.flex = '0 0 auto';
+                // 0 0 auto
+                def.flexGrow = 0;
+                def.flexShrink = 0;
             }
         }
 
@@ -316,9 +350,9 @@ export class Styles extends RX.Styles {
             def['lineHeight'] = def.lineHeight + 'px';
         }
 
-        // Add default border width if border style was provided. Otherwise
-        // the browser will default to a one-pixel border.
-        if (def.borderStyle) {
+        // Add default border width if border style or some subset of border widths
+        // were provided. Otherwise the browser will default to a two-pixel border.
+        if (def.borderStyle || def.borderTopWidth || def.borderRightWidth || def.borderBottomWidth || def.borderLeftWidth) {
             if (def.borderWidth === undefined) {
                 if (def.borderTopWidth === undefined) {
                     def.borderTopWidth = 0;
@@ -397,7 +431,7 @@ export class Styles extends RX.Styles {
     }
 }
 
-export function memoize<T extends Function>(func: T, resolver?: Function): T { 
+export function memoize<T extends (...args: any[]) => any>(func: T, resolver?: (...args: any[]) => any): T { 
     return _.memoize(func, resolver);
 }
  

@@ -27,10 +27,14 @@ accessibilityHidden: boolean = false;
 accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 
 // Region for accessibility mechanisms
-accessibilityLiveRegion?: AccessibilityLiveRegion = undefined; // Android and web only
+accessibilityLiveRegion: AccessibilityLiveRegion =
+    undefined; // Android and web only
 
 // Should fonts be scaled according to system setting?
 allowFontScaling: boolean = true; // Android and iOS only
+
+// Specifies a unique id for an HTML element
+id: string = undefined; // Web only
 
 // Should the scale multiplier be capped when allowFontScaling is set to true?
 // Possible values include the following:
@@ -45,6 +49,10 @@ numberOfLines: number = 0;
 
 // Is the text selectable (affects mouse pointer and copy command)
 selectable: boolean = false;
+
+// Mouse & Touch Events
+onPress?: (e: SyntheticEvent) => void = undefined;
+onContextMenu?: (e: SyntheticEvent) => void = undefined;
 
 // See below for supported styles
 style: TextStyleRuleSet | TextStyleRuleSet[] = [];

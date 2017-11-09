@@ -13,9 +13,9 @@ import RN = require('react-native');
 
 import Animated from './Animated';
 import AccessibilityUtil from './AccessibilityUtil';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
+import UserInterface from './UserInterface';
 
 const _styles = {
     defaultButton: Styles.createButtonStyle({
@@ -52,24 +52,24 @@ function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, properti
     });
 }
 
-export class Button extends RX.Button<{}> {
+export class Button extends React.Component<Types.ButtonProps, {}> {
     private _mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount || noop;
     private _mixin_componentWillUnmount = RN.Touchable.Mixin.componentWillUnmount || noop;
 
     touchableGetInitialState: () => RN.Touchable.State;
     touchableHandleStartShouldSetResponder: () => boolean;
     touchableHandleResponderTerminationRequest: () => boolean;
-    touchableHandleResponderGrant: (e: React.SyntheticEvent) => void;
-    touchableHandleResponderMove: (e: React.SyntheticEvent) => void;
-    touchableHandleResponderRelease: (e: React.SyntheticEvent) => void;
-    touchableHandleResponderTerminate: (e: React.SyntheticEvent) => void;
+    touchableHandleResponderGrant: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderMove: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderRelease: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderTerminate: (e: React.SyntheticEvent<any>) => void;
 
     private _isMounted = false;
-    private _hideTimeout: number = null;
-    private _buttonElement: RN.Animated.View = null;
-    private _defaultOpacityValue: number = null;
-    private _opacityAnimatedValue: RN.Animated.Value = null;
-    private _opacityAnimatedStyle: Types.AnimatedViewStyle = null;
+    private _hideTimeout: number|undefined;
+    private _buttonElement: RN.Animated.View|undefined;
+    private _defaultOpacityValue: number|undefined;
+    private _opacityAnimatedValue: RN.Animated.Value|undefined;
+    private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet|undefined;
 
     constructor(props: Types.ButtonProps) {
         super(props);
@@ -97,8 +97,8 @@ export class Button extends RX.Button<{}> {
         return (
             <RN.Animated.View
                 ref={ this._onButtonRef }
-                style={ Styles.combine(_styles.defaultButton, [this.props.style, opacityStyle],
-                this.props.disabled && _styles.disabled) }
+                style={ Styles.combine([_styles.defaultButton, this.props.style, opacityStyle,
+                    this.props.disabled && _styles.disabled]) }
                 accessibilityLabel={ this.props.accessibilityLabel || this.props.title }
                 accessibilityTraits={ accessibilityTrait }
                 accessibilityComponentType={ accessibilityComponentType }
@@ -110,6 +110,7 @@ export class Button extends RX.Button<{}> {
                 onResponderRelease={ this.touchableHandleResponderRelease }
                 onResponderTerminate={ this.touchableHandleResponderTerminate }
                 shouldRasterizeIOS={ this.props.shouldRasterizeIOS }
+                onAccessibilityTapIOS={ this.props.onAccessibilityTapIOS }
             >
                 { this.props.children }
             </RN.Animated.View>
@@ -129,7 +130,7 @@ export class Button extends RX.Button<{}> {
     componentWillReceiveProps(nextProps: Types.ButtonProps) {
         if (nextProps !== this.props) {
             // If opacity got updated as a part of props update, we need to reflect that in the opacity animation value
-           this._setOpacityStyles(nextProps);
+           this._setOpacityStyles(nextProps, this.props);
         }
     }
 
@@ -142,8 +143,10 @@ export class Button extends RX.Button<{}> {
     touchableHandleActivePressIn = (e: Types.SyntheticEvent) => {
         if (this._isTouchFeedbackApplicable()) {
             if (this.props.underlayColor) {
-                clearTimeout(this._hideTimeout);
-                this._hideTimeout = undefined;
+                if (this._hideTimeout) {
+                    clearTimeout(this._hideTimeout);
+                    this._hideTimeout = undefined;
+                }
                 this._showUnderlay();
             }
 
@@ -161,7 +164,9 @@ export class Button extends RX.Button<{}> {
     touchableHandleActivePressOut = (e: Types.SyntheticEvent) => {
         if (this._isTouchFeedbackApplicable()) {
             if (this.props.underlayColor) {
-                clearTimeout(this._hideTimeout);
+                if (this._hideTimeout) {
+                    clearTimeout(this._hideTimeout);
+                }
                 this._hideTimeout = setTimeout(this._hideUnderlay, _hideUnderlayTimeout);
             }
 
@@ -176,6 +181,7 @@ export class Button extends RX.Button<{}> {
     }
 
     touchableHandlePress = (e: Types.MouseEvent) => {
+        UserInterface.evaluateTouchLatency(e);
         if (!this.props.disabled && this.props.onPress) {
             this.props.onPress(e);
         }
@@ -203,10 +209,10 @@ export class Button extends RX.Button<{}> {
          // native mobile platforms doesn't have the notion of blur for buttons, so ignore.
     }
 
-    private _setOpacityStyles(props: Types.ButtonProps) {
-        const currentOpacityValue = this._getDefaultOpacityValue(props);
-        if (this._defaultOpacityValue !== currentOpacityValue) {
-            this._defaultOpacityValue = currentOpacityValue;
+    private _setOpacityStyles(props: Types.ButtonProps, prevProps?: Types.ButtonProps) {
+        const opacityValueFromProps = this._getDefaultOpacityValue(props);
+        if (this._defaultOpacityValue !== opacityValueFromProps || (prevProps && props.disabled !== prevProps.disabled)) {
+            this._defaultOpacityValue = opacityValueFromProps;
             this._opacityAnimatedValue = new Animated.Value(this._defaultOpacityValue);
             this._opacityAnimatedStyle = Styles.createAnimatedViewStyle({
                 opacity: this._opacityAnimatedValue
@@ -227,23 +233,24 @@ export class Button extends RX.Button<{}> {
     }
 
     private _opacityInactive(duration: number) {
-        this.setOpacityTo(this._defaultOpacityValue, duration);
+        this.setOpacityTo(this._defaultOpacityValue!!!, duration);
     }
 
     private _getDefaultOpacityValue(props: Types.ButtonProps): number {
-        let flattenedStyles: { [key: string]: any } = null;
+        let flattenedStyles: { [key: string]: any }|undefined;
         if (props && props.style) {
             flattenedStyles = RN.StyleSheet.flatten(props.style);
         }
 
         return flattenedStyles && (flattenedStyles as Types.ButtonStyle).opacity || 1;
     }
+
     /**
     * Animate the touchable to a new opacity.
     */
     setOpacityTo(value: number, duration: number) {
        Animated.timing(
-            this._opacityAnimatedValue,
+            this._opacityAnimatedValue!!!,
             {
                 toValue: value,
                 duration: duration,

@@ -27,11 +27,11 @@ onError: (e: SyntheticEvent) => void;
 onLoad: (e: SyntheticEvent) => void;
 
 // Android-specific resize property
-resizeMethod?: 'auto' | 'resize' | 'scale'; // Android only
+resizeMethod: 'auto' | 'resize' | 'scale' = 'auto'; // Android only
 
 // Determines how to resize the image if its natural size
 // does not match the size of the container
-resizeMode: 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat';
+resizeMode: 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat' = 'stretch';
 
 // Rasterize contents using offscreen bitmap (perf optimization)
 shouldRasterizeIOS: boolean = false; // iOS only

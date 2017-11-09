@@ -17,7 +17,7 @@ In addition to the [common accessibility props](/reactxp/docs/accessibility.html
 ``` javascript
 // Alternate text to display if the image cannot be loaded
 // or by screen readers
-accessibilityHidden: boolean = false;
+accessibilityLabel: boolean = false;
 
 // Hide the component from screen readers?
 accessibilityHidden: boolean = false;
@@ -26,13 +26,27 @@ accessibilityHidden: boolean = false;
 accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 
 // Region for accessibility mechanisms
-accessibilityLiveRegion?: AccessibilityLiveRegion = undefined; // Android and web only
+accessibilityLiveRegion: AccessibilityLiveRegion =
+    undefined; // Android and web only
+
+// Id of an expandable element revealed by the button. Describes a relation between button and element to screen reader.
+ariaControls: string = undefined; // Web only
+
+// Specifies a unique id for an HTML element
+id: string = undefined; // Web only
+
+// Expose the element and/or its children as accessible to Screen readers
+importantForAccessibility?: ImportantForAccessibility = ImportantForAccessibility.yes;
 
 // Delay in ms before onLongPress is called
 delayLongPress: number = 1000;
 
 // If disabled, touch and mouse input events are ignored
 disabled: boolean = false;
+
+// Called when VoiceOver is on and the user double tapped to
+// activate a control
+onAccessibilityTapIOS: (e: SyntheticEvent) => void; // iOS Only
 
 // Called when the user has pressed and held for a specified duration
 onLongPress: (e: SyntheticEvent) => void;
@@ -41,13 +55,15 @@ onLongPress: (e: SyntheticEvent) => void;
 onHoverStart: (e: SyntheticEvent) => void;
 onHoverEnd: (e: SyntheticEvent) => void;
 
-// Called when the touch or mouse button is released within the bounds of the view and the press has not been canceled
+// Called when the touch or mouse button is released within the
+// bounds of the view and the press has not been canceled
 onPress: (e: SyntheticEvent) => void;
 
 // Called when touch is initiated or mouse button is pressed
 onPressIn: (e: SyntheticEvent) => void;
 
-// Called when touch or the mouse button is released or the user&apos;s finger or mouse cursor is no longer over the view
+// Called when touch or the mouse button is released or the
+// user's finger or mouse cursor is no longer over the view
 onPressOut: (e: SyntheticEvent) => void;
 
 // Rasterize contents using offscreen bitmap (perf optimization)
@@ -64,13 +80,13 @@ title: string = undefined;
 
 // Visual touchfeedback properties
 // Disable default opacity animation on touch of buttons
-disableTouchOpacityAnimation?: boolean;  // iOS and Android only
+disableTouchOpacityAnimation: boolean = false;  // iOS and Android only
 
 // Opacity value the button should animate to on button touch
-activeOpacity?: number; // iOS and Android only
+activeOpacity: number = undefined; // iOS and Android only
 
 // Background color that will be visible on button touch
-underlayColor?: string; // iOS and Android only
+underlayColor: string = undefined; // iOS and Android only
 ```
 
 ## Styles

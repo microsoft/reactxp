@@ -24,9 +24,11 @@ Many base components share common subsets of style attributes. For example, almo
 
 ## Combining Styles
 
-All of the base components support a *style* prop that can accept a single style or an array of styles. If an array of styles is provided, the styles are combined in such a way that styles with larger indices override styles with smaller indices. Falsy values (false, null, undefined) can also be specified in a style array. This allows for the following common pattern.
+All of the base components support a *style* prop that can accept a single style or an array of styles. If an array of styles is provided, the styles are combined in such a way that styles with larger indices override styles with smaller indices. Falsy values (false, null, undefined) can also be specified in a style array. This allows for the following common pattern. 
 
+``` javascript
     let buttonTextStyles = [_styles.baseText, this.state.hovering && _styles.hoverText];
+```
 
 Here is another variant that does the same thing -- a little more verbose but arguably easier to read.
 
@@ -36,6 +38,15 @@ if (this.state.hovering) {
     buttonTextStyles.push(_styles.hoverText);
 }
 ```
+
+Within a style array, you can also pass nested arrays. This allows easy manipulation of composite styles.
+
+``` javascript
+// this.props.style might be undefined, a single style, or a (potentially-nested)
+// array of styles.
+<RX.View style={ [_styles.defaultStyle, this.props.style] } />
+```
+
 
 ## Style Caching
 
@@ -60,15 +71,16 @@ ReactXP adopts the simplified flexbox rules and defaults defined by React Native
 
 + Widths, heights, and other measurements are assumed to be pixel values. Other units (including percentages) are not supported.
 
-+ There is no way to specify flexBasis, flexShrink or flexGrow attributes. A single flex attribute covers all of the common cases. It accepts an integer value.
++ While it is possible to specify flexGrow, flexShrink and flexBasis values independently, it is more common to specify the flex parameters using a shortcut called "flex". It accepts an integer value and covers the following common cases.
     * "flex: 0" implies "flex: 0 0 auto"
-    * "flex: -1" implies "flex: 0 1 auto"
-    * "flex: n" (where n is positive) implies "flex: n 0 0"
+    * "flex: n" (where n is negative) implies "flex: 0 n auto"
+    * "flex: p" (where p is positive) implies "flex: n 1 auto"
 
 + The default flexDirection is 'column' rather than 'row'.
 
 + The default position for all elements is 'relative' rather than 'auto'.
 
++ The default justifyContent for buttons is 'center' rather than 'flex-start'.
 
 **Container layout**
 ```javascript
@@ -133,6 +145,9 @@ paddingLeft: number = 0;
 ```javascript
 backgroundColor: color = undefined; // Value is animatable
 opacity: number = 1.0; // Value is animatable
+acrylicOpacityUWP: number = 1.0; // UWP only
+acrylicSourceUWP: 'host' | 'app'; // UWP only
+acrylicTintColorUWP: string = undefined; // UWP only; default = backgroundColor
 ```
 
 **Overflow**
@@ -144,7 +159,7 @@ overflow: 'hidden' | 'visible';
 ```javascript
 borderWidth: number;
 borderColor: color;
-borderStyle: 'none' | 'solid' | 'dotted' | 'dashed';
+borderStyle: 'solid' | 'dotted' | 'dashed' | 'none';
 borderRadius: number;  // Sets all four border radius attributes; value is animatable
 borderTopRightRadius: number = 0;
 borderBottomRightRadius: number = 0;
@@ -181,8 +196,9 @@ transform: {
     scale: number = 0;
     scaleX: number = 0;
     scaleY: number = 0;
-    translateX: string = 0;
-    translateY: string = 0;
+    scaleY: number = 0;
+    translateX: number = 0;
+    translateY: number = 0;
 }
 ```
 

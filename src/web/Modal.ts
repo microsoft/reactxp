@@ -15,14 +15,30 @@ import Types = require('../common/Types');
 
 export class Modal extends RX.Modal {
     isDisplayed(modalId: string): boolean {
+        if (!modalId || modalId === '') {
+            throw new Error(`modalId must be a non-empty string. Actual: ${modalId}`);
+        }
+
         return FrontLayerViewManager.isModalDisplayed(modalId);
     }
 
-    show(modal: React.ReactElement<Types.ViewProps>, modalId: string): void {
-         FrontLayerViewManager.showModal(modal, modalId);
+    show(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions): void {
+        if (!modal) {
+            throw new Error(`modal must be valid. Actual ${modal}`);
+        }
+
+        if (!modalId || modalId === '') {
+            throw new Error(`modalId must be a non-empty string. Actual: ${modalId}`);
+        }
+
+        FrontLayerViewManager.showModal(modal, modalId, options);
     }
 
     dismiss(modalId: string): void {
+        if (!modalId || modalId === '') {
+            throw new Error(`modalId must be a non-empty string. Actual: ${modalId}`);
+        }
+        
         FrontLayerViewManager.dismissModal(modalId);
     }
 

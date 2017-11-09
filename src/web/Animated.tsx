@@ -53,7 +53,7 @@ var animatedPropUnits: { [key: string]: string } = {
 
     // AnimatedTextStyleRules
     color: '',
-    fontSize: ''
+    fontSize: 'px'
  };
 
 // Every Animation subclass should extend this.
@@ -75,15 +75,15 @@ export abstract class Animation {
 var animatedValueUniqueId = 0;
 
 // The animated value object
-export class Value extends RX.AnimatedValue {
+export class Value extends Types.AnimatedValue {
     _value: number | string;
     _listenerId: number;
     _animationId: number;
-    _animations: { [key: number]: Animation };
-    _listeners: { [key: number]: Types.Animated.ValueListenerCallback };
+    _animations: { [key: number]: Animation|undefined };
+    _listeners: { [key: string]: Types.Animated.ValueListenerCallback };
     _animatedValueUniqueId: number;
     _cssProperties: { [key: string]: string } = {};
-    _element: HTMLElement;
+    _element: HTMLElement|undefined;
     _isInitialized: boolean = false;
     _interpolationConfig: { [key: number]: (number | string) };
 
@@ -108,6 +108,8 @@ export class Value extends RX.AnimatedValue {
         return this._value;
     }
 
+    // Note: public access to interpolate will be going away. Use
+    // RX.Animated.interpolate instead.
     interpolate(config: Types.Animated.InterpolationConfigType) {
         // TODO: This is a temporary implementation in order to keep parity with RN's API.
         // In reallity we should support string values as well string tovalues in the animations.
@@ -128,7 +130,7 @@ export class Value extends RX.AnimatedValue {
         if (input0 > input1) {
             throw 'The interpolation input values should be in ascending order.';
         }
-        
+
         this._interpolationConfig = {};
         _.each(config.inputRange, (value, index) => {
             this._interpolationConfig[value] = config.outputRange[index];
@@ -138,13 +140,13 @@ export class Value extends RX.AnimatedValue {
     }
 
     // Gets animation reference by id. An animated value may be referenced in multiple animations.
-    getAnimation(id: number): Animation {
+    getAnimation(id: number): Animation|undefined {
         // Return CSS key (transition/animation) string from animation object if available.
         if (this._animations) {
             return this._animations[id];
         }
 
-        return null;
+        return undefined;
     }
 
     // Adds a new associated css property to this animated value.
@@ -190,22 +192,22 @@ export class Value extends RX.AnimatedValue {
     // Clears the HTML element reference and marks the value as uninitialized
     destroy(): void {
         this._isInitialized = false;
-        this._element = null;
+        this._element = undefined;
     }
 
     // Add listener for when the value gets updated.
-    addListener(callback: Types.Animated.ValueListenerCallback): number {
+    addListener(callback: Types.Animated.ValueListenerCallback): string {
         if (callback) {
             this._listenerId++;
-            this._listeners[this._listenerId] = callback;
+            this._listeners[String(this._listenerId)] = callback;
         }
 
-        return this._listenerId;
+        return String(this._listenerId);
     }
 
     // Remove a specific listner.
     removeListener(id: string): void {
-        delete this._listeners[id as any];
+        delete this._listeners[id];
     }
 
     // Remove all listeners.
@@ -254,7 +256,7 @@ export class Value extends RX.AnimatedValue {
 
         // Make sure the reference for this animation is destroyed.
         // This will avoid problems where timing animations are shared across multiple states.
-        this._animations[id] = null;
+        this._animations[id] = undefined;
     }
 
      private _startPendingAnimations() {
@@ -270,7 +272,7 @@ export class Value extends RX.AnimatedValue {
      private _updateElementStyles(): void {
        // Update the style of the element.
        if (this._isInitialized) {
-           this.updateElementStylesOnto(this._element.style);
+           this.updateElementStylesOnto(this._element!!!.style);
         }
     }
 
@@ -305,7 +307,7 @@ export class Value extends RX.AnimatedValue {
 
         // Notify subscribers about the new value.
         for (var key in this._listeners) {
-            if (typeof this._listeners[key] === 'ValueListenerCallback') {
+            if (typeof this._listeners[key] === 'function') {
                 this._listeners[key](this.getValue());
             }
         }
@@ -337,7 +339,7 @@ class TimingAnimation extends Animation {
     _duration: number;
     _delay: number;
     _easing: Types.Animated.EasingFunction;
-    _onEnd: Types.Animated.EndCallback;
+    _onEnd: Types.Animated.EndCallback|undefined;
     _timeout: any;
     _animatedValue: Value;
     _loop: boolean;
@@ -365,6 +367,7 @@ class TimingAnimation extends Animation {
                 value = trimmedValue.substr(0, trimmedValue.length - units.length);
                 return false;
             }
+            return undefined;
         });
 
         return value;
@@ -409,7 +412,7 @@ class TimingAnimation extends Animation {
 
             this.resetAnimation();
 
-            executeTransition(this._animatedValue._element, properties, () => {
+            executeTransition(this._animatedValue._element!!!, properties, () => {
                 if (this._triggerAnimation) {
                     if (!this._loop) {
                         this._animatedValue.setValue(this._toValue);
@@ -425,7 +428,7 @@ class TimingAnimation extends Animation {
 
     resetAnimation() {
         if (this._animatedValue.isInitialized()) {
-            this._animatedValue._element.style.transition = 'none';
+            this._animatedValue._element!!!.style.transition = 'none';
         }
     }
 
@@ -467,7 +470,7 @@ export var timing: Types.Animated.TimingFunction = function(
         start: function(callback?: Types.Animated.EndCallback): void {
             function animate() : void {
                 if (isLooping) {
-                    (value as Value).setValue(config.loop.restartFrom);
+                    (value as Value).setValue(config.loop!!!.restartFrom);
                 }
 
                 (value as Value).startAnimation(id, (r) => {
@@ -592,11 +595,11 @@ export var parallel: Types.Animated.ParallelFunction = function (
 };
 
 // Function for creating wrapper AnimatedComponent around passed in component
-function createAnimatedComponent<PropsType extends Types.CommonProps>(Component: any): typeof RX.AnimatedComponent {
+function createAnimatedComponent<PropsType extends Types.CommonProps>(Component: any): any {
     var refName = 'animatedNode';
 
     class AnimatedComponentGenerated extends React.Component<PropsType, void> implements RX.AnimatedComponent<PropsType, void> {
-        private _initialStyle: Object;
+        private _initialStyle: Object|undefined;
         private _propsWithoutStyle: Object;
         private _animatedValues: Value[];
 
@@ -639,7 +642,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
 
             // Attempt to get static initial styles for the first build.  After the build,
             // initializeComponent will take over and apply styles dynamically.
-            let styles = Styles.combine(null, props.style) as any;
+            let styles = Styles.combine(props.style) as any;
 
             // Initialize the tricky properties here (e.g. transform).
             this._animatedValues = AnimatedTransform.initialize(styles);
@@ -665,13 +668,13 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
 
             // Add the complicated styles
             _.each(this._animatedValues, value => {
-                value.updateElementStylesOnto(this._initialStyle);
+                value.updateElementStylesOnto(this._initialStyle!!!);
             });
         }
 
         initializeComponent(props: Types.CommonProps) {
             // Conclude the initialization setting the element.
-            const element = ReactDOM.findDOMNode<HTMLElement>(this.refs[refName]);
+            const element = ReactDOM.findDOMNode(this.refs[refName]) as HTMLElement;
             if (element) {
                 this._animatedValues.forEach(Value => {
                     Value.setAsInitialized(element);
@@ -695,20 +698,30 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         }
 
         focus() {
-            if (this.refs[refName] instanceof RXView) {
-                const component = this.refs[refName] as RXView;
-                if (component.focus) {
-                    component.focus();
-                }
+            const component = this.refs[refName] as RXView;
+            if (component.focus) {
+                component.focus();
             }
         }
 
         blur() {
-            if (this.refs[refName] instanceof RXView) {
-                const component = this.refs[refName] as RXView;
-                if (component.blur) {
-                    component.blur();
-                }
+            const component = this.refs[refName] as RXView;
+            if (component.blur) {
+                component.blur();
+            }
+        }
+
+        setFocusRestricted(restricted: boolean) {
+            const component = this.refs[refName] as RXView;
+            if (component.setFocusRestricted) {
+                component.setFocusRestricted(restricted);
+            }
+        }
+
+        setFocusLimited(limited: boolean) {
+            const component = this.refs[refName] as RXView;
+            if (component.setFocusLimited) {
+                component.setFocusLimited(limited);
             }
         }
 
@@ -731,9 +744,25 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
     return AnimatedComponentGenerated;
 }
 
-export var Image = createAnimatedComponent(RXImage) as typeof RX.AnimatedImage;
+export var Image = createAnimatedComponent<Types.ImageProps>(RXImage) as typeof RX.AnimatedImage;
 export var Text = createAnimatedComponent(RXText) as typeof RX.AnimatedText;
 export var TextInput = createAnimatedComponent(RXTextInput) as typeof RX.AnimatedTextInput;
 export var View = createAnimatedComponent(RXView) as typeof RX.AnimatedView;
+
+export type Image = RX.AnimatedImage;
+export type Text = RX.AnimatedText;
+export type TextInput = RX.AnimatedTextInput;
+export type View = RX.AnimatedView;
+
+// NOTE: Direct access to "Value" will be going away in the near future.
+// Please move to createValue and interpolate instead.
+export var createValue: (initialValue: number) => Value = function(initialValue: number) {
+    return new Value(initialValue);
+};
+
+export var interpolate: (value: Value, inputRange: number[], outputRange: string[]) => 
+        Value = function(value: Value, inputRange: number[], outputRange: string[]) {
+    return value.interpolate({ inputRange: inputRange, outputRange: outputRange });
+};
 
 export { Easing };

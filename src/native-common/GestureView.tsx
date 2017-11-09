@@ -10,10 +10,14 @@
 */
 
 import assert = require('assert');
+import _ = require('./lodashMini');
 import React = require('react');
 import RN = require('react-native');
 
+import AccessibilityUtil from './AccessibilityUtil';
+
 import Types = require('../common/Types');
+import UserInterface from './UserInterface';
 import ViewBase from './ViewBase';
 
 enum GestureType {
@@ -32,19 +36,21 @@ const _tapPixelThreshold = 4;
 const _doubleTapDurationThreshold = 250;
 const _doubleTapPixelThreshold = 20;
 
+const _defaultImportantForAccessibility = Types.ImportantForAccessibility.Yes;
+
 export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     private _panResponder: RN.PanResponder;
     private _doubleTapTimer: any = null;
 
     // State for tracking move gestures (pinch/zoom or pan)
     private _pendingGestureType: GestureType = GestureType.None;
-    private _pendingGestureState: Types.MultiTouchGestureState | Types.PanGestureState | Types.TapGestureState = null;
+    private _pendingGestureState: Types.MultiTouchGestureState | Types.PanGestureState | Types.TapGestureState | undefined;
 
     // State for tracking double taps
-    private _lastTapEvent: Types.TouchEvent = null;
+    private _lastTapEvent: Types.TouchEvent|undefined;
 
     // State for tracking single taps
-    private _lastGestureStartEvent: Types.TouchEvent = null;
+    private _lastGestureStartEvent: Types.TouchEvent|undefined;
 
     constructor(props: Types.GestureViewProps) {
         super(props);
@@ -66,7 +72,8 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     private _setUpPanResponder(): void {
         this._panResponder = RN.PanResponder.create({
             onStartShouldSetPanResponder: (e, gestureState) => {
-                const event = (e.nativeEvent as any) as Types.TouchEvent;
+                const event = (e as any).nativeEvent as Types.TouchEvent;
+                UserInterface.evaluateTouchLatency(e as any);
 
                 this._lastGestureStartEvent = event;
                 // If we're trying to detect a tap, set this as the responder immediately.
@@ -77,7 +84,8 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
             },
 
             onMoveShouldSetPanResponder: (e, gestureState) => {
-                const event = (e.nativeEvent as any) as Types.TouchEvent;
+                const event = (e as any).nativeEvent as Types.TouchEvent;
+                UserInterface.evaluateTouchLatency(e as any);
 
                 this._lastGestureStartEvent = event;
                 this._pendingGestureType = this._detectMoveGesture(event, gestureState);
@@ -107,7 +115,8 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
             },
 
             onPanResponderMove: (e, gestureState) => {
-                const event = (e.nativeEvent as any) as Types.TouchEvent;
+                const event = (e as any).nativeEvent as Types.TouchEvent;
+                UserInterface.evaluateTouchLatency(e as any);
 
                 let initializeFromEvent = false;
 
@@ -136,18 +145,18 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     }
 
     private _onPanResponderEnd(e: RN.ResponderSyntheticEvent, gestureState: RN.PanResponderGestureState) {
-        const event = (e.nativeEvent as any) as Types.TouchEvent;
+        const event = (e as any).nativeEvent as Types.TouchEvent;
 
         // Close out any of the pending move gestures.
         if (this._pendingGestureType === GestureType.MultiTouch) {
             this._sendMultiTouchEvents(event, gestureState, false, true);
-            this._pendingGestureState = null;
+            this._pendingGestureState = undefined;
             this._pendingGestureType = GestureType.None;
         } else if (this._pendingGestureType === GestureType.Pan ||
             this._pendingGestureType === GestureType.PanVertical ||
             this._pendingGestureType === GestureType.PanHorizontal) {
             this._sendPanEvent(event, gestureState, this._pendingGestureType, false, true);
-            this._pendingGestureState = null;
+            this._pendingGestureState = undefined;
             this._pendingGestureType = GestureType.None;
         } else if (this._isTap(event)) {
             if (!this.props.onDoubleTap) {
@@ -157,7 +166,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
                 // This is a double-tap, so swallow the previous single tap.
                 this._cancelDoubleTapTimer();
                 this._sendDoubleTapEvent(event);
-                this._lastTapEvent = null;
+                this._lastTapEvent = undefined;
             } else {
                 // This wasn't a double-tap. Report any previous single tap and start the double-tap
                 // timer so we can determine whether the current tap is a single or double.
@@ -199,13 +208,13 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         }
 
         const initialTimeStamp = this._getEventTimestamp(this._lastGestureStartEvent);
-        const initialPageX = this._lastGestureStartEvent.pageX;
-        const initialPageY = this._lastGestureStartEvent.pageY;
+        const initialPageX = this._lastGestureStartEvent.pageX!!!;
+        const initialPageY = this._lastGestureStartEvent.pageY!!!;
 
         const timeStamp = this._getEventTimestamp(e);
 
         return (timeStamp - initialTimeStamp <= _tapDurationThreshold &&
-            this._calcDistance(initialPageX - e.pageX, initialPageY - e.pageY) <= _tapPixelThreshold);
+            this._calcDistance(initialPageX - e.pageX!!!, initialPageY - e.pageY!!!) <= _tapPixelThreshold);
     }
 
     // This method assumes that the caller has already determined that two
@@ -220,7 +229,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         }
 
         return (timeStamp - this._getEventTimestamp(this._lastTapEvent) <= _doubleTapDurationThreshold &&
-            this._calcDistance(this._lastTapEvent.pageX - e.pageX, this._lastTapEvent.pageY - e.pageY) <=
+            this._calcDistance((this._lastTapEvent.pageX || 0) - (e.pageX || 0), (this._lastTapEvent.pageY || 0) - (e.pageY || 0)) <=
                 _doubleTapPixelThreshold);
     }
 
@@ -247,7 +256,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     private _reportDelayedTap() {
         if (this._lastTapEvent && this.props.onTap) {
             this._sendTapEvent(this._lastTapEvent);
-            this._lastTapEvent = null;
+            this._lastTapEvent = undefined;
         }
     }
 
@@ -290,7 +299,8 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         }
 
         // Has the user started to pan?
-        const panThreshold = this.props.panPixelThreshold > 0 ? this.props.panPixelThreshold : _panPixelThreshold;
+        const panThreshold = (!_.isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
+            this.props.panPixelThreshold : _panPixelThreshold;
         return (this._calcDistance(gestureState.dx, gestureState.dy) >= panThreshold);
     }
 
@@ -300,7 +310,8 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         }
 
         // Has the user started to pan?
-        const panThreshold = this.props.panPixelThreshold > 0 ? this.props.panPixelThreshold : _panPixelThreshold;
+        const panThreshold = (!_.isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
+            this.props.panPixelThreshold : _panPixelThreshold;
         const isPan = Math.abs(gestureState.dy) >= panThreshold;
 
         if (isPan && this.props.preferredPan === Types.PreferredPanGesture.Horizontal) {
@@ -315,7 +326,8 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         }
 
         // Has the user started to pan?
-        const panThreshold = this.props.panPixelThreshold > 0 ? this.props.panPixelThreshold : _panPixelThreshold;
+        const panThreshold = (!_.isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
+            this.props.panPixelThreshold : _panPixelThreshold;
         const isPan = Math.abs(gestureState.dx) >= panThreshold;
 
         if (isPan && this.props.preferredPan === Types.PreferredPanGesture.Vertical) {
@@ -417,10 +429,10 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
             gestureType: GestureType, initializeFromEvent: boolean, isComplete: boolean) {
         let state = this._pendingGestureState as Types.PanGestureState;
 
-        let pageX = e.pageX;
-        let pageY = e.pageY;
-        let clientX = e.locationX;
-        let clientY = e.locationY;
+        let pageX = e.pageX!!!;
+        let pageY = e.pageY!!!;
+        let clientX = e.locationX!!!;
+        let clientY = e.locationY!!!;
 
         // Grab the first touch. If the user adds additional touch events,
         // we will ignore them. If we use e.pageX/Y, we will be using the average
@@ -435,16 +447,16 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         assert.ok(this._lastGestureStartEvent, 'Gesture start event must not be null.');
 
         let initialPageX = this._lastGestureStartEvent 
-            ? this._lastGestureStartEvent.pageX 
+            ? this._lastGestureStartEvent.pageX!!! 
             : initializeFromEvent ? pageX : state.initialPageX;
         let initialPageY = this._lastGestureStartEvent 
-            ? this._lastGestureStartEvent.pageY 
+            ? this._lastGestureStartEvent.pageY!!! 
             : initializeFromEvent ? pageY : state.initialPageY;
         let initialClientX = this._lastGestureStartEvent 
-            ? this._lastGestureStartEvent.locationX 
+            ? this._lastGestureStartEvent.locationX!!!
             : initializeFromEvent ? clientX : state.initialClientX;
         let initialClientY = this._lastGestureStartEvent 
-            ? this._lastGestureStartEvent.locationY 
+            ? this._lastGestureStartEvent.locationY!!! 
             : initializeFromEvent ? clientY : state.initialClientY;
 
         let velocityX = initializeFromEvent ? 0 : gestureState.vx;
@@ -467,9 +479,9 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
             timeStamp: e.timeStamp
         };
 
-        let callback = gestureType === GestureType.Pan ? this.props.onPan :
-            (gestureType === GestureType.PanVertical ? this.props.onPanVertical :
-                this.props.onPanHorizontal);
+        let callback = gestureType === GestureType.Pan ? this.props.onPan!!! :
+            (gestureType === GestureType.PanVertical ? this.props.onPanVertical!!! :
+                this.props.onPanHorizontal!!!);
 
         callback(panEvent);
 
@@ -479,10 +491,10 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     private _sendTapEvent(e: Types.TouchEvent) {
         if (this.props.onTap) {
             const tapEvent: Types.TapGestureState = {
-                pageX: e.pageX,
-                pageY: e.pageY,
-                clientX: e.locationX,
-                clientY: e.locationY,
+                pageX: e.pageX!!!,
+                pageY: e.pageY!!!,
+                clientX: e.locationX!!!,
+                clientY: e.locationY!!!,
                 timeStamp: e.timeStamp
             };
 
@@ -493,10 +505,10 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     private _sendDoubleTapEvent(e: Types.TouchEvent) {
         if (this.props.onDoubleTap) {
             const tapEvent: Types.TapGestureState = {
-                pageX: e.pageX,
-                pageY: e.pageY,
-                clientX: e.locationX,
-                clientY: e.locationY,
+                pageX: e.pageX!!!,
+                pageY: e.pageY!!!,
+                clientX: e.locationX!!!,
+                clientY: e.locationY!!!,
                 timeStamp: e.timeStamp
             };
 
@@ -505,12 +517,21 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     }
 
     render() {
+        const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
+            _defaultImportantForAccessibility);
+        const accessibilityTrait = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
+        const accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(this.props.accessibilityTraits);
+
         return (
             <RN.View
                 style={ this._getStyles(this.props) }
+                importantForAccessibility={ importantForAccessibility }
+                accessibilityTraits={ accessibilityTrait }
+                accessibilityComponentType={ accessibilityComponentType }
+                accessibilityLabel={ this.props.accessibilityLabel }
                 { ...this._panResponder.panHandlers }
             >
-                { this.props.children }
+                {this.props.children}
             </RN.View>
         );
     }

@@ -15,13 +15,7 @@ import ReactDOM = require('react-dom');
 import Interfaces = require('../common/Interfaces');
 import Types = require('../common/Types');
 
-let _styles = {
-    defaultStyle: {
-        display: 'flex'
-    }
-};
-
-class Video extends Interfaces.Video<{}> {
+class Video extends RX.Component<Types.VideoProps, {}> {
     componentDidMount() {
         // We need to manually install the onEnded handler because. React doesn't support this.
         let videoDOM = ReactDOM.findDOMNode<HTMLVideoElement>(this);
@@ -41,7 +35,9 @@ class Video extends Interfaces.Video<{}> {
     }
 
     render() {
-        let combinedStyles = RX.Styles.combine(_styles.defaultStyle, this.props.style);
+        let combinedStyles = extend(RX.Styles.combine(this.props.style), {
+            display: 'flex'
+        });
 
         if (this.props.resizeMode === 'cover') {
             combinedStyles = extend(combinedStyles, {
@@ -76,7 +72,6 @@ class Video extends Interfaces.Video<{}> {
                 ref='video'
                 style={ combinedStyles }
                 src={ this.props.source }
-                alt={ this.props.accessibilityLabel }
                 controls={ this.props.showControls }
                 loop={ this.props.loop }
                 onLoadedData={ this._onLoadedData }

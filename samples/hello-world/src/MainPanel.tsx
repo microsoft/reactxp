@@ -57,7 +57,7 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
     constructor() {
         super();
 
-        this._translationValue = new RX.Animated.Value(-100);
+        this._translationValue = RX.Animated.createValue(-100);
         this._animatedStyle = RX.Styles.createAnimatedTextStyle({
             transform: [
                 {
@@ -94,7 +94,7 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
                     <RX.Link style={ styles.docLink } url={ 'https://microsoft.github.io/reactxp/docs' }>
                         View ReactXP documentation
                     </RX.Link>
-
+                    
                     <RX.Button style={ styles.roundButton } onPress={ this._onPressNavigate }>
                         <RX.Text style={ styles.buttonText }>
                             See More Examples
@@ -104,7 +104,7 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
             </RX.ScrollView>
         );
     }
-
+    
     private _onPressNavigate = () => {
         this.props.onPressNavigate();
     }

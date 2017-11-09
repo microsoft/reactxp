@@ -44,7 +44,6 @@ export class App extends RX.App {
 
     initialize(debug: boolean, development: boolean) {
         super.initialize(debug, development);
-        window['rxdebug'] = debug;
     }
 
     getActivationState(): Types.AppActivationState {

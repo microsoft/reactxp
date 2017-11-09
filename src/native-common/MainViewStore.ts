@@ -9,11 +9,10 @@
 */
 
 import React = require('react');
+import SubscribableEvent from 'subscribableevent';
 
-import SubscribableEvent = require('../common/SubscribableEvent');
-
-export class MainViewStore extends SubscribableEvent.SubscribableEvent<() => void> {
-    private _mainView: React.ReactElement<any> = null;
+export class MainViewStore extends SubscribableEvent<() => void> {
+    private _mainView: React.ReactElement<any>|undefined;
 
     getMainView() {
         return this._mainView;
@@ -25,5 +24,4 @@ export class MainViewStore extends SubscribableEvent.SubscribableEvent<() => voi
     }
 }
 
-var instance = new MainViewStore();
-export default instance;
+export default new MainViewStore();

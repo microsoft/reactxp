@@ -1,4 +1,4 @@
-﻿/**
+/**
 * TextInput.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -7,11 +7,9 @@
 * Web-specific implementation of the cross-platform TextInput abstraction.
 */
 
-import _ = require('./utils/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
 
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
@@ -26,14 +24,15 @@ let _styles = {
         display: 'flex',
         flexDirection: 'row',
         flexBasis: 'auto',
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
         overflowX: 'hidden',
         overflowY: 'auto',
         alignItems: 'stretch'
     }
 };
 
-export class TextInput extends RX.TextInput<TextInputState> {
+export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
     private _selectionStart: number = 0;
     private _selectionEnd: number = 0;
 
@@ -60,14 +59,16 @@ export class TextInput extends RX.TextInput<TextInputState> {
     }
 
     render() {
-        let combinedStyles = Styles.combine(_styles.defaultStyle, this.props.style);
+        let combinedStyles = Styles.combine([_styles.defaultStyle, this.props.style]) as any;
 
-        // Always hide the outline and border.
-        combinedStyles = _.extend({
-            outline: 'none',
-            border: 'none',
-            resize: 'none'
-        }, combinedStyles);
+        // Always hide the outline.
+        combinedStyles.outline = 'none';
+        combinedStyles.resize = 'none';
+
+        // Set the border to zero width if not otherwise specified.
+        if (combinedStyles.borderWidth === undefined) {
+            combinedStyles.borderWidth = 0;
+        }
 
         // By default, the control is editable.
         const editable = (this.props.editable !== undefined ? this.props.editable : true);
@@ -77,10 +78,10 @@ export class TextInput extends RX.TextInput<TextInputState> {
         if (this.props.multiline) {
             return (
                 <textarea
-                    style={ combinedStyles }
+                    style={ combinedStyles as any }
                     value={ this.state.inputValue }
 
-                    autoCorrect={ this.props.autoCorrect }
+                    autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
                     disabled={ !editable }
                     maxLength={ this.props.maxLength }
@@ -101,10 +102,10 @@ export class TextInput extends RX.TextInput<TextInputState> {
         } else {
             return (
                 <input
-                    style={ combinedStyles }
+                    style={ combinedStyles as any }
                     value={ this.state.inputValue }
 
-                    autoCorrect={ this.props.autoCorrect }
+                    autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
                     disabled={ !editable }
                     maxLength={ this.props.maxLength }
@@ -133,9 +134,9 @@ export class TextInput extends RX.TextInput<TextInputState> {
         this._checkSelectionChanged();
     }
 
-    private _onInput = (e: React.FormEvent) => {
+    private _onInput = (e: React.FormEvent<any>) => {
         if (!e.defaultPrevented) {
-            let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+            let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
             if (el) {
                 // Has the input value changed?
                 const value = el.value || '';
@@ -159,7 +160,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
     }
 
     private _checkSelectionChanged = () => {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             if (this._selectionStart !== el.selectionStart || this._selectionEnd !== el.selectionEnd) {
                 this._selectionStart = el.selectionStart;
@@ -199,22 +200,30 @@ export class TextInput extends RX.TextInput<TextInputState> {
         }
     }
 
+    private _focus = () => {
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
+        if (el) {
+            el.focus();
+        }
+    }
+
     blur() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             el.blur();
         }
     }
 
     focus() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
-        if (el) {
-            el.focus();
-        }
+        this._focus();
+    }
+
+    setAccessibilityFocus() {
+        this._focus();
     }
 
     isFocused() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             return document.activeElement === el;
         }
@@ -222,14 +231,14 @@ export class TextInput extends RX.TextInput<TextInputState> {
     }
 
     selectAll() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             el.select();
         }
     }
 
     selectRange(start: number, end: number) {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             el.setSelectionRange(start, end);
         }
@@ -240,7 +249,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
             start: 0,
             end: 0
         };
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             range.start = el.selectionStart;
             range.end = el.selectionEnd;
@@ -254,7 +263,7 @@ export class TextInput extends RX.TextInput<TextInputState> {
         if (this.state.inputValue !== inputValue) {
             // It's important to set the actual value in the DOM immediately. This allows us to call other related methods
             // like selectRange synchronously afterward.
-            let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+            let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
             if (el) {
                 el.value = inputValue;
             }

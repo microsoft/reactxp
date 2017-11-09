@@ -7,9 +7,9 @@
 * Web-specific implementation for i18n.
 */
 
-import Types = require('../common/Types');
+import RXInterfaces = require('../common/Interfaces');
 
-export class International {
+export class International implements RXInterfaces.International {
     allowRTL(allow: boolean): void {
         // Need to implement
     }

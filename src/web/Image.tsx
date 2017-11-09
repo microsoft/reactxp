@@ -14,7 +14,6 @@ import SyncTasks = require('synctasks');
 import PropTypes = require('prop-types');
 
 import restyleForInlineText = require('./utils/restyleForInlineText');
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -22,6 +21,7 @@ const _styles = {
     image: {
         position: 'absolute',
         display: 'flex',
+        flexDirection: 'column',
         opacity: 0,
         maxWidth: '100%',
         maxHeight: '100%'
@@ -35,9 +35,9 @@ const _styles = {
 };
 
 export interface ImageState {
-    showImgTag?: boolean;
-    xhrRequest?: boolean;
-    displayUrl?: string;
+    showImgTag: boolean;
+    xhrRequest: boolean;
+    displayUrl: string;
 }
 
 export interface ImageContext {
@@ -56,14 +56,14 @@ class XhrBlobUrlCache {
     private static _maximumItems: number = 128;
     private static _cachedXhrBlobUrls: { [source: string]: XhrBlobUrlCacheEntry } = {};
 
-    static get(source: string): string {
+    static get(source: string): string|undefined {
         if (this._cachedXhrBlobUrls[source]) {
             this._cachedXhrBlobUrls[source].refCount++;
 
             return this._cachedXhrBlobUrls[source].xhrBlobUrl;
         }
 
-        return null;
+        return undefined;
     }
 
     static insert(source: string, xhrBlobUrl: string) {
@@ -94,8 +94,8 @@ class XhrBlobUrlCache {
         // If we've reached maximum capacity, clean up the oldest freeable cache entry if any. An entry is freeable is
         // it's not currently in use (refCount == 0). Return whether we have room to add more entries to the cache.
         if (Object.keys(XhrBlobUrlCache._cachedXhrBlobUrls).length + 1 > XhrBlobUrlCache._maximumItems) {
-            let oldestFreeableKey: string;
-            let oldestFreeableEntry: XhrBlobUrlCacheEntry;
+            let oldestFreeableKey: string|undefined;
+            let oldestFreeableEntry: XhrBlobUrlCacheEntry|undefined;
 
             Object.keys(XhrBlobUrlCache._cachedXhrBlobUrls).forEach(key => {
                 if ((!oldestFreeableEntry || XhrBlobUrlCache._cachedXhrBlobUrls[key].insertionDate < oldestFreeableEntry.insertionDate) &&
@@ -106,14 +106,14 @@ class XhrBlobUrlCache {
             });
 
             if (oldestFreeableKey) {
-                URL.revokeObjectURL(oldestFreeableEntry.xhrBlobUrl);
+                URL.revokeObjectURL(oldestFreeableEntry!!!.xhrBlobUrl);
                 delete XhrBlobUrlCache._cachedXhrBlobUrls[oldestFreeableKey];
             }
         }
     }
 }
 
-export class Image extends RX.Image<ImageState> {
+export class Image extends React.Component<Types.ImageProps, ImageState> {
     static contextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool
     };
@@ -151,13 +151,13 @@ export class Image extends RX.Image<ImageState> {
     }
 
     private _isMounted = false;
-    private _nativeImageWidth: number;
-    private _nativeImageHeight: number;
+    private _nativeImageWidth: number|undefined;
+    private _nativeImageHeight: number|undefined;
 
     constructor(props: Types.ImageProps) {
         super(props);
 
-        const performXhrRequest = this._initializeAndSetState(props);
+        const performXhrRequest = this._initializeAndSetState(props, true);
 
         if (performXhrRequest) {
             this._startXhrImageFetch(props);
@@ -169,7 +169,7 @@ export class Image extends RX.Image<ImageState> {
             !_.isEqual(nextProps.headers || {}, this.props.headers || {}));
 
         if (!nextProps.onLoad !== !this.props.onLoad || !nextProps.onError !== !this.props.onError || sourceOrHeaderChanged) {
-            const performXhrRequest = this._initializeAndSetState(nextProps);
+            const performXhrRequest = this._initializeAndSetState(nextProps, false);
 
             if (sourceOrHeaderChanged && performXhrRequest) {
                 this._startXhrImageFetch(nextProps);
@@ -188,7 +188,7 @@ export class Image extends RX.Image<ImageState> {
         }
     }
 
-    private _initializeAndSetState(props: Types.ImageProps): boolean {
+    private _initializeAndSetState(props: Types.ImageProps, initial: boolean): boolean {
         // Retrieve the xhr blob url from the cache if it exists. This is a performance optimization as we've seen xhr
         // requests take some time and cause flicker during rendering. Even when we're hitting the browser cache, we've
         // seen it stall and take some time.
@@ -201,11 +201,16 @@ export class Image extends RX.Image<ImageState> {
 
         // We normally don't show an img tag because we use background images. However, if the caller has supplied an
         // onLoad or onError callback, we'll use the img tag until we receive an onLoad or onError.
-        this.state = {
+        const newState: ImageState = {
             showImgTag: (!performXhrRequest || !!cachedXhrBlobUrl) && (!!props.onLoad || !!props.onError),
             xhrRequest: !!props.headers,
             displayUrl: displayUrl
         };
+        if (initial) {
+            this.state = newState;
+        } else {
+            this.setState(newState);
+        }
 
         return performXhrRequest;
     }
@@ -236,9 +241,11 @@ export class Image extends RX.Image<ImageState> {
         if (window.fetch) {
             var headers = new Headers();
 
-            Object.keys(props.headers).forEach(key => {
-                headers.append(key, props.headers[key]);
-            });
+            if (props.headers) {
+                Object.keys(props.headers).forEach(key => {
+                    headers.append(key, props.headers!!![key]);
+                });
+            }
 
             var xhr = new Request(props.source, {
                 method: 'GET',
@@ -263,9 +270,11 @@ export class Image extends RX.Image<ImageState> {
             req.open('GET', props.source, true);
 
             req.responseType = 'blob';
-            Object.keys(props.headers).forEach(key => {
-                req.setRequestHeader(key, props.headers[key]);
-            });
+            if (props.headers) {
+                Object.keys(props.headers).forEach(key => {
+                    req.setRequestHeader(key, props.headers!!![key]);
+                });
+            }
 
             req.onload = () => {
                 if (req.status >= 400 || req.status < 600) {
@@ -291,12 +300,12 @@ export class Image extends RX.Image<ImageState> {
             throw new Error(errorText);
         }
 
-        let optionalImg: JSX.Element = null;
+        let optionalImg: JSX.Element|null = null;
 
         if (this.state.showImgTag) {
             optionalImg = (
                 <img
-                    style={ _styles.image }
+                    style={ _styles.image as any }
                     src={ this.state.displayUrl }
                     alt={ this.props.accessibilityLabel }
                     onLoad={ this._onLoad }
@@ -324,7 +333,7 @@ export class Image extends RX.Image<ImageState> {
     }
 
     private _getStyles() {
-        let combinedStyles = Styles.combine(_styles.defaultContainer, this.props.style);
+        let combinedStyles = Styles.combine([_styles.defaultContainer, this.props.style]) as any;
 
         combinedStyles['display'] = 'flex';
 
@@ -368,11 +377,14 @@ export class Image extends RX.Image<ImageState> {
         // Measure the natural width & height of the image.
         this._nativeImageWidth = undefined;
         this._nativeImageHeight = undefined;
-        let imageDOM = ReactDOM.findDOMNode<HTMLImageElement>(this.refs['image']);
-        if (imageDOM) {
-            this._nativeImageWidth = imageDOM.naturalWidth;
-            this._nativeImageHeight = imageDOM.naturalHeight;
+        let imageDOM = ReactDOM.findDOMNode(this.refs['image']) as HTMLImageElement;
+        if (!imageDOM) {
+            // No idea why this might happen, but check anyway...
+            return;
         }
+
+        this._nativeImageWidth = imageDOM.naturalWidth;
+        this._nativeImageHeight = imageDOM.naturalHeight;
 
         // We can hide the img now. We assume that if the img. URL resolved without error,
         // then the background img. URL also did.
@@ -417,11 +429,11 @@ export class Image extends RX.Image<ImageState> {
     }
 
     // Note: This works only if you have an onLoaded handler and wait for the image to load.
-    getNativeWidth(): number {
+    getNativeWidth(): number|undefined {
         return this._nativeImageWidth;
     }
 
-    getNativeHeight(): number {
+    getNativeHeight(): number|undefined {
         return this._nativeImageHeight;
     }
 }

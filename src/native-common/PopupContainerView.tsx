@@ -31,31 +31,31 @@ export interface PopupContainerViewProps extends Types.CommonProps {
 
 export interface PopupContainerViewState {
     // We need to measure the popup before it can be positioned. This indicates that we're in the "measuring" phase.
-    isMeasuringPopup?: boolean;
+    isMeasuringPopup: boolean;
 
     // Measured (unconstrained) dimensions of the popup; not valid if isMeasuringPopup is false.
-    popupWidth?: number;
-    popupHeight?: number;
+    popupWidth: number;
+    popupHeight: number;
 
     // Position of popup relative to its anchor (top, bottom, left, right)
-    anchorPosition?: Types.PopupPosition;
+    anchorPosition: Types.PopupPosition;
 
     // Top or left offset of the popup relative to the center of the anchor
-    anchorOffset?: number;
+    anchorOffset: number;
 
     // Absolute window location of the popup
-    popupTop?: number;
-    popupLeft?: number;
+    popupTop: number;
+    popupLeft: number;
 
     // Constrained dimensions of the popup once it is placed
-    constrainedPopupWidth?: number;
-    constrainedPopupHeight?: number;
+    constrainedPopupWidth: number;
+    constrainedPopupHeight: number;
 }
 
 export class PopupContainerView extends React.Component<PopupContainerViewProps, PopupContainerViewState> {
     private _isMounted: boolean = false;
     private _viewHandle: number = 0;
-    private _respositionPopupTimer: number = null;
+    private _respositionPopupTimer: number|undefined;
 
     constructor(props: PopupContainerViewProps) {
         super(props);
@@ -206,7 +206,7 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
                 return;
             }
 
-            let positionsToTry: Types.PopupPosition[] = this.props.activePopupOptions.positionPriorities;
+            let positionsToTry = this.props.activePopupOptions.positionPriorities;
             if (!positionsToTry || positionsToTry.length === 0) {
                 positionsToTry = ['bottom', 'right', 'top', 'left'];
             }
@@ -340,7 +340,7 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
 
     private _recalcInnerPosition(anchorRect: ClientRect, newState: PopupContainerViewState) {
         // For inner popups we only accept the first position of the priorities since there should always be room for the bubble.
-        const pos = this.props.activePopupOptions.positionPriorities[0];
+        const pos = this.props.activePopupOptions.positionPriorities!!![0];
 
         switch (pos) {
             case 'top':
@@ -390,7 +390,7 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
     private _stopRepositionPopupTimer() {
         if (this._respositionPopupTimer) {
             clearInterval(this._respositionPopupTimer);
-            this._respositionPopupTimer = null;
+            this._respositionPopupTimer = undefined;
         }
     }
 }

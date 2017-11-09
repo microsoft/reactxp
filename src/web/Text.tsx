@@ -12,7 +12,6 @@ import ReactDOM = require('react-dom');
 import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -32,7 +31,8 @@ const _styles = {
     defaultStyle: {
         position: 'relative',
         display: 'inline',
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
         overflow: 'hidden',
         whiteSpace: 'pre-wrap',
         overflowWrap: 'break-word',
@@ -41,14 +41,15 @@ const _styles = {
     ellipsis: {
         position: 'relative',
         display: 'inline',
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
         overflow: 'hidden',
         whiteSpace: 'pre',
         textOverflow: 'ellipsis'
     }
 };
 
-export class Text extends RX.Text<void> {
+export class Text extends React.Component<Types.TextProps, {}> {
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired
     };
@@ -71,9 +72,11 @@ export class Text extends RX.Text<void> {
         if (this.props.selectable || typeof this.props.children !== 'string') {
             return (
                 <div
-                    style={ this._getStyles() }
+                    style={ this._getStyles() as any }
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
+                    id={ this.props.id }
+                    onContextMenu={ this.props.onContextMenu }
                 >
                     { this.props.children }
                 </div>
@@ -84,10 +87,12 @@ export class Text extends RX.Text<void> {
             // will be displayed as pseudo element.
             return (
                 <div
-                    style={ this._getStyles() }
+                    style={ this._getStyles() as any }
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
+                    onContextMenu={ this.props.onContextMenu }
                     data-text-as-pseudo-element={ this.props.children }
+                    id={ this.props.id }
                 />
             );
         }
@@ -96,8 +101,8 @@ export class Text extends RX.Text<void> {
     _getStyles(): Types.TextStyleRuleSet {
         // There's no way in HTML to properly handle numberOfLines > 1,
         // but we can correctly handle the common case where numberOfLines is 1.
-        let combinedStyles = Styles.combine(this.props.numberOfLines === 1 ?
-            _styles.ellipsis : _styles.defaultStyle, this.props.style);
+        let combinedStyles = Styles.combine([this.props.numberOfLines === 1 ?
+            _styles.ellipsis : _styles.defaultStyle, this.props.style]) as any;
 
         // Handle cursor styles
         if (this.props.selectable) {
@@ -118,14 +123,14 @@ export class Text extends RX.Text<void> {
     }
 
     blur() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             el.blur();
         }
     }
 
     focus() {
-        let el = ReactDOM.findDOMNode<HTMLInputElement>(this);
+        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
         if (el) {
             el.focus();
         }

@@ -9,7 +9,6 @@
 
 import React = require('react');
 
-import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 const _activityIndicatorCss = `
@@ -623,7 +622,7 @@ export interface ActivityIndicatorState {
     isVisible?: boolean;
 }
 
-export class ActivityIndicator extends RX.ActivityIndicator<ActivityIndicatorState> {
+export class ActivityIndicator extends React.Component<Types.ActivityIndicatorProps, ActivityIndicatorState> {
     private static _isStyleSheetInstalled: boolean = false;
     private _isMounted = false;
 

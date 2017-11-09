@@ -12,6 +12,7 @@ import RN = require('react-native');
 
 import RX = require('../common/Interfaces');
 import StyleLeakDetector from './StyleLeakDetector';
+import Platform from './Platform';
 import Types = require('../common/Types');
 
 const forbiddenProps: string[] = [
@@ -19,6 +20,15 @@ const forbiddenProps: string[] = [
     'appRegion',
     'cursor'
 ];
+
+// RN would crash if it gets an undeclared property.
+// The properties below are declared only in RN UWP.
+if (Platform.getType() !== 'windows') {
+    forbiddenProps.push(
+        'acrylicOpacityUWP',
+        'acrylicSourceUWP',
+        'acrylicTintColorUWP');
+}
 
 // React Native styles that ReactXP doesn't expose.
 type ReactNativeViewAndImageCommonStyle<Style extends Types.ViewAndImageCommonStyle> = Style & {
@@ -28,23 +38,43 @@ type ReactNativeViewAndImageCommonStyle<Style extends Types.ViewAndImageCommonSt
 };
 
 export class Styles extends RX.Styles {
-    combine<S>(defaultStyle: Types.StyleRuleSet<S>,
-            ruleSet: Types.StyleRuleSet<S> | Types.StyleRuleSet<S>[],
-            overrideStyle?: Types.StyleRuleSet<S>): Types.StyleRuleSet<S> | Types.StyleRuleSet<S>[] {
-        let styles = [defaultStyle];
-        if (ruleSet) {
-            if (ruleSet instanceof Array) {
-                styles = styles.concat(ruleSet);
-            } else {
-                styles.push(ruleSet);
+    combine<S>(ruleSet1: Types.StyleRuleSetRecursive<S>|undefined, ruleSet2?: Types.StyleRuleSetRecursive<S>)
+            : Types.StyleRuleSetOrArray<S>|undefined {
+        if (!ruleSet1 && !ruleSet2) {
+            return undefined;
+        }
+
+        let ruleSet = ruleSet1 ? (ruleSet2 ? [ruleSet1, ruleSet2] : ruleSet1) : ruleSet2;
+
+        if (ruleSet instanceof Array) {
+            let resultArray: Types.StyleRuleSet<S>[] = [];
+            for (let i = 0; i < ruleSet.length; i++) {
+                let subRuleSet = this.combine(ruleSet[i]);
+                
+                if (subRuleSet) {
+                    if (subRuleSet instanceof Array) {
+                        resultArray = resultArray.concat(subRuleSet);
+                    } else {
+                        resultArray.push(subRuleSet);
+                    }
+                }
             }
+
+            if (resultArray.length === 0) {
+                return undefined;
+            }
+
+            // Elimiante the array if there's a single style.
+            if (resultArray.length === 1) {
+                return resultArray[0];
+            }
+
+            return resultArray;
         }
 
-        if (overrideStyle) {
-            styles.push(overrideStyle);
-        }
-
-        return styles;
+        // Handle the case where the input was either undefined
+        // or not an array (a single style).
+        return ruleSet;
     }
 
     // Creates opaque styles that can be used for View
@@ -103,13 +133,18 @@ export class Styles extends RX.Styles {
     }
 
     // Creates opaque styles that can be used for Link
-    createLinkStyle(ruleSet: Types.LinkStyleRuleSet, cacheStyle: boolean = true): Types.LinkStyleRuleSet {
+    createLinkStyle(ruleSet: Types.LinkStyle, cacheStyle: boolean = true): Types.LinkStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for Picker
     createPickerStyle(ruleSet: Types.PickerStyle, cacheStyle: boolean = true): Types.PickerStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
+    }
+
+    getCssPropertyAliasesCssStyle(): {[key: string]: string} {
+        // Nothing to do in native; this is for web only
+        return {};
     }
 
     private _adaptStyles<S extends Types.ViewAndImageCommonStyle>(def: S, cacheStyle: boolean): Types.StyleRuleSet<S> {
@@ -119,7 +154,7 @@ export class Styles extends RX.Styles {
 
             // Forbidden props are not allowed in uncached styles. Perform the
             // omit only in the cached path.
-            adaptedRuleSet = _.omit<S, S>(adaptedRuleSet, forbiddenProps);
+            adaptedRuleSet = _.omit<S>(adaptedRuleSet, forbiddenProps) as ReactNativeViewAndImageCommonStyle<S>;
         }
 
         // Convert text styling
@@ -141,13 +176,13 @@ export class Styles extends RX.Styles {
             var flexValue = def.flex;
             delete adaptedRuleSet.flex;
             if (flexValue > 0) {
-                // n 1 auto
+                // p 1 auto
                 adaptedRuleSet.flexGrow = flexValue;
                 adaptedRuleSet.flexShrink = 1;
             } else if (flexValue < 0) {
-                // 0 1 auto
+                // 0 -n auto
                 adaptedRuleSet.flexGrow = 0;
-                adaptedRuleSet.flexShrink = 1;
+                adaptedRuleSet.flexShrink = -flexValue;
             } else {
                 // 0 0 auto
                 adaptedRuleSet.flexGrow = 0;
@@ -163,7 +198,7 @@ export class Styles extends RX.Styles {
     }
 
     private _adaptAnimatedStyles<T extends Types.AnimatedViewAndImageCommonStyle>(def: T): T {
-        return _.omit<T, T>(def, forbiddenProps);
+        return _.omit<T>(def, forbiddenProps) as T;
     }
 }
 

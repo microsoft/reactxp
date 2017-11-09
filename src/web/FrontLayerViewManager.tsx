@@ -15,15 +15,15 @@ import { RootView } from './RootView';
 import Types = require('../common/Types');
 
 export class FrontLayerViewManager {
-    private _mainView: React.ReactElement<any> = null;
+    private _mainView: React.ReactElement<any>|undefined;
     private _modalStack: { modal: React.ReactElement<Types.ViewProps>, id: string }[] = [];
 
-    private _activePopupOptions: Types.PopupOptions = null;
-    private _activePopupId: string = null;
+    private _activePopupOptions: Types.PopupOptions|undefined;
+    private _activePopupId: string|undefined;
     private _activePopupAutoDismiss: boolean = false;
     private _activePopupAutoDismissDelay: number = 0;
     private _activePopupShowDelay: number = 0;
-    private _popupShowDelayTimer: any = null;
+    private _popupShowDelayTimer: number|undefined;
 
     setMainView(element: React.ReactElement<any>): void {
         this._mainView = element;
@@ -34,14 +34,10 @@ export class FrontLayerViewManager {
         return this._modalStack.some(d => d.id === modalId);
     }
 
-    showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string) {
-        if (!modalId) {
-            console.error('modal must have valid ID');
-        }
-
+    showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions) {
         // Dismiss any active popups.
         if (this._activePopupOptions) {
-            this.dismissPopup(this._activePopupId);
+            this.dismissPopup(this._activePopupId!!!);
         }
 
         this._modalStack.push({ modal: modal, id: modalId });
@@ -61,14 +57,15 @@ export class FrontLayerViewManager {
     }
 
     private _shouldPopupBeDismissed = (options: Types.PopupOptions): boolean => {
-        return this._activePopupOptions &&
-            this._activePopupOptions.getAnchor() === options.getAnchor();
+        return !!this._activePopupOptions &&
+            this._activePopupOptions!!!.getAnchor() === options.getAnchor();
     }
 
     showPopup(options: Types.PopupOptions, popupId: string, showDelay?: number): boolean {
-        // If options.dismissIfShown is true, calling this methos will behave like a toggle. On one call, it will open the popup.
-        // If it is called when pop up is seen, it will dismiss the popup.
-        // If options.dismissIfShown is false, we will simply show the popup always.
+        // If options.dismissIfShown is true, calling this method will behave like a toggle.
+        // On one call, it will open the popup. If it is called when pop up is seen, it will
+        // dismiss the popup. If options.dismissIfShown is false, we will simply show the
+        // popup always.
         if (options.dismissIfShown) {
             if (this._shouldPopupBeDismissed(options)) {
                 this.dismissPopup(popupId);
@@ -89,7 +86,7 @@ export class FrontLayerViewManager {
 
         if (this._popupShowDelayTimer) {
             clearTimeout(this._popupShowDelayTimer);
-            this._popupShowDelayTimer = null;
+            this._popupShowDelayTimer = undefined;
         }
 
         this._activePopupOptions = options;
@@ -102,7 +99,7 @@ export class FrontLayerViewManager {
         if (this._activePopupShowDelay > 0) {
             this._popupShowDelayTimer = window.setTimeout(() => {
                 this._activePopupShowDelay = 0;
-                this._popupShowDelayTimer = null;
+                this._popupShowDelayTimer = undefined;
                 this._renderRootView();
             }, this._activePopupShowDelay);
         }
@@ -112,7 +109,7 @@ export class FrontLayerViewManager {
         if (popupId === this._activePopupId && this._activePopupOptions) {
             if (this._popupShowDelayTimer) {
                 clearTimeout(this._popupShowDelayTimer);
-                this._popupShowDelayTimer = null;
+                this._popupShowDelayTimer = undefined;
             }
 
             this._activePopupAutoDismiss = true;
@@ -129,33 +126,35 @@ export class FrontLayerViewManager {
 
             if (this._popupShowDelayTimer) {
                 clearTimeout(this._popupShowDelayTimer);
-                this._popupShowDelayTimer = null;
+                this._popupShowDelayTimer = undefined;
             }
 
-            this._activePopupOptions = null;
-            this._activePopupId = null;
+            this._activePopupOptions = undefined;
+            this._activePopupId = undefined;
             this._renderRootView();
         }
     }
 
     dismissAllPopups() {
-        this.dismissPopup(this._activePopupId);
+        if (this._activePopupId) {
+            this.dismissPopup(this._activePopupId);
+        }
     }
 
     private _renderRootView() {
         let topModal = this._modalStack.length > 0 ?
-            this._modalStack[this._modalStack.length - 1].modal : null;
+            this._modalStack[this._modalStack.length - 1].modal : undefined;
 
         let rootView = (
             <RootView
                 mainView={ this._mainView }
-                keyBoardFocusOutline={ this._mainView.props.keyBoardFocusOutline }
-                mouseFocusOutline={ this._mainView.props.mouseFocusOutline }
+                keyBoardFocusOutline={ this._mainView!!!.props.keyBoardFocusOutline }
+                mouseFocusOutline={ this._mainView!!!.props.mouseFocusOutline }
                 modal={ topModal }
-                activePopupOptions={ this._activePopupShowDelay > 0 ? null : this._activePopupOptions }
+                activePopupOptions={ this._activePopupShowDelay > 0 ? undefined : this._activePopupOptions }
                 autoDismiss={ this._activePopupAutoDismiss }
                 autoDismissDelay={ this._activePopupAutoDismissDelay }
-                onDismissPopup={ () => this.dismissPopup(this._activePopupId) }
+                onDismissPopup={ () => this.dismissPopup(this._activePopupId!!!) }
             />
         );
 

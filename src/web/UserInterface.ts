@@ -18,14 +18,19 @@ import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export class UserInterface extends RX.UserInterface {
-    private _layoutChangeAnimationFrame: number;
+    private _isNavigatingWithKeyboard: boolean = false;
+
+    constructor() {
+        super();
+        this.keyboardNavigationEvent.subscribe(this._keyboardNavigationStateChanged);
+    }
 
     measureLayoutRelativeToWindow(component: React.Component<any, any>) :
             SyncTasks.Promise<Types.LayoutInfo> {
 
         let deferred = SyncTasks.Defer<Types.LayoutInfo>();
 
-        const componentDomNode = ReactDOM.findDOMNode<HTMLElement>(component);
+        const componentDomNode = ReactDOM.findDOMNode(component) as HTMLElement;
 
         if (!componentDomNode) {
             deferred.reject('measureLayoutRelativeToWindow failed');
@@ -48,8 +53,8 @@ export class UserInterface extends RX.UserInterface {
 
         let deferred = SyncTasks.Defer<Types.LayoutInfo>();
 
-        const componentDomNode = ReactDOM.findDOMNode<HTMLElement>(component);
-        const ancestorDomNode = ReactDOM.findDOMNode<HTMLElement>(ancestor);
+        const componentDomNode = ReactDOM.findDOMNode(component) as HTMLElement;
+        const ancestorDomNode = ReactDOM.findDOMNode(ancestor) as HTMLElement;
 
         if (!componentDomNode || !ancestorDomNode) {
             deferred.reject('measureLayoutRelativeToAncestor failed');
@@ -112,12 +117,32 @@ export class UserInterface extends RX.UserInterface {
         FrontLayerViewManager.setMainView(element);
     }
 
+    registerRootView(viewKey: string, getComponentFunc: Function) {
+        // Nothing to do
+    }
+
     useCustomScrollbars(enable = true) {
         ScrollViewConfig.setUseCustomScrollbars(enable);
     }
 
     dismissKeyboard() {
         // Nothing to do
+    }
+
+    enableTouchLatencyEvents(latencyThresholdMs: number): void {
+        // Nothing to do
+    }
+
+    evaluateTouchLatency(e: Types.MouseEvent) {
+        // Nothing to do
+    }
+
+    isNavigatingWithKeyboard(): boolean {
+        return this._isNavigatingWithKeyboard;
+    }
+
+    private _keyboardNavigationStateChanged = (isNavigatingWithKeyboard: boolean) => {
+        this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
     }
 }
 
