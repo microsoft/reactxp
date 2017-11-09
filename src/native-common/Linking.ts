@@ -50,8 +50,8 @@ export class Linking extends CommonLinking {
         return defer.promise();
     }
 
-    getInitialUrl(): SyncTasks.Promise<string> {
-        let defer = SyncTasks.Defer<string>();
+    getInitialUrl(): SyncTasks.Promise<string|undefined> {
+        let defer = SyncTasks.Defer<string|undefined>();
 
         RN.Linking.getInitialURL().then(url => {
             defer.resolve(url);
