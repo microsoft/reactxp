@@ -144,7 +144,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
             const deferred = SyncTasks.Defer<void>();
             ViewBase._reportLayoutChange(() => {
                 if (!this._isMounted || !this.props.onLayout) {
-                    deferred.resolve();
+                    deferred.resolve(void 0);
                     return;
                 }
 
@@ -154,7 +154,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
                     width: this._lastWidth,
                     height: this._lastHeight
                 });
-                deferred.resolve();
+                deferred.resolve(void 0);
             });
             return deferred.promise();
         }

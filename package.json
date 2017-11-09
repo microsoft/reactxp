@@ -1,6 +1,6 @@
 {
   "name": "reactxp",
-  "version": "0.42.12",
+  "version": "0.42.13",
   "description": "Cross-platform abstraction layer for writing React-based applications a single time that work identically across web, React Native, and Electron distribution",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "prop-types": "^15.5.9",
     "rebound": "^0.0.13",
     "subscribableevent": "^1.0.0",
-    "synctasks": "^0.2.9"
+    "synctasks": "^0.3.0"
   },
   "peerDependencies": {
     "react": "^15.4.1",
