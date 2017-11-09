@@ -48,7 +48,7 @@ export class Linking extends CommonLinking {
     }
 
     getInitialUrl(): SyncTasks.Promise<string|undefined> {
-        return SyncTasks.Resolved<string>(undefined);
+        return SyncTasks.Resolved(undefined);
     }
 }
 

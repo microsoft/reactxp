@@ -34,7 +34,7 @@ export class Linking extends CommonLinking {
                 } as Types.LinkingErrorInfo);
             } else {
                 RN.Linking.openURL(url).then(() => {
-                    defer.resolve();
+                    defer.resolve(void 0);
                 }, err => {
                     defer.reject(err);
                 });

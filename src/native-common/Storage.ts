@@ -18,7 +18,7 @@ export class Storage extends RX.Storage {
 
         RN.AsyncStorage.getItem(key, (error: any, result: string|undefined) => {
             if (!error) {
-                deferred.resolve(result);
+                deferred.resolve(result!!!);
             } else {
                 deferred.reject(error);
             }
@@ -32,7 +32,7 @@ export class Storage extends RX.Storage {
 
         RN.AsyncStorage.setItem(key, value, (error: any) => {
             if (!error) {
-                deferred.resolve();
+                deferred.resolve(void 0);
             } else {
                 deferred.reject(error);
             }
@@ -46,7 +46,7 @@ export class Storage extends RX.Storage {
 
         RN.AsyncStorage.removeItem(key, (error: any) => {
             if (!error) {
-                deferred.resolve();
+                deferred.resolve(void 0);
             } else {
                 deferred.reject(error);
             }
@@ -60,7 +60,7 @@ export class Storage extends RX.Storage {
 
         RN.AsyncStorage.clear((error: any) => {
             if (!error) {
-                deferred.resolve();
+                deferred.resolve(void 0);
             } else {
                 deferred.reject(error);
             }
