@@ -1225,7 +1225,7 @@ export interface LayoutInfo {
 //
 // Platform
 // ----------------------------------------------------------------------
-export type PlatformType = 'web' | 'ios' | 'android' | 'windows';
+export type PlatformType = 'web' | 'ios' | 'android' | 'windows' | 'macos';
 
 //
 // Network

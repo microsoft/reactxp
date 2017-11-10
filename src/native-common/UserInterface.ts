@@ -87,7 +87,8 @@ export class UserInterface extends RX.UserInterface {
         let deferred = SyncTasks.Defer<number>();
 
         // TODO: #727532 Remove conditional after implementing UIManager.getContentSizeMultiplier for UWP
-        if (RN.Platform.OS === 'windows') {
+        // TODO:(alregner) Remove conditional after implementing UIManager.getContentSizeMultiplier for macos
+        if (RN.Platform.OS === 'windows' || RN.Platform.OS === 'macos') {
             deferred.resolve(1);
         } else {
             RN.NativeModules.UIManager.getContentSizeMultiplier((value: number) => {
@@ -102,7 +103,8 @@ export class UserInterface extends RX.UserInterface {
         let deferred = SyncTasks.Defer<number>();
 
         // TODO: #727532 Remove conditional after implementing UIManager.getContentSizeMultiplier for UWP
-        if (RN.Platform.OS === 'windows') {
+        // TODO:(alregner) Remove conditional after implementing UIManager.getContentSizeMultiplier for macos
+        if (RN.Platform.OS === 'windows' || RN.Platform.OS === 'macos') {
             deferred.resolve(1);
         } else {
             RN.NativeModules.UIManager.getMaxContentSizeMultiplier((value: number) => {
@@ -115,7 +117,8 @@ export class UserInterface extends RX.UserInterface {
 
     setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void {
         // TODO: #727532 Remove conditional after implementing UIManager.getContentSizeMultiplier for UWP
-        if (RN.Platform.OS !== 'windows') {
+        // TODO:(alregner) Remove conditional after implementing UIManager.getContentSizeMultiplier for macos
+        if (RN.Platform.OS !== 'windows' && RN.Platform.OS !== 'macos') {
             RN.NativeModules.UIManager.setMaxContentSizeMultiplier(maxContentSizeMultiplier);
         }
     }

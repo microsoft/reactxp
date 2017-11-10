@@ -37,7 +37,7 @@ declare module 'react-native' {
 
     var Children: React.ReactChildren;
 
-    type PlatformString = 'android'|'ios'|'windows';
+    type PlatformString = 'android'|'ios'|'windows'|'macos';
     var Platform: {
         OS: PlatformString,
         Version?: number
