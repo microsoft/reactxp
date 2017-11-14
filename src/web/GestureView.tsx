@@ -95,15 +95,16 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
             id: this._id,
             target: this._container,
             shouldBecomeFirstResponder: (event: MouseEvent) => {
-                if (!this._container) {
-                    return false;
-                }
-
                 if (!this.props.onPan && !this.props.onPanHorizontal && !this.props.onPanVertical) {
                     return false;
                 }
 
-                const { top, left, bottom, right } = this._container.getBoundingClientRect();
+                const boundingRect = this._getGestureViewClientRect();
+                if (!boundingRect) {
+                    return false;
+                }
+
+                const { top, left, bottom, right } = boundingRect;
                 const { clientX, clientY } = event;
 
                 if (clientX >= left && clientX <= right && clientY >= top && clientY <= bottom) {
