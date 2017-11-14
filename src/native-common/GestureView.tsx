@@ -39,7 +39,7 @@ const _doubleTapPixelThreshold = 20;
 const _defaultImportantForAccessibility = Types.ImportantForAccessibility.Yes;
 
 export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
-    private _panResponder: RN.PanResponder;
+    private _panResponder: RN.PanResponderInstance;
     private _doubleTapTimer: any = null;
 
     // State for tracking move gestures (pinch/zoom or pan)
@@ -140,11 +140,11 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
 
             // Something else wants to become responder. Should this view release the responder?
             // Returning true allows release
-            onPanResponderTerminationRequest: e => this.props.releaseOnRequest
+            onPanResponderTerminationRequest: (e, gestureState) => this.props.releaseOnRequest || true
         });
     }
 
-    private _onPanResponderEnd(e: RN.ResponderSyntheticEvent, gestureState: RN.PanResponderGestureState) {
+    private _onPanResponderEnd(e: RN.GestureResponderEvent, gestureState: RN.PanResponderGestureState) {
         const event = (e as any).nativeEvent as Types.TouchEvent;
 
         // Close out any of the pending move gestures.
