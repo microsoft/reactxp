@@ -22,7 +22,7 @@ const ReactNativeAnimatedClasses = {
     Image: RN.Animated.createAnimatedComponent(RXImage),
     Text: RN.Animated.createAnimatedComponent(RXText),
     TextInput: RN.Animated.createAnimatedComponent(RXTextInput),
-    View: RN.Animated.createAnimatedComponent(RXView, true)
+    View: RN.Animated.createAnimatedComponent(RXView)
 };
 
 export class AnimatedImage extends RX.AnimatedImage {
@@ -158,7 +158,7 @@ var timing = function(
     return {
         start: function(callback?: Types.Animated.EndCallback): void {
             function animate() : void {
-                const timingConfig: RN.AnimatedTimingConfig = {
+                const timingConfig: RN.Animated.TimingAnimationConfig = {
                     toValue: config.toValue,
                     easing: config.easing ? config.easing.function : undefined,
                     duration: config.duration,
