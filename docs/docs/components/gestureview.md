@@ -9,7 +9,7 @@ next: components/image
 
 This component provides support for common touch gestures -- tapping, double-tapping, panning, and pinching. It also handles common mouse-based gestures including double clicking and scroll wheel input.
 
-Information about pending gestures is returned through event handlers. A caller can specify which gestures it's interested in by specifying those event handlers. For example, if you are interested in double taps and horizontal pans, provide an onDoubleTap and onPanHorizontal handler.
+Information about pending gestures is returned through event handlers. A caller can specify which gestures they are interested in by specifying those event handlers. For example, if you are interested in double taps and horizontal pans, provide an onDoubleTap and onPanHorizontal handler.
 
 ## Props
 ``` javascript
