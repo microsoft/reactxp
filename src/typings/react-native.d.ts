@@ -38,7 +38,7 @@ declare module 'react-native' {
 
     var Children: React.ReactChildren;
 
-    type PlatformString = 'android'|'ios'|'windows';
+    type PlatformString = 'android'|'ios'|'windows'|'macos';
     var Platform: {
         OS: PlatformString,
         Version?: number
@@ -377,6 +377,8 @@ declare module 'react-native' {
         underlineColorAndroid?: string;
         disableFullscreenUI?: boolean;
         textBreakStrategy?: 'highQuality' | 'simple' | 'balanced';
+        // macOS only property for submitting the text on enter
+        submitTextOnEnter?: boolean;
     }
 
     interface TextInputState {
