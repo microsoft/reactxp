@@ -41,7 +41,7 @@ import StatusBarImpl from './StatusBar';
 import StorageImpl from '../native-common/Storage';
 import StylesImpl from '../native-common/Styles';
 import TextImpl from '../native-common/Text';
-import TextInputImpl from '../native-common/TextInput';
+import TextInputImpl from './TextInput';
 import UserInterfaceImpl from '../native-common/UserInterface';
 import UserPresenceImpl from '../native-common/UserPresence';
 import ViewImpl from '../native-common/View';

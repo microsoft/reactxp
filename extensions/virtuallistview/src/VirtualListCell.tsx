@@ -59,6 +59,7 @@ const _styles = {
     })
 };
 
+const _isNativeMacOS = RX.Platform.getType() === 'macos';
 const _skypeEaseInAnimationCurve = RX.Animated.Easing.CubicBezier(1, 0, 0.78, 1);
 const _skypeEaseOutAnimationCurve = RX.Animated.Easing.CubicBezier(0.33, 0, 0, 1);
 const _virtualCellRef = 'virtualCell';
@@ -118,7 +119,7 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
         const leftValue = props.left || 0;
         this._leftValue = RX.Animated.createValue(leftValue);
 
-        if (!props.isScreenReaderModeEnabled) {
+        if (!props.isScreenReaderModeEnabled && !_isNativeMacOS) {
             // On native platforms, we'll stick with translate[X|Y] because it has a performance advantage.
             this._animatedStylePosition = RX.Styles.createAnimatedViewStyle({
                 transform: [{
