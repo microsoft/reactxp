@@ -61,7 +61,7 @@ class ImageList extends ComponentBase<{}, ImageListState> {
                     image: image
                 };
             })
-        }
+        };
     }
 
     render() {

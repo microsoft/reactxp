@@ -78,8 +78,8 @@ const alertStyles = {
 class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
     private _progressTimerToken: number;
 
-    constructor() {
-        super();
+    constructor(props: SecondPanelProps) {
+        super(props);
 
         this.state = {
             toggleValue: true,

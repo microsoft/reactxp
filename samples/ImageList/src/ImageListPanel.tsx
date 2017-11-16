@@ -33,8 +33,8 @@ const _styles = {
 };
 
 class ImageListPanel extends RX.Component<{}, ImageListPanelState> {
-    constructor() {
-        super();
+    constructor(props: {}) {
+        super(props);
 
         this.state = {
             inputValue: ''
