@@ -54,8 +54,8 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
     private _translationValue: RX.Animated.Value;
     private _animatedStyle: RX.Types.AnimatedTextStyleRuleSet;
 
-    constructor() {
-        super();
+    constructor(props: MainPanelProps) {
+        super(props);
 
         this._translationValue = RX.Animated.createValue(-100);
         this._animatedStyle = RX.Styles.createAnimatedTextStyle({
