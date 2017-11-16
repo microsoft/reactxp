@@ -12,11 +12,14 @@ import React = require('react');
 import RN = require('react-native');
 
 import Animated from './Animated';
+import AppConfig from '../common/AppConfig';
 import AccessibilityUtil from './AccessibilityUtil';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { isEqual } from '../common/lodashMini';
 import UserInterface from './UserInterface';
+import { isEqual } from '../common/lodashMini';
+import { deepHasChildOfType } from '../common/ReactChildrenUtil';
 
 const _styles = {
     defaultButton: Styles.createButtonStyle({
@@ -82,6 +85,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         ]);
         this.state = this.touchableGetInitialState();
         this._setOpacityStyles(props);
+        this._warnAgainstInvalidChildren(props.children);
     }
 
     render() {
@@ -132,6 +136,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         if (!isEqual(this.props, nextProps)) {
             // If opacity got updated as a part of props update, we need to reflect that in the opacity animation value
            this._setOpacityStyles(nextProps, this.props);
+           this._warnAgainstInvalidChildren(nextProps.children);
         }
     }
 
@@ -291,6 +296,18 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
                 backgroundColor: _underlayInactive
             }, this.props.style],
         });
+    }
+
+    private _warnAgainstInvalidChildren(children: React.ReactNode) {
+        if (AppConfig.isDevelopmentMode()) {
+            const childCount = React.Children.count(children);
+            
+            if (childCount > 1) { 
+                console.warn('Button expects only one child component, otherwise some APIs will not work (e.g. Accessibility).');
+            } else if (childCount === 1 && deepHasChildOfType(children, Button)) {
+                console.warn('Button components should not be embedded. Some APIs, e.g. Accessibility, will not work.');
+            }
+        }
     }
 }
 
