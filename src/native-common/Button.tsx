@@ -15,6 +15,7 @@ import Animated from './Animated';
 import AccessibilityUtil from './AccessibilityUtil';
 import Styles from './Styles';
 import Types = require('../common/Types');
+import { isEqual } from '../common/lodashMini';
 import UserInterface from './UserInterface';
 
 const _styles = {
@@ -128,7 +129,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     }
 
     componentWillReceiveProps(nextProps: Types.ButtonProps) {
-        if (nextProps !== this.props) {
+        if (!isEqual(this.props, nextProps)) {
             // If opacity got updated as a part of props update, we need to reflect that in the opacity animation value
            this._setOpacityStyles(nextProps, this.props);
         }
