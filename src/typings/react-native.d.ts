@@ -369,6 +369,8 @@ declare module 'react-native' {
         underlineColorAndroid?: string;
         disableFullscreenUI?: boolean;
         textBreakStrategy?: 'highQuality' | 'simple' | 'balanced';
+        // macOS only property for submitting the text on enter
+        submitTextOnEnter?: boolean;
     }
 
     interface TextInputState {
