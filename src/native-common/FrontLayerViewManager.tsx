@@ -29,7 +29,8 @@ const _styles = {
     fullScreenView: {
         flex: 1,
         alignSelf: 'stretch',
-        overflow: 'visible'
+        overflow: 'visible',
+        backgroundColor: 'transparent' // otherwise RNW will remove this view form the tree and it won't receive mouse events
     }
 };
 
