@@ -38,7 +38,7 @@ declare module 'react-native' {
 
     var Children: React.ReactChildren;
 
-    type PlatformString = 'android'|'ios'|'windows';
+    type PlatformString = 'android'|'ios'|'windows'|'macos';
     var Platform: {
         OS: PlatformString,
         Version?: number
@@ -83,10 +83,31 @@ declare module 'react-native' {
             headers?: {[header: string]: string};
     }
 
-    interface ImageProps extends ComponentPropsStyleBase {
+    interface ImagePropertiesAndroid {
+        /**
+         * The mechanism that should be used to resize the image when the image's dimensions
+         * differ from the image view's dimensions. Defaults to auto.
+         *
+         * 'auto': Use heuristics to pick between resize and scale.
+         *
+         * 'resize': A software operation which changes the encoded image in memory before it gets decoded.
+         * This should be used instead of scale when the image is much larger than the view.
+         *
+         * 'scale': The image gets drawn downscaled or upscaled. Compared to resize, scale is faster (usually hardware accelerated)
+         * and produces higher quality images. This should be used if the image is smaller than the view.
+         * It should also be used if the image is slightly bigger than the view.
+         */
+        resizeMethod?: 'auto' | 'resize' | 'scale'
+
+        /**
+         * Duration of fade in animation.
+         */
+        fadeDuration?: number;
+    }
+
+    interface ImageProperties extends ImagePropertiesAndroid, ComponentPropsStyleBase {
         onLayout?: Function;
         resizeMode?: string;
-        resizeMethod?: string; // android only prop: 'auto' | 'resize' | 'scale'
         source?: ImageSource | number;
         testID?: string;
 
@@ -101,9 +122,6 @@ declare module 'react-native' {
         onLoadEnd?: (e: SyntheticEvent<Image>) => void;
         onLoadStart?: Function;
         onProgress?: Function;
-
-        // Android
-        fadeDuration?: number;
     }
 
     interface ActivityIndicatorProps extends ComponentPropsBase {
@@ -377,6 +395,8 @@ declare module 'react-native' {
         underlineColorAndroid?: string;
         disableFullscreenUI?: boolean;
         textBreakStrategy?: 'highQuality' | 'simple' | 'balanced';
+        // macOS only property for submitting the text on enter
+        submitTextOnEnter?: boolean;
     }
 
     interface TextInputState {
@@ -460,7 +480,7 @@ declare module 'react-native' {
         minute: number;
     }
 
-    class Image extends ReactNativeBaseComponent<ImageProps, {}> {
+    class Image extends ReactNativeBaseComponent<ImageProperties, {}> {
         static prefetch(url: string): Promise<boolean>;
     }
     class ActivityIndicator extends ReactNativeBaseComponent<ActivityIndicatorProps, {}> { }
@@ -738,30 +758,33 @@ declare module 'react-native' {
         numberActiveTouches: number;
     }
 
-    interface ResponderSyntheticEvent extends React.SyntheticEvent<any> {
+    interface GestureResponderEvent extends React.SyntheticEvent<any> {
         touchHistory: Function;
     }
 
     type PanResponderCreateConfig = {
-        onMoveShouldSetPanResponder?: (e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void | boolean,
-        onMoveShouldSetPanResponderCapture?: ((e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void | boolean),
-        onStartShouldSetPanResponder?: ((e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void | boolean),
-        onStartShouldSetPanResponderCapture?: ((e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void | boolean),
-        onPanResponderReject?: ((e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void | boolean),
-        onPanResponderGrant?: ((e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void | boolean),
-        onPanResponderStart?: ((e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void | boolean),
-        onPanResponderEnd?: ((e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void | boolean),
-        onPanResponderRelease?: ((e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void | boolean),
-        onPanResponderMove?: ((e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void | boolean),
-        onPanResponderTerminate?: ((e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void | boolean),
-        onPanResponderTerminationRequest?: ((e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void | boolean),
-        onShouldBlockNativeResponder?:  ((e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void | boolean), // android only
-        onStartShouldSetResponderCapture?: (e: ResponderSyntheticEvent, gestureState: PanResponderGestureState) => void,
+        onMoveShouldSetPanResponder?: (e: GestureResponderEvent, gestureState: PanResponderGestureState) => void | boolean,
+        onMoveShouldSetPanResponderCapture?: ((e: GestureResponderEvent, gestureState: PanResponderGestureState) => void | boolean),
+        onStartShouldSetPanResponder?: ((e: GestureResponderEvent, gestureState: PanResponderGestureState) => void | boolean),
+        onStartShouldSetPanResponderCapture?: ((e: GestureResponderEvent, gestureState: PanResponderGestureState) => void | boolean),
+        onPanResponderReject?: ((e: GestureResponderEvent, gestureState: PanResponderGestureState) => void | boolean),
+        onPanResponderGrant?: ((e: GestureResponderEvent, gestureState: PanResponderGestureState) => void | boolean),
+        onPanResponderStart?: ((e: GestureResponderEvent, gestureState: PanResponderGestureState) => void | boolean),
+        onPanResponderEnd?: ((e: GestureResponderEvent, gestureState: PanResponderGestureState) => void | boolean),
+        onPanResponderRelease?: ((e: GestureResponderEvent, gestureState: PanResponderGestureState) => void | boolean),
+        onPanResponderMove?: ((e: GestureResponderEvent, gestureState: PanResponderGestureState) => void | boolean),
+        onPanResponderTerminate?: ((e: GestureResponderEvent, gestureState: PanResponderGestureState) => void | boolean),
+        onPanResponderTerminationRequest?: ((e: GestureResponderEvent, gestureState: PanResponderGestureState) => void | boolean),
+        onShouldBlockNativeResponder?:  ((e: GestureResponderEvent, gestureState: PanResponderGestureState) => void | boolean), // android only
+        onStartShouldSetResponderCapture?: (e: GestureResponderEvent, gestureState: PanResponderGestureState) => void,
 
     }
 
     class PanResponder {
-        static create(config: PanResponderCreateConfig): PanResponder;
+        static create(config: PanResponderCreateConfig): PanResponderInstance;
+    }
+
+    class PanResponderInstance {
         panHandlers: ResponderProps;
     }
 
@@ -867,13 +890,6 @@ declare module 'react-native' {
         useNativeDriver?: boolean;
      }
 
-     interface AnimatedTimingConfig extends AnimationConfig {
-        toValue: number;
-        duration?: number;
-        delay?: number
-        easing?: (input: number) => number;
-    }
-
     interface CompositeAnimation {
         start(callback?: AnimatedEndCallback): void;
         stop: () => void;
@@ -883,22 +899,29 @@ declare module 'react-native' {
     type AnimatedEndCallback = (result: AnimatedEndResult) => void;
 
      module Animated {
-         function createAnimatedComponent(Component: any, notCollapsable?: boolean): any;
-         function delay(time: number): CompositeAnimation;
-         function timing(value: Animated.Value, config: AnimatedTimingConfig): CompositeAnimation;
-         function parallel(animations: CompositeAnimation[]): CompositeAnimation
-         function sequence(animations: CompositeAnimation[]): CompositeAnimation
-         class Value {
-            constructor(val: number);
-            setValue(value: number): void;
-            addListener(callback: any): string;
-            removeListener(id: string): void;
-            removeAllListeners(): void;
-            interpolate(config: any): Value;
-         }
-         class View extends ReactNativeBaseComponent<ViewProps, {}> { }
-         class Image extends ReactNativeBaseComponent<ImageProps, {}> { }
-         class Text extends ReactNativeBaseComponent<TextProps, {}> { }
+        interface TimingAnimationConfig extends AnimationConfig {
+            toValue: number;
+            duration?: number;
+            delay?: number
+            easing?: (input: number) => number;
+        }
+
+        function createAnimatedComponent(Component: any, notCollapsable?: boolean): any;
+        function delay(time: number): CompositeAnimation;
+        function timing(value: Animated.Value, config: TimingAnimationConfig): CompositeAnimation;
+        function parallel(animations: CompositeAnimation[]): CompositeAnimation
+        function sequence(animations: CompositeAnimation[]): CompositeAnimation
+        class Value {
+        constructor(val: number);
+        setValue(value: number): void;
+        addListener(callback: any): string;
+        removeListener(id: string): void;
+        removeAllListeners(): void;
+        interpolate(config: any): Value;
+        }
+        class View extends ReactNativeBaseComponent<ViewProps, {}> { }
+        class Image extends ReactNativeBaseComponent<ImageProperties, {}> { }
+        class Text extends ReactNativeBaseComponent<TextProps, {}> { }
      }
 
      interface IUpdateLayoutAnimationConfig {

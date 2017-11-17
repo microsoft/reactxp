@@ -29,7 +29,8 @@ const _styles = {
     fullScreenView: {
         flex: 1,
         alignSelf: 'stretch',
-        overflow: 'visible'
+        overflow: 'visible',
+        backgroundColor: 'transparent' // otherwise in UWP it will be removed from the tree and won't receive mouse events
     }
 };
 

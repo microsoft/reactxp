@@ -28,9 +28,9 @@ export class Image extends React.Component<Types.ImageProps, {}> {
     static prefetch(url: string): SyncTasks.Promise<boolean> {
         const defer = SyncTasks.Defer<boolean>();
 
-        RN.Image.prefetch(url).then(value => {
+        RN.Image.prefetch(url).then((value: boolean) => {
             defer.resolve(value);
-        }).catch(error => {
+        }).catch((error: any) => {
             defer.reject(error);
         });
 
@@ -41,7 +41,7 @@ export class Image extends React.Component<Types.ImageProps, {}> {
     private _nativeImageWidth: number|undefined;
     private _nativeImageHeight: number|undefined;
 
-    protected _getAdditionalProps(): RN.ImageProps {
+    protected _getAdditionalProps(): RN.ImageProperties | {} {
         return {};
     }
 
@@ -96,7 +96,7 @@ export class Image extends React.Component<Types.ImageProps, {}> {
         );
     }
 
-    public setNativeProps(nativeProps: RN.ImageProps) {
+    public setNativeProps(nativeProps: RN.ImageProperties) {
         (this.refs['nativeImage'] as RN.Image).setNativeProps(nativeProps);
     }
 

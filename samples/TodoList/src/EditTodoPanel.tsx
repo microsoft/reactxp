@@ -31,8 +31,8 @@ const _styles = {
 };
 
 class EditTodoPanel extends RX.Component<TodoPanelProps, TodoPanelState> {
-    constructor() {
-        super();
+    constructor(initialProps: TodoPanelProps) {
+        super(initialProps);
 
         this.state = {};
     }

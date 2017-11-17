@@ -62,6 +62,35 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
 
     componentDidMount() {
         this._id = _idCounter++;
+    }
+
+    componentWillUnmount() {
+        // Dispose of timer before the component goes away.
+        this._cancelDoubleTapTimer();
+    }
+
+    render() {
+        const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
+        const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
+
+        return (
+            <div
+                style={ this._getStyles() }
+                ref={ this._setContainerRef }
+                onClick={ this._onClick }
+                onWheel={ this._onWheel }
+                role={ ariaRole }
+                aria-label={ this.props.accessibilityLabel }
+                aria-hidden={ isAriaHidden }
+            >
+                { this.props.children }
+            </div>
+        );
+    }
+
+    private _createMouseResponder() {
+        this._disposeMouseResponder();
+
         this._responder = MouseResponder.create({
             id: this._id,
             target: this._container,
@@ -69,8 +98,13 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
                 if (!this.props.onPan && !this.props.onPanHorizontal && !this.props.onPanVertical) {
                     return false;
                 }
-                
-                const { top, left, bottom, right } = this._container.getBoundingClientRect();
+
+                const boundingRect = this._getGestureViewClientRect();
+                if (!boundingRect) {
+                    return false;
+                }
+
+                const { top, left, bottom, right } = boundingRect;
                 const { clientX, clientY } = event;
 
                 if (clientX >= left && clientX <= right && clientY >= top && clientY <= bottom) {
@@ -93,36 +127,22 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
         });
     }
 
-    componentWillUnmount() {
-        // Dispose of timer before the component goes away.
-        this._cancelDoubleTapTimer();
+    private _disposeMouseResponder() {
         if (this._responder) {
             this._responder.dispose();
+            delete this._responder;
         }
-    }
-
-    render() {
-        const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
-        const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
-
-        return (
-            <div
-                style={ this._getStyles() }
-                ref={ this._setContainerRef }
-                onClick={ this._onClick }
-                onWheel={ this._onWheel }
-                role={ ariaRole }
-                aria-label={ this.props.accessibilityLabel }
-                aria-hidden={ isAriaHidden }
-            >
-                { this.props.children }
-            </div>
-        );
     }
 
     private _setContainerRef = (container: any) => {
         // safe since div refs resolve into HTMLElement and not react element.
         this._container = container as HTMLElement;
+
+        if (container) {
+            this._createMouseResponder();
+        } else {
+            this._disposeMouseResponder();
+        }
     }
 
     private _getStyles(): any {
@@ -249,16 +269,19 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
     private _onWheel = (e: React.WheelEvent<any>) => {
         if (this.props.onScrollWheel) {
             const clientRect = this._getGestureViewClientRect();
-            const scrollWheelEvent: Types.ScrollWheelGestureState = {
-                clientX: e.clientX - clientRect.left,
-                clientY: e.clientY - clientRect.top,
-                pageX: e.pageX,
-                pageY: e.pageY,
-                scrollAmount: e.deltaY,
-                timeStamp: e.timeStamp
-            };
 
-            this.props.onScrollWheel(scrollWheelEvent);
+            if (clientRect) {
+                const scrollWheelEvent: Types.ScrollWheelGestureState = {
+                    clientX: e.clientX - clientRect.left,
+                    clientY: e.clientY - clientRect.top,
+                    pageX: e.pageX,
+                    pageY: e.pageY,
+                    scrollAmount: e.deltaY,
+                    timeStamp: e.timeStamp
+                };
+
+                this.props.onScrollWheel(scrollWheelEvent);
+            }
         }
     }
 
@@ -320,30 +343,36 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
 
         if (this.props.onTap) {
             const clientRect = this._getGestureViewClientRect();
-            const tapEvent: Types.TapGestureState = {
-                pageX: e.pageX,
-                pageY: e.pageY,
-                clientX: e.clientX - clientRect.left,
-                clientY: e.clientY - clientRect.top,
-                timeStamp: e.timeStamp
-            };
 
-            this.props.onTap(tapEvent);
+            if (clientRect) {
+                const tapEvent: Types.TapGestureState = {
+                    pageX: e.pageX,
+                    pageY: e.pageY,
+                    clientX: e.clientX - clientRect.left,
+                    clientY: e.clientY - clientRect.top,
+                    timeStamp: e.timeStamp
+                };
+
+                this.props.onTap(tapEvent);
+            }
         }
     }
 
     private _sendDoubleTapEvent(e: Types.MouseEvent) {
         if (this.props.onDoubleTap) {
             const clientRect = this._getGestureViewClientRect();
-            const tapEvent: Types.TapGestureState = {
-                pageX: e.pageX,
-                pageY: e.pageY,
-                clientX: e.clientX - clientRect.left,
-                clientY: e.clientY - clientRect.top,
-                timeStamp: e.timeStamp
-            };
 
-            this.props.onDoubleTap(tapEvent);
+            if (clientRect) {
+                const tapEvent: Types.TapGestureState = {
+                    pageX: e.pageX,
+                    pageY: e.pageY,
+                    clientX: e.clientX - clientRect.left,
+                    clientY: e.clientY - clientRect.top,
+                    timeStamp: e.timeStamp
+                };
+
+                this.props.onDoubleTap(tapEvent);
+            }
         }
     }
 
@@ -372,7 +401,7 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
     }
 
     private _getGestureViewClientRect() {
-        return this._container.getBoundingClientRect();
+        return this._container ? this._container.getBoundingClientRect() : null;
     }
 }
 

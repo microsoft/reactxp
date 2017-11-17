@@ -343,7 +343,7 @@ export type ComponentBase = React.Component<any, any>;
 // Components
 // ----------------------------------------------------------------------
 export interface CommonProps {
-    ref?: string | ((obj: ComponentBase) => void);
+    ref?: string | ((obj: ComponentBase | null) => void);
     key?: string | number;
     type?: any;
     children?: React.ReactNode | React.ReactNode[];
@@ -867,6 +867,9 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     // iOS and Android only property for controlling the text input selection color
     selectionColor?: string;
 
+    // macOS only property for submitting the text on enter
+    submitTextOnEnter?: boolean;
+
     onKeyPress?: (e: KeyboardEvent) => void;
     onFocus?: (e: FocusEvent) => void;
     onBlur?: (e: FocusEvent) => void;
@@ -1254,7 +1257,7 @@ export interface LayoutInfo {
 //
 // Platform
 // ----------------------------------------------------------------------
-export type PlatformType = 'web' | 'ios' | 'android' | 'windows';
+export type PlatformType = 'web' | 'ios' | 'android' | 'windows' | 'macos';
 
 //
 // Network
