@@ -30,7 +30,7 @@ const _styles = {
         flex: 1,
         alignSelf: 'stretch',
         overflow: 'visible',
-        backgroundColor: 'transparent' // otherwise RNW will remove this view form the tree and it won't receive mouse events
+        backgroundColor: 'transparent' // otherwise in UWP it will be removed from the tree and won't receive mouse events
     }
 };
 
