@@ -331,7 +331,7 @@ export class Scrollbar {
     private _handleMouseDown(e: React.MouseEvent<any>) {
         const target = e.currentTarget as any;
 
-        if (this._dragging === true || !target) {
+        if (this._dragging || !target) {
             this._prevent(e);
             return;
         }
