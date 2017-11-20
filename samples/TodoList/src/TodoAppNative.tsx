@@ -9,7 +9,7 @@ import NoSqlProvider = require('nosqlprovider');
 
 import TodoApp = require('./TodoApp');
 
-class TodoAppWeb extends TodoApp {
+class TodoAppNative extends TodoApp {
     protected _getDbProvidersToTry(): NoSqlProvider.DbProvider[] {
         let rnSqliteProvider = require('react-native-sqlite-storage');
 
@@ -21,5 +21,5 @@ class TodoAppWeb extends TodoApp {
     }
 }
 
-export = new TodoAppWeb();
+export = new TodoAppNative();
 
