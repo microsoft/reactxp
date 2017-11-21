@@ -329,7 +329,26 @@ export class Scrollbar {
     }
 
     private _handleMouseDown(e: React.MouseEvent<any>) {
-        this._prevent(e);
+        const target = e.currentTarget as any;
+
+        if (this._dragging || !target) {
+            this._prevent(e);
+            return;
+        }
+
+        if (this._hasVertical) {
+            const eventOffsetY = e.pageY - target.getBoundingClientRect().top;
+            const halfHeight = this._verticalBar.slider!!!.offsetHeight / 2; 
+            const offsetY = (eventOffsetY - this._verticalBar.slider!!!.offsetTop - halfHeight) * this._verticalBar.slider2Scroll!!!;
+            this._viewport.scrollTop = offsetY + this._viewport.scrollTop;
+        }
+        
+        if (this._hasHorizontal) {
+            const eventOffsetX = e.pageX - target.getBoundingClientRect().left;
+            const halfWidth = this._horizontalBar.slider!!!.offsetWidth / 2; 
+            const offsetX = (eventOffsetX - this._horizontalBar.slider!!!.offsetLeft - halfWidth) * this._horizontalBar.slider2Scroll!!!;
+            this._viewport.scrollLeft = offsetX + this._viewport.scrollLeft;
+        }
     }
 
     private _normalizeDelta(e: React.WheelEvent<any>) {
