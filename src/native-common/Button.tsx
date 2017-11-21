@@ -10,16 +10,14 @@
 import assert = require('assert');
 import React = require('react');
 import RN = require('react-native');
+import PropTypes = require('prop-types');
 
 import Animated from './Animated';
-import AppConfig from '../common/AppConfig';
 import AccessibilityUtil from './AccessibilityUtil';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { isEqual } from '../common/lodashMini';
 import UserInterface from './UserInterface';
-import { isEqual } from '../common/lodashMini';
-import { deepHasChildOfType } from '../common/ReactChildrenUtil';
 
 const _styles = {
     defaultButton: Styles.createButtonStyle({
@@ -56,7 +54,24 @@ function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, properti
     });
 }
 
+export interface ButtonContext {
+    hasRxButtonAscendant?: boolean;
+}
+
 export class Button extends React.Component<Types.ButtonProps, {}> {
+    static propTypes = {
+        // Button should only have a single child.
+        children: PropTypes.element
+    };
+
+    static contextTypes = {
+        hasRxButtonAscendant: PropTypes.bool
+    };
+
+    static childContextTypes = {
+        hasRxButtonAscendant: PropTypes.bool
+    };
+
     private _mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount || noop;
     private _mixin_componentWillUnmount = RN.Touchable.Mixin.componentWillUnmount || noop;
 
@@ -75,8 +90,8 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     private _opacityAnimatedValue: RN.Animated.Value|undefined;
     private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet|undefined;
 
-    constructor(props: Types.ButtonProps) {
-        super(props);
+    constructor(props: Types.ButtonProps, context: ButtonContext) {
+        super(props, context);
         applyMixin(this, RN.Touchable.Mixin, [
             // Properties that Button and RN.Touchable.Mixin have in common. Button needs
             // to dispatch these methods to RN.Touchable.Mixin manually.
@@ -85,7 +100,10 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         ]);
         this.state = this.touchableGetInitialState();
         this._setOpacityStyles(props);
-        this._warnAgainstInvalidChildren(props.children);
+
+        if (context.hasRxButtonAscendant) {
+            console.warn('Button components should not be embedded. Some APIs, e.g. Accessibility, will not work.');
+        }
     }
 
     render() {
@@ -136,8 +154,11 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         if (!isEqual(this.props, nextProps)) {
             // If opacity got updated as a part of props update, we need to reflect that in the opacity animation value
            this._setOpacityStyles(nextProps, this.props);
-           this._warnAgainstInvalidChildren(nextProps.children);
         }
+    }
+
+    getChildContext(): ButtonContext {
+        return { hasRxButtonAscendant: true };
     }
 
     setNativeProps(nativeProps: RN.ViewProps) {
@@ -296,18 +317,6 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
                 backgroundColor: _underlayInactive
             }, this.props.style],
         });
-    }
-
-    private _warnAgainstInvalidChildren(children: React.ReactNode) {
-        if (AppConfig.isDevelopmentMode()) {
-            const childCount = React.Children.count(children);
-            
-            if (childCount > 1) { 
-                console.warn('Button expects only one child component, otherwise some APIs will not work (e.g. Accessibility).');
-            } else if (childCount === 1 && deepHasChildOfType(children, Button)) {
-                console.warn('Button components should not be embedded. Some APIs, e.g. Accessibility, will not work.');
-            }
-        }
     }
 }
 

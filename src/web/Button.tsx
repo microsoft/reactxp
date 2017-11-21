@@ -9,14 +9,13 @@
 
 import React = require('react');
 import ReactDOM = require('react-dom');
+import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import AppConfig from '../common/AppConfig';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
 import UserInterface from './UserInterface';
-import { deepHasChildOfType } from '../common/ReactChildrenUtil';
 
 const _styles = {
     defaultButton: {
@@ -48,7 +47,24 @@ UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
     _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 });
 
+export interface ButtonContext {
+    hasRxButtonAscendant?: boolean;
+}
+
 export class Button extends React.Component<Types.ButtonProps, {}> {
+    static propTypes = {
+        // Button should only have a single child.
+        children: PropTypes.element
+    };
+
+    static contextTypes = {
+        hasRxButtonAscendant: PropTypes.bool
+    };
+
+    static childContextTypes = {
+        hasRxButtonAscendant: PropTypes.bool
+    };
+
     private _lastMouseDownTime: number = 0;
     private _lastMouseDownEvent: Types.SyntheticEvent;
     private _ignoreClick = false;
@@ -57,9 +73,16 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     private _isFocusedWithKeyboard = false;
     private _isHoverStarted = false;
 
-    constructor(props: Types.ButtonProps) {
-        super(props);
-        this._warnAgainstInvalidChildren(props.children);
+    constructor(props: Types.ButtonProps, context: ButtonContext) {
+        super(props, context);
+
+        if (context.hasRxButtonAscendant) {
+            console.warn('Button components should not be embedded. Some APIs, e.g. Accessibility, will not work.');
+        }
+    }
+
+    getChildContext(): ButtonContext {
+        return { hasRxButtonAscendant: true };
     }
 
     render() {
@@ -99,10 +122,6 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
                 { this.props.children }
             </button>
         );
-    }
-
-    componentWillReceiveProps(nextProps: Types.ButtonProps) {
-        this._warnAgainstInvalidChildren(nextProps.children);
     }
 
     focus() {
@@ -236,18 +255,6 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
 
             if (this.props.onHoverEnd) {
                 this.props.onHoverEnd(e);
-            }
-        }
-    }
-
-    private _warnAgainstInvalidChildren(children: React.ReactNode) {
-        if (AppConfig.isDevelopmentMode()) {
-            const childCount = React.Children.count(children);
-            
-            if (childCount > 1) { 
-                console.warn('Button expects only one child component, otherwise some APIs will not work (e.g. Accessibility).');
-            } else if (childCount === 1 && deepHasChildOfType(children, Button)) {
-                console.warn('Button components should not be embedded. Some APIs, e.g. Accessibility, will not work.');
             }
         }
     }
