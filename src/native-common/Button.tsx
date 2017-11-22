@@ -10,6 +10,7 @@
 import assert = require('assert');
 import React = require('react');
 import RN = require('react-native');
+import PropTypes = require('prop-types');
 
 import Animated from './Animated';
 import AccessibilityUtil from './AccessibilityUtil';
@@ -53,7 +54,24 @@ function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, properti
     });
 }
 
+export interface ButtonContext {
+    hasRxButtonAscendant?: boolean;
+}
+
 export class Button extends React.Component<Types.ButtonProps, {}> {
+    static propTypes = {
+        // Button should only have a single child.
+        children: PropTypes.element
+    };
+
+    static contextTypes = {
+        hasRxButtonAscendant: PropTypes.bool
+    };
+
+    static childContextTypes = {
+        hasRxButtonAscendant: PropTypes.bool
+    };
+
     private _mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount || noop;
     private _mixin_componentWillUnmount = RN.Touchable.Mixin.componentWillUnmount || noop;
 
@@ -72,8 +90,8 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     private _opacityAnimatedValue: RN.Animated.Value|undefined;
     private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet|undefined;
 
-    constructor(props: Types.ButtonProps) {
-        super(props);
+    constructor(props: Types.ButtonProps, context: ButtonContext) {
+        super(props, context);
         applyMixin(this, RN.Touchable.Mixin, [
             // Properties that Button and RN.Touchable.Mixin have in common. Button needs
             // to dispatch these methods to RN.Touchable.Mixin manually.
@@ -82,6 +100,10 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         ]);
         this.state = this.touchableGetInitialState();
         this._setOpacityStyles(props);
+
+        if (context.hasRxButtonAscendant) {
+            console.warn('Button components should not be embedded. Some APIs, e.g. Accessibility, will not work.');
+        }
     }
 
     render() {
@@ -133,6 +155,10 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
             // If opacity got updated as a part of props update, we need to reflect that in the opacity animation value
            this._setOpacityStyles(nextProps, this.props);
         }
+    }
+
+    getChildContext(): ButtonContext {
+        return { hasRxButtonAscendant: true };
     }
 
     setNativeProps(nativeProps: RN.ViewProps) {

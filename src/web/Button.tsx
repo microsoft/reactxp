@@ -9,6 +9,7 @@
 
 import React = require('react');
 import ReactDOM = require('react-dom');
+import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
 import Styles from './Styles';
@@ -46,7 +47,24 @@ UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
     _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 });
 
+export interface ButtonContext {
+    hasRxButtonAscendant?: boolean;
+}
+
 export class Button extends React.Component<Types.ButtonProps, {}> {
+    static propTypes = {
+        // Button should only have a single child.
+        children: PropTypes.element
+    };
+
+    static contextTypes = {
+        hasRxButtonAscendant: PropTypes.bool
+    };
+
+    static childContextTypes = {
+        hasRxButtonAscendant: PropTypes.bool
+    };
+
     private _lastMouseDownTime: number = 0;
     private _lastMouseDownEvent: Types.SyntheticEvent;
     private _ignoreClick = false;
@@ -54,6 +72,18 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     private _isMouseOver = false;
     private _isFocusedWithKeyboard = false;
     private _isHoverStarted = false;
+
+    constructor(props: Types.ButtonProps, context: ButtonContext) {
+        super(props, context);
+
+        if (context.hasRxButtonAscendant) {
+            console.warn('Button components should not be embedded. Some APIs, e.g. Accessibility, will not work.');
+        }
+    }
+
+    getChildContext(): ButtonContext {
+        return { hasRxButtonAscendant: true };
+    }
 
     render() {
         const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits,
