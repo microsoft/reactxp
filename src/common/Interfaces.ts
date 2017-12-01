@@ -231,8 +231,8 @@ export abstract class Platform {
 
 export abstract class Input {
     backButtonEvent = new SubscribableEvent<() => boolean>(true);
-    keyDownEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
-    keyUpEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
+    keyDownEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>(true);
+    keyUpEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>(true);
 }
 
 export interface IScrollView {
