@@ -69,9 +69,24 @@ export class View extends ViewBase<Types.ViewProps, {}> {
                 this._internalProps.pointerEvents = 'box-none';
             }
         }
+
+        // RN sets event data in nativeEvent, but JS expects it to be directly in the event object
+        for (const name of ['onDragEnter', 'onDragOver', 'onDrop', 'onDragLeave']) {
+            const handler = this._internalProps[name];
+
+            if (handler) {
+                this._internalProps.allowDrop = true;
+
+                this._internalProps[name] = (event: any) => {
+                    const newEvent = Object.create(event);
+                    newEvent.dataTransfer = event.nativeEvent.dataTransfer;
+                    handler(newEvent);
+                };
+            }
+        }
     }
 
-    private _isButton (viewProps: Types.ViewProps): boolean {
+    private _isButton(viewProps: Types.ViewProps): boolean {
         return !!(viewProps.onPress || viewProps.onLongPress);
     }
 
@@ -79,19 +94,19 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         if (this.props.animateChildEnter || this.props.animateChildMove || this.props.animateChildLeave) {
             return (
                 <AnimateListEdits { ...this._internalProps }>
-                    { this.props.children }
+                    {this.props.children}
                 </AnimateListEdits>
             );
         } else if (this._isButton(this.props)) {
             return (
                 <Button { ...this._internalProps }>
-                    { this.props.children }
+                    {this.props.children}
                 </Button>
             );
         } else {
             return (
                 <RN.View { ...this._internalProps }>
-                    { this.props.children }
+                    {this.props.children}
                 </RN.View>
             );
         }
