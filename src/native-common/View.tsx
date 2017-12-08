@@ -18,7 +18,6 @@ import AnimateListEdits from './listAnimations/AnimateListEdits';
 import Button from './Button';
 import Types = require('../common/Types');
 import ViewBase from './ViewBase';
-import { SyntheticEvent } from 'react';
 
 export class View extends ViewBase<Types.ViewProps, {}> {
     private _internalProps: any = {};
@@ -71,13 +70,19 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             }
         }
 
+        if (RN.Platform.OS === 'windows') {
+            this._processDragAndDropProps();
+        }
+    }
+
+    private _processDragAndDropProps() {
         for (const name of ['onDragEnter', 'onDragOver', 'onDrop', 'onDragLeave']) {
             const handler = this._internalProps[name];
 
             if (handler) {
-                this._internalProps.allowDrop = true;
+                this._internalProps.allowDrop = true; // TODO: let RN figure this out?
 
-                this._internalProps[name] = (e: SyntheticEvent) => {
+                this._internalProps[name] = (e: React.SyntheticEvent) => {
                     handler({
                         dataTransfer: (e.nativeEvent as any).dataTransfer,
 
