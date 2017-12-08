@@ -18,6 +18,7 @@ import AnimateListEdits from './listAnimations/AnimateListEdits';
 import Button from './Button';
 import Types = require('../common/Types');
 import ViewBase from './ViewBase';
+import { SyntheticEvent } from 'react';
 
 export class View extends ViewBase<Types.ViewProps, {}> {
     private _internalProps: any = {};
@@ -70,17 +71,28 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             }
         }
 
-        // RN sets event data in nativeEvent, but JS expects it to be directly in the event object
         for (const name of ['onDragEnter', 'onDragOver', 'onDrop', 'onDragLeave']) {
             const handler = this._internalProps[name];
 
             if (handler) {
                 this._internalProps.allowDrop = true;
 
-                this._internalProps[name] = (event: any) => {
-                    const newEvent = Object.create(event);
-                    newEvent.dataTransfer = event.nativeEvent.dataTransfer;
-                    handler(newEvent);
+                this._internalProps[name] = (e: SyntheticEvent) => {
+                    handler({
+                        dataTransfer: (e.nativeEvent as any).dataTransfer,
+
+                        stopPropagation() {
+                            if (e.stopPropagation) {
+                                e.stopPropagation();
+                            }
+                        },
+
+                        preventDefault() {
+                            if (e.preventDefault) {
+                                e.preventDefault();
+                            }
+                        },
+                    });
                 };
             }
         }
