@@ -80,7 +80,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             const handler = this._internalProps[name];
 
             if (handler) {
-                this._internalProps.allowDrop = true; // TODO: let RN figure this out?
+                this._internalProps.allowDrop = true;
 
                 this._internalProps[name] = (e: React.SyntheticEvent) => {
                     handler({
