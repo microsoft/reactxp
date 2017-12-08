@@ -536,7 +536,7 @@ export interface AnimatedImageProps extends ImagePropsShared {
 // | I am a very |
 // | important   |
 // | example     |
-export interface TextPropsShared extends CommonProps {
+export interface TextPropsShared extends CommonProps, CommonAccessibilityProps {
     children?: ReactNode;
     selectable?: boolean;
     numberOfLines?: number;
@@ -555,8 +555,6 @@ export interface TextPropsShared extends CommonProps {
     // TODO : http://skype.vso.io/865016 : remove this exposed property
     // Used only for Android.
     textBreakStrategy?: 'highQuality' | 'simple' | 'balanced';
-
-    importantForAccessibility?: ImportantForAccessibility;
 
     // Android only
     elevation?: number;
