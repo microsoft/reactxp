@@ -111,19 +111,19 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         if (this.props.animateChildEnter || this.props.animateChildMove || this.props.animateChildLeave) {
             return (
                 <AnimateListEdits { ...this._internalProps }>
-                    {this.props.children}
+                    { this.props.children }
                 </AnimateListEdits>
             );
         } else if (this._isButton(this.props)) {
             return (
                 <Button { ...this._internalProps }>
-                    {this.props.children}
+                    { this.props.children }
                 </Button>
             );
         } else {
             return (
                 <RN.View { ...this._internalProps }>
-                    {this.props.children}
+                    { this.props.children }
                 </RN.View>
             );
         }
