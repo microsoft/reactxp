@@ -379,13 +379,19 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
     private _sendPanEvent = (gestureState: Types.PanGestureState) => {
         switch (this._pendingGestureType) {
             case GestureType.Pan:
-                this.props.onPan!!!(gestureState);
+                if (this.props.onPan) {
+                    this.props.onPan(gestureState);
+                }
                 break;
             case GestureType.PanVertical:
-                this.props.onPanVertical!!!(gestureState);
+                if (this.props.onPanVertical) {
+                    this.props.onPanVertical(gestureState);
+                }
                 break;
             case GestureType.PanHorizontal:
-                this.props.onPanHorizontal!!!(gestureState);
+                if (this.props.onPanHorizontal) {
+                    this.props.onPanHorizontal(gestureState);
+                }
                 break;
 
             default:
