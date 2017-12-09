@@ -69,9 +69,41 @@ export class View extends ViewBase<Types.ViewProps, {}> {
                 this._internalProps.pointerEvents = 'box-none';
             }
         }
+
+        if (RN.Platform.OS === 'windows') {
+            this._processDragAndDropProps();
+        }
     }
 
-    private _isButton (viewProps: Types.ViewProps): boolean {
+    private _processDragAndDropProps() {
+        for (const name of ['onDragEnter', 'onDragOver', 'onDrop', 'onDragLeave']) {
+            const handler = this._internalProps[name];
+
+            if (handler) {
+                this._internalProps.allowDrop = true;
+
+                this._internalProps[name] = (e: React.SyntheticEvent) => {
+                    handler({
+                        dataTransfer: (e.nativeEvent as any).dataTransfer,
+
+                        stopPropagation() {
+                            if (e.stopPropagation) {
+                                e.stopPropagation();
+                            }
+                        },
+
+                        preventDefault() {
+                            if (e.preventDefault) {
+                                e.preventDefault();
+                            }
+                        },
+                    });
+                };
+            }
+        }
+    }
+
+    private _isButton(viewProps: Types.ViewProps): boolean {
         return !!(viewProps.onPress || viewProps.onLongPress);
     }
 
