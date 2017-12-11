@@ -1,6 +1,6 @@
 {
   "name": "reactxp",
-  "version": "0.46.5",
+  "version": "0.46.6",
   "description": "Cross-platform abstraction layer for writing React-based applications a single time that work identically across web, React Native, and Electron distribution",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "react": "16.0.0-alpha.12",
     "react-dom": "16.0.0-alpha.12",
     "react-native": "^0.46.0",
-    "react-native-windows": "^0.33.0"
+    "react-native-windows": "^0.46.0-rc.0"
   },
   "devDependencies": {
     "typescript": "2.6.0-dev.20170826",
