@@ -82,7 +82,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             if (handler) {
                 this._internalProps.allowDrop = true;
 
-                this._internalProps[name] = (e: React.SyntheticEvent) => {
+                this._internalProps[name] = (e: React.SyntheticEvent<View>) => {
                     handler({
                         dataTransfer: (e.nativeEvent as any).dataTransfer,
 
