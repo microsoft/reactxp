@@ -16,6 +16,16 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.46.6 of reactxp
+_Released 13 Dec 2017_
+
+Fixed potential crash in web implementation of RX.ScrollView. 
+Fixed bug in UWP implementation of RX.Popup, allowing background to be clickable.
+In web implementation of RX.ScrollView, added support for clicking on scroll bar to adjust position of thumb.
+Added dev warning when using nested RX.Button items.
+Fixed a potential crash in web implementation of RX.GestureView.
+Implemented drag-and-drop support in UWP implementation of RX.View.
+
 #### Version 0.46.5 of reactxp
 _Released 31 Oct 2017_
 
