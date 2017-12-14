@@ -16,6 +16,11 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.46.7 of reactxp
+_Released 14 Dec 2017_
+
+React-native Button is allowed to have multiple nested elements. This warning is hard to control now as View generates a Button in case onPress is defined.
+
 #### Version 0.46.6 of reactxp
 _Released 13 Dec 2017_
 
