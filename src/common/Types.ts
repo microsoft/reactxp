@@ -558,9 +558,6 @@ export interface TextPropsShared extends CommonProps {
 
     importantForAccessibility?: ImportantForAccessibility;
 
-    // Android only
-    elevation?: number;
-
     onPress?: (e: SyntheticEvent) => void;
 
     id?: string; // Web only. Needed for accessibility.
