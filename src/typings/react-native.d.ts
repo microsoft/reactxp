@@ -788,16 +788,25 @@ declare module 'react-native' {
         panHandlers: ResponderProps;
     }
 
-    type DimensionType = {
-        width: number,
-        height: number,
-        scale: number,
-        fontScale: number,
+    interface DimensionType {
+        width: number;
+        height: number;
+        scale: number;
+        fontScale: number;
+    }
+    
+    type DimensionEventType = 'change';
+
+    interface DimensionChangeEvent {
+        window: DimensionType;
+        screen: DimensionType;
     }
 
     class Dimensions {
         static set(obj: any): boolean;
         static get(key: string): DimensionType;
+
+        static addEventListener(type: DimensionEventType, handler: (event: DimensionChangeEvent) => void): void;
     }
 
     type RCTAppStateData = { app_state: string }
