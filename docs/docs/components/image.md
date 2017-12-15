@@ -21,10 +21,10 @@ accessibilityLabel: string = undefined;
 headers: { [headerName: string]: string } = undefined;
 
 // Called when an error occurs that prevents the image from loading
-onError: (e: SyntheticEvent) => void;
+onError: (err?: Error) => void;
 
 // Called when the image successfully loads
-onLoad: (e: SyntheticEvent) => void;
+onLoad: (size: Dimensions) => void;
 
 // Android-specific resize property
 resizeMethod: 'auto' | 'resize' | 'scale' = 'auto'; // Android only
