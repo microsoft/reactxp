@@ -23,10 +23,9 @@ export class UserInterface extends RX.UserInterface {
 
     constructor() {
         super();
-
-        RN.DeviceEventEmitter.addListener('didUpdateDimensions', (newValue: RN.DimensionType) => {
-            this.contentSizeMultiplierChangedEvent.fire(newValue.fontScale);
-        });
+        RN.Dimensions.addEventListener('change', (event) => {
+            this.contentSizeMultiplierChangedEvent.fire(event.window.fontScale);
+        });        
     }
 
     measureLayoutRelativeToWindow(component: React.Component<any, any>):
