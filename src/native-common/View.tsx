@@ -152,8 +152,8 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         // The web implementation doesn't support string refs. For consistency, do the same assert
         // in the native implementation.
         assert(
-            findInvalidRefs(this.nextProps.children).length === 0,
-            'Invalid ref(s): ' + JSON.stringify(findInvalidRefs(this.nextProps.children)) +
+            findInvalidRefs(nextProps.children).length === 0,
+            'Invalid ref(s): ' + JSON.stringify(findInvalidRefs(nextProps.children)) +
             ' Only callback refs are supported when using child animations on a `View`'
         );
 
@@ -176,11 +176,11 @@ export class View extends ViewBase<Types.ViewProps, {}> {
                 duration: 300,
             };
 
-            if (this.nextProps.animateChildMove) {
+            if (nextProps.animateChildMove) {
                 configDictionary.update = updateConfig;
             }
 
-            if (this.nextProps.animateChildEnter) {
+            if (nextProps.animateChildEnter) {
                 configDictionary.create = createConfig;
             }
 
