@@ -15,19 +15,11 @@ This component supports only one child. If you require multiple child components
 In addition to the [common accessibility props](/reactxp/docs/accessibility.html), the following props are supported.
 
 ``` javascript
-// Alternate text to display if the image cannot be loaded
-// or by screen readers
+// Text to be used by screen readers
 accessibilityLabel: boolean = false;
-
-// Hide the component from screen readers?
-accessibilityHidden: boolean = false;
 
 // Traits used to hint screen readers, etc.
 accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
-
-// Region for accessibility mechanisms
-accessibilityLiveRegion: AccessibilityLiveRegion =
-    undefined; // Android and web only
 
 // Id of an expandable element revealed by the button. Describes a relation between button and element to screen reader.
 ariaControls: string = undefined; // Web only
@@ -36,7 +28,7 @@ ariaControls: string = undefined; // Web only
 id: string = undefined; // Web only
 
 // Expose the element and/or its children as accessible to Screen readers
-importantForAccessibility?: ImportantForAccessibility = ImportantForAccessibility.yes;
+importantForAccessibility?: ImportantForAccessibility = ImportantForAccessibility.Yes;
 
 // Delay in ms before onLongPress is called
 delayLongPress: number = 1000;
