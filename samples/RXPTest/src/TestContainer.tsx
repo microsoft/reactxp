@@ -22,6 +22,9 @@ const _styles = {
         justifyContent: 'space-between',
         alignItems: 'center'
     }),
+    headerSpacer: RX.Styles.createViewStyle({
+        paddingTop: 20
+    }),
     button: RX.Styles.createButtonStyle({
         flex: 0,
         margin: 8,
@@ -36,8 +39,12 @@ const _styles = {
         marginHorizontal: 12,
         color: CommonStyles.buttonTextColor
     }),
+    titleText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.buttonFontSize,
+        marginHorizontal: 12
+    }),
     resultContainer: RX.Styles.createViewStyle({
-        height: 86,
+        height: 100,
         alignSelf: 'stretch',
         borderBottomWidth: 1,
         borderColor: '#ddd'
@@ -47,7 +54,8 @@ const _styles = {
         alignSelf: 'stretch'
     }),
     resultItem: RX.Styles.createViewStyle({
-        margin: 8
+        marginHorizontal: 12,
+        marginTop: 8
     }),
     notRunText: RX.Styles.createTextStyle({
         fontSize: CommonStyles.generalFontSize,
@@ -146,7 +154,7 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
 
         return (
             <RX.View style={ _styles.container }>
-                <RX.View style={ _styles.header }>
+                <RX.View style={ [_styles.header, RX.StatusBar.isOverlay() && _styles.headerSpacer] }>
                     <RX.Button
                         style={ _styles.button }
                         onPress={ this._onBack }
@@ -156,7 +164,9 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
                             { 'Back' }
                         </RX.Text>
                     </RX.Button>
-                    { TestRegistry.formatPath(test.getPath()) }
+                    <RX.Text style={ _styles.titleText }>
+                        { TestRegistry.formatPath(test.getPath()) }
+                    </RX.Text>
                     <RX.Button
                         style={ _styles.button }
                         onPress={ this._onRun }

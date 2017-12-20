@@ -23,6 +23,9 @@ const _styles = {
         justifyContent: 'space-between',
         alignItems: 'center'
     }),
+    headerSpacer: RX.Styles.createViewStyle({
+        paddingTop: 20
+    }),
     button: RX.Styles.createButtonStyle({
         flex: 0,
         margin: 8,
@@ -47,11 +50,15 @@ const _styles = {
         alignSelf: 'stretch'
     }),
     itemContainer: RX.Styles.createViewStyle({
+        alignSelf: 'stretch',
+        justifyContent: 'center',
+        height: 32,
+        cursor: 'pointer'
+    }),
+    itemTextContainer: RX.Styles.createViewStyle({
         flexDirection: 'row',
         alignSelf: 'stretch',
-        height: 32,
-        alignItems: 'center',
-        cursor: 'pointer'
+        justifyContent: 'center'
     }),
     resultContainer: RX.Styles.createViewStyle({
         flexDirection: 'row',
@@ -140,11 +147,13 @@ export class TestListView extends RX.Component<TestListViewProps, TestListViewSt
                     key={ path }
                     onPress={ () => this._onPressItem(testPath) }
                 >
-                    <RX.Text style={ _styles.itemText } numberOfLines={ 1 }>
-                        { TestRegistry.formatPath(test.getPath()) }
-                    </RX.Text>
-                    <RX.View style={ _styles.resultContainer }>
-                        { resultText }
+                    <RX.View style={ _styles.itemTextContainer}>
+                        <RX.Text style={ _styles.itemText } numberOfLines={ 1 }>
+                            { TestRegistry.formatPath(test.getPath()) }
+                        </RX.Text>
+                        <RX.View style={ _styles.resultContainer }>
+                            { resultText }
+                        </RX.View>
                     </RX.View>
                 </RX.View>
             );
@@ -152,7 +161,7 @@ export class TestListView extends RX.Component<TestListViewProps, TestListViewSt
 
         return (
             <RX.View style={ _styles.container }>
-                <RX.View style={ _styles.header }>
+                <RX.View style={ [_styles.header, RX.StatusBar.isOverlay() && _styles.headerSpacer] }>
                     <RX.Text style={ _styles.explainText }>
                         { 'Select test to run' }
                     </RX.Text>

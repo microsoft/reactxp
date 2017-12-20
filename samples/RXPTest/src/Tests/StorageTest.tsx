@@ -43,7 +43,7 @@ class StorageBasicTest implements Test {
             }).then(value => {
                 if (value !== undefined) {
                     results.errors.push('RX.Storage.getItem returned unexpected value: "' +
-                        value + '" after removing key');
+                        value + '" after removing key; expected undefined');
                 }
 
                 return RX.Storage.setItem(_storageKey, 'value3');
@@ -54,7 +54,7 @@ class StorageBasicTest implements Test {
             }).then(value => {
                 if (value !== undefined) {
                     results.errors.push('RX.Storage.getItem returned unexpected value: "' +
-                        value + '" after clearing all keys');
+                        value + '" after clearing all keys; expected undefined');
                 }
             });
         }).catch(error => {
