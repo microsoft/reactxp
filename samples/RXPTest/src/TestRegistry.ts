@@ -10,6 +10,7 @@ import ButtonBasicTest from './Tests/ButtonBasicTest';
 import ButtonInteractiveTest from './Tests/ButtonInteractiveTest';
 import InputTest from './Tests/InputTest';
 import PlatformTest from './Tests/PlatformTest';
+import StatusBarTest from './Tests/StatusBarTest';
 import StorageTest from './Tests/StorageTest';
 import ViewBasicTest from './Tests/ViewBasicTest';
 
@@ -21,6 +22,7 @@ class TestRegistry {
         // API tests
         this.registerTest(InputTest);
         this.registerTest(PlatformTest);
+        this.registerTest(StatusBarTest);
         this.registerTest(StorageTest);
         
         // Component tests
