@@ -100,7 +100,7 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
 
     componentDidUpdate(prevProps: TestContainerProps, prevState: TestContainerState) {
         if (this.props.autoRun) {
-            if (!this.state.isTestRunning) {
+            if (!prevState.isTestRunning && !this.state.isTestRunning) {
                 this._executeTest();
             }
         }
@@ -217,6 +217,8 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
     private _onMountTestUI = (component: any) => {
         // Record the mounted component. This will trigger
         // the test to run if the autoRun prop is set.
-        this.setState({ mountedComponent: component });
+        if (component) {
+            this.setState({ mountedComponent: component });
+        }
     }
 }

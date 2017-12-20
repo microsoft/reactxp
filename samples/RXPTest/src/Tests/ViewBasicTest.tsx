@@ -42,7 +42,7 @@ const _styles = {
     })
 };
 
-class BasicView extends RX.Component<{}, RX.Stateless> {
+class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
     render() {
         return (
             <RX.View style={ _styles.container}>

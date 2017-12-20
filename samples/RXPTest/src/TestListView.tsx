@@ -171,11 +171,9 @@ export class TestListView extends RX.Component<TestListViewProps, TestListViewSt
                         </RX.Text>
                     </RX.Button>
                 </RX.View>
-                <RX.View>
-                    <RX.ScrollView style={ _styles.scrollView }>
-                        { testListItems }
-                    </RX.ScrollView>
-                </RX.View>
+                <RX.ScrollView style={ _styles.scrollView }>
+                    { testListItems }
+                </RX.ScrollView>
             </RX.View>
         );
     }

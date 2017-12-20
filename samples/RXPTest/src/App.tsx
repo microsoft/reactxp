@@ -28,6 +28,7 @@ class App extends RX.Component<RX.CommonProps, AppState> {
         if (this.state.selectedTest) {
             return (
                 <TestContainer
+                    key={ this.state.selectedTest }
                     test={ this.state.selectedTest }
                     prevResult={ TestRegistry.getResult(this.state.selectedTest) }
                     autoRun={ this.state.runAll }

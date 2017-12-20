@@ -5,6 +5,7 @@
 
 import { Test, TestResult } from './Test';
 
+import ActivityIndicatorTest from './Tests/ActivityIndicatorTest';
 import ViewBasicTest from './Tests/ViewBasicTest';
 import StorageTest from './Tests/StorageTest';
 
@@ -17,6 +18,7 @@ class TestRegistry {
         this.registerTest(StorageTest);
 
         // Component tests
+        this.registerTest(ActivityIndicatorTest);
         this.registerTest(ViewBasicTest);
 
         // Add more tests here...
