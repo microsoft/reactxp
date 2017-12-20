@@ -14,11 +14,11 @@ import RX = require('../common/Interfaces');
 
 export class Storage extends RX.Storage {
     getItem(key: string): SyncTasks.Promise<string|undefined> {
-        var deferred = SyncTasks.Defer<string>();
+        var deferred = SyncTasks.Defer<string|undefined>();
 
         RN.AsyncStorage.getItem(key, (error: any, result: string|undefined) => {
             if (!error) {
-                deferred.resolve(result!!!);
+                deferred.resolve(result || undefined);
             } else {
                 deferred.reject(error);
             }
