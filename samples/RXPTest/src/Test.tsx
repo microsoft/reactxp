@@ -19,8 +19,8 @@ export interface Test {
     getPath(): string;
 
     // Renders the UI for the test
-    render(): RX.Types.ReactNode;
+    render(onMount: (component: any) => void): RX.Types.ReactNode;
 
     // Runs the test, calling back the "complete" callback when finished
-    execute(complete: (result: TestResult) => void): void;
+    execute(component: any, complete: (result: TestResult) => void): void;
 }

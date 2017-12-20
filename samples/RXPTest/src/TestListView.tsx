@@ -3,9 +3,11 @@
 * select or deselect particular tests and run them.
 */
 
+import _ = require('lodash');
 import RX = require('reactxp');
 
-import { Test } from './Test';
+import * as CommonStyles from './CommonStyles';
+import { Test, TestResult } from './Test';
 import TestRegistry from './TestRegistry';
 
 const _styles = {
@@ -16,74 +18,134 @@ const _styles = {
     header: RX.Styles.createViewStyle({
         alignSelf: 'stretch',
         flex: 0,
-        backgroundColor: '#ddd',
+        backgroundColor: CommonStyles.headerBackgroundColor,
         flexDirection: 'row',
-        justifyContent: 'flex-start'
+        justifyContent: 'space-between',
+        alignItems: 'center'
     }),
     button: RX.Styles.createButtonStyle({
         flex: 0,
         margin: 8,
         height: 28,
-        backgroundColor: '#aaa',
-        borderRadius: 8
+        backgroundColor: CommonStyles.buttonBackgroundColor,
+        borderRadius: CommonStyles.buttonBorderRadius,
+        borderWidth: CommonStyles.buttonBorderWidth,
+        borderColor: CommonStyles.buttonBorderColor
     }),
     buttonText: RX.Styles.createTextStyle({
-        fontSize: 16,
-        marginHorizontal: 12
+        fontSize: CommonStyles.buttonFontSize,
+        marginHorizontal: 12,
+        color: CommonStyles.buttonTextColor
+    }),
+    explainText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.generalFontSize,
+        marginHorizontal: 12,
+        color: CommonStyles.explainTextColor
     }),
     scrollView: RX.Styles.createScrollViewStyle({
         flex: 1,
         alignSelf: 'stretch'
     }),
     itemContainer: RX.Styles.createViewStyle({
+        flexDirection: 'row',
         alignSelf: 'stretch',
         height: 32,
-        justifyContent: 'center',
+        alignItems: 'center',
         cursor: 'pointer'
     }),
-    itemContainerSelected: RX.Styles.createViewStyle({
-        backgroundColor: '#ccccff'
+    resultContainer: RX.Styles.createViewStyle({
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        width: 120,
+        marginHorizontal: 12
     }),
     itemText: RX.Styles.createTextStyle({
-        fontSize: 16,
+        flex: 1,
+        fontSize: CommonStyles.generalFontSize,
         marginHorizontal: 12
+    }),
+    notRunText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.generalFontSize,
+        color: CommonStyles.explainTextColor
+    }),
+    errorText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.generalFontSize,
+        color: CommonStyles.errorTextColor
+    }),
+    warningText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.generalFontSize,
+        color: CommonStyles.warningTextColor
+    }),
+    successText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.generalFontSize,
+        color: CommonStyles.successTextColor
     })
 };
 
-export interface TestListViewState {
-    selected?: {[path: string]: boolean };
+export interface TestListViewProps extends RX.CommonProps {
+    onSelectTest: (path: string) => void;
+    onRunAll: () => void;
 }
 
-export class TestListView extends RX.Component<RX.CommonProps, TestListViewState> {
-    private _tests: Test[];
+export interface TestListViewState {
+    results?: {[path: string]: TestResult };
+}
 
-    constructor(props: RX.CommonProps) {
+export class TestListView extends RX.Component<TestListViewProps, TestListViewState> {
+    constructor(props: TestListViewProps) {
         super(props);
 
-        this._tests = TestRegistry.getTests();
-
         this.state = {
-            selected: {}
+            results: {}
         }
-
-        // By default, select all
-        this._tests.forEach(test => {
-            this.state.selected[test.getPath()] = true;
-        });
     }
 
     render() {
-        let testListItems: JSX.Element[] = this._tests.map((test, index) => {
+        let tests = TestRegistry.getAllTests();
+        
+        let testListItems: JSX.Element[] = _.map(tests, (test, path) => {
             let testPath = test.getPath();
+            let result = TestRegistry.getResult(testPath);
+            let resultText: JSX.Element;
+            if (!result) {
+                resultText = (
+                    <RX.Text style={ _styles.notRunText } numberOfLines={ 1 }>
+                        { 'not run' }
+                    </RX.Text>
+                );
+            } else if (result.errors.length > 0) {
+                resultText = (
+                    <RX.Text style={ _styles.errorText } numberOfLines={ 1 }>
+                        { result.errors.length + (result.errors.length > 1 ? ' errors' : ' error') }
+                    </RX.Text>
+                );
+            } else if (result.warnings.length > 0) {
+                resultText = (
+                    <RX.Text style={ _styles.warningText } numberOfLines={ 1 }>
+                        { result.warnings.length + (result.warnings.length > 1 ? ' warnings' : ' warning') }
+                    </RX.Text>
+                );
+            } else {
+                resultText = (
+                    <RX.Text style={ _styles.successText } numberOfLines={ 1 }>
+                        { 'success' }
+                    </RX.Text>
+                );
+            }
+
             return (
                 <RX.View
-                    style={ [_styles.itemContainer, this.state.selected[testPath] && _styles.itemContainerSelected] }
-                    key={ index }
-                    onPress={ () => this._toggleSelection(testPath) }
+                    style={ _styles.itemContainer }
+                    key={ path }
+                    onPress={ () => this._onPressItem(testPath) }
                 >
-                    <RX.Text style={ _styles.itemText }>
-                        { test.getPath().replace(/\//ig, ' - ') }
+                    <RX.Text style={ _styles.itemText } numberOfLines={ 1 }>
+                        { TestRegistry.formatPath(test.getPath()) }
                     </RX.Text>
+                    <RX.View style={ _styles.resultContainer }>
+                        { resultText }
+                    </RX.View>
                 </RX.View>
             );
         });
@@ -91,19 +153,12 @@ export class TestListView extends RX.Component<RX.CommonProps, TestListViewState
         return (
             <RX.View style={ _styles.container }>
                 <RX.View style={ _styles.header }>
-                    <RX.Button style={ _styles.button } onPress={ this._selectAll }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'Select test to run' }
+                    </RX.Text>
+                    <RX.Button style={ _styles.button } onPress={ this._runAll }>
                         <RX.Text style={ _styles.buttonText }>
-                            { 'Select All' }
-                        </RX.Text>
-                    </RX.Button>
-                    <RX.Button style={ _styles.button } onPress={ this._clearAll }>
-                        <RX.Text style={ _styles.buttonText }>
-                            { 'Clear All' }
-                        </RX.Text>
-                    </RX.Button>
-                    <RX.Button style={ _styles.button } onPress={ this._runSelected }>
-                        <RX.Text style={ _styles.buttonText }>
-                            { 'Run Selected' }
+                            { 'Run All' }
                         </RX.Text>
                     </RX.Button>
                 </RX.View>
@@ -116,33 +171,11 @@ export class TestListView extends RX.Component<RX.CommonProps, TestListViewState
         );
     }
 
-    private _selectAll = (e: RX.Types.SyntheticEvent) => {
-        let newState: TestListViewState = {};
-        newState.selected = {};
-        this._tests.forEach(test => {
-            newState.selected[test.getPath()] = true;
-        });
-        this.setState(newState);
+    private _onPressItem(path: string) {
+        this.props.onSelectTest(path);
     }
 
-    private _clearAll = (e: RX.Types.SyntheticEvent) => {
-        let newState: TestListViewState = {};
-        newState.selected = {};
-        this.setState(newState);
-    }
-
-    private _toggleSelection(path: string) {
-        let newState: TestListViewState = {};
-        newState.selected = {};
-        this._tests.forEach(test => {
-            let p = test.getPath();
-            newState.selected[test.getPath()] = p === path ?
-                !this.state.selected[p] : this.state.selected[p];
-        });
-        this.setState(newState);
-    }
-
-    private _runSelected = (e: RX.Types.SyntheticEvent) => {
-        
+    private _runAll = (e: RX.Types.SyntheticEvent) => {
+        this.props.onRunAll();
     }
 }
