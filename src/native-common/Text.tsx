@@ -41,7 +41,6 @@ export class Text extends React.Component<Types.TextProps, {}> {
                 selectable={ this.props.selectable }
                 textBreakStrategy={ 'simple' }
                 ellipsizeMode={ this.props.ellipsizeMode }
-                elevation={ this.props.elevation }
             >
                 { this.props.children }
             </RN.Text>
