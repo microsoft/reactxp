@@ -6,7 +6,7 @@
 import RX = require('reactxp');
 
 import * as CommonStyles from './CommonStyles';
-import { TestResult } from './Test';
+import { AutoExecutableTest, TestResult, TestType } from './Test';
 import TestRegistry from './TestRegistry';
 
 const _styles = {
@@ -65,10 +65,6 @@ const _styles = {
         fontSize: CommonStyles.generalFontSize,
         color: CommonStyles.errorTextColor
     }),
-    warningText: RX.Styles.createTextStyle({
-        fontSize: CommonStyles.generalFontSize,
-        color: CommonStyles.warningTextColor
-    }),
     successText: RX.Styles.createTextStyle({
         fontSize: CommonStyles.generalFontSize,
         color: CommonStyles.successTextColor
@@ -108,6 +104,7 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
 
     render() {
         let test = TestRegistry.getTest(this.props.test);
+        let testType = test.getTestType();
 
         let testResults: JSX.Element;
         let result = this.state.result || this.props.prevResult;
@@ -131,16 +128,6 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
                 )
             });
         
-            result.warnings.forEach((warning, index) => {
-                resultText.push(
-                    <RX.View style={ _styles.resultItem } key={ 'warn' + index }>
-                        <RX.Text style={ _styles.warningText }>
-                            { warning }
-                        </RX.Text>
-                    </RX.View>
-                );
-            });
-
             if (resultText.length === 0) {
                 resultText.push(
                     <RX.View style={ _styles.resultItem } key={ 'success' }>
@@ -150,6 +137,44 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
                     </RX.View>
                 );
             }
+        }
+
+        // Include results if it's not a render-only test.
+        let optionalResultSection: JSX.Element;
+        if (testType === TestType.AutoExecutable) {
+            optionalResultSection = (
+                <RX.View style={ _styles.resultContainer }>
+                    <RX.ScrollView style={ _styles.resultScrollView }>
+                        { resultText }
+                    </RX.ScrollView>
+                </RX.View>
+            );         
+        }
+
+        let rightButton: JSX.Element;
+        if (testType === TestType.Interactive) {
+            rightButton = (
+                <RX.Button
+                    style={ _styles.button }
+                    onPress={ this._onCompleteInteractiveTest }
+                >
+                    <RX.Text style={ _styles.buttonText }>
+                        { 'Validate' }
+                    </RX.Text>
+                </RX.Button>
+            );
+        } else {
+            rightButton = (
+                <RX.Button
+                    style={ _styles.button }
+                    onPress={ this._onRunTest }
+                    disabled={ this.state.isTestRunning || testType !== TestType.AutoExecutable }
+                >
+                    <RX.Text style={ _styles.buttonText }>
+                        { 'Run' }
+                    </RX.Text>
+                </RX.Button>
+            );
         }
 
         return (
@@ -167,24 +192,14 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
                     <RX.Text style={ _styles.titleText }>
                         { TestRegistry.formatPath(test.getPath()) }
                     </RX.Text>
-                    <RX.Button
-                        style={ _styles.button }
-                        onPress={ this._onRun }
-                        disabled={ this.state.isTestRunning }
-                    >
-                        <RX.Text style={ _styles.buttonText }>
-                            { 'Run' }
-                        </RX.Text>
-                    </RX.Button>
+                    { rightButton }
                 </RX.View>
-                <RX.View style={ _styles.resultContainer }>
-                    <RX.ScrollView style={ _styles.resultScrollView }>
-                        { resultText }
-                    </RX.ScrollView>
-                </RX.View>
-                <RX.View>
-                    { test.render(this._onMountTestUI) }
-                </RX.View>
+                { optionalResultSection }
+                <RX.ScrollView>
+                    <RX.View>
+                        { test.render(this._onMountTestUI) }
+                    </RX.View>
+                </RX.ScrollView>
             </RX.View>
         );
     }
@@ -193,7 +208,7 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
         this.props.onBack();
     }
 
-    private _onRun = () => {
+    private _onRunTest = () => {
         this._executeTest();
     }
 
@@ -201,17 +216,44 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
         this.setState({ isTestRunning: true });
 
         let test = TestRegistry.getTest(this.props.test);
-        test.execute(this.state.mountedComponent, result => {
-            // Record the results.
-            TestRegistry.setResult(this.props.test, result);
+        let testType = test.getTestType();
 
-            this.setState({ isTestRunning: false, result });
+        if (testType === TestType.AutoExecutable) {
+            (test as AutoExecutableTest).execute(this.state.mountedComponent, result => {
+                // Record the results.
+                TestRegistry.setResult(this.props.test, result);
 
-            // Automatically go back if we're auto-running.
+                this.setState({ isTestRunning: false, result });
+
+                // Automatically go back.
+                if (this.props.autoRun) {
+                    this.props.onBack();
+                }
+            });
+        } else {
+            let result = new TestResult();
+            if (testType === TestType.Interactive) {
+                result.userValidated = false;
+                TestRegistry.setResult(this.props.test, result);
+            } else {
+                // For render-only tests, always report success.
+                TestRegistry.setResult(this.props.test, result);
+            }
+
+            // Automatically go back.
             if (this.props.autoRun) {
                 this.props.onBack();
             }
-        });
+        }
+    }
+
+    private _onCompleteInteractiveTest = () => {
+        // This should be called only if the test type is interactive.
+        let result = new TestResult();
+        result.userValidated = true;
+        TestRegistry.setResult(this.props.test, result);
+
+        this.props.onBack();
     }
 
     private _onMountTestUI = (component: any) => {

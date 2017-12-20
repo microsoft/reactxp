@@ -5,7 +5,8 @@
 import _ = require('lodash');
 import RX = require('reactxp');
 
-import { Test, TestResult } from '../Test'
+import * as CommonStyles from '../CommonStyles';
+import { AutoExecutableTest, TestResult, TestType } from '../Test'
 
 const _styles = {
     container: RX.Styles.createViewStyle({
@@ -15,6 +16,13 @@ const _styles = {
     }),
     aiContainer: RX.Styles.createViewStyle({
         margin: 20
+    }),
+    explainTextContainer: RX.Styles.createViewStyle({
+        margin: 12
+    }),
+    explainText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.generalFontSize,
+        color: CommonStyles.explainTextColor
     })
 };
 
@@ -80,11 +88,14 @@ class ActivityIndicatorView extends RX.Component<RX.CommonProps, ActivityIndicat
         }
 
         return (
-            <RX.ScrollView>
-                <RX.View style={ _styles.container}>
-                    { optionalIndicators }
+            <RX.View style={ _styles.container}>
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation' }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'When the test is run, four activity indicators should appear with varying sizes and delays' }
+                    </RX.Text>
                 </RX.View>
-            </RX.ScrollView>
+                { optionalIndicators }
+            </RX.View>
         );
     }
 
@@ -98,11 +109,15 @@ class ActivityIndicatorView extends RX.Component<RX.CommonProps, ActivityIndicat
     }
 }
 
-class ActivityIndicatorTest implements Test {
+class ActivityIndicatorTest implements AutoExecutableTest {
     getPath(): string {
         return 'Components/ActivityIndicator';
     }
     
+    getTestType(): TestType {
+        return TestType.AutoExecutable;
+    }
+
     render(onMount: (component: any) => void): RX.Types.ReactNode {
         return (
             <ActivityIndicatorView

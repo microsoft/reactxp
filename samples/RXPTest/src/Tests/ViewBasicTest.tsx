@@ -4,15 +4,15 @@
 
 import RX = require('reactxp');
 
-import { Test, TestResult } from '../Test'
+import * as CommonStyles from '../CommonStyles';
+import { Test, TestResult, TestType } from '../Test'
 
 const _styles = {
     container: RX.Styles.createViewStyle({
         flex: 1,
         alignSelf: 'stretch',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        alignItems: 'center'
+        flexDirection: 'column',
+        alignItems: 'flex-start'
     }),
     view1: RX.Styles.createViewStyle({
         width: 40,
@@ -39,6 +39,13 @@ const _styles = {
         borderBottomRightRadius: 4,
         borderTopLeftRadius: 2,
         borderTopRightRadius: 10
+    }),
+    explainTextContainer: RX.Styles.createViewStyle({
+        margin: 12
+    }),
+    explainText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.generalFontSize,
+        color: CommonStyles.explainTextColor
     })
 };
 
@@ -46,6 +53,11 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
     render() {
         return (
             <RX.View style={ _styles.container}>
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation' }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'A variety of views with different styles should appear below' }
+                    </RX.Text>
+                </RX.View>
                 <RX.View style={ _styles.view1 }/>
                 <RX.View style={ _styles.view2 }/>
                 <RX.View style={ _styles.view3 }/>
@@ -59,17 +71,14 @@ class ViewBasicTest implements Test {
         return 'Components/View/Basic';
     }
     
+    getTestType(): TestType {
+        return TestType.RenderOnly;
+    }
+
     render(onMount: (component: any) => void): RX.Types.ReactNode {
         return (
             <BasicView ref={ onMount }/>
         );
-    }
-
-    execute(component: any, complete: (result: TestResult) => void): void {
-        // Nothing to do but report success
-        let results = new TestResult();
-
-        complete(results);
     }
 }
 

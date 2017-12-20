@@ -7,7 +7,7 @@ import _ = require('lodash');
 import RX = require('reactxp');
 
 import * as CommonStyles from './CommonStyles';
-import { Test, TestResult } from './Test';
+import { Test, TestResult, TestType } from './Test';
 import TestRegistry from './TestRegistry';
 
 const _styles = {
@@ -113,8 +113,10 @@ export class TestListView extends RX.Component<TestListViewProps, TestListViewSt
         
         let testListItems: JSX.Element[] = _.map(tests, (test, path) => {
             let testPath = test.getPath();
+            let testType = test.getTestType();
             let result = TestRegistry.getResult(testPath);
             let resultText: JSX.Element;
+
             if (!result) {
                 resultText = (
                     <RX.Text style={ _styles.notRunText } numberOfLines={ 1 }>
@@ -127,16 +129,16 @@ export class TestListView extends RX.Component<TestListViewProps, TestListViewSt
                         { result.errors.length + (result.errors.length > 1 ? ' errors' : ' error') }
                     </RX.Text>
                 );
-            } else if (result.warnings.length > 0) {
+            } else if (testType === TestType.Interactive && !result.userValidated) {
                 resultText = (
                     <RX.Text style={ _styles.warningText } numberOfLines={ 1 }>
-                        { result.warnings.length + (result.warnings.length > 1 ? ' warnings' : ' warning') }
+                        { 'requires validation' }
                     </RX.Text>
                 );
             } else {
                 resultText = (
                     <RX.Text style={ _styles.successText } numberOfLines={ 1 }>
-                        { 'success' }
+                        { testType === TestType.Interactive ? 'validated' : 'success' }
                     </RX.Text>
                 );
             }

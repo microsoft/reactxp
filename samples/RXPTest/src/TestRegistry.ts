@@ -6,8 +6,10 @@
 import { Test, TestResult } from './Test';
 
 import ActivityIndicatorTest from './Tests/ActivityIndicatorTest';
-import ViewBasicTest from './Tests/ViewBasicTest';
+import ButtonBasicTest from './Tests/ButtonBasicTest';
+import ButtonInteractiveTest from './Tests/ButtonInteractiveTest';
 import StorageTest from './Tests/StorageTest';
+import ViewBasicTest from './Tests/ViewBasicTest';
 
 class TestRegistry {
     private _tests: {[path: string]: Test } = {};
@@ -19,6 +21,8 @@ class TestRegistry {
 
         // Component tests
         this.registerTest(ActivityIndicatorTest);
+        this.registerTest(ButtonBasicTest);
+        this.registerTest(ButtonInteractiveTest);
         this.registerTest(ViewBasicTest);
 
         // Add more tests here...

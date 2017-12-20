@@ -4,18 +4,44 @@
 
 import RX = require('reactxp');
 
-import { Test, TestResult } from '../Test'
+import * as CommonStyles from '../CommonStyles';
+import { AutoExecutableTest, TestResult, TestType } from '../Test'
 
 const _storageKey = 'storageKey1';
 
-class StorageBasicTest implements Test {
+const _styles = {
+    container: RX.Styles.createViewStyle({
+        flex: 1,
+        alignSelf: 'stretch',
+        alignItems: 'center'
+    }),
+    explainTextContainer: RX.Styles.createViewStyle({
+        margin: 12
+    }),
+    explainText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.generalFontSize,
+        color: CommonStyles.explainTextColor
+    })
+};
+
+class StorageBasicTest implements AutoExecutableTest {
     getPath(): string {
-        return 'APIs/Storage/Basic';
+        return 'APIs/Storage';
     }
     
+    getTestType(): TestType {
+        return TestType.AutoExecutable;
+    }
+
     render(onMount: (component: any) => void): RX.Types.ReactNode {
         return (
-            <RX.View ref={ onMount } />
+            <RX.View style={ _styles.container} ref={ onMount }>
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation' }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'When the test is run, the storage APIs will be used to store, retrieve, delete and clear key/value pairs' }
+                    </RX.Text>
+                </RX.View>
+            </RX.View>
         );
     }
 
