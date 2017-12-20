@@ -105,7 +105,7 @@ class ActivityIndicatorView extends RX.Component<RX.CommonProps, ActivityIndicat
         _.delay(() => {
             this.setState({ renderIndicators: false });
             finished();
-        }, 2000);
+        }, 1500);
     }
 }
 

@@ -8,6 +8,8 @@ import { Test, TestResult } from './Test';
 import ActivityIndicatorTest from './Tests/ActivityIndicatorTest';
 import ButtonBasicTest from './Tests/ButtonBasicTest';
 import ButtonInteractiveTest from './Tests/ButtonInteractiveTest';
+import InputTest from './Tests/InputTest';
+import PlatformTest from './Tests/PlatformTest';
 import StorageTest from './Tests/StorageTest';
 import ViewBasicTest from './Tests/ViewBasicTest';
 
@@ -17,8 +19,10 @@ class TestRegistry {
     
     constructor() {
         // API tests
+        this.registerTest(InputTest);
+        this.registerTest(PlatformTest);
         this.registerTest(StorageTest);
-
+        
         // Component tests
         this.registerTest(ActivityIndicatorTest);
         this.registerTest(ButtonBasicTest);

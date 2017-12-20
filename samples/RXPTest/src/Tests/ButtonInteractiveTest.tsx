@@ -127,7 +127,7 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
 
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation3' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'This button have a tooltip when hovering over it.' }
+                        { 'This button have a tooltip when hovering over it (mouse-based platforms only).' }
                     </RX.Text>
                 </RX.View>
                 <RX.Button
