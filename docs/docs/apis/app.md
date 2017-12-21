@@ -37,11 +37,6 @@ enum AppActivationState {
 // checks are appropriate.
 initialize(debug: boolean, development: boolean): void;
 
-// Indicates whether the app was initialized in debug and/or
-// development mode
-isDebugMode(): boolean;
-isDevelopmentMode(): boolean;
-
 // Returns the current activitation state for the app
 getActivationState(): AppActivationState;
 ```
