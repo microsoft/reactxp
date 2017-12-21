@@ -5,6 +5,8 @@
 
 import { Test, TestResult } from './Test';
 
+import AccessibilityTest from './Tests/AccessibilityTest';
+import AlertTest from './Tests/AlertTest';
 import ActivityIndicatorTest from './Tests/ActivityIndicatorTest';
 import ButtonBasicTest from './Tests/ButtonBasicTest';
 import ButtonInteractiveTest from './Tests/ButtonInteractiveTest';
@@ -22,6 +24,8 @@ class TestRegistry {
     
     constructor() {
         // API tests
+        this.registerTest(AccessibilityTest);
+        this.registerTest(AlertTest);
         this.registerTest(ClipboardTest);
         this.registerTest(InputTest);
         this.registerTest(PlatformTest);
