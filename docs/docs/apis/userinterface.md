@@ -46,7 +46,7 @@ measureLayoutRelativeToAncestor(component: React.Component<any, any>,
     ancestor: React.Component<any, any>): SyncTasks.Promise<LayoutInfo>;
 
 // Measures the dimension of the full window (or screen, in the case
-// of mobile devices); the dimensions can also be obtained for any
+// of non-windowed platforms); the dimensions can also be obtained for any
 // view (including your app's top-level view) using the onLayout
 // callback
 measureWindow(): Types.Dimensions;
@@ -66,17 +66,17 @@ getMaxContentSizeMultiplier(): SyncTasks.Promise<number>;
 // Note: Older versions of React Native don’t support this interface.
 setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
 
-// Dismisses the on-screen keyboard (applies to mobile only)
+// Dismisses the on-screen keyboard (on applicable platforms)
 dismissKeyboard(): void;
 
 // Enables native -> script touch event latency diagnostic events.
 // When latency greater than latencyThresholdMs is observed, the
-// touchLatencyEvent will fire. (applies to mobile only)
+// touchLatencyEvent will fire (on applicable platforms).
 enableTouchLatencyEvents(latencyThresholdMs: number): void;
 
 // Returns true if the application is in the keyboard navigation state,
 // when the user is using Tab key to navigate through the focusable
-// elements. (applies to web only)
+// elements (on applicalbe platforms).
 isNavigatingWithKeyboard(): boolean;
 ```
 
@@ -89,12 +89,12 @@ contentSizeMultiplierChangedEvent: SubscribableEvent<
 
 // Triggered when enableTouchLatencyEvents has been called and
 // native -> script touch latency exceeding the threshold has
-// been observed. (applies to mobile only)
+// been observed (on applicable platforms).
 touchLatencyEvent: SubscribableEvent<
     (observedLatencyMs: number) => void>();
 
-// Triggered when the keyboard navigation state is changed.
-// (applies to web only)
+// Triggered when the keyboard navigation state is changed
+// (on applicable platforms).
 keyboardNavigationEvent: SubscribableEvent<
     (isNavigatingWithKeyboard: boolean) => void>();
 ```

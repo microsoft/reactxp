@@ -147,7 +147,12 @@ export class UserInterface extends RX.UserInterface {
         RN.AppRegistry.registerComponent(viewKey, () => {
             class RootViewWrapper extends React.Component<any, any> {
                 render() {
-                    return <RootViewUsingProps reactxp_mainViewType={ getComponentFunc() } {...this.props} />;
+                    return (
+                        <RootViewUsingProps
+                            reactxp_mainViewType={ getComponentFunc() }
+                            { ...this.props }
+                        />
+                    );
                 }
             }
 
