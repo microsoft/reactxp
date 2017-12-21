@@ -21,7 +21,7 @@ export class Clipboard extends RX.Clipboard {
 
     public getText(): SyncTasks.Promise<string> {
         // Not supported in web platforms. This should can be only handled in the paste event handlers
-       throw 'Not implemented';
+       return SyncTasks.Rejected<string>('Not supported on web');
     }
 
     private static _createInvisibleNode(): HTMLSpanElement {
