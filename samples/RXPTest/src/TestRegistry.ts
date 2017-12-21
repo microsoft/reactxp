@@ -12,6 +12,7 @@ import ActivityIndicatorTest from './Tests/ActivityIndicatorTest';
 import ButtonBasicTest from './Tests/ButtonBasicTest';
 import ButtonInteractiveTest from './Tests/ButtonInteractiveTest';
 import ClipboardTest from './Tests/ClipboardTest';
+import GestureViewTest from './Tests/GestureViewTest';
 import InputTest from './Tests/InputTest';
 import InternationalTest from './Tests/InternationalTest';
 import LinkingTest from './Tests/LinkingTest';
@@ -53,6 +54,7 @@ class TestRegistry {
         this.registerTest(ActivityIndicatorTest);
         this.registerTest(ButtonBasicTest);
         this.registerTest(ButtonInteractiveTest);
+        this.registerTest(GestureViewTest);
         this.registerTest(ViewBasicTest);
 
         // Add more tests here...

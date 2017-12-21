@@ -220,7 +220,7 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
         const threshold = this._getPanPixelThreshold();
         const distance = this._calcDistance(
             gestureState.clientX - gestureState.initialClientX,
-            gestureState.clientY - gestureState.initialClientY,
+            gestureState.clientY - gestureState.initialClientY
         );
 
         if (distance < threshold) {
