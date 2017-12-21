@@ -22,6 +22,7 @@ import PlatformTest from './Tests/PlatformTest';
 import PopupTest from './Tests/PopupTest';
 import StatusBarTest from './Tests/StatusBarTest';
 import StorageTest from './Tests/StorageTest';
+import UserInterfaceTest from './Tests/UserInterfaceTest';
 import UserPresenceTest from './Tests/UserPresenceTest';
 import ViewBasicTest from './Tests/ViewBasicTest';
 
@@ -45,6 +46,7 @@ class TestRegistry {
         this.registerTest(PopupTest);
         this.registerTest(StatusBarTest);
         this.registerTest(StorageTest);
+        this.registerTest(UserInterfaceTest);
         this.registerTest(UserPresenceTest);
         
         // Component tests

@@ -27,8 +27,9 @@ setMainView(element: React.ReactElement<any>): void;
 
 // Android & iOS only.
 // Wrapper around RN.AppRegistry.registerComponent();
-// IMPORTANT: Some APIs, e.g. Popup & Modal, require a string `reactxp_rootViewId`
-// prop to be set on the component from the native-side.
+// IMPORTANT: Some APIs, e.g. Popup & Modal, require a string 
+// `reactxp_rootViewId` prop to be set on the component from the
+// native-side.
 registerRootView(viewKey: string, getComponentFunc: Function);
 
 // Specifies whether custom scrollbars should be enabled (applies
@@ -54,11 +55,6 @@ measureWindow(): Types.Dimensions;
 // Indicates the "size multiplier" for text increase or decrease, which
 // can be adjusted by users on some platforms; defaults to 1.0
 getContentSizeMultiplier(): SyncTasks.Promise<number>;
-
-// Indicates the default maximum "size multiplier" for text increase.
-// Defaults to 0 which indicates there is no max.
-// Note: Older versions of React Native don’t support this interface.
-getMaxContentSizeMultiplier(): SyncTasks.Promise<number>;
 
 // Sets the default maximum "size multiplier" for text increase.
 // Values must be 0 or >=1. The default is 0 which indicates that
