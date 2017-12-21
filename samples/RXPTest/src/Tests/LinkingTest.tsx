@@ -62,6 +62,8 @@ interface LinkingState {
 }
 
 class LinkingView extends RX.Component<RX.CommonProps, LinkingState> {
+    private _isMounted = false;
+
     constructor(props: RX.CommonProps) {
         super(props);
 
@@ -75,15 +77,25 @@ class LinkingView extends RX.Component<RX.CommonProps, LinkingState> {
     }
 
     componentDidMount() {
+        this._isMounted = true;
+
         RX.Linking.getInitialUrl().then(url => {
-            if (url === undefined) {
-                this.setState({ initialUrl: '(undefined)' });
-            } else {
-                this.setState({ initialUrl: url });
+            if (this._isMounted) {
+                if (!url) {
+                    this.setState({ initialUrl: '(blank URL)' });
+                } else {
+                    this.setState({ initialUrl: url });
+                }
             }
         }).catch(err => {
-            this.setState({ initialUrl: '(Received error: ' + err + ')' });
+            if (this._isMounted) {
+                this.setState({ initialUrl: '(Received error: ' + err + ')' });
+            }
         });
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     render() {
@@ -182,19 +194,27 @@ class LinkingView extends RX.Component<RX.CommonProps, LinkingState> {
 
     private _openValidUrl = () => {
         RX.Linking.openUrl('https://microsoft.github.io/reactxp/').then(() => {
-            this.setState({ openValidUrlResult: 'Succeeded' });
+            if (this._isMounted) {
+                this.setState({ openValidUrlResult: 'Succeeded' });
+            }
         }).catch(err => {
             let linkErr = err as RX.Types.LinkingErrorInfo;
-            this.setState( { openValidUrlResult: this._formatLinkingError(linkErr) } );
+            if (this._isMounted) {
+                this.setState( { openValidUrlResult: this._formatLinkingError(linkErr) } );
+            }
         });
     }
 
     private _openInvalidUrl = () => {
         RX.Linking.openUrl('foo://reactxp').then(() => {
-            this.setState({ openInvalidUrlResult: 'Succeeded' });
+            if (this._isMounted) {
+                this.setState({ openInvalidUrlResult: 'Succeeded' });
+            }
         }).catch(err => {
             let linkErr = err as RX.Types.LinkingErrorInfo;
-            this.setState( { openInvalidUrlResult: this._formatLinkingError(linkErr) } );
+            if (this._isMounted) {
+                this.setState( { openInvalidUrlResult: this._formatLinkingError(linkErr) } );
+            }
         });
     }
 
@@ -204,10 +224,14 @@ class LinkingView extends RX.Component<RX.CommonProps, LinkingState> {
             body: 'You up?'
         };
         RX.Linking.launchSms(smsData).then(() => {
-            this.setState({ openSmsResult: 'Succeeded' });
+            if (this._isMounted) {
+                this.setState({ openSmsResult: 'Succeeded' });
+            }
         }).catch(err => {
             let linkErr = err as RX.Types.LinkingErrorInfo;
-            this.setState( { openSmsResult: this._formatLinkingError(linkErr) } );
+            if (this._isMounted) {
+                this.setState( { openSmsResult: this._formatLinkingError(linkErr) } );
+            }
         });
     }
 
@@ -220,10 +244,14 @@ class LinkingView extends RX.Component<RX.CommonProps, LinkingState> {
             body: 'Nothing to see here'
         };
         RX.Linking.launchEmail(emailInfo).then(() => {
-            this.setState({ openEmailResult: 'Succeeded' });
+            if (this._isMounted) {
+                this.setState({ openEmailResult: 'Succeeded' });
+            }
         }).catch(err => {
             let linkErr = err as RX.Types.LinkingErrorInfo;
-            this.setState( { openEmailResult: this._formatLinkingError(linkErr) } );
+            if (this._isMounted) {
+                this.setState( { openEmailResult: this._formatLinkingError(linkErr) } );
+            }
         });
     }
 
