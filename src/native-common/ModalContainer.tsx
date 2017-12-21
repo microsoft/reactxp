@@ -19,7 +19,7 @@ const _styles = {
         right: 0,
         bottom: 0,
         left: 0,
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
