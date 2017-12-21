@@ -13,8 +13,11 @@ Sometimes it's important to announce state changes in the app (for example, an i
 
 ## Events
 ``` javascript
-// Triggered when a new announcement is ready for the screen reader.
-newAnnouncementReadyEvent: SubscribableEvent<(announcement: string) => void>;
+// Triggered when the high-contrast setting changes.
+highContrastChangedEvent: SubscribableEvent<(isEnabled: boolean) => void>;
+
+// Triggered when the screen reader setting changes.
+screenReaderChangedEvent: SubscribableEvent<(isEnabled: boolean) => void>;
 ```
 
 ## Methods
