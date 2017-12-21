@@ -16,6 +16,7 @@ import InputTest from './Tests/InputTest';
 import InternationalTest from './Tests/InternationalTest';
 import LinkingTest from './Tests/LinkingTest';
 import LocationTest from './Tests/LocationTest';
+import ModalTest from './Tests/ModalTest';
 import PlatformTest from './Tests/PlatformTest';
 import StatusBarTest from './Tests/StatusBarTest';
 import StorageTest from './Tests/StorageTest';
@@ -36,6 +37,7 @@ class TestRegistry {
         this.registerTest(InternationalTest);
         this.registerTest(LinkingTest);
         this.registerTest(LocationTest);
+        this.registerTest(ModalTest);
         this.registerTest(PlatformTest);
         this.registerTest(StatusBarTest);
         this.registerTest(StorageTest);
