@@ -1,5 +1,5 @@
 /*
-* Tests the RX.Accessibility APIs in an interactive manner.
+* Tests the RX.App APIs in an interactive manner.
 */
 
 import _ = require('lodash');
@@ -30,6 +30,10 @@ const _styles = {
         fontWeight: 'bold',
         color: 'black'
     }),
+    historyText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.generalFontSize,
+        color: 'black'
+    }),
     button: RX.Styles.createButtonStyle({
         backgroundColor: '#ddd',
         borderWidth: 1,
@@ -45,37 +49,45 @@ const _styles = {
     })
 };
 
-interface AccessibilityState {
-    isHighContrastEnabled?: boolean,
-    isScreenReaderEnabled?: boolean
+interface AppState {
+    activationState?: RX.Types.AppActivationState;
+    activationHistory?: string;
+
+    memoryWarningCount?: number;
 }
 
-class AccessibilityView extends RX.Component<RX.CommonProps, AccessibilityState> {
-    private _highContrastEvent: RX.Types.SubscriptionToken;
-    private _screenReaderEvent: RX.Types.SubscriptionToken;
+class AppView extends RX.Component<RX.CommonProps, AppState> {
+    private _appActivationEvent: RX.Types.SubscriptionToken;
+    private _memoryWarningEvent: RX.Types.SubscriptionToken;
     
     constructor(props: RX.CommonProps) {
         super(props);
 
+        let curState = RX.App.getActivationState();
+
         this.state = {
-            isHighContrastEnabled: RX.Accessibility.isHighContrastEnabled(),
-            isScreenReaderEnabled: RX.Accessibility.isScreenReaderEnabled()
+            activationState: curState,
+            activationHistory: this._activationStateToString(curState),
+            memoryWarningCount: 0
         };
     }
 
     componentDidMount() {
-        this._highContrastEvent = RX.Accessibility.highContrastChangedEvent.subscribe(isEnabled => {
-            this.setState({ isHighContrastEnabled: isEnabled });
+        this._appActivationEvent = RX.App.activationStateChangedEvent.subscribe(state => {
+            this.setState({
+                activationState: state,
+                activationHistory: this.state.activationHistory + '\n' + this._activationStateToString(state)
+            });
         });
 
-        this._screenReaderEvent = RX.Accessibility.screenReaderChangedEvent.subscribe(isEnabled => {
-            this.setState({ isScreenReaderEnabled: isEnabled });
+        this._memoryWarningEvent = RX.App.memoryWarningEvent.subscribe(() => {
+            this.setState({ memoryWarningCount: this.state.memoryWarningCount + 1 });
         });
     }
 
     componentWillUnmount() {
-        this._highContrastEvent.unsubscribe();
-        this._screenReaderEvent.unsubscribe();
+        this._appActivationEvent.unsubscribe();
+        this._memoryWarningEvent.unsubscribe();
     }
 
     render() {
@@ -83,51 +95,63 @@ class AccessibilityView extends RX.Component<RX.CommonProps, AccessibilityState>
             <RX.View style={ _styles.container}>
                 <RX.View style={ _styles.textContainer } key={ 'explanation1' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'Is the screen reader enabled?' }
+                        { 'Current app activation state:' }
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.labelContainer }>
                     <RX.Text style={ _styles.labelText }>
-                        { this.state.isScreenReaderEnabled ? 'Screen Reader On' : 'Screen Reader Off' }
+                        { this._activationStateToString(this.state.activationState) }
                     </RX.Text>
                 </RX.View>
 
                 <RX.View style={ _styles.textContainer } key={ 'explanation2' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'Is high-contrast mode enabled?' }
+                        { 'Move app into background and foreground to change the state. The history is recorded here.' }
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.labelContainer }>
-                    <RX.Text style={ _styles.labelText }>
-                        { this.state.isHighContrastEnabled ? 'High Contrast On' : 'High Contrast Off' }
+                    <RX.Text style={ _styles.historyText }>
+                        { this.state.activationHistory }
                     </RX.Text>
                 </RX.View>
 
                 <RX.View style={ _styles.textContainer } key={ 'explanation3' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'Press button to send "Hello" to the screen reader.' }
+                        { 'Launch other apps to create memory pressure.' }
                     </RX.Text>
                 </RX.View>
-                <RX.Button
-                    style={ _styles.button }
-                    onPress={ () => this._sendTextToScreenReader('Hello') }
-                >
-                    <RX.Text style={ _styles.buttonText }>
-                        { 'Send "Hello" to Screen Reader' }
+                <RX.View style={ _styles.labelContainer }>
+                    <RX.Text style={ _styles.historyText }>
+                        { 'Memory warning events received: ' + this.state.memoryWarningCount }
                     </RX.Text>
-                </RX.Button>
+                </RX.View>
             </RX.View>
         );
     }
 
-    private _sendTextToScreenReader(text: string) {
-        RX.Accessibility.announceForAccessibility(text);
+    private _activationStateToString(state: RX.Types.AppActivationState): string {
+        switch (state) {
+            case RX.Types.AppActivationState.Active:
+                return 'Active';
+
+            case RX.Types.AppActivationState.Background:
+                return 'Background';
+
+            case RX.Types.AppActivationState.Inactive:
+                return 'Inactive';
+
+            case RX.Types.AppActivationState.Extension:
+                return 'Extension';
+
+            default:
+                return 'Unknown';
+        }
     }
 }
 
-class AccessibilityTest implements Test {
+class AppTest implements Test {
     getPath(): string {
-        return 'APIs/Accessibility';
+        return 'APIs/App';
     }
     
     getTestType(): TestType {
@@ -136,11 +160,11 @@ class AccessibilityTest implements Test {
 
     render(onMount: (component: any) => void): RX.Types.ReactNode {
         return (
-            <AccessibilityView
+            <AppView
                 ref={ onMount }
             />
         );
     }
 }
 
-export default new AccessibilityTest();
+export default new AppTest();
