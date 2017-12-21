@@ -68,6 +68,10 @@ const _styles = {
     successText: RX.Styles.createTextStyle({
         fontSize: CommonStyles.generalFontSize,
         color: CommonStyles.successTextColor
+    }),
+    fullScreenContainer: RX.Styles.createViewStyle({
+        flex: 1,
+        alignSelf: 'stretch'
     })
 };
 
@@ -177,6 +181,25 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
             );
         }
 
+        let renderedTest = test.render(this._onMountTestUI);
+
+        let testContainer: JSX.Element;
+        if (test.useFullScreenContainer) {
+            testContainer = (
+                <RX.View style={ _styles.fullScreenContainer }>
+                    { renderedTest }
+                </RX.View>
+            );
+        } else {
+            testContainer = (
+                <RX.ScrollView>
+                    <RX.View>
+                    { renderedTest }
+                    </RX.View>
+                </RX.ScrollView>
+            );
+        }
+
         return (
             <RX.View style={ _styles.container }>
                 <RX.View style={ [_styles.header, RX.StatusBar.isOverlay() && _styles.headerSpacer] }>
@@ -195,11 +218,7 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
                     { rightButton }
                 </RX.View>
                 { optionalResultSection }
-                <RX.ScrollView>
-                    <RX.View>
-                        { test.render(this._onMountTestUI) }
-                    </RX.View>
-                </RX.ScrollView>
+                { testContainer }
             </RX.View>
         );
     }

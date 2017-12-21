@@ -32,6 +32,11 @@ export interface Test {
     // Returns the type of test
     getTestType(): TestType;
 
+    // Optional value that allows a test to specify that the test container
+    // should be a full-screen view rather than a scrolling view (which
+    // accommodates arbitrary-sized contents).
+    useFullScreenContainer?: boolean;
+
     // Renders the UI for the test
     render(onMount: (component: any) => void): RX.Types.ReactNode;
 }
