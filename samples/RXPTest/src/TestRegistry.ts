@@ -13,6 +13,8 @@ import ButtonBasicTest from './Tests/ButtonBasicTest';
 import ButtonInteractiveTest from './Tests/ButtonInteractiveTest';
 import ClipboardTest from './Tests/ClipboardTest';
 import InputTest from './Tests/InputTest';
+import InternationalTest from './Tests/InternationalTest';
+import LinkingTest from './Tests/LinkingTest';
 import PlatformTest from './Tests/PlatformTest';
 import StatusBarTest from './Tests/StatusBarTest';
 import StorageTest from './Tests/StorageTest';
@@ -30,6 +32,8 @@ class TestRegistry {
         this.registerTest(AppTest);
         this.registerTest(ClipboardTest);
         this.registerTest(InputTest);
+        this.registerTest(InternationalTest);
+        this.registerTest(LinkingTest);
         this.registerTest(PlatformTest);
         this.registerTest(StatusBarTest);
         this.registerTest(StorageTest);

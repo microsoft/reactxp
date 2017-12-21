@@ -33,19 +33,6 @@ const _styles = {
     historyText: RX.Styles.createTextStyle({
         fontSize: CommonStyles.generalFontSize,
         color: 'black'
-    }),
-    button: RX.Styles.createButtonStyle({
-        backgroundColor: '#ddd',
-        borderWidth: 1,
-        margin: 16,
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 8,
-        borderColor: 'black'
-    }),
-    buttonText: RX.Styles.createTextStyle({
-        fontSize: CommonStyles.generalFontSize,
-        color: 'black'
     })
 };
 
