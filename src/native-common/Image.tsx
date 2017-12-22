@@ -84,7 +84,7 @@ export class Image extends React.Component<Types.ImageProps, {}> {
                 style={ this.getStyles() }
                 source={ imageSource }
                 resizeMode={ resizeMode }
-                resizeMethod= { this.props.resizeMethod }
+                resizeMethod={ this.props.resizeMethod }
                 accessibilityLabel={ this.props.accessibilityLabel }
                 onLoad={ this.props.onLoad ? this._onLoad : undefined }
                 onError={ this._onError }

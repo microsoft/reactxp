@@ -13,6 +13,8 @@ import ButtonBasicTest from './Tests/ButtonBasicTest';
 import ButtonInteractiveTest from './Tests/ButtonInteractiveTest';
 import ClipboardTest from './Tests/ClipboardTest';
 import GestureViewTest from './Tests/GestureViewTest';
+import ImageApiTest from './Tests/ImageApiTest';
+import ImageInteractiveTest from './Tests/ImageInteractiveTest';
 import InputTest from './Tests/InputTest';
 import InternationalTest from './Tests/InternationalTest';
 import LinkingTest from './Tests/LinkingTest';
@@ -55,6 +57,8 @@ class TestRegistry {
         this.registerTest(ButtonBasicTest);
         this.registerTest(ButtonInteractiveTest);
         this.registerTest(GestureViewTest);
+        this.registerTest(ImageApiTest);
+        this.registerTest(ImageInteractiveTest);
         this.registerTest(ViewBasicTest);
 
         // Add more tests here...

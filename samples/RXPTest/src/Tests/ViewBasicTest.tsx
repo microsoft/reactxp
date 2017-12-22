@@ -72,7 +72,7 @@ class ViewBasicTest implements Test {
     }
     
     getTestType(): TestType {
-        return TestType.RenderOnly;
+        return TestType.Interactive;
     }
 
     render(onMount: (component: any) => void): RX.Types.ReactNode {

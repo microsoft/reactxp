@@ -65,6 +65,7 @@ class ButtonView extends RX.Component<RX.CommonProps, RX.Stateless> {
                     disabled={ false }
                     shouldRasterizeIOS={ true }
                     title={ 'Hello' }
+                    onPress={ () => {} }
                 >
                     <RX.Text style={ _styles.button1Text }>
                         { 'Simple Text Button' }
@@ -79,6 +80,7 @@ class ButtonView extends RX.Component<RX.CommonProps, RX.Stateless> {
                 <RX.Button
                     style={ _styles.button2 }
                     disabled={ true }
+                    onPress={ () => {} }
                 >
                     <RX.Text style={ _styles.button2Text }>
                         { 'Disabled Button' }
@@ -95,7 +97,7 @@ class ButtonBasicTest implements Test {
     }
     
     getTestType(): TestType {
-        return TestType.RenderOnly;
+        return TestType.Interactive;
     }
 
     render(onMount: (component: any) => void): RX.Types.ReactNode {

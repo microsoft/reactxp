@@ -117,7 +117,7 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
             resultText.push(
                 <RX.View style={ _styles.resultItem } key='notrun'>
                     <RX.Text style={ _styles.notRunText }>
-                        { 'Test not run' }
+                        { this.state.isTestRunning ? 'Test is running' : 'Test not run' }
                     </RX.Text>
                 </RX.View>
             );

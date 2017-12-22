@@ -5,9 +5,6 @@
 import RX = require('reactxp');
 
 export const enum TestType {
-    // The test consists only of a render action, no other execution
-    RenderOnly,
-
     // The test needs to be executed but requires no user interaction or validation
     AutoExecutable,
 
