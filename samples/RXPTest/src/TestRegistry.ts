@@ -9,6 +9,7 @@ import AccessibilityTest from './Tests/AccessibilityTest';
 import AlertTest from './Tests/AlertTest';
 import AppTest from './Tests/AppTest';
 import ActivityIndicatorTest from './Tests/ActivityIndicatorTest';
+import AnimationTest from './Tests/AnimationTest';
 import ButtonTest from './Tests/ButtonTest';
 import ClipboardTest from './Tests/ClipboardTest';
 import GestureViewTest from './Tests/GestureViewTest';
@@ -40,6 +41,7 @@ class TestRegistry {
         // API tests
         this.registerTest(AccessibilityTest);
         this.registerTest(AlertTest);
+        this.registerTest(AnimationTest);
         this.registerTest(AppTest);
         this.registerTest(ClipboardTest);
         this.registerTest(InputTest);
