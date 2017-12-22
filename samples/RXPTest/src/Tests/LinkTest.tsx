@@ -90,7 +90,7 @@ class LinkView extends RX.Component<RX.CommonProps, LinkViewState> {
                     </RX.Text>
                 </RX.View>
 
-                <RX.View style={ _styles.explainTextContainer } key={ 'explanation1' }>
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation2' }>
                     <RX.Text style={ _styles.explainText }>
                         { 'This link is artificially constrained to one line and should appear ' +
                           'truncated. Press to open a browser target. Hover to display tooltip.' }
@@ -108,7 +108,7 @@ class LinkView extends RX.Component<RX.CommonProps, LinkViewState> {
                     </RX.Link>
                 </RX.View>
 
-                <RX.View style={ _styles.explainTextContainer } key={ 'explanation1' }>
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation3' }>
                     <RX.Text style={ _styles.explainText }>
                         <RX.Text selectable={ true }>
                             { 'Links can also be used with other ' }

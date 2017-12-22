@@ -22,6 +22,7 @@ import LinkingTest from './Tests/LinkingTest';
 import LocationTest from './Tests/LocationTest';
 import ModalTest from './Tests/ModalTest';
 import NetworkTest from './Tests/NetworkTest';
+import PickerTest from './Tests/PickerTest';
 import PlatformTest from './Tests/PlatformTest';
 import PopupTest from './Tests/PopupTest';
 import StatusBarTest from './Tests/StatusBarTest';
@@ -61,6 +62,7 @@ class TestRegistry {
         this.registerTest(ImageApiTest);
         this.registerTest(ImageInteractiveTest);
         this.registerTest(LinkTest);
+        this.registerTest(PickerTest);
         this.registerTest(ViewBasicTest);
 
         // Add more tests here...

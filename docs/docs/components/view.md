@@ -134,14 +134,17 @@ style: ViewStyleRuleSet | ViewStyleRuleSet[] = [];
 viewLayerTypeAndroid: 'none' | 'software' | 'hardware'; // Android only property
 
 // Visual touchfeedback properties
-// Disable default opacity animation on touch on views that have onPress handlers
+// Disable default opacity animation on touch on views that have
+// onPress handlers
 disableTouchOpacityAnimation: boolean = false;  // iOS and Android only
 
-// Opacity value the button should animate to, on touch on views that have onPress handlers.
+// Opacity value the button should animate to, on touch on views that
+// have onPress handlers
 activeOpacity: number = undefined; // iOS and Android only
 
-// Background color that will be visible on touch on views that have onPress handlers.
-underlayColor: string = undefined; // ßiOS and Android only
+// Background color that will be visible on touch on views that have onPress
+// handlers
+underlayColor: string = undefined; // iOS and Android only
 ```
 
 ## Styles
