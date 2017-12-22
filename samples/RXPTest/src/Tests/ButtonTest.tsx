@@ -232,9 +232,9 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
     }
 }
 
-class ButtonInteractiveTest implements Test {
+class ButtonTest implements Test {
     getPath(): string {
-        return 'Components/Button/Interactive';
+        return 'Components/Button';
     }
     
     getTestType(): TestType {
@@ -248,4 +248,4 @@ class ButtonInteractiveTest implements Test {
     }
 }
 
-export default new ButtonInteractiveTest();
+export default new ButtonTest();

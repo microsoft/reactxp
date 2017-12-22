@@ -9,8 +9,7 @@ import AccessibilityTest from './Tests/AccessibilityTest';
 import AlertTest from './Tests/AlertTest';
 import AppTest from './Tests/AppTest';
 import ActivityIndicatorTest from './Tests/ActivityIndicatorTest';
-import ButtonBasicTest from './Tests/ButtonBasicTest';
-import ButtonInteractiveTest from './Tests/ButtonInteractiveTest';
+import ButtonTest from './Tests/ButtonTest';
 import ClipboardTest from './Tests/ClipboardTest';
 import GestureViewTest from './Tests/GestureViewTest';
 import ImageApiTest from './Tests/ImageApiTest';
@@ -27,6 +26,8 @@ import PlatformTest from './Tests/PlatformTest';
 import PopupTest from './Tests/PopupTest';
 import StatusBarTest from './Tests/StatusBarTest';
 import StorageTest from './Tests/StorageTest';
+import TextInputApiTest from './Tests/TextInputApiTest';
+import TextInputInteractiveTest from './Tests/TextInputInteractiveTest';
 import UserInterfaceTest from './Tests/UserInterfaceTest';
 import UserPresenceTest from './Tests/UserPresenceTest';
 import ViewBasicTest from './Tests/ViewBasicTest';
@@ -56,13 +57,14 @@ class TestRegistry {
         
         // Component tests
         this.registerTest(ActivityIndicatorTest);
-        this.registerTest(ButtonBasicTest);
-        this.registerTest(ButtonInteractiveTest);
+        this.registerTest(ButtonTest);
         this.registerTest(GestureViewTest);
         this.registerTest(ImageApiTest);
         this.registerTest(ImageInteractiveTest);
         this.registerTest(LinkTest);
         this.registerTest(PickerTest);
+        this.registerTest(TextInputApiTest);
+        this.registerTest(TextInputInteractiveTest);
         this.registerTest(ViewBasicTest);
 
         // Add more tests here...

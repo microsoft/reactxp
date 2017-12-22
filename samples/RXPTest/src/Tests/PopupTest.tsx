@@ -37,6 +37,9 @@ const _styles = {
         justifyContent: 'center',
         overflow: 'visible'
     }),
+    popupContainer: RX.Styles.createViewStyle({
+        overflow: 'visible'
+    }),
     anchorText: RX.Styles.createTextStyle({
         fontSize: CommonStyles.generalFontSize
     }),
@@ -51,11 +54,11 @@ const _styles = {
     }),
     popupAnchor1: RX.Styles.createViewStyle({
         left: 10,
-        top: 100
+        top: 150
     }),
     popupAnchor2: RX.Styles.createViewStyle({
         right: 10,
-        top: 150
+        top: 250
     }),
     popupAnchor3: RX.Styles.createViewStyle({
         left: 10,
@@ -122,10 +125,12 @@ class PopupBox extends RX.Component<PopupBoxProps, RX.Stateless> {
 
         return (
             <RX.View style={ _styles.popupBox } onPress={ this.props.onPress }>
-                <RX.Text style={ _styles.popupText }>
-                    { this.props.text }
-                </RX.Text>
-                <RX.View style={ [_styles.anchorIndicator, indicatorPosition] }/>
+                <RX.View style={ _styles.popupContainer }>
+                    <RX.Text style={ _styles.popupText }>
+                        { this.props.text }
+                    </RX.Text>
+                    <RX.View style={ [_styles.anchorIndicator, indicatorPosition] }/>
+                </RX.View>
             </RX.View>
         );
     }

@@ -75,7 +75,7 @@ onKeyPress: (e: KeyboardEvent) => void = undefined;
 onPaste: (e: ClipboardEvent) => void = undefined;
 
 // Called when the selection scrolls due to overflow
-onScroll: (newScrollTop: number, newScrollLeft: number) => void = undefined;
+onScroll: (newScrollLeft: number, newScrollTop: number) => void = undefined;
 
 // Called when the selection range or insertion point location changes
 onSelectionChange: (start: number, end: number) => void = undefined;

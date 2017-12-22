@@ -874,7 +874,7 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     onChangeText?: (newValue: string) => void;
     onSelectionChange?: (start: number, end: number) => void;
     onSubmitEditing?: () => void;
-    onScroll?: (newScrollTop: number, newScrollLeft: number) => void;
+    onScroll?: (newScrollLeft: number, newScrollTop: number) => void;
 }
 
 export interface TextInputProps extends TextInputPropsShared {

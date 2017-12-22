@@ -202,8 +202,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     selectAll() {
-        // to make selection visible we have to implement it in native
-        // http://stackoverflow.com/questions/1689911/programatically-select-all-text-in-uitextfield
+        this._selectionStart = 0;
+        this._selectionEnd = this.state.inputValue.length;
+        this.forceUpdate();
     }
 
     selectRange(start: number, end: number) {
