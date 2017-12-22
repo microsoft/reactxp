@@ -52,6 +52,8 @@ style: LinkStyleRuleSet | LinkStyleRuleSet[] = [];
 
 ## Styles
 
+[**Text Styles**](/reactxp/docs/styles.html#text-style-attributes)
+
 [**Flexbox Styles**](/reactxp/docs/styles.html#flexbox-style-attributes)
 
 [**View Styles**](/reactxp/docs/styles.html#view-style-attributes)

@@ -17,6 +17,7 @@ import ImageApiTest from './Tests/ImageApiTest';
 import ImageInteractiveTest from './Tests/ImageInteractiveTest';
 import InputTest from './Tests/InputTest';
 import InternationalTest from './Tests/InternationalTest';
+import LinkTest from './Tests/LinkTest';
 import LinkingTest from './Tests/LinkingTest';
 import LocationTest from './Tests/LocationTest';
 import ModalTest from './Tests/ModalTest';
@@ -59,6 +60,7 @@ class TestRegistry {
         this.registerTest(GestureViewTest);
         this.registerTest(ImageApiTest);
         this.registerTest(ImageInteractiveTest);
+        this.registerTest(LinkTest);
         this.registerTest(ViewBasicTest);
 
         // Add more tests here...

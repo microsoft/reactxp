@@ -31,18 +31,7 @@ const _styles = {
     })
 };
 
-interface ImageViewState {
-}
-
-class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
-    constructor(props: RX.CommonProps) {
-        super(props);
-
-        this.state = {
-            isTestRunning: false
-        };
-    }
-
+class ImageView extends RX.Component<RX.CommonProps, RX.Stateless> {
     render() {
         return (
             <RX.View style={ _styles.container}>
