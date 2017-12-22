@@ -54,7 +54,9 @@ class ModalView extends RX.Component<RX.CommonProps, RX.Stateless> {
             <RX.View style={ _styles.container }>
                 <RX.View style={ _styles.textContainer } key={ 'explanation1' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'This test displays and then dismisses several stacked modals in succession.' }
+                        { 'This test displays and then dismisses several modals in succession. ' +
+                          'You should see a large gray modal cover nearly the entire screen followed ' +
+                          'by a wide, short purple modal.' }
                     </RX.Text>
                 </RX.View>
             </RX.View>
@@ -113,9 +115,9 @@ class ModalView extends RX.Component<RX.CommonProps, RX.Stateless> {
 
                 _.delay(() => {
                     complete(result);
-                }, 100);
-            }, 250);
-        }, 250);
+                }, 250);
+            }, 500);
+        }, 500);
     }
 }
 

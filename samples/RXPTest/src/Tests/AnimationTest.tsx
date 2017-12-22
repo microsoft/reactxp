@@ -218,7 +218,9 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
             this._testCompletion = undefined;
             this._testResult = undefined;
 
-            this.setState({ isAutoRunning: false });
+            if (this._isMounted) {
+                this.setState({ isAutoRunning: false });
+            }
         } else {
             // Run the next stage after a brief delay.
             _.delay(() => {
@@ -235,7 +237,9 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
         let setNextValues = () => {
             // Are we done?
             if (this._test1Angle >= 2 * Math.PI) {
-                this.setState({ isRunningTest1: false });
+                if (this._isMounted) {
+                    this.setState({ isRunningTest1: false });
+                }
                 this._executeNextStage();
                 return;
             }
@@ -283,7 +287,9 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
         ]);
 
         animation.start(() => {
-            this.setState({ isRunningTest2: false });
+            if (this._isMounted) {
+                this.setState({ isRunningTest2: false });
+            }
             this._executeNextStage();
         });
     }
@@ -307,7 +313,9 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
         _.delay(() => {
             animation.stop();
             this._test3Angle.setValue(0);
-            this.setState({ isRunningTest3: false });
+            if (this._isMounted) {
+                this.setState({ isRunningTest3: false });
+            }
             this._executeNextStage();
         }, 2000);
     }

@@ -12,6 +12,7 @@ export const buttonBorderRadius = 8;
 export const buttonBorderWidth = 1;
 
 export const headerBackgroundColor = '#ddd';
+export const headerBorderColor = '#aaa';
 
 export const explainTextColor = '#999';
 export const errorTextColor = 'red';

@@ -20,7 +20,9 @@ const _styles = {
         backgroundColor: CommonStyles.headerBackgroundColor,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderColor: CommonStyles.headerBorderColor
     }),
     headerSpacer: RX.Styles.createViewStyle({
         paddingTop: 20
