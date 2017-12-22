@@ -52,6 +52,15 @@ export class FrontLayerViewManager {
         return this._findIndexOfModal(modalId) !== -1;
     }
 
+    public anyModalDisplayed(): boolean {
+        if (this._overlayStack.length > 0) {
+            const modals = _.filter(this._overlayStack, iter => (iter instanceof ModalStackContext));
+            return modals.length > 0;
+        }
+
+        return false;
+    }
+
     public dismissModal(modalId: string): void {
         const index = this._findIndexOfModal(modalId);
 

@@ -23,6 +23,10 @@ export class Modal extends RX.Modal {
         return FrontLayerViewManager.isModalDisplayed(modalId);
     }
 
+    anyDisplayed(): boolean {
+        return FrontLayerViewManager.anyModalDisplayed();
+    }
+
     show(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions): void {
         if (!modal) {
             throw new Error(`modal must be valid. Actual ${modal}`);
