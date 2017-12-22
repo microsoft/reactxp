@@ -60,7 +60,7 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
     private _gestureTypeLocked = false;
     private _skipNextTap = false;
 
-    componentDidMount() {
+    componentWillMount() {
         this._id = _idCounter++;
     }
 
