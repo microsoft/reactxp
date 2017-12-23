@@ -27,6 +27,7 @@ import PlatformTest from './Tests/PlatformTest';
 import PopupTest from './Tests/PopupTest';
 import StatusBarTest from './Tests/StatusBarTest';
 import StorageTest from './Tests/StorageTest';
+import TextTest from './Tests/TextTest';
 import TextInputApiTest from './Tests/TextInputApiTest';
 import TextInputInteractiveTest from './Tests/TextInputInteractiveTest';
 import UserInterfaceTest from './Tests/UserInterfaceTest';
@@ -65,6 +66,7 @@ class TestRegistry {
         this.registerTest(ImageInteractiveTest);
         this.registerTest(LinkTest);
         this.registerTest(PickerTest);
+        this.registerTest(TextTest);
         this.registerTest(TextInputApiTest);
         this.registerTest(TextInputInteractiveTest);
         this.registerTest(ViewBasicTest);
