@@ -33,6 +33,7 @@ import TextInputInteractiveTest from './Tests/TextInputInteractiveTest';
 import UserInterfaceTest from './Tests/UserInterfaceTest';
 import UserPresenceTest from './Tests/UserPresenceTest';
 import ViewBasicTest from './Tests/ViewBasicTest';
+import WebViewInteractiveTest from './Tests/WebViewInteractiveTest';
 
 class TestRegistry {
     private _tests: {[path: string]: Test } = {};
@@ -70,6 +71,7 @@ class TestRegistry {
         this.registerTest(TextInputApiTest);
         this.registerTest(TextInputInteractiveTest);
         this.registerTest(ViewBasicTest);
+        this.registerTest(WebViewInteractiveTest);
 
         // Add more tests here...
     }
