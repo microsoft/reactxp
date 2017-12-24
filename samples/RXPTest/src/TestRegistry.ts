@@ -25,6 +25,8 @@ import NetworkTest from './Tests/NetworkTest';
 import PickerTest from './Tests/PickerTest';
 import PlatformTest from './Tests/PlatformTest';
 import PopupTest from './Tests/PopupTest';
+import ScrollViewBasicTest from './Tests/ScrollViewBasicTest';
+import ScrollViewEventTest from './Tests/ScrollViewEventTest';
 import StatusBarTest from './Tests/StatusBarTest';
 import StorageTest from './Tests/StorageTest';
 import TextTest from './Tests/TextTest';
@@ -67,6 +69,8 @@ class TestRegistry {
         this.registerTest(ImageInteractiveTest);
         this.registerTest(LinkTest);
         this.registerTest(PickerTest);
+        this.registerTest(ScrollViewBasicTest);
+        this.registerTest(ScrollViewEventTest);
         this.registerTest(TextTest);
         this.registerTest(TextInputApiTest);
         this.registerTest(TextInputInteractiveTest);

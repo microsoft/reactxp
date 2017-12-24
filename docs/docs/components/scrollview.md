@@ -31,12 +31,6 @@ keyboardDismissMode: 'none' | 'interactive' | 'on-drag'; // Native only
 // the scroll view?
 keyboardShouldPersistTaps: boolean = false; // Native only
 
-// Maximum scale factor
-maximumZoomScale: number = 1.0;
-
-// Minimum scale factor
-minimumZoomScale: number = 1.0;
-
 // Invoked when the contents of the scroll view change
 onContentSizeChange: (width: number, height: number) => void = undefined;
 
@@ -60,8 +54,12 @@ snapToInterval: number = undefined; // iOS only
 // Is scrolling enabled?
 scrollEnabled: boolean = true;
 
-// how often (in milliseconds) between scroll events?
+// Minimum duration (in milliseconds) between scroll events
 scrollEventThrottle: number = undefined;
+
+// Inset (in pixels) of scroll indicator from top/bottom (vertical)
+// or left/right (horizontal)
+scrollIndicatorInsets: ScrollIndicatorInsets = undefined;
 
 // If true, this scroll bar scrolls to the top when the user
 // taps on the status bar.
