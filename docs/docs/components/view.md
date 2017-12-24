@@ -17,9 +17,6 @@ In addition to the [common accessibility props](/reactxp/docs/accessibility.html
 // If not defined, title prop is used.
 accessibilityLabel: string = undefined;
 
-// Hide the component from screen readers?
-accessibilityHidden: boolean = false;
-
 // Traits used to hint screen readers, etc.
 accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 
