@@ -7,11 +7,11 @@
 * RN-specific implementation of the cross-platform TextInput abstraction.
 */
 
-import _ = require('./lodashMini');
 import React = require('react');
 import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
+import EventHelpers from '../native-common/utils/EventHelpers';
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -49,49 +49,58 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
+    protected _render(props: RN.TextInputProps): JSX.Element {
+        return (
+            <RN.TextInput
+                {...props}
+            />
+        );
+    }
+
     render() {
         const editable = (this.props.editable !== undefined ? this.props.editable : true);
         const blurOnSubmit = this.props.blurOnSubmit || !this.props.multiline;
-        return (
-            <RN.TextInput
-                ref={ this._onMount }
-                multiline={ this.props.multiline }
-                style={ Styles.combine([_styles.defaultTextInput, this.props.style]) }
-                value={ this.state.inputValue }
 
-                autoCorrect={ this.props.autoCorrect }
-                spellCheck={ this.props.spellCheck }
-                autoCapitalize={ this.props.autoCapitalize }
-                autoFocus= { this.props.autoFocus }
-                keyboardType={ this.props.keyboardType }
-                editable={ editable }
-                selectionColor={ this.props.selectionColor }
-                maxLength={ this.props.maxLength }
-                placeholder={ this.props.placeholder }
-                defaultValue={ this.props.value }
-                placeholderTextColor={ this.props.placeholderTextColor }
-                onSubmitEditing={this.props.onSubmitEditing }
-                onKeyPress={ this._onKeyPress as any }
-                onChangeText={ this._onChangeText }
-                onSelectionChange={ this._onSelectionChange as any }
-                onFocus={ this._onFocus }
-                onBlur={ this._onBlur }
-                onScroll={ this._onScroll }
-                selection={{ start: this._selectionStart, end: this._selectionEnd }}
-                secureTextEntry={ this.props.secureTextEntry }
+        const internalProps: RN.TextInputProps = {
+            ref: this._mountedComponent,
+            multiline: this.props.multiline,
+            style: Styles.combine([_styles.defaultTextInput, this.props.style]),
+            value: this.state.inputValue,
 
-                textAlign={ this.props.textAlign }
-                keyboardAppearance={ this.props.keyboardAppearance }
-                returnKeyType={ this.props.returnKeyType }
-                disableFullscreenUI={ this.props.disableFullscreenUI }
-                blurOnSubmit={ blurOnSubmit }
-                textBreakStrategy={ 'simple' }
-                accessibilityLabel={ this.props.accessibilityLabel }
-                allowFontScaling={ this.props.allowFontScaling }
-                maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
-                underlineColorAndroid='transparent'
-            />
-        );
+            autoCorrect: this.props.autoCorrect,
+            spellCheck: this.props.spellCheck,
+            autoCapitalize: this.props.autoCapitalize,
+            autoFocus: this.props.autoFocus,
+            keyboardType: this.props.keyboardType,
+            editable: editable,
+            selectionColor: this.props.selectionColor,
+            maxLength: this.props.maxLength,
+            placeholder: this.props.placeholder,
+            defaultValue: this.props.value,
+            placeholderTextColor: this.props.placeholderTextColor,
+            onSubmitEditing: this.props.onSubmitEditing,
+            onKeyPress: this._onKeyPress as any,
+            onChangeText: this._onChangeText,
+            onSelectionChange: this._onSelectionChange as any,
+            onFocus: this._onFocus,
+            onBlur: this._onBlur,
+            onScroll: this._onScroll,
+            selection: { start: this._selectionStart, end: this._selectionEnd },
+            secureTextEntry: this.props.secureTextEntry,
+
+            textAlign: this.props.textAlign,
+            keyboardAppearance: this.props.keyboardAppearance,
+            returnKeyType: this.props.returnKeyType,
+            disableFullscreenUI: this.props.disableFullscreenUI,
+            blurOnSubmit: blurOnSubmit,
+            textBreakStrategy: 'simple',
+            accessibilityLabel: this.props.accessibilityLabel,
+            allowFontScaling: this.props.allowFontScaling,
+            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
+            underlineColorAndroid: 'transparent'
+        };
+
+        return this._render(internalProps);
     }
 
     protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
@@ -122,7 +131,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    private _onSelectionChange = (selEvent: React.SyntheticEvent<TextInput>) => {
+    private _onSelectionChange = (selEvent: React.SyntheticEvent<any>) => {
         let selection: { start: number, end: number } =
             (selEvent.nativeEvent as any).selection;
 
@@ -140,46 +149,10 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         this.forceUpdate();
     }
 
-    private _onKeyPress = (e: React.KeyboardEvent<TextInput>) => {
+    private _onKeyPress = (e: React.SyntheticEvent<any>) => {
+
         if (this.props.onKeyPress) {
-            let keyName: string = (e.nativeEvent as any).key;
-            let keyCode: number = 0;
-
-            if (keyName.length === 1) {
-                keyCode = keyName.charCodeAt(0);
-            } else {
-                switch (keyName) {
-                    case 'Enter':
-                        keyCode = 13;
-                        break;
-
-                    case 'Tab':
-                        keyCode = 9;
-                        break;
-
-                    case 'Backspace':
-                        keyCode = 8;
-                        break;
-                }
-            }
-
-            // We need to add keyCode to the original event, but React Native
-            // reuses events, so we're not allowed to modify the original.
-            // Instead, we'll clone it.
-            let keyEvent = _.clone(e);
-            keyEvent.keyCode = keyCode;
-            keyEvent.stopPropagation = () => {
-                if (e.stopPropagation) {
-                    e.stopPropagation();
-                }
-            };
-            keyEvent.preventDefault = () => {
-                if (e.preventDefault) {
-                    e.preventDefault();
-                }
-            };
-
-            this.props.onKeyPress(keyEvent);
+            this.props.onKeyPress(EventHelpers.toKeyboardEvent(e));
         }
     }
 

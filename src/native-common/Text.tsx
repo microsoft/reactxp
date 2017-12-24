@@ -8,6 +8,7 @@
 */
 
 import _ = require('./lodashMini');
+import PropTypes = require('prop-types');
 import React = require('react');
 import RN = require('react-native');
 
@@ -21,7 +22,14 @@ const _styles = {
     })
 };
 
-export class Text extends React.Component<Types.TextProps, {}> {
+export interface TextContext {
+    isRxParentAText?: boolean;
+}
+
+export class Text extends React.Component<Types.TextProps, {}> implements React.ChildContextProvider<TextContext> {
+    static childContextTypes: React.ValidationMap<any> = {
+        isRxParentAText: PropTypes.bool.isRequired,
+    };
     protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
 
     // To be able to use Text inside TouchableHighlight/TouchableOpacity
@@ -53,6 +61,13 @@ export class Text extends React.Component<Types.TextProps, {}> {
 
     protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
         this._mountedComponent = component;
+    }
+
+    getChildContext() {
+        // Let descendant Types components know that their nearest Types ancestor is an Types.Text.
+        // Because they're in an Types.Text, they should style themselves specially for appearing
+        // inline with text.
+        return { isRxParentAText: true };
     }
 
     protected _getStyles(): Types.StyleRuleSetRecursiveArray<Types.TextStyleRuleSet> {

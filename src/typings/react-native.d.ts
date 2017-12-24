@@ -70,7 +70,7 @@ declare module 'react-native' {
     // ----------------------------------------------------------------------
 
     interface ComponentPropsBase {
-        ref?: string | ((obj: ReactNativeBaseComponent<any, any>) => void);
+        ref?: string | ((obj: ReactNativeBaseComponent<any, any> | null) => void);
         key?: string | number;
     }
 
@@ -794,7 +794,7 @@ declare module 'react-native' {
         scale: number;
         fontScale: number;
     }
-    
+
     type DimensionEventType = 'change';
 
     interface DimensionChangeEvent {
