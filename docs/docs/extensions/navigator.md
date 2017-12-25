@@ -15,7 +15,7 @@ When a Navigator is first mounted, the stack is empty. The caller must wait for 
 
 The current implementation of Navitator on React Native makes use of the deprecated "Navigator Experimental". We will look at moving away from this implementation to the now-recommended "react-navigation" in the near future. Some of the more advanced interfaces may need to change. These are listed at the end of this article. Use these with caution.
 
-To install: ```npm install reactxp-navigator```
+To install: ```npm install reactxp-navigation```
 
 ## Types
 ``` javascript
