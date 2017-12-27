@@ -21,7 +21,7 @@ import RXTypes = require('../common/Types');
 import AccessibilityImpl from './Accessibility';
 import ActivityIndicatorImpl from '../native-common/ActivityIndicator';
 import AlertImpl from '../native-common/Alert';
-import AppImpl from '../native-common/App';
+import AppImpl from '../native-desktop/App';
 import ButtonImpl from './Button';
 import PickerImpl from '../native-common/Picker';
 import ImageImpl from '../native-common/Image';

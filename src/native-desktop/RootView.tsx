@@ -38,7 +38,7 @@ const styles = RN.StyleSheet.create({
 type Constructor<T extends React.Component> = new (...args: any[]) => T;
 
 function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Component>>(RootViewBase: TRootViewBase) {
-    return class RootView extends RootViewBase {
+    return class RootView extends RootViewBase implements React.ChildContextProvider<any> {
         static childContextTypes: React.ValidationMap<any> = {
             focusManager: PropTypes.object
         };
