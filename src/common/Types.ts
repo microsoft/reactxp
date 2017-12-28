@@ -463,7 +463,6 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     children?: ReactNode;
     disabled?: boolean;
     delayLongPress?: number;
-    cursor?: string;
 
     onAccessibilityTapIOS?: Function; // iOS-only prop, call when a button is double tapped in accessibility mode
     onContextMenu?: (e: SyntheticEvent) => void;
