@@ -15,16 +15,12 @@ import RX = require('../common/Interfaces');
 import Types= require('../common/Types');
 
 export class Modal extends RX.Modal {
-    isDisplayed(modalId: string): boolean {
-        if (!modalId || modalId === '') {
+    isDisplayed(modalId?: string): boolean {
+        if (modalId === '') {
             throw new Error(`modalId must be a non-empty string. Actual: ${modalId}`);
         }
 
         return FrontLayerViewManager.isModalDisplayed(modalId);
-    }
-
-    anyDisplayed(): boolean {
-        return FrontLayerViewManager.anyModalDisplayed();
     }
 
     show(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions): void {

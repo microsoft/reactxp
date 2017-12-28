@@ -48,17 +48,16 @@ export class FrontLayerViewManager {
         }
     }
 
-    public isModalDisplayed(modalId: string) : boolean {
-        return this._findIndexOfModal(modalId) !== -1;
-    }
-
-    public anyModalDisplayed(): boolean {
-        if (this._overlayStack.length > 0) {
-            const modals = _.filter(this._overlayStack, iter => (iter instanceof ModalStackContext));
-            return modals.length > 0;
+    public isModalDisplayed(modalId?: string) : boolean {
+        if (modalId) {
+            return this._findIndexOfModal(modalId) !== -1;
+        } else {
+            if (this._overlayStack.length > 0) {
+                const modals = _.filter(this._overlayStack, iter => (iter instanceof ModalStackContext));
+                return modals.length > 0;
+            }
+            return false;
         }
-
-        return false;
     }
 
     public dismissModal(modalId: string): void {

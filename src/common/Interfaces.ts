@@ -99,11 +99,10 @@ export abstract class UserInterface {
 }
 
 export abstract class Modal {
-    abstract isDisplayed(modalId: string): boolean;
+    abstract isDisplayed(modalId?: string): boolean;
     abstract show(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions): void;
     abstract dismiss(modalId: string): void;
     abstract dismissAll(): void;
-    abstract anyDisplayed(): boolean;
 }
 
 export abstract class Popup {
