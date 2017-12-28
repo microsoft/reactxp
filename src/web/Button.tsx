@@ -164,6 +164,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
             combinedStyles.opacity = 0.5;
         }
 
+        // Default to 'pointer' cursor for enabled buttons unless otherwise specified.
         if (!combinedStyles['cursor']) {
             combinedStyles['cursor'] = this.props.disabled ? 'default' : 'pointer';
         }
