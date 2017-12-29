@@ -297,6 +297,10 @@ export abstract class FocusManager {
         return !!storedComponent && (storedComponent.restricted || storedComponent.limitedCount > 0);
     }
 
+    static getCurrentFocusedComponent(): string | undefined {
+        return FocusManager._currentFocusedComponent ? FocusManager._currentFocusedComponent.id : undefined;
+    }
+
     private static _getStoredComponent(component: React.Component<any, any>): StoredFocusableComponent|undefined {
         const componentId: string = (component as any)._focusableComponentId;
 

@@ -68,24 +68,21 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
             }
 
             if (kbdEvent.keyCode === KEY_CODE_ESC) {
-                /* TODO
                 // If Esc is pressed and the focused element stays the same after some time,
                 // switch the keyboard navigation off to dismiss the outline.
-                const activeElement = document.activeElement; //XXX
+                const activeComponent = FocusManager.getCurrentFocusedComponent();
 
                 if (this._isNavigatingWithKeyboardUpateTimer) {
-                    window.clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
+                    clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
                 }
 
-                this._isNavigatingWithKeyboardUpateTimer = window.setTimeout(() => {
+                this._isNavigatingWithKeyboardUpateTimer = setTimeout(() => {
                     this._isNavigatingWithKeyboardUpateTimer = undefined;
 
-                    if ((document.activeElement === activeElement) && activeElement && (activeElement !== document.body)) {
+                    if (activeComponent === FocusManager.getCurrentFocusedComponent()) {
                         this._updateKeyboardNavigationState(false);
                     }
                 }, 500);
-                */
-                this._updateKeyboardNavigationState(false);
             }
         }
 
@@ -99,14 +96,6 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
                 this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 
                 UserInterface.keyboardNavigationEvent.fire(isNavigatingWithKeyboard);
-
-    /* TODO: potentially useless properties
-                const focusClass = isNavigatingWithKeyboard ? this.props.keyBoardFocusOutline : this.props.mouseFocusOutline;
-
-                if (this.state.focusClass !== focusClass) {
-                    this.setState({ focusClass: focusClass });
-                }
-    */
             }
         }
 
