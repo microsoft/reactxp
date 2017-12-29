@@ -9,13 +9,9 @@
 
 import React = require('react');
 import RN = require('react-native');
-import RNW = require('react-native-windows');
 import {ScrollView as ScrollViewBase} from '../native-common/ScrollView';
 
 import EventHelpers from '../native-common/utils/EventHelpers';
-
-// The enhanced ScrollView can be accessed through the RN realm
-RNW.ScrollView = RN.ScrollView;
 
 export class ScrollView extends ScrollViewBase {
 
@@ -33,7 +29,7 @@ export class ScrollView extends ScrollViewBase {
 
         return (
 
-            <RNW.ScrollView
+            <RN.ScrollView
                 {...props}
                 onKeyDown={ onKeyDownCallback }
                 keyboardShouldPersistTaps={ keyboardShouldPersistTaps }
@@ -41,7 +37,7 @@ export class ScrollView extends ScrollViewBase {
                 disableKeyboardBasedScrolling={true}
             >
                 {props.children}
-            </RNW.ScrollView>
+            </RN.ScrollView>
         );
     }
 

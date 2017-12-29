@@ -4,7 +4,8 @@
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
 *
-* Type definition file for React Native Windows
+* Type definition file for React Native Windows only components and modules
+* Definitions for extensions pertaining to existing React Native components are merged into the reaxt-native.d.ts file.
 */
 
 declare module 'react-native-windows' {
@@ -32,25 +33,4 @@ declare module 'react-native-windows' {
     }
 
     class FocusableWindows extends RN.ReactNativeBaseComponent<FocusableProps, {}> { }
-
-    //
-    // Declarations for "enhanced" components
-    // Even though this is a good place to define these and to avoid poluting react-native.d.ts, truth is
-    // the real life objects will be visible in the ReactNative namespace rather than ReactWindows
-    // ----------------------------------------------------------------------
-    interface ScrollViewProps extends RN.ScrollViewProps {
-        onKeyDown?                      : Function;
-        onKeyUp?                        : Function;
-        tabNavigation?                  : string; // enum( 'local', 'cycle', 'once' );
-        disableKeyboardBasedScrolling?  : boolean;
-    }
-    class ScrollView extends RN.ReactNativeBaseComponent<ScrollViewProps, {}> { }
-
-    interface TextInputProps extends RN.TextInputProps {
-        tabIndex?                       : number;
-    }
-    class TextInput extends RN.ReactNativeBaseComponent<TextInputProps, {}>
-    {
-        static State: RN.TextInputState;
-    }
 }

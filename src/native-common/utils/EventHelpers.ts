@@ -129,9 +129,15 @@ export class EventHelpers {
 
     toFocusEvent(e: Types.SyntheticEvent): Types.FocusEvent {
 
-        // Ideally we'd like to add a null set "relatedTarget", but the new typining doesn't allow that.
+        // Ideally we'd like to add a null set "relatedTarget", but the new typing doesn't allow that.
         // So keeping it a noop for now
         return e as Types.FocusEvent;
+    }
+
+    toMouseEvent(e: Types.SyntheticEvent): Types.MouseEvent {
+
+        // Nothing for now, this will have to be enhanced based on platform support.
+        return e as Types.MouseEvent;
     }
 }
 

@@ -21,11 +21,11 @@ const KEY_CODE_SPACE = 32;
 const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER];
 const UP_KEYCODES = [KEY_CODE_SPACE];
 
-// let _isNavigatingWithKeyboard = false;
+let _isNavigatingWithKeyboard = false;
 
 // TODO: take this into account
 UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
-   // _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
+   _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 });
 
 // Simple check for the presence of the updated React Native for Windows
@@ -34,6 +34,10 @@ const IsUpdatedReactNativeForWindows = (RNW.FocusableWindows !== undefined);
 export class Button extends ButtonBase implements FocusManagerFocusableComponent {
 
     private _focusableElement : RNW.FocusableWindows | null = null;
+
+    private _isMouseOver = false;
+    private _isFocusedWithKeyboard = false;
+    private _isHoverStarted = false;
 
     private _onFocusableRef = (btn: RNW.FocusableWindows): void => {
         this._focusableElement = btn;
@@ -75,6 +79,8 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
             >
                 <RN.Animated.View
                     {...internalProps}
+                    onMouseEnter={this._onMouseEnter}
+                    onMouseLeave={this._onMouseLeave}
                 >
                     { this.props.children }
                 </RN.Animated.View>
@@ -126,19 +132,57 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
         }
     }
 
+    private _onMouseEnter = (e: React.SyntheticEvent<any>) => {
+        this._isMouseOver = true;
+        this._onHoverStart(e);
+    }
+
+    private _onMouseLeave = (e: React.SyntheticEvent<any>) => {
+        this._isMouseOver = false;
+        this._onHoverEnd(e);
+    }
+
+    // When we get focus on an element, show the hover effect on the element.
+    // This ensures that users using keyboard also get the similar experience as mouse users for accessibility.
     private _onFocus = (e: React.SyntheticEvent<any>): void => {
         this.onFocus();
+
+        this._isFocusedWithKeyboard = _isNavigatingWithKeyboard;
+        this._onHoverStart(e);
+
         if (this.props.onFocus) {
             this.props.onFocus(EventHelpers.toFocusEvent(e));
         }
     }
 
     private _onBlur = (e: React.SyntheticEvent<any>): void => {
+        this._isFocusedWithKeyboard = false;
+        this._onHoverEnd(e);
+
         if (this.props.onBlur) {
             this.props.onBlur(EventHelpers.toFocusEvent(e));
         }
     }
 
+    private _onHoverStart = (e: React.SyntheticEvent<any>) => {
+        if (!this._isHoverStarted && (this._isMouseOver || this._isFocusedWithKeyboard)) {
+            this._isHoverStarted = true;
+
+            if (this.props.onHoverStart) {
+                this.props.onHoverStart(e);
+            }
+        }
+    }
+
+    private _onHoverEnd = (e: React.SyntheticEvent<any>) => {
+        if (this._isHoverStarted && !this._isMouseOver && !this._isFocusedWithKeyboard) {
+            this._isHoverStarted = false;
+
+            if (this.props.onHoverEnd) {
+                this.props.onHoverEnd(e);
+            }
+        }
+    }
     onFocus() {
         // Focus Manager hook
     }

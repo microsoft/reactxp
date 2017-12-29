@@ -9,21 +9,17 @@
 
 import React = require('react');
 import RN = require('react-native');
-import RNW = require('react-native-windows');
 
 import {applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 
 import {TextInput as TextInputBase} from '../native-common/TextInput';
-
-// The enhanced TextInput can be accessed through the RN realm
-RNW.TextInput = RN.TextInput;
 
 export class TextInput extends TextInputBase implements FocusManagerFocusableComponent {
 
     protected _render(props: RN.TextInputProps): JSX.Element {
 
         return (
-            <RNW.TextInput
+            <RN.TextInput
             {...props}
             tabIndex = {this.getTabIndex()}
             onFocus = { (e: React.FocusEvent<any>) => this._onFocusEx(e, props.onFocus)}

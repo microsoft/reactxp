@@ -42,7 +42,11 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         focusManager: PropTypes.object
     };
 
-    private _onKeyDown: (e: Types.SyntheticEvent) => void;
+    private _onKeyDown: (e: React.SyntheticEvent<any>) => void;
+    private _onMouseEnter: (e: React.SyntheticEvent<any>) => void;
+    private _onMouseLeave: (e: React.SyntheticEvent<any>) => void;
+    private _onMouseOver: (e: React.SyntheticEvent<any>) => void;
+    private _onMouseMove: (e: React.SyntheticEvent<any>) => void;
 
     private _focusableElement : RNW.FocusableWindows | null = null;
 
@@ -141,6 +145,51 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                     });
                 };
             }
+        }
+
+        // Mouse events (using same lazy initialization as for onKeyDown)
+        if (props.onMouseEnter) {
+            if (this._onMouseEnter === undefined) {
+                this._onMouseEnter =  (e: React.SyntheticEvent<any>) => {
+                    if (this.props.onMouseEnter) {
+                         this.props.onMouseEnter(EventHelpers.toMouseEvent(e));
+                    }
+                };
+            }
+            this._internalProps.onMouseEnter = this._onMouseEnter;
+        }
+
+        if (props.onMouseLeave) {
+            if (this._onMouseLeave === undefined) {
+                this._onMouseLeave =  (e: React.SyntheticEvent<any>) => {
+                    if (this.props.onMouseLeave) {
+                         this.props.onMouseLeave(EventHelpers.toMouseEvent(e));
+                    }
+                };
+            }
+            this._internalProps.onMouseLeave = this._onMouseLeave;
+        }
+
+        if (props.onMouseOver) {
+            if (this._onMouseOver === undefined) {
+                this._onMouseOver =  (e: React.SyntheticEvent<any>) => {
+                    if (this.props.onMouseOver) {
+                         this.props.onMouseOver(EventHelpers.toMouseEvent(e));
+                    }
+                };
+            }
+            this._internalProps.onMouseOver = this._onMouseOver;
+        }
+
+        if (props.onMouseMove) {
+            if (this._onMouseMove === undefined) {
+                this._onMouseMove =  (e: React.SyntheticEvent<any>) => {
+                    if (this.props.onMouseMove) {
+                         this.props.onMouseMove(EventHelpers.toMouseEvent(e));
+                    }
+                };
+            }
+            this._internalProps.onMouseMove = this._onMouseMove;
         }
     }
 
