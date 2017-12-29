@@ -18,6 +18,7 @@ export interface StoredFocusableComponent {
     onFocus: () => void;
     restricted: boolean;
     limitedCount: number;
+    latestFocused?: boolean;
     origTabIndex?: number;
     origAriaHidden?: string;
     removed?: boolean;
@@ -81,7 +82,16 @@ export abstract class FocusManager {
             restricted: false,
             limitedCount: 0,
             onFocus: () => {
-                FocusManager._currentFocusedComponent = storedComponent;
+                if (FocusManager._currentFocusedComponent !== storedComponent) {
+                    if (FocusManager._currentFocusedComponent && FocusManager._currentFocusedComponent.latestFocused) {
+                        delete FocusManager._currentFocusedComponent.latestFocused;
+                        this._updateComponentFocusRestriction(FocusManager._currentFocusedComponent);
+                    }
+
+                    FocusManager._currentFocusedComponent = storedComponent;
+                    FocusManager._currentFocusedComponent.latestFocused = true;
+                    this._updateComponentFocusRestriction(FocusManager._currentFocusedComponent);
+                }
             }
         };
 

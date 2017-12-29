@@ -13,7 +13,10 @@ import {FocusManager as FocusManagerBase,
     applyFocusableComponentMixin as applyFocusableComponentMixinBase,
     StoredFocusableComponent} from '../../common/utils/FocusManager';
 
+import Platform from '../../native-common/Platform';
 import UserInterface from '../UserInterface';
+
+const isNativeWindows: boolean = Platform.getType() === 'windows';
 
 let _isNavigatingWithKeyboard: boolean;
 //let _isShiftPressed: boolean;
@@ -132,7 +135,8 @@ export class FocusManager extends FocusManagerBase {
     }
 
     protected /* static */  _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
-        if ((storedComponent.restricted || (storedComponent.limitedCount > 0)) && !('origTabIndex' in storedComponent)) {
+        if ((storedComponent.restricted || (storedComponent.limitedCount > 0)) &&
+            !(isNativeWindows && storedComponent.latestFocused) && !('origTabIndex' in storedComponent)) {
             storedComponent.origTabIndex = FocusManager._setComponentTabIndexOverride(storedComponent.component, -1);
             FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, true);
         } else if (!storedComponent.restricted && !storedComponent.limitedCount && ('origTabIndex' in storedComponent)) {
@@ -212,6 +216,30 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
             console.error('FocusableComponentMixin: updateNativeTabIndex error!');
         }
     };
+
+    if (isNativeWindows) {
+        // UWP platform (at least) is slightly stricter with regard to tabIndex combinations. The "component focusable but not in tab order"
+        // case (usually encoded with tabIndex<0 for browsers) is not supported. A negative tabIndex disables focusing/keyboard input
+        // completely instead.
+        // Even though a comprehensive fix may be needed, we currently fix this partially by simulating the expected behavior on
+        // components monitored by FocusManager only
+        // - Calling "focus" on a component with an effective tabIndex<0 forces an override of "tabIndex=0" first. Subsequent onFocus
+        // syncronizes the FocusManager internal state
+        // - Latest component with focus is waived from restrictions, so swithing to another window and back gives a chance to the focus to
+        // be set back to that latest focused component.
+
+        inheritMethod('focus', function (this: FocusManagerFocusableComponentInternal, origCallback: any) {
+
+            let tabIndex: number | undefined = this.getTabIndex();
+
+            if (tabIndex === undefined || tabIndex < 0) {
+                this.setTabIndexOverride(0);
+            }
+
+            // To original
+            return origCallback.call(this);
+        });
+    }
 
     function inheritMethod(methodName: string, action: Function) {
         let origCallback = Component.prototype[methodName];

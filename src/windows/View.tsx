@@ -311,9 +311,10 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 }
 
+// A value for tabIndex (even <0) marks a View as being potential keyboard focusable
 applyFocusableComponentMixin(View, function (this: View, nextProps?: Types.ViewProps) {
     let tabIndex = nextProps && ('tabIndex' in nextProps) ? nextProps.tabIndex : this.props.tabIndex;
-    return tabIndex !== undefined && tabIndex >= 0;
+    return tabIndex !== undefined;
 });
 
 export default View;
