@@ -16,6 +16,7 @@ import Input from './Input';
 import UserInterface from './UserInterface';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import FocusManager from './utils/FocusManager';
+import FrontLayerViewManager from '../native-common/FrontLayerViewManager';
 
 type SyntheticEvent = React.SyntheticEvent<any>;
 
@@ -117,15 +118,15 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
         _onKeyUp = (e: SyntheticEvent) => {
             let kbdEvent = EventHelpers.toKeyboardEvent(e);
 
-    /* TODO fix popup processing
-            if (this.props.activePopupOptions && (e.keyCode === KEY_CODE_ESC)) {
+            let activePopupId = FrontLayerViewManager.getActivePopupId();
+            if (activePopupId && (kbdEvent.keyCode === KEY_CODE_ESC)) {
                 if (e.stopPropagation) {
                     e.stopPropagation();
                 }
-                this._dismissPopup();
+                FrontLayerViewManager.dismissPopup(activePopupId);
                 return;
             }
-    */
+
             Input.dispatchKeyUp(kbdEvent);
         }
 
