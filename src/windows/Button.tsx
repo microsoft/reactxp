@@ -23,7 +23,6 @@ const UP_KEYCODES = [KEY_CODE_SPACE];
 
 let _isNavigatingWithKeyboard = false;
 
-// TODO: take this into account
 UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 });
@@ -183,6 +182,7 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
             }
         }
     }
+
     onFocus() {
         // Focus Manager hook
     }

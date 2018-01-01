@@ -18,7 +18,7 @@ export class EventHelpers {
 
             // Currently some key codes are dependent on platform. React Native proper (the iOS and Android platforms) have different
             // keycodes for arrow keys when comparing with React (JS).
-            // We align the keycodes for nativre desktop platforms to the other native ones, as a workaround.
+            // We align the keycodes for native desktop platforms to the other native ones, as a workaround.
             // Ideally all key codes should be consistent OR a set of constants should be exposed by ReactXP.
             let keyName: string = (e.nativeEvent as any).key;
             let keyCode: number = 0;
