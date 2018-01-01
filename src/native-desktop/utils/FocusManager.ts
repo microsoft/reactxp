@@ -19,7 +19,6 @@ import UserInterface from '../UserInterface';
 const isNativeWindows: boolean = Platform.getType() === 'windows';
 
 let _isNavigatingWithKeyboard: boolean;
-//let _isShiftPressed: boolean;
 
 UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
     _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
@@ -67,34 +66,38 @@ export class FocusManager extends FocusManagerBase {
         return false;
     }
 
-   /*
-    private static focusFirst (last?: boolean) {
+    private static focusFirst () {
         const focusable = Object.keys(FocusManager._allFocusableComponents)
             .map(componentId => FocusManager._allFocusableComponents[componentId])
-            .filter(storedComponent => !storedComponent.removed && !storedComponent.restricted && !storedComponent.limitedCount)
-            .map(storedComponent => ReactDOM.findDOMNode<HTMLElement>(storedComponent.component))
-            .filter(el => el && el.focus);
+            .filter(storedComponent => !storedComponent.removed && !storedComponent.restricted && !storedComponent.limitedCount);
 
         if (focusable.length) {
             focusable.sort((a, b) => {
-                // Some element which is mounted later could come earlier in the DOM,
-                // so, we sort the elements by their appearance in the DOM.
+                // This function does its best, but contrasry to DOM-land we have no idea on where the native components
+                // ended up on screen, unless some expensive measuring is done on them.
+                // So we defer to less than optimal "add focusable component" order. A lot of factors (absolute positioning,
+                // instance replacements, etc.) can alter the correctness of this method, but I see no other way.
                 if (a === b) {
                     return 0;
                 }
-                return a.compareDocumentPosition(b) & document.DOCUMENT_POSITION_PRECEDING ? 1 : -1;
+
+                if (a.numericId < b.numericId) {
+                    return -1;
+                } else {
+                    return 1;
+                }
             });
 
-            focusable[last ? focusable.length - 1 : 0].focus();
+            let fc = focusable[0].component as any as FocusManagerFocusableComponent;
+
+            if (fc && fc.focus) {
+                fc.focus();
+            }
         }
-    } */
+    }
 
     protected /* static */ resetFocus() {
-        if (_isNavigatingWithKeyboard) {
-            return;
-        }
 
-        /*
         if (FocusManager._resetFocusTimer) {
             clearTimeout(FocusManager._resetFocusTimer);
             FocusManager._resetFocusTimer = undefined;
@@ -105,38 +108,26 @@ export class FocusManager extends FocusManagerBase {
             // first focusable component to be focused straight away, without the
             // necessity to press Tab.
 
-            // Defer the focusing to let the view finish its initialization.
+            // Defer the focusing to let the view finish its initialization and to allow for manual focus setting (if any)
+            // to be processed (the asynchronous nature of focus->onFocus path requires a delay)
             FocusManager._resetFocusTimer = setTimeout(() => {
                 FocusManager._resetFocusTimer = undefined;
-                FocusManager.focusFirst();
-            }, 0);
-        } else if ((typeof document !== 'undefined') && document.body && document.body.focus && document.body.blur) {
-            // An example to explain this part:
-            // We've shown a modal dialog which is higher in the DOM by clicking
-            // on a button which is lower in the DOM, we've applied the restrictions
-            // and only the elements from the modal dialog are focusable now.
-            // But internally the browser keeps the last focus position in the DOM
-            // (even if we do blur() for the button) and when Tab is pressed again,
-            // the browser will start searching for the next focusable element from
-            // this position.
-            // This means that the first Tab press will get us to the browser's address
-            // bar (or nowhere in case of Electron) and only the second Tab press will
-            // lead us to focusing the first focusable element in the modal dialog.
-            // In order to avoid losing this first Tab press, we're making <body>
-            // focusable, focusing it, removing the focus and making it unfocusable
-            // back again.
-            const prevTabIndex = FocusManager._setTabIndex(document.body, 0);
-            document.body.focus();
-            document.body.blur();
-            FocusManager._setTabIndex(document.body, prevTabIndex);
-        }
 
-        */
+                // Check if the currently focused component is without limit/restriction.
+                // We skip setting focus on "first" component in that case because:
+                // - focusFirst has its limits, to say it gently
+                // - We ended up in resetFocus for a reason that is not true anymore (mostly because focus was set manually)
+
+                const storedComponent = FocusManager._currentFocusedComponent;
+                if (!storedComponent || storedComponent.restricted || (storedComponent.limitedCount > 0)) {
+                    FocusManager.focusFirst();
+                }
+            }, 100);
+        }
     }
 
     protected /* static */  _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
-        if ((storedComponent.restricted || (storedComponent.limitedCount > 0)) &&
-            !(isNativeWindows && storedComponent.latestFocused) && !('origTabIndex' in storedComponent)) {
+        if ((storedComponent.restricted || (storedComponent.limitedCount > 0)) && !('origTabIndex' in storedComponent)) {
             storedComponent.origTabIndex = FocusManager._setComponentTabIndexOverride(storedComponent.component, -1);
             FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, true);
         } else if (!storedComponent.restricted && !storedComponent.limitedCount && ('origTabIndex' in storedComponent)) {
@@ -220,13 +211,12 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
     if (isNativeWindows) {
         // UWP platform (at least) is slightly stricter with regard to tabIndex combinations. The "component focusable but not in tab order"
         // case (usually encoded with tabIndex<0 for browsers) is not supported. A negative tabIndex disables focusing/keyboard input
-        // completely instead.
+        // completely instead (though a component already having keyboard focus doesn't lose it right away).
         // Even though a comprehensive fix may be needed, we currently fix this partially by simulating the expected behavior on
-        // components monitored by FocusManager only
+        // components monitored by FocusManager only:
         // - Calling "focus" on a component with an effective tabIndex<0 forces an override of "tabIndex=0" first. Subsequent onFocus
-        // syncronizes the FocusManager internal state
-        // - Latest component with focus is waived from restrictions, so swithing to another window and back gives a chance to the focus to
-        // be set back to that latest focused component.
+        // syncronizes the FocusManager internal state and hopefully maintains the component out of any focusing restriction.
+        //
 
         inheritMethod('focus', function (this: FocusManagerFocusableComponentInternal, origCallback: any) {
 

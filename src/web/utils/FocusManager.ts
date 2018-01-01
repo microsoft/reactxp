@@ -31,8 +31,6 @@ export {applyFocusableComponentMixin, FocusableComponentStateCallback};
 
 export class FocusManager extends FocusManagerBase {
 
-    private static _resetFocusTimer: number | undefined;
-
     constructor(parent: FocusManager | undefined) {
         super(parent);
     }

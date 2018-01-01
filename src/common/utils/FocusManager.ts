@@ -14,11 +14,11 @@ let _lastComponentId: number = 0;
 
 export interface StoredFocusableComponent {
     id: string;
+    numericId: number;
     component: React.Component<any, any>;
     onFocus: () => void;
     restricted: boolean;
     limitedCount: number;
-    latestFocused?: boolean;
     origTabIndex?: number;
     origAriaHidden?: string;
     removed?: boolean;
@@ -39,9 +39,10 @@ export abstract class FocusManager {
     private static _currentRestrictionOwner: FocusManager|undefined;
     private static _restoreRestrictionTimer: number|undefined;
     private static _pendingPrevFocusedComponent: StoredFocusableComponent|undefined;
-    private static _currentFocusedComponent: StoredFocusableComponent|undefined;
+    protected static _currentFocusedComponent: StoredFocusableComponent|undefined;
     protected static _allFocusableComponents: { [id: string]: StoredFocusableComponent } = {};
     protected static _skipFocusCheck = false;
+    protected static _resetFocusTimer: number | undefined;
 
     private _parent: FocusManager|undefined;
     private _isFocusLimited: boolean;
@@ -74,24 +75,17 @@ export abstract class FocusManager {
             return;
         }
 
-        const componentId: string = 'fc-' + ++_lastComponentId;
+        const numericComponentId = ++_lastComponentId;
+        const componentId: string = 'fc-' + numericComponentId;
 
         let storedComponent: StoredFocusableComponent = {
             id: componentId,
+            numericId: numericComponentId,
             component: component,
             restricted: false,
             limitedCount: 0,
             onFocus: () => {
-                if (FocusManager._currentFocusedComponent !== storedComponent) {
-                    if (FocusManager._currentFocusedComponent && FocusManager._currentFocusedComponent.latestFocused) {
-                        delete FocusManager._currentFocusedComponent.latestFocused;
-                        this._updateComponentFocusRestriction(FocusManager._currentFocusedComponent);
-                    }
-
-                    FocusManager._currentFocusedComponent = storedComponent;
-                    FocusManager._currentFocusedComponent.latestFocused = true;
-                    this._updateComponentFocusRestriction(FocusManager._currentFocusedComponent);
-                }
+                FocusManager._currentFocusedComponent = storedComponent;
             }
         };
 
