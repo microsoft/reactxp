@@ -36,8 +36,8 @@ dismiss(modalId: string);
 // Removes all modals from the modal stack.
 dismissAll();
 
-// Indicates whether the specified modal is in the modal stack.
-isDisplayed(modalId: string): boolean;
+// Indicates whether the specified modal is in the modal stack. If no id provided indicates if some modal is displayed.
+isDisplayed(modalId?: string): boolean;
 
 // Pushes the modal onto the modal stack.
 show(modal: React.ReactElement<ViewProps>, modalId: string, options?: ModalOptions);
