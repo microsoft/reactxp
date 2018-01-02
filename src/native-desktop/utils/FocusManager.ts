@@ -73,7 +73,7 @@ export class FocusManager extends FocusManagerBase {
 
         if (focusable.length) {
             focusable.sort((a, b) => {
-                // This function does its best, but contrasry to DOM-land we have no idea on where the native components
+                // This function does its best, but contrary to DOM-land we have no idea on where the native components
                 // ended up on screen, unless some expensive measuring is done on them.
                 // So we defer to less than optimal "add focusable component" order. A lot of factors (absolute positioning,
                 // instance replacements, etc.) can alter the correctness of this method, but I see no other way.
