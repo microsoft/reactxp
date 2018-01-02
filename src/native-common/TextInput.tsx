@@ -11,7 +11,7 @@ import React = require('react');
 import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import EventHelpers from '../native-common/utils/EventHelpers';
+import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -31,6 +31,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     private _selectionStart: number = 0;
     private _selectionEnd: number = 0;
     private _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+
+    protected _textInputRef: RN.TextInput|null = null;
 
     constructor(props: Types.TextInputProps) {
         super(props);
@@ -62,7 +64,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         const blurOnSubmit = this.props.blurOnSubmit || !this.props.multiline;
 
         const internalProps: RN.TextInputProps = {
-            ref: this._mountedComponent,
+            ref: this._onMount,
             multiline: this.props.multiline,
             style: Styles.combine([_styles.defaultTextInput, this.props.style]),
             value: this.state.inputValue,

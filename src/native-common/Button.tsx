@@ -86,7 +86,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
 
     private _isMounted = false;
     private _hideTimeout: number|undefined;
-    private _buttonElement: RN.Animated.View|undefined;
+    private _buttonElement: RN.Animated.View|null = null;
     private _defaultOpacityValue: number|undefined;
     private _opacityAnimatedValue: RN.Animated.Value|undefined;
     private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet|undefined;
@@ -259,7 +259,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         }
     }
 
-    private _onButtonRef = (btn: RN.Animated.View): void => {
+    private _onButtonRef = (btn: RN.Animated.View|null): void => {
         this._buttonElement = btn;
     }
 

@@ -38,7 +38,7 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
     private _isFocusedWithKeyboard = false;
     private _isHoverStarted = false;
 
-    private _onFocusableRef = (btn: RNW.FocusableWindows): void => {
+    private _onFocusableRef = (btn: RNW.FocusableWindows | null): void => {
         this._focusableElement = btn;
     }
 

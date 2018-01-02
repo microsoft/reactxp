@@ -36,7 +36,7 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
 
     private _focusableElement : RNW.FocusableWindows | null = null;
 
-    private _onFocusableRef = (btn: RNW.FocusableWindows): void => {
+    private _onFocusableRef = (btn: RNW.FocusableWindows | null): void => {
         this._focusableElement = btn;
     }
 

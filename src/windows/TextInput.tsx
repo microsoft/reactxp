@@ -45,10 +45,13 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
     }
 
     updateNativeTabIndex(): void {
-        let tabIndex: number | undefined = this.getTabIndex();
-        (this.refs['nativeTextInput'] as any).setNativeProps({
-            tabIndex: tabIndex
-        });
+        if (this._textInputRef) {
+            let tabIndex: number | undefined = this.getTabIndex();
+            this._textInputRef.setNativeProps({
+                tabIndex: tabIndex,
+                value: this.state.inputValue, // mandatory for some reason
+            });
+        }
     }
 }
 
