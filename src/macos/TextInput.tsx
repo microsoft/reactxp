@@ -72,7 +72,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 defaultValue={ this.props.value }
                 placeholderTextColor={ this.props.placeholderTextColor }
                 onSubmitEditing={this.props.onSubmitEditing }
-                onKeyPress={ this._onKeyPress as any}
+                onKeyPress={ this._onKeyPress as any }
                 onChangeText={ this._onChangeText }
                 onSelectionChange={ this._onSelectionChange as any }
                 onFocus={ this._onFocus }
