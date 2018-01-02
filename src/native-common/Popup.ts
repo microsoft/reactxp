@@ -45,6 +45,10 @@ export class Popup extends RX.Popup {
     dismissAll(): void {
         FrontLayerViewManager.dismissAllPopups();
     }
+
+    isDisplayed(popupId?: string): boolean {
+        return FrontLayerViewManager.isPopupDisplayed(popupId);
+    }
 }
 
 export default new Popup();

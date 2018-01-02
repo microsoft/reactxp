@@ -235,6 +235,19 @@ export class FrontLayerViewManager {
         // Check for any Popup in queue
         return this._overlayStack.length === 0 ? null : _.last(this._overlayStack);
     }
+
+    isPopupDisplayed(popupId?: string): boolean {
+        if (popupId) {
+            return this._findIndexOfPopup(popupId) !== -1;
+        } else {
+            if (this._overlayStack.length > 0) {
+                const popups = _.filter(this._overlayStack, iter => (iter instanceof PopupStackContext));
+                return popups.length > 0;
+            }
+            
+            return false;
+        }
+    }
 }
 
 export default new FrontLayerViewManager();
