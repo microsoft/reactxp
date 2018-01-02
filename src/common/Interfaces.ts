@@ -193,14 +193,14 @@ export abstract class Platform {
 
 export abstract class Input {
     backButtonEvent = new SubscribableEvent<() => boolean>(true);
-    keyDownEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
-    keyUpEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
+    keyDownEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>(true);
+    keyUpEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>(true);
 }
 
 export interface ScrollViewConstructor {
     new(props: Types.ScrollViewProps): ScrollView;
 }
-    
+
 export interface ScrollView extends React.Component<Types.ScrollViewProps, any> {
     setScrollTop(scrollTop: number, animate?: boolean): void;
     setScrollLeft(scrollLeft: number, animate?: boolean): void;
