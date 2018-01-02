@@ -61,6 +61,9 @@ scrollEventThrottle: number = undefined;
 // or left/right (horizontal)
 scrollIndicatorInsets: ScrollIndicatorInsets = undefined;
 
+// Windows-only property to control tab navigation inside the view
+tabNavigation?: 'local' | 'cycle' | 'once';
+
 // If true, this scroll bar scrolls to the top when the user
 // taps on the status bar.
 scrollsToTop: boolean = false; // iOS only

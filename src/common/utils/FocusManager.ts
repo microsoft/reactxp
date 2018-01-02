@@ -63,7 +63,6 @@ export abstract class FocusManager {
     protected abstract /* static */ removeFocusListenerFromComponent(component: React.Component<any, any>, onFocus: () => void): void;
     protected abstract /* static */ focusComponent(component: React.Component<any, any>): boolean;
 
-    // protected abstract /* static */ focusFirst(last?: boolean): void;
     protected abstract /* static */ resetFocus() : void;
     protected abstract /* static */ _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent): void;
 
