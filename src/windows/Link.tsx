@@ -26,7 +26,7 @@ export interface LinkContext {
 }
 
 // Simple check for the presence of the updated React Native for Windows
-const IsUpdatedReactNativeForWindows = (RNW.FocusableWindows !== undefined);
+const HasFocusableWindows = (RNW.FocusableWindows !== undefined);
 
 export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
@@ -43,7 +43,7 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     render() {
 
         // Fallback to native-common fast if the keyboard enabled component is not available
-        if (!IsUpdatedReactNativeForWindows) {
+        if (!HasFocusableWindows) {
             return super.render();
         }
 

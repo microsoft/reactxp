@@ -28,6 +28,7 @@ export class EventHelpers {
             } else {
                 switch (keyName) {
                     case 'Backspace':
+                    case 'Delete':
                         keyCode = 8;
                         break;
 
@@ -85,10 +86,6 @@ export class EventHelpers {
                     case 'Down':
                     case 'ArrowDown':
                         keyCode = 20;
-                        break;
-
-                    case 'Delete':
-                        keyCode = 8;
                         break;
                 }
             }

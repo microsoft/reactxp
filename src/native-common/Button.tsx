@@ -134,7 +134,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         let internalProps: RN.ViewProps = {
             ref: this._onButtonRef,
             style: Styles.combine([_styles.defaultButton, this.props.style, opacityStyle,
-                            this.props.disabled && _styles.disabled]),
+                this.props.disabled && _styles.disabled]),
             accessibilityLabel: this.props.accessibilityLabel || this.props.title,
             accessibilityTraits: accessibilityTrait,
             accessibilityComponentType: accessibilityComponentType,

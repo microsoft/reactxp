@@ -28,7 +28,7 @@ UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
 });
 
 // Simple check for the presence of the updated React Native for Windows
-const IsUpdatedReactNativeForWindows = (RNW.FocusableWindows !== undefined);
+const HasFocusableWindows = (RNW.FocusableWindows !== undefined);
 
 export class Button extends ButtonBase implements FocusManagerFocusableComponent {
 
@@ -45,7 +45,7 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
     protected _render(internalProps: RN.ViewProps): JSX.Element {
 
         // Fallback to native-common fast if the keyboard enabled component is not available
-        if (!IsUpdatedReactNativeForWindows) {
+        if (!HasFocusableWindows) {
             return super._render(internalProps);
         }
 
@@ -115,7 +115,6 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
                 // ENTER triggers press on key down
                 if (key === KEY_CODE_ENTER) {
                     this.props.onPress(keyEvent);
-                    return;
                 }
             }
         }

@@ -28,7 +28,7 @@ export interface ViewContext {
 }
 
 // Simple check for the presence of the updated React Native for Windows
-const IsUpdatedReactNativeForWindows = (RNW.FocusableWindows !== undefined);
+const HasFocusableWindows = (RNW.FocusableWindows !== undefined);
 
 export class View extends ViewCommon implements React.ChildContextProvider<ViewContext>, FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
@@ -198,7 +198,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         let content: JSX.Element = super.render();
 
         // Exit fast if the keyboard enabled component is not available
-        if (!IsUpdatedReactNativeForWindows) {
+        if (!HasFocusableWindows) {
             return content;
         }
 
