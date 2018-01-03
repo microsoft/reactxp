@@ -64,8 +64,8 @@ export class Text extends React.Component<Types.TextProps, {}> implements React.
     }
 
     getChildContext() {
-        // Let descendant Types components know that their nearest Types ancestor is an Types.Text.
-        // Because they're in an Types.Text, they should style themselves specially for appearing
+        // Let descendant RX components know that their nearest RX ancestor is an RX.Text.
+        // Because they're in an RX.Text, they should style themselves specially for appearing
         // inline with text.
         return { isRxParentAText: true };
     }

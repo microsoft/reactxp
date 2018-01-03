@@ -129,7 +129,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
         render() {
             let content = super.render();
 
-            // Using "any" since onKeyDown/onKeyDown are not defined at RN.View property level
+            // Using "any" since onKeyDown/onKeyUp/etc. are not defined at RN.View property level
             // Yet the handlers are called as part of capturing/bubbling events for/from children.
             let internalProps: any = {
                 onKeyDown: this._onKeyDown,

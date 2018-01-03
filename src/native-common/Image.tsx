@@ -108,8 +108,8 @@ export class Image extends React.Component<Types.ImageProps, {}> implements Reac
     }
 
     getChildContext() {
-        // Let descendant Types components know that their nearest Types ancestor is not an Types.Text.
-        // Because they're in an Types.View/etc, they should use their normal styling rather than their
+        // Let descendant RX components know that their nearest RX ancestor is not an RX.Text.
+        // Because they're in an RX.View/etc, they should use their normal styling rather than their
         // special styling for appearing inline with text.
         return { isRxParentAText: false };
     }
