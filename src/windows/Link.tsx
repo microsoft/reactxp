@@ -121,6 +121,8 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
         this.onFocus();
     }
 
+    // From FocusManagerFocusableComponent interface
+    //
     onFocus() {
         // Focus Manager hook
     }

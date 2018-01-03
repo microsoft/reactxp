@@ -338,6 +338,8 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
     }
 
+    // From FocusManagerFocusableComponent interface
+    //
     onFocus() {
         // Focus Manager hook
     }

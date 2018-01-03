@@ -182,6 +182,8 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
         }
     }
 
+    // From FocusManagerFocusableComponent interface
+    //
     onFocus() {
         // Focus Manager hook
     }

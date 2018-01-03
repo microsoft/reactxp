@@ -35,6 +35,8 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
         }
     }
 
+    // From FocusManagerFocusableComponent interface
+    //
     onFocus() {
         // Focus Manager hook
     }
