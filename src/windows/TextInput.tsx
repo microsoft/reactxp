@@ -21,10 +21,10 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
         return (
             <RN.TextInput
             {...props}
-            tabIndex = {this.getTabIndex()}
-            onFocus = { (e: React.FocusEvent<any>) => this._onFocusEx(e, props.onFocus)}
-        />)
-            ;
+            tabIndex={this.getTabIndex()}
+            onFocus={ (e: React.FocusEvent<any>) => this._onFocusEx(e, props.onFocus)}
+            />
+        );
     }
 
     private _onFocusEx (e: React.FocusEvent<any>, origHandler: ((e: React.FocusEvent<any>) => void) | undefined) {

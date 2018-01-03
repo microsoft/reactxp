@@ -102,7 +102,6 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
             if (key === KEY_CODE_ENTER) {
                 // Defer to base class
                 this._onPress(keyEvent);
-                return;
             }
         }
     }

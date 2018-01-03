@@ -18,9 +18,9 @@ export class ScrollView extends ScrollViewBase {
     protected _render(props: RN.ScrollViewProps): JSX.Element {
 
         var onKeyDownCallback = this.props.onKeyPress ?
-                // We have a callback function, call the wrapper
-                this._onKeyDown :
-                undefined;
+            // We have a callback function, call the wrapper
+            this._onKeyDown :
+            undefined;
 
         // TODO: #737970 Remove special case for UWP when this bug is fixed. The bug
         //   causes you to have to click twice instead of once on some pieces of UI in
@@ -28,7 +28,6 @@ export class ScrollView extends ScrollViewBase {
         const keyboardShouldPersistTaps = 'always';
 
         return (
-
             <RN.ScrollView
                 {...props}
                 onKeyDown={ onKeyDownCallback }

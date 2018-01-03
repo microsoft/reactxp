@@ -320,7 +320,7 @@ declare module 'react-native' {
         // Windows only
         onKeyDown? : Function;
         onKeyUp? : Function;
-        tabNavigation? : string; // enum( 'local', 'cycle', 'once' );
+        tabNavigation? : 'local' | 'cycle' | 'once';
         disableKeyboardBasedScrolling?: boolean;
     }
 

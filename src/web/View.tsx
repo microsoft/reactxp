@@ -326,7 +326,8 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         if (AppConfig.isDevelopmentMode()) {
             if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
                 console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
-            } else if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
+            } 
+            if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
                 console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
             }
         }

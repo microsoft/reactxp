@@ -70,7 +70,8 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
         if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
             console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
-        } else if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
+        }
+        if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
             console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
         }
     }
@@ -93,10 +94,6 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         if (this._focusManager) {
             this._focusManager.release();
         }
-        // Mixins may have added this
-        if (super.componentWillUnmount !== undefined) {
-            super.componentWillUnmount();
-        }
     }
 
     protected _buildInternalProps(props: Types.ViewProps) {
@@ -108,7 +105,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
             // Define the handler for "onKeyDown" on first use, it's the safest way when functions
             // called from super constructors are involved.
-            if (this._onKeyDown === undefined) {
+            if (!this._onKeyDown) {
                 this._onKeyDown =  (e: Types.SyntheticEvent) => {
                     if (this.props.onKeyPress) {
                         // A conversion to a KeyboardEvent looking event is needed
@@ -149,7 +146,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
         // Mouse events (using same lazy initialization as for onKeyDown)
         if (props.onMouseEnter) {
-            if (this._onMouseEnter === undefined) {
+            if (!this._onMouseEnter) {
                 this._onMouseEnter =  (e: React.SyntheticEvent<any>) => {
                     if (this.props.onMouseEnter) {
                          this.props.onMouseEnter(EventHelpers.toMouseEvent(e));
@@ -160,7 +157,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
 
         if (props.onMouseLeave) {
-            if (this._onMouseLeave === undefined) {
+            if (!this._onMouseLeave) {
                 this._onMouseLeave =  (e: React.SyntheticEvent<any>) => {
                     if (this.props.onMouseLeave) {
                          this.props.onMouseLeave(EventHelpers.toMouseEvent(e));
@@ -171,7 +168,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
 
         if (props.onMouseOver) {
-            if (this._onMouseOver === undefined) {
+            if (!this._onMouseOver) {
                 this._onMouseOver =  (e: React.SyntheticEvent<any>) => {
                     if (this.props.onMouseOver) {
                          this.props.onMouseOver(EventHelpers.toMouseEvent(e));
@@ -182,7 +179,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
 
         if (props.onMouseMove) {
-            if (this._onMouseMove === undefined) {
+            if (!this._onMouseMove) {
                 this._onMouseMove =  (e: React.SyntheticEvent<any>) => {
                     if (this.props.onMouseMove) {
                          this.props.onMouseMove(EventHelpers.toMouseEvent(e));
@@ -255,8 +252,8 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 
     getChildContext() {
-        // Let descendant Types components know that their nearest Types ancestor is not an Types.Text.
-        // Because they're in an Types.View, they should use their normal styling rather than their
+        // Let descendant RX components know that their nearest RX ancestor is not an RX.Text.
+        // Because they're in an RX.View, they should use their normal styling rather than their
         // special styling for appearing inline with text.
         let childContext: ViewContext = {
             isRxParentAText: false
@@ -310,7 +307,6 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             // ENTER triggers press on key down
             if (key === KEY_CODE_ENTER) {
                 this.props.onPress(keyEvent);
-                return;
             }
         }
     }

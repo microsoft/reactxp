@@ -66,7 +66,6 @@ AccessibilityUtil.setAccessibilityPlatformUtil(AccessibilityPlatformUtil);
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 
-// TODO change
 module ReactXP {
     export type Accessibility = RXInterfaces.Accessibility;
     export var Accessibility: RXInterfaces.Accessibility = AccessibilityImpl;
