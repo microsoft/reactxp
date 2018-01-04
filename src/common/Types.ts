@@ -92,9 +92,6 @@ export abstract class AnimatedValue implements RX.IAnimatedValue {
         // No-op
     }
     abstract setValue(value: number): void;
-    abstract addListener(callback: any): string;
-    abstract removeListener(id: string): void;
-    abstract removeAllListeners(): void;
     abstract interpolate(config: any): AnimatedValue;
 }
 

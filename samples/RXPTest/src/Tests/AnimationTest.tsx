@@ -40,6 +40,7 @@ const _styles = {
     }),
     animationCanvas: RX.Styles.createViewStyle({
         alignSelf: 'stretch',
+        flexDirection: 'row',
         height: 120,
         margin: 12,
         backgroundColor: '#eee',
@@ -50,7 +51,7 @@ const _styles = {
         height: 100,
         width: 100
     }),
-    animatedView: RX.Styles.createViewStyle({
+    animatedViewTest2: RX.Styles.createViewStyle({
         height: 40,
         width: 40,
         backgroundColor: 'red'
@@ -60,17 +61,30 @@ const _styles = {
         fontWeight: 'bold',
         fontStyle: 'italic',
         color: 'blue'
+    }),
+    animatedViewTest4: RX.Styles.createViewStyle({
+        height: 40,
+        width: 40,
+        borderRadius: 20,
+        backgroundColor: 'green'
+    }),
+    limitBox: RX.Styles.createViewStyle({
+        width: 1,
+        height: 40,
+        backgroundColor: 'black'
     })
 };
 
 const _test1Radius = 40;
 const _test2Duration = 500;
+const _test4Duration = 1000;
 
 interface AnimationViewState {
     isAutoRunning?: boolean;
     isRunningTest1?: boolean;
     isRunningTest2?: boolean;
     isRunningTest3?: boolean;
+    isRunningTest4?: boolean;
 }
 
 const _testValue1 = 'A long test value for the text input box';
@@ -100,7 +114,8 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
         transform: [{
             translateX: this._test2OffsetH
         }],
-        backgroundColor: RX.Animated.interpolate(this._test2Color, [0, 1], ['red', 'blue'])
+        backgroundColor: RX.Animated.interpolate(
+            this._test2Color, [0, 0.5, 1], ['red', 'blue', 'green'])
     });
 
     // Test 3 animation variables
@@ -111,6 +126,14 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
         }]
     });
 
+    // Test 4 animation variables
+    private _test4OffsetH = new RX.Animated.Value(-100);
+    private _test4Animation = RX.Styles.createAnimatedViewStyle({
+        transform: [{
+            translateX: this._test4OffsetH
+        }]
+    });
+
     constructor(props: RX.CommonProps) {
         super(props);
 
@@ -118,7 +141,8 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
             isAutoRunning: false,
             isRunningTest1: false,
             isRunningTest2: false,
-            isRunningTest3: false
+            isRunningTest3: false,
+            isRunningTest4: false
         };
     }
 
@@ -170,7 +194,7 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
                     </RX.Button>
                 </RX.View>
                 <RX.View style={ _styles.animationCanvas }>
-                    <RX.Animated.View style={ [_styles.animatedView, this._test2Animation] }/>
+                    <RX.Animated.View style={ [_styles.animatedViewTest2, this._test2Animation] }/>
                 </RX.View>
 
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation3' }>
@@ -194,6 +218,26 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
                         { 'Cool Rotation!' }
                     </RX.Animated.Text>
                 </RX.View>
+
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation4' }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'Animation that is interrupted. It should move halfway to the black line and back.' }
+                    </RX.Text>
+                    <RX.Button
+                        style={ _styles.button }
+                        onPress={ this._runTest4 }
+                        disabled={ this.state.isAutoRunning || this.state.isRunningTest4 }
+                    >
+                        <RX.Text style={ _styles.buttonText }>
+                            { 'Animate' }
+                        </RX.Text>
+                    </RX.Button>
+                </RX.View>
+                <RX.View style={ _styles.animationCanvas }>
+                    <RX.Animated.View style={ [_styles.animatedViewTest4, this._test4Animation] }/>
+                    <RX.View style={ _styles.limitBox }/>
+                </RX.View>
+
             </RX.View>
         );
     }
@@ -210,6 +254,8 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
             this._runTest2();
         }, () => {
             this._runTest3();
+        }, () => {
+            this._runTest4();
         }];
 
         // Are we done?
@@ -318,6 +364,35 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
             }
             this._executeNextStage();
         }, 2000);
+    }
+
+    private _runTest4 = () => {
+        this.setState({ isRunningTest4: true });
+
+        let animation = RX.Animated.timing(this._test4OffsetH, {
+            toValue: 0,
+            duration: _test4Duration,
+            easing: RX.Animated.Easing.InOut()
+        });
+        animation.start();
+
+        // Set a timer for half-way through the animation. This will
+        // stop the animation and start it again in the opposite direction.
+        _.delay(() => {
+            if (this._isMounted) {
+                animation.stop();
+                RX.Animated.timing(this._test4OffsetH, {
+                    toValue: -100,
+                    duration: _test4Duration / 2,
+                    easing: RX.Animated.Easing.InOut()
+                }).start(() => {
+                    if (this._isMounted) {
+                        this.setState({ isRunningTest4: false });
+                    }
+                    this._executeNextStage();
+                });
+            }
+        }, _test4Duration / 2);
     }
 
     execute(complete: (result: TestResult) => void): void {

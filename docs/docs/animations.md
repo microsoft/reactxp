@@ -89,3 +89,11 @@ let compositeAnimation = RX.Animated.parallel([
 
 compositeAnimation.start();
 ```
+
+## Web Limitations
+ReactXP animation APIs on the web are implemented using DOM style transitions, as opposed to using JavaScript code to drive the animation. This results in much better performance and (in most cases) glitch-free animations, but it imposes some limitations on the use of the animation APIs.
+* All active animated values associated with a particular element must share the same timing parameters (duration, easing function, delay, loop) and must be started at the same time.
+* Each animated value can be associated with only one animated attribute that is actively running.
+* Interpolated values are limited to only two values -- a begin and end value -- and must be specified in increasing order.
+* For interpolated values, the starting and ending values of an animation must correspond to the two interpolation keys.
+* If an animation is stopped, the value will not reflect the intermediate position in the case of transforms and interpolated values.

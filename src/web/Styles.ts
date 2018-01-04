@@ -286,14 +286,15 @@ export class Styles extends RX.Styles {
 
         if (def.transform) {
             let transformStrings: string[] = [];
-            let animatedTransforms: { type: string, value: Object }[] = [];
+            let animatedTransforms: { [key: string]: Object } = {};
+            let staticTransforms: { [key: string]: string } = {};
 
             _.each(def.transform, (t: { [key: string]: string }) => {
                 _.each(_.keys(t), key => {
-                    // Animated transforms use AnimatedValue objects rather
+                    // Animated transforms use Animated.Value objects rather
                     // than strings. We need to store these separately.
                     if (typeof t[key] === 'object') {
-                        animatedTransforms.push({ type: key, value: t[key] });
+                        animatedTransforms[key] = t[key];
                     } else {
                         let value: string = t[key].toString();
                         if (key.indexOf('rotate') === 0) {
@@ -303,6 +304,7 @@ export class Styles extends RX.Styles {
                         }
 
                         transformStrings.push(key + '(' + value + ')');
+                        staticTransforms[key] = value;
                     }
                 });
             });
@@ -313,8 +315,9 @@ export class Styles extends RX.Styles {
                 def['transform'] = transformStrings.join(' ');
             }
 
-            if (animatedTransforms.length > 0) {
-                def['animatedTransform'] = animatedTransforms;
+            if (_.keys(animatedTransforms).length > 0) {
+                def['animatedTransforms'] = animatedTransforms;
+                def['staticTransforms'] = staticTransforms;
             }
         }
 

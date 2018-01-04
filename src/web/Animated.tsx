@@ -23,7 +23,7 @@ import Types = require('../common/Types');
 
 // Animated Css Property Units - check /common/Types for the list of available
 // css animated properties
-var animatedPropUnits: { [key: string]: string } = {
+const animatedPropUnits: { [key: string]: string } = {
     // AnimatedFlexboxStyleRules
     height: 'px',
     width: 'px',
@@ -59,48 +59,34 @@ var animatedPropUnits: { [key: string]: string } = {
 // Every Animation subclass should extend this.
 export abstract class Animation {
     _id: number;
-    _triggerAnimation: boolean = false; // Flag that sets animation to start.
-    _toValue: number | string;
 
     // Starts the animation
     abstract start(onEnd?: Types.Animated.EndCallback): void;
+
     // Stops the animation
     abstract stop(): void;
-    // Animate method that kicks the animation
-    abstract forceAnimate(): void;
 }
 
-// Incrementor for the animated value
-// this incrementor is necessary for all the initialization
-var animatedValueUniqueId = 0;
+// Interface for a component that wants to know when the value
+// of an Animated.Value changes or is about to be animated.
+export interface ValueListener {
+    setValue(valueObject: Value, newValue: number | string): void;
+    startTransition(valueObject: Value, from: number|string, toValue: number|string, duration: number,
+        easing: string, delay: number, onEnd: Types.Animated.EndCallback): void;
+    stopTransition(valueObject: Value): number|string|undefined;
+}
 
 // The animated value object
 export class Value extends Types.AnimatedValue {
-    _value: number | string;
-    _listenerId: number;
-    _animationId: number;
-    _animations: { [key: number]: Animation|undefined };
-    _listeners: { [key: string]: Types.Animated.ValueListenerCallback };
-    _animatedValueUniqueId: number;
-    _cssProperties: { [key: string]: string } = {};
-    _element: HTMLElement|undefined;
-    _isInitialized: boolean = false;
-    _interpolationConfig: { [key: number]: (number | string) };
-
+    private _value: number|string;
+    private _listeners: ValueListener[];
+    private _interpolationConfig: { [key: number]: string|number };
+    
     // Initializes the object with the defaults and assigns the id for the animated value.
     constructor(value: number) {
         super(value);
         this._value = value;
-        this._animations = {};
-        this._listeners = {};
-        this._animationId = 0;
-        this._listenerId = 0;
-        this._animatedValueUniqueId = ++animatedValueUniqueId;
-    }
-
-    // Gets the unique id for this animated value
-    getId() {
-        return this._animatedValueUniqueId;
+        this._listeners = [];
     }
 
     // Gets the current animated value (this gets updates after animation concludes)
@@ -108,54 +94,35 @@ export class Value extends Types.AnimatedValue {
         return this._value;
     }
 
-    // Note: public access to interpolate will be going away. Use
-    // RX.Animated.interpolate instead.
+    isInterpolated(): boolean {
+        return !!this._interpolationConfig;
+    }
+
+    getInterpolatedValue(key: number): string|number {
+        return this._interpolationConfig[key];
+    }
+
     interpolate(config: Types.Animated.InterpolationConfigType) {
-        // TODO: This is a temporary implementation in order to keep parity with RN's API.
-        // In reallity we should support string values as well string tovalues in the animations.
-        // We need to work with the RN folks in order to understand what was the motivation for them
-        // To not go with that approach instead.
-        if (!config || !config.inputRange || !config.outputRange) {
-            throw 'The interpolation config is invalid. Make sure you set input and output ranges with the same indexes';
+        if (!config || !config.inputRange || !config.outputRange ||
+                config.inputRange.length < 2 || config.outputRange.length < 2 ||
+                config.inputRange.length !== config.outputRange.length) {
+            throw 'The interpolation config is invalid. Input and output arrays must be same length.';
         }
 
-        // TODO: VSO #773423: Support >2 input/output values.
-        if (config.inputRange.length !== 2 && config.outputRange.length !== 2) {
-            throw 'The interpolation input/output ranges need to be length 2 and map from (input(0) -> output(0))' +
-            'and to (input(1) -> input(1))';
-        }
-
-        var input0 = config.inputRange[0];
-        var input1 = config.inputRange[1];
-        if (input0 > input1) {
-            throw 'The interpolation input values should be in ascending order.';
+        // This API doesn't currently support more than two elements in the
+        // interpolation array. Supporting this in the web would require the
+        // use of JS-driven animations or keyframes, both of which are prohibitively
+        // expensive from a performance and responsiveness perspective.
+        if (config.inputRange.length !== 2) {
+            console.log('Web implementation of interpolate API currently supports only two interpolation values.');
         }
 
         this._interpolationConfig = {};
-        _.each(config.inputRange, (value, index) => {
-            this._interpolationConfig[value] = config.outputRange[index];
+        _.each(config.inputRange, (key, index) => {
+            this._interpolationConfig[key] = config.outputRange[index];
         });
 
         return this;
-    }
-
-    // Gets animation reference by id. An animated value may be referenced in multiple animations.
-    getAnimation(id: number): Animation|undefined {
-        // Return CSS key (transition/animation) string from animation object if available.
-        if (this._animations) {
-            return this._animations[id];
-        }
-
-        return undefined;
-    }
-
-    // Adds a new associated css property to this animated value.
-    addCssProperty(key: string, value: string): void {
-        if (key && value) {
-            this._cssProperties[key] = value;
-        } else {
-            throw 'Trying to add a css property which has invalid key/value. Key:' + key;
-        }
     }
 
     // Updates a value in this animated reference.
@@ -164,141 +131,6 @@ export class Value extends Types.AnimatedValue {
             throw 'An invalid value was passed into setvalue in the animated value api';
         }
 
-        this._updateValue(value);
-        this._updateElementStyles();
-    }
-
-    // True if the animated value was correctly initialized; false otherwise.
-    isInitialized(): boolean {
-        return this._isInitialized;
-    }
-
-    // Sets an HTML element for the animated value
-    setAsInitialized(element: HTMLElement): void {
-        if (!element) {
-            throw 'The element being set in the animated value is not valid.';
-        }
-
-        if (this._element === element) {
-            return;
-        }
-
-        // TODO: Support multiple elements in the future.
-        this._element = element;
-        this._isInitialized = true;
-        this._startPendingAnimations();
-    }
-
-    // Clears the HTML element reference and marks the value as uninitialized
-    destroy(): void {
-        this._isInitialized = false;
-        this._element = undefined;
-    }
-
-    // Add listener for when the value gets updated.
-    addListener(callback: Types.Animated.ValueListenerCallback): string {
-        if (callback) {
-            this._listenerId++;
-            this._listeners[String(this._listenerId)] = callback;
-        }
-
-        return String(this._listenerId);
-    }
-
-    // Remove a specific listner.
-    removeListener(id: string): void {
-        delete this._listeners[id];
-    }
-
-    // Remove all listeners.
-    removeAllListeners(): void {
-        this._listeners = {};
-    }
-
-    // Add an associated animation into this animated value.
-    addAnimation(animation: Animation): number {
-        if (!animation) {
-            throw 'It\'s not ok to add a null animation into animated value bah';
-        }
-
-        this._animationId++;
-        animation._id = this._animationId;
-        this._animations[this._animationId] = animation;
-        return this._animationId;
-    }
-
-    // Start a specific animation.
-    startAnimation(id: number, onEnd?: Types.Animated.EndCallback): void {
-        if (!id) {
-            throw 'An id is needed in order to start an animation in the animated value';
-        }
-
-        let animation = this._animations[id];
-        if (!animation) {
-            throw 'Animation not found so not possible to start it.';
-        }
-
-        animation.start(onEnd);
-    }
-
-    // Stop animation.
-    stopAnimation(id: number) {
-        if (!id) {
-            throw 'An id is needed in order to stop an animation in the animated value';
-        }
-
-        let animation = this._animations[id];
-        if (!animation) {
-            throw 'Animation not found so not possible to stop it.';
-        }
-
-        animation.stop();
-
-        // Make sure the reference for this animation is destroyed.
-        // This will avoid problems where timing animations are shared across multiple states.
-        this._animations[id] = undefined;
-    }
-
-     private _startPendingAnimations() {
-        // Start animations if they were waiting for the animated value to be initialized.
-        // This is accomplished via the animate flag within the animation (isReadyToAnimate).
-        _.each(this._animations, (animation: Animation) => {
-            if (animation && animation._triggerAnimation) {
-                animation.forceAnimate();
-            }
-        });
-     }
-
-     private _updateElementStyles(): void {
-       // Update the style of the element.
-       if (this._isInitialized) {
-           this.updateElementStylesOnto(this._element!!!.style);
-        }
-    }
-
-    updateElementStylesOnto(styles: Object) {
-        // Just update the style and make sure it renders the frame 1.
-        _.each(this._cssProperties, (value: string, key: string) => {
-            (styles as any)[key] = value.replace(new RegExp('##', 'g'), this.getCssValueString());
-        });
-    }
-
-    getCssValueString(): string {
-        if (this._interpolationConfig) {
-            const fromValue = this._interpolationConfig[this.getValue() as any];
-
-            if (fromValue === undefined) {
-                throw 'The interpolation config does not match the animated value or to value specified';
-            }
-
-            return fromValue.toString();
-        }
-
-        return this.getValue().toString();
-    }
-
-    // Update the value and kicks the callbacks.
-    private _updateValue(value: number | string): void {
         // If value the same, do nothing.
         if (value === this._value) {
             return;
@@ -306,201 +138,96 @@ export class Value extends Types.AnimatedValue {
         this._value = value;
 
         // Notify subscribers about the new value.
-        for (var key in this._listeners) {
-            if (typeof this._listeners[key] === 'function') {
-                this._listeners[key](this.getValue());
-            }
+        _.each(this._listeners, listener => listener.setValue(this, value));
+    }
+
+    // Add listener for when the value gets updated.
+    addListener(listenerToAdd: ValueListener): void {
+        if (this._listeners.indexOf(listenerToAdd) < 0) {
+            this._listeners.push(listenerToAdd);
         }
     }
-}
 
-// Parser for the transform css. Transform needs a special way to parse animated values.
-class AnimatedTransform {
-   static initialize(style: any): Value[] {
-       // Temporary cache for the animated values parsed so far.
-       let animatedValues: Value[] = [];
-
-       if (style['animatedTransform']) {
-            _.each(style['animatedTransform'], (transform: { type: string, value: Value }) => {
-                animatedValues.push(transform.value);
-
-                // We currently support only one animated transform type per style.
-                // The last one will "win".
-                transform.value.addCssProperty('transform', transform.type + '(##' + animatedPropUnits[transform.type] + ') ');
-            });
-       }
-
-       return animatedValues;
-    }
-}
-
-// Animating functions
-class TimingAnimation extends Animation {
-    _duration: number;
-    _delay: number;
-    _easing: Types.Animated.EasingFunction;
-    _onEnd: Types.Animated.EndCallback|undefined;
-    _timeout: any;
-    _animatedValue: Value;
-    _loop: boolean;
-    _initialized: boolean;
-
-    constructor(value: Value, config: Types.Animated.TimingAnimationConfig) {
-        super();
-
-        this._animatedValue = value;
-        this._toValue = config.toValue;
-        this._easing = config.easing || Easing.Default();
-        this._duration = config.duration !== undefined ? config.duration : 500;
-        this._delay = config.delay || 0;
-        this._loop = config.loop !== undefined;
-        this._initialized = false;
+    // Remove a specific listner.
+    removeListener(listenerToRemove: ValueListener): void {
+        this._listeners = _.filter(this._listeners, listener => listener !== listenerToRemove);
     }
 
-    private _stripUnits(value: string): string {
-        // We need to strip off 'deg' or 'px' units from the end
-        // of the interpolated values for compatibility with React Native.
-        let trimmedValue = value.trim();
-        const unitsToStrip = ['deg', 'px'];
-        _.each(unitsToStrip, units => {
-            if (_.endsWith(trimmedValue, units)) {
-                value = trimmedValue.substr(0, trimmedValue.length - units.length);
-                return false;
-            }
-            return undefined;
+    // Remove all listeners.
+    removeAllListeners(): void {
+        this._listeners = [];
+    }
+
+    // Start a specific animation.
+    startTransition(toValue: number|string, duration: number, easing: string, delay: number,
+            onEnd: Types.Animated.EndCallback): void {
+        _.each(this._listeners, listener => {
+            listener.startTransition(this, this.getValue(), toValue, duration, easing, delay, onEnd);
         });
-
-        return value;
     }
 
-    // Animate the animated value
-    forceAnimate(): void {
-        if (this._animatedValue.isInitialized()) {
-            let properties: ITransitionSpec[] = [];
-            let fromValue: string;
-            let toValue: string;
-
-            // TODO: Support animating multiple properties in the same animated value at the same time.
-            _.each(this._animatedValue._cssProperties, (value: string, property: string) => {
-                if (this._animatedValue._interpolationConfig) {
-                    fromValue = this._animatedValue._interpolationConfig[this._animatedValue.getValue() as any].toString();
-                    toValue = this._animatedValue._interpolationConfig[this._toValue.toString() as any].toString();
-
-                    if (!fromValue || !toValue) {
-                        throw 'The interpolation config does not match the animated value or to value specified';
-                    }
-
-                    fromValue = this._stripUnits(fromValue);
-                    toValue = this._stripUnits(toValue);
-                } else {
-                    fromValue = this._animatedValue.getValue().toString();
-                    toValue = this._toValue.toString();
-                }
-
-                let from = value.replace(new RegExp('##', 'g'), fromValue);
-                let to = value.replace(new RegExp('##', 'g'), toValue);
-
-                properties.push({
-                    property: _.kebabCase(property),
-                    duration: this._duration,
-                    timing: this._easing.cssName,
-                    delay: this._delay,
-                    from: from,
-                    to: to
-                });
-            });
-
-            this.resetAnimation();
-
-            executeTransition(this._animatedValue._element!!!, properties, () => {
-                if (this._triggerAnimation) {
-                    if (!this._loop) {
-                        this._animatedValue.setValue(this._toValue);
-                    }
-                    this._triggerAnimation = false;
-                    if (this._onEnd) {
-                        this._onEnd({ finished: !this._loop });
-                    }
-                }
-            });
-        }
+    // Stop animation.
+    stopTransition() {
+        _.each(this._listeners, listener => {
+            let updatedValue = listener.stopTransition(this);
+            if (updatedValue !== undefined) {
+                this.updateFinalValue(updatedValue);
+            }
+        });
     }
 
-    resetAnimation() {
-        if (this._animatedValue.isInitialized()) {
-            this._animatedValue._element!!!.style.transition = 'none';
-        }
-    }
-
-    // Flag the animation to start.
-    start(onEnd?: Types.Animated.EndCallback): void {
-        this._onEnd = onEnd;
-        this._triggerAnimation = true;
-        this.forceAnimate();
-    }
-
-    // Flag the animation to stop.
-    stop(): void {
-        this._triggerAnimation = false;
-        this._animatedValue.setValue(this._toValue);
-
-        this.resetAnimation();
-
-        if (this._onEnd) {
-            this._onEnd({ finished: false });
-        }
+    // After an animation is stopped or completed, updates
+    // the final value.
+    updateFinalValue(value: number|string) {
+        this._value = value;
     }
 }
 
-export var timing: Types.Animated.TimingFunction = function(
-    value: Value,
-    config: Types.Animated.TimingAnimationConfig)
-    : Types.Animated.CompositeAnimation {
+export let timing: Types.Animated.TimingFunction = function(
+    value: Value, config: Types.Animated.TimingAnimationConfig): Types.Animated.CompositeAnimation {
 
     if (!value  || !config) {
         throw 'Timing animation requires value and config';
     }
 
-    // Set the animation on the value as soon as the timing animation is created
-    // And trigger start and stop through animations
-    let id = (value as Value).addAnimation(new TimingAnimation(value as Value, config));
-    let isLooping = config.loop !== undefined && config.loop != null;
-
+    let stopLooping = false;
     return {
-        start: function(callback?: Types.Animated.EndCallback): void {
-            function animate() : void {
-                if (isLooping) {
-                    (value as Value).setValue(config.loop!!!.restartFrom);
+        start: function(onEnd?: Types.Animated.EndCallback): void {
+            let animate = () => {
+                if (config.loop) {
+                    value.setValue(config.loop.restartFrom);
                 }
 
-                (value as Value).startAnimation(id, (r) => {
-                    if (callback) {
-                        callback(r);
+                let easing: Types.Animated.EasingFunction = config.easing || Easing.Default();
+                let duration = config.duration !== undefined ? config.duration : 500;
+                let delay = config.delay || 0;
+                value.startTransition(config.toValue, duration, easing.cssName, delay, result => {
+                    if (onEnd) {
+                        onEnd(result);
                     }
 
-                    if (!isLooping) {
-                        return;
+                    // Restart the loop?
+                    if (config.loop && !stopLooping) {
+                        animate();
+                    } else {
+                        value.updateFinalValue(config.toValue);
                     }
-
-                    // Hack to get into the loop
-                    animate();
                 });
-            }
+            };
 
-            // Trigger animation loop (hack for now)
+            // Trigger animation loop
             animate();
         },
 
         stop: function(): void {
-            isLooping = false;
-            (value as Value).stopAnimation(id);
-        },
+            stopLooping = true;
+            value.stopTransition();
+        }
     };
 };
 
-export var sequence: Types.Animated.SequenceFunction = function (
-    animations: Array<Types.Animated.CompositeAnimation>
-): Types.Animated.CompositeAnimation {
+export let sequence: Types.Animated.SequenceFunction = function (
+    animations: Array<Types.Animated.CompositeAnimation>): Types.Animated.CompositeAnimation {
 
     if (!animations) {
         throw 'Sequence animation requires a list of animations';
@@ -509,9 +236,9 @@ export var sequence: Types.Animated.SequenceFunction = function (
     let hasBeenStopped = false;
     let doneCount = 0;
     let result = {
-        start: function (callback?: Types.Animated.EndCallback) {
+        start: function (onEnd?: Types.Animated.EndCallback) {
             if (!animations || animations.length === 0) {
-                throw 'No animations were passed to the animated sequence api';
+                throw 'No animations were passed to the animated sequence API';
             }
 
             var executeNext = () => {
@@ -521,8 +248,8 @@ export var sequence: Types.Animated.SequenceFunction = function (
                 if (hasBeenStopped || isFinished) {
                     doneCount = 0;
                     hasBeenStopped = false;
-                    if (callback) {
-                        callback({ finished: isFinished });
+                    if (onEnd) {
+                        onEnd({ finished: isFinished });
                     }
 
                     return;
@@ -547,8 +274,7 @@ export var sequence: Types.Animated.SequenceFunction = function (
 };
 
 export var parallel: Types.Animated.ParallelFunction = function (
-    animations: Array<Types.Animated.CompositeAnimation>
-): Types.Animated.CompositeAnimation {
+    animations: Array<Types.Animated.CompositeAnimation>): Types.Animated.CompositeAnimation {
 
     if (!animations) {
         throw 'Parallel animation requires a list of animations';
@@ -559,9 +285,9 @@ export var parallel: Types.Animated.ParallelFunction = function (
     let doneCount = 0;
 
     var result = {
-        start: function (callback?: Types.Animated.EndCallback) {
+        start: function (onEnd?: Types.Animated.EndCallback) {
             if (!animations || animations.length === 0) {
-                throw 'No animations were passed to the animated parallel api';
+                throw 'No animations were passed to the animated parallel API';
             }
 
             // Walk through animations and start all as soon as possible.
@@ -572,8 +298,8 @@ export var parallel: Types.Animated.ParallelFunction = function (
                     if (hasBeenStopped || isFinished) {
                         doneCount = 0;
                         hasBeenStopped = false;
-                        if (callback) {
-                            callback({ finished: isFinished });
+                        if (onEnd) {
+                            onEnd({ finished: isFinished });
                         }
 
                         return;
@@ -594,107 +320,369 @@ export var parallel: Types.Animated.ParallelFunction = function (
     return result;
 };
 
+interface ExtendedTransition extends ITransitionSpec {
+    onEnd?: RX.Types.Animated.EndCallback;
+    toValue?: number|string;
+}
+
+interface AnimatedAttribute {
+    valueObject: Value;
+    activeTransition?: ExtendedTransition;
+}
+
+type AnimatedValueMap = { [transform: string]: AnimatedAttribute };
+
 // Function for creating wrapper AnimatedComponent around passed in component
 function createAnimatedComponent<PropsType extends Types.CommonProps>(Component: any): any {
     var refName = 'animatedNode';
 
-    class AnimatedComponentGenerated extends React.Component<PropsType, void> implements RX.AnimatedComponent<PropsType, void> {
-        private _initialStyle: Object|undefined;
-        private _propsWithoutStyle: Object;
-        private _animatedValues: Value[];
+    class AnimatedComponentGenerated extends React.Component<PropsType, void>
+            implements RX.AnimatedComponent<PropsType, void>, ValueListener {
+                
+        private _propsWithoutStyle: any;
+        private _processedStyle: { [attribute: string]: string};
+
+        private _animatedAttributes: AnimatedValueMap;
+        private _staticTransforms: { [transform: string]: string };
+        private _animatedTransforms: AnimatedValueMap;
 
         constructor(props: PropsType) {
             super(props);
 
+            this._animatedAttributes = {};
+            this._animatedTransforms = {};
             this._updateStyles(props);
         }
 
         setNativeProps(props: PropsType) {
-            throw 'Called setNativeProps on web AnimatedComponent';
+            console.error('setNativeProps not supported on web');
         }
 
         componentWillReceiveProps(props: Types.CommonStyledProps<Types.StyleRuleSet<Object>>) {
             this._updateStyles(props);
         }
 
-        private _updateStyles(props: Types.CommonStyledProps<Types.StyleRuleSet<Object>>) {
-            this._propsWithoutStyle = _.omit(props, 'style');
-
-            if (!props.style) {
-                this._initialStyle = undefined;
-                this._animatedValues = [];
+        setValue(valueObject: Value, newValue: number | string): void {
+            let attrib = this._findAnimatedAttributeByValue(this._animatedAttributes, valueObject);
+            if (attrib) {
+                let cssValue = this._generateCssAttributeValue(attrib, valueObject, valueObject.getValue());
+                (this._getDomNode().style as any)[attrib] = cssValue;
                 return;
             }
 
-            // If a style is present, make sure we initialize all animations associated with
-            // animated values on it.
-            // The way this works is:
-            // - Animated value can be associated with multiple animated styles.
-            // - When the component is being created we will walk through all the styles
-            //   and initialize all the animations within the animated value (the animation
-            //   gets registered when the animation function (e.g. timing) gets called, where the
-            //   the reference to the animation is kept within the animated value.
-            // - We will initialize the animated value with the list of css properties and html element
-            //   where the style transition/animation. Should be applied and the css properties
-            //   associated with it: key and from/to values.
-            // - Then we will kick off the animation as soon as it's initialized or flag it to
-            //   start anytime later.
-
-            // Attempt to get static initial styles for the first build.  After the build,
-            // initializeComponent will take over and apply styles dynamically.
-            let styles = Styles.combine(props.style) as any;
-
-            // Initialize the tricky properties here (e.g. transform).
-            this._animatedValues = AnimatedTransform.initialize(styles);
-
-            // Initialize the simple ones here (e.g. opacity);
-            for (var key in styles) {
-                if (styles[key] instanceof Value) {
-                    styles[key].addCssProperty(key, '##' + animatedPropUnits[key]);
-                    this._animatedValues.push(styles[key]);
-                }
+            let transform = this._findAnimatedAttributeByValue(this._animatedTransforms, valueObject);
+            if (transform) {
+                this._getDomNode().style.transform = this._generateCssTransformList(true);
             }
-
-            this._initialStyle = {};
-
-            // Build the simple static styles
-            for (var styleKey in styles) {
-                if (_.isObject(styles[styleKey])) {
-                    continue;
-                } else if (styles.hasOwnProperty(styleKey)) {
-                    (this._initialStyle as any)[styleKey] = styles[styleKey];
-                }
-            }
-
-            // Add the complicated styles
-            _.each(this._animatedValues, value => {
-                value.updateElementStylesOnto(this._initialStyle!!!);
-            });
         }
 
-        initializeComponent(props: Types.CommonProps) {
-            // Conclude the initialization setting the element.
-            const element = ReactDOM.findDOMNode(this.refs[refName]) as HTMLElement;
-            if (element) {
-                this._animatedValues.forEach(Value => {
-                    Value.setAsInitialized(element);
+        startTransition(valueObject: Value, fromValue: number|string, toValue: number|string, duration: number,
+                easing: string, delay: number, onEnd: Types.Animated.EndCallback): void {
+
+            let updateTransition = false; 
+
+            let attrib = this._findAnimatedAttributeByValue(this._animatedAttributes, valueObject);
+            if (attrib) {
+                if (this._animatedAttributes[attrib].activeTransition) {
+                    console.error('Animation started while animation was already pending');
+                }
+                this._animatedAttributes[attrib].activeTransition = {
+                    property: attrib,
+                    from: this._generateCssAttributeValue(attrib, this._animatedAttributes[attrib].valueObject, fromValue),
+                    to: this._generateCssAttributeValue(attrib, this._animatedAttributes[attrib].valueObject, toValue),
+                    duration,
+                    timing: easing,
+                    delay,
+                    toValue,
+                    onEnd
+                };
+                updateTransition = true;
+            }
+
+            let transform = this._findAnimatedAttributeByValue(this._animatedTransforms, valueObject);
+            if (transform) {
+                if (this._animatedTransforms[transform].activeTransition) {
+                    console.error('Animation started while animation was already pending');
+                }
+                this._animatedTransforms[transform].activeTransition = {
+                    property: transform,
+                    from: fromValue,
+                    to: toValue,
+                    duration,
+                    timing: easing,
+                    delay,
+                    toValue,
+                    onEnd
+                };
+                updateTransition = true;
+            }
+
+            if (updateTransition) {
+                this._updateTransition();
+            }
+        }
+
+        // Stops a pending transition, returning the value at the current time.
+        stopTransition(valueObject: Value): number|string|undefined {
+            let partialValue: number|string|undefined;
+            let stoppedTransition: ExtendedTransition|undefined;
+            let updateTransition = false;
+
+            let attrib = this._findAnimatedAttributeByValue(this._animatedAttributes, valueObject);
+            if (attrib) {
+                let activeTransition = this._animatedAttributes[attrib].activeTransition;
+                if (activeTransition) {
+                    partialValue = activeTransition.toValue;
+
+                    // We don't currently support updating to an intermediate
+                    // value for interpolated values because this would involve
+                    // mapping the interpolated value in reverse. Instead, we'll
+                    // simply update it to the "toValue".
+                    if (!valueObject.isInterpolated()) {
+                        let computedStyle = window.getComputedStyle(this._getDomNode(), undefined);
+                        if (computedStyle && (computedStyle as any)[attrib]) {
+                            partialValue = (computedStyle as any)[attrib];
+                        }
+                    }
+
+                    stoppedTransition = this._animatedAttributes[attrib].activeTransition;
+                    delete this._animatedAttributes[attrib].activeTransition;
+                    updateTransition = true;
+                }
+            } else {
+                let transform = this._findAnimatedAttributeByValue(this._animatedTransforms, valueObject);
+                if (transform) {
+                    let activeTransition = this._animatedTransforms[transform].activeTransition;
+                    if (activeTransition) {
+                        // We don't currently support updating to an intermediate value
+                        // for interpolated transform values. This is because getComputedStyle
+                        // returns a transform matrix for 'transform'. To implement this, we'd
+                        // need to convert the matrix back to a rotation, scale, etc.
+                        partialValue = activeTransition.toValue;
+
+                        stoppedTransition = this._animatedTransforms[transform].activeTransition;
+                        delete this._animatedTransforms[transform].activeTransition;
+                        updateTransition = true;
+                    }
+                }
+            }
+
+            if (stoppedTransition && stoppedTransition.onEnd) {
+                stoppedTransition.onEnd({ finished: false });
+            }
+
+            if (updateTransition) {
+                this._updateTransition();
+            }
+
+            return partialValue;
+        }
+
+        private _getDomNode(): HTMLElement {
+            return ReactDOM.findDOMNode(this.refs[refName]) as HTMLElement;
+        }
+
+        // Looks for the specified value object in the specified map. Returns
+        // the key for the map (i.e. the attribute name) if found.
+        private _findAnimatedAttributeByValue(map: AnimatedValueMap, valueObj: Value): string|undefined {
+            let keys = _.keys(map);
+            let index = _.findIndex(keys, key => map[key].valueObject === valueObj);
+            return index >= 0 ? keys[index] : undefined;
+        }
+
+        // Updates the "transform" CSS attribute for the element to reflect all
+        // active transitions.
+        private _updateTransition() {
+            let activeTransitions: ITransitionSpec[] = [];
+            _.each(this._animatedAttributes, attrib => {
+                if (attrib.activeTransition) {
+                    activeTransitions.push(attrib.activeTransition);
+                }
+            });
+
+            // If there are any transform transitions, we need to combine
+            // these into a single transition. That means we can't specify
+            // different durations, delays or easing functions for each. That's
+            // an unfortunate limitation of CSS.
+            let keys = _.keys(this._animatedTransforms);
+            let index = _.findIndex(keys, key => !!this._animatedTransforms[key].activeTransition);
+            if (index >= 0) {
+                let transformTransition = this._animatedTransforms[keys[index]].activeTransition!;
+                activeTransitions.push({
+                    property: 'transform',
+                    from: this._generateCssTransformList(false),
+                    to: this._generateCssTransformList(true),
+                    duration: transformTransition.duration,
+                    timing: transformTransition.timing,
+                    delay: transformTransition.delay
+                });
+            }
+
+            if (activeTransitions.length > 0) {
+                executeTransition(this._getDomNode(), activeTransitions, () => {
+                    // Clear all of the active transitions and invoke the onEnd callbacks.
+                    let completeTransitions: ExtendedTransition[] = [];
+
+                    _.each(this._animatedAttributes, attrib => {
+                        if (attrib.activeTransition) {
+                            completeTransitions.push(attrib.activeTransition);
+                            delete attrib.activeTransition;
+                        }
+                    });
+
+                    _.each(this._animatedTransforms, transform => {
+                        if (transform.activeTransition) {
+                            completeTransitions.push(transform.activeTransition);
+                            delete transform.activeTransition;
+                        }
+                    });
+
+                    _.each(completeTransitions, transition => {
+                        if (transition.onEnd) {
+                            transition.onEnd({ finished: true });
+                        }
+                    });
                 });
             }
         }
 
-        componentDidMount() {
-            this.initializeComponent(this.props);
+        // Generates the CSS value for the specified attribute given
+        // an animated value object.
+        private _generateCssAttributeValue(attrib: string, valueObj: Value, newValue: number|string): string {
+            if (valueObj.isInterpolated()) {
+                newValue = valueObj.getInterpolatedValue(newValue as number);
+            }
+
+            // If the value is a raw number, append the default units.
+            // If it's a string, we assume the caller has specified the units.
+            if (typeof newValue === 'number') {
+                newValue = newValue + animatedPropUnits[attrib];
+            }
+            return newValue;
         }
 
-        componentDidUpdate() {
-            this.initializeComponent(this.props);
+        private _generateCssTransformValue(transform: string, valueObj: Value, newValue: number|string): string {
+            if (valueObj.isInterpolated()) {
+                newValue = valueObj.getInterpolatedValue(newValue as number);
+            }
+
+            // If the value is a raw number, append the default units.
+            // If it's a string, we assume the caller has specified the units.
+            if (typeof newValue === 'number') {
+                newValue = newValue + animatedPropUnits[transform];
+            }
+            return newValue;
+        }
+
+        // Regenerates the list of transforms, combining all static and animated transforms.
+        private _generateCssTransformList(useActiveValues: boolean): string {
+            let transformList: string[] = [];
+            _.each(this._staticTransforms, (value, transform) => {
+                transformList.push(transform + '(' + value + ')');
+            });
+            _.each(this._animatedTransforms, (value, transform) => {
+                let newValue = useActiveValues && value.activeTransition ? value.activeTransition.to : value.valueObject.getValue();
+                transformList.push(transform + '(' + this._generateCssTransformValue(transform, value.valueObject, newValue) + ')');
+            });
+            return transformList.join(' ');
+        }
+
+        private _updateStyles(props: Types.CommonStyledProps<Types.StyleRuleSet<Object>>) {
+            this._propsWithoutStyle = _.omit(props, 'style');
+
+            let rawStyles = Styles.combine(props.style || {}) as any;
+            this._processedStyle = {};
+
+            let newAnimatedAttributes: { [transform: string]: Value } = {};
+
+            for (let attrib in rawStyles) {
+                // Handle transforms separately.
+                if (attrib === 'staticTransforms' || attrib === 'animatedTransforms') {
+                    continue;
+                }
+
+                // Is this a dynamic (animated) value?
+                if (rawStyles[attrib] instanceof Value) {
+                    let valueObj = rawStyles[attrib];
+                    this._processedStyle[attrib] = this._generateCssAttributeValue(attrib, valueObj, valueObj.getValue());
+                    newAnimatedAttributes[attrib] = valueObj;
+                } else {
+                    // Copy the static style value.
+                    this._processedStyle[attrib] = rawStyles[attrib];
+                }
+            }
+
+            // Handle transforms, which require special processing because they need to
+            // be combined into a single 'transform' CSS attribute.
+            this._staticTransforms = rawStyles['staticTransforms'] || {};
+            let newAnimatedTransforms: { [transform: string]: Value } = rawStyles['animatedTransforms'] || {};
+
+            // Update this._animatedAttributes and this._animatedTransforms so they match
+            // the updated style.
+
+            // Remove any previous animated attributes that are no longer present 
+            // or associated with different value objects.
+            _.each(this._animatedAttributes, (value, attrib) => {
+                if (!newAnimatedAttributes[attrib] || newAnimatedAttributes[attrib] !== value.valueObject) {
+                    if (value.activeTransition) {
+                        console.error('Animated style attribute removed while the animation was active');
+                    }
+                    delete this._animatedAttributes[attrib];
+                }
+            });
+
+            // Add new animated attributes.
+            _.each(newAnimatedAttributes, (value, attrib) => {
+                if (!this._animatedAttributes[attrib]) {
+                    this._animatedAttributes[attrib] = { valueObject: value };
+                }
+            });
+
+            // Remove any previous animated transforms that are no longer present
+            // or associated with different value objects.
+            _.each(this._animatedTransforms, (value, transform) => {
+                if (!newAnimatedTransforms[transform] || newAnimatedTransforms[transform] !== value.valueObject) {
+                    if (value.activeTransition) {
+                        console.warn('Should not remove an animated transform attribute while the animation is active');
+                    }
+                    delete this._animatedTransforms[transform];
+                }
+            });
+
+            // Add new animated transforms.
+            _.each(newAnimatedTransforms, (value, transform) => {
+                if (!this._animatedTransforms[transform]) {
+                    this._animatedTransforms[transform] = { valueObject: value };
+                }
+            });
+        
+            // Update the transform attribute in this._processedStyle.
+            let transformList = this._generateCssTransformList(true);
+            if (transformList) {
+                this._processedStyle['transform'] = transformList;
+            }
+        }
+
+        componentDidMount() {
+            _.each(this._animatedAttributes, value => {
+                value.valueObject.addListener(this);
+            });
+
+            _.each(this._animatedTransforms, value => {
+                value.valueObject.addListener(this);
+            });
         }
 
         componentWillUnmount() {
-            _.each(this._animatedValues, value => {
-                value.destroy();
+            _.each(this._animatedAttributes, value => {
+                value.valueObject.removeListener(this);
             });
-            this._animatedValues = [];
+            this._animatedAttributes = {};
+
+            _.each(this._animatedTransforms, value => {
+                value.valueObject.removeListener(this);
+            });
+            this._animatedTransforms = {};
         }
 
         focus() {
@@ -728,7 +716,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         render() {
             return (
                 <Component
-                    style={ this._initialStyle }
+                    style={ this._processedStyle }
                     { ...this._propsWithoutStyle }
                     ref={ refName }
                 >
@@ -754,8 +742,6 @@ export type Text = RX.AnimatedText;
 export type TextInput = RX.AnimatedTextInput;
 export type View = RX.AnimatedView;
 
-// NOTE: Direct access to "Value" will be going away in the near future.
-// Please move to createValue and interpolate instead.
 export var createValue: (initialValue: number) => Value = function(initialValue: number) {
     return new Value(initialValue);
 };

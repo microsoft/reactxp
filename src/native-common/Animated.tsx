@@ -156,7 +156,7 @@ var timing = function(
 
     let isLooping = config.loop !== undefined && config.loop != null;
     return {
-        start: function(callback?: Types.Animated.EndCallback): void {
+        start: function(onEnd?: Types.Animated.EndCallback): void {
             function animate() : void {
                 const timingConfig: RN.Animated.TimingAnimationConfig = {
                     toValue: config.toValue,
@@ -167,9 +167,9 @@ var timing = function(
                     useNativeDriver: config.useNativeDriver
                 };
 
-                RN.Animated.timing(value, timingConfig).start((r) => {
-                    if (callback) {
-                        callback(r);
+                RN.Animated.timing(value as RN.Animated.Value, timingConfig).start(result => {
+                    if (onEnd) {
+                        onEnd(result);
                     }
 
                     if (isLooping) {
