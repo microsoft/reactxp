@@ -2,7 +2,7 @@
 This module provides cross-platform navigation support [ReactXP](https://microsoft.github.io/reactxp/) library.
 
 ## Documentation
-For detailed documentation, look [here](https://microsoft.github.io/reactxp/docs/extensions/navigation.html).
+For detailed documentation, look [here](https://microsoft.github.io/reactxp/docs/extensions/navigator.html).
 
 ### Prerequisites
 * [ReactXP](https://github.com/microsoft/reactxp/)
