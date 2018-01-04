@@ -140,7 +140,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
 
             // Something else wants to become responder. Should this view release the responder?
             // Returning true allows release
-            onPanResponderTerminationRequest: (e, gestureState) => this.props.releaseOnRequest || true
+            onPanResponderTerminationRequest: (e, gestureState) => this.props.releaseOnRequest
         });
     }
 
@@ -479,11 +479,26 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
             timeStamp: e.timeStamp
         };
 
-        let callback = gestureType === GestureType.Pan ? this.props.onPan!!! :
-            (gestureType === GestureType.PanVertical ? this.props.onPanVertical!!! :
-                this.props.onPanHorizontal!!!);
+        switch (gestureType) {
+            case GestureType.Pan:
+                if (this.props.onPan) {
+                    this.props.onPan(panEvent);
+                }
+                break;
+            case GestureType.PanVertical:
+                if (this.props.onPanVertical) {
+                    this.props.onPanVertical(panEvent);
+                }
+                break;
+            case GestureType.PanHorizontal:
+                if (this.props.onPanHorizontal) {
+                    this.props.onPanHorizontal(panEvent);
+                }
+                break;
 
-        callback(panEvent);
+            default:
+                // do nothing;
+        }
 
         return panEvent;
     }
