@@ -100,6 +100,9 @@ dismissAll(): void;
 // Displays a popup. Returns true if successful, false if the popup is
 // already displayed
 show(options: PopupOptions, popupId: string, showDelay: number = 0): boolean;
+
+// Indicates whether the specified popup is displayed. If no id provided indicates if some popup is displayed.
+isDisplayed(popupId?: string): boolean;
 ```
 
 ## Sample Usage

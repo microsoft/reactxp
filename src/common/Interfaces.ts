@@ -110,6 +110,7 @@ export abstract class Popup {
     abstract autoDismiss(popupId: string, delay?: number): void;
     abstract dismiss(popupId: string): void;
     abstract dismissAll(): void;
+    abstract isDisplayed(popupId?: string): boolean;
 }
 
 export abstract class Linking {

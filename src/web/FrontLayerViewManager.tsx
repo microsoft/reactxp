@@ -166,6 +166,14 @@ export class FrontLayerViewManager {
 
         ReactDOM.render(rootView, container);
     }
+
+    isPopupDisplayed(popupId?: string): boolean {
+        if (popupId) {
+            return popupId === this._activePopupId;
+        } else {
+            return !!this._activePopupId;
+        }
+    }
 }
 
 export default new FrontLayerViewManager();

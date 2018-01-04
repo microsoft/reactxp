@@ -6,7 +6,7 @@ import _ = require('lodash');
 import RX = require('reactxp');
 
 import * as CommonStyles from '../CommonStyles';
-import { Test, TestResult, TestType } from '../Test'
+import { Test, TestResult, TestType } from '../Test';
 
 const _indicatorWidth = 8;
 const _popupMargin = 8;
@@ -23,6 +23,10 @@ const _styles = {
     explainText: RX.Styles.createTextStyle({
         fontSize: CommonStyles.generalFontSize,
         color: CommonStyles.explainTextColor
+    }),
+    anyDisplayedText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.generalFontSize,
+        marginTop: 20,
     }),
     popupText: RX.Styles.createTextStyle({
         fontSize: CommonStyles.generalFontSize,
@@ -47,7 +51,7 @@ const _styles = {
         position: 'absolute',
         borderRadius: 15,
         height: 30,
-        width: 30,
+        width: 160,
         backgroundColor: '#eee',
         alignItems: 'center',
         justifyContent: 'center'
@@ -157,6 +161,9 @@ class PopupView extends RX.Component<RX.CommonProps, RX.Stateless> {
                         { 'Resize the window or rotate the device when a popup is displayed ' +
                           'to confirm that it follows the location of the anchor.' }
                     </RX.Text>
+                    <RX.Text style={ _styles.anyDisplayedText }>
+                        { `Any Popup displayed = ${RX.Popup.isDisplayed()}`}
+                    </RX.Text>
                 </RX.View>
                 <RX.Button
                     style={ [_styles.popupAnchor, _styles.popupAnchor1] }
@@ -164,7 +171,7 @@ class PopupView extends RX.Component<RX.CommonProps, RX.Stateless> {
                     onPress={ this._showPopup1 }
                 >
                     <RX.Text style={ _styles.anchorText }>
-                        { '1' }
+                        { `1: isDisplayed = ${RX.Popup.isDisplayed(popup1Id)}` }
                     </RX.Text>
                 </RX.Button>
                 <RX.Button
@@ -173,7 +180,7 @@ class PopupView extends RX.Component<RX.CommonProps, RX.Stateless> {
                     onPress={ this._showPopup2 }
                 >
                     <RX.Text style={ _styles.anchorText }>
-                        { '2' }
+                        { `2: isDisplayed = ${RX.Popup.isDisplayed(popup2Id)}` }
                     </RX.Text>
                 </RX.Button>
                 <RX.Button
@@ -182,7 +189,7 @@ class PopupView extends RX.Component<RX.CommonProps, RX.Stateless> {
                     onPress={ this._showPopup3 }
                 >
                     <RX.Text style={ _styles.anchorText }>
-                        { '3' }
+                        { `3: isDisplayed = ${RX.Popup.isDisplayed(popup3Id)}` }
                     </RX.Text>
                 </RX.Button>
             </RX.View>
@@ -229,7 +236,7 @@ class PopupView extends RX.Component<RX.CommonProps, RX.Stateless> {
                         anchorPosition={ anchorPosition }
                         popupWidth={ popupWidth }
                         popupHeight={ popupHeight }
-                        onPress={ () => { RX.Popup.dismiss(popup2Id) } }
+                        onPress={ () => { RX.Popup.dismiss(popup2Id); } }
                     />
                 );
             }
