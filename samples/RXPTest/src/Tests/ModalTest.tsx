@@ -105,12 +105,18 @@ class ModalView extends RX.Component<RX.CommonProps, RX.Stateless> {
                 if (!RX.Modal.isDisplayed(modal2Id)) {
                     result.errors.push('Expected RX.Modal.isDisplayed to return true for modal 2');
                 }
+                if (!RX.Modal.isDisplayed()) {
+                    result.errors.push('Expected RX.Modal.isDisplayed to return true for undefined');
+                }
 
                 // Dismiss all modals.
                 RX.Modal.dismissAll();
 
                 if (RX.Modal.isDisplayed(modal2Id)) {
                     result.errors.push('Expected RX.Modal.isDisplayed to return false for modal 2');
+                }
+                if (RX.Modal.isDisplayed()) {
+                    result.errors.push('Expected RX.Modal.isDisplayed to return false for undefined');
                 }
 
                 _.delay(() => {
