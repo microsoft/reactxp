@@ -10,6 +10,8 @@
 import React = require('react');
 import PropTypes = require('prop-types');
 
+import AppConfig from '../../common/AppConfig';
+
 let _lastComponentId: number = 0;
 
 export interface StoredFocusableComponent {
@@ -53,7 +55,9 @@ export abstract class FocusManager {
         if (parent) {
             this._parent = parent;
         } else if (FocusManager._rootFocusManager) {
-            console.error('FocusManager: root is already set');
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('FocusManager: root is already set');
+            }
         } else {
             FocusManager._rootFocusManager = this;
         }
@@ -373,7 +377,9 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
             if (focusManager) {
                 action.call(this, focusManager, arguments);
             } else {
-                console.error('FocusableComponentMixin: context error!');
+                if (AppConfig.isDevelopmentMode()) {
+                    console.error('FocusableComponentMixin: context error!');
+                }
             }
 
             if (origCallback) {

@@ -13,6 +13,7 @@ import { FocusManager as FocusManagerBase,
     applyFocusableComponentMixin as applyFocusableComponentMixinBase,
     StoredFocusableComponent } from '../../common/utils/FocusManager';
 
+import AppConfig from '../../common/AppConfig';
 import Platform from '../../native-common/Platform';
 import UserInterface from '../UserInterface';
 
@@ -160,7 +161,9 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
         if (this._onFocusSink) {
             this._onFocusSink();
         } else {
-            console.error('FocusableComponentMixin: focus sink error!');
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('FocusableComponentMixin: focus sink error!');
+            }
         }
 
         origCallback.call(this);
@@ -187,7 +190,9 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
         if (this.updateNativeTabIndex) {
             this.updateNativeTabIndex();
         } else {
-            console.error('FocusableComponentMixin: updateNativeTabIndex error!');
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('FocusableComponentMixin: updateNativeTabIndex error!');
+            }
         }
     };
 
@@ -200,7 +205,9 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
         if (this.updateNativeTabIndex) {
             this.updateNativeTabIndex();
         } else {
-            console.error('FocusableComponentMixin: updateNativeTabIndex error!');
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('FocusableComponentMixin: updateNativeTabIndex error!');
+            }
         }
     };
 
@@ -235,7 +242,9 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
                 return action.call(this, origCallback, arguments);
             };
         } else {
-            console.error('FocusableComponentMixin: ' + methodName + ' error!');
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('FocusableComponentMixin: ' + methodName + ' error!');
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ import RNW = require('react-native-windows');
 import Types = require('../common/Types');
 import PropTypes = require('prop-types');
 
+import AppConfig from '../common/AppConfig';
 import { View as ViewCommon } from '../native-common/View';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent, FocusManager } from '../native-desktop/utils/FocusManager';
@@ -74,12 +75,14 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
     componentWillReceiveProps(nextProps: Types.ViewProps) {
         super.componentWillReceiveProps(nextProps);
-
-        if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
-            console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
-        }
-        if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
-            console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
+        
+        if (AppConfig.isDevelopmentMode()) {
+            if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
+                console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
+            }
+            if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
+                console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
+            }
         }
     }
 
