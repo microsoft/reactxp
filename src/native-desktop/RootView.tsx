@@ -6,12 +6,13 @@
 *
 * The top-most view that's used for proper layering or modals and popups.
 */
+
 import React = require('react');
 import RN = require('react-native');
 import PropTypes = require('prop-types');
 
-import {RootView as RootViewBase, RootViewUsingProps as RootViewUsingPropsBase,
-        BaseRootViewProps, RootViewPropsWithMainViewType, RootViewState, BaseRootView} from '../native-common/RootView';
+import { RootView as RootViewBase, RootViewUsingProps as RootViewUsingPropsBase,
+    BaseRootViewProps, RootViewPropsWithMainViewType, RootViewState, BaseRootView } from '../native-common/RootView';
 import Input from './Input';
 import UserInterface from './UserInterface';
 import EventHelpers from '../native-common/utils/EventHelpers';
@@ -25,8 +26,8 @@ const KEY_CODE_ESC = 27;
 
 const styles = RN.StyleSheet.create({
     appWrapper: {
-      flex: 1,
-    },
+      flex: 1
+    }
   });
 
 //
@@ -61,7 +62,6 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
         }
 
         _onKeyDownCapture = (e: SyntheticEvent) => {
-
             let kbdEvent = EventHelpers.toKeyboardEvent(e);
             if (kbdEvent.keyCode === KEY_CODE_TAB) {
                 this._updateKeyboardNavigationState(true);
@@ -140,10 +140,10 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
 
             return (
                 <RN.View 
-                    {...internalProps}
-                    style={styles.appWrapper}
+                    { ...internalProps }
+                    style={ styles.appWrapper }
                 >
-                    {content}
+                    { content }
                 </RN.View>
             );
         }
@@ -159,7 +159,7 @@ export {
     RootViewState,
     BaseRootView,
     RootViewUsingStore as RootView,
-    RootViewUsingProps,
+    RootViewUsingProps
 };
 
 export default RootViewUsingStore;

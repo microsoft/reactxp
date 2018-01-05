@@ -8,7 +8,7 @@
 * UI (layout measurements, etc.) - desktop version.
 */
 
-import {UserInterface as UserInterfaceCommon} from '../native-common/UserInterface';
+import { UserInterface as UserInterfaceCommon } from '../native-common/UserInterface';
 
 export class UserInterface extends UserInterfaceCommon {
     private _isNavigatingWithKeyboard: boolean = false;

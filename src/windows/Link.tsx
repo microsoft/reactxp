@@ -10,11 +10,11 @@
 import React = require('react');
 import RN = require('react-native');
 import RNW = require('react-native-windows');
-import {applyFocusableComponentMixin, FocusManagerFocusableComponent} from '../native-desktop/utils/FocusManager';
+import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 import PropTypes = require('prop-types');
 
 import EventHelpers from '../native-common/utils/EventHelpers';
-import {Link as LinkCommon } from '../native-common/Link';
+import { Link as LinkCommon } from '../native-common/Link';
 
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_SPACE = 32;
@@ -37,7 +37,7 @@ if (HasFocusableWindows) {
 
 export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
-        isRxParentAText: PropTypes.bool,
+        isRxParentAText: PropTypes.bool
     };
     context: LinkContext;
 
@@ -48,7 +48,6 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     }
 
     protected _render(internalProps: RN.TextProps) {
-
         // Fallback to native-common fast if the keyboard enabled component is not available
         if (!HasFocusableWindows) {
             return super._render(internalProps);
@@ -78,12 +77,12 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
                 handledKeyUpKeys: UP_KEYCODES,
                 onKeyDown: this._onKeyDown,
                 onKeyUp: this._onKeyUp,
-                onFocus: this._onFocus,
+                onFocus: this._onFocus
             };
 
             return (
                 <FocusableText
-                    {...focusableTextProps}
+                    { ...focusableTextProps }
                 />
             );
         } else {
@@ -92,16 +91,14 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     }
 
     focus() {
-        if (this._focusableElement &&
-            this._focusableElement.focus) {
-                this._focusableElement.focus();
+        if (this._focusableElement && this._focusableElement.focus) {
+            this._focusableElement.focus();
         }
     }
 
     blur() {
-        if (this._focusableElement &&
-            this._focusableElement.blur) {
-                this._focusableElement.blur();
+        if (this._focusableElement && this._focusableElement.blur) {
+            this._focusableElement.blur();
         }
     }
 

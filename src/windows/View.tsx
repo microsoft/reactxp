@@ -13,7 +13,7 @@ import RNW = require('react-native-windows');
 import Types = require('../common/Types');
 import PropTypes = require('prop-types');
 
-import {View as ViewCommon} from '../native-common/View';
+import { View as ViewCommon } from '../native-common/View';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent, FocusManager } from '../native-desktop/utils/FocusManager';
 
@@ -104,7 +104,6 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 
     protected _buildInternalProps(props: Types.ViewProps) {
-
         // Base class does the bulk of _internalprops creation
         super._buildInternalProps(props);
 
@@ -231,7 +230,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
             return (
                 <FocusableView
-                    {...focusableViewProps}
+                    { ...focusableViewProps }
                 />
             );
         } else {
@@ -331,7 +330,6 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 
     private _onFocusableKeyUp = (e: React.SyntheticEvent<any>): void => {
-
         let keyEvent = EventHelpers.toKeyboardEvent(e);
         if (keyEvent.keyCode === KEY_CODE_SPACE) {
             if (this.props.onPress) {

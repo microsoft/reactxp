@@ -9,9 +9,9 @@
 
 import React = require('react');
 
-import {FocusManager as FocusManagerBase,
+import { FocusManager as FocusManagerBase,
     applyFocusableComponentMixin as applyFocusableComponentMixinBase,
-    StoredFocusableComponent} from '../../common/utils/FocusManager';
+    StoredFocusableComponent } from '../../common/utils/FocusManager';
 
 import Platform from '../../native-common/Platform';
 import UserInterface from '../UserInterface';
@@ -24,8 +24,8 @@ UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
     _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 });
 
-import {FocusableComponentStateCallback} from  '../../common/utils/FocusManager';
-export {FocusableComponentStateCallback};
+import { FocusableComponentStateCallback } from  '../../common/utils/FocusManager';
+export { FocusableComponentStateCallback };
 
 export interface FocusManagerFocusableComponent {
     getTabIndex(): number | undefined;
@@ -66,7 +66,7 @@ export class FocusManager extends FocusManagerBase {
         return false;
     }
 
-    private static focusFirst () {
+    private static focusFirst() {
         const focusable = Object.keys(FocusManager._allFocusableComponents)
             .map(componentId => FocusManager._allFocusableComponents[componentId])
             .filter(storedComponent => !storedComponent.removed && !storedComponent.restricted && !storedComponent.limitedCount);
@@ -97,7 +97,6 @@ export class FocusManager extends FocusManagerBase {
     }
 
     protected /* static */ resetFocus() {
-
         if (FocusManager._resetFocusTimer) {
             clearTimeout(FocusManager._resetFocusTimer);
             FocusManager._resetFocusTimer = undefined;
@@ -138,7 +137,7 @@ export class FocusManager extends FocusManagerBase {
     }
 
     private  static  _setComponentTabIndexOverride(
-            component: React.Component<any, any>, tabIndex: number): number | undefined {
+        component: React.Component<any, any>, tabIndex: number): number | undefined {
 
         (component as any as FocusManagerFocusableComponentInternal).setTabIndexOverride(tabIndex);
         // Original value is not used for desktop implementation
@@ -146,13 +145,12 @@ export class FocusManager extends FocusManagerBase {
     }
 
     private  static  _removeComponentTabIndexOverride(
-            component: React.Component<any, any>): void {
+        component: React.Component<any, any>): void {
         (component as any as FocusManagerFocusableComponentInternal).removeTabIndexOverride();
     }
 }
 
 export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function) {
-
     // Call base
     // This adds the basic "monitor focusable components" functionality.
     applyFocusableComponentMixinBase(Component, isConditionallyFocusable);

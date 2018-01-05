@@ -110,10 +110,9 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     }
 
     protected _render(internalProps: RN.ViewProps): JSX.Element {
-
         return (
             <RN.Animated.View
-                {...internalProps}
+                { ...internalProps }
              >
                 { this.props.children }
             </RN.Animated.View>
@@ -146,7 +145,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
             onResponderRelease: this.touchableHandleResponderRelease,
             onResponderTerminate: this.touchableHandleResponderTerminate,
             shouldRasterizeIOS: this.props.shouldRasterizeIOS,
-            onAccessibilityTapIOS: this.props.onAccessibilityTapIOS,
+            onAccessibilityTapIOS: this.props.onAccessibilityTapIOS
         };
 
         return this._render(internalProps);
@@ -327,7 +326,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         this._buttonElement.setNativeProps({
             style: [{
                 backgroundColor: _underlayInactive
-            }, this.props.style],
+            }, this.props.style]
         });
     }
 }

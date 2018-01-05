@@ -33,7 +33,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
             onLongPress: this._onLongPress,
             allowFontScaling: this.props.allowFontScaling,
             maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
-            children: this.props.children,
+            children: this.props.children
         };
 
         return this._render(internalProps);

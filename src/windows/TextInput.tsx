@@ -10,19 +10,18 @@
 import React = require('react');
 import RN = require('react-native');
 
-import {applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
+import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 
-import {TextInput as TextInputBase} from '../native-common/TextInput';
+import { TextInput as TextInputBase } from '../native-common/TextInput';
 
 export class TextInput extends TextInputBase implements FocusManagerFocusableComponent {
 
     protected _render(props: RN.TextInputProps): JSX.Element {
-
         return (
             <RN.TextInput
-            {...props}
-            tabIndex={this.getTabIndex()}
-            onFocus={ (e: React.FocusEvent<any>) => this._onFocusEx(e, props.onFocus)}
+                { ...props }
+                tabIndex={ this.getTabIndex() }
+                onFocus={ (e: React.FocusEvent<any>) => this._onFocusEx(e, props.onFocus) }
             />
         );
     }
@@ -51,7 +50,7 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
             let tabIndex: number | undefined = this.getTabIndex();
             this._textInputRef.setNativeProps({
                 tabIndex: tabIndex,
-                value: this.state.inputValue, // mandatory for some reason
+                value: this.state.inputValue // mandatory for some reason
             });
         }
     }

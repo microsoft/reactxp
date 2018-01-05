@@ -9,7 +9,7 @@
 
 import Types = require('../common/Types');
 
-import {Input as InputCommon} from '../native-common/Input';
+import { Input as InputCommon } from '../native-common/Input';
 
 export class Input extends InputCommon {
     constructor() {

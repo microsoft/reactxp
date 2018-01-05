@@ -22,9 +22,9 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
     protected _render(props: RN.ScrollViewProps): JSX.Element {
         return (
             <RN.ScrollView
-                {...props}
+                { ...props }
             >
-                {props.children}
+                { props.children }
             </RN.ScrollView>
         );
     }
@@ -38,14 +38,14 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         }
 
         var layoutCallback = this.props.onLayout ?
-                // We have a callback function, call the wrapper
-                this._onLayout :
-                undefined;
+            // We have a callback function, call the wrapper
+            this._onLayout :
+            undefined;
 
         var scrollCallback = this.props.onScroll ?
-                // We have a callback function, call the wrapper
-                this._onScroll :
-                undefined;
+            // We have a callback function, call the wrapper
+            this._onScroll :
+            undefined;
 
         const keyboardShouldPersistTaps = (this.props.keyboardShouldPersistTaps ? 'always' : 'never');
 

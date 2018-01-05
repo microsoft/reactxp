@@ -7,7 +7,7 @@ permalink: docs/components/scrollview.html
 next: components/text
 ---
 
-Like a View, this component is a container for other components. However, it supports scrolling (panning) and zooming so it is possible to view larger contents. 
+Like a View, this component is a container for other components. However, it supports scrolling (panning) and zooming so it is possible to view larger contents.
 
 ScrollViews must have a bounded height (or width, if it scrolls horizontally) since its children are of unbounded height (or width). To bound the dimensions of a ScrollView, either set the height/width directly or make sure that its parent's height/width is bounded.
 
@@ -20,7 +20,7 @@ bounces: boolean = true; // iOS only
 horizontal: boolean = false;
 vertical: boolean = true;
 
-// If the contents are smaller than the view port, should they be justified 
+// If the contents are smaller than the view port, should they be justified
 // to the top of the view (i.e. flex-start) or the end (flex-end)?
 justifyEnd: boolean = false;
 
@@ -61,9 +61,6 @@ scrollEventThrottle: number = undefined;
 // or left/right (horizontal)
 scrollIndicatorInsets: ScrollIndicatorInsets = undefined;
 
-// Windows-only property to control tab navigation inside the view
-tabNavigation?: 'local' | 'cycle' | 'once';
-
 // If true, this scroll bar scrolls to the top when the user
 // taps on the status bar.
 scrollsToTop: boolean = false; // iOS only
@@ -74,6 +71,9 @@ showsVerticalScrollIndicator: boolean = [same as horizontal];
 
 // See below for supported styles
 style: ViewStyleRuleSet | ViewStyleRuleSet[] = [];
+
+// Windows-only property to control tab navigation inside the view
+tabNavigation?: 'local' | 'cycle' | 'once';
 ```
 
 ## Styles

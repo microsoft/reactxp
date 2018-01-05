@@ -8,7 +8,7 @@
 */
 
 import React = require('react');
-import {Button as ButtonBase} from '../native-common/Button';
+import { Button as ButtonBase } from '../native-common/Button';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import UserInterface from '../native-desktop/UserInterface';
 import RN = require('react-native');
@@ -49,7 +49,6 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
     }
 
     protected _render(internalProps: RN.ViewProps): JSX.Element {
-
         // Fallback to native-common fast if the keyboard enabled component is not available
         if (!HasFocusableWindows) {
             return super._render(internalProps);
@@ -105,7 +104,7 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
 
     }
 
-blur() {
+    blur() {
         super.blur();
         if (this._focusableElement && this._focusableElement.blur) {
             this._focusableElement.blur();
@@ -122,7 +121,6 @@ blur() {
     }
 
     private _onKeyDown = (e: React.SyntheticEvent<any>): void => {
-
         if (!this.props.disabled) {
             let keyEvent = EventHelpers.toKeyboardEvent(e);
             if (this.props.onKeyPress) {
@@ -140,7 +138,6 @@ blur() {
     }
 
     private _onKeyUp = (e: React.SyntheticEvent<any>): void => {
-
         let keyEvent = EventHelpers.toKeyboardEvent(e);
         if (keyEvent.keyCode === KEY_CODE_SPACE) {
             if (!this.props.disabled && this.props.onPress) {
@@ -203,17 +200,17 @@ blur() {
 
     // From FocusManagerFocusableComponent interface
     //
-onFocus() {
+    onFocus() {
         // Focus Manager hook
     }
 
-getTabIndex(): number | undefined {
+    getTabIndex(): number | undefined {
         // Button defaults to a tabIndex of 0
         // Focus Manager may override this
         return this.props.tabIndex || 0;
     }
 
-updateNativeTabIndex(): void {
+    updateNativeTabIndex(): void {
         if (this._focusableElement) {
             let tabIndex: number | undefined = this.getTabIndex();
             let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;

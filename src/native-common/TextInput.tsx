@@ -54,7 +54,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     protected _render(props: RN.TextInputProps): JSX.Element {
         return (
             <RN.TextInput
-                {...props}
+                { ...props }
             />
         );
     }
@@ -152,7 +152,6 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     private _onKeyPress = (e: React.SyntheticEvent<any>) => {
-
         if (this.props.onKeyPress) {
             this.props.onKeyPress(EventHelpers.toKeyboardEvent(e));
         }

@@ -10,9 +10,9 @@
 import React = require('react');
 import ReactDOM = require('react-dom');
 
-import {FocusManager as FocusManagerBase,
+import { FocusManager as FocusManagerBase,
     StoredFocusableComponent,
-    OriginalAttributeValues} from '../../common/utils/FocusManager';
+    OriginalAttributeValues } from '../../common/utils/FocusManager';
 
 import UserInterface from '../UserInterface';
 
@@ -26,8 +26,8 @@ UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
     _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 });
 
-import {applyFocusableComponentMixin, FocusableComponentStateCallback} from  '../../common/utils/FocusManager';
-export {applyFocusableComponentMixin, FocusableComponentStateCallback};
+import { applyFocusableComponentMixin, FocusableComponentStateCallback } from  '../../common/utils/FocusManager';
+export { applyFocusableComponentMixin, FocusableComponentStateCallback };
 
 export class FocusManager extends FocusManagerBase {
 
