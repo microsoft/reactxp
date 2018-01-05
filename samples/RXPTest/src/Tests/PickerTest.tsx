@@ -29,11 +29,15 @@ const _styles = {
         color: 'black'
     }),
     pickerContainer: RX.Styles.createViewStyle({
-        marginHorizontal: 24,
-        flexDirection: 'row',
+        alignSelf: 'stretch',
         alignItems: 'center'
     }),
     picker: RX.Styles.createPickerStyle({
+        alignSelf: 'stretch'
+    }),
+    pickerWeb: RX.Styles.createPickerStyle({
+        alignSelf: 'center',
+        marginVertical: 12,
         height: 24,
         width: 100
     })
@@ -78,7 +82,7 @@ class PickerView extends RX.Component<RX.CommonProps, PickerViewState> {
 
                 <RX.View style={ _styles.pickerContainer }>
                     <RX.Picker
-                        style={ _styles.picker }
+                        style={ [_styles.picker, RX.Platform.getType() === 'web' && _styles.pickerWeb] }
                         selectedValue={ this.state.test1Value }
                         items={ picker1Items }
                         mode={ 'dialog' }
