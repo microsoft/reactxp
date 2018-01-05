@@ -19,7 +19,7 @@ declare module 'react-native-windows' {
     //
     // Focusable view related declarations
     // ----------------------------------------------------------------------
-    interface FocusableProps extends RN.ViewProps {
+    type FocusableWindowsProps<P={}> = P & {
         isTabStop?: boolean;
         tabIndex?: number;
         tabNavigation?: 'local' | 'cycle' | 'once';
@@ -30,7 +30,15 @@ declare module 'react-native-windows' {
         handledKeyUpKeys?: number[];
         onKeyDown?: Function;
         onKeyUp?: Function;
+        componentRef?: Function;
+    };
+
+    interface FocusableWindows<P> extends RN.ReactNativeBaseComponent<FocusableWindowsProps<P>, {}>{
+        focus(): void;
+        blur(): void;
     }
 
-    class FocusableWindows extends RN.ReactNativeBaseComponent<FocusableProps, {}> { }
+    type FocusableComponentConstructor<P> = new() => FocusableWindows<P>;
+
+    function createFocusableComponent<P>(Component: any): FocusableComponentConstructor<P>;
 }

@@ -8,6 +8,7 @@
 */
 
 import React = require('react');
+import RN = require('react-native');
 import RNW = require('react-native-windows');
 import Types = require('../common/Types');
 import PropTypes = require('prop-types');
@@ -28,7 +29,13 @@ export interface ViewContext {
 }
 
 // Simple check for the presence of the updated React Native for Windows
-const HasFocusableWindows = (RNW.FocusableWindows !== undefined);
+const HasFocusableWindows = (RNW.createFocusableComponent !== undefined);
+
+let FocusableView: RNW.FocusableComponentConstructor<RN.ViewProps>;
+if (HasFocusableWindows) {
+    FocusableView = RNW.createFocusableComponent(RN.View) as
+        RNW.FocusableComponentConstructor<RN.ViewProps>;
+}
 
 export class View extends ViewCommon implements React.ChildContextProvider<ViewContext>, FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
@@ -48,7 +55,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     private _onMouseOver: (e: React.SyntheticEvent<any>) => void;
     private _onMouseMove: (e: React.SyntheticEvent<any>) => void;
 
-    private _focusableElement : RNW.FocusableWindows | null = null;
+    private _focusableElement : RNW.FocusableWindows<RN.ViewProps> | null = null;
 
     private _focusManager: FocusManager;
     private _isFocusLimited: boolean;
@@ -191,21 +198,26 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 
     render(): JSX.Element {
-
-        let content: JSX.Element = super.render();
-
         // Exit fast if the keyboard enabled component is not available
         if (!HasFocusableWindows) {
-            return content;
+            return super.render();
         }
 
         if (this.props.tabIndex !== undefined) {
             let tabIndex: number = this.getTabIndex() || 0;
             let windowsTabFocusable: boolean =  tabIndex >= 0;
 
-            // RNW.FocusableWindows doesn't participate in layouting, it basically mimics the position/size of the child
-            let focusableViewProps: RNW.FocusableProps = {
+            // We don't use 'string' ref type inside ReactXP
+            let originalRef = this._internalProps.ref;
+            if (typeof originalRef === 'string') {
+                throw new Error('View: ReactXP must not use string refs internally');
+            }
+            let componentRef: Function = originalRef as Function;
+
+            let focusableViewProps: RNW.FocusableWindowsProps<RN.ViewProps> = {
+                ...this._internalProps,
                 ref: this._onFocusableRef,
+                componentRef: componentRef,
                 isTabStop: windowsTabFocusable,
                 tabIndex: tabIndex,
                 disableSystemFocusVisuals: false,
@@ -217,19 +229,17 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                 onBlur: this._onBlur
             };
 
-            content = (
-                <RNW.FocusableWindows
+            return (
+                <FocusableView
                     {...focusableViewProps}
-                >
-                    {content}
-                </RNW.FocusableWindows>
+                />
             );
+        } else {
+            return super.render();
         }
-
-        return content;
     }
 
-    private _onFocusableRef = (btn: RNW.FocusableWindows): void => {
+    private _onFocusableRef = (btn: RNW.FocusableWindows<RN.ViewProps>): void => {
         this._focusableElement = btn;
     }
 
@@ -292,6 +302,15 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         } else if (!limited && this._isFocusLimited) {
             this._isFocusLimited = false;
             this._focusManager.removeFocusLimitation();
+        }
+    }
+
+    public setNativeProps(nativeProps: RN.ViewProps) {
+        // Redirect to focusable component if present.
+        if (this._focusableElement) {
+            this._focusableElement.setNativeProps(nativeProps);
+        } else {
+            super.setNativeProps(nativeProps);
         }
     }
 

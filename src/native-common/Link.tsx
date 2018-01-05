@@ -25,18 +25,25 @@ export class Link extends React.Component<Types.LinkProps, {}> {
     }
 
     render() {
+        let internalProps: RN.TextProps = {
+            ref: this._onMount,
+            style: this.props.style,
+            numberOfLines: this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines,
+            onPress: this._onPress,
+            onLongPress: this._onLongPress,
+            allowFontScaling: this.props.allowFontScaling,
+            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
+            children: this.props.children,
+        };
+
+        return this._render(internalProps);
+    }
+
+    protected _render(internalProps: RN.TextProps) {
         return (
             <RN.Text
-                style={ this.props.style }
-                ref={ this._onMount }
-                numberOfLines={ this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines }
-                onPress={ this._onPress }
-                onLongPress={ this._onLongPress }
-                allowFontScaling={ this.props.allowFontScaling }
-                maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
-            >
-                { this.props.children }
-            </RN.Text>
+                { ...internalProps }
+            />
         );
     }
 

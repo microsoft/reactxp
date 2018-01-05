@@ -8,6 +8,7 @@
 */
 
 import React = require('react');
+import RN = require('react-native');
 import RNW = require('react-native-windows');
 import {applyFocusableComponentMixin, FocusManagerFocusableComponent} from '../native-desktop/utils/FocusManager';
 import PropTypes = require('prop-types');
@@ -26,7 +27,13 @@ export interface LinkContext {
 }
 
 // Simple check for the presence of the updated React Native for Windows
-const HasFocusableWindows = (RNW.FocusableWindows !== undefined);
+const HasFocusableWindows = (RNW.createFocusableComponent !== undefined);
+
+let FocusableText: RNW.FocusableComponentConstructor<RN.TextProps>;
+if (HasFocusableWindows) {
+    FocusableText = RNW.createFocusableComponent(RN.Text) as
+        RNW.FocusableComponentConstructor<RN.TextProps>;
+}
 
 export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
@@ -34,20 +41,18 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     };
     context: LinkContext;
 
-    private _focusableElement : RNW.FocusableWindows | null = null;
+    private _focusableElement : RNW.FocusableWindows<RN.TextProps> | null = null;
 
-    private _onFocusableRef = (btn: RNW.FocusableWindows | null): void => {
+    private _onFocusableRef = (btn: RNW.FocusableWindows<RN.TextProps> | null): void => {
         this._focusableElement = btn;
     }
 
-    render() {
+    protected _render(internalProps: RN.TextProps) {
 
         // Fallback to native-common fast if the keyboard enabled component is not available
         if (!HasFocusableWindows) {
-            return super.render();
+            return super._render(internalProps);
         }
-
-        let content: JSX.Element = super.render();
 
         // The "in text parent" case requires a special nyi control.
         if (this.context && !this.context.isRxParentAText) {
@@ -55,8 +60,16 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
             let tabIndex: number | undefined = this.getTabIndex();
             let windowsTabFocusable: boolean =  tabIndex !== undefined && tabIndex >= 0;
 
-            // RNW.FocusableWindows doesn't participate in layouting, it basically mimics the position/size of the child
-            let focusableViewProps: RNW.FocusableProps = {
+            // We don't use 'string' ref type inside ReactXP
+            let originalRef = internalProps.ref;
+            if (typeof originalRef === 'string') {
+                throw new Error('Link: ReactXP must not use string refs internally');
+            }
+            let componentRef: Function = originalRef as Function;
+
+            let focusableTextProps: RNW.FocusableWindowsProps<RN.TextProps> = {
+                ...internalProps,
+                componentRef: componentRef,
                 ref: this._onFocusableRef,
                 isTabStop: windowsTabFocusable,
                 tabIndex: tabIndex,
@@ -68,16 +81,14 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
                 onFocus: this._onFocus,
             };
 
-            content = (
-                <RNW.FocusableWindows
-                    {...focusableViewProps}
-                >
-                    {content}
-                </RNW.FocusableWindows>
+            return (
+                <FocusableText
+                    {...focusableTextProps}
+                />
             );
+        } else {
+            return super._render(internalProps);
         }
-
-        return content;
     }
 
     focus() {
@@ -91,6 +102,15 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
         if (this._focusableElement &&
             this._focusableElement.blur) {
                 this._focusableElement.blur();
+        }
+    }
+
+    setNativeProps(nativeProps: RN.TextProps) {
+        // Redirect to focusable component if present.
+        if (this._focusableElement) {
+            this._focusableElement.setNativeProps(nativeProps);
+        } else {
+            super.setNativeProps(nativeProps);
         }
     }
 
