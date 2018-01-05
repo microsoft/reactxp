@@ -18,7 +18,7 @@ import Types = require('../common/Types');
 class Video extends RX.Component<Types.VideoProps, {}> {
     componentDidMount() {
         // We need to manually install the onEnded handler because. React doesn't support this.
-        let videoDOM = ReactDOM.findDOMNode<HTMLVideoElement>(this);
+        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement;
         videoDOM.onended = () => {
             if (this.props.onEnded) {
                 this.props.onEnded();
@@ -27,7 +27,7 @@ class Video extends RX.Component<Types.VideoProps, {}> {
     }
 
     componentWillUnmount() {
-        let videoDOM = ReactDOM.findDOMNode<HTMLVideoElement>(this);
+        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement;
         if (videoDOM) {
             // Prevent Chrome based browsers  to leak video elements
             videoDOM.src = '';
@@ -86,35 +86,35 @@ class Video extends RX.Component<Types.VideoProps, {}> {
     }
 
     seek(position: number) {
-        let videoDOM = ReactDOM.findDOMNode<HTMLVideoElement>(this);
+        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement;
         if (videoDOM) {
             videoDOM.currentTime = position;
         }
     }
 
     seekPercent(percentage: number) {
-        let videoDOM = ReactDOM.findDOMNode<HTMLVideoElement>(this);
+        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement;
         if (videoDOM) {
             videoDOM.currentTime = percentage * videoDOM.duration;
         }
     }
 
     play() {
-        let videoDOM = ReactDOM.findDOMNode<HTMLVideoElement>(this);
+        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement;
         if (videoDOM) {
             videoDOM.play();
         }
     }
 
     pause() {
-        let videoDOM = ReactDOM.findDOMNode<HTMLVideoElement>(this);
+        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement;
         if (videoDOM) {
             videoDOM.pause();
         }
     }
 
     stop() {
-        let videoDOM = ReactDOM.findDOMNode<HTMLVideoElement>(this);
+        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement;
         if (videoDOM) {
             videoDOM.pause();
             videoDOM.currentTime = 0;
@@ -122,7 +122,7 @@ class Video extends RX.Component<Types.VideoProps, {}> {
     }
 
     mute(muted: boolean) {
-        let videoDOM = ReactDOM.findDOMNode<HTMLVideoElement>(this);
+        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement;
         if (videoDOM) {
             videoDOM.muted = muted;
         }
@@ -130,7 +130,7 @@ class Video extends RX.Component<Types.VideoProps, {}> {
 
     private _onLoadedData = () => {
         if (this.props.onLoadedData) {
-            let videoDOM = ReactDOM.findDOMNode<HTMLVideoElement>(this);
+            let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement;
 
             if (videoDOM) {
                 const loadInfo: Types.VideoInfo = {
@@ -147,7 +147,7 @@ class Video extends RX.Component<Types.VideoProps, {}> {
 
     private _onTimeUpdate = () => {
         if (this.props.onProgress) {
-            let videoDOM = ReactDOM.findDOMNode<HTMLVideoElement>(this);
+            let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement;
             if (videoDOM) {
                 this.props.onProgress({
                     currentTime: videoDOM.currentTime,

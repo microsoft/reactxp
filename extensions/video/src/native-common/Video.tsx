@@ -21,7 +21,7 @@ export interface VideoState {
 }
 
 class Video extends RX.Component<Types.VideoProps, VideoState> {
-    private _isMounted = false;
+    private _mountedComponent: RNVideo|null = null;
 
     constructor(props: Types.VideoProps) {
         super(props);
@@ -32,18 +32,10 @@ class Video extends RX.Component<Types.VideoProps, VideoState> {
         };
     }
 
-    componentDidMount() {
-        this._isMounted = true;
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
-
     render() {
         return (
             <RNVideo
-                ref='video'
+                ref={ this._onMount }
                 controls={ this.props.showControls }
                 paused={ !this.state.isPlaying }
                 muted={ this.state.isMuted }
@@ -62,8 +54,12 @@ class Video extends RX.Component<Types.VideoProps, VideoState> {
         );
     }
 
+    private _onMount = (component: any) => {
+        this._mountedComponent = component as RNVideo;
+    }
+
     private _onError = () => {
-        if (!this._isMounted) {
+        if (!this._mountedComponent) {
             return;
         }
 
@@ -73,7 +69,7 @@ class Video extends RX.Component<Types.VideoProps, VideoState> {
     }
 
     private _onLoad = () => {
-        if (!this._isMounted) {
+        if (!this._mountedComponent) {
             return;
         }
 
@@ -85,7 +81,7 @@ class Video extends RX.Component<Types.VideoProps, VideoState> {
     }
 
     private _onLoadData = (loadInfo: VideoInfo) => {
-        if (!this._isMounted) {
+        if (!this._mountedComponent) {
             return;
         }
 
@@ -103,7 +99,7 @@ class Video extends RX.Component<Types.VideoProps, VideoState> {
     }
 
     private _onBuffer = (bufferInfo: VideoBufferInfo) => {
-        if (!this._isMounted) {
+        if (!this._mountedComponent) {
             return;
         }
 
@@ -119,7 +115,7 @@ class Video extends RX.Component<Types.VideoProps, VideoState> {
     }
 
     private _onEnd = () => {
-        if (!this._isMounted) {
+        if (!this._mountedComponent) {
             return;
         }
 
@@ -137,11 +133,15 @@ class Video extends RX.Component<Types.VideoProps, VideoState> {
     }
 
     seek(position: number) {
-        (this.refs['video'] as any).seek(position);
+        if (this._mountedComponent) {
+            this._mountedComponent.seek(position);
+        }
     }
 
     seekPercent(percentage: number) {
-        (this.refs['video'] as any).seek(this.state.duration * percentage);
+        if (this._mountedComponent) {
+            this._mountedComponent.seek(this.state.duration * percentage);
+        }
     }
 
     play() {

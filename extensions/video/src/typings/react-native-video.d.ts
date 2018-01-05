@@ -78,5 +78,7 @@ declare module 'react-native-video' {
         style?: any
     }
 
-    export default class Video extends React.Component<VideoProps, {}> { }
+    export default class Video extends React.Component<VideoProps, {}> {
+        seek(position: number): void;
+    }
 }
