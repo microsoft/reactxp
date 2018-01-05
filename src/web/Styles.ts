@@ -9,6 +9,7 @@
 
 import _ = require('./utils/lodashMini');
 
+import AppConfig from '../common/AppConfig';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 import StyleLeakDetector from '../common/StyleLeakDetector';
@@ -33,18 +34,20 @@ export class Styles extends RX.Styles {
                 combinedStyles = _.extend(combinedStyles, subRuleSet);
             }
 
-            if ((combinedStyles.marginLeft !== undefined || combinedStyles.marginRight !== undefined ||
-                    combinedStyles.marginTop !== undefined || combinedStyles.marginBottom !== undefined) &&
-                    combinedStyles.margin !== undefined) {
-                console.error('Conflicting rules for margin specified.');
-                delete combinedStyles.margin;
-            }
+            if (AppConfig.isDevelopmentMode()) {
+                if ((combinedStyles.marginLeft !== undefined || combinedStyles.marginRight !== undefined ||
+                        combinedStyles.marginTop !== undefined || combinedStyles.marginBottom !== undefined) &&
+                        combinedStyles.margin !== undefined) {
+                    console.error('Conflicting rules for margin specified.');
+                    delete combinedStyles.margin;
+                }
 
-            if ((combinedStyles.paddingLeft !== undefined || combinedStyles.paddingRight !== undefined ||
-                    combinedStyles.paddingTop !== undefined || combinedStyles.paddingBottom !== undefined) &&
-                    combinedStyles.padding !== undefined) {
-                console.error('Conflicting rules for padding specified.');
-                delete combinedStyles.padding;
+                if ((combinedStyles.paddingLeft !== undefined || combinedStyles.paddingRight !== undefined ||
+                        combinedStyles.paddingTop !== undefined || combinedStyles.paddingBottom !== undefined) &&
+                        combinedStyles.padding !== undefined) {
+                    console.error('Conflicting rules for padding specified.');
+                    delete combinedStyles.padding;
+                }
             }
 
             if (combinedStyles.borderWidth || 
@@ -385,11 +388,13 @@ export class Styles extends RX.Styles {
             delete def.marginHorizontal;
         }
 
-        if ((def.marginHorizontal !== undefined || def.marginVertical !== undefined ||
-            def.marginLeft !== undefined || def.marginRight !== undefined ||
-            def.marginTop !== undefined || def.marginBottom !== undefined) && def.margin !== undefined) {
-            console.error('Conflicting rules for margin specified.');
-            delete def.margin;
+        if (AppConfig.isDevelopmentMode()) {
+            if ((def.marginHorizontal !== undefined || def.marginVertical !== undefined ||
+                    def.marginLeft !== undefined || def.marginRight !== undefined ||
+                    def.marginTop !== undefined || def.marginBottom !== undefined) && def.margin !== undefined) {
+                console.error('Conflicting rules for margin specified.');
+                delete def.margin;
+            }
         }
 
         if (def.paddingVertical !== undefined) {
@@ -404,11 +409,13 @@ export class Styles extends RX.Styles {
             delete def.paddingHorizontal;
         }
 
-        if ((def.paddingHorizontal !== undefined || def.paddingVertical !== undefined ||
-            def.paddingLeft !== undefined || def.paddingRight !== undefined ||
-            def.paddingTop !== undefined || def.paddingBottom !== undefined) && def.padding !== undefined) {
-            console.error('Conflicting rules for padding specified.');
-            delete def.padding;
+        if (AppConfig.isDevelopmentMode()) {
+            if ((def.paddingHorizontal !== undefined || def.paddingVertical !== undefined ||
+                    def.paddingLeft !== undefined || def.paddingRight !== undefined ||
+                    def.paddingTop !== undefined || def.paddingBottom !== undefined) && def.padding !== undefined) {
+                console.error('Conflicting rules for padding specified.');
+                delete def.padding;
+            }
         }
 
         // CSS doesn't support 'textDecorationLine'

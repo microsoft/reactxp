@@ -13,6 +13,7 @@ import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
 import AnimateListEdits from './listAnimations/AnimateListEdits';
+import AppConfig from '../common/AppConfig';
 import restyleForInlineText = require('./utils/restyleForInlineText');
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -120,7 +121,9 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
 
         if (containerStyles.position !== 'relative') {
-            console.error('View: importantForLayout property is applicable only for a view with relative position');
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('View: importantForLayout property is applicable only for a view with relative position');
+            }
             return null;
         }
 
@@ -220,7 +223,9 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
     setFocusRestricted(restricted: boolean) {
         if (!this._focusManager || !this.props.restrictFocusWithin) {
-            console.error('View: setFocusRestricted method requires restrictFocusWithin property to be set to true');
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('View: setFocusRestricted method requires restrictFocusWithin property to be set to true');
+            }
             return;
         }
 
@@ -233,7 +238,9 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
     setFocusLimited(limited: boolean) {
         if (!this._focusManager || !this.props.limitFocusWithin) {
-            console.error('View: setFocusLimited method requires limitFocusWithin property to be set to true');
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('View: setFocusLimited method requires limitFocusWithin property to be set to true');
+            }
             return;
         }
 
@@ -316,10 +323,12 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     componentWillReceiveProps(nextProps: Types.ViewProps) {
         super.componentWillReceiveProps(nextProps);
 
-        if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
-            console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
-        } else if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
-            console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
+        if (AppConfig.isDevelopmentMode()) {
+            if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
+                console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
+            } else if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
+                console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
+            }
         }
     }
 

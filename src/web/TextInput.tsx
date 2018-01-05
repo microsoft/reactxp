@@ -79,8 +79,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             return (
                 <textarea
                     style={ combinedStyles as any }
-                    value={ this.props.defaultValue ? '' : this.state.inputValue }
-                    defaultValue={ this.props.defaultValue }
+                    value={ this.props.defaultValue ? undefined : this.state.inputValue }
+                    defaultValue={ this.props.defaultValue || undefined }
 
                     autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
@@ -104,8 +104,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             return (
                 <input
                     style={ combinedStyles as any }
-                    value={ this.props.defaultValue ? '' : this.state.inputValue }
-                    defaultValue={ this.props.defaultValue }
+                    value={ this.props.defaultValue ? undefined : this.state.inputValue }
+                    defaultValue={ this.props.defaultValue || undefined }
 
                     autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }

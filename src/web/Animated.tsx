@@ -11,6 +11,7 @@ import _ = require('./utils/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
 
+import AppConfig from '../common/AppConfig';
 import Easing from '../common/Easing';
 import { executeTransition, ITransitionSpec } from './animated/executeTransition';
 import RXImage from './Image';
@@ -114,7 +115,11 @@ export class Value extends Types.AnimatedValue {
         // use of JS-driven animations or keyframes, both of which are prohibitively
         // expensive from a performance and responsiveness perspective.
         if (config.inputRange.length !== 2) {
-            console.log('Web implementation of interpolate API currently supports only two interpolation values.');
+            if (AppConfig.isDevelopmentMode()) {
+                if (AppConfig.isDevelopmentMode()) {
+                    console.log('Web implementation of interpolate API currently supports only two interpolation values.');
+                }
+            }
         }
 
         this._interpolationConfig = {};
@@ -354,7 +359,9 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         }
 
         setNativeProps(props: PropsType) {
-            console.error('setNativeProps not supported on web');
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('setNativeProps not supported on web');
+            }
         }
 
         componentWillReceiveProps(props: Types.CommonStyledProps<Types.StyleRuleSet<Object>>) {
@@ -383,7 +390,9 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             let attrib = this._findAnimatedAttributeByValue(this._animatedAttributes, valueObject);
             if (attrib) {
                 if (this._animatedAttributes[attrib].activeTransition) {
-                    console.error('Animation started while animation was already pending');
+                    if (AppConfig.isDevelopmentMode()) {
+                        console.error('Animation started while animation was already pending');
+                    }
                 }
                 this._animatedAttributes[attrib].activeTransition = {
                     property: attrib,
@@ -401,7 +410,9 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             let transform = this._findAnimatedAttributeByValue(this._animatedTransforms, valueObject);
             if (transform) {
                 if (this._animatedTransforms[transform].activeTransition) {
-                    console.error('Animation started while animation was already pending');
+                    if (AppConfig.isDevelopmentMode()) {
+                        console.error('Animation started while animation was already pending');
+                    }
                 }
                 this._animatedTransforms[transform].activeTransition = {
                     property: transform,
@@ -624,7 +635,9 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             _.each(this._animatedAttributes, (value, attrib) => {
                 if (!newAnimatedAttributes[attrib] || newAnimatedAttributes[attrib] !== value.valueObject) {
                     if (value.activeTransition) {
-                        console.error('Animated style attribute removed while the animation was active');
+                        if (AppConfig.isDevelopmentMode()) {
+                            console.error('Animated style attribute removed while the animation was active');
+                        }
                     }
                     delete this._animatedAttributes[attrib];
                 }
@@ -642,7 +655,9 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             _.each(this._animatedTransforms, (value, transform) => {
                 if (!newAnimatedTransforms[transform] || newAnimatedTransforms[transform] !== value.valueObject) {
                     if (value.activeTransition) {
-                        console.warn('Should not remove an animated transform attribute while the animation is active');
+                        if (AppConfig.isDevelopmentMode()) {
+                            console.warn('Should not remove an animated transform attribute while the animation is active');
+                        }
                     }
                     delete this._animatedTransforms[transform];
                 }

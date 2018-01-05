@@ -10,6 +10,7 @@
 import _ = require('./utils/lodashMini');
 import ReactDOM = require('react-dom');
 
+import AppConfig from '../common/AppConfig';
 import RX = require('../common/Interfaces');
 import SyncTasks = require('synctasks');
 import Types = require('../common/Types');
@@ -94,7 +95,9 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
             try {
                 func();
             } catch (e) {
-                console.error('Caught exception on onLayout response: ', e);
+                if (AppConfig.isDevelopmentMode()) {
+                    console.error('Caught exception on onLayout response: ', e);
+                }
             }
         });
     }

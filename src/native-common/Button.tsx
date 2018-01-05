@@ -12,8 +12,9 @@ import React = require('react');
 import RN = require('react-native');
 import PropTypes = require('prop-types');
 
-import Animated from './Animated';
 import AccessibilityUtil from './AccessibilityUtil';
+import Animated from './Animated';
+import AppConfig from '../common/AppConfig';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { isEqual } from '../common/lodashMini';
@@ -102,7 +103,9 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         this._setOpacityStyles(props);
 
         if (context.hasRxButtonAscendant) {
-            console.warn('Button components should not be embedded. Some APIs, e.g. Accessibility, will not work.');
+            if (AppConfig.isDevelopmentMode()) {
+                console.warn('Button components should not be embedded. Some APIs, e.g. Accessibility, will not work.');
+            }
         }
     }
 

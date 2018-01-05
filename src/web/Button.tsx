@@ -12,6 +12,7 @@ import ReactDOM = require('react-dom');
 import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
+import AppConfig from '../common/AppConfig';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
@@ -77,7 +78,9 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         super(props, context);
 
         if (context.hasRxButtonAscendant) {
-            console.warn('Button components should not be embedded. Some APIs, e.g. Accessibility, will not work.');
+            if (AppConfig.isDevelopmentMode()) {
+                console.warn('Button components should not be embedded. Some APIs, e.g. Accessibility, will not work.');
+            }
         }
     }
 
