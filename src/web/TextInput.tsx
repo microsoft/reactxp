@@ -122,10 +122,28 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onMouseUp={ this._checkSelectionChanged }
                     onPaste={ this._onPaste }
                     aria-label={ this.props.accessibilityLabel }
-                    type={ this.props.secureTextEntry ? 'password' : 'text' }
+                    type={ this.props.secureTextEntry ? 'password' : this._getKeyboardType() }
                 />
             );
         }
+    }
+
+    private _getKeyboardType = () => {
+        // Show the correct virtual keyboardType in HTML 5
+        let keyboardType = 'text';
+        let keyboardTypeProp = this.props.keyboardType;
+        
+        if (keyboardTypeProp === 'default') {
+            keyboardType = 'text';
+        } else if (keyboardTypeProp === 'numeric') {
+            keyboardType = 'tel';
+        } else if (keyboardTypeProp === 'email-address') {
+            keyboardType = 'email';
+        } else if (keyboardTypeProp === 'number-pad') {
+            keyboardType = 'tel';
+        }
+
+        return keyboardType;
     }
 
     private _onPaste = (e: Types.ClipboardEvent) => {
