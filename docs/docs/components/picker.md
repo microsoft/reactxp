@@ -84,14 +84,16 @@ class MyComponent extends RX.Component<null, { selectedValue: string }> {
 
     render(): JSX.Element {
         return (
-            <RX.Text numberOfLines={ 1 }>
-                <RX.Text> { 'How are you feeling? ' } </RX.Text>
+            <RX.View>
+                <RX.Text>
+                    { 'How are you feeling?' }
+                </RX.Text>
                 <RX.Picker
                     items={ pickerItems }
                     selectedValue={ this.state.selectedValue }
                     onValueChange={ this._onValueChange }
                 />
-            </RX.Text>
+            </RX.View>
         );
     }
 
