@@ -26,20 +26,18 @@ const ReactNativeAnimatedClasses = {
 };
 
 export class AnimatedImage extends RX.AnimatedImage {
+    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+
     setNativeProps(props: Types.AnimatedImageProps) {
-        const nativeComponent = this.refs['nativeComponent'] as any;
-        if (nativeComponent) {
-            if (!nativeComponent.setNativeProps) {
-                throw 'Component does not implement setNativeProps';
-            }
-            nativeComponent.setNativeProps(props);
+        if (this._mountedComponent && this._mountedComponent.setNativeProps) {
+            this._mountedComponent.setNativeProps(props);
         }
     }
 
     render() {
         return (
             <ReactNativeAnimatedClasses.Image
-                ref='nativeComponent'
+                ref={ this._onMount }
                 { ...this.props }
                 style={ this.props.style }
             >
@@ -47,23 +45,25 @@ export class AnimatedImage extends RX.AnimatedImage {
             </ReactNativeAnimatedClasses.Image>
         );
     }
+
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+        this._mountedComponent = component;
+    }
 }
 
 export class AnimatedText extends RX.AnimatedText {
+    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+
     setNativeProps(props: Types.AnimatedTextProps) {
-        const nativeComponent = this.refs['nativeComponent'] as any;
-        if (nativeComponent) {
-            if (!nativeComponent.setNativeProps) {
-                throw 'Component does not implement setNativeProps';
-            }
-            nativeComponent.setNativeProps(props);
+        if (this._mountedComponent && this._mountedComponent.setNativeProps) {
+            this._mountedComponent.setNativeProps(props);
         }
     }
 
     render() {
         return (
             <ReactNativeAnimatedClasses.Text
-                ref='nativeComponent'
+                ref={ this._onMount }
                 { ...this.props }
                 style={ this.props.style }
             >
@@ -71,61 +71,63 @@ export class AnimatedText extends RX.AnimatedText {
             </ReactNativeAnimatedClasses.Text>
         );
     }
+
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+        this._mountedComponent = component;
+    }
 }
 
 export class AnimatedTextInput extends RX.AnimatedTextInput {
+    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+
     setNativeProps(props: Types.AnimatedTextInputProps) {
-        const nativeComponent = this.refs['nativeComponent'] as any;
-        if (nativeComponent) {
-            if (!nativeComponent.setNativeProps) {
-                throw 'Component does not implement setNativeProps';
-            }
-            nativeComponent.setNativeProps(props);
+        if (this._mountedComponent && this._mountedComponent.setNativeProps) {
+            this._mountedComponent.setNativeProps(props);
         }
     }
 
     focus() {
-        const nativeComponent = this.refs['nativeComponent'] as any;
-        if (nativeComponent && nativeComponent._component) {
-            nativeComponent._component.focus();
+        if (this._mountedComponent && this._mountedComponent.focus) {
+            this._mountedComponent.focus();
         }
     }
 
     blur() {
-        const nativeComponent = this.refs['nativeComponent'] as any;
-        if (nativeComponent && nativeComponent._component) {
-            nativeComponent._component.blur();
+        if (this._mountedComponent && this._mountedComponent.blur) {
+            this._mountedComponent.blur();
         }
     }
 
     render() {
         return (
             <ReactNativeAnimatedClasses.TextInput
-                ref='nativeComponent'
+                ref={ this._onMount }
                 { ...this.props }
                 style={ this.props.style }
             />
         );
     }
+
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+        this._mountedComponent = component;
+    }
 }
 
 export class AnimatedView extends RX.AnimatedView {
+    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+
     setNativeProps(props: Types.AnimatedViewProps) {
-        const nativeComponent = this.refs['nativeComponent'] as any;
-        if (nativeComponent) {
-            if (!nativeComponent.setNativeProps) {
-                throw 'Component does not implement setNativeProps';
-            }
-            nativeComponent.setNativeProps(props);
+        if (this._mountedComponent && this._mountedComponent.setNativeProps) {
+            this._mountedComponent.setNativeProps(props);
         }
     }
 
     focus() {
-        // Native mobile platform doesn't have the notion of focus for AnimatedViews, so ignore
+        // Native mobile platform doesn't have the notion of focus for AnimatedViews, so ignore.
     }
 
     blur() {
-        // Native mobile platform doesn't have the notion of blur for AnimatedViews, so ignore
+        // Native mobile platform doesn't have the notion of blur for AnimatedViews, so ignore.
     }
 
     setFocusRestricted(restricted: boolean) {
@@ -139,13 +141,17 @@ export class AnimatedView extends RX.AnimatedView {
     render() {
         return (
             <ReactNativeAnimatedClasses.View
-                ref='nativeComponent'
+                ref={ this._onMount }
                 { ...this.props }
                 style={ this.props.style }
             >
                 { this.props.children }
             </ReactNativeAnimatedClasses.View>
         );
+    }
+
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+        this._mountedComponent = component;
     }
 }
 

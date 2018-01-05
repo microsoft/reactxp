@@ -9,7 +9,6 @@
 
 import _ = require('./utils/lodashMini');
 import React = require('react');
-import ReactDOM = require('react-dom');
 import SyncTasks = require('synctasks');
 import PropTypes = require('prop-types');
 
@@ -117,11 +116,15 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
     static contextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool
     };
+
     context: ImageContext;
 
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired
     };
+
+    private _mountedComponent: HTMLImageElement|null = null;
+
     getChildContext() {
         // Let descendant RX components know that their nearest RX ancestor is not an RX.Text.
         // Because they're in an RX.Image, they should use their normal styling rather than their
@@ -310,8 +313,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
                     alt={ this.props.accessibilityLabel }
                     onLoad={ this._onLoad }
                     onError={ this._imgOnError }
-                    key='image'
-                    ref='image'
+                    ref={ this._onMount }
                 />
             );
         }
@@ -330,6 +332,10 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         return this.context.isRxParentAText ?
             restyleForInlineText(reactElement) :
             reactElement;
+    }
+
+    protected _onMount = (component: HTMLImageElement|null) => {
+        this._mountedComponent = component;
     }
 
     private _getStyles() {
@@ -377,7 +383,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         // Measure the natural width & height of the image.
         this._nativeImageWidth = undefined;
         this._nativeImageHeight = undefined;
-        let imageDOM = ReactDOM.findDOMNode(this.refs['image']) as HTMLImageElement;
+        let imageDOM = this._mountedComponent;
         if (!imageDOM) {
             // No idea why this might happen, but check anyway...
             return;

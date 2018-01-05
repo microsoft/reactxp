@@ -54,7 +54,7 @@ export interface PopupContainerViewState {
 }
 
 export class PopupContainerView extends React.Component<PopupContainerViewProps, PopupContainerViewState> {
-    private _isMounted: boolean = false;
+    private _mountedComponent: RN.View|null = null;
     private _viewHandle: number = 0;
     private _respositionPopupTimer: number|undefined;
 
@@ -97,8 +97,7 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
     }
 
     componentDidMount () {
-        this._viewHandle = RN.findNodeHandle(this.refs['popupContainerView']);
-        this._isMounted = true;
+        this._viewHandle = RN.findNodeHandle(this._mountedComponent);
 
         if (this.props.activePopupOptions) {
             this._recalcPosition();
@@ -110,7 +109,6 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
     }
 
     componentWillUnmount() {
-        this._isMounted = false;
         this._stopRepositionPopupTimer();
     }
 
@@ -133,15 +131,19 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
         return (
             <RN.View
                 style={ style }
-                ref='popupContainerView'
+                ref={ this._onMount }
             >
-                {popupView}
+                { popupView }
             </RN.View>
         );
     }
 
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+        this._mountedComponent = component;
+    }
+
     private _recalcPosition() {
-        if (!this._isMounted) {
+        if (!this._mountedComponent) {
             return;
         }
 
@@ -149,7 +151,7 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
         RN.NativeModules.UIManager.measureInWindow(
             this.props.anchorHandle,
             (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
-                if (!this._isMounted) {
+                if (!this._mountedComponent) {
                     return;
                 }
 

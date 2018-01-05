@@ -55,6 +55,7 @@ export default class SecondPanel extends RX.Component {
     constructor(props) {
         super(props);
         this._playVideo = this._playVideo.bind(this);
+        this._onMountVideo = this._onMountVideo.bind(this);
         this._onChangeToggle = this._onChangeToggle.bind(this);
         this.state = {
             toggleValue: true,
@@ -102,7 +103,7 @@ export default class SecondPanel extends RX.Component {
                         Here is a video using the Video extension
                     </RX.Text>
                     <RXVideo
-                        ref='video'
+                        ref={ this._onMountVideo }
                         style={ styles.video }
                         source={ 'https://www.w3schools.com/html/mov_bbb.mp4' }
                         loop={ true }
@@ -114,11 +115,14 @@ export default class SecondPanel extends RX.Component {
     }
 
     _playVideo() {
-        const video = this.refs['video'];
-        if (video) {
-            video.mute(true);
-            video.play();
+        if (this._mountedVideo) {
+            this._mountedVideo.mute(true);
+            this._mountedVideo.play();
         }
+    }
+
+    _onMountVideo(component) {
+        this._mountedVideo = component;
     }
 
     _startProgressIndicator() {

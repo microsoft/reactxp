@@ -37,20 +37,12 @@ export class Image extends React.Component<Types.ImageProps, {}> {
         return defer.promise();
     }
 
-    private _isMounted = false;
+    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
     private _nativeImageWidth: number|undefined;
     private _nativeImageHeight: number|undefined;
 
     protected _getAdditionalProps(): RN.ImageProperties | {} {
         return {};
-    }
-
-    componentDidMount() {
-        this._isMounted = true;
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
     }
 
     render() {
@@ -80,7 +72,7 @@ export class Image extends React.Component<Types.ImageProps, {}> {
 
         return (
             <RN.Image
-                ref='nativeImage'
+                ref={ this._onMount }
                 style={ this.getStyles() }
                 source={ imageSource }
                 resizeMode={ resizeMode }
@@ -96,8 +88,14 @@ export class Image extends React.Component<Types.ImageProps, {}> {
         );
     }
 
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+        this._mountedComponent = component;
+    }
+
     public setNativeProps(nativeProps: RN.ImageProperties) {
-        (this.refs['nativeImage'] as RN.Image).setNativeProps(nativeProps);
+        if (this._mountedComponent) {
+            this._mountedComponent.setNativeProps(nativeProps);
+        }
     }
 
     protected getStyles() {
@@ -105,7 +103,7 @@ export class Image extends React.Component<Types.ImageProps, {}> {
     }
 
     private _onLoad = (e: React.SyntheticEvent<Image>) => {
-        if (!this._isMounted) {
+        if (!this._mountedComponent) {
             return;
         }
 
@@ -119,7 +117,7 @@ export class Image extends React.Component<Types.ImageProps, {}> {
     }
 
     private _onError = (e: React.SyntheticEvent<Image>) => {
-        if (!this._isMounted) {
+        if (!this._mountedComponent) {
             return;
         }
 

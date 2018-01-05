@@ -22,9 +22,13 @@ const _styles = {
 };
 
 export class Text extends React.Component<Types.TextProps, {}> {
+    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+
     // To be able to use Text inside TouchableHighlight/TouchableOpacity
     public setNativeProps(nativeProps: RN.TextProps) {
-        (this.refs['nativeText'] as any).setNativeProps(nativeProps);
+        if (this._mountedComponent) {
+            this._mountedComponent.setNativeProps(nativeProps);
+        }
     }
 
     render() {
@@ -32,7 +36,7 @@ export class Text extends React.Component<Types.TextProps, {}> {
         return (
             <RN.Text
                 style={ this._getStyles() }
-                ref='nativeText'
+                ref={ this._onMount }
                 importantForAccessibility={ importantForAccessibility }
                 numberOfLines={ this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
@@ -45,6 +49,10 @@ export class Text extends React.Component<Types.TextProps, {}> {
                 { this.props.children }
             </RN.Text>
         );
+    }
+
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+        this._mountedComponent = component;
     }
 
     protected _getStyles(): Types.StyleRuleSetRecursiveArray<Types.TextStyleRuleSet> {

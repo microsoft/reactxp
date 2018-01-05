@@ -78,6 +78,8 @@ let _customStyles = {
 const _defaultScrollThrottleValue = 1000 / 60;
 
 export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements RX.ScrollView {
+    private _mountedComponent: HTMLElement|null = null;
+
     constructor(props: Types.ScrollViewProps) {
         super(props);
 
@@ -172,8 +174,8 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         }
     }
 
-    protected _getContainerRef(): React.ReactInstance {
-        return this.refs['scrollView'];
+    protected _getContainer(): HTMLElement|null {
+        return this._mountedComponent;
     }
 
     // Throttled scroll handler
@@ -231,7 +233,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
     private _renderNormal() {
         return (
             <div
-                ref='scrollView'
+                    ref={ this._onMount }
                 onScroll={ this._onScroll }
                 onTouchStart={ this._onTouchStart }
                 onTouchEnd={ this._onTouchEnd }
@@ -263,7 +265,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 style={ containerStyles }
             >
                 <div
-                    ref='scrollView'
+                    ref={ this._onMount }
                     className={ scrollComponentClassNames.join(' ') }
                     onScroll={ this._onScroll }
                     style={ this._getContainerStyle() as any }
@@ -277,6 +279,10 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 </div>
             </div>
         );
+    }
+
+    protected _onMount = (component: HTMLElement|null) => {
+        this._mountedComponent = component;
     }
 
     setScrollTop(scrollTop: number, animate = false): void {

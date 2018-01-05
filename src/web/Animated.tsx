@@ -334,11 +334,10 @@ type AnimatedValueMap = { [transform: string]: AnimatedAttribute };
 
 // Function for creating wrapper AnimatedComponent around passed in component
 function createAnimatedComponent<PropsType extends Types.CommonProps>(Component: any): any {
-    var refName = 'animatedNode';
-
     class AnimatedComponentGenerated extends React.Component<PropsType, void>
             implements RX.AnimatedComponent<PropsType, void>, ValueListener {
                 
+        private _mountedComponent: any = null;
         private _propsWithoutStyle: any;
         private _processedStyle: { [attribute: string]: string};
 
@@ -479,7 +478,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         }
 
         private _getDomNode(): HTMLElement {
-            return ReactDOM.findDOMNode(this.refs[refName]) as HTMLElement;
+            return ReactDOM.findDOMNode(this._mountedComponent) as HTMLElement;
         }
 
         // Looks for the specified value object in the specified map. Returns
@@ -686,30 +685,26 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         }
 
         focus() {
-            const component = this.refs[refName] as RXView;
-            if (component.focus) {
-                component.focus();
+            if (this._mountedComponent && this._mountedComponent.focus) {
+                this._mountedComponent.focus();
             }
         }
 
         blur() {
-            const component = this.refs[refName] as RXView;
-            if (component.blur) {
-                component.blur();
+            if (this._mountedComponent && this._mountedComponent.blur) {
+                this._mountedComponent.blur();
             }
         }
 
         setFocusRestricted(restricted: boolean) {
-            const component = this.refs[refName] as RXView;
-            if (component.setFocusRestricted) {
-                component.setFocusRestricted(restricted);
+            if (this._mountedComponent && this._mountedComponent.setFocusRestricted) {
+                this._mountedComponent.setFocusRestricted(restricted);
             }
         }
 
         setFocusLimited(limited: boolean) {
-            const component = this.refs[refName] as RXView;
-            if (component.setFocusLimited) {
-                component.setFocusLimited(limited);
+            if (this._mountedComponent && this._mountedComponent.setFocusLimited) {
+                this._mountedComponent.setFocusLimited(limited);
             }
         }
 
@@ -718,11 +713,15 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                 <Component
                     style={ this._processedStyle }
                     { ...this._propsWithoutStyle }
-                    ref={ refName }
+                    ref={ this._onMount }
                 >
                     { this.props.children }
                 </Component>
             );
+        }
+
+        protected _onMount = (component: any) => {
+            this._mountedComponent = component;
         }
 
         // Update the component's display name for easy debugging in react devtools extension

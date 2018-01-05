@@ -30,6 +30,7 @@ export interface TextInputState {
 export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
     private _selectionStart: number = 0;
     private _selectionEnd: number = 0;
+    private _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
 
     constructor(props: Types.TextInputProps) {
         super(props);
@@ -54,7 +55,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         const submitTextOnEnter = this.props.submitTextOnEnter && this.props.multiline;
         return (
             <RN.TextInput
-                ref={ 'nativeTextInput' }
+                ref={ this._onMount }
                 multiline={ this.props.multiline }
                 style={ Styles.combine([_styles.defaultTextInput, this.props.style]) }
                 value={ this.state.inputValue }
@@ -93,6 +94,10 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 submitTextOnEnter={ submitTextOnEnter }
             />
         );
+    }
+
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+        this._mountedComponent = component;
     }
 
     private _onFocus = (e: Types.FocusEvent) => {
@@ -248,11 +253,15 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     blur() {
-        (this.refs['nativeTextInput'] as any).blur();
+        if (this._mountedComponent) {
+            this._mountedComponent.blur();
+        }
     }
 
     focus() {
-        (this.refs['nativeTextInput'] as any).focus();
+        if (this._mountedComponent) {
+            this._mountedComponent.focus();
+        }
     }
 
     setAccessibilityFocus() {

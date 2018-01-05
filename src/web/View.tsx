@@ -214,8 +214,8 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         return childContext;
     }
 
-    protected _getContainerRef(): React.ReactInstance {
-        return this;
+    protected _getContainer(): HTMLElement|null {
+        return ReactDOM.findDOMNode(this) as HTMLElement;
     }
 
     setFocusRestricted(restricted: boolean) {

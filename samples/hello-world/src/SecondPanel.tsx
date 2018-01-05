@@ -77,6 +77,7 @@ const alertStyles = {
 
 class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
     private _progressTimerToken: number;
+    private _mountedVideo: RXVideo;
 
     constructor(props: SecondPanelProps) {
         super(props);
@@ -127,7 +128,7 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
                         Here is a video using the Video extension
                     </RX.Text>
                     <RXVideo
-                        ref='video'
+                        ref={ this._onMountVideo }
                         style={ styles.video }
                         source={ 'https://www.w3schools.com/html/mov_bbb.mp4' }
                         loop={ true }
@@ -149,15 +150,18 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
         );
     }
 
+    private _onMountVideo = (component: RXVideo|null) => {
+        this._mountedVideo = component;
+    }
+
     private _onPressBack = () => {
         this.props.onNavigateBack();
     }
 
     private _playVideo = () => {
-        const video = this.refs['video'] as RXVideo;
-        if (video) {
-            video.mute(true);
-            video.play();
+        if (this._mountedVideo) {
+            this._mountedVideo.mute(true);
+            this._mountedVideo.play();
         }
     }
 

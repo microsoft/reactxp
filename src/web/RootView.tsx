@@ -107,6 +107,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         focusManager: PropTypes.object
     };
 
+    private _mountedComponent: HTMLDivElement|null = null;
     private _hidePopupTimer: number|undefined;
     private _respositionPopupTimer: number|undefined;
     private _clickHandlerInstalled = false;
@@ -278,7 +279,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             optionalPopup = (
                 <div
                     style={ popupContainerStyle }
-                    ref='popupContainer'
+                    ref={ this._onMount }
                     onMouseEnter={ e => this._onMouseEnter(e) }
                     onMouseLeave={ e => this._onMouseLeave(e) }
                 >
@@ -317,13 +318,13 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         );
     }
 
+    protected _onMount = (component: HTMLDivElement|null) => {
+        this._mountedComponent = component;
+    }
+
     private _tryClosePopup = (e: MouseEvent) => {
         // Dismiss a visible popup if there's a click outside.
-        const reactPopupContainer = this.refs['popupContainer'];
-        if (!reactPopupContainer) {
-            return;
-        }
-        let popupContainer = ReactDOM.findDOMNode(reactPopupContainer);
+        const popupContainer = this._mountedComponent;
         if (!popupContainer) {
             return;
         }
@@ -520,12 +521,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         let newState: RootViewState = _.extend({}, this.state);
 
         if (this.state.isMeasuringPopup) {
-            const popupContainer = this.refs['popupContainer'];
-            if (!popupContainer) {
-                return;
-            }
             // Get the width/height of the popup.
-            let popup = ReactDOM.findDOMNode(popupContainer) as HTMLElement;
+            const popup = this._mountedComponent;
             if (!popup) {
                 return;
             }

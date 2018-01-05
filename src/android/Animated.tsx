@@ -18,10 +18,10 @@ import Types = require('../common/Types');
 var ReactAnimatedText = RN.Animated.createAnimatedComponent(RXText);
 
 export class AnimatedText extends CommonAnimated.Text {
-   render() {
+    render() {
         return (
             <ReactAnimatedText
-                ref='nativeComponent'
+                ref={ this._onMount }
                 { ...this.props }
                 style={ this.props.style }
             >

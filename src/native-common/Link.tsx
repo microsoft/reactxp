@@ -15,16 +15,20 @@ import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export class Link extends React.Component<Types.LinkProps, {}> {
+    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+
     // To be able to use Link inside TouchableHighlight/TouchableOpacity
     public setNativeProps(nativeProps: RN.TextProps) {
-        (this.refs['nativeLink'] as any).setNativeProps(nativeProps);
+        if (this._mountedComponent) {
+            this._mountedComponent.setNativeProps(nativeProps);
+        }
     }
 
     render() {
         return (
             <RN.Text
                 style={ this.props.style }
-                ref='nativeLink'
+                ref={ this._onMount }
                 numberOfLines={ this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines }
                 onPress={ this._onPress }
                 onLongPress={ this._onLongPress }
@@ -34,6 +38,10 @@ export class Link extends React.Component<Types.LinkProps, {}> {
                 { this.props.children }
             </RN.Text>
         );
+    }
+
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+        this._mountedComponent = component;
     }
 
     private _onPress = (e: RX.Types.SyntheticEvent) => {

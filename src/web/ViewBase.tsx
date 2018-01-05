@@ -8,7 +8,6 @@
 */
 
 import _ = require('./utils/lodashMini');
-import React = require('react');
 import ReactDOM = require('react-dom');
 
 import RX = require('../common/Interfaces');
@@ -28,18 +27,8 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
     private static _appActivationState = Types.AppActivationState.Active;
 
     abstract render(): JSX.Element;
-    protected abstract _getContainerRef(): React.ReactInstance;
+    protected abstract _getContainer(): HTMLElement|null;
     private _isMounted = false;
-    private _container: HTMLElement|undefined;
-
-    protected _getContainer(): HTMLElement {
-        // Perf: Don't prefetch this since we might never need it
-        const containerRef = this._getContainerRef();
-        if (!this._container && containerRef) {
-            this._container = ReactDOM.findDOMNode(containerRef) as HTMLElement;
-        }
-        return this._container!!!;
-    }
 
     // Sets the activation state so we can stop our periodic timer
     // when the app is in the background.
@@ -220,10 +209,6 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
 
     componentWillUnmount() {
         this._isMounted = false;
-
-        // Don't retain a reference to a DOM object. This can cause memory leaks
-        // because the GC may not be able to clean them up.
-        this._container = undefined;
 
         if (this.props.onLayout) {
             this._checkViewCheckerUnbuild();

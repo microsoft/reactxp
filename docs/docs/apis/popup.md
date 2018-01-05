@@ -124,7 +124,7 @@ onHoverEnd() {
 displayPopup() {
     let popupOptions: RX.Types.PopupOptions = {
         getAnchor: () => {
-            return this.refs['myButton'];
+            return this._mountedButton;
         },
         renderPopup: (anchorPosition: Types.PopupPosition, anchorOffset: number,
                 popupWidth: number, popupHeight: number) => {

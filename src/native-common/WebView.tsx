@@ -21,15 +21,15 @@ const _styles = {
     })
 };
 
-const WEBVIEW_REF = 'webview';
-
 export class WebView extends RX.ViewBase<Types.WebViewProps, {}> implements RX.WebView {
+    private _mountedComponent: RN.WebView|null = null;
+
     render() {
         let styles = [_styles.webViewDefault, this.props.style];
 
         return (
             <RN.WebView
-                ref= { WEBVIEW_REF }
+                ref={ this._onMount }
                 style={ styles }
                 onNavigationStateChange={ this.props.onNavigationStateChange }
                 onShouldStartLoadWithRequest={ this.props.onShouldStartLoadWithRequest }
@@ -46,28 +46,29 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, {}> implements RX.W
         );
     }
 
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+        this._mountedComponent = component as RN.WebView;
+    }
+
     postMessage(message: string, targetOrigin: string = '*') {
         // Not Implemented...
     }
         
     reload() {
-        const webView : RN.WebView = this.refs[WEBVIEW_REF] as RN.WebView;
-        if (webView) {
-            webView.reload();
+        if (this._mountedComponent) {
+            this._mountedComponent.reload();
         }
     }
 
     goBack() {
-        const webView : RN.WebView = this.refs[WEBVIEW_REF] as RN.WebView;
-        if (webView) {
-            webView.goBack();
+        if (this._mountedComponent) {
+            this._mountedComponent.goBack();
         }
     }
     
     goForward() {
-        const webView : RN.WebView = this.refs[WEBVIEW_REF] as RN.WebView;
-        if (webView) {
-            webView.goForward();
+        if (this._mountedComponent) {
+            this._mountedComponent.goForward();
         }
     }
 }

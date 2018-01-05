@@ -36,7 +36,7 @@ export class Text extends CommonText {
         return (
             <RN.Text
                 style={ this._getStyles() }
-                ref='nativeText'
+                ref={ this._onMount }
                 importantForAccessibility={ importantForAccessibility }
                 numberOfLines={ this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
