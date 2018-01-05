@@ -30,8 +30,12 @@ export class FrontLayerViewManager {
         this._renderRootView();
     }
 
-    isModalDisplayed(modalId: string): boolean {
-        return this._modalStack.some(d => d.id === modalId);
+    isModalDisplayed(modalId?: string): boolean {
+        if (modalId) {
+            return this._modalStack.some(d => d.id === modalId);
+        } else {
+            return this._modalStack.length > 0;
+        }
     }
 
     showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions) {
