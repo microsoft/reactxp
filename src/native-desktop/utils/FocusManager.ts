@@ -163,9 +163,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
             console.error('FocusableComponentMixin: focus sink error!');
         }
 
-        if (origCallback) {
-            origCallback.call(this);
-        }
+        origCallback.call(this);
     });
 
     // Hook 'getTabIndex'

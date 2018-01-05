@@ -144,8 +144,9 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     }
 
     getTabIndex(): number | undefined {
+        // Link defaults to a tabIndex of 0
         // Focus Manager may override this
-        return 0;
+        return this.props.tabIndex || 0;
     }
 
     updateNativeTabIndex(): void {
