@@ -15,4 +15,5 @@ This app provides tests for all of the functionality exposed by ReactXP.
 
 - Run `npm run rn-watch`. This compiles the TypeScript code and recompiles it whenever any files are changed.
 - In another command prompt run `npm start`. This starts the React Native Packager.
-- Use Xcode or Android Studio to build and deploy the native app code just like you would with any other React Native project.
+- For iOS or Android: Use Xcode or Android Studio to build and deploy the native app code just like you would with any other React Native project.
+- For Windows: Open `windows\RXPTest.sln` in Visual Studio 2017. Build and run the app for x64 or x86.
