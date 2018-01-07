@@ -129,7 +129,6 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
                 <RX.View style={ _styles.scrollViewContainer }>
                     <RX.ScrollView
                         style={ _styles.scrollView1 }
-                        pagingEnabled={ true }
                         snapToInterval={ 50 }
                         scrollsToTop={ true }
                     >
