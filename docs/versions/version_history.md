@@ -16,6 +16,25 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.51.0-alpha.1 of reactxp
+_Released 6 Jan 2018_
+
+Fixed break in device dimension change event due to change in RN.
+Removed use of RX.Button implementation within RX.View for native-common implementation.
+Fixed bug in web implementation of RX.Clipboard.getText. It shouldn't throw.
+Fixed timing bug in web implementation of GestureView.
+Fixed popup positioning for right-to-left languages in native-common implementation.
+Fixed bug in web implementation of TextInput that caused assertion in React.
+Breaking change: Removed 'cursor' prop from RX.Button. It was redundant with the 'cursor' style.
+New feature: RX.Input.key[Up|Down]Event now allow event subscribers to cancel the event.
+New feature: Changed RX.Modal.isDisplayed to accept undefined parameter, in which case it determines whether _any_ modal is displayed.
+New feature: Added RX.Popup.isDisplayed method.
+Reimplemented web implementation of animation APIs. Removed many limitations of previous implementation and fixed several bugs. Documented remaining limitations.
+Fixed bug in web implementation of RX.TextInput that resulted in assertions within React.
+Fixed bug in web implementation of RX.Picker. It wasn't correctly combining styles.
+Added support in web implementation of RX.TextInput for keyboard type (applicable on mobile web browsers).
+Removed use of deprecated RX.NetInfo.fetch method.
+
 #### Version 0.46.6 of reactxp
 _Released 13 Dec 2017_
 
