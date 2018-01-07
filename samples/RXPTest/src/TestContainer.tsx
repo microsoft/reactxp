@@ -42,6 +42,7 @@ const _styles = {
         color: CommonStyles.buttonTextColor
     }),
     titleText: RX.Styles.createTextStyle({
+        flex: -1,
         fontSize: CommonStyles.buttonFontSize,
         marginHorizontal: 12
     }),
@@ -214,7 +215,7 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
                             { 'Back' }
                         </RX.Text>
                     </RX.Button>
-                    <RX.Text style={ _styles.titleText }>
+                    <RX.Text style={ _styles.titleText } numberOfLines={ 1 }>
                         { TestRegistry.formatPath(test.getPath()) }
                     </RX.Text>
                     { rightButton }

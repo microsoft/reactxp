@@ -55,7 +55,8 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
             <RX.View style={ _styles.container}>
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'A variety of views with different styles should appear below' }
+                        { 'A variety of views with different styles should appear below. ' +
+                          'Interact with them to test.' }
                     </RX.Text>
                 </RX.View>
                 <RX.View

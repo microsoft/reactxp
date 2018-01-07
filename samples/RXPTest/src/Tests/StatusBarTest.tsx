@@ -74,7 +74,7 @@ class StatusBarView extends RX.Component<RX.CommonProps, StatusBarViewState> {
         RX.StatusBar.setHidden(false, 'fade');
         RX.StatusBar.setBarStyle('default', true);
         RX.StatusBar.setNetworkActivityIndicatorVisible(true);
-        RX.StatusBar.setBackgroundColor('', true);
+        RX.StatusBar.setBackgroundColor('black', true);
         RX.StatusBar.setTranslucent(false);
     }
 
@@ -110,7 +110,7 @@ class StatusBarView extends RX.Component<RX.CommonProps, StatusBarViewState> {
 
                 <RX.View style={ _styles.textContainer } key={ 'explanation2' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'Press button to hide and show the status bar using fade transition.' }
+                        { 'Press button to hide and show the status bar.' }
                     </RX.Text>
                 </RX.View>
                 <RX.Button
@@ -121,12 +121,6 @@ class StatusBarView extends RX.Component<RX.CommonProps, StatusBarViewState> {
                         { this.state.isStatusBarHidden ? 'Show (Fade)' : 'Hide (Fade)' }
                     </RX.Text>
                 </RX.Button>
-
-                <RX.View style={ _styles.textContainer } key={ 'explanation3' }>
-                    <RX.Text style={ _styles.explainText }>
-                        { 'Press button to hide and show the status bar using slide transition.' }
-                    </RX.Text>
-                </RX.View>
                 <RX.Button
                     style={ _styles.button }
                     onPress={ () => this._toggleStatusBar('slide') }
@@ -147,7 +141,7 @@ class StatusBarView extends RX.Component<RX.CommonProps, StatusBarViewState> {
 
                 <RX.View style={ _styles.textContainer } key={ 'explanation5' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'Press button to toggle the network activity indicator.' }
+                        { 'Press button to toggle the network activity indicator (iOS only).' }
                     </RX.Text>
                 </RX.View>
                 <RX.Button
@@ -155,7 +149,7 @@ class StatusBarView extends RX.Component<RX.CommonProps, StatusBarViewState> {
                     onPress={ () => this._toggleNetworkIndicator() }
                 >
                     <RX.Text style={ _styles.buttonText }>
-                        { this.state.isNetworkVisible ? 'Hide' : 'Show' }
+                        { this.state.isNetworkVisible ? 'Hide Network Indicator' : 'Show Network Indicator' }
                     </RX.Text>
                 </RX.Button>
 

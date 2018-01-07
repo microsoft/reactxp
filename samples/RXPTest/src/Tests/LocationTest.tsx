@@ -88,7 +88,7 @@ class LocationView extends RX.Component<RX.CommonProps, LocationState> {
                 </RX.View>
                 <RX.View style={ _styles.labelContainer }>
                     <RX.Text style={ _styles.labelText }>
-                        { this.state.isLocationAvailable ? 'Available' : 'Not Available' }
+                        { this.state.isLocationAvailable ? 'Geolocation Available' : 'Geolocation Not Available' }
                     </RX.Text>
                 </RX.View>
 

@@ -66,7 +66,7 @@ const _styles = {
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        width: 120,
+        width: 80,
         marginHorizontal: 12
     }),
     itemText: RX.Styles.createTextStyle({
