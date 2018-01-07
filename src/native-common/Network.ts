@@ -35,28 +35,26 @@ export class Network extends RX.Network {
     }
 
     getType(): SyncTasks.Promise<Types.DeviceNetworkType> {
-        return SyncTasks.fromThenable(RN.NetInfo.fetch().then(networkType =>
-            Network._NativeNetworkTypeToDeviceNetworkType(networkType)));
+        return SyncTasks.fromThenable(RN.NetInfo.getConnectionInfo()).then(info => {
+            return Network._getNetworkType(info);
+        });
     }
 
     private _onEventOccured(isConnected: boolean) {
         this.connectivityChangedEvent.fire(isConnected);
     }
 
-    private static _NativeNetworkTypeToDeviceNetworkType(networkType: string): Types.DeviceNetworkType {
-        switch (networkType) {
-            case 'UNKNOWN':
-                return Types.DeviceNetworkType.Unknown;
-            case 'NONE':
-                return Types.DeviceNetworkType.None;
-            case 'WIFI':
-                return Types.DeviceNetworkType.Wifi;
-            case 'MOBILE_2G':
-                return Types.DeviceNetworkType.Mobile2G;
-            case 'MOBILE_3G':
-                return Types.DeviceNetworkType.Mobile3G;
-            case 'MOBILE_4G':
-                return Types.DeviceNetworkType.Mobile4G;
+    private static _getNetworkType(info: RN.ConnectionInfo): Types.DeviceNetworkType {
+        if (info.effectiveType === '2g') {
+            return Types.DeviceNetworkType.Mobile2G;
+        } else if (info.effectiveType === '3g') {
+            return Types.DeviceNetworkType.Mobile3G;
+        } else if (info.effectiveType === '4g') {
+            return Types.DeviceNetworkType.Mobile4G;
+        } else if (info.type === 'wifi' || info.type === 'ethernet') {
+            return Types.DeviceNetworkType.Wifi;
+        } else if (info.type === 'none') {
+            return Types.DeviceNetworkType.None;
         }
 
         return Types.DeviceNetworkType.Unknown;

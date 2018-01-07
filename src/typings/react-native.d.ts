@@ -880,13 +880,18 @@ declare module 'react-native' {
          static clear(callback: (error: any) => void): void;
      }
 
+     interface ConnectionInfo {
+         type: 'none' | 'wifi' | 'cellular' | 'bluetooth' | 'ethernet' | 'wimax' | 'unknown';
+         effectiveType: '2g' | '3g' | '4g' | 'unknown';
+     }
+
      class NetInfo {
          static isConnected: {
              addEventListener: (eventName: string, handler: (isConnected: boolean) => void) => void;
              removeEventListener: (eventName: string, handler: (isConnected: boolean) => void) => void;
              fetch: () => Promise<boolean>;
          }
-         static fetch(): Promise<string>;
+         static getConnectionInfo(): Promise<ConnectionInfo>;
      }
 
      class Easing {
