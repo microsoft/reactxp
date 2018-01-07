@@ -21,13 +21,10 @@
     "webpack": "2.2.1"
   },
   "dependencies": {
-    "react": "16.0.0-rc.3",
-    "react-dom": "16.0.0-rc.3",
-    "react-native": "^0.46.0",
+    "react": "16.2.0",
+    "react-dom": "16.2.0",
+    "react-native": "^0.51.0",
     "react-native-windows": "^0.46.0-rc.0",
-    "reactxp": "^0.46.2",
-    "reactxp-imagesvg": "^0.2.7",
-    "reactxp-navigation": "^1.0.14",
-    "reactxp-video": "^0.2.2"
+    "reactxp": "^0.51.0-alpha.1"
   }
 }
