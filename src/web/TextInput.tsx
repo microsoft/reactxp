@@ -101,11 +101,14 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 />
             );
         } else {
-            return (
+            let keyboardType = this._getKeyboardType().keyboardType;
+            let wrapInForm = this._getKeyboardType().wrapInForm;
+
+            let input = (
                 <input
                     style={ combinedStyles as any }
-                    value={ this.props.defaultValue ? undefined : this.state.inputValue }
-                    defaultValue={ this.props.defaultValue || undefined }
+                    value={ this.props.defaultValue ? '' : this.state.inputValue }
+                    defaultValue={ this.props.defaultValue }
 
                     autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
@@ -122,16 +125,29 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onMouseUp={ this._checkSelectionChanged }
                     onPaste={ this._onPaste }
                     aria-label={ this.props.accessibilityLabel }
-                    type={ this.props.secureTextEntry ? 'password' : this._getKeyboardType() }
+                    type={ this.props.secureTextEntry ? 'password' : keyboardType }
                 />
             );
+
+            if (wrapInForm) {
+                // Wrap the input in a form tag if required
+                input = (
+                    <form action=''>
+                        { input }
+                    </form>
+                );
+            }
+
+            return input;
         }
     }
 
     private _getKeyboardType = () => {
         // Show the correct virtual keyboardType in HTML 5
         let keyboardType = 'text';
+        let wrapInForm = false;
         let keyboardTypeProp = this.props.keyboardType;
+        let returnKeyTypeProp = this.props.returnKeyType;
         
         if (keyboardTypeProp === 'default') {
             keyboardType = 'text';
@@ -143,7 +159,13 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             keyboardType = 'tel';
         }
 
-        return keyboardType;
+        if (returnKeyTypeProp === 'search') {
+            keyboardType = 'search';
+            wrapInForm = true;
+        }
+
+        let keyboardTypeObject = { keyboardType, wrapInForm };
+        return keyboardTypeObject;
     }
 
     private _onPaste = (e: Types.ClipboardEvent) => {
