@@ -79,7 +79,7 @@ export class FrontLayerViewManager {
     public showPopup(
         popupOptions: Types.PopupOptions, popupId: string, delay?: number): boolean {
         const index = this._findIndexOfPopup(popupId);
-        
+
         if (index === -1) {
             this._overlayStack.push(new PopupStackContext(popupId, popupOptions, RN.findNodeHandle(popupOptions.getAnchor())));
 
@@ -117,9 +117,9 @@ export class FrontLayerViewManager {
             return null;
         }
 
-        const overlayContext = 
+        const overlayContext =
             _.findLast(
-                this._overlayStack, 
+                this._overlayStack,
                 context => context instanceof ModalStackContext && this.modalOptionsMatchesRootViewId(context.modalOptions, rootViewId)
             ) as ModalStackContext;
 
@@ -131,6 +131,14 @@ export class FrontLayerViewManager {
             );
         }
 
+        return null;
+    }
+
+    public getActivePopupId() : string | null {
+        let activeOverlay = this._getActiveOverlay();
+        if (activeOverlay && (activeOverlay instanceof PopupStackContext)) {
+            return activeOverlay.popupId;
+        }
         return null;
     }
 
@@ -146,9 +154,9 @@ export class FrontLayerViewManager {
             return null;
         }
 
-        const overlayContext = 
+        const overlayContext =
             _.findLast(
-                this._overlayStack, 
+                this._overlayStack,
                 context => context instanceof PopupStackContext && context.popupOptions.rootViewId === rootViewId
             ) as PopupStackContext;
 
@@ -188,16 +196,16 @@ export class FrontLayerViewManager {
                     activePopupContext.anchorHandle,
                     (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
                         const touchEvent = e.nativeEvent as any;
-                        let anchorRect: ClientRect = { left: x, top: y, right: x + width, 
+                        let anchorRect: ClientRect = { left: x, top: y, right: x + width,
                                 bottom: y + height, width: width, height: height };
 
                         // Find out if the press event was on the anchor so we can notify the caller about it.
                         if (!_.isUndefined(touchEvent.pageX) && !_.isUndefined(touchEvent.pageY) &&
                                 touchEvent.pageX >= anchorRect.left && touchEvent.pageX < anchorRect.right
                                 && touchEvent.pageY >= anchorRect.top && touchEvent.pageY < anchorRect.bottom) {
-                            // Showing another animation while dimissing the popup creates a conflict in the 
+                            // Showing another animation while dimissing the popup creates a conflict in the
                             // UI making it not doing one of the two animations (i.e.: Opening an actionsheet
-                            // while dismissing a popup). We introduce this delay to make sure the popup 
+                            // while dismissing a popup). We introduce this delay to make sure the popup
                             // dimissing animation has finished before we call the event handler.
                             setTimeout(() => { activePopupContext.popupOptions.onAnchorPressed!!!(e); }, 500);
                         }

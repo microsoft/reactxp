@@ -21,9 +21,11 @@ import ViewBase from './ViewBase';
 
 let LayoutAnimation = RN.LayoutAnimation;
 
-function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}) {
+function noop() { /* noop */ }
+
+function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, propertiesToSkip: string[]) {
     Object.getOwnPropertyNames(mixin).forEach(name => {
-        if (name !== 'constructor') {
+        if (name !== 'constructor' && propertiesToSkip.indexOf(name) === -1) {
             assert(
                 !(name in thisObj),
                 `An object cannot have a method with the same name as one of its mixins: "${name}"`
@@ -33,9 +35,9 @@ function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}) {
     });
 }
 
-function removeMixin(thisObj: any, mixin: {[propertyName: string]: any}) {
+function removeMixin(thisObj: any, mixin: {[propertyName: string]: any}, propertiesToSkip: string[]) {
     Object.getOwnPropertyNames(mixin).forEach(name => {
-        if (name !== 'constructor') {
+        if (name !== 'constructor' && propertiesToSkip.indexOf(name) === -1) {
             assert(
                 (name in thisObj),
                 `An object is missing a mixin method: "${name}"`
@@ -105,7 +107,7 @@ function _childrenEdited(prevChildrenKeys: ChildKey[], nextChildrenKeys: ChildKe
 }
 
 export class View extends ViewBase<Types.ViewProps, {}> {
-    private _internalProps: any = {};
+    protected _internalProps: any = {};
 
     touchableGetInitialState: () => RN.Touchable.State;
     touchableHandleStartShouldSetResponder: () => boolean;
@@ -117,6 +119,9 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
     private _mixinIsApplied = false;
     private _childrenKeys: ChildKey[];
+
+    private _mixin_componentDidMount = noop;
+    private _mixin_componentWillUnmount = noop;
 
     constructor(props: Types.ViewProps) {
         super(props);
@@ -188,10 +193,29 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
     }
 
+    // componentDidMount & componentWillUnmount don't do anything in particular, but implmenenting them explicitly
+    // (rather than letting the mixin ones be applied on View) allows derived components the flexibility of having
+    // implementations for these as well.
+    componentDidMount() {
+        this._mixin_componentDidMount();
+    }
+
+    componentWillUnmount() {
+        this._mixin_componentWillUnmount();
+    }
+
     private _updateMixin(props: Types.ViewProps, initial: boolean) {
         let isButton = this._isButton(props);
         if (isButton && !this._mixinIsApplied) {
-            applyMixin(this, RN.Touchable.Mixin);
+            applyMixin(this, RN.Touchable.Mixin, [
+                // Properties that View and RN.Touchable.Mixin have in common. View needs
+                // to dispatch these methods to RN.Touchable.Mixin manually.
+                'componentDidMount',
+                'componentWillUnmount'
+            ]);
+
+            this._mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount || noop;
+            this._mixin_componentWillUnmount = RN.Touchable.Mixin.componentWillUnmount || noop;
 
             if (initial) {
                 this.state = this.touchableGetInitialState();
@@ -200,7 +224,14 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             }
             this._mixinIsApplied = true;
         } else if (!isButton && this._mixinIsApplied) {
-            removeMixin(this, RN.Touchable.Mixin);
+            removeMixin(this, RN.Touchable.Mixin, [
+                'componentDidMount',
+                'componentWillUnmount'
+            ]);
+
+            this._mixin_componentDidMount = noop;
+            this._mixin_componentWillUnmount = noop;
+
             this._mixinIsApplied = false;
         }
     }
@@ -210,7 +241,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
      * be careful with setting any non layout properties unconditionally in this method to any value
      * as on android that would lead to extra layers of Views.
      */
-    private _buildInternalProps(props: Types.ViewProps) {
+    protected _buildInternalProps(props: Types.ViewProps) {
         this._internalProps = _.clone(props) as any;
         this._internalProps.style = this._getStyles(props);
         this._internalProps.ref = this._setNativeView;
@@ -249,38 +280,6 @@ export class View extends ViewBase<Types.ViewProps, {}> {
                 onResponderTerminate: this.touchableHandleResponderTerminate
             };
             this._internalProps = _.extend(this._internalProps, responderProps);
-        }
-
-        if (RN.Platform.OS === 'windows') {
-            this._processDragAndDropProps();
-        }
-    }
-
-    private _processDragAndDropProps() {
-        for (const name of ['onDragEnter', 'onDragOver', 'onDrop', 'onDragLeave']) {
-            const handler = this._internalProps[name];
-
-            if (handler) {
-                this._internalProps.allowDrop = true;
-
-                this._internalProps[name] = (e: React.SyntheticEvent<View>) => {
-                    handler({
-                        dataTransfer: (e.nativeEvent as any).dataTransfer,
-
-                        stopPropagation() {
-                            if (e.stopPropagation) {
-                                e.stopPropagation();
-                            }
-                        },
-
-                        preventDefault() {
-                            if (e.preventDefault) {
-                                e.preventDefault();
-                            }
-                        },
-                    });
-                };
-            }
         }
     }
 

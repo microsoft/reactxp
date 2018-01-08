@@ -7,6 +7,7 @@
 * RN-specific implementation of the cross-platform Image abstraction.
 */
 
+import PropTypes = require('prop-types');
 import React = require('react');
 import RN = require('react-native');
 import SyncTasks = require('synctasks');
@@ -24,7 +25,15 @@ const _styles = {
     })
 };
 
-export class Image extends React.Component<Types.ImageProps, {}> {
+export interface ImageContext {
+    isRxParentAText?: boolean;
+}
+
+export class Image extends React.Component<Types.ImageProps, {}> implements React.ChildContextProvider<ImageContext> {
+    static childContextTypes: React.ValidationMap<any> = {
+        isRxParentAText: PropTypes.bool.isRequired,
+    };
+
     static prefetch(url: string): SyncTasks.Promise<boolean> {
         const defer = SyncTasks.Defer<boolean>();
 
@@ -96,6 +105,13 @@ export class Image extends React.Component<Types.ImageProps, {}> {
         if (this._mountedComponent) {
             this._mountedComponent.setNativeProps(nativeProps);
         }
+    }
+
+    getChildContext() {
+        // Let descendant RX components know that their nearest RX ancestor is not an RX.Text.
+        // Because they're in an RX.View/etc, they should use their normal styling rather than their
+        // special styling for appearing inline with text.
+        return { isRxParentAText: false };
     }
 
     protected getStyles() {

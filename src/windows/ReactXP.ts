@@ -10,7 +10,7 @@
 
 import React = require('react');
 
-import AnimatedImpl = require('../native-common/Animated');
+import AnimatedImpl = require('./Animated');
 import RXInterfaces = require('../common/Interfaces');
 import RXModuleInterface = require('../common/ModuleInterface');
 import RXTypes = require('../common/Types');
@@ -21,30 +21,30 @@ import RXTypes = require('../common/Types');
 import AccessibilityImpl from './Accessibility';
 import ActivityIndicatorImpl from '../native-common/ActivityIndicator';
 import AlertImpl from '../native-common/Alert';
-import AppImpl from '../native-common/App';
-import ButtonImpl from '../native-common/Button';
+import AppImpl from '../native-desktop/App';
+import ButtonImpl from './Button';
 import PickerImpl from '../native-common/Picker';
 import ImageImpl from '../native-common/Image';
 import ClipboardImpl from '../native-common/Clipboard';
 import GestureViewImpl from './GestureView';
 import InputImpl from '../native-common/Input';
 import InternationalImpl from '../native-common/International';
-import LinkImpl from '../native-common/Link';
+import LinkImpl from './Link';
 import LinkingImpl from './Linking';
 import LocationImpl from '../common/Location';
 import ModalImpl from '../native-common/Modal';
 import NetworkImpl from '../native-common/Network';
 import PlatformImpl from '../native-common/Platform';
 import PopupImpl from '../native-common/Popup';
-import ScrollViewImpl from '../native-common/ScrollView';
+import ScrollViewImpl from './ScrollView';
 import StatusBarImpl from './StatusBar';
 import StorageImpl from '../native-common/Storage';
 import StylesImpl from '../native-common/Styles';
 import TextImpl from '../native-common/Text';
-import TextInputImpl from '../native-common/TextInput';
+import TextInputImpl from './TextInput';
 import UserInterfaceImpl from '../native-common/UserInterface';
 import UserPresenceImpl from '../native-common/UserPresence';
-import ViewImpl from '../native-common/View';
+import ViewImpl from './View';
 import WebViewImpl from '../native-common/WebView';
 import ViewBase from '../native-common/ViewBase';
 
@@ -57,7 +57,7 @@ ViewBase.setDefaultViewStyle(_defaultViewStyle);
 
 // Initialize Windows implementation of platform accessibility helpers inside the singleton
 // instance of native-common AccessibilityUtil. This is to let native-common components access
-// platform specific APIs through native-common implementation itself. 
+// platform specific APIs through native-common implementation itself.
 import AccessibilityUtil from '../native-common/AccessibilityUtil';
 import AccessibilityPlatformUtil from './AccessibilityUtil';
 

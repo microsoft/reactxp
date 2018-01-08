@@ -70,7 +70,7 @@ declare module 'react-native' {
     // ----------------------------------------------------------------------
 
     interface ComponentPropsBase {
-        ref?: string | ((obj: ReactNativeBaseComponent<any, any>) => void);
+        ref?: string | ((obj: ReactNativeBaseComponent<any, any> | null) => void);
         key?: string | number;
     }
 
@@ -267,6 +267,13 @@ declare module 'react-native' {
         // iOS
         onAccessibilityTapIOS?: Function;
         shouldRasterizeIOS? : boolean;
+
+        // Windows
+        onKeyDown?: Function;
+        onMouseEnter?: Function;
+        onMouseLeave?: Function;
+        onMouseOver?: Function;
+        onMouseMove?: Function;
     }
 
     interface ScrollViewProps extends ViewProps {
@@ -310,6 +317,11 @@ declare module 'react-native' {
         overScrollMode?: string; //enum( 'always', 'always-if-content-scrolls', 'never' )
         // iOS
         scrollIndicatorInsets?: {top: number, left: number, bottom: number, right: number };
+        // Windows only
+        onKeyDown? : Function;
+        onKeyUp? : Function;
+        tabNavigation? : 'local' | 'cycle' | 'once';
+        disableKeyboardBasedScrolling?: boolean;
     }
 
     interface ListViewDataSourceCallback {
@@ -397,6 +409,8 @@ declare module 'react-native' {
         textBreakStrategy?: 'highQuality' | 'simple' | 'balanced';
         // macOS only property for submitting the text on enter
         submitTextOnEnter?: boolean;
+        // Windows only
+        tabIndex?: number;
     }
 
     interface TextInputState {
@@ -794,7 +808,7 @@ declare module 'react-native' {
         scale: number;
         fontScale: number;
     }
-    
+
     type DimensionEventType = 'change';
 
     interface DimensionChangeEvent {

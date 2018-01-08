@@ -19,6 +19,16 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
     private _scrollLeft = 0;
     protected _nativeView: RN.ScrollView|undefined;
 
+    protected _render(props: RN.ScrollViewProps): JSX.Element {
+        return (
+            <RN.ScrollView
+                { ...props }
+            >
+                { props.children }
+            </RN.ScrollView>
+        );
+    }
+
     render() {
         let scrollThrottle = this.props.scrollEventThrottle || 16;
 
@@ -28,23 +38,16 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         }
 
         var layoutCallback = this.props.onLayout ?
-                // We have a callback function, call the wrapper
-                this._onLayout :
-                undefined;
+            // We have a callback function, call the wrapper
+            this._onLayout :
+            undefined;
 
         var scrollCallback = this.props.onScroll ?
-                // We have a callback function, call the wrapper
-                this._onScroll :
-                undefined;
+            // We have a callback function, call the wrapper
+            this._onScroll :
+            undefined;
 
-        // TODO: #737970 Remove special case for UWP when this bug is fixed. The bug
-        //   causes you to have to click twice instead of once on some pieces of UI in
-        //   order for the UI to acknowledge your interaction.
-        const keyboardShouldPersistTaps = (
-            RN.Platform.OS === 'windows'
-                ? 'always'
-                : (this.props.keyboardShouldPersistTaps ? 'always' : 'never')
-        );
+        const keyboardShouldPersistTaps = (this.props.keyboardShouldPersistTaps ? 'always' : 'never');
 
         // NOTE: We are setting `automaticallyAdjustContentInsets` to false
         // (http://facebook.github.io/react-native/docs/scrollview.html#automaticallyadjustcontentinsets). The
@@ -56,35 +59,35 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         // set to true.
         // We also set removeClippedSubviews to false, overriding the default value. Most of the scroll views
         // we use are virtualized anyway.
-        return (
-            <RN.ScrollView
-                ref={ this._setNativeView }
-                style={ this.props.style }
-                onScroll={ scrollCallback }
-                automaticallyAdjustContentInsets={ false }
-                showsHorizontalScrollIndicator={ this.props.showsHorizontalScrollIndicator }
-                showsVerticalScrollIndicator={ this.props.showsVerticalScrollIndicator }
-                keyboardDismissMode={  this.props.keyboardDismissMode }
-                keyboardShouldPersistTaps={ keyboardShouldPersistTaps }
-                scrollEnabled={ this.props.scrollEnabled }
-                onContentSizeChange={ this.props.onContentSizeChange }
-                onLayout={ layoutCallback }
-                scrollEventThrottle={ scrollThrottle }
-                horizontal={ this.props.horizontal }
-                bounces={ this.props.bounces }
-                pagingEnabled={ this.props.pagingEnabled }
-                snapToInterval={ this.props.snapToInterval }
-                onMoveShouldSetResponder={ this.props.onMoveShouldSetResponder }
-                scrollsToTop={ this.props.scrollsToTop }
-                removeClippedSubviews={ false }
-                overScrollMode={ this.props.overScrollMode }
-                scrollIndicatorInsets={ this.props.scrollIndicatorInsets }
-                onScrollBeginDrag={ this.props.onScrollBeginDrag }
-                onScrollEndDrag={ this.props.onScrollEndDrag }
-            >
-                { this.props.children }
-            </RN.ScrollView>
-        );
+
+        const internalProps: RN.ScrollViewProps = {
+            ref: this._setNativeView,
+            style: this.props.style,
+            onScroll: scrollCallback,
+            automaticallyAdjustContentInsets: false,
+            showsHorizontalScrollIndicator: this.props.showsHorizontalScrollIndicator,
+            showsVerticalScrollIndicator: this.props.showsVerticalScrollIndicator,
+            keyboardDismissMode:  this.props.keyboardDismissMode,
+            keyboardShouldPersistTaps: keyboardShouldPersistTaps,
+            scrollEnabled: this.props.scrollEnabled,
+            onContentSizeChange: this.props.onContentSizeChange,
+            onLayout: layoutCallback,
+            scrollEventThrottle: scrollThrottle,
+            horizontal: this.props.horizontal,
+            bounces: this.props.bounces,
+            pagingEnabled: this.props.pagingEnabled,
+            snapToInterval: this.props.snapToInterval,
+            onMoveShouldSetResponder: this.props.onMoveShouldSetResponder,
+            scrollsToTop: this.props.scrollsToTop,
+            removeClippedSubviews: false,
+            overScrollMode: this.props.overScrollMode,
+            scrollIndicatorInsets: this.props.scrollIndicatorInsets,
+            onScrollBeginDrag: this.props.onScrollBeginDrag,
+            onScrollEndDrag: this.props.onScrollEndDrag,
+            children: this.props.children
+        };
+
+        return this._render(internalProps);
     }
 
     private _onScroll = (event: React.SyntheticEvent<ScrollView>) => {

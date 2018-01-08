@@ -25,18 +25,25 @@ export class Link extends React.Component<Types.LinkProps, {}> {
     }
 
     render() {
+        let internalProps: RN.TextProps = {
+            ref: this._onMount,
+            style: this.props.style,
+            numberOfLines: this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines,
+            onPress: this._onPress,
+            onLongPress: this._onLongPress,
+            allowFontScaling: this.props.allowFontScaling,
+            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
+            children: this.props.children
+        };
+
+        return this._render(internalProps);
+    }
+
+    protected _render(internalProps: RN.TextProps) {
         return (
             <RN.Text
-                style={ this.props.style }
-                ref={ this._onMount }
-                numberOfLines={ this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines }
-                onPress={ this._onPress }
-                onLongPress={ this._onLongPress }
-                allowFontScaling={ this.props.allowFontScaling }
-                maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
-            >
-                { this.props.children }
-            </RN.Text>
+                { ...internalProps }
+            />
         );
     }
 
@@ -44,7 +51,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
         this._mountedComponent = component;
     }
 
-    private _onPress = (e: RX.Types.SyntheticEvent) => {
+    protected _onPress = (e: RX.Types.SyntheticEvent) => {
         if (this.props.onPress) {
             this.props.onPress(e, this.props.url);
             return;
@@ -58,11 +65,11 @@ export class Link extends React.Component<Types.LinkProps, {}> {
         }
     }
 
-    private _onLongPress = (e: RX.Types.SyntheticEvent) => {
+    protected _onLongPress = (e: RX.Types.SyntheticEvent) => {
         if (this.props.onLongPress) {
             this.props.onLongPress(e, this.props.url);
         }
-    }    
+    }
 }
 
 export default Link;
