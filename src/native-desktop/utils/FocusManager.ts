@@ -208,8 +208,13 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
             if (tabIndex !== undefined && tabIndex < 0) {
                 // A negative tabIndex maps to non focusable in UWP.
                 // We temporary apply a local override of "tabIndex=0", and then forward the focus command.
-                // A timer makes sure the tabIndex returns back to "non-overriden" state. Focus is never ejected if tabIndex becomes -1,
-                // for example, so the simulation is pretty accurate.
+                // A timer makes sure the tabIndex returns back to "non-overriden" state.
+                // - If the component is not under FocusManager control (a View with tabIndex===-1, for ex.), the only action
+                // available for user is to tab out.
+                // - If the component is under FocusManager control, the "tabIndex===-1" is usually due to a limit imposed on the component,
+                // and that limit is usually removed when component aquires focus. If not, the user has again one only choice left: to
+                // tab out.
+                // A more accurate solution would require tracking onBlur and other state.
                 this.tabIndexLocalOverride = 0;
 
                 // Refresh the native view
