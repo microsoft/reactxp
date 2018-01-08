@@ -11,6 +11,7 @@ import React = require('react');
 import ReactDOM = require('react-dom');
 
 import { FocusManager as FocusManagerBase,
+    FocusableComponentInternal,
     StoredFocusableComponent,
     OriginalAttributeValues } from '../../common/utils/FocusManager';
 
@@ -81,21 +82,21 @@ export class FocusManager extends FocusManagerBase {
         });
     }
 
-    protected /* static */ addFocusListenerOnComponent(component: React.Component<any, any>, onFocus: () => void): void {
+    protected /* static */ addFocusListenerOnComponent(component: FocusableComponentInternal, onFocus: () => void): void {
         const el = ReactDOM.findDOMNode(component) as HTMLElement;
         if (el) {
             el.addEventListener('focus', onFocus);
         }
     }
 
-    protected /* static */ removeFocusListenerFromComponent(component: React.Component<any, any>, onFocus: () => void): void {
+    protected /* static */ removeFocusListenerFromComponent(component: FocusableComponentInternal, onFocus: () => void): void {
         const el = ReactDOM.findDOMNode(component) as HTMLElement;
         if (el) {
             el.removeEventListener('focus', onFocus);
         }
     }
 
-    protected /* static */ focusComponent(component: React.Component<any, any>): boolean {
+    protected /* static */ focusComponent(component: FocusableComponentInternal): boolean {
         const el = ReactDOM.findDOMNode(component) as HTMLElement;
         if (el && el.focus) {
             el.focus();

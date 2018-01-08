@@ -14,10 +14,16 @@ import AppConfig from '../../common/AppConfig';
 
 let _lastComponentId: number = 0;
 
+export interface FocusableInternal {
+    focusableComponentId?: string;
+}
+
+export type FocusableComponentInternal = React.Component<any, any> & FocusableInternal;
+
 export interface StoredFocusableComponent {
     id: string;
     numericId: number;
-    component: React.Component<any, any>;
+    component: FocusableComponentInternal;
     onFocus: () => void;
     restricted: boolean;
     limitedCount: number;
@@ -63,9 +69,9 @@ export abstract class FocusManager {
         }
     }
 
-    protected abstract /* static */ addFocusListenerOnComponent(component: React.Component<any, any>, onFocus: () => void): void;
-    protected abstract /* static */ removeFocusListenerFromComponent(component: React.Component<any, any>, onFocus: () => void): void;
-    protected abstract /* static */ focusComponent(component: React.Component<any, any>): boolean;
+    protected abstract /* static */ addFocusListenerOnComponent(component: FocusableComponentInternal, onFocus: () => void): void;
+    protected abstract /* static */ removeFocusListenerFromComponent(component: FocusableComponentInternal, onFocus: () => void): void;
+    protected abstract /* static */ focusComponent(component: FocusableComponentInternal): boolean;
 
     protected abstract /* static */ resetFocus() : void;
     protected abstract /* static */ _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent): void;
@@ -73,8 +79,8 @@ export abstract class FocusManager {
     // Whenever the focusable element is mounted, we let the application
     // know so that FocusManager could account for this element during the
     // focus restriction.
-    addFocusableComponent(component: React.Component<any, any>) {
-        if ((component as any)._focusableComponentId) {
+    addFocusableComponent(component: FocusableComponentInternal) {
+        if (component.focusableComponentId) {
             return;
         }
 
@@ -92,7 +98,7 @@ export abstract class FocusManager {
             }
         };
 
-        (component as any)._focusableComponentId = componentId;
+        component.focusableComponentId = componentId;
         FocusManager._allFocusableComponents[componentId] = storedComponent;
 
         let withinRestrictionOwner: boolean = false;
@@ -118,8 +124,11 @@ export abstract class FocusManager {
         this.addFocusListenerOnComponent(component, storedComponent.onFocus);
     }
 
-    removeFocusableComponent(component: React.Component<any, any>) {
-        const componentId: string = (component as any)._focusableComponentId;
+    removeFocusableComponent(component: FocusableComponentInternal) {
+        if (!component.focusableComponentId) {
+            return;
+        }
+        const componentId: string = component.focusableComponentId;
 
         if (componentId) {
             const storedComponent: StoredFocusableComponent = FocusManager._allFocusableComponents[componentId];
@@ -139,7 +148,7 @@ export abstract class FocusManager {
             }
 
             delete FocusManager._allFocusableComponents[componentId];
-            delete (component as any)._focusableComponentId;
+            delete component.focusableComponentId;
         }
     }
 
@@ -267,7 +276,7 @@ export abstract class FocusManager {
         this.removeFocusLimitation();
     }
 
-    subscribe(component: React.Component<any, any>, callback: FocusableComponentStateCallback) {
+    subscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback) {
         const storedComponent = FocusManager._getStoredComponent(component);
 
         if (storedComponent) {
@@ -279,7 +288,7 @@ export abstract class FocusManager {
         }
     }
 
-    unsubscribe(component: React.Component<any, any>, callback: FocusableComponentStateCallback) {
+    unsubscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback) {
         const storedComponent = FocusManager._getStoredComponent(component);
 
         if (storedComponent && storedComponent.callbacks) {
@@ -289,7 +298,7 @@ export abstract class FocusManager {
         }
     }
 
-    isComponentFocusRestrictedOrLimited(component: React.Component<any, any>): boolean {
+    isComponentFocusRestrictedOrLimited(component: FocusableComponentInternal): boolean {
         const storedComponent = FocusManager._getStoredComponent(component);
         return !!storedComponent && (storedComponent.restricted || storedComponent.limitedCount > 0);
     }
@@ -298,8 +307,8 @@ export abstract class FocusManager {
         return FocusManager._currentFocusedComponent ? FocusManager._currentFocusedComponent.id : undefined;
     }
 
-    private static _getStoredComponent(component: React.Component<any, any>): StoredFocusableComponent|undefined {
-        const componentId: string = (component as any)._focusableComponentId;
+    private static _getStoredComponent(component: FocusableComponentInternal): StoredFocusableComponent|undefined {
+        const componentId: string | undefined = component.focusableComponentId;
 
         if (componentId) {
             return FocusManager._allFocusableComponents[componentId];
@@ -346,23 +355,23 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
     contextTypes.focusManager = PropTypes.object;
     Component.contextTypes = contextTypes;
 
-    inheritMethod('componentDidMount', function (this: React.Component<any, any>, focusManager: FocusManager) {
+    inheritMethod('componentDidMount', function (this: FocusableComponentInternal, focusManager: FocusManager) {
         if (!isConditionallyFocusable || isConditionallyFocusable.call(this)) {
             focusManager.addFocusableComponent(this);
         }
     });
 
-    inheritMethod('componentWillUnmount', function (this: React.Component<any, any>, focusManager: FocusManager) {
+    inheritMethod('componentWillUnmount', function (this: FocusableComponentInternal, focusManager: FocusManager) {
         focusManager.removeFocusableComponent(this);
     });
 
-    inheritMethod('componentWillUpdate', function (this: React.Component<any, any>, focusManager: FocusManager, origArguments: IArguments) {
+    inheritMethod('componentWillUpdate', function (this: FocusableComponentInternal, focusManager: FocusManager, origArgs: IArguments) {
         if (isConditionallyFocusable) {
-            let isFocusable = isConditionallyFocusable.apply(this, origArguments);
+            let isFocusable = isConditionallyFocusable.apply(this, origArgs);
 
-            if (isFocusable && !(this as any)._focusableComponentId) {
+            if (isFocusable && !this.focusableComponentId) {
                 focusManager.addFocusableComponent(this);
-            } else if (!isFocusable && (this as any)._focusableComponentId) {
+            } else if (!isFocusable && this.focusableComponentId) {
                 focusManager.removeFocusableComponent(this);
             }
         }

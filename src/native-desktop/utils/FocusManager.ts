@@ -7,9 +7,8 @@
 * Manages focusable elements for better keyboard navigation (RN desktop version)
 */
 
-import React = require('react');
-
 import { FocusManager as FocusManagerBase,
+    FocusableComponentInternal as FocusableComponentInternalBase,
     applyFocusableComponentMixin as applyFocusableComponentMixinBase,
     StoredFocusableComponent } from '../../common/utils/FocusManager';
 
@@ -35,11 +34,11 @@ export interface FocusManagerFocusableComponent {
     updateNativeTabIndex(): void;
 }
 
-interface FocusManagerFocusableComponentInternal extends FocusManagerFocusableComponent {
-    _tabIndexOverride?: number;
+export interface FocusableComponentInternal extends FocusManagerFocusableComponent, FocusableComponentInternalBase {
+    tabIndexOverride?: number;
     setTabIndexOverride(tabIndex: number): void;
     removeTabIndexOverride(): void;
-    _onFocusSink?: () => void;
+    onFocusSink?: () => void;
 }
 
 export class FocusManager extends FocusManagerBase {
@@ -48,20 +47,19 @@ export class FocusManager extends FocusManagerBase {
         super(parent);
     }
 
-    protected /* static */ addFocusListenerOnComponent(component: React.Component<any, any>, onFocus: () => void): void {
+    protected /* static */ addFocusListenerOnComponent(component: FocusableComponentInternal,
+         onFocus: () => void): void {
         // We intercept the "onFocus" all the focusable elements have to have
-        (component as any as FocusManagerFocusableComponentInternal)._onFocusSink = onFocus;
+        component.onFocusSink = onFocus;
     }
 
-    protected /* static */ removeFocusListenerFromComponent(component: React.Component<any, any>, onFocus: () => void): void {
-        delete  (component as any as FocusManagerFocusableComponentInternal)._onFocusSink;
+    protected /* static */ removeFocusListenerFromComponent(component: FocusableComponentInternal, onFocus: () => void): void {
+        delete  component.onFocusSink;
     }
 
-    protected /* static */ focusComponent(component: React.Component<any, any>): boolean {
-        let fc = component as any as FocusManagerFocusableComponent;
-
-        if (fc && fc.focus) {
-            fc.focus();
+    protected /* static */ focusComponent(component: FocusableComponentInternal): boolean {
+        if (component && component.focus) {
+            component.focus();
             return true;
         }
         return false;
@@ -89,7 +87,7 @@ export class FocusManager extends FocusManagerBase {
                 }
             });
 
-            let fc = focusable[0].component as any as FocusManagerFocusableComponent;
+            let fc = focusable[0].component as FocusableComponentInternal;
 
             if (fc && fc.focus) {
                 fc.focus();
@@ -128,26 +126,27 @@ export class FocusManager extends FocusManagerBase {
 
     protected /* static */  _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
         if ((storedComponent.restricted || (storedComponent.limitedCount > 0)) && !('origTabIndex' in storedComponent)) {
-            storedComponent.origTabIndex = FocusManager._setComponentTabIndexOverride(storedComponent.component, -1);
+            storedComponent.origTabIndex = FocusManager._setComponentTabIndexOverride(
+                storedComponent.component as FocusableComponentInternal, -1);
             FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, true);
         } else if (!storedComponent.restricted && !storedComponent.limitedCount && ('origTabIndex' in storedComponent)) {
-            FocusManager._removeComponentTabIndexOverride(storedComponent.component);
+            FocusManager._removeComponentTabIndexOverride(storedComponent.component as FocusableComponentInternal);
             delete storedComponent.origTabIndex;
             FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, false);
         }
     }
 
     private  static  _setComponentTabIndexOverride(
-        component: React.Component<any, any>, tabIndex: number): number | undefined {
+        component: FocusableComponentInternal, tabIndex: number): number | undefined {
 
-        (component as any as FocusManagerFocusableComponentInternal).setTabIndexOverride(tabIndex);
+        component.setTabIndexOverride(tabIndex);
         // Original value is not used for desktop implementation
         return undefined;
     }
 
     private  static  _removeComponentTabIndexOverride(
-        component: React.Component<any, any>): void {
-        (component as any as FocusManagerFocusableComponentInternal).removeTabIndexOverride();
+        component: FocusableComponentInternal): void {
+        component.removeTabIndexOverride();
     }
 }
 
@@ -157,9 +156,9 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
     applyFocusableComponentMixinBase(Component, isConditionallyFocusable);
 
     // Hook 'onFocus'
-    inheritMethod('onFocus', function (this: FocusManagerFocusableComponentInternal, origCallback: Function) {
-        if (this._onFocusSink) {
-            this._onFocusSink();
+    inheritMethod('onFocus', function (this: FocusableComponentInternal, origCallback: Function) {
+        if (this.onFocusSink) {
+            this.onFocusSink();
         } else {
             if (AppConfig.isDevelopmentMode()) {
                 console.error('FocusableComponentMixin: focus sink error!');
@@ -170,11 +169,11 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
     });
 
     // Hook 'getTabIndex'
-    inheritMethod('getTabIndex', function (this: FocusManagerFocusableComponentInternal, origCallback: any) {
+    inheritMethod('getTabIndex', function (this: FocusableComponentInternal, origCallback: any) {
         // Check override available
-        if (this._tabIndexOverride !== undefined) {
+        if (this.tabIndexOverride !== undefined) {
             // Override available, use this one
-            return this._tabIndexOverride;
+            return this.tabIndexOverride;
         } else {
             // Override not available, defer to original handler to return the prop
             return origCallback.call(this);
@@ -182,9 +181,9 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
     });
 
     // Implement 'setTabIndexOverride'
-    Component.prototype['setTabIndexOverride'] = function (this: FocusManagerFocusableComponentInternal, tabIndex: number) {
+    Component.prototype['setTabIndexOverride'] = function (this: FocusableComponentInternal, tabIndex: number) {
         // Save the override on a custom property
-        this._tabIndexOverride = tabIndex;
+        this.tabIndexOverride = tabIndex;
 
         // Call special method on component avoiding state changes/re-renderings
         if (this.updateNativeTabIndex) {
@@ -197,9 +196,9 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
     };
 
     // Implement 'setTabIndexOverride'
-    Component.prototype['removeTabIndexOverride'] = function (this: FocusManagerFocusableComponentInternal) {
+    Component.prototype['removeTabIndexOverride'] = function (this: FocusableComponentInternal) {
         // Remove the cached override
-        delete this._tabIndexOverride;
+        delete this.tabIndexOverride;
 
         // Reset to original value avoiding state changes/re-renderings
         if (this.updateNativeTabIndex) {
@@ -221,7 +220,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
         // syncronizes the FocusManager internal state and hopefully maintains the component out of any focusing restriction.
         //
 
-        inheritMethod('focus', function (this: FocusManagerFocusableComponentInternal, origCallback: any) {
+        inheritMethod('focus', function (this: FocusableComponentInternal, origCallback: any) {
 
             let tabIndex: number | undefined = this.getTabIndex();
 
