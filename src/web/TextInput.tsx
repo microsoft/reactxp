@@ -101,7 +101,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 />
             );
         } else {
-            return (
+            let { keyboardTypeValue, wrapInForm } = this._getKeyboardType();
+            
+            let input = (
                 <input
                     style={ combinedStyles as any }
                     value={ this.props.defaultValue ? undefined : this.state.inputValue }
@@ -122,28 +124,49 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onMouseUp={ this._checkSelectionChanged }
                     onPaste={ this._onPaste }
                     aria-label={ this.props.accessibilityLabel }
-                    type={ this.props.secureTextEntry ? 'password' : this._getKeyboardType() }
+                    type={ keyboardTypeValue }
                 />
             );
+            
+            if (wrapInForm) {
+                // Wrap the input in a form tag if required
+                input = (
+                    <form action=''>
+                        { input }
+                    </form>
+                );
+            }
+
+            return input;
         }
     }
 
-    private _getKeyboardType = () => {
+    private _getKeyboardType() {
         // Show the correct virtual keyboardType in HTML 5
         let keyboardType = 'text';
-        let keyboardTypeProp = this.props.keyboardType;
-        
-        if (keyboardTypeProp === 'default') {
-            keyboardType = 'text';
-        } else if (keyboardTypeProp === 'numeric') {
-            keyboardType = 'tel';
-        } else if (keyboardTypeProp === 'email-address') {
-            keyboardType = 'email';
-        } else if (keyboardTypeProp === 'number-pad') {
-            keyboardType = 'tel';
+        let wrapInForm = false;
+        let { keyboardType, returnKeyType, secureTextEntry } = this.props;
+
+        if (keyboardType === 'default') {
+            keyboardTypeValue = 'text';
+        } else if (keyboardType === 'numeric') {
+            keyboardTypeValue = 'tel';
+        } else if (keyboardType === 'email-address') {
+            keyboardTypeValue = 'email';
+        } else if (keyboardType === 'number-pad') {
+            keyboardTypeValue = 'tel';
         }
 
-        return keyboardType;
+        if (returnKeyType === 'search') {
+            keyboardTypeValue = 'search';
+            wrapInForm = true;
+        }
+
+        if (secureTextEntry) {
+            keyboardTypeValue = 'password';
+        }
+
+        return { keyboardTypeValue, wrapInForm };
     }
 
     private _onPaste = (e: Types.ClipboardEvent) => {
