@@ -36,8 +36,8 @@ export interface FocusManagerFocusableComponent {
 
 export interface FocusableComponentInternal extends FocusManagerFocusableComponent, FocusableComponentInternalBase {
     tabIndexOverride?: number;
-    setTabIndexOverride(tabIndex: number): void;
-    removeTabIndexOverride(): void;
+    tabIndexLocalOverride?: number;
+    tabIndexLocalOverrideTimer?: number;
     onFocusSink?: () => void;
 }
 
@@ -47,8 +47,7 @@ export class FocusManager extends FocusManagerBase {
         super(parent);
     }
 
-    protected /* static */ addFocusListenerOnComponent(component: FocusableComponentInternal,
-         onFocus: () => void): void {
+    protected /* static */ addFocusListenerOnComponent(component: FocusableComponentInternal, onFocus: () => void): void {
         // We intercept the "onFocus" all the focusable elements have to have
         component.onFocusSink = onFocus;
     }
@@ -124,7 +123,7 @@ export class FocusManager extends FocusManagerBase {
         }
     }
 
-    protected /* static */  _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
+    protected /* static */ _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
         if ((storedComponent.restricted || (storedComponent.limitedCount > 0)) && !('origTabIndex' in storedComponent)) {
             storedComponent.origTabIndex = FocusManager._setComponentTabIndexOverride(
                 storedComponent.component as FocusableComponentInternal, -1);
@@ -136,17 +135,34 @@ export class FocusManager extends FocusManagerBase {
         }
     }
 
-    private  static  _setComponentTabIndexOverride(
-        component: FocusableComponentInternal, tabIndex: number): number | undefined {
+    private static _setComponentTabIndexOverride(component: FocusableComponentInternal, tabIndex: number): number | undefined {
+        // Save the override on a custom property
+        component.tabIndexOverride = tabIndex;
 
-        component.setTabIndexOverride(tabIndex);
+        // Refresh the native view
+        updateNativeTabIndex(component);
+
         // Original value is not used for desktop implementation
         return undefined;
     }
 
-    private  static  _removeComponentTabIndexOverride(
-        component: FocusableComponentInternal): void {
-        component.removeTabIndexOverride();
+    private static  _removeComponentTabIndexOverride(component: FocusableComponentInternal): void {
+        // Remove any override
+        delete component.tabIndexOverride;
+
+        // Refresh the native view
+        updateNativeTabIndex(component);
+    }
+}
+
+function updateNativeTabIndex(component: FocusableComponentInternal) {
+    // Call special method on component avoiding state changes/re-renderings
+    if (component.updateNativeTabIndex) {
+        component.updateNativeTabIndex();
+    } else {
+        if (AppConfig.isDevelopmentMode()) {
+            console.error('FocusableComponentMixin: updateNativeTabIndex error!');
+        }
     }
 }
 
@@ -170,8 +186,11 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
 
     // Hook 'getTabIndex'
     inheritMethod('getTabIndex', function (this: FocusableComponentInternal, origCallback: any) {
-        // Check override available
-        if (this.tabIndexOverride !== undefined) {
+        // Check local override first, then focus manager one
+        if (this.tabIndexLocalOverride !== undefined) {
+            // Local override available, use this one
+            return this.tabIndexLocalOverride;
+        } else if (this.tabIndexOverride !== undefined) {
             // Override available, use this one
             return this.tabIndexOverride;
         } else {
@@ -180,55 +199,45 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
         }
     });
 
-    // Implement 'setTabIndexOverride'
-    Component.prototype['setTabIndexOverride'] = function (this: FocusableComponentInternal, tabIndex: number) {
-        // Save the override on a custom property
-        this.tabIndexOverride = tabIndex;
-
-        // Call special method on component avoiding state changes/re-renderings
-        if (this.updateNativeTabIndex) {
-            this.updateNativeTabIndex();
-        } else {
-            if (AppConfig.isDevelopmentMode()) {
-                console.error('FocusableComponentMixin: updateNativeTabIndex error!');
-            }
-        }
-    };
-
-    // Implement 'setTabIndexOverride'
-    Component.prototype['removeTabIndexOverride'] = function (this: FocusableComponentInternal) {
-        // Remove the cached override
-        delete this.tabIndexOverride;
-
-        // Reset to original value avoiding state changes/re-renderings
-        if (this.updateNativeTabIndex) {
-            this.updateNativeTabIndex();
-        } else {
-            if (AppConfig.isDevelopmentMode()) {
-                console.error('FocusableComponentMixin: updateNativeTabIndex error!');
-            }
-        }
-    };
-
     if (isNativeWindows) {
         // UWP platform (at least) is slightly stricter with regard to tabIndex combinations. The "component focusable but not in tab order"
         // case (usually encoded with tabIndex<0 for browsers) is not supported. A negative tabIndex disables focusing/keyboard input
         // completely instead (though a component already having keyboard focus doesn't lose it right away).
-        // Even though a comprehensive fix may be needed, we currently fix this partially by simulating the expected behavior on
-        // components monitored by FocusManager only:
-        // - Calling "focus" on a component with an effective tabIndex<0 forces an override of "tabIndex=0" first. Subsequent onFocus
-        // syncronizes the FocusManager internal state and hopefully maintains the component out of any focusing restriction.
-        //
-
+        // We try to simulate the right behavior through a trick.
         inheritMethod('focus', function (this: FocusableComponentInternal, origCallback: any) {
-
             let tabIndex: number | undefined = this.getTabIndex();
 
-            if (tabIndex === undefined || tabIndex < 0) {
-                this.setTabIndexOverride(0);
+            // Check effective tabIndex
+            if (tabIndex !== undefined && tabIndex < 0) {
+                // A negative tabIndex maps to non focusable in UWP.
+                // We temporary apply a local override of "tabIndex=0", and then forward the focus command.
+                // A timer makes sure the tabIndex returns back to "non-overriden" state. Focus is never ejected if tabIndex becomes -1,
+                // for example, so the simulation is pretty accurate.
+                this.tabIndexLocalOverride = 0;
+
+                // Refresh the native view
+                updateNativeTabIndex(this);
+
+                this.tabIndexLocalOverrideTimer = setTimeout(() => {
+                    if (this.tabIndexLocalOverrideTimer !== undefined) {
+                        this.tabIndexLocalOverrideTimer = undefined;
+                        // Remove override
+                        delete this.tabIndexLocalOverride;
+
+                        // Refresh the native view
+                        updateNativeTabIndex(this);
+                    }
+                }, 500);
             }
 
             // To original
+            return origCallback.call(this);
+        });
+
+        inheritMethod('componentWillUnmount', function (this: FocusableComponentInternal, origCallback: any) {
+            // Reset any pending local override timer
+            delete this.tabIndexLocalOverrideTimer;
+            // To original (base mixin already has an implementation)
             return origCallback.call(this);
         });
     }

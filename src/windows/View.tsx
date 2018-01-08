@@ -75,7 +75,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
     componentWillReceiveProps(nextProps: Types.ViewProps) {
         super.componentWillReceiveProps(nextProps);
-        
+
         if (AppConfig.isDevelopmentMode()) {
             if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
                 console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
@@ -378,10 +378,10 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 }
 
-// A value for tabIndex (even <0) marks a View as being potentially keyboard focusable
+// A value for tabIndex marks a View as being potentially keyboard focusable
 applyFocusableComponentMixin(View, function (this: View, nextProps?: Types.ViewProps) {
     let tabIndex = nextProps && ('tabIndex' in nextProps) ? nextProps.tabIndex : this.props.tabIndex;
-    return tabIndex !== undefined;
+    return tabIndex !== undefined && tabIndex >= 0;
 });
 
 export default View;
