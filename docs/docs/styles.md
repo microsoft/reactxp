@@ -62,7 +62,7 @@ let dynamicViewStyle = RX.Styles.createViewStyle({
 
 For each style attribute, the type and default value is specified. For enumerated values, the first item in the enumeration is the default value.
 
-Color values are specified as strings. They can be specified as color names (e.g. 'red'), three-digit or six-digit hex values (e.g. '#444' or '#ff00ee'), or rgb or rgba values (e.g. 'rgb(255, 0, 67)' or 'rgba(255, 0, 67, 0.5)').
+Color values are specified as strings. They can be specified as color names (e.g. `red`), three-digit or six-digit hex values (e.g. `#444` or `#ff00ee`), or rgb or rgba values (e.g. `rgb(255, 0, 67)` or `rgba(255, 0, 67, 0.5)).
 
 ## Flexbox Style Attributes
 ReactXP adopts the simplified flexbox rules and defaults defined by React Native. It differs somewhat from the flexbox standard in CSS in the following ways.
