@@ -53,7 +53,6 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
             return super._render(internalProps);
         }
 
-        // The "in text parent" case requires a special nyi control.
         if (this.context && !this.context.isRxParentAText) {
 
             let tabIndex: number | undefined = this.getTabIndex();
@@ -86,6 +85,8 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
                 />
             );
         } else {
+            // TODO: The "in text parent" case requires a React Native view that maps to
+            // XAML Hyperlink but this RN view isn't implemented yet.
             return super._render(internalProps);
         }
     }
@@ -134,7 +135,9 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     }
 
     private _onFocus = (e: React.SyntheticEvent<any>): void => {
-        this.onFocus();
+        if (e.currentTarget === e.target) {
+            this.onFocus();
+        }
     }
 
     // From FocusManagerFocusableComponent interface

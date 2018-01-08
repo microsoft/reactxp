@@ -27,7 +27,9 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
     }
 
     private _onFocusEx (e: React.FocusEvent<any>, origHandler: ((e: React.FocusEvent<any>) => void) | undefined) {
-        this.onFocus();
+        if (e.currentTarget === e.target) {
+            this.onFocus();
+        }
 
         if (origHandler) {
             origHandler(e);

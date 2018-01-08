@@ -342,7 +342,10 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 
     private _onFocus = (e: React.SyntheticEvent<any>): void => {
-        this.onFocus();
+        if (e.currentTarget === e.target) {
+            this.onFocus();
+        }
+
         if (this.props.onFocus) {
             this.props.onFocus(EventHelpers.toFocusEvent(e));
         }

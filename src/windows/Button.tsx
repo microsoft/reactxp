@@ -159,7 +159,9 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
     // When we get focus on an element, show the hover effect on the element.
     // This ensures that users using keyboard also get the similar experience as mouse users for accessibility.
     private _onFocus = (e: React.SyntheticEvent<any>): void => {
-        this.onFocus();
+        if (e.currentTarget === e.target) {
+            this.onFocus();
+        }
 
         this._isFocusedWithKeyboard = _isNavigatingWithKeyboard;
         this._onHoverStart(e);

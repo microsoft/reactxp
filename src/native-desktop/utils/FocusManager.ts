@@ -104,7 +104,6 @@ export class FocusManager extends FocusManagerBase {
             // When we're in the keyboard navigation mode, we want to have the
             // first focusable component to be focused straight away, without the
             // necessity to press Tab.
-
             // Defer the focusing to let the view finish its initialization and to allow for manual focus setting (if any)
             // to be processed (the asynchronous nature of focus->onFocus path requires a delay)
             FocusManager._resetFocusTimer = setTimeout(() => {
@@ -114,12 +113,11 @@ export class FocusManager extends FocusManagerBase {
                 // We skip setting focus on "first" component in that case because:
                 // - focusFirst has its limits, to say it gently
                 // - We ended up in resetFocus for a reason that is not true anymore (mostly because focus was set manually)
-
                 const storedComponent = FocusManager._currentFocusedComponent;
-                if (!storedComponent || storedComponent.restricted || (storedComponent.limitedCount > 0)) {
+                if (!storedComponent || storedComponent.removed || storedComponent.restricted || (storedComponent.limitedCount > 0)) {
                     FocusManager.focusFirst();
                 }
-            }, 100);
+            }, 500);
         }
     }
 
@@ -161,7 +159,7 @@ function updateNativeTabIndex(component: FocusableComponentInternal) {
         component.updateNativeTabIndex();
     } else {
         if (AppConfig.isDevelopmentMode()) {
-            console.error('FocusableComponentMixin: updateNativeTabIndex error!');
+            console.error('FocusableComponentMixin: updateNativeTabIndex doesn\'t exist!');
         }
     }
 }
@@ -177,7 +175,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
             this.onFocusSink();
         } else {
             if (AppConfig.isDevelopmentMode()) {
-                console.error('FocusableComponentMixin: focus sink error!');
+                console.error('FocusableComponentMixin: onFocusSink doesn\'t exist!');
             }
         }
 
@@ -206,7 +204,6 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
         // We try to simulate the right behavior through a trick.
         inheritMethod('focus', function (this: FocusableComponentInternal, origCallback: any) {
             let tabIndex: number | undefined = this.getTabIndex();
-
             // Check effective tabIndex
             if (tabIndex !== undefined && tabIndex < 0) {
                 // A negative tabIndex maps to non focusable in UWP.
@@ -251,7 +248,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
             };
         } else {
             if (AppConfig.isDevelopmentMode()) {
-                console.error('FocusableComponentMixin: ' + methodName + ' error!');
+                console.error('FocusableComponentMixin: ' + methodName + ' is expected to exist and it doesn\'t!');
             }
         }
     }
