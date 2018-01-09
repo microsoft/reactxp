@@ -16,6 +16,15 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.51.0-alpha.2 of reactxp
+_Released 9 Jan 2018_
+
+Fixed bug in native implementation of RX.ActivityIndicator. It wasn't properly handling the delay prop.
+Added support in web implementation of RX.TextInput for custom keyboard types on mobile web browsers.
+Added focus and keyboard navigation support for native UWP platform.
+Added support for injection of HTML content into RX.WebView.
+Added support for postMessage and onMessage handler in RX.WebView for bidirectional communication.
+
 #### Version 0.51.0-alpha.1 of reactxp
 _Released 6 Jan 2018_
 
