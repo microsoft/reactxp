@@ -33,9 +33,17 @@ export interface WebViewState {
     webFrameIdentifier?: string;
 }
 
+interface WebViewMessageEventInternal extends RX.Types.WebViewMessageEvent {
+    __propagationStopped: boolean;
+}
+
 export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> implements RX.WebView {
     private static _webFrameNumber = 1;
+    private static _onMessageReceived: RX.Types.SubscribableEvent<(e: WebViewMessageEventInternal) => void>;
+    private static _messageListenerInstalled = false;
+
     private _mountedComponent: HTMLIFrameElement|null = null;
+    private _onMessageReceivedToken: RX.Types.SubscriptionToken|undefined;
 
     constructor(props: Types.WebViewProps) {
         super(props);
@@ -71,6 +79,13 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> imple
         }
     }
 
+    componentWillUnmount() {
+        if (this._onMessageReceivedToken) {
+            this._onMessageReceivedToken.unsubscribe();
+            this._onMessageReceivedToken = undefined;
+        }
+    }
+
     private _getCustomHtml(props: Types.WebViewProps): string|undefined {
         if (props.url || !props.source) {
             return undefined;
@@ -92,7 +107,69 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> imple
         }
     }
 
+    private _installMessageListener() {
+        // Don't install global message listener twice.
+        if (!WebView._messageListenerInstalled) {
+            // Set up the global event.
+            WebView._onMessageReceived = new RX.Types.SubscribableEvent<
+                (e: WebViewMessageEventInternal) => void>(true);
+            
+            window.addEventListener('message', (e: MessageEvent) => {
+                let event: WebViewMessageEventInternal = {
+                    data: e.data,
+                    origin: e.origin,
+                    nativeEvent: e,
+                    bubbles: e.bubbles,
+                    currentTarget: e.currentTarget,
+                    cancelable: e.cancelable,
+                    defaultPrevented: e.defaultPrevented,
+                    eventPhase: e.eventPhase,
+                    isDefaultPrevented: () => e.defaultPrevented,
+                    isPropagationStopped: () => false,
+                    __propagationStopped: false,
+                    isTrusted: e.isTrusted,
+                    persist: () => { /* nothing to do */ },
+                    stopPropagation: () => {
+                        e.stopPropagation();
+                        event.__propagationStopped = true;
+                    },
+                    preventDefault: () => {
+                        e.preventDefault();
+                    },
+                    target: e.target,
+                    timeStamp: e.timeStamp,
+                    type: e.type
+                };
+
+                WebView._onMessageReceived.fire(event);
+            });
+
+            WebView._messageListenerInstalled = true;
+        }
+
+        // Subscribe to the global event if we haven't already done so.
+        if (!this._onMessageReceivedToken) {
+            this._onMessageReceivedToken = WebView._onMessageReceived.subscribe(e => {
+                if (this.props.onMessage) {
+                    this.props.onMessage(e);
+
+                    // Stop the event from propagating further.
+                    return e.__propagationStopped;
+                }
+
+                return false;
+            });
+        }
+    }
+
     private _postRender() {
+        // If the caller wants to receive posted messages
+        // from the web view, we need to install a global
+        // message handler.
+        if (this.props.onMessage) {
+            this._installMessageListener();
+        }
+
         if (!this.state.postComplete) {
             this.setState({
                 postComplete: true

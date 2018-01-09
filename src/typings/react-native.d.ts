@@ -432,6 +432,7 @@ declare module 'react-native' {
         onLoadStart?: Function;
         renderError?: Function;
         onError?: Function;
+        onMessage?: Function;
         renderLoading?: Function;
         scalesPageToFit?: boolean;
         scrollEnabled?: boolean;

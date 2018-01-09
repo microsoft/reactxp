@@ -7,6 +7,7 @@
 * A control that allows the display of an independent web page.
 */
 
+import _ = require('./lodashMini');
 import React = require('react');
 import RN = require('react-native');
 
@@ -49,12 +50,38 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, {}> implements RX.W
                 scalesPageToFit={ this.props.scalesPageToFit }
                 onError={ this.props.onError }
                 onLoadStart={ this.props.onLoadStart }
+                onMessage={ this.props.onMessage ? this._onMessage : undefined }
             />
         );
     }
 
     protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
         this._mountedComponent = component as RN.WebView;
+    }
+
+    protected _onMessage = (e: RN.SyntheticEvent<any>) => {
+        if (this.props.onMessage) {
+            // Clone the original event because RN reuses events.
+            let event: RX.Types.WebViewMessageEvent = _.clone(e) as any;
+            
+            // Add the data element.
+            event.data = (e.nativeEvent as any).data;
+            event.origin = '*';
+
+            event.stopPropagation = () => {
+                if (e.stopPropagation) {
+                    e.stopPropagation();
+                }
+            };
+
+            event.preventDefault = () => {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+            };
+            
+            this.props.onMessage(event);
+        }
     }
 
     postMessage(message: string, targetOrigin: string = '*') {

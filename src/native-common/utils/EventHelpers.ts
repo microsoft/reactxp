@@ -4,6 +4,7 @@
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
 */
+
 import _ = require('../../native-common/lodashMini');
 import Types = require('../../common/Types');
 

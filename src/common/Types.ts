@@ -940,7 +940,8 @@ export interface WebViewProps extends CommonStyledProps<WebViewStyleRuleSet> {
     domStorageEnabled?: boolean;
     onShouldStartLoadWithRequest?: (shouldStartLoadEvent: WebViewShouldStartLoadEvent) => boolean;
     onLoadStart?: (e: SyntheticEvent) => void;
-    onError?: (s: SyntheticEvent) => void;
+    onError?: (e: SyntheticEvent) => void;
+    onMessage?: (e: WebViewMessageEvent) => void;
 
     // Web only; overrides javaScriptEnabled if used
     sandbox?: WebViewSandboxMode;
@@ -1186,6 +1187,7 @@ export type ViewOnLayoutEvent = {
     height: number;
     width: number;
 };
+
 export interface KeyboardEvent extends SyntheticEvent {
     ctrlKey: boolean;
     altKey: boolean;
@@ -1193,6 +1195,11 @@ export interface KeyboardEvent extends SyntheticEvent {
     keyCode: number;
     metaKey: boolean;
     key: string;
+}
+
+export interface WebViewMessageEvent extends SyntheticEvent {
+    data: string;
+    origin: string;
 }
 
 //

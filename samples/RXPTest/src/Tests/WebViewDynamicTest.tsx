@@ -99,6 +99,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
                         onLoadStart={ this._onLoadStartTest1 }
                         onLoad={ this._onLoadTest1 }
                         onError={ this._onErrorTest1 }
+                        onMessage={ this._onMessageReceived }
                     />
                 </RX.View>
                 <RX.View style={ _styles.buttonBank }>
@@ -143,7 +144,8 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
         // Some browsers and web controls require that we install the event listener
         // on the window, others on the document. We'll install it on both here.
         const receiverScript = 'window.onload=function() {' +
-            'function receiveMessage(e) { document.getElementById("msg").innerHTML = "Message Received: " + e.data; }' +
+            'function receiveMessage(e) { document.getElementById("msg").innerHTML = "Message Received: " + e.data; };' +
+            'document.getElementById("sendButton").onclick=function() { window.parent.postMessage("Posted message from WebView!", "*"); };' +
             'document.addEventListener("message", receiveMessage);' +
             'window.addEventListener("message", receiveMessage);' +
         '}';
@@ -152,7 +154,9 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
 
         const htmlContent = '<html><head><script>' + receiverScript +
             '</script></head><body style="font-size: 36px; background-color: #eef">' +
-            bodyContent + '<div id="msg">Tap &ldquo;Post Message&rdquo; to send message to web view.</div></body></html>';
+            bodyContent + '<div id="msg">Tap &ldquo;Post Message&rdquo; to send message to web view.</div>' + 
+            '<button id="sendButton" style="margin: 20px; font-size: 36px">Send Message</button>' +
+            '</body></html>';
 
         return htmlContent;
     }
@@ -171,6 +175,10 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
 
     private _onErrorTest1 = (e: RX.Types.SyntheticEvent) => {
         this._appendHistoryTest1('Error');
+    }
+
+    private _onMessageReceived = (e: RX.Types.WebViewMessageEvent) => {
+        this._appendHistoryTest1('Received message: ' + e.data);
     }
 
     private _onLoadContent1 = () => {

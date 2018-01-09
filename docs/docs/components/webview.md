@@ -71,6 +71,9 @@ onLoad: (e: SyntheticEvent) => void = undefined;
 // Called when the contents start to load
 onLoadStart: (e: SyntheticEvent) => void = undefined; // Native only
 
+// Called when a message is posted from within a WebView
+onMessage: (e: WebViewMessageEvent) => void = undefined;
+
 // Called when the navigation state changes
 onNavigationStateChange: (navigationState: WebViewNavigationState) => void;
 
