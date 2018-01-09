@@ -66,7 +66,6 @@ const _styles = {
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        width: 80,
         marginHorizontal: 12
     }),
     itemText: RX.Styles.createTextStyle({
@@ -134,7 +133,7 @@ export class TestListView extends RX.Component<TestListViewProps, TestListViewSt
             } else if (testType === TestType.Interactive && !result.userValidated) {
                 resultText = (
                     <RX.Text style={ _styles.warningText } numberOfLines={ 1 }>
-                        { 'requires validation' }
+                        { 'needs validation' }
                     </RX.Text>
                 );
             } else {
