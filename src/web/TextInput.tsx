@@ -141,28 +141,24 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    private _getKeyboardType() {
-        // Show the correct virtual keyboardType in HTML 5
-        let keyboardType = 'text';
+    private _getKeyboardType(): { keyboardTypeValue: string, wrapInForm: boolean } {
+        // Determine the correct virtual keyboardType in HTML 5.
+        // Some types require the <input> tag to be wrapped in a form.
+        let keyboardTypeValue = 'text';
         let wrapInForm = false;
-        let { keyboardType, returnKeyType, secureTextEntry } = this.props;
 
-        if (keyboardType === 'default') {
-            keyboardTypeValue = 'text';
-        } else if (keyboardType === 'numeric') {
+        if (this.props.keyboardType === 'numeric' || this.props.keyboardType === 'number-pad') {
             keyboardTypeValue = 'tel';
-        } else if (keyboardType === 'email-address') {
+        } else if (this.props.keyboardType === 'email-address') {
             keyboardTypeValue = 'email';
-        } else if (keyboardType === 'number-pad') {
-            keyboardTypeValue = 'tel';
         }
 
-        if (returnKeyType === 'search') {
+        if (this.props.returnKeyType === 'search') {
             keyboardTypeValue = 'search';
             wrapInForm = true;
         }
 
-        if (secureTextEntry) {
+        if (this.props.secureTextEntry) {
             keyboardTypeValue = 'password';
         }
 
