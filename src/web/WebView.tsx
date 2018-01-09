@@ -51,10 +51,45 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> imple
 
     componentDidMount() {
         this._postRender();
+
+        let customContents = this._getCustomHtml(this.props);
+        if (customContents) {
+            this._setContents(customContents);
+        }
     }
 
     componentDidUpdate(prevProps: Types.WebViewProps, prevState: WebViewState) {
         this._postRender();
+
+        let oldCustomContents = this._getCustomHtml(prevProps);
+        let newCustomContents = this._getCustomHtml(this.props);
+
+        if (newCustomContents) {
+            if (oldCustomContents !== newCustomContents) {
+                this._setContents(newCustomContents);
+            }
+        }
+    }
+
+    private _getCustomHtml(props: Types.WebViewProps): string|undefined {
+        if (props.url || !props.source) {
+            return undefined;
+        }
+
+        return props.source.html;
+    }
+
+    private _setContents(html: string) {
+        const iframeDOM = this._mountedComponent;
+        if (iframeDOM && iframeDOM.contentWindow) {
+            try {
+                // Some older browsers don't support this, so
+                // be prepared to catch an exception.
+                (iframeDOM as any).srcdoc = html;
+            } catch {
+                // Swallow exceptions
+            }
+        }
     }
 
     private _postRender() {

@@ -920,8 +920,14 @@ export enum WebViewSandboxMode {
     AllowTopNavigation = 1 << 9
 }
 
+export interface WebViewSource {
+    html: string;
+    baseUrl?: string;
+}
+
 export interface WebViewProps extends CommonStyledProps<WebViewStyleRuleSet> {
-    url: string;
+    url?: string;
+    source?: WebViewSource;
     headers?: { [key: string]: string };
     onLoad?: (e: SyntheticEvent) => void;
     onNavigationStateChange?: (navigationState: WebViewNavigationState) => void;

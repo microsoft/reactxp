@@ -519,6 +519,8 @@ declare module 'react-native' {
         static State: TextInputState;
     }
     class WebView extends ReactNativeBaseComponent<WebViewProps, {}> {
+        postMessage(message: string) : void;
+        injectJavaScript(javascript: string) : void;
         reload() : void;
         goBack() : void;
         goForward() : void;

@@ -1,6 +1,5 @@
 /*
-* Tests the functionality of a WebView component using manual
-* user validation.
+* Tests the dynamic injection functionality of a WebView component.
 */
 
 import _ = require('lodash');
@@ -65,8 +64,7 @@ const _styles = {
 };
 
 interface WebViewViewState {
-    test1CanGoBack?: boolean;
-    test1CanGoForward?: boolean;
+    htmlContent?: string;
     test1EventHistory?: string[];
 }
 
@@ -77,8 +75,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
         super(props);
 
         this.state = {
-            test1CanGoBack: false,
-            test1CanGoForward: false,
+            htmlContent: WebViewView._getHtmlContent(0),
             test1EventHistory: []
         };
     }
@@ -88,17 +85,15 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
             <RX.View style={ _styles.container}>
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'The web view below displays the RX.WebView documentation. ' +
-                          'Click on links and use the "Back" and "Forward" buttons to navigate. ' +
-                          'The gray area below the web view displays the event stream (most recent ' +
-                          'event first). You should see a "Load start" and "Load" event. ' +
-                          'The "Message" button will cause a message box to appear in the view (web only).' }
+                        { 'The web view below is injected with custom HTML provided by the test. ' +
+                          'It also has a message handler that can receive messages from outside the control.' }
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.webViewContainer }>
                     <RX.WebView
+                        sandbox={ RX.Types.WebViewSandboxMode.AllowScripts }
                         style={ _styles.webView }
-                        url={ 'https://microsoft.github.io/reactxp/docs/components/webview.html' }
+                        source={ { html: this.state.htmlContent } }
                         ref={ (comp: RX.WebView) => { this._webViewTest1 = comp; } }
                         onNavigationStateChange={ this._onNavChangeTest1 }
                         onLoadStart={ this._onLoadStartTest1 }
@@ -109,28 +104,26 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
                 <RX.View style={ _styles.buttonBank }>
                     <RX.Button
                         style={ _styles.button }
-                        onPress={ this._onBackTest1 }
-                        disabled={ !this.state.test1CanGoBack }
+                        onPress={ this._onLoadContent1 }
                     >
                         <RX.Text style={ _styles.buttonText }>
-                            { 'Back' }
+                            { 'Page 1' }
                         </RX.Text>
                     </RX.Button>
                     <RX.Button
                         style={ _styles.button }
-                        onPress={ this._onForwardTest1 }
-                        disabled={ !this.state.test1CanGoForward }
+                        onPress={ this._onLoadContent2 }
                     >
                         <RX.Text style={ _styles.buttonText }>
-                            { 'Forward' }
+                            { 'Page 2' }
                         </RX.Text>
                     </RX.Button>
                     <RX.Button
                         style={ _styles.button }
-                        onPress={ this._onReloadTest1 }
+                        onPress={ this._onPostMessage }
                     >
                         <RX.Text style={ _styles.buttonText }>
-                            { 'Reload' }
+                            { 'Post Message' }
                         </RX.Text>
                     </RX.Button>
                 </RX.View>
@@ -146,13 +139,26 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
         );
     }
 
+    private static _getHtmlContent(pageNumber: number): string {
+        // Some browsers and web controls require that we install the event listener
+        // on the window, others on the document. We'll install it on both here.
+        const receiverScript = 'window.onload=function() {' +
+            'function receiveMessage(e) { document.getElementById("msg").innerHTML = "Message Received: " + e.data; }' +
+            'document.addEventListener("message", receiveMessage);' +
+            'window.addEventListener("message", receiveMessage);' +
+        '}';
+
+        let bodyContent = pageNumber ? `Page ${pageNumber.toString()} Content` : 'Tap buttons to load new HTML content.';
+
+        const htmlContent = '<html><head><script>' + receiverScript +
+            '</script></head><body style="font-size: 36px; background-color: #eef">' +
+            bodyContent + '<div id="msg">Tap &ldquo;Post Message&rdquo; to send message to web view.</div></body></html>';
+
+        return htmlContent;
+    }
+
     private _onNavChangeTest1 = (navState: RX.Types.WebViewNavigationState) => {
         this._appendHistoryTest1('Nav state changed');
-
-        this.setState({
-            test1CanGoBack: navState.canGoBack,
-            test1CanGoForward: navState.canGoForward
-        });
     }
 
     private _onLoadStartTest1 = (e: RX.Types.SyntheticEvent) => {
@@ -167,16 +173,16 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
         this._appendHistoryTest1('Error');
     }
 
-    private _onBackTest1 = () => {
-        this._webViewTest1.goBack();
+    private _onLoadContent1 = () => {
+        this.setState({ htmlContent: WebViewView._getHtmlContent(1) });
     }
 
-    private _onForwardTest1 = () => {
-        this._webViewTest1.goForward();
+    private _onLoadContent2 = () => {
+        this.setState({ htmlContent: WebViewView._getHtmlContent(2) });
     }
 
-    private _onReloadTest1 = () => {
-        this._webViewTest1.reload();
+    private _onPostMessage = () => {
+        this._webViewTest1.postMessage('ReactXP Is Cool!');
     }
 
     private _appendHistoryTest1(newLine: string) {
@@ -190,17 +196,11 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
 }
 
 // TODO - need to test the following props and methods
-// domStorageEnabled
 // injectedJavaScript
-// javaScriptEnabled
-// sandbox
-// scalesPageToFit
-// startInLoadingState
-// postMessage
 
-class ViewBasicTest implements Test {
+class WebViewDynamicTest implements Test {
     getPath(): string {
-        return 'Components/WebView';
+        return 'Components/WebView/Dynamic';
     }
     
     getTestType(): TestType {
@@ -214,4 +214,4 @@ class ViewBasicTest implements Test {
     }
 }
 
-export default new ViewBasicTest();
+export default new WebViewDynamicTest();

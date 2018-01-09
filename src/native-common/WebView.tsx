@@ -26,6 +26,13 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, {}> implements RX.W
 
     render() {
         let styles = [_styles.webViewDefault, this.props.style];
+        let source: any = this.props.source;
+        if (this.props.url) {
+            source = {
+                uri: this.props.url,
+                headers: this.props.headers
+            };
+        }
 
         return (
             <RN.WebView
@@ -33,7 +40,7 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, {}> implements RX.W
                 style={ styles }
                 onNavigationStateChange={ this.props.onNavigationStateChange }
                 onShouldStartLoadWithRequest={ this.props.onShouldStartLoadWithRequest }
-                source={ { uri: this.props.url, headers: this.props.headers } }
+                source={ source }
                 onLoad={ this.props.onLoad }
                 startInLoadingState={ this.props.startInLoadingState }
                 javaScriptEnabled={ this.props.javaScriptEnabled }
@@ -51,7 +58,9 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, {}> implements RX.W
     }
 
     postMessage(message: string, targetOrigin: string = '*') {
-        // Not Implemented...
+        if (this._mountedComponent) {
+            this._mountedComponent.postMessage(message);
+        }
     }
         
     reload() {
