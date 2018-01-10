@@ -110,7 +110,7 @@ export interface AnimatedFlexboxStyle {
 // ------------------------------------------------------------
 
 export interface TransformStyle {
-    transform?: [{
+    transform?: {
         perspective?: number;
         rotate?: string;
         rotateX?: string;
@@ -121,11 +121,11 @@ export interface TransformStyle {
         scaleY?: number;
         translateX?: number;
         translateY?: number;
-    }];
+    }[];
 }
 
 export interface AnimatedTransformStyle {
-    transform?: [{
+    transform?: {
         perspective?: AnimatedValue;
         rotate?: AnimatedValue;
         rotateX?: AnimatedValue;
@@ -136,7 +136,7 @@ export interface AnimatedTransformStyle {
         scaleY?: AnimatedValue;
         translateX?: AnimatedValue;
         translateY?: AnimatedValue;
-    }];
+    }[];
 }
 
 export type StyleRuleSet<T> = T | number | undefined;
