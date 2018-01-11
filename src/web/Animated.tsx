@@ -91,15 +91,15 @@ export class Value extends Types.AnimatedValue {
     }
 
     // Gets the current animated value (this gets updates after animation concludes)
-    getValue(): number | string {
+    _getValue(): number | string {
         return this._value;
     }
 
-    isInterpolated(): boolean {
+    _isInterpolated(): boolean {
         return !!this._interpolationConfig;
     }
 
-    getInterpolatedValue(key: number): string|number {
+    _getInterpolatedValue(key: number): string|number {
         return this._interpolationConfig[key];
     }
 
@@ -167,7 +167,7 @@ export class Value extends Types.AnimatedValue {
     startTransition(toValue: number|string, duration: number, easing: string, delay: number,
             onEnd: Types.Animated.EndCallback): void {
         _.each(this._listeners, listener => {
-            listener.startTransition(this, this.getValue(), toValue, duration, easing, delay, onEnd);
+            listener.startTransition(this, this._getValue(), toValue, duration, easing, delay, onEnd);
         });
     }
 
@@ -371,7 +371,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         setValue(valueObject: Value, newValue: number | string): void {
             let attrib = this._findAnimatedAttributeByValue(this._animatedAttributes, valueObject);
             if (attrib) {
-                let cssValue = this._generateCssAttributeValue(attrib, valueObject, valueObject.getValue());
+                let cssValue = this._generateCssAttributeValue(attrib, valueObject, valueObject._getValue());
                 (this._getDomNode().style as any)[attrib] = cssValue;
                 return;
             }
@@ -448,7 +448,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                     // value for interpolated values because this would involve
                     // mapping the interpolated value in reverse. Instead, we'll
                     // simply update it to the "toValue".
-                    if (!valueObject.isInterpolated()) {
+                    if (!valueObject._isInterpolated()) {
                         let computedStyle = window.getComputedStyle(this._getDomNode(), undefined);
                         if (computedStyle && (computedStyle as any)[attrib]) {
                             partialValue = (computedStyle as any)[attrib];
@@ -559,8 +559,8 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         // Generates the CSS value for the specified attribute given
         // an animated value object.
         private _generateCssAttributeValue(attrib: string, valueObj: Value, newValue: number|string): string {
-            if (valueObj.isInterpolated()) {
-                newValue = valueObj.getInterpolatedValue(newValue as number);
+            if (valueObj._isInterpolated()) {
+                newValue = valueObj._getInterpolatedValue(newValue as number);
             }
 
             // If the value is a raw number, append the default units.
@@ -572,8 +572,8 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         }
 
         private _generateCssTransformValue(transform: string, valueObj: Value, newValue: number|string): string {
-            if (valueObj.isInterpolated()) {
-                newValue = valueObj.getInterpolatedValue(newValue as number);
+            if (valueObj._isInterpolated()) {
+                newValue = valueObj._getInterpolatedValue(newValue as number);
             }
 
             // If the value is a raw number, append the default units.
@@ -591,7 +591,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                 transformList.push(transform + '(' + value + ')');
             });
             _.each(this._animatedTransforms, (value, transform) => {
-                let newValue = useActiveValues && value.activeTransition ? value.activeTransition.to : value.valueObject.getValue();
+                let newValue = useActiveValues && value.activeTransition ? value.activeTransition.to : value.valueObject._getValue();
                 transformList.push(transform + '(' + this._generateCssTransformValue(transform, value.valueObject, newValue) + ')');
             });
             return transformList.join(' ');
