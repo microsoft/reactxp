@@ -908,6 +908,7 @@ declare module 'react-native' {
              removeEventListener: (eventName: string, handler: (isConnected: boolean) => void) => void;
              fetch: () => Promise<boolean>;
          }
+         static fetch(): Promise<string>;
          static getConnectionInfo(): Promise<ConnectionInfo>;
      }
 
