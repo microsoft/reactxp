@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.51.0-alpha.5 of reactxp
+_Released 11 Jan 2018_
+
+Eliminated limitation within RX.Button where only one child element was allowed.
+Fixed regression where native implementation of RX.View with onPress handler didn't provide touch feedback.
+
 #### Version 0.51.0-alpha.4 of reactxp
 _Released 10 Jan 2018_
 
