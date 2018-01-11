@@ -66,7 +66,6 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         hasRxButtonAscendant: PropTypes.bool
     };
 
-    private _lastMouseDownTime: number = 0;
     private _lastMouseDownEvent: Types.SyntheticEvent;
     private _ignoreClick = false;
     private _longPressTimer: number|undefined;
@@ -187,7 +186,6 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         }
 
         if (this.props.onLongPress) {
-            this._lastMouseDownTime = Date.now().valueOf();
             this._lastMouseDownEvent = e;
             e.persist();
 
