@@ -120,15 +120,9 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> imple
                     origin: e.origin,
                     nativeEvent: e,
                     bubbles: e.bubbles,
-                    currentTarget: e.currentTarget,
                     cancelable: e.cancelable,
                     defaultPrevented: e.defaultPrevented,
-                    eventPhase: e.eventPhase,
-                    isDefaultPrevented: () => e.defaultPrevented,
-                    isPropagationStopped: () => false,
                     __propagationStopped: false,
-                    isTrusted: e.isTrusted,
-                    persist: () => { /* nothing to do */ },
                     stopPropagation: () => {
                         e.stopPropagation();
                         event.__propagationStopped = true;
@@ -136,9 +130,7 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> imple
                     preventDefault: () => {
                         e.preventDefault();
                     },
-                    target: e.target,
-                    timeStamp: e.timeStamp,
-                    type: e.type
+                    timeStamp: e.timeStamp
                 };
 
                 WebView._onMessageReceived.fire(event);

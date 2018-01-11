@@ -423,7 +423,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         }
     }
 
-    private _onMouseUp = (e: Types.MouseEvent) => {
+    private _onMouseUp = (e: React.MouseEvent<any>) => {
         if (e.button === 0) {
             // Types.Image doesn't officially support an onClick prop, but when it's
             // contained within a button, it may have this prop.

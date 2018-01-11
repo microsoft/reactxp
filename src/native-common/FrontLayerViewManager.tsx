@@ -182,7 +182,7 @@ export class FrontLayerViewManager {
         return null;
     }
 
-    private _onBackgroundPressed = (e: Types.SyntheticEvent) => {
+    private _onBackgroundPressed = (e: RN.SyntheticEvent<any>) => {
         e.persist();
 
         const activePopupContext = this._getActiveOverlay();

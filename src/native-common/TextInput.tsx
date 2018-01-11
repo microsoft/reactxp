@@ -90,7 +90,6 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             selection: { start: this._selectionStart, end: this._selectionEnd },
             secureTextEntry: this.props.secureTextEntry,
 
-            textAlign: this.props.textAlign,
             keyboardAppearance: this.props.keyboardAppearance,
             returnKeyType: this.props.returnKeyType,
             disableFullscreenUI: this.props.disableFullscreenUI,

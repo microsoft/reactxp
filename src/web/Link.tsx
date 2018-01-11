@@ -98,7 +98,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
         }
     }
 
-    private _onMouseDown = (e: Types.SyntheticEvent) => {
+    private _onMouseDown = (e: React.SyntheticEvent<any>) => {
         if (this.props.onLongPress) {
             e.persist();
 

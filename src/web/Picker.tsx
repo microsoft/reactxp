@@ -31,7 +31,7 @@ export class Picker extends RX.Picker {
         return Styles.combine(this.props.style) as any;
     }
 
-    private _onValueChange = (e: Types.SyntheticEvent) => {
+    private _onValueChange = (e: React.SyntheticEvent<any>) => {
         const selectEl = e.target as HTMLSelectElement;
         const selectedValue = selectEl.value;
         const selectedItemPosition = _.findIndex(this.props.items, i => i.value === selectedValue);

@@ -241,9 +241,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         this._checkSelectionChanged();
     }
 
-    private _onScroll = (e: Types.UIEvent) => {
+    private _onScroll = (e: React.UIEvent<any>) => {
         if (this.props.onScroll) {
-            const {scrollLeft, scrollTop} = (e.target as Element);
+            const { scrollLeft, scrollTop } = (e.target as Element);
             this.props.onScroll(scrollLeft, scrollTop);
         }
     }

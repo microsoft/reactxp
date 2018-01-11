@@ -175,7 +175,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         }
     }
 
-    private _onMouseDown = (e: Types.SyntheticEvent) => {
+    private _onMouseDown = (e: React.SyntheticEvent<any>) => {
         if (this.props.onPressIn) {
             this.props.onPressIn(e);
         }

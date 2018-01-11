@@ -52,7 +52,6 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     render() {
         const editable = (this.props.editable !== undefined ? this.props.editable : true);
         const blurOnSubmit = this.props.blurOnSubmit || !this.props.multiline;
-        const submitTextOnEnter = this.props.submitTextOnEnter && this.props.multiline;
         return (
             <RN.TextInput
                 ref={ this._onMount }
@@ -81,7 +80,6 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 selection={{ start: this._selectionStart, end: this._selectionEnd }}
                 secureTextEntry={ this.props.secureTextEntry }
 
-                textAlign={ this.props.textAlign }
                 keyboardAppearance={ this.props.keyboardAppearance }
                 returnKeyType={ this.props.returnKeyType }
                 disableFullscreenUI={ this.props.disableFullscreenUI }
@@ -91,7 +89,6 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 allowFontScaling={ this.props.allowFontScaling }
                 maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
                 underlineColorAndroid='transparent'
-                submitTextOnEnter={ submitTextOnEnter }
             />
         );
     }

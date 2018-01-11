@@ -102,9 +102,6 @@ spellCheck: boolean = [value of autoCorrect];
 // See below for supported styles
 style: TextInputStyleRuleSet | TextInputStyleRuleSet[] = [];
 
-// Alignment of text within the input box.
-textAlign: 'auto' | 'left' | 'right' | 'center' | 'justify';
-
 
 // If defined, the control value is forced to match this value;
 // if undefined, control value can be modified by the user

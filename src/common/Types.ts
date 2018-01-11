@@ -20,7 +20,7 @@ export type ReactNode = React.ReactNode;
 // depends on using a platform specific React library (web vs native). Thus, we need an interface to abstract
 // this detail away from the components' common implementation.
 export type ReactInterface = {
-    createElement<P>(type: string, props?: P, ...children: React.ReactNode[]): React.ReactElement<P>;
+    createElement<P>(type: string, props?: P, ...children: ReactNode[]): React.ReactElement<P>;
 };
 
 //------------------------------------------------------------
@@ -351,7 +351,7 @@ export interface CommonProps {
     ref?: string | ((obj: ComponentBase | null) => void);
     key?: string | number;
     type?: any;
-    children?: React.ReactNode | React.ReactNode[];
+    children?: ReactNode | ReactNode[];
 }
 
 export interface Stateless {}
@@ -623,19 +623,19 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
 
 export interface ViewProps extends ViewPropsShared {
     style?:  StyleRuleSetRecursive<ViewStyleRuleSet>;
-    onContextMenu?: (e: React.SyntheticEvent<any>) => void;
-    onStartShouldSetResponder?: (e: React.SyntheticEvent<any>) => boolean;
-    onMoveShouldSetResponder?: (e: React.SyntheticEvent<any>) => boolean;
-    onStartShouldSetResponderCapture?: (e: React.SyntheticEvent<any>) => boolean;
-    onMoveShouldSetResponderCapture?: (e: React.SyntheticEvent<any>) => boolean;
-    onResponderGrant?: (e: React.SyntheticEvent<any>) => void;
-    onResponderReject?: (e: React.SyntheticEvent<any>) => void;
-    onResponderRelease?: (e: React.SyntheticEvent<any>) => void;
-    onResponderStart?: (e: React.TouchEvent<any>) => void;
-    onResponderMove?: (e: React.TouchEvent<any>) => void;
-    onResponderEnd?: (e: React.TouchEvent<any>) => void;
-    onResponderTerminate?: (e: React.SyntheticEvent<any>) => void;
-    onResponderTerminationRequest?: (e: React.SyntheticEvent<any>) => boolean;
+    onContextMenu?: (e: SyntheticEvent) => void;
+    onStartShouldSetResponder?: (e: SyntheticEvent) => boolean;
+    onMoveShouldSetResponder?: (e: SyntheticEvent) => boolean;
+    onStartShouldSetResponderCapture?: (e: SyntheticEvent) => boolean;
+    onMoveShouldSetResponderCapture?: (e: SyntheticEvent) => boolean;
+    onResponderGrant?: (e: SyntheticEvent) => void;
+    onResponderReject?: (e: SyntheticEvent) => void;
+    onResponderRelease?: (e: SyntheticEvent) => void;
+    onResponderStart?: (e: TouchEvent) => void;
+    onResponderMove?: (e: TouchEvent) => void;
+    onResponderEnd?: (e: TouchEvent) => void;
+    onResponderTerminate?: (e: SyntheticEvent) => void;
+    onResponderTerminationRequest?: (e: SyntheticEvent) => boolean;
 }
 
 export interface AnimatedViewProps extends ViewPropsShared {
@@ -843,7 +843,6 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     placeholderTextColor?: string;
     secureTextEntry?: boolean;
     value?: string;
-    textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify';
 
      // Should fonts be scaled according to system setting? Defaults
     // to true. iOS and Android only.
@@ -866,9 +865,6 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
 
     // iOS and Android only property for controlling the text input selection color
     selectionColor?: string;
-
-    // macOS only property for submitting the text on enter
-    submitTextOnEnter?: boolean;
 
     onKeyPress?: (e: KeyboardEvent) => void;
     onFocus?: (e: FocusEvent) => void;
@@ -1127,13 +1123,24 @@ export module Animated {
 //
 // Events
 // ----------------------------------------------------------------------
-export type SyntheticEvent = React.SyntheticEvent<any>;
-
-export type DragEvent = React.DragEvent<any>;
-export type ClipboardEvent = React.ClipboardEvent<any>;
-export type FocusEvent = React.FocusEvent<any>;
-export type FormEvent = React.FormEvent<any>;
-export type MouseEvent = React.MouseEvent<any>;
+export type SyntheticEvent = {
+    readonly bubbles: boolean;
+    readonly cancelable: boolean;
+    readonly defaultPrevented: boolean;
+    readonly timeStamp: number;
+    readonly nativeEvent: any; // Platform-specific
+    preventDefault(): void;
+    stopPropagation(): void;
+};
+export interface ClipboardEvent extends SyntheticEvent {
+    clipboardData: DataTransfer;
+}
+export type FocusEvent = SyntheticEvent;
+export type FormEvent = SyntheticEvent;
+export type MouseEvent = SyntheticEvent;
+export interface DragEvent extends MouseEvent {
+    dataTransfer: DataTransfer;
+}
 
 export interface Touch {
     identifier: number;
@@ -1155,7 +1162,7 @@ export interface TouchList {
     identifiedTouch(identifier: number): Touch;
 }
 
-export interface TouchEvent extends React.SyntheticEvent<any> {
+export interface TouchEvent extends SyntheticEvent {
     // We override this definition because the public
     // type excludes location and page fields.
     altKey: boolean;
@@ -1171,8 +1178,12 @@ export interface TouchEvent extends React.SyntheticEvent<any> {
     pageY?: number;
     touches: TouchList;
 }
-export type UIEvent = React.UIEvent<any>;
-export type WheelEvent = React.WheelEvent<any>;
+export interface WheelEvent extends SyntheticEvent {
+    deltaMode: number;
+    deltaX: number;
+    deltaY: number;
+    deltaZ: number;
+}
 
 export interface WebViewShouldStartLoadEvent extends SyntheticEvent {
     url: string;
