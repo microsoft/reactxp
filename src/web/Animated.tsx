@@ -614,7 +614,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                 // Is this a dynamic (animated) value?
                 if (rawStyles[attrib] instanceof Value) {
                     let valueObj = rawStyles[attrib];
-                    this._processedStyle[attrib] = this._generateCssAttributeValue(attrib, valueObj, valueObj.getValue());
+                    this._processedStyle[attrib] = this._generateCssAttributeValue(attrib, valueObj, valueObj._getValue());
                     newAnimatedAttributes[attrib] = valueObj;
                 } else {
                     // Copy the static style value.
