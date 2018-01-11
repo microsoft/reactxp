@@ -40,14 +40,14 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         super(props);
 
         this.state = {
-            inputValue: props.value || ''
+            inputValue: props.value !== undefined ? props.value : (props.defaultValue || '')
         };
     }
 
     componentWillReceiveProps(nextProps: Types.TextInputProps) {
         if (nextProps.value !== undefined && nextProps.value !== this.state.inputValue) {
             this.setState({
-                inputValue: nextProps.value || ''
+                inputValue: nextProps.value
             });
         }
     }
@@ -79,8 +79,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             return (
                 <textarea
                     style={ combinedStyles as any }
-                    value={ this.props.defaultValue ? undefined : this.state.inputValue }
-                    defaultValue={ this.props.defaultValue || undefined }
+                    value={ this.state.inputValue }
 
                     autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
@@ -106,8 +105,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             let input = (
                 <input
                     style={ combinedStyles as any }
-                    value={ this.props.defaultValue ? undefined : this.state.inputValue }
-                    defaultValue={ this.props.defaultValue || undefined }
+                    value={ this.state.inputValue }
 
                     autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
