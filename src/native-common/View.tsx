@@ -15,11 +15,20 @@ import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
 
+import Animated from './Animated';
+import Styles from './Styles';
 import Types = require('../common/Types');
 import UserInterface from './UserInterface';
 import ViewBase from './ViewBase';
 
 let LayoutAnimation = RN.LayoutAnimation;
+
+// Note: a lot of code is duplicated with Button due to View currently supporting a lot of features Button does.
+const _defaultActiveOpacity = 0.2;
+const _inactiveOpacityAnimationDuration = 250;
+const _activeOpacityAnimationDuration = 0;
+const _hideUnderlayTimeout = 100;
+const _underlayInactive = 'transparent';
 
 function noop() { /* noop */ }
 
@@ -120,8 +129,14 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     private _mixinIsApplied = false;
     private _childrenKeys: ChildKey[];
 
-    private _mixin_componentDidMount = noop;
-    private _mixin_componentWillUnmount = noop;
+    private _mixin_componentDidMount?: () => void;
+    private _mixin_componentWillUnmount?: () => void;
+
+    private _isMounted = false;
+    private _hideTimeout: number|undefined;
+    private _defaultOpacityValue: number|undefined;
+    private _opacityAnimatedValue: RN.Animated.Value|undefined;
+    private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet|undefined;
 
     constructor(props: Types.ViewProps) {
         super(props);
@@ -193,20 +208,31 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
     }
 
-    // componentDidMount & componentWillUnmount don't do anything in particular, but implmenenting them explicitly
-    // (rather than letting the mixin ones be applied on View) allows derived components the flexibility of having
-    // implementations for these as well.
     componentDidMount() {
-        this._mixin_componentDidMount();
+        this._isMounted = true;
+        if (this._mixin_componentDidMount) {
+            this._mixin_componentDidMount();
+        }
     }
 
     componentWillUnmount() {
-        this._mixin_componentWillUnmount();
+        this._isMounted = false;
+        if (this._mixin_componentWillUnmount) {
+            this._mixin_componentWillUnmount();
+        }
     }
 
     private _updateMixin(props: Types.ViewProps, initial: boolean) {
         let isButton = this._isButton(props);
         if (isButton && !this._mixinIsApplied) {
+            // Create local handlers
+            this.touchableHandlePress = this.touchableHandlePress.bind(this);
+            this.touchableHandleLongPress = this.touchableHandleLongPress.bind(this);
+            this.touchableGetPressRectOffset = this.touchableGetPressRectOffset.bind(this);
+            this.touchableHandleActivePressIn = this.touchableHandleActivePressIn.bind(this);
+            this.touchableHandleActivePressOut = this.touchableHandleActivePressOut.bind(this);
+            this.touchableGetHighlightDelayMS = this.touchableGetHighlightDelayMS.bind(this);
+
             applyMixin(this, RN.Touchable.Mixin, [
                 // Properties that View and RN.Touchable.Mixin have in common. View needs
                 // to dispatch these methods to RN.Touchable.Mixin manually.
@@ -222,6 +248,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             } else {
                 this.setState(this.touchableGetInitialState());
             }
+
             this._mixinIsApplied = true;
         } else if (!isButton && this._mixinIsApplied) {
             removeMixin(this, RN.Touchable.Mixin, [
@@ -229,8 +256,15 @@ export class View extends ViewBase<Types.ViewProps, {}> {
                 'componentWillUnmount'
             ]);
 
-            this._mixin_componentDidMount = noop;
-            this._mixin_componentWillUnmount = noop;
+            delete this._mixin_componentDidMount;
+            delete this._mixin_componentWillUnmount;
+
+            delete this.touchableHandlePress;
+            delete this.touchableHandleLongPress;
+            delete this.touchableGetPressRectOffset;
+            delete this.touchableHandleActivePressIn;
+            delete this.touchableHandleActivePressOut;
+            delete this.touchableGetHighlightDelayMS;
 
             this._mixinIsApplied = false;
         }
@@ -243,7 +277,6 @@ export class View extends ViewBase<Types.ViewProps, {}> {
      */
     protected _buildInternalProps(props: Types.ViewProps) {
         this._internalProps = _.clone(props) as any;
-        this._internalProps.style = this._getStyles(props);
         this._internalProps.ref = this._setNativeView;
 
         // Translate accessibilityProps from RX to RN, there are type diferrences for example:
@@ -270,6 +303,8 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             }
         }
 
+        const baseStyle = this._getStyles(props);
+        this._internalProps.style = baseStyle;
         if (this._mixinIsApplied) {
             const responderProps = {
                 onStartShouldSetResponder: this.touchableHandleStartShouldSetResponder,
@@ -280,35 +315,139 @@ export class View extends ViewBase<Types.ViewProps, {}> {
                 onResponderTerminate: this.touchableHandleResponderTerminate
             };
             this._internalProps = _.extend(this._internalProps, responderProps);
+
+            if (!this.props.disableTouchOpacityAnimation) {
+                const opacityValueFromProps = this._getDefaultOpacityValue(props);
+                if (this._defaultOpacityValue !== opacityValueFromProps) {
+                    this._defaultOpacityValue = opacityValueFromProps;
+                    this._opacityAnimatedValue = new Animated.Value(this._defaultOpacityValue);
+                    this._opacityAnimatedStyle = Styles.createAnimatedViewStyle({
+                        opacity: this._opacityAnimatedValue
+                    });
+                }
+                this._internalProps.style = Styles.combine([baseStyle, this._opacityAnimatedStyle]);
+            }
         }
     }
+    private _isTouchFeedbackApplicable() {
+        return this._isMounted && this._mixinIsApplied && this._nativeView;
+    }
 
-    private _isButton(viewProps: Types.ViewProps): boolean {
+    private _opacityActive(duration: number) {
+        this._setOpacityTo(this.props.activeOpacity || _defaultActiveOpacity, duration);
+    }
+
+    private _opacityInactive(duration: number) {
+        this._setOpacityTo(this._defaultOpacityValue!!!, duration);
+    }
+
+    private _getDefaultOpacityValue(props: Types.ViewProps): number {
+        let flattenedStyles: { [key: string]: any }|undefined;
+        if (props && props.style) {
+            flattenedStyles = RN.StyleSheet.flatten(props.style);
+        }
+
+        return flattenedStyles && flattenedStyles.opacity || 1;
+    }
+
+    private _setOpacityTo(value: number, duration: number) {
+       Animated.timing(
+            this._opacityAnimatedValue!!!,
+            {
+                toValue: value,
+                duration: duration,
+                easing: Animated.Easing.InOut()
+            }
+        ).start();
+    }
+
+    private _showUnderlay() {
+        if (!this._nativeView) {
+            return;
+        }
+
+        this._nativeView.setNativeProps({
+            style: {
+                backgroundColor: this.props.underlayColor
+            }
+        });
+    }
+
+    private _hideUnderlay = () => {
+        if (!this._isMounted || !this._nativeView) {
+            return;
+        }
+
+        this._nativeView.setNativeProps({
+            style: [{
+                backgroundColor: _underlayInactive
+            }, this.props.style],
+        });
+    }
+
+    protected _isButton(viewProps: Types.ViewProps): boolean {
         return !!(viewProps.onPress || viewProps.onLongPress);
     }
 
     render() {
+        let PotentiallyAnimatedView = this._isButton(this.props) ? RN.Animated.View : RN.View;
         return (
-            <RN.View { ...this._internalProps }>
+            <PotentiallyAnimatedView { ...this._internalProps }>
                 { this.props.children }
-            </RN.View>
+            </PotentiallyAnimatedView>
         );
     }
 
-    touchableHandlePress = (e: Types.MouseEvent) => {
+    touchableHandlePress(e: Types.MouseEvent): void {
         UserInterface.evaluateTouchLatency(e);
         if (this.props.onPress) {
             this.props.onPress(e);
         }
     }
 
-    touchableHandleLongPress = (e: Types.MouseEvent) => {
+    touchableHandleLongPress(e: Types.MouseEvent): void {
         if (this.props.onLongPress) {
             this.props.onLongPress(e);
         }
     }
 
-    touchableGetPressRectOffset = () => {
+    touchableHandleActivePressIn(e: Types.SyntheticEvent): void {
+        if (this._isTouchFeedbackApplicable()) {
+            if (this.props.underlayColor) {
+                if (this._hideTimeout) {
+                    clearTimeout(this._hideTimeout);
+                    this._hideTimeout = undefined;
+                }
+                this._showUnderlay();
+            }
+
+             // We do not want to animate opacity if underlayColour is provided. Unless an explicit activeOpacity is provided
+            if (!this.props.disableTouchOpacityAnimation && (this.props.activeOpacity || !this.props.underlayColor)) {
+                this._opacityActive(_activeOpacityAnimationDuration);
+            }
+        }
+    }
+
+    touchableHandleActivePressOut(e: Types.SyntheticEvent): void {
+        if (this._isTouchFeedbackApplicable()) {
+            if (this.props.underlayColor) {
+                if (this._hideTimeout) {
+                    clearTimeout(this._hideTimeout);
+                }
+                this._hideTimeout = setTimeout(this._hideUnderlay, _hideUnderlayTimeout);
+            }
+
+            if (!this.props.disableTouchOpacityAnimation && (this.props.activeOpacity || !this.props.underlayColor)) {
+                this._opacityInactive(_inactiveOpacityAnimationDuration);
+            }
+        }
+    }
+
+    touchableGetHighlightDelayMS(): number {
+        return 20;
+    }
+
+    touchableGetPressRectOffset() {
         return {top: 20, left: 20, right: 20, bottom: 100};
     }
 
