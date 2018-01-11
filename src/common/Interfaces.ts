@@ -43,13 +43,6 @@ export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewP
     abstract setFocusLimited(limited: boolean): void;
 }
 
-export interface IAnimatedValue {
-    setValue(value: number): void;
-
-    // NOTE: interpolate is deprecated. Use RX.Animated.interpolate instead.
-    interpolate(config: any): IAnimatedValue;
-}
-
 export abstract class App {
     // Initialization
     initialize(debug: boolean, development: boolean): void {
@@ -301,11 +294,9 @@ export interface Animated {
     parallel: Types.Animated.ParallelFunction;
     sequence: Types.Animated.SequenceFunction;
 
-    // Note: Access to Value is deprecated. Move to createValue
-    // and interpolate instead.
     Value: typeof Types.AnimatedValue;
     createValue: (initialValue: number) => Types.AnimatedValue;
-    interpolate: (value: Types.AnimatedValue, inputRange: number[], outputRange: string[]) => Types.AnimatedValue;
+    interpolate: (value: Types.AnimatedValue, inputRange: number[], outputRange: string[]) => Types.InterpolatedValue;
 }
 
 export interface International {

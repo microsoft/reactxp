@@ -87,22 +87,30 @@ export interface FlexboxChildrenStyle {
 export interface FlexboxStyle extends FlexboxParentStyle, FlexboxChildrenStyle {
 }
 
-export abstract class AnimatedValue implements RX.IAnimatedValue {
+export type InterpolationConfig = {
+    inputRange: number[];
+    outputRange: number[] | string[];
+};
+
+export abstract class AnimatedValue {
     constructor(val: number) {
         // No-op
     }
     abstract setValue(value: number): void;
-    abstract interpolate(config: any): AnimatedValue;
+    abstract interpolate(config: InterpolationConfig): InterpolatedValue;
+}
+
+export abstract class InterpolatedValue {
 }
 
 export interface AnimatedFlexboxStyle {
-    height?: AnimatedValue;
-    width?: AnimatedValue;
+    height?: AnimatedValue|InterpolatedValue;
+    width?: AnimatedValue|InterpolatedValue;
 
-    top?: AnimatedValue;
-    right?: AnimatedValue;
-    bottom?: AnimatedValue;
-    left?: AnimatedValue;
+    top?: AnimatedValue|InterpolatedValue;
+    right?: AnimatedValue|InterpolatedValue;
+    bottom?: AnimatedValue|InterpolatedValue;
+    left?: AnimatedValue|InterpolatedValue;
 }
 
 // ------------------------------------------------------------
@@ -126,16 +134,16 @@ export interface TransformStyle {
 
 export interface AnimatedTransformStyle {
     transform?: {
-        perspective?: AnimatedValue;
-        rotate?: AnimatedValue;
-        rotateX?: AnimatedValue;
-        rotateY?: AnimatedValue;
-        rotateZ?: AnimatedValue;
-        scale?: AnimatedValue;
-        scaleX?: AnimatedValue;
-        scaleY?: AnimatedValue;
-        translateX?: AnimatedValue;
-        translateY?: AnimatedValue;
+        perspective?: AnimatedValue|InterpolatedValue;
+        rotate?: AnimatedValue|InterpolatedValue;
+        rotateX?: AnimatedValue|InterpolatedValue;
+        rotateY?: AnimatedValue|InterpolatedValue;
+        rotateZ?: AnimatedValue|InterpolatedValue;
+        scale?: AnimatedValue|InterpolatedValue;
+        scaleX?: AnimatedValue|InterpolatedValue;
+        scaleY?: AnimatedValue|InterpolatedValue;
+        translateX?: AnimatedValue|InterpolatedValue;
+        translateY?: AnimatedValue|InterpolatedValue;
     }[];
 }
 
@@ -162,9 +170,9 @@ export interface ViewAndImageCommonStyle extends FlexboxStyle, TransformStyle {
 }
 
 export interface AnimatedViewAndImageCommonStyle extends AnimatedFlexboxStyle, AnimatedTransformStyle {
-    borderRadius?: AnimatedValue;
-    backgroundColor?: AnimatedValue;
-    opacity?: AnimatedValue;
+    borderRadius?: AnimatedValue|InterpolatedValue;
+    backgroundColor?: InterpolatedValue;
+    opacity?: AnimatedValue|InterpolatedValue;
 }
 
 // ------------------------------------------------------------
@@ -276,8 +284,8 @@ export interface TextStyle extends ViewStyle {
 export type TextStyleRuleSet = StyleRuleSet<TextStyle>;
 
 export interface AnimatedTextStyle extends AnimatedViewAndImageCommonStyle {
-    color?: AnimatedValue;
-    fontSize?: AnimatedValue;
+    color?: InterpolatedValue;
+    fontSize?: AnimatedValue|InterpolatedValue;
 }
 
 export type AnimatedTextStyleRuleSet = StyleRuleSet<AnimatedTextStyle>;
@@ -292,8 +300,8 @@ export interface TextInputStyle extends TextStyle {
 export type TextInputStyleRuleSet = StyleRuleSet<TextInputStyle>;
 
 export interface AnimatedTextInputStyle extends AnimatedViewAndImageCommonStyle {
-    color?: AnimatedValue;
-    fontSize?: AnimatedValue;
+    color?: InterpolatedValue;
+    fontSize?: AnimatedValue|InterpolatedValue;
 }
 
 export type AnimatedTextInputStyleRuleSet = StyleRuleSet<AnimatedTextInputStyle>;
@@ -1085,7 +1093,8 @@ export module Animated {
         outputRange: (number | string)[];
     }
 
-    export type TimingFunction = (value: RX.IAnimatedValue, config: TimingAnimationConfig) => CompositeAnimation;
+    export type TimingFunction = (value: RX.Types.AnimatedValue|RX.Types.InterpolatedValue,
+        config: TimingAnimationConfig) => CompositeAnimation;
     export var timing: TimingFunction;
 
     export type SequenceFunction = (animations: Array<CompositeAnimation>) => CompositeAnimation;
