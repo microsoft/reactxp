@@ -17,6 +17,8 @@ export interface TextInputState {
     inputValue?: string;
 }
 
+const _isMac = (typeof navigator !== 'undefined') && (typeof navigator.platform === 'string') && (navigator.platform.indexOf('Mac') >= 0);
+
 let _styles = {
     defaultStyle: {
         position: 'relative',
@@ -98,6 +100,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onPaste={ this._onPaste }
                     onScroll={ this._onScroll }
                     aria-label={ this.props.accessibilityLabel }
+                    // VoiceOver does not handle text inputs properly at the moment, aria-live is a temporary workaround.
+                    aria-live={ _isMac ? 'assertive' : undefined }
                 />
             );
         } else {
@@ -124,6 +128,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onMouseUp={ this._checkSelectionChanged }
                     onPaste={ this._onPaste }
                     aria-label={ this.props.accessibilityLabel }
+                    // VoiceOver does not handle text inputs properly at the moment, aria-live is a temporary workaround.
+                    aria-live={ _isMac ? 'assertive' : undefined }
                     type={ keyboardTypeValue }
                 />
             );
