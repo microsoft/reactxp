@@ -16,11 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
-#### Version 0.51.0-alpha.3 of reactxp
+#### Version 0.51.0-alpha.4 of reactxp
 _Released 10 Jan 2018_
 
 Added code to native implementation of RX.Network so it works with versions of RN before and after 0.48.x.
 Fixed regression in web implementation of RX.TextInput.
+Fixed bug that caused incorrect behavior of RX.Modal on native platforms.
 
 #### Version 0.51.0-alpha.2 of reactxp
 _Released 9 Jan 2018_
