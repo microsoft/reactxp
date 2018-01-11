@@ -33,8 +33,11 @@ export interface ViewContext {
 const HasFocusableWindows = (RNW.createFocusableComponent !== undefined);
 
 let FocusableView: RNW.FocusableComponentConstructor<RN.ViewProps>;
+let FocusableAnimatedView: RNW.FocusableComponentConstructor<RN.ViewProps>;
 if (HasFocusableWindows) {
     FocusableView = RNW.createFocusableComponent(RN.View) as
+        RNW.FocusableComponentConstructor<RN.ViewProps>;
+    FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View) as
         RNW.FocusableComponentConstructor<RN.ViewProps>;
 }
 
@@ -231,8 +234,9 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                 onBlur: this._onBlur
             };
 
+            let PotentiallyAnimatedFocusableView = this._isButton(this.props) ? FocusableAnimatedView : FocusableView;
             return (
-                <FocusableView
+                <PotentiallyAnimatedFocusableView 
                     { ...focusableViewProps }
                 />
             );
