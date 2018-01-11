@@ -144,6 +144,7 @@ class RootViewUsingStore extends BaseRootView<BaseRootViewProps> {
     }
 
     componentWillUnmount(): void {
+        super.componentWillUnmount();
         MainViewStore.unsubscribe(this._changeListener);
     }
 
