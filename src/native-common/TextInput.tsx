@@ -138,11 +138,19 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             (selEvent.nativeEvent as any).selection;
 
         /**
-         * On iOS this callback is called BEFORE the _onChangeText, which means the inputValue hasn't had time to get updated yet
-         * and cursor would always be one character behind. Fix this problem on Android only.
+         * On Android, clamp the selection start and end indices to be within the bounds of the TextInput's value.
+         * If we didn't do this, on Android some Java code would throw an index out of bounds exception when attempting
+         * to set the selection. An important detail for this to work is that React Native Android fires `onChangeText`
+         * before `onSelectionChange` which means we have the up-to-date TextInput value's length when this handler
+         * runs. Whereas in React Native iOS and UWP, those events fire in the reverse order so this handler can't
+         * clamp on those platforms.
          */
-        this._selectionStart = (RN.Platform.OS !== 'ios') ? Math.min(selection.start, this.state.inputValue.length) : selection.start;
-        this._selectionEnd = (RN.Platform.OS !== 'ios') ? Math.min(selection.end, this.state.inputValue.length) : selection.end;
+        this._selectionStart = (RN.Platform.OS === 'android')
+            ? Math.min(selection.start, this.state.inputValue.length)
+            : selection.start;
+        this._selectionEnd = (RN.Platform.OS === 'android')
+            ? Math.min(selection.end, this.state.inputValue.length)
+            : selection.end;
 
         if (this.props.onSelectionChange) {
             this.props.onSelectionChange(this._selectionStart, this._selectionEnd);
