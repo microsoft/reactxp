@@ -8,7 +8,6 @@
 */
 
 import React = require('react');
-import ReactDOM = require('react-dom');
 
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -33,6 +32,7 @@ let _styles = {
 };
 
 export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
+    private _mountedComponent: HTMLInputElement|HTMLTextAreaElement|null = null;
     private _selectionStart: number = 0;
     private _selectionEnd: number = 0;
 
@@ -78,6 +78,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         if (this.props.multiline) {
             return (
                 <textarea
+                    ref={ this._onMount }
                     style={ combinedStyles as any }
                     value={ this.state.inputValue }
 
@@ -104,6 +105,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             
             let input = (
                 <input
+                    ref={ this._onMount }
                     style={ combinedStyles as any }
                     value={ this.state.inputValue }
 
@@ -137,6 +139,10 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
             return input;
         }
+    }
+
+    private _onMount = (comp: HTMLInputElement|HTMLTextAreaElement|null) => {
+        this._mountedComponent = comp;
     }
 
     private _getKeyboardType(): { keyboardTypeValue: string, wrapInForm: boolean } {
@@ -173,10 +179,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     private _onInput = (e: React.FormEvent<any>) => {
         if (!e.defaultPrevented) {
-            let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-            if (el) {
+            if (this._mountedComponent) {
                 // Has the input value changed?
-                const value = el.value || '';
+                const value = this._mountedComponent.value || '';
                 if (this.state.inputValue !== value) {
                     // If the parent component didn't specify a value, we'll keep
                     // track of the modified value.
@@ -197,11 +202,11 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     private _checkSelectionChanged = () => {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-        if (el) {
-            if (this._selectionStart !== el.selectionStart || this._selectionEnd !== el.selectionEnd) {
-                this._selectionStart = el.selectionStart;
-                this._selectionEnd = el.selectionEnd;
+        if (this._mountedComponent) {
+            if (this._selectionStart !== this._mountedComponent.selectionStart ||
+                    this._selectionEnd !== this._mountedComponent.selectionEnd) {
+                this._selectionStart = this._mountedComponent.selectionStart;
+                this._selectionEnd = this._mountedComponent.selectionEnd;
 
                 if (this.props.onSelectionChange) {
                     this.props.onSelectionChange(this._selectionStart, this._selectionEnd);
@@ -238,16 +243,14 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     private _focus = () => {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-        if (el) {
-            el.focus();
+        if (this._mountedComponent) {
+            this._mountedComponent.focus();
         }
     }
 
     blur() {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-        if (el) {
-            el.blur();
+        if (this._mountedComponent) {
+            this._mountedComponent.blur();
         }
     }
 
@@ -260,24 +263,22 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     isFocused() {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-        if (el) {
-            return document.activeElement === el;
+        if (this._mountedComponent) {
+            return document.activeElement === this._mountedComponent;
         }
         return false;
     }
 
     selectAll() {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-        if (el) {
-            el.select();
+        if (this._mountedComponent) {
+            this._mountedComponent.select();
         }
     }
 
     selectRange(start: number, end: number) {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-        if (el) {
-            el.setSelectionRange(start, end);
+        if (this._mountedComponent) {
+            let component = this._mountedComponent as HTMLInputElement;
+            component.setSelectionRange(start, end);
         }
     }
 
@@ -286,10 +287,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             start: 0,
             end: 0
         };
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-        if (el) {
-            range.start = el.selectionStart;
-            range.end = el.selectionEnd;
+        if (this._mountedComponent) {
+            range.start = this._mountedComponent.selectionStart;
+            range.end = this._mountedComponent.selectionEnd;
         }
 
         return range;
@@ -300,9 +300,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         if (this.state.inputValue !== inputValue) {
             // It's important to set the actual value in the DOM immediately. This allows us to call other related methods
             // like selectRange synchronously afterward.
-            let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-            if (el) {
-                el.value = inputValue;
+            if (this._mountedComponent) {
+                this._mountedComponent.value = inputValue;
             }
 
             this.setState({
