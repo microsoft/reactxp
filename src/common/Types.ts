@@ -457,7 +457,6 @@ export interface CommonStyledProps<T> extends CommonProps {
 // Button
 export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, CommonAccessibilityProps {
     title?: string;
-    children?: ReactNode;
     disabled?: boolean;
     delayLongPress?: number;
 
@@ -503,7 +502,6 @@ export interface ImagePropsShared extends CommonProps {
     source: string;
     headers?: { [headerName: string]: string };
     accessibilityLabel?: string;
-    children?: ReactNode;
     resizeMode?: 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat';
 
     resizeMethod?: 'auto' | 'resize' | 'scale'; // Android only
@@ -533,7 +531,6 @@ export interface AnimatedImageProps extends ImagePropsShared {
 // | important   |
 // | example     |
 export interface TextPropsShared extends CommonProps {
-    children?: ReactNode;
     selectable?: boolean;
     numberOfLines?: number;
 
@@ -577,7 +574,6 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     blockPointerEvents?: boolean; // Native-only prop for disabling touches on self and all child views
     shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
     viewLayerTypeAndroid?: ViewLayerType; // Android only property
-    children?: ReactNode;
 
     restrictFocusWithin?: boolean; // Web-only, during the keyboard navigation, the focus will not go outside this view
     limitFocusWithin?: boolean; // Web-only, make the view and all focusable subelements not focusable when isFocusLimited state is true
