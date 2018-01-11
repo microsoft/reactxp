@@ -53,11 +53,6 @@ export interface ButtonContext {
 }
 
 export class Button extends React.Component<Types.ButtonProps, {}> {
-    static propTypes = {
-        // Button should only have a single child.
-        children: PropTypes.element
-    };
-
     static contextTypes = {
         hasRxButtonAscendant: PropTypes.bool
     };

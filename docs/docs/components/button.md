@@ -9,8 +9,6 @@ next: components/gestureview
 
 Like View, this component is a generic container for other components. However, it adds some additional capabilities -- support for presses or clicks and hovering.
 
-This component supports only one child. If you require multiple child components, wrap them in a View.
-
 ## Props
 In addition to the [common accessibility props](/reactxp/docs/accessibility.html), the following props are supported.
 
