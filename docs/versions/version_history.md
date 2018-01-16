@@ -16,6 +16,14 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.51.0-alpha.6 of reactxp
+_Released 16 Jan 2018_
+
+Fixed bug in Windows UWP implementation related to selection ranges in TextInput.
+Fixed screen reader issue in Mac implementation.
+Removed ```textAlign``` prop from TextInput. It was extraneous, since it's already supported as a style attribute.
+Updated Windows UWP dependency to use the latest version of RN for UWP.
+
 #### Version 0.51.0-alpha.5 of reactxp
 _Released 11 Jan 2018_
 
