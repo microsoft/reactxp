@@ -106,7 +106,7 @@ export class TestListView extends RX.Component<TestListViewProps, TestListViewSt
 
         this.state = {
             results: {}
-        }
+        };
     }
 
     render() {

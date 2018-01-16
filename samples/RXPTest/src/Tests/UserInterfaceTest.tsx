@@ -7,7 +7,7 @@ import RX = require('reactxp');
 import SyncTasks = require('synctasks');
 
 import * as CommonStyles from '../CommonStyles';
-import { AutoExecutableTest, TestResult, TestType } from '../Test'
+import { AutoExecutableTest, TestResult, TestType } from '../Test';
 
 const _styles = {
     container: RX.Styles.createViewStyle({
@@ -103,10 +103,9 @@ class UserInterfaceView extends RX.Component<RX.CommonProps, UserInterfaceState>
 
         // setMaxContentSizeMultiplier
         try {
-            RX.UserInterface.setMaxContentSizeMultiplier(1.3)
-            RX.UserInterface.setMaxContentSizeMultiplier(0)
-        }
-        catch (e) {
+            RX.UserInterface.setMaxContentSizeMultiplier(1.3);
+            RX.UserInterface.setMaxContentSizeMultiplier(0);
+        } catch (e) {
             // Some versions of RN don't implement this call, which can result
             // in an exception.
             result.errors.push('Caught exception when calling RX.UserInterface.setMaxContentSizeMultiplier');
