@@ -65,6 +65,9 @@ export interface RootViewState {
 
     // Screen Reader text to be announced.
     announcementText: string;
+
+    // Render announcementText in a nested div to work around browser quirks
+    announcementTextInNestedDiv: boolean;
 }
 
 // Width of the "alley" around popups so they don't get too close to the boundary of the window.
@@ -131,8 +134,12 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                     announcement += ' ';
                 }
 
+                // Additionally, alternate between announcement text directly under the aria-live element and
+                // nested in a div to work around issues with some browsers. Chrome on Windows is known to
+                // not fire accessibility events reliably without this, for example.
                 this.setState({
-                    announcementText: announcement
+                    announcementText: announcement,
+                    announcementTextInNestedDiv: !this.state.announcementTextInNestedDiv
                 });
         });
 
@@ -163,7 +170,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             constrainedPopupHeight: 0,
             isMouseInPopup: false,
             focusClass: this.props.mouseFocusOutline,
-            announcementText: ''
+            announcementText: '',
+            announcementTextInNestedDiv: false
         };
     }
 
@@ -299,6 +307,10 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             );
         }
 
+        let announcement: any = this.state.announcementTextInNestedDiv ?
+            ( <div> { this.state.announcementText } </div> ) :
+            this.state.announcementText;
+
         return (
             <div
                 className={ this.state.focusClass }
@@ -311,8 +323,9 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                     style={ _styles.liveRegionContainer as any }
                     aria-live={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
                     aria-atomic={ 'true' }
+                    aria-relevant={ 'text' }
                 >
-                    { this.state.announcementText }
+                    { announcement }
                 </div>
             </div>
         );
