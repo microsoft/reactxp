@@ -6,7 +6,7 @@ import _ = require('lodash');
 import RX = require('reactxp');
 
 import * as CommonStyles from '../CommonStyles';
-import { Test, TestResult, TestType } from '../Test'
+import { Test, TestResult, TestType } from '../Test';
 
 const _styles = {
     container: RX.Styles.createViewStyle({
@@ -71,7 +71,7 @@ interface WebViewViewState {
 class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
     private _webViewTest1: RX.WebView;
 
-    constructor(props: RX.CommonProps){
+    constructor(props: RX.CommonProps) {
         super(props);
 
         this.state = {

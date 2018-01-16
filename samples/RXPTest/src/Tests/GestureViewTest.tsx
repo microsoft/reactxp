@@ -6,7 +6,7 @@
 import RX = require('reactxp');
 
 import * as CommonStyles from '../CommonStyles';
-import { Test, TestResult, TestType } from '../Test'
+import { Test, TestResult, TestType } from '../Test';
 import { MultiTouchGestureState } from 'reactxp/dist/common/Types';
 
 const _styles = {

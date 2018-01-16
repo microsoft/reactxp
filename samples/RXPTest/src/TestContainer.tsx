@@ -132,7 +132,7 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
                             { error }
                         </RX.Text>
                     </RX.View>
-                )
+                );
             });
         
             if (resultText.length === 0) {

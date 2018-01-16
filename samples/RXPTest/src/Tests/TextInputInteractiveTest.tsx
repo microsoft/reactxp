@@ -7,7 +7,7 @@ import _ = require('lodash');
 import RX = require('reactxp');
 
 import * as CommonStyles from '../CommonStyles';
-import { Test, TestResult, TestType } from '../Test'
+import { Test, TestResult, TestType } from '../Test';
 
 const _styles = {
     container: RX.Styles.createViewStyle({

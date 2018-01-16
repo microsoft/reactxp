@@ -6,7 +6,7 @@
 import RX = require('reactxp');
 
 import * as CommonStyles from '../CommonStyles';
-import { AutoExecutableTest, TestResult, TestType } from '../Test'
+import { AutoExecutableTest, TestResult, TestType } from '../Test';
 
 const _styles = {
     container: RX.Styles.createViewStyle({
