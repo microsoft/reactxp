@@ -23,6 +23,7 @@ Fixed bug in Windows UWP implementation related to selection ranges in TextInput
 Fixed screen reader issue in Mac implementation.
 Removed ```textAlign``` prop from TextInput. It was extraneous, since it's already supported as a style attribute.
 Updated Windows UWP dependency to use the latest version of RN for UWP.
+Worked around issue with screen readers on Chrome browsers.
 
 #### Version 0.51.0-alpha.5 of reactxp
 _Released 11 Jan 2018_
