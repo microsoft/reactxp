@@ -1128,6 +1128,7 @@ export type SyntheticEvent = {
     readonly cancelable: boolean;
     readonly defaultPrevented: boolean;
     readonly timeStamp: number;
+    readonly currentTarget: EventTarget;
     readonly nativeEvent: any; // Platform-specific
     preventDefault(): void;
     stopPropagation(): void;
