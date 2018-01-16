@@ -53,7 +53,7 @@ interface StatusBarViewState {
     barStyle?: 'default' | 'light-content' | 'dark-content';
     isNetworkVisible?: boolean;
     backgroundColorIndex?: number;
-    isTranslucent?: boolean
+    isTranslucent?: boolean;
 }
 
 class StatusBarView extends RX.Component<RX.CommonProps, StatusBarViewState> {

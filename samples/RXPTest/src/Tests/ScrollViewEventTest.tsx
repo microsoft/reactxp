@@ -178,19 +178,19 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
         this.setState({
             test1ContentWidth: width,
             test1ContentHeight: height
-        })
+        });
     }
 
     private _onScrollBeginDragTest1 = () => {
         this.setState({
             test1DragStartTime: Date.now()
-        })
+        });
     }
 
     private _onScrollEndDragTest1 = () => {
         this.setState({
             test1DragEndTime: Date.now()
-        })
+        });
     }
 }
 

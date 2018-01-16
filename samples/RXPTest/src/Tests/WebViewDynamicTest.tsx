@@ -145,7 +145,8 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
         // on the window, others on the document. We'll install it on both here.
         const receiverScript = 'window.onload=function() {' +
             'function receiveMessage(e) { document.getElementById("msg").innerHTML = "Message Received: " + e.data; };' +
-            'document.getElementById("sendButton").onclick=function() { window.parent.postMessage("Posted message from WebView!", "*"); };' +
+            'document.getElementById("sendButton").onclick=function() { window.parent.postMessage("Posted message ' + 
+            'from WebView!", "*"); };' +
             'document.addEventListener("message", receiveMessage);' +
             'window.addEventListener("message", receiveMessage);' +
         '}';

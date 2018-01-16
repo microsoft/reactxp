@@ -64,7 +64,8 @@ class UserPresenceView extends RX.Component<RX.CommonProps, UserPresenceViewStat
             <RX.View style={ _styles.container}>
                 <RX.View style={ _styles.textContainer } key={ 'explanation1' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'Is the user currently present? Depending on the platform, placing the app in the background or leaving it idle may change this state.' }
+                        { 'Is the user currently present? Depending on the platform, placing the app in ' + 
+                          'the background or leaving it idle may change this state.' }
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.labelContainer } key={ 'platform' }>

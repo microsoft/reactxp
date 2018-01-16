@@ -65,7 +65,9 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
                     viewLayerTypeAndroid={ 'hardware' }
                     tabIndex={ 1 }
                     title={ 'shouldRasterizeIOS = true\nviewLayerTypeAndroid = true' }
-                    onLongPress={ () => {} }
+                    onLongPress={ () => {
+                        // no-op
+                    } }
                     id={ 'testId' }
                     ariaLabelledBy={ 'aria label' }
                     accessibilityLabel={ 'accessibility label' }
@@ -79,7 +81,9 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
 
                 <RX.View
                     style={ _styles.view2 }
-                    onPress={ () => {} }
+                    onPress={ () => {
+                        // no-op
+                    } }
                     activeOpacity={ 0.5 }
                     underlayColor={ '#fee' }
                     tabIndex={ 3 }
@@ -91,7 +95,9 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
                 
                 <RX.View
                     style={ _styles.view3 }
-                    onPress={ () => {} }
+                    onPress={ () => {
+                        // no-op
+                    } }
                     disableTouchOpacityAnimation={ true }
                     tabIndex={ 2 }
                 >
