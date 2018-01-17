@@ -11,7 +11,7 @@ namespace rxptest
         {
             get
             {
-                return "rxptest";
+                return "RXApp";
             }
         }
 
