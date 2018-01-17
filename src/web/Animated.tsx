@@ -166,6 +166,23 @@ export class Value extends Types.AnimatedValue {
     // Start a specific animation.
     startTransition(toValue: number|string, duration: number, easing: string, delay: number,
             onEnd: Types.Animated.EndCallback): void {
+
+        // If there are no listeners, the app probably has a bug where it's
+        // starting an animation before the associated element is mounted.
+        // Flag this as an error and complete the animation immediately.
+        if (this._listeners.length === 0) {
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('Animating a value that is not associated with any mounted element');
+            }
+
+            this.updateFinalValue(toValue);
+            if (onEnd) {
+                onEnd({ finished: false });
+            }
+
+            return;
+        }
+        
         _.each(this._listeners, listener => {
             listener.startTransition(this, this._getValue(), toValue, duration, easing, delay, onEnd);
         });
