@@ -169,12 +169,9 @@ export class Value extends Types.AnimatedValue {
 
         // If there are no listeners, the app probably has a bug where it's
         // starting an animation before the associated element is mounted.
-        // Flag this as an error and complete the animation immediately.
+        // Complete the animation immediately by updating to the end value
+        // and caling the onEnd callback.
         if (this._listeners.length === 0) {
-            if (AppConfig.isDevelopmentMode()) {
-                console.error('Animating a value that is not associated with any mounted element');
-            }
-
             this.updateFinalValue(toValue);
             if (onEnd) {
                 onEnd({ finished: false });
