@@ -111,56 +111,84 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
                     </RX.Text>
                 </RX.View>
 
+                {/* View's accessibilityLabel (both explicit and automatic recursive generation)
+                  * and importantForAccessibility all possible values and hierarchical combinations. */}
+
                 <RX.View 
                     style={ _styles.explainTextContainer } 
                     key={ 'explanation2' }
                 >
                     <RX.Text style={ _styles.explainText }>
-                        { 'Should be read by screen reader as \"Alpha Beta Gamma Delta\" ' + 
+                        { 'Should be read by screen reader as a single text element \"Alpha Beta Gamma Delta\" ' + 
                           'and screen reader should not be able to get to individual texts.' }
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.labelContainer }>
+                    { BasicView.accessibilityLabelAndImportantForAccessibilityTestUI(RX.Types.ImportantForAccessibility.Yes) }
+                </RX.View>
+
+                <RX.View 
+                    style={ _styles.explainTextContainer } 
+                    key={ 'explanation3' }
+                >
+                    <RX.Text style={ _styles.explainText }>
+                        { 'Should be read by screen reader as four separate text elements: ' + 
+                          '\"Alpha\", \"Beta\", \"Gamma\", \"Delta\".' }
+                    </RX.Text>
+                </RX.View>
+                <RX.View style={ _styles.labelContainer }>
+                    { BasicView.accessibilityLabelAndImportantForAccessibilityTestUI(RX.Types.ImportantForAccessibility.No) }
+                </RX.View>
+            </RX.View>
+        );
+    }
+
+    private static accessibilityLabelAndImportantForAccessibilityTestUI(important: RX.Types.ImportantForAccessibility) {
+        return (
+            <RX.View 
+                style={ _styles.labelContainer } 
+                importantForAccessibility={ important }
+            >
+                <RX.View
+                    style={ _styles.labelContainer }
+                    importantForAccessibility={ RX.Types.ImportantForAccessibility.Auto}
+                >
+                    <RX.Text style={ _styles.labelText }>
+                        { 'Alpha' }
+                    </RX.Text>
+                </RX.View>
+                <RX.View style={ _styles.labelContainer }>
+                    <RX.View
+                        style={ _styles.labelContainer }
+                        importantForAccessibility={ RX.Types.ImportantForAccessibility.No }
+                    >
+                        <RX.Text style={ _styles.labelText }>
+                            { 'Beta' }
+                        </RX.Text>
+                    </RX.View>
                     <RX.View 
+                        style={ _styles.labelContainer } 
+                        accessibilityLabel={ 'Gamma' }
+                    >
+                        <RX.Text style={ _styles.labelText }>
+                            { 'Orange' }
+                        </RX.Text>
+                    </RX.View>
+                </RX.View>
+                <RX.Text style={ _styles.labelText }>
+                    { 'Delta' }
+                </RX.Text>
+                <RX.View 
+                    style={ _styles.labelContainer } 
+                    importantForAccessibility={ RX.Types.ImportantForAccessibility.NoHideDescendants }
+                >
+                    <RX.View
                         style={ _styles.labelContainer } 
                         importantForAccessibility={ RX.Types.ImportantForAccessibility.Yes }
                     >
                         <RX.Text style={ _styles.labelText }>
-                            { 'Alpha' }
-                        </RX.Text>
-                        <RX.View style={ _styles.labelContainer }>
-                            <RX.Text style={ _styles.labelText }>
-                                { 'Beta' }
-                            </RX.Text>
-                            <RX.View 
-                                style={ _styles.labelContainer } 
-                                accessibilityLabel={ 'Gamma' }
-                            >
-                                <RX.Text style={ _styles.labelText }>
-                                    { 'Orange' }
-                                </RX.Text>
-                            </RX.View>
-                        </RX.View>
-                        <RX.Text style={ _styles.labelText }>
-                            { 'Delta' }
-                        </RX.Text>
-                        <RX.Text 
-                            style={ _styles.labelText } 
-                            importantForAccessibility={ RX.Types.ImportantForAccessibility.No }
-                        >
                             { 'Epsilon' }
                         </RX.Text>
-                        <RX.View 
-                            style={ _styles.labelContainer } 
-                            importantForAccessibility={ RX.Types.ImportantForAccessibility.NoHideDescendants }
-                        >
-                            <RX.Text 
-                                style={ _styles.labelText } 
-                                importantForAccessibility={ RX.Types.ImportantForAccessibility.Yes }
-                            >
-                                { 'Zeta' }
-                            </RX.Text>
-                        </RX.View>
                     </RX.View>
                 </RX.View>
             </RX.View>
