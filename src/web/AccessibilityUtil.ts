@@ -37,7 +37,8 @@ const roleMap = {
     [Types.AccessibilityTrait.ComboBox]: 'combobox',
     [Types.AccessibilityTrait.Log]: 'log',
     [Types.AccessibilityTrait.Status]: 'status',
-    [Types.AccessibilityTrait.Dialog]: 'dialog'
+    [Types.AccessibilityTrait.Dialog]: 'dialog',
+    [Types.AccessibilityTrait.Switch]: 'switch'
 }; 
 
 // Map of accesssibility live region to an aria-live property.

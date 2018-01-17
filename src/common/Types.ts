@@ -452,6 +452,7 @@ export enum AccessibilityTrait {
     Dialog,
     HasPopup,
     Option,
+    Switch,
 
     // Desktop & mobile. This is at the end because this
     // is the highest priority trait.
