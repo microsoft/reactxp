@@ -16,7 +16,7 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
-#### Version 0.51.0-alpha.7 of reactxp
+#### Version 0.51.0-alpha.8 of reactxp
 _Released 16 Jan 2018_
 
 Fixed bug in Windows UWP implementation related to selection ranges in TextInput.
