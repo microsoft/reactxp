@@ -29,17 +29,8 @@ export interface ViewContext {
     focusManager?: FocusManager;
 }
 
-// Simple check for the presence of the updated React Native for Windows
-const HasFocusableWindows = (RNW.createFocusableComponent !== undefined);
-
-let FocusableView: RNW.FocusableComponentConstructor<RN.ViewProps>;
-let FocusableAnimatedView: RNW.FocusableComponentConstructor<RN.ViewProps>;
-if (HasFocusableWindows) {
-    FocusableView = RNW.createFocusableComponent(RN.View) as
-        RNW.FocusableComponentConstructor<RN.ViewProps>;
-    FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View) as
-        RNW.FocusableComponentConstructor<RN.ViewProps>;
-}
+let FocusableView = RNW.createFocusableComponent(RN.View);
+let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
 
 export class View extends ViewCommon implements React.ChildContextProvider<ViewContext>, FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
@@ -203,11 +194,6 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 
     render(): JSX.Element {
-        // Exit fast if the keyboard enabled component is not available
-        if (!HasFocusableWindows) {
-            return super.render();
-        }
-
         if (this.props.tabIndex !== undefined) {
             let tabIndex: number = this.getTabIndex() || 0;
             let windowsTabFocusable: boolean =  tabIndex >= 0;

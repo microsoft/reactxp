@@ -26,14 +26,7 @@ export interface LinkContext {
     isRxParentAText?: boolean;
 }
 
-// Simple check for the presence of the updated React Native for Windows
-const HasFocusableWindows = (RNW.createFocusableComponent !== undefined);
-
-let FocusableText: RNW.FocusableComponentConstructor<RN.TextProps>;
-if (HasFocusableWindows) {
-    FocusableText = RNW.createFocusableComponent(RN.Text) as
-        RNW.FocusableComponentConstructor<RN.TextProps>;
-}
+let FocusableText = RNW.createFocusableComponent(RN.Text);
 
 export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
@@ -48,11 +41,6 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     }
 
     protected _render(internalProps: RN.TextProps) {
-        // Fallback to native-common fast if the keyboard enabled component is not available
-        if (!HasFocusableWindows) {
-            return super._render(internalProps);
-        }
-
         if (this.context && !this.context.isRxParentAText) {
 
             let tabIndex: number | undefined = this.getTabIndex();

@@ -27,14 +27,7 @@ UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 });
 
-// Simple check for the presence of the updated React Native for Windows
-const HasFocusableWindows = (RNW.createFocusableComponent !== undefined);
-
-let FocusableAnimatedView: RNW.FocusableComponentConstructor<RN.ViewProps>;
-if (HasFocusableWindows) {
-    FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View) as
-        RNW.FocusableComponentConstructor<RN.ViewProps>;
-}
+let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
 
 export class Button extends ButtonBase implements FocusManagerFocusableComponent {
 
@@ -49,11 +42,6 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
     }
 
     protected _render(internalProps: RN.ViewProps): JSX.Element {
-        // Fallback to native-common fast if the keyboard enabled component is not available
-        if (!HasFocusableWindows) {
-            return super._render(internalProps);
-        }
-
         // RNW.FocusableProps tabIndex: default is 0.
         // -1 has no special semantic similar to DOM.
         let tabIndex: number | undefined = this.getTabIndex();
