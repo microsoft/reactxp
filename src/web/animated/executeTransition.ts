@@ -47,7 +47,7 @@ export function executeTransition(element: HTMLElement, transitions: ITransition
         getComputedStyle(element).opacity;
 
         // TODO: Cross-browser equivalent of 'transition' style (e.g. vendor prefixed).
-        cssTransitions.push(duration + 'ms ' + property + ' ' + timing + ' ' + delay + 'ms');
+        cssTransitions.push(property + ' ' + duration + 'ms ' + timing + ' ' + delay + 'ms');
     });
 
     element.style.transition = cssTransitions.join(', ');
@@ -89,15 +89,11 @@ export function executeTransition(element: HTMLElement, transitions: ITransition
     timeoutId = window.setTimeout(finish, longestDurationPlusDelay + 10);
     element.dataset['transitionId'] = timeoutId.toString();
 
-    // On webkit browsers, we need to defer the setting of the actual properties
-    // for some reason.
-    _.defer(() => {
-        // Set the "to" values.
-        _.each(transitions, (transition: ITransitionSpec) => {
-            const property = transition.property;
-            const to = transition.to;
-            (element.style as any)[property] = to;
-        });
+    // Set the "to" values.
+    _.each(transitions, (transition: ITransitionSpec) => {
+        const property = transition.property;
+        const to = transition.to;
+        (element.style as any)[property] = to;
     });
 }
 

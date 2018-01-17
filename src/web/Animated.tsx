@@ -207,15 +207,15 @@ export let timing: Types.Animated.TimingFunction = function(
                 let duration = config.duration !== undefined ? config.duration : 500;
                 let delay = config.delay || 0;
                 value.startTransition(config.toValue, duration, easing.cssName, delay, result => {
-                    if (onEnd) {
-                        onEnd(result);
-                    }
-
                     // Restart the loop?
                     if (config.loop && !stopLooping) {
                         animate();
                     } else {
                         value.updateFinalValue(config.toValue);
+                    }
+
+                    if (onEnd) {
+                        onEnd(result);
                     }
                 });
             };
@@ -465,7 +465,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                     let activeTransition = this._animatedTransforms[transform].activeTransition;
                     if (activeTransition) {
                         // We don't currently support updating to an intermediate value
-                        // for interpolated transform values. This is because getComputedStyle
+                        // for transform values. This is because getComputedStyle
                         // returns a transform matrix for 'transform'. To implement this, we'd
                         // need to convert the matrix back to a rotation, scale, etc.
                         partialValue = activeTransition.toValue;
