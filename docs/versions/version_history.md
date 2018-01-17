@@ -16,6 +16,11 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.51.0-alpha.9 of reactxp
+_Released 17 Jan 2018_
+
+Removed console error related to animations of values not currently associated with any mounted component. It was too noisy.
+
 #### Version 0.51.0-alpha.8 of reactxp
 _Released 16 Jan 2018_
 
