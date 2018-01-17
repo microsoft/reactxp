@@ -8,6 +8,10 @@
 * UI (layout measurements, etc.) - desktop version.
 */
 
+import React = require('react');
+import RN = require('react-native');
+
+import { RootViewUsingProps } from './RootView';
 import { UserInterface as UserInterfaceCommon } from '../native-common/UserInterface';
 
 export class UserInterface extends UserInterfaceCommon {
@@ -23,6 +27,23 @@ export class UserInterface extends UserInterfaceCommon {
 
     private _keyboardNavigationStateChanged = (isNavigatingWithKeyboard: boolean) => {
         this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
+    }
+
+    registerRootView(viewKey: string, getComponentFunc: Function) {
+        RN.AppRegistry.registerComponent(viewKey, () => {
+            class RootViewWrapper extends React.Component<any, any> {
+                render() {
+                    return (
+                        <RootViewUsingProps
+                            reactxp_mainViewType={ getComponentFunc() }
+                            { ...this.props }
+                        />
+                    );
+                }
+            }
+
+            return RootViewWrapper;
+        });
     }
 }
 
