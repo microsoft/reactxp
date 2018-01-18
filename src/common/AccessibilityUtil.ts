@@ -18,24 +18,27 @@ export const ImportantForAccessibilityMap = {
     [Types.ImportantForAccessibility.NoHideDescendants]: 'no-hide-descendants'
 };
 
-// Platform specific helpers exposed through Native-Common AccessibilityUtil. 
+// Platform specific helpers exposed through Native-Common AccessibilityUtil.
 export abstract class AccessibilityPlatformUtil {
     abstract setAccessibilityFocus(component: React.Component<any, any>): void;
 }
 
 export abstract class AccessibilityUtil {
-    isHidden(importantForAccessibility: Types.ImportantForAccessibility|undefined): boolean {
+    isHidden(importantForAccessibility: Types.ImportantForAccessibility|undefined): true|undefined {
+        // aria-hidden is false by default, returning true or undefined, so that it doesn't pollute the DOM.
         if (importantForAccessibility) {
             const importantForAccessibilityString = this.importantForAccessibilityToString(importantForAccessibility);
-            return importantForAccessibilityString === ImportantForAccessibilityMap[Types.ImportantForAccessibility.NoHideDescendants];
+            if (importantForAccessibilityString === ImportantForAccessibilityMap[Types.ImportantForAccessibility.NoHideDescendants]) {
+                return true;
+            }
         }
-        return false;
+        return undefined;
     }
 
-    importantForAccessibilityToString(importantForAccessibility: Types.ImportantForAccessibility|undefined, 
+    importantForAccessibilityToString(importantForAccessibility: Types.ImportantForAccessibility|undefined,
         defaultImportantForAccessibility?: Types.ImportantForAccessibility): string|undefined {
-        importantForAccessibility = importantForAccessibility || defaultImportantForAccessibility; 
-        
+        importantForAccessibility = importantForAccessibility || defaultImportantForAccessibility;
+
         if (importantForAccessibility && ImportantForAccessibilityMap[importantForAccessibility]) {
             return ImportantForAccessibilityMap[importantForAccessibility];
         }
@@ -43,6 +46,6 @@ export abstract class AccessibilityUtil {
     }
 
     protected abstract accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): string|undefined;
-    protected abstract accessibilityTraitToString(trait: Types.AccessibilityTrait | Types.AccessibilityTrait[], 
-        defaultTrait?: Types.AccessibilityTrait): string | string[] | undefined; 
+    protected abstract accessibilityTraitToString(trait: Types.AccessibilityTrait | Types.AccessibilityTrait[],
+        defaultTrait?: Types.AccessibilityTrait): string | string[] | undefined;
 }
