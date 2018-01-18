@@ -326,7 +326,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         if (AppConfig.isDevelopmentMode()) {
             if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
                 console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
-            } 
+            }
             if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
                 console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
             }
@@ -357,8 +357,11 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 }
 
 applyFocusableComponentMixin(View, function (this: View, nextProps?: Types.ViewProps) {
-    let tabIndex = nextProps && ('tabIndex' in nextProps) ? nextProps.tabIndex : this.props.tabIndex;
-    return tabIndex !== undefined && tabIndex !== -1;
+    // VoiceOver with the VoiceOver key combinations (Ctrl+Option+Left/Right) focuses
+    // <div>s when whatever tabIndex is set (even if tabIndex=-1). So, View is focusable
+    // when tabIndex is not undefined.
+    const tabIndex = nextProps && ('tabIndex' in nextProps) ? nextProps.tabIndex : this.props.tabIndex;
+    return tabIndex !== undefined;
 });
 
 export default View;
