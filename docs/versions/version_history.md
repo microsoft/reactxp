@@ -16,6 +16,14 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.51.0 of reactxp
+_Released 18 Jan 2018_
+
+Fixed focusable View condition for VoiceOver in web implementation.
+Exposed web-specific ariaRoleDescription prop to work around other VoiceOver issues.
+Updated RN for Windows UWP dependency.
+Fixed recent regression that broke focus and blur calls in iOS and Android implementations of AnimatedTextInput.
+
 #### Version 0.51.0-alpha.9 of reactxp
 _Released 17 Jan 2018_
 
