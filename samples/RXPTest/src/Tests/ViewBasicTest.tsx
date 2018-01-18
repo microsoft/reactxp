@@ -55,8 +55,8 @@ const _styles = {
 
 function accessibilityLabelAndImportantForAccessibilityTestUI(important: RX.Types.ImportantForAccessibility) {
     return (
-        <RX.View 
-            style={ _styles.labelContainer } 
+        <RX.View
+            style={ _styles.labelContainer }
             importantForAccessibility={ important }
         >
             <RX.View
@@ -76,8 +76,8 @@ function accessibilityLabelAndImportantForAccessibilityTestUI(important: RX.Type
                         { 'Beta' }
                     </RX.Text>
                 </RX.View>
-                <RX.View 
-                    style={ _styles.labelContainer } 
+                <RX.View
+                    style={ _styles.labelContainer }
                     accessibilityLabel={ 'Gamma' }
                 >
                     <RX.Text style={ _styles.labelText }>
@@ -88,12 +88,12 @@ function accessibilityLabelAndImportantForAccessibilityTestUI(important: RX.Type
             <RX.Text style={ _styles.labelText }>
                 { 'Delta' }
             </RX.Text>
-            <RX.View 
-                style={ _styles.labelContainer } 
+            <RX.View
+                style={ _styles.labelContainer }
                 importantForAccessibility={ RX.Types.ImportantForAccessibility.NoHideDescendants }
             >
                 <RX.View
-                    style={ _styles.labelContainer } 
+                    style={ _styles.labelContainer }
                     importantForAccessibility={ RX.Types.ImportantForAccessibility.Yes }
                 >
                     <RX.Text style={ _styles.labelText }>
@@ -126,6 +126,7 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
                     } }
                     id={ 'testId' }
                     ariaLabelledBy={ 'aria label' }
+                    ariaRoleDescription={ 'custom role' }
                     accessibilityLabel={ 'accessibility label' }
                     accessibilityLiveRegion={ RX.Types.AccessibilityLiveRegion.Polite }
                     importantForAccessibility={ RX.Types.ImportantForAccessibility.Yes }
@@ -148,7 +149,7 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
                         { 'Press me' }
                     </RX.Text>
                 </RX.View>
-                
+
                 <RX.View
                     style={ _styles.view3 }
                     onPress={ () => {
@@ -166,12 +167,12 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
                 {/* View's accessibilityLabel (both explicit and automatic recursive generation)
                   * and importantForAccessibility all possible values and hierarchical combinations. */}
 
-                <RX.View 
-                    style={ _styles.explainTextContainer } 
+                <RX.View
+                    style={ _styles.explainTextContainer }
                     key={ 'explanation2' }
                 >
                     <RX.Text style={ _styles.explainText }>
-                        { 'Should be read by screen reader as a single text element \"Alpha Beta Gamma Delta\" ' + 
+                        { 'Should be read by screen reader as a single text element \"Alpha Beta Gamma Delta\" ' +
                           'and screen reader should not be able to get to individual texts.' }
                     </RX.Text>
                 </RX.View>
@@ -179,12 +180,12 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
                     { accessibilityLabelAndImportantForAccessibilityTestUI(RX.Types.ImportantForAccessibility.Yes) }
                 </RX.View>
 
-                <RX.View 
-                    style={ _styles.explainTextContainer } 
+                <RX.View
+                    style={ _styles.explainTextContainer }
                     key={ 'explanation3' }
                 >
                     <RX.Text style={ _styles.explainText }>
-                        { 'Should be read by screen reader as four separate text elements: ' + 
+                        { 'Should be read by screen reader as four separate text elements: ' +
                           '\"Alpha\", \"Beta\", \"Gamma\", \"Delta\".' }
                     </RX.Text>
                 </RX.View>
@@ -234,7 +235,7 @@ class ViewBasicTest implements Test {
     getPath(): string {
         return 'Components/View/Basic';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

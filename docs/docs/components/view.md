@@ -35,7 +35,10 @@ animateChildLeave: boolean = false;
 animateChildMove: boolean = false;
 
 // Id of an element that describes the view for screenreader.
-ariaLabelledBy: string = undefined; // Web only
+ariaLabelledBy?: string = undefined; // Web only
+
+// A custom role description to be read by the screen readers.
+ariaRoleDescription?: string = undefined; // Web only
 
 // Block touches for this component and all of its children
 blockPointerEvents: boolean = false; // iOS and Android only
