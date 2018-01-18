@@ -26,7 +26,7 @@ const ReactNativeAnimatedClasses = {
 };
 
 export class AnimatedImage extends RX.AnimatedImage {
-    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+    private _mountedComponent: typeof ReactNativeAnimatedClasses.Image;
 
     setNativeProps(props: Types.AnimatedImageProps) {
         if (this._mountedComponent && this._mountedComponent.setNativeProps) {
@@ -52,7 +52,7 @@ export class AnimatedImage extends RX.AnimatedImage {
 }
 
 export class AnimatedText extends RX.AnimatedText {
-    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+    private _mountedComponent: typeof ReactNativeAnimatedClasses.Text;
 
     setNativeProps(props: Types.AnimatedTextProps) {
         if (this._mountedComponent && this._mountedComponent.setNativeProps) {
@@ -78,7 +78,7 @@ export class AnimatedText extends RX.AnimatedText {
 }
 
 export class AnimatedTextInput extends RX.AnimatedTextInput {
-    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+    private _mountedComponent: typeof ReactNativeAnimatedClasses.TextInput;
 
     setNativeProps(props: Types.AnimatedTextInputProps) {
         if (this._mountedComponent && this._mountedComponent.setNativeProps) {
@@ -87,14 +87,18 @@ export class AnimatedTextInput extends RX.AnimatedTextInput {
     }
 
     focus() {
-        if (this._mountedComponent && this._mountedComponent.focus) {
-            this._mountedComponent.focus();
+        if (this._mountedComponent && this._mountedComponent._component) {
+            if (this._mountedComponent._component.focus) {
+                this._mountedComponent._component.focus();
+            }
         }
     }
 
     blur() {
-        if (this._mountedComponent && this._mountedComponent.blur) {
-            this._mountedComponent.blur();
+        if (this._mountedComponent && this._mountedComponent._component) {
+            if (this._mountedComponent._component.blur) {
+                this._mountedComponent.blur();
+            }
         }
     }
 
@@ -103,7 +107,6 @@ export class AnimatedTextInput extends RX.AnimatedTextInput {
             <ReactNativeAnimatedClasses.TextInput
                 ref={ this._onMount }
                 { ...this.props }
-                style={ this.props.style }
             />
         );
     }
@@ -155,7 +158,7 @@ export class AnimatedView extends RX.AnimatedView {
     }
 }
 
-var timing = function(
+let timing = function(
     value: Types.AnimatedValue,
     config: Types.Animated.TimingAnimationConfig)
     : Types.Animated.CompositeAnimation {
@@ -197,7 +200,7 @@ var timing = function(
     };
 };
 
-export var Animated = {
+export let Animated = {
     Image: AnimatedImage,
     Text: AnimatedText,
     TextInput: AnimatedTextInput,
