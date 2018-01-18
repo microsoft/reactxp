@@ -393,6 +393,7 @@ export interface AccessibilityHtmlAttributes extends React.HTMLAttributes<any> {
     'aria-haspopup'?: boolean;
     'aria-controls'?: string;
     'aria-labelledby'?: string;
+    'aria-roledescription'?: string;
 }
 
 // Android & Desktop supported prop, which allows screen-reader to inform its users when a
@@ -590,6 +591,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
     id?: string; // Web-only. Needed for accessibility.
     ariaLabelledBy?: string; // Web-only. Needed for accessibility.
+    ariaRoleDescription?: string; // Web-only. Needed for accessibility.
     accessibilityLiveRegion?: AccessibilityLiveRegion; // Android and web only
 
     // There are a couple of constraints when child animations are enabled:

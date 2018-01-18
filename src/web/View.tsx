@@ -271,6 +271,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             'aria-hidden': isAriaHidden,
             'aria-selected': ariaSelected,
             'aria-labelledby': this.props.ariaLabelledBy,
+            'aria-roledescription': this.props.ariaRoleDescription,
             'aria-live': ariaLive,
             onContextMenu: this.props.onContextMenu,
             onMouseEnter: this.props.onMouseEnter,
@@ -326,7 +327,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         if (AppConfig.isDevelopmentMode()) {
             if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
                 console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
-            } 
+            }
             if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
                 console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
             }
