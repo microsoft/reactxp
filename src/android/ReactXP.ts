@@ -18,7 +18,7 @@ import RXTypes = require('../common/Types');
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 
-import AccessibilityImpl from '../native-common/Accessibility';
+import AccessibilityImpl from './Accessibility';
 import ActivityIndicatorImpl from '../native-common/ActivityIndicator';
 import AlertImpl from '../native-common/Alert';
 import AppImpl from '../native-common/App';
@@ -58,7 +58,7 @@ ViewBase.setDefaultViewStyle(_defaultViewStyle);
 
 // Initialize Android implementation of platform accessibility helpers inside the singleton
 // instance of native-common AccessibilityUtil. This is to let native-common components access
-// platform specific APIs through native-common implementation itself. 
+// platform specific APIs through native-common implementation itself.
 import AccessibilityUtil from '../native-common/AccessibilityUtil';
 import AccessibilityPlatformUtil  from './AccessibilityUtil';
 
