@@ -99,7 +99,7 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
                         Here is an SVG image using the ImageSvg extension
                     </RX.Text>
                     <ProgressIndicator
-                        style={ styles.progressMargin }
+                        style={ styles.progressMargin as any }
                         progress={ this.state.progressValue }
                         fillColor={ '#ddd' }
                         size={ 32 }
@@ -110,7 +110,7 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
                     </RX.Text>
                     <RXVideo
                         ref={ this._onMountVideo }
-                        style={ styles.video }
+                        style={ styles.video as any }
                         source={ 'https://www.w3schools.com/html/mov_bbb.mp4' }
                         loop={ true }
                         onCanPlay={ this._playVideo }

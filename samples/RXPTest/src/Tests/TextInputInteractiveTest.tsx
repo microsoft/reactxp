@@ -117,7 +117,6 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
                         maxLength={ 10 }
                         returnKeyType={ 'done' }
                         value={ this.state.test1Input }
-                        textAlign={ 'center' }
                         autoCorrect={ false }
                         autoFocus={ true }
                         maxContentSizeMultiplier={ 1.5 }
@@ -169,7 +168,6 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
                         returnKeyType={ 'send' }
                         keyboardType={ 'numeric' }
                         defaultValue={ '1234' }
-                        textAlign={ 'right' }
                         disableFullscreenUI={ true }
                     />
                 </RX.View>

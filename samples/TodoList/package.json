@@ -20,17 +20,19 @@
     "webpack": "2.2.1"
   },
   "dependencies": {
-    "nosqlprovider": "0.5.15",
+    "nosqlprovider": "0.6.6",
+    "react": "16.2.0",
+    "react-dom": "16.2.0",
+    "react-native": "^0.51.0",
     "react-native-sqlite-storage": "^3.3.1",
-    "react": "16.0.0-alpha.12",
-    "react-dom": "16.0.0-alpha.12",
-    "react-native": "^0.46.0",
-    "react-native-windows": "^0.33.0",
-    "reactxp": "^0.46.2",
-    "reactxp-imagesvg": "^0.2.7",
-    "reactxp-navigation": "^1.0.14",
-    "reactxp-virtuallistview": "^0.1.5",
-    "resub": "^0.0.16",
-    "synctasks": "0.2.17"
+    "react-native-windows": "^0.51.0-rc.1",
+    "reactxp": "^0.51.0",
+    "reactxp-imagesvg": "^0.2.8",
+    "reactxp-navigation": "^1.0.15",
+    "reactxp-video": "^0.2.3",
+    "reactxp-virtuallistview": "^0.1.7",
+    "resub": "^1.0.7",
+    "simplerestclients": "^0.1.5",
+    "synctasks": "0.3.1"
   }
 }

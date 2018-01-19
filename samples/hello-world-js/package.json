@@ -16,13 +16,13 @@
     "webpack": "2.2.1"
   },
   "dependencies": {
-    "reactxp": "^0.46.1",
-    "react": "16.0.0-rc.3",
-    "react-dom": "16.0.0-rc.3",
-    "react-native": "^0.46.0",
-    "react-native-windows": "^0.33.0",
-    "reactxp-imagesvg": "^0.2.6",
-    "reactxp-navigation": "^1.0.14",
-    "reactxp-video": "^0.2.1"
+    "react": "16.2.0",
+    "react-dom": "16.2.0",
+    "react-native": "^0.51.0",
+    "react-native-windows": "^0.51.0-rc.1",
+    "reactxp": "^0.51.0",
+    "reactxp-imagesvg": "^0.2.8",
+    "reactxp-navigation": "^1.0.15",
+    "reactxp-video": "^0.2.3"
   }
 }

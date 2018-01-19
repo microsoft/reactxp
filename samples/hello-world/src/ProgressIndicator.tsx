@@ -7,15 +7,15 @@
 */
 
 import RX = require('reactxp');
-import { default as RXImageSvg, SvgPath as RXSvgPath } from 'reactxp-imagesvg';
+import { default as RXImageSvg, SvgPath as RXSvgPath, Types as SvgTypes } from 'reactxp-imagesvg';
 
-export interface ProgressIndicatorProps extends RX.CommonStyledProps<RX.Types.ImageStyleRuleSet>  {
+export interface ProgressIndicatorProps extends RX.CommonStyledProps<SvgTypes.ImageSvgStyleRuleSet>  {
     progress: number;
     fillColor: string;
     size: number;
 }
 
-class ProgressIndicator extends RX.Component<ProgressIndicatorProps, {}> {
+class ProgressIndicator extends RX.Component<ProgressIndicatorProps, RX.Stateless> {
     render() {
         const size = this.props.size;
         const progress = this.props.progress;

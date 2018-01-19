@@ -65,7 +65,6 @@ class EditTodoPanel extends RX.Component<TodoPanelProps, TodoPanelState> {
                     placeholderTextColor={ TodoStyles.controlColors.placeholderText }
                     onChangeText={ this._onChangeText }
                     autoFocus={ true }
-                    textAlign={ 'left' }
                 />
             </RX.View>
         );
