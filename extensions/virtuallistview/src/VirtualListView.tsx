@@ -239,7 +239,7 @@ export class VirtualListView extends RX.Component<VirtualListViewProps, VirtualL
     private _minCullAmount = this._minOverdrawAmount * 2;
 
     constructor(props?: VirtualListViewProps) {
-        super();
+        super(props);
 
         this._updateStateFromProps(props, true);
         this.state = { lastFocusedItemKey: null };

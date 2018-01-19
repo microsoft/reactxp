@@ -105,11 +105,11 @@ class SceneConfigStyles {
     /* tslint:enable:no-unused-variable */
     // CSS requires all transforms to be combined into one transform property. bundleCompoundStyles searches a style
     // definition for separate transforms and melts it down to a "transform" property.
-    public static bundleCompoundStyles (styles: TransitionStyle): any {
+    public static bundleCompoundStyles(styles: { [name: string]: string | number }): any {
         let transforms: { [name: string]: string | number } = { };
         let remaining: { [name: string]: string | number } = { };
 
-        for (var name in styles) {
+        for (let name in styles) {
             if (styles.hasOwnProperty(name)) {
                 switch (name) {
                     case 'translateX':
@@ -121,11 +121,11 @@ class SceneConfigStyles {
                     case 'rotateX':
                     case 'rotateY':
                     case 'rotateZ':
-                        transforms[name] = _.get<string|number>(styles, name);
+                        transforms[name] = styles[name];
                         break;
 
                     default:
-                        remaining[name] = _.get<string|number>(styles, name);
+                        remaining[name] = styles[name];
                         break;
                 }
             }
@@ -169,11 +169,11 @@ export class NavigatorSceneConfig {
     private _styleInterpolator (styles: TransitionStyle): InterpolatorWrapper {
         return (previousStyleSet: Types.ViewStyleRuleSet, dimensions: Types.Dimensions, progress: number): boolean => {
             // Calls the interpolator method for each type and calculates
-            //
+            const interpolatedValues: { [name: string]: number|string } = {};
             const newStyleSet = SceneConfigStyles.bundleCompoundStyles(
                 _.mapValues(styles, (interpolator: Interpolator | number) => {
                     return _.isNumber(interpolator) ? interpolator : interpolator(progress, dimensions);
-                }));
+                }) as any);
 
             // Check if anything has changed since last frame.
             if (_.isEqual(previousStyleSet, newStyleSet)) {

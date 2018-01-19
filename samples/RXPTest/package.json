@@ -17,10 +17,10 @@
     "awesome-typescript-loader": "3.1.2",
     "rnpm-plugin-windows": "^0.2.8",
     "source-map-loader": "^0.1.6",
-    "tslint": "5.4.3",
+    "tslint": "5.8.0",
     "tslint-microsoft-contrib": "5.0.0",
     "ts-node": "^3.2.1",
-    "typescript": "2.4.1",
+    "typescript": "2.6.2",
     "webpack": "2.2.1"
   },
   "dependencies": {
