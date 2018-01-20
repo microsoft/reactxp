@@ -137,7 +137,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             if (wrapInForm) {
                 // Wrap the input in a form tag if required
                 input = (
-                    <form action=''>
+                    <form action='' onSubmit={ (ev) => { /* prevent form submission/page reload */ ev.preventDefault(); } }>
                         { input }
                     </form>
                 );
