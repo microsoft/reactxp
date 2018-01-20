@@ -97,7 +97,7 @@ export class AnimatedTextInput extends RX.AnimatedTextInput {
     blur() {
         if (this._mountedComponent && this._mountedComponent._component) {
             if (this._mountedComponent._component.blur) {
-                this._mountedComponent.blur();
+                this._mountedComponent._component.blur();
             }
         }
     }
@@ -107,6 +107,7 @@ export class AnimatedTextInput extends RX.AnimatedTextInput {
             <ReactNativeAnimatedClasses.TextInput
                 ref={ this._onMount }
                 { ...this.props }
+                style={ this.props.style }
             />
         );
     }
