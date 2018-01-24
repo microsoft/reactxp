@@ -22,7 +22,7 @@ import AccessibilityImpl from './Accessibility';
 import ActivityIndicatorImpl from '../native-common/ActivityIndicator';
 import AlertImpl from '../native-common/Alert';
 import AppImpl from '../native-common/App';
-import ButtonImpl from '../native-common/Button';
+import ButtonImpl from './Button';
 import PickerImpl from '../native-common/Picker';
 import ImageImpl from '../native-common/Image';
 import ClipboardImpl from '../native-common/Clipboard';
