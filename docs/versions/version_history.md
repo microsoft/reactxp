@@ -16,6 +16,17 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.51.2 of reactxp
+_Released 25 Jan 2018_
+
+Prevent web page reload when hitting enter in RX.TextInput.
+Fix announcement issue on Android devices.
+
+#### Version 0.51.1 of reactxp
+_Released 20 Jan 2018_
+
+Fixed regression in Animated.View blur() method
+
 #### Version 0.51.0 of reactxp
 _Released 18 Jan 2018_
 
@@ -85,7 +96,7 @@ Removed use of deprecated RX.NetInfo.fetch method.
 #### Version 0.46.6 of reactxp
 _Released 13 Dec 2017_
 
-Fixed potential crash in web implementation of RX.ScrollView. 
+Fixed potential crash in web implementation of RX.ScrollView.
 Fixed bug in UWP implementation of RX.Popup, allowing background to be clickable.
 In web implementation of RX.ScrollView, added support for clicking on scroll bar to adjust position of thumb.
 Added dev warning when using nested RX.Button items.
@@ -299,7 +310,7 @@ Fixed accessibility bug relating to Modal dialogs.
 _Released 18 Apr 2017_
 
 Added missing box-sizing CSS directives for web.
-Fixed bug in native implementation of View related to accessibility. 
+Fixed bug in native implementation of View related to accessibility.
 
 
 #### Version 0.1.0 of reactxp-imagesvg
