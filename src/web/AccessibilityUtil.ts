@@ -13,7 +13,7 @@ import _ = require('./utils/lodashMini');
 import { AccessibilityUtil as CommonAccessibiltiyUtil } from '../common/AccessibilityUtil';
 import Types = require('../common/Types');
 
-// Map of accessibility trait to an aria role attribute.  
+// Map of accessibility trait to an aria role attribute.
 // What's a role attribute? https://www.w3.org/wiki/PF/XTech/HTML5/RoleAttribute
 const roleMap = {
     [Types.AccessibilityTrait.None]: 'presentation',
@@ -39,27 +39,26 @@ const roleMap = {
     [Types.AccessibilityTrait.Status]: 'status',
     [Types.AccessibilityTrait.Dialog]: 'dialog',
     [Types.AccessibilityTrait.Switch]: 'switch'
-}; 
-
-// Map of accesssibility live region to an aria-live property.
-const liveRegionMap = {
-    [Types.AccessibilityLiveRegion.None]: 'off',
-    [Types.AccessibilityLiveRegion.Assertive]: 'assertive',
-    [Types.AccessibilityLiveRegion.Polite]: 'polite'
 };
 
 export class AccessibilityUtil extends CommonAccessibiltiyUtil {
     // Web equivalent value for aria-live property.
-    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): string|undefined {
-        if (liveRegion) {
-            return liveRegionMap[liveRegion];
+    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): 'off'|'assertive'|'polite'|undefined {
+        switch (liveRegion) {
+            case Types.AccessibilityLiveRegion.None:
+                return 'off';
+            case Types.AccessibilityLiveRegion.Assertive:
+                return 'assertive';
+            case Types.AccessibilityLiveRegion.Polite:
+                return 'polite';
+            default:
+                return undefined;
         }
-        return undefined;
     }
 
-    // Web equivalent value for role property. 
+    // Web equivalent value for role property.
     // NOTE: Web only supports a single aria-role on a component.
-    accessibilityTraitToString(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined, 
+    accessibilityTraitToString(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined,
             defaultTrait?: Types.AccessibilityTrait): string|undefined {
         // Combine & remove duplicate traits.
         let combinedTraits: Types.AccessibilityTrait[] = defaultTrait ? [defaultTrait] : [];
@@ -70,8 +69,8 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
 
         // Max enum value in this array of traits is role for web. Return corresponding
         // role string from roleMap.
-        return combinedTraits.length > 0 ? 
-            roleMap[_.max(_.filter(combinedTraits, t => roleMap.hasOwnProperty(t as any)))!!!] 
+        return combinedTraits.length > 0 ?
+            roleMap[_.max(_.filter(combinedTraits, t => roleMap.hasOwnProperty(t as any)))!!!]
             : undefined;
     }
 
@@ -80,7 +79,7 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
         if (traits && _.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.Tab) !== -1) {
             return traits.indexOf(Types.AccessibilityTrait.Selected) !== -1;
         }
-        
+
         // Here we are returning undefined if the above condition is not met
         // as we dont want to pollute the dom with "aria-selected = false" for every falsy condition
         return undefined;

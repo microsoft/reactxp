@@ -385,7 +385,7 @@ export enum ImportantForAccessibility {
 
 export interface AccessibilityHtmlAttributes extends React.HTMLAttributes<any> {
     'aria-label'?: string;
-    'aria-live'?: string;
+    'aria-live'?: 'off'|'assertive'|'polite';
     'aria-hidden'?: boolean;
     'aria-disabled'?: boolean;
     'aria-selected'?: boolean;
