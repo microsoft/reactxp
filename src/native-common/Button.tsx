@@ -80,6 +80,8 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     touchableHandleResponderTerminate: (e: React.SyntheticEvent<any>) => void;
 
     private _isMounted = false;
+    protected _isMouseOver = false;
+    protected _isHoverStarted = false;
     private _hideTimeout: number|undefined;
     private _buttonElement: RN.Animated.View|null = null;
     private _defaultOpacityValue: number|undefined;
@@ -140,7 +142,9 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
             onResponderRelease: this.touchableHandleResponderRelease,
             onResponderTerminate: this.touchableHandleResponderTerminate,
             shouldRasterizeIOS: this.props.shouldRasterizeIOS,
-            onAccessibilityTapIOS: this.props.onAccessibilityTapIOS
+            onAccessibilityTapIOS: this.props.onAccessibilityTapIOS,
+            onMouseEnter: this._onMouseEnter,
+            onMouseLeave: this._onMouseLeave
         };
 
         return this._render(internalProps);
@@ -276,6 +280,36 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         }
 
         return flattenedStyles && (flattenedStyles as Types.ButtonStyle).opacity || 1;
+    }
+
+    protected _onMouseEnter = (e: Types.SyntheticEvent) => {
+        this._isMouseOver = true;
+        this._onHoverStart(e);
+    }
+
+    protected _onMouseLeave = (e: Types.SyntheticEvent) => {
+        this._isMouseOver = false;
+        this._onHoverEnd(e);
+    }
+
+    protected _onHoverStart = (e: Types.SyntheticEvent) => {
+        if (!this._isHoverStarted && this._isMouseOver) {
+            this._isHoverStarted = true;
+
+            if (this.props.onHoverStart) {
+                this.props.onHoverStart(e);
+            }
+        }
+    }
+
+    protected _onHoverEnd = (e: Types.SyntheticEvent) => {
+        if (this._isHoverStarted && !this._isMouseOver) {
+            this._isHoverStarted = false;
+
+            if (this.props.onHoverEnd) {
+                this.props.onHoverEnd(e);
+            }
+        }
     }
 
     /**
