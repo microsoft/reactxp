@@ -383,9 +383,11 @@ export enum ImportantForAccessibility {
     NoHideDescendants
 }
 
+export type AriaLive = 'off' | 'assertive' | 'polite';
+
 export interface AccessibilityHtmlAttributes extends React.HTMLAttributes<any> {
     'aria-label'?: string;
-    'aria-live'?: string;
+    'aria-live'?: AriaLive;
     'aria-hidden'?: boolean;
     'aria-disabled'?: boolean;
     'aria-selected'?: boolean;
