@@ -19,4 +19,4 @@ The commands in the instructions below assume you are in the root of this repo.
 	- In a command prompt run `npm start`. This starts the React Native Packager.
 	- Use Xcode or Android Studio to build and deploy the native app code just like you would with any other React Native project.
 - Option 2
-	- In a command prompt run `npm android` or `npm ios`. This starts the React Native Packager and deploys your application to the appropriate platform.
+	- In a command prompt run `npm run android` or `npm run ios`. This starts the React Native Packager and deploys your application to the appropriate platform.
