@@ -44,7 +44,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     componentWillReceiveProps(nextProps: Types.TextInputProps) {
-        if (nextProps.value !== this.state.inputValue) {
+        if (nextProps.value !== undefined && nextProps.value !== this.state.inputValue) {
             this.setState({
                 inputValue: nextProps.value || ''
             });
