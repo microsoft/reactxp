@@ -73,19 +73,19 @@ class ToggleSwitch extends RX.Component<ToggleSwitchProps, null> {
         });
     }
 
-    componentWillUpdate(newProps: ToggleSwitchProps) {
+    componentDidUpdate(oldProps: ToggleSwitchProps) {
 
         // If the value of the toggle changes, animate the toggle sliding
         // from one side to the other. In parallel, animate the opacity change.
-        if (this.props.value !== newProps.value) {
+        if (oldProps.value !== this.props.value) {
             RX.Animated.parallel([
                 RX.Animated.timing(this._knobLeftAnimationValue, {
-                    toValue: newProps.value ? _knobLeftOn : _knobLeftOff,
+                    toValue: this.props.value ? _knobLeftOn : _knobLeftOff,
                     duration: _animationDuration,
                     easing: RX.Animated.Easing.InOut()
                 }),
                 RX.Animated.timing(this._toggleColorAnimationValue, {
-                    toValue: newProps.value ? 1 : 0,
+                    toValue: this.props.value ? 1 : 0,
                     duration: _animationDuration,
                     easing: RX.Animated.Easing.InOut()
                 })
