@@ -30,6 +30,10 @@ let _styles = {
         overflowX: 'hidden',
         overflowY: 'auto',
         alignItems: 'stretch'
+    },
+    formStyle: {
+        display: 'flex',
+        flex: 1
     }
 };
 
@@ -105,7 +109,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 />
             );
         } else {
-            let { keyboardTypeValue, wrapInForm } = this._getKeyboardType();
+            let { keyboardTypeValue, wrapInForm, pattern } = this._getKeyboardType();
             
             let input = (
                 <input
@@ -131,13 +135,15 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     // VoiceOver does not handle text inputs properly at the moment, aria-live is a temporary workaround.
                     aria-live={ _isMac ? 'assertive' : undefined }
                     type={ keyboardTypeValue }
+                    pattern={ pattern }
                 />
             );
             
             if (wrapInForm) {
                 // Wrap the input in a form tag if required
                 input = (
-                    <form action='' onSubmit={ (ev) => { /* prevent form submission/page reload */ ev.preventDefault(); } }>
+                    <form action='' onSubmit={ (ev) => { /* prevent form submission/page reload */ ev.preventDefault(); this.blur(); } }
+                          style={ _styles.formStyle }>
                         { input }
                     </form>
                 );
@@ -151,13 +157,17 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         this._mountedComponent = comp;
     }
 
-    private _getKeyboardType(): { keyboardTypeValue: string, wrapInForm: boolean } {
+    private _getKeyboardType(): { keyboardTypeValue: string, wrapInForm: boolean, pattern: string|undefined } {
         // Determine the correct virtual keyboardType in HTML 5.
         // Some types require the <input> tag to be wrapped in a form.
+        // Pattern is used on numeric keyboardType to display numbers only.
         let keyboardTypeValue = 'text';
         let wrapInForm = false;
+        let pattern = undefined;
 
-        if (this.props.keyboardType === 'numeric' || this.props.keyboardType === 'number-pad') {
+        if (this.props.keyboardType === 'numeric') {
+            pattern = '\\d*';
+        } else if (this.props.keyboardType === 'number-pad') {
             keyboardTypeValue = 'tel';
         } else if (this.props.keyboardType === 'email-address') {
             keyboardTypeValue = 'email';
@@ -172,7 +182,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             keyboardTypeValue = 'password';
         }
 
-        return { keyboardTypeValue, wrapInForm };
+        return { keyboardTypeValue, wrapInForm, pattern };
     }
 
     private _onPaste = (e: Types.ClipboardEvent) => {
