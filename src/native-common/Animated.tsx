@@ -9,6 +9,7 @@
 
 import React = require('react');
 import RN = require('react-native');
+import { ReactNativeBaseComponent } from 'react-native';
 
 import Easing from '../common/Easing';
 import Types = require('../common/Types');
@@ -18,122 +19,101 @@ import RXText from './Text';
 import RXTextInput from './TextInput';
 import RX = require('../common/Interfaces');
 
-const ReactNativeAnimatedClasses = {
-    Image: RN.Animated.createAnimatedComponent(RXImage),
-    Text: RN.Animated.createAnimatedComponent(RXText),
-    TextInput: RN.Animated.createAnimatedComponent(RXTextInput),
-    View: RN.Animated.createAnimatedComponent(RXView)
+export interface AnimatedClasses {
+    Image: typeof ReactNativeBaseComponent;
+    Text: typeof ReactNativeBaseComponent;
+    TextInput: typeof ReactNativeBaseComponent;
+    View: typeof ReactNativeBaseComponent;
+}
+
+export const CommonAnimatedClasses: AnimatedClasses = {
+    Image: RN.Animated.createAnimatedComponent(RXImage) as typeof ReactNativeBaseComponent,
+    Text: RN.Animated.createAnimatedComponent(RXText) as typeof ReactNativeBaseComponent,
+    TextInput: RN.Animated.createAnimatedComponent(RXTextInput) as typeof ReactNativeBaseComponent,
+    View: RN.Animated.createAnimatedComponent(RXView)  as typeof ReactNativeBaseComponent
 };
 
-export class AnimatedImage extends RX.AnimatedImage {
-    private _mountedComponent: typeof ReactNativeAnimatedClasses.Image;
+let animatedClasses: AnimatedClasses = CommonAnimatedClasses;
 
-    setNativeProps(props: Types.AnimatedImageProps) {
-        if (this._mountedComponent && this._mountedComponent.setNativeProps) {
-            this._mountedComponent.setNativeProps(props);
-        }
-    }
+class AnimatedWrapper<P, T> extends RX.AnimatedComponent<P, T> {
+    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any> | null;
 
-    render() {
-        return (
-            <ReactNativeAnimatedClasses.Image
-                ref={ this._onMount }
-                { ...this.props }
-                style={ this.props.style }
-            >
-                { this.props.children }
-            </ReactNativeAnimatedClasses.Image>
-        );
-    }
-
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
-        this._mountedComponent = component;
-    }
-}
-
-export class AnimatedText extends RX.AnimatedText {
-    private _mountedComponent: typeof ReactNativeAnimatedClasses.Text;
-
-    setNativeProps(props: Types.AnimatedTextProps) {
-        if (this._mountedComponent && this._mountedComponent.setNativeProps) {
-            this._mountedComponent.setNativeProps(props);
-        }
-    }
-
-    render() {
-        return (
-            <ReactNativeAnimatedClasses.Text
-                ref={ this._onMount }
-                { ...this.props }
-                style={ this.props.style }
-            >
-                { this.props.children }
-            </ReactNativeAnimatedClasses.Text>
-        );
-    }
-
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
-        this._mountedComponent = component;
-    }
-}
-
-export class AnimatedTextInput extends RX.AnimatedTextInput {
-    private _mountedComponent: typeof ReactNativeAnimatedClasses.TextInput;
-
-    setNativeProps(props: Types.AnimatedTextInputProps) {
+    setNativeProps(props: P) {
         if (this._mountedComponent && this._mountedComponent.setNativeProps) {
             this._mountedComponent.setNativeProps(props);
         }
     }
 
     focus() {
-        if (this._mountedComponent && this._mountedComponent._component) {
-            if (this._mountedComponent._component.focus) {
-                this._mountedComponent._component.focus();
-            }
-        }
-    }
-
-    blur() {
-        if (this._mountedComponent && this._mountedComponent._component) {
-            if (this._mountedComponent._component.blur) {
-                this._mountedComponent._component.blur();
-            }
-        }
-    }
-
-    render() {
-        return (
-            <ReactNativeAnimatedClasses.TextInput
-                ref={ this._onMount }
-                { ...this.props }
-                style={ this.props.style }
-            />
-        );
-    }
-
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
-        this._mountedComponent = component;
-    }
-}
-
-export class AnimatedView extends RX.AnimatedView {
-    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
-
-    setNativeProps(props: Types.AnimatedViewProps) {
-        if (this._mountedComponent && this._mountedComponent.setNativeProps) {
-            this._mountedComponent.setNativeProps(props);
-        }
-    }
-
-    focus() {
-        // Native mobile platform doesn't have the notion of focus for AnimatedViews, so ignore.
+        // Native mobile platform doesn't have the notion of focus for AnimatedViews
     }
 
     blur() {
         // Native mobile platform doesn't have the notion of blur for AnimatedViews, so ignore.
     }
 
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+        this._mountedComponent = component;
+    }
+}
+
+class AnimatedImage extends AnimatedWrapper<Types.AnimatedImageProps, {}> {
+    render() {
+        const additionalProps = {ref: this._onMount, style: this.props.style };
+        return (
+            <animatedClasses.Image
+                { ...this.props }
+                { ... additionalProps }
+            >
+                { this.props.children }
+            </animatedClasses.Image>
+        );
+    }
+}
+
+class AnimatedText extends AnimatedWrapper<Types.AnimatedTextProps, {}>  {
+    render() {
+        const additionalProps = {ref: this._onMount, style: this.props.style };
+        return (
+            <animatedClasses.Text
+                { ...this.props }
+                { ... additionalProps }
+            >
+                { this.props.children }
+            </animatedClasses.Text>
+        );
+    }
+}
+
+class AnimatedTextInput extends AnimatedWrapper<Types.AnimatedTextInputProps, {}>   {
+    focus() {
+        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
+        if (innerComponent && innerComponent.focus) {
+            innerComponent.focus();
+        }
+    }
+
+    blur() {
+        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
+        if (innerComponent && innerComponent.focus) {
+            innerComponent.blur();
+        }
+    }
+
+    render() {
+        const additionalProps = {ref: this._onMount, style: this.props.style };
+        return (
+            <animatedClasses.TextInput
+                { ...this.props }
+                { ... additionalProps }
+            >
+                { this.props.children }
+            </animatedClasses.TextInput>
+        );
+    }
+}
+
+class AnimatedView extends AnimatedWrapper<Types.AnimatedTextInputProps, {}> {
     setFocusRestricted(restricted: boolean) {
         // Nothing to do.
     }
@@ -143,19 +123,45 @@ export class AnimatedView extends RX.AnimatedView {
     }
 
     render() {
+        const additionalProps = {ref: this._onMount, style: this.props.style };
         return (
-            <ReactNativeAnimatedClasses.View
-                ref={ this._onMount }
+            <animatedClasses.View
                 { ...this.props }
-                style={ this.props.style }
+                { ... additionalProps }
             >
                 { this.props.children }
-            </ReactNativeAnimatedClasses.View>
+            </animatedClasses.View>
         );
     }
+}
 
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
-        this._mountedComponent = component;
+class FocusRestrictedAnimatedView extends AnimatedView {
+    focus() {
+        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
+        if (innerComponent && innerComponent.focus) {
+            innerComponent.focus();
+        }
+    }
+
+    blur() {
+        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
+        if (innerComponent && innerComponent.focus) {
+            innerComponent.blur();
+        }
+    }
+
+    setFocusRestricted(restricted: boolean) {
+        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
+        if (innerComponent && innerComponent.setFocusRestricted) {
+            innerComponent.setFocusRestricted(restricted);
+        }
+    }
+
+    setFocusLimited(limited: boolean) {
+        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
+        if (innerComponent && innerComponent.setFocusLimited) {
+            innerComponent.setFocusLimited(limited);
+        }
     }
 }
 
@@ -201,11 +207,23 @@ let timing = function(
     };
 };
 
-export let Animated = {
-    Image: AnimatedImage,
-    Text: AnimatedText,
-    TextInput: AnimatedTextInput,
-    View: AnimatedView,
+export function makeAnimated(nativeAnimatedClasses: AnimatedClasses, useFocusRestrictedView?: boolean): RX.Animated {
+    if (nativeAnimatedClasses) {
+        animatedClasses = nativeAnimatedClasses;
+    }
+
+    return {
+        // platform specific animated components
+        Image: AnimatedImage,
+        Text: AnimatedText,
+        TextInput: AnimatedTextInput,
+        View: useFocusRestrictedView ? FocusRestrictedAnimatedView :  AnimatedView,
+        // common stuff
+        ...AnimatedCommon
+    } as RX.Animated;
+}
+
+export let AnimatedCommon = {
     Easing: Easing as Types.Animated.Easing,
 
     timing: timing,
@@ -223,4 +241,4 @@ export let Animated = {
     }
 };
 
-export default Animated;
+export default AnimatedCommon;
