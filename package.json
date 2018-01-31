@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.80",
-    "@types/react": "^16.0.9",
+    "@types/react": "^16.0.36",
     "@types/react-dom": "^16.0.3",
     "assert": "^1.3.0",
     "ifvisible": "^1.1.0",

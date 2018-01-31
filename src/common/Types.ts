@@ -383,19 +383,6 @@ export enum ImportantForAccessibility {
     NoHideDescendants
 }
 
-export interface AccessibilityHtmlAttributes extends React.HTMLAttributes<any> {
-    'aria-label'?: string;
-    'aria-live'?: string;
-    'aria-hidden'?: boolean;
-    'aria-disabled'?: boolean;
-    'aria-selected'?: boolean;
-    'aria-checked'?: boolean;
-    'aria-haspopup'?: boolean;
-    'aria-controls'?: string;
-    'aria-labelledby'?: string;
-    'aria-roledescription'?: string;
-}
-
 // Android & Desktop supported prop, which allows screen-reader to inform its users when a
 // component has dynamically changed. For example, the content of an inApp toast.
 export enum AccessibilityLiveRegion {
