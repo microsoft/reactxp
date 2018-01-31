@@ -67,7 +67,7 @@ export interface RootViewState {
     announcementText: string;
 
     // Render announcementText in a nested div to work around browser quirks for windows.
-    // Nested divs breaks mac.
+    // Nested divs break mac.
     announcementTextInNestedDiv: boolean;
 }
 
@@ -138,8 +138,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 }
 
                 if (_isMac) {
-                    // We don't want to alternate between nested div on mac as it doesn't VO doesn't work
-                    // with any markup inside ARIA live div view 
+                    // annnouncementText should never be in nested div for mac.
+                    // Voice over ignores reading nested divs in aria-live container.
                     this.setState({
                         announcementText: announcement
                     });
