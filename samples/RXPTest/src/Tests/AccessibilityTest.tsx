@@ -116,6 +116,21 @@ class AccessibilityView extends RX.Component<RX.CommonProps, AccessibilityState>
                         { 'Send "Hello" to Screen Reader' }
                     </RX.Text>
                 </RX.Button>
+
+                <RX.View style={ _styles.textContainer } key={ 'explanation4' }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'Validate that the screen reader reads "5, Mock Slider, Slider" when focus is on "Mock Slider" text below.' }
+                    </RX.Text>
+                </RX.View>
+                <RX.View
+                    valueNow={ 5 }
+                    accessibilityTraits={ RX.Types.AccessibilityTrait.Adjustable }
+                    accessibilityLabel={ 'Mock Slider' }
+                    tabIndex={ 0 }>
+                    <RX.Text>
+                        { 'Mock Slider' }
+                    </RX.Text>
+                </RX.View>
             </RX.View>
         );
     }
