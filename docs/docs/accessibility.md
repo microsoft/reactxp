@@ -56,6 +56,9 @@ onAccessibilityAction?: (e: SyntheticEvent) => void;
 
 // Keyboard tab order
 tabIndex?: number = undefined; // web only
+
+// Used to define the current value for a range widget such as a slider, spinbutton or progressbar
+valueNow?: number = undefined; // web only
 ```
 
 
