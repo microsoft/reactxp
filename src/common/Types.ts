@@ -368,7 +368,7 @@ export interface CommonAccessibilityProps {
 
     // Desktop only.
     tabIndex?: number;
-    valueNow? : number;
+    ariaValueNow? : number;
 
     // iOS only.
     accessibilityActions?: string[];
