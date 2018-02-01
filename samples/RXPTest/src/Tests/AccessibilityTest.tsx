@@ -123,7 +123,7 @@ class AccessibilityView extends RX.Component<RX.CommonProps, AccessibilityState>
                     </RX.Text>
                 </RX.View>
                 <RX.View
-                    valueNow={ 5 }
+                    ariaValueNow={ 5 }
                     accessibilityTraits={ RX.Types.AccessibilityTrait.Adjustable }
                     accessibilityLabel={ 'Mock Slider' }
                     tabIndex={ 0 }>
