@@ -383,6 +383,8 @@ export enum ImportantForAccessibility {
     NoHideDescendants
 }
 
+export type AriaLive = 'off' | 'assertive' | 'polite';
+
 // Android & Desktop supported prop, which allows screen-reader to inform its users when a
 // component has dynamically changed. For example, the content of an inApp toast.
 export enum AccessibilityLiveRegion {
