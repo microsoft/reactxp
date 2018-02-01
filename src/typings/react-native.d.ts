@@ -240,6 +240,9 @@ declare module 'react-native' {
         accessible?                      : boolean;
         onAcccessibilityTap?             : Function;
 
+        // desktop
+        valueNow?                        : string;
+
         // android
         accessibilityComponentType?    : string; //enum ( 'none', 'button', 'radiobutton_checked', 'radiobutton_unchecked' )
         accessibilityLiveRegion?       : string; //enum ( 'none', 'polite', 'assertive' )
