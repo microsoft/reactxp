@@ -42,7 +42,7 @@ const roleMap: { [key: string]: string } = {
 }; 
 
 // Map of accesssibility live region to an aria-live property.
-const liveRegionMap: { [key: string]: string } = {
+const liveRegionMap: { [key: string]: Types.AriaLive } = {
     [Types.AccessibilityLiveRegion.None]: 'off',
     [Types.AccessibilityLiveRegion.Assertive]: 'assertive',
     [Types.AccessibilityLiveRegion.Polite]: 'polite'
@@ -50,7 +50,7 @@ const liveRegionMap: { [key: string]: string } = {
 
 export class AccessibilityUtil extends CommonAccessibiltiyUtil {
     // Web equivalent value for aria-live property.
-    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): string|undefined {
+    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): Types.AriaLive | undefined {
         if (liveRegion) {
             return liveRegionMap[liveRegion];
         }

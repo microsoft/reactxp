@@ -262,7 +262,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             AccessibilityUtil.accessibilityLiveRegionToString(this.props.accessibilityLiveRegion) :
             undefined;
 
-        let props: Types.AccessibilityHtmlAttributes = {
+        let props: React.HTMLAttributes<any> = {
             role: ariaRole,
             tabIndex: this.props.tabIndex,
             style: combinedStyles,
