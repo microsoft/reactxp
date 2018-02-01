@@ -9,8 +9,9 @@
 */
 
 import React = require('react');
+import RN = require('react-native');
 
-import AnimatedImpl = require('../native-common/Animated');
+import { makeAnimated, CommonAnimatedClasses } from '../native-common/Animated';
 import RXInterfaces = require('../common/Interfaces');
 import RXModuleInterface = require('../common/ModuleInterface');
 import RXTypes = require('../common/Types');
@@ -124,7 +125,12 @@ module ReactXP {
     export type WebView = RXInterfaces.WebView;
     export var WebView: RXInterfaces.WebViewConstructor = WebViewImpl;
 
-    export import Animated = AnimatedImpl.Animated;
+    const macAnimatedClasses =  {
+        ...CommonAnimatedClasses,
+        TextInput: RN.Animated.createAnimatedComponent(TextInputImpl)
+    };
+
+    export const Animated = makeAnimated(macAnimatedClasses);
     export import CommonProps = RXTypes.CommonProps;
     export import CommonStyledProps = RXTypes.CommonStyledProps;
     export import Stateless = RXTypes.Stateless;
