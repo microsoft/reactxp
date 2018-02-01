@@ -1,4 +1,4 @@
-﻿ /**
+ /**
 * RootView.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -66,7 +66,8 @@ export interface RootViewState {
     // Screen Reader text to be announced.
     announcementText: string;
 
-    // Render announcementText in a nested div to work around browser quirks
+    // Render announcementText in a nested div to work around browser quirks for windows.
+    // Nested divs break mac.
     announcementTextInNestedDiv: boolean;
 }
 
@@ -79,6 +80,8 @@ const _minAnchorOffset = 16;
 
 // Button code for when right click is pressed in a mouse event
 const _rightClickButtonCode = 2;
+
+const _isMac = (typeof navigator !== 'undefined') && (typeof navigator.platform === 'string') && (navigator.platform.indexOf('Mac') >= 0);
 
 const _styles = {
     liveRegionContainer: Styles.createViewStyle({
@@ -134,14 +137,23 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                     announcement += ' ';
                 }
 
-                // Additionally, alternate between announcement text directly under the aria-live element and
-                // nested in a div to work around issues with some browsers. Chrome on Windows is known to
-                // not fire accessibility events reliably without this, for example.
-                this.setState({
-                    announcementText: announcement,
-                    announcementTextInNestedDiv: !this.state.announcementTextInNestedDiv
-                });
-        });
+                if (_isMac) {
+                    // annnouncementText should never be in nested div for mac.
+                    // Voice over ignores reading nested divs in aria-live container.
+                    this.setState({
+                        announcementText: announcement
+                    });
+                } else {
+
+                    // Additionally, alternate between announcement text directly under the aria-live element and
+                    // nested in a div to work around issues with some browsers. Chrome on Windows is known to
+                    // not fire accessibility events reliably without this, for example.
+                    this.setState({
+                        announcementText: announcement,
+                        announcementTextInNestedDiv: !this.state.announcementTextInNestedDiv
+                    });
+                }
+            });
 
         this.state = this._getInitialState();
 
@@ -306,7 +318,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 </ModalContainer>
             );
         }
-
+    
         let announcement: any = this.state.announcementTextInNestedDiv ?
             ( <div> { this.state.announcementText } </div> ) :
             this.state.announcementText;
