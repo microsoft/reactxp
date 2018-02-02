@@ -16,6 +16,14 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.51.4 of reactxp
+_Released 2 Feb 2018_
+
+Fixed regression in RootView getStateFromStore() method
+
+#### Version 0.51.3 of reactxp
+_Released 31 Jan 2018_
+
 #### Version 0.51.2 of reactxp
 _Released 25 Jan 2018_
 
