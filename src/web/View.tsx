@@ -273,7 +273,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             ariaRole = 'none';
         }
 
-        let props: Types.AccessibilityHtmlAttributes = {
+        let props: React.HTMLAttributes<any> = {
             role: ariaRole,
             tabIndex: this.props.tabIndex,
             style: combinedStyles,
