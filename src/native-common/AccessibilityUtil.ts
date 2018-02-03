@@ -15,14 +15,14 @@ import { AccessibilityUtil as CommonAccessibilityUtil, AccessibilityPlatformUtil
 
 import Types = require('../common/Types');
 
-const liveRegionMap = {
+const liveRegionMap: { [key: string]: string } = {
     [Types.AccessibilityLiveRegion.None]: 'none',
     [Types.AccessibilityLiveRegion.Assertive]: 'assertive',
     [Types.AccessibilityLiveRegion.Polite]: 'polite'
 };
 
 // iOS supported map.
-const traitsMap = {
+const traitsMap: { [key: string]: string } = {
     [Types.AccessibilityTrait.None]: 'none',
     [Types.AccessibilityTrait.Tab]: 'none', // NOTE: Tab trait isn't supported on iOS. Setting it to none, allows us to give it a custom
                                             // label. This needs to be done for any custom role, which needs to be supported on iOS.
@@ -45,7 +45,7 @@ const traitsMap = {
 };
 
 // Android supported map.
-const componentTypeMap = {
+const componentTypeMap: { [key: string]: string } = {
     [Types.AccessibilityTrait.None]: 'none',
     [Types.AccessibilityTrait.Tab]: 'none', // NOTE: Tab component type isn't supported on Android. Setting it to none, allows us to give
                                             // it a custom label. This needs to be done for any custom role, which needs to be supported
@@ -56,11 +56,11 @@ const componentTypeMap = {
 };
 
 export class AccessibilityUtil extends CommonAccessibilityUtil {
-    // Handle to accessibility platform helper instance that gets initialized during ReactXP initialization using the setter. 
+    // Handle to accessibility platform helper instance that gets initialized during ReactXP initialization using the setter.
     private _instance: AccessibilityPlatformUtil;
 
     setAccessibilityPlatformUtil(instance: AccessibilityPlatformUtil) {
-        this._instance = instance; 
+        this._instance = instance;
     }
 
     // Converts an AccessibilityTrait to a string, but the returned value is only needed for iOS. Other platforms ignore it. Presence
@@ -100,7 +100,7 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
         return undefined;
     }
 
-    // Platform specific accessibility APIs. 
+    // Platform specific accessibility APIs.
     setAccessibilityFocus(component: React.Component<any, any>): void {
         this._instance.setAccessibilityFocus(component);
     }
