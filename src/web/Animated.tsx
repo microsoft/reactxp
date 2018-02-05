@@ -383,6 +383,12 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         }
 
         setValue(valueObject: Value, newValue: number | string): void {
+            // We should never get here if the component isn't mounted,
+            // but we'll add this additional protection.
+            if (!this._mountedComponent) {
+                return;
+            }
+
             let attrib = this._findAnimatedAttributeByValue(this._animatedAttributes, valueObject);
             if (attrib) {
                 let cssValue = this._generateCssAttributeValue(attrib, valueObject, valueObject._getValue());
@@ -398,6 +404,12 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
 
         startTransition(valueObject: Value, fromValue: number|string, toValue: number|string, duration: number,
                 easing: string, delay: number, onEnd: Types.Animated.EndCallback): void {
+
+            // We should never get here if the component isn't mounted,
+            // but we'll add this additional protection.
+            if (!this._mountedComponent) {
+                return;
+            }
 
             let updateTransition = false; 
 
@@ -448,6 +460,12 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
 
         // Stops a pending transition, returning the value at the current time.
         stopTransition(valueObject: Value): number|string|undefined {
+            // We should never get here if the component isn't mounted,
+            // but we'll add this additional protection.
+            if (!this._mountedComponent) {
+                return;
+            }
+
             let partialValue: number|string|undefined;
             let stoppedTransition: ExtendedTransition|undefined;
             let updateTransition = false;
@@ -517,6 +535,12 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         // Updates the "transform" CSS attribute for the element to reflect all
         // active transitions.
         private _updateTransition() {
+            // We should never get here if the component isn't mounted,
+            // but we'll add this additional protection.
+            if (!this._mountedComponent) {
+                return;
+            }
+
             let activeTransitions: ITransitionSpec[] = [];
             _.each(this._animatedAttributes, attrib => {
                 if (attrib.activeTransition) {
@@ -653,6 +677,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                             console.error('Animated style attribute removed while the animation was active');
                         }
                     }
+                    value.valueObject.removeListener(this);
                     delete this._animatedAttributes[attrib];
                 }
             });
@@ -661,6 +686,9 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             _.each(newAnimatedAttributes, (value, attrib) => {
                 if (!this._animatedAttributes[attrib]) {
                     this._animatedAttributes[attrib] = { valueObject: value };
+                    if (this._mountedComponent) {
+                        value.addListener(this);
+                    }
                 }
             });
 
@@ -673,6 +701,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                             console.warn('Should not remove an animated transform attribute while the animation is active');
                         }
                     }
+                    value.valueObject.removeListener(this);
                     delete this._animatedTransforms[transform];
                 }
             });
@@ -681,6 +710,9 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             _.each(newAnimatedTransforms, (value, transform) => {
                 if (!this._animatedTransforms[transform]) {
                     this._animatedTransforms[transform] = { valueObject: value };
+                    if (this._mountedComponent) {
+                        value.addListener(this);
+                    }
                 }
             });
         
