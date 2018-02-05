@@ -383,16 +383,23 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         }
 
         setValue(valueObject: Value, newValue: number | string): void {
+            const domNode = this._getDomNode();
+
+            if (!domNode) {
+                // node is not mounted
+                return;
+            }
+
             let attrib = this._findAnimatedAttributeByValue(this._animatedAttributes, valueObject);
             if (attrib) {
                 let cssValue = this._generateCssAttributeValue(attrib, valueObject, valueObject._getValue());
-                (this._getDomNode().style as any)[attrib] = cssValue;
+                (domNode.style as any)[attrib] = cssValue;
                 return;
             }
 
             let transform = this._findAnimatedAttributeByValue(this._animatedTransforms, valueObject);
             if (transform) {
-                this._getDomNode().style.transform = this._generateCssTransformList(true);
+                domNode.style.transform = this._generateCssTransformList(true);
             }
         }
 
@@ -457,13 +464,14 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                 let activeTransition = this._animatedAttributes[attrib].activeTransition;
                 if (activeTransition) {
                     partialValue = activeTransition.toValue;
+                    const domNode = this._getDomNode();
 
                     // We don't currently support updating to an intermediate
                     // value for interpolated values because this would involve
                     // mapping the interpolated value in reverse. Instead, we'll
                     // simply update it to the "toValue".
-                    if (!valueObject._isInterpolated()) {
-                        let computedStyle = window.getComputedStyle(this._getDomNode(), undefined);
+                    if (domNode && !valueObject._isInterpolated()) {
+                        let computedStyle = window.getComputedStyle(domNode, undefined);
                         if (computedStyle && (computedStyle as any)[attrib]) {
                             partialValue = (computedStyle as any)[attrib];
                         }
@@ -502,7 +510,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             return partialValue;
         }
 
-        private _getDomNode(): HTMLElement {
+        private _getDomNode(): HTMLElement|undefined {
             return ReactDOM.findDOMNode(this._mountedComponent) as HTMLElement;
         }
 
@@ -543,7 +551,14 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             }
 
             if (activeTransitions.length > 0) {
-                executeTransition(this._getDomNode(), activeTransitions, () => {
+                const domNode = this._getDomNode();
+
+                if (!domNode) {
+                    // node is not mounted
+                    return;
+                }
+
+                executeTransition(domNode, activeTransitions, () => {
                     // Clear all of the active transitions and invoke the onEnd callbacks.
                     let completeTransitions: ExtendedTransition[] = [];
 
