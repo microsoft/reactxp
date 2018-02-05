@@ -16,6 +16,11 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.51.5 of reactxp
+_Released 5 Feb 2018_
+
+Accessibility: Added valuenow attribute for slider role support
+
 #### Version 0.51.4 of reactxp
 _Released 2 Feb 2018_
 
