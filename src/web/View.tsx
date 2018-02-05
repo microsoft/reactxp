@@ -284,6 +284,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             'aria-labelledby': ariaLabelledBy,
             'aria-roledescription': ariaRoleDescription,
             'aria-live': ariaLive,
+            'aria-valuenow': this.props.ariaValueNow,
             onContextMenu: this.props.onContextMenu,
             onMouseEnter: this.props.onMouseEnter,
             onMouseLeave: this.props.onMouseLeave,
