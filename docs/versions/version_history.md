@@ -16,6 +16,11 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.51.6 of reactxp
+_Released 5 Feb 2018_
+
+Rare crash fix for Animated Styles on Web when changing styles on a component
+
 #### Version 0.51.5 of reactxp
 _Released 5 Feb 2018_
 
