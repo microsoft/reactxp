@@ -33,9 +33,7 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
 
     private _focusableElement : RNW.FocusableWindows<RN.ViewProps> | null = null;
 
-    private _isMouseOver = false;
     private _isFocusedWithKeyboard = false;
-    private _isHoverStarted = false;
 
     private _onFocusableRef = (btn: RNW.FocusableWindows<RN.ViewProps> | null): void => {
         this._focusableElement = btn;
@@ -134,16 +132,6 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
         }
     }
 
-    private _onMouseEnter = (e: React.SyntheticEvent<any>) => {
-        this._isMouseOver = true;
-        this._onHoverStart(e);
-    }
-
-    private _onMouseLeave = (e: React.SyntheticEvent<any>) => {
-        this._isMouseOver = false;
-        this._onHoverEnd(e);
-    }
-
     // When we get focus on an element, show the hover effect on the element.
     // This ensures that users using keyboard also get the similar experience as mouse users for accessibility.
     private _onFocus = (e: React.SyntheticEvent<any>): void => {
@@ -168,7 +156,7 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
         }
     }
 
-    private _onHoverStart = (e: React.SyntheticEvent<any>) => {
+    protected _onHoverStart = (e: React.SyntheticEvent<any>) => {
         if (!this._isHoverStarted && (this._isMouseOver || this._isFocusedWithKeyboard)) {
             this._isHoverStarted = true;
 
@@ -178,7 +166,7 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
         }
     }
 
-    private _onHoverEnd = (e: React.SyntheticEvent<any>) => {
+    protected _onHoverEnd = (e: React.SyntheticEvent<any>) => {
         if (this._isHoverStarted && !this._isMouseOver && !this._isFocusedWithKeyboard) {
             this._isHoverStarted = false;
 
