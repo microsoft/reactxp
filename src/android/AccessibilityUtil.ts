@@ -20,11 +20,23 @@ export class AccessibilityUtil extends CommonAccessibilityNativeUtil {
 
         // For some reason, a small delay is required for the event to be properly processed.
         setTimeout(() => {
-            RN.NativeModules.UIManager.sendAccessibilityEvent(
-                RN.findNodeHandle(component),
-                eventId);
-            }, 100
-        );
+            let nodeHandle;
+
+            // Component could be unmountend at the moment this function is executed and in
+            // that case RN.findNodeHandle() will throw an exception.
+            // We can't use just simple component.isMounted() checks as it's deprecated and
+            // will throw red-screen in dev mode and I don't want to access _isMounted as
+            // it's private prop.
+            try {
+                nodeHandle = RN.findNodeHandle(component);
+            } catch (e) {
+                // Intended noop, it's valid situation
+            }
+
+            if (nodeHandle) {
+                RN.NativeModules.UIManager.sendAccessibilityEvent(nodeHandle, eventId);
+            }
+        }, 100);
     }
 
     setAccessibilityFocus(component: React.Component<any, any>) {
