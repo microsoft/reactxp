@@ -150,7 +150,7 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
         assert.ok(!!this.props.anchorHandle);
         RN.NativeModules.UIManager.measureInWindow(
             this.props.anchorHandle,
-            (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+            (x: number, y: number, width: number, height: number) => {
                 if (!this._mountedComponent) {
                     return;
                 }
@@ -163,7 +163,7 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
 
                 RN.NativeModules.UIManager.measureInWindow(
                     this._viewHandle,
-                    (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+                    (x: number, y: number, width: number, height: number) => {
                         let popupRect: ClientRect = {
                             left: x, top: y, right: x + width, bottom: y + height,
                             width: width, height: height

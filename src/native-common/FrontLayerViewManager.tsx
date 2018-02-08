@@ -194,7 +194,7 @@ export class FrontLayerViewManager {
             if (activePopupContext.popupOptions.onAnchorPressed) {
                 RN.NativeModules.UIManager.measureInWindow(
                     activePopupContext.anchorHandle,
-                    (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+                    (x: number, y: number, width: number, height: number) => {
                         const touchEvent = e.nativeEvent as any;
                         let anchorRect: ClientRect = { left: x, top: y, right: x + width,
                                 bottom: y + height, width: width, height: height };
