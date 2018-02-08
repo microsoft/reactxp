@@ -421,7 +421,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                     }
                 }
                 this._animatedAttributes[attrib].activeTransition = {
-                    property: attrib,
+                    property: Styles.convertJsToCssStyle(attrib),
                     from: this._generateCssAttributeValue(attrib, this._animatedAttributes[attrib].valueObject, fromValue),
                     to: this._generateCssAttributeValue(attrib, this._animatedAttributes[attrib].valueObject, toValue),
                     duration,

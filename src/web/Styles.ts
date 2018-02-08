@@ -201,7 +201,7 @@ export class Styles extends RX.Styles {
     });
 
     // Converts a property from JavaScript style (camel-case) to CSS style (lowercase with hyphens).
-    private _convertJsToCssStyle(prop: string): string {
+    convertJsToCssStyle(prop: string): string {
         let cssString = '';
 
         if (prop) {
@@ -216,22 +216,6 @@ export class Styles extends RX.Styles {
         }
 
         return cssString;
-    }
-
-    _cssPropertyAliasesCssStyle = memoize(() => {
-        let jsStyleAliases = this._getCssPropertyAliasesJsStyle();
-
-        let aliases: CssAliasMap = {};
-
-        _.each(_.keys(jsStyleAliases), prop => {
-            aliases[prop] = this._convertJsToCssStyle(jsStyleAliases[prop]);
-        });
-
-        return aliases;
-    });
-
-    getCssPropertyAliasesCssStyle(): {[key: string]: string} {
-        return this._cssPropertyAliasesCssStyle();
     }
 
     getParentComponentName(component: any): string {
