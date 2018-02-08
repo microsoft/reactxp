@@ -36,7 +36,7 @@ export class UserInterface extends RX.UserInterface {
 
         assert.ok(!!nodeHandle);
         RN.NativeModules.UIManager.measureInWindow(
-            nodeHandle, (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+            nodeHandle, (x: number, y: number, width: number, height: number) => {
                 deferred.resolve({
                     x: x,
                     y: y,
