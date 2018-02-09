@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.51.7 of reactxp
+_Released 5 Feb 2018_
+
+Fix crash when Android Talkback is enabled
+Fix bug in Web-based CSS animations
+
 #### Version 0.51.6 of reactxp
 _Released 5 Feb 2018_
 
