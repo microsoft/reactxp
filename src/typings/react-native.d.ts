@@ -34,7 +34,7 @@ declare module 'react-native' {
     interface SyntheticEvent<T> extends React.SyntheticEvent<T> {}
 
     function isValidElement(object: {}): boolean;
-    function findNodeHandle(componentOrHandle: any): number;
+    function findNodeHandle(componentOrHandle: any): number | null;
 
     var Children: React.ReactChildren;
 

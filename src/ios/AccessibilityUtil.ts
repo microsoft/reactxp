@@ -16,7 +16,13 @@ import { AccessibilityPlatformUtil } from '../common/AccessibilityUtil';
 export class AccessibilityUtil extends AccessibilityPlatformUtil {
     setAccessibilityFocus(component: React.Component<any, any>): void {
         if (Accessibility.isScreenReaderEnabled() && RN.AccessibilityInfo && RN.AccessibilityInfo.setAccessibilityFocus) {
-            RN.AccessibilityInfo.setAccessibilityFocus(RN.findNodeHandle(component));
+            const nodeHandle = RN.findNodeHandle(component);
+
+            if (nodeHandle) {
+                RN.AccessibilityInfo.setAccessibilityFocus(nodeHandle);
+            } else {
+                console.warn('Could not find node handle to set accessibility focus.');
+            }
         }
     }
 }
