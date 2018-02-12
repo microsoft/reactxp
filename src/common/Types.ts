@@ -1113,6 +1113,8 @@ export module Animated {
     }
 }
 
+export type NodeHandle = number;
+
 //
 // Events
 // ----------------------------------------------------------------------
@@ -1121,8 +1123,12 @@ export type SyntheticEvent = {
     readonly cancelable: boolean;
     readonly defaultPrevented: boolean;
     readonly timeStamp: number;
-    readonly currentTarget: EventTarget;
+    readonly currentTarget: EventTarget | NodeHandle;
+    readonly target: EventTarget | NodeHandle;
     readonly nativeEvent: any; // Platform-specific
+    readonly eventPhase: number;
+    readonly isTrusted: boolean;
+    readonly type: string;
     preventDefault(): void;
     stopPropagation(): void;
 };

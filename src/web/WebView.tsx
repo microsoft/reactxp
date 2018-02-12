@@ -123,6 +123,10 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> imple
                     cancelable: e.cancelable,
                     defaultPrevented: e.defaultPrevented,
                     currentTarget: e.currentTarget,
+                    target: e.target,
+                    eventPhase: e.eventPhase,
+                    isTrusted: e.isTrusted,
+                    type: e.type,
                     __propagationStopped: false,
                     stopPropagation: () => {
                         e.stopPropagation();
