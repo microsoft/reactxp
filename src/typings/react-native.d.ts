@@ -366,7 +366,7 @@ declare module 'react-native' {
         editable?: boolean;
         keyboardType?: string; // enum("default", 'numeric', 'email-address', "ascii-capable", 'numbers-and-punctuation', 'url', 'number-pad', 'phone-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search')
         multiline?: boolean;
-        onBlur?: ((e: React.FocusEvent<TextInput>) => void);
+        onBlur?: (() => void);
         onKeyPress?: (e: SyntheticEvent<TextInput>) => void;
         onChange?: Function;
         onChangeText?: ((changedText: string) => void);
