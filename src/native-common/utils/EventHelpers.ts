@@ -137,6 +137,10 @@ export class EventHelpers {
         // Nothing for now, this will have to be enhanced based on platform support.
         return e as Types.MouseEvent;
     }
+
+    isRightMouseButton(e: Types.SyntheticEvent) {
+        return e.nativeEvent.isRightButton;
+    }
 }
 
 export default new EventHelpers();
