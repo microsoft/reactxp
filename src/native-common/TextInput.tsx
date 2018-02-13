@@ -27,9 +27,14 @@ export interface TextInputState {
     isFocused: boolean;
 }
 
+interface Selection {
+    start: number;
+    end: number;
+}
+
 export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
-    private _selectionStart: number = 0;
-    private _selectionEnd: number = 0;
+    private _selectionToSet: Selection | undefined;
+    private _selection: Selection = { start: 0, end: 0 };
     private _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
 
     protected _textInputRef: RN.TextInput|null = null;
@@ -87,7 +92,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             onFocus: this._onFocus,
             onBlur: this._onBlur,
             onScroll: this._onScroll,
-            selection: { start: this._selectionStart, end: this._selectionEnd },
+            selection: this._selectionToSet,
             secureTextEntry: this.props.secureTextEntry,
 
             keyboardAppearance: this.props.keyboardAppearance,
@@ -101,6 +106,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             underlineColorAndroid: 'transparent'
         };
 
+        this._selectionToSet = undefined;
+        
         return this._render(internalProps);
     }
 
@@ -144,18 +151,17 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
          * runs. Whereas in React Native iOS and UWP, those events fire in the reverse order so this handler can't
          * clamp on those platforms.
          */
-        this._selectionStart = (RN.Platform.OS === 'android')
+        const selectionStart = (RN.Platform.OS === 'android')
             ? Math.min(selection.start, this.state.inputValue.length)
             : selection.start;
-        this._selectionEnd = (RN.Platform.OS === 'android')
+        const selectionEnd = (RN.Platform.OS === 'android')
             ? Math.min(selection.end, this.state.inputValue.length)
             : selection.end;
 
+        this._selection = { start: selectionStart, end: selectionEnd };
         if (this.props.onSelectionChange) {
-            this.props.onSelectionChange(this._selectionStart, this._selectionEnd);
+            this.props.onSelectionChange(selectionStart, selectionEnd);
         }
-
-        this.forceUpdate();
     }
 
     private _onKeyPress = (e: React.SyntheticEvent<any>) => {
@@ -192,8 +198,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     selectAll() {
-        this._selectionStart = 0;
-        this._selectionEnd = this.state.inputValue.length;
+        this._selectionToSet = { start: 0, end: this.state.inputValue.length };
         this.forceUpdate();
     }
 
@@ -201,18 +206,12 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         const constrainedStart = Math.min(start, this.state.inputValue.length);
         const constrainedEnd = Math.min(end, this.state.inputValue.length);
 
-        this._selectionStart = constrainedStart;
-        this._selectionEnd = constrainedEnd;
+        this._selectionToSet = { start: constrainedStart, end: constrainedEnd };
         this.forceUpdate();
     }
 
     getSelectionRange(): { start: number, end: number } {
-        let range = {
-            start: this._selectionStart,
-            end: this._selectionEnd
-        };
-
-        return range;
+        return this._selection;
     }
 
     setValue(value: string): void {
