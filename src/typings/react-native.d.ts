@@ -632,8 +632,10 @@ declare module 'react-native' {
         static flatten: (s: StyleSheet) => { [key: string]: any };
     }
 
+    type ComponentProvider = () => React.ComponentType<any>;
+
     class AppRegistry {
-        static registerComponent(appKey: string, getComponentFunc: Function): any;
+        static registerComponent(appKey: string, getComponentFunc: ComponentProvider): any;
     }
 
    type  CameraRollProps = {

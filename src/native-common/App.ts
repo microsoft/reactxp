@@ -46,7 +46,7 @@ export class App extends RX.App {
         return _rnStateToRxState[RN.AppState.currentState];
     }
 
-    protected getRootViewFactory(): Function {
+    protected getRootViewFactory(): RN.ComponentProvider {
         return () => RootView;
     }
 }

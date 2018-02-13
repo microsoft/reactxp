@@ -45,7 +45,7 @@ export class ActivityIndicator extends React.Component<Types.ActivityIndicatorPr
     }
 
     render() {
-        let size: string;
+        let size: 'small' | 'large';
         switch (this.props.size) {
             case 'tiny':
             case 'small':
