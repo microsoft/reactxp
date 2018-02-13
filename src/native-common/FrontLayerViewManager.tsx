@@ -79,9 +79,10 @@ export class FrontLayerViewManager {
     public showPopup(
         popupOptions: Types.PopupOptions, popupId: string, delay?: number): boolean {
         const index = this._findIndexOfPopup(popupId);
+        const nodeHandle = index !== -1 && RN.findNodeHandle(popupOptions.getAnchor());
 
-        if (index === -1) {
-            this._overlayStack.push(new PopupStackContext(popupId, popupOptions, RN.findNodeHandle(popupOptions.getAnchor())));
+        if (index === -1 && nodeHandle) {
+            this._overlayStack.push(new PopupStackContext(popupId, popupOptions, nodeHandle));
 
             this.event_changed.fire();
             return true;

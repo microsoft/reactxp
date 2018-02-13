@@ -55,7 +55,7 @@ export interface PopupContainerViewState {
 
 export class PopupContainerView extends React.Component<PopupContainerViewProps, PopupContainerViewState> {
     private _mountedComponent: RN.View|null = null;
-    private _viewHandle: number = 0;
+    private _viewHandle: number | null = null;
     private _respositionPopupTimer: number|undefined;
 
     constructor(props: PopupContainerViewProps) {
