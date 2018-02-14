@@ -10,6 +10,7 @@
 import React = require('react');
 import RN = require('react-native');
 
+import EventHelpers from './utils/EventHelpers';
 import Linking from '../native-common/Linking';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
@@ -52,6 +53,10 @@ export class Link extends React.Component<Types.LinkProps, {}> {
     }
 
     protected _onPress = (e: RX.Types.SyntheticEvent) => {
+        if (EventHelpers.isRightMouseButton(e)) {
+            return;
+        }
+
         if (this.props.onPress) {
             this.props.onPress(e, this.props.url);
             return;
@@ -66,7 +71,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
     }
 
     protected _onLongPress = (e: RX.Types.SyntheticEvent) => {
-        if (this.props.onLongPress) {
+        if (!EventHelpers.isRightMouseButton(e) && this.props.onLongPress) {
             this.props.onLongPress(e, this.props.url);
         }
     }

@@ -15,6 +15,7 @@ import PropTypes = require('prop-types');
 import AccessibilityUtil from './AccessibilityUtil';
 import Animated from './Animated';
 import AppConfig from '../common/AppConfig';
+import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { isEqual } from '../common/lodashMini';
@@ -215,13 +216,21 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
 
     touchableHandlePress = (e: Types.MouseEvent) => {
         UserInterface.evaluateTouchLatency(e);
-        if (!this.props.disabled && this.props.onPress) {
-            this.props.onPress(e);
+        if (!this.props.disabled) {
+            if (EventHelpers.isRightMouseButton(e)) {
+                if (this.props.onContextMenu) {
+                    this.props.onContextMenu(e);
+                }
+            } else {
+                if (this.props.onPress) {
+                    this.props.onPress(e);
+                }
+            }
         }
     }
 
     touchableHandleLongPress = (e: Types.MouseEvent) => {
-        if (!this.props.disabled && this.props.onLongPress) {
+        if (!this.props.disabled && !EventHelpers.isRightMouseButton(e) && this.props.onLongPress) {
             this.props.onLongPress(e);
         }
     }
