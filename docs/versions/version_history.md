@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.51.8 of reactxp
+_Released 13 Feb 2018_
+
+Revert web CSS animation change in 0.51.7 due to imagesvg incompatibility
+Improve app visibility detection on web
+
 #### Version 0.51.7 of reactxp
 _Released 5 Feb 2018_
 
