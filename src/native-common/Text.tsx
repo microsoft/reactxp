@@ -42,6 +42,10 @@ export class Text extends React.Component<Types.TextProps, {}> implements React.
 
     render() {
         const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility);
+
+        // The presence of any of the onPress or onContextMenu makes the RN.Text a potential touch responder
+        const onPress = (this.props.onPress || this.props.onContextMenu) ? this._onPress : undefined;
+
         return (
             <RN.Text
                 style={ this._getStyles() }
@@ -50,7 +54,7 @@ export class Text extends React.Component<Types.TextProps, {}> implements React.
                 numberOfLines={ this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
                 maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
-                onPress={ this._onPress }
+                onPress={ onPress }
                 selectable={ this.props.selectable }
                 textBreakStrategy={ 'simple' }
                 ellipsizeMode={ this.props.ellipsizeMode }

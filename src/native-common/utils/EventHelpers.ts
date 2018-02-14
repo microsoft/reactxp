@@ -5,7 +5,7 @@
 * Licensed under the MIT license.
 */
 
-import _ = require('../../native-common/lodashMini');
+import _ = require('../lodashMini');
 import Types = require('../../common/Types');
 
 //
@@ -138,8 +138,8 @@ export class EventHelpers {
         return e as Types.MouseEvent;
     }
 
-    isRightMouseButton(e: Types.SyntheticEvent) {
-        return e.nativeEvent.isRightButton;
+    isRightMouseButton(e: Types.SyntheticEvent): boolean {
+        return !!e.nativeEvent.isRightButton;
     }
 }
 
