@@ -13,6 +13,7 @@ import React = require('react');
 import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
+import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -41,6 +42,10 @@ export class Text extends React.Component<Types.TextProps, {}> implements React.
 
     render() {
         const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility);
+
+        // The presence of any of the onPress or onContextMenu makes the RN.Text a potential touch responder
+        const onPress = (this.props.onPress || this.props.onContextMenu) ? this._onPress : undefined;
+
         return (
             <RN.Text
                 style={ this._getStyles() }
@@ -49,7 +54,7 @@ export class Text extends React.Component<Types.TextProps, {}> implements React.
                 numberOfLines={ this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
                 maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
-                onPress={ this.props.onPress }
+                onPress={ onPress }
                 selectable={ this.props.selectable }
                 textBreakStrategy={ 'simple' }
                 ellipsizeMode={ this.props.ellipsizeMode }
@@ -61,6 +66,18 @@ export class Text extends React.Component<Types.TextProps, {}> implements React.
 
     protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
         this._mountedComponent = component;
+    }
+
+    private _onPress = (e: RN.SyntheticEvent<any>) => {
+        if (EventHelpers.isRightMouseButton(e)) {
+            if (this.props.onContextMenu) {
+                this.props.onContextMenu(e);
+            }
+        } else {
+            if (this.props.onPress) {
+                this.props.onPress(e);
+            }
+        }
     }
 
     getChildContext() {

@@ -16,6 +16,7 @@ import RN = require('react-native');
 import AccessibilityUtil from './AccessibilityUtil';
 
 import Animated from './Animated';
+import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import UserInterface from './UserInterface';
@@ -400,14 +401,22 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
     touchableHandlePress(e: Types.MouseEvent): void {
         UserInterface.evaluateTouchLatency(e);
-        if (this.props.onPress) {
-            this.props.onPress(e);
+        if (EventHelpers.isRightMouseButton(e)) {
+            if (this.props.onContextMenu) {
+                this.props.onContextMenu(e);
+            }
+        } else {
+            if (this.props.onPress) {
+                this.props.onPress(e);
+            }
         }
     }
 
     touchableHandleLongPress(e: Types.MouseEvent): void {
-        if (this.props.onLongPress) {
-            this.props.onLongPress(e);
+        if (!EventHelpers.isRightMouseButton(e)) {
+            if (this.props.onLongPress) {
+                this.props.onLongPress(e);
+            }
         }
     }
 
