@@ -238,7 +238,7 @@ declare module 'react-native' {
     interface CommonAccessibilityProps {
         accessibilityLabel?              : string;
         accessible?                      : boolean;
-        onAcccessibilityTap?             : Function;
+        onAccessibilityTap?              : Function;
 
         // android
         accessibilityComponentType?    : string; //enum ( 'none', 'button', 'radiobutton_checked', 'radiobutton_unchecked' )

@@ -70,7 +70,8 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
             onKeyDown: this._onKeyDown,
             onKeyUp: this._onKeyUp,
             onFocus: this._onFocus,
-            onBlur: this._onBlur
+            onBlur: this._onBlur,
+            onAccessibilityTap: this._onAccessibilityTap
         };
 
         return (
@@ -103,6 +104,14 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
             this._focusableElement.setNativeProps(nativeProps);
         } else {
             super.setNativeProps(nativeProps);
+        }
+    }
+
+    private _onAccessibilityTap = (e: React.SyntheticEvent<any>): void => {
+        if (!this.props.disabled) {
+            if (this.props.onPress) {
+                this.props.onPress(e);
+            }
         }
     }
 
