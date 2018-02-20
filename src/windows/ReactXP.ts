@@ -28,7 +28,7 @@ import PickerImpl from '../native-common/Picker';
 import ImageImpl from '../native-common/Image';
 import ClipboardImpl from '../native-common/Clipboard';
 import GestureViewImpl from './GestureView';
-import InputImpl from '../native-common/Input';
+import InputImpl from '../native-desktop/Input';
 import InternationalImpl from '../native-common/International';
 import LinkImpl from './Link';
 import LinkingImpl from './Linking';
