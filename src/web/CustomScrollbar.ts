@@ -1,5 +1,5 @@
-﻿/**
-* Scrollbar.ts
+/**
+* CustomScrollbar.ts
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
@@ -14,7 +14,6 @@ import React = require('react');
 var UNIT = 'px';
 var SCROLLER_MIN_SIZE = 15;
 var SCROLLER_NEGATIVE_MARGIN = 30;
-var LTR_OVERRIDE_CLASS = 'ltroverride';
 var NEUTRAL_OVERRIDE_CLASS = 'neutraloverride';
 
 interface IScrollbarInfo {
@@ -173,6 +172,7 @@ export class Scrollbar {
     private _handleWheelCallback = this._handleWheel.bind(this);
     private _handleMouseDownCallback = this._handleMouseDown.bind(this);
     private _updateCallback = this.update.bind(this);
+    private _asyncInitTimer: number|undefined;
 
     static getNativeScrollbarWidth() {
         // Have we cached the value alread?
@@ -253,12 +253,8 @@ export class Scrollbar {
             isNeutral = isLeftBound && isRightBound;
 
         this._container.classList.remove(NEUTRAL_OVERRIDE_CLASS);
-        this._container.classList.remove(LTR_OVERRIDE_CLASS);
-
         if (isNeutral) {
             this._container.classList.add(NEUTRAL_OVERRIDE_CLASS);
-        } else if (isLeftBound) {
-            this._container.classList.add(LTR_OVERRIDE_CLASS);
         }
 
         rtlbox.innerHTML = '';
@@ -511,14 +507,22 @@ export class Scrollbar {
             }
         }
         Scrollbar._installStyleSheet();
-        this._tryLtrOverride();
         this._addScrollbars();
         this.show();
-        this.update();
         this._container.addEventListener('mouseenter', this._updateCallback);
+
+        // Defer remaining init work to avoid triggering sync layout
+        this._asyncInitTimer = window.setTimeout(() => {
+            this._tryLtrOverride();
+            this.update();
+        }, 0);
     }
 
     dispose() {
+        if (this._asyncInitTimer) {
+            window.clearInterval(this._asyncInitTimer);
+            this._asyncInitTimer = undefined;
+        }
         this._stopDrag();
         this._container.removeEventListener('mouseenter', this._updateCallback);
         this.hide();
