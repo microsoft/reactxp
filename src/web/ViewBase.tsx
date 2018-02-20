@@ -113,32 +113,32 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
             return SyncTasks.Resolved<void>();
         }
 
-        const container = this._getContainer();
-        if (!container) {
-            return SyncTasks.Resolved<void>();
-        }
+        const deferred = SyncTasks.Defer<void>();
+        ViewBase._reportLayoutChange(() => {
+            if (!this._isMounted || !this.props.onLayout) {
+                deferred.resolve(void 0);
+                return;
+            }
+            const container = this._getContainer();
+            if (!container) {
+                deferred.resolve(void 0);
+                return;
+            }
 
-        const newX = container.offsetLeft;
-        const newY = container.offsetTop;
-        const marginTop = !container.style.marginTop ? 0 : parseInt(container.style.marginTop, 10) || 0;
-        const marginBottom = !container.style.marginBottom ? 0 : parseInt(container.style.marginBottom, 10) || 0;
-        const marginRight = !container.style.marginRight ? 0 : parseInt(container.style.marginRight, 10) || 0;
-        const marginLeft = !container.style.marginLeft ? 0 : parseInt(container.style.marginLeft, 10) || 0;
-        const newWidth = container.offsetWidth + marginRight + marginLeft;
-        const newHeight = container.offsetHeight + marginTop + marginBottom;
+            const newX = container.offsetLeft;
+            const newY = container.offsetTop;
+            const marginTop = !container.style.marginTop ? 0 : parseInt(container.style.marginTop, 10) || 0;
+            const marginBottom = !container.style.marginBottom ? 0 : parseInt(container.style.marginBottom, 10) || 0;
+            const marginRight = !container.style.marginRight ? 0 : parseInt(container.style.marginRight, 10) || 0;
+            const marginLeft = !container.style.marginLeft ? 0 : parseInt(container.style.marginLeft, 10) || 0;
+            const newWidth = container.offsetWidth + marginRight + marginLeft;
+            const newHeight = container.offsetHeight + marginTop + marginBottom;
 
-        if (this._lastX !== newX || this._lastY !== newY || this._lastWidth !== newWidth || this._lastHeight !== newHeight) {
-            this._lastX = newX;
-            this._lastY = newY;
-            this._lastWidth = newWidth;
-            this._lastHeight = newHeight;
-
-            const deferred = SyncTasks.Defer<void>();
-            ViewBase._reportLayoutChange(() => {
-                if (!this._isMounted || !this.props.onLayout) {
-                    deferred.resolve(void 0);
-                    return;
-                }
+            if (this._lastX !== newX || this._lastY !== newY || this._lastWidth !== newWidth || this._lastHeight !== newHeight) {
+                this._lastX = newX;
+                this._lastY = newY;
+                this._lastWidth = newWidth;
+                this._lastHeight = newHeight;
 
                 this.props.onLayout({
                     x: newX,
@@ -147,11 +147,9 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
                     height: this._lastHeight
                 });
                 deferred.resolve(void 0);
-            });
-            return deferred.promise();
-        }
-
-        return SyncTasks.Resolved<void>();
+            }
+        });
+        return deferred.promise();
     }
 
     private _checkViewCheckerBuild() {
