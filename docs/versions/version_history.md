@@ -16,7 +16,7 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
-#### Version 1.0.0-alpha.1 of reactxp
+#### Version 1.0.0-alpha.2 of reactxp
 _Released 21 Feb 2018_
 
 Switched to new versioning scheme that's independent of RN.
@@ -28,6 +28,11 @@ Added valuenow attribute for slider role support.
 Fixed bug in web implementation of Animated where it wasn't properly managing listener subscriptions when animated styles were added to (or removed from) an animated component.
 Fix random Android crashes when Talkback is enabled.
 Fixed bug in web animation that caused certain CSS properties not to animate correctly because transition was specifying the attribute using camel case rather than CSS (hyphenated) case. This affected attributes like "backgroundColor".
+Removed parameter from onBlur event.
+Fixed bug in RX.TextInput that affected Windows version: Pass selection in render only after explicitly set.
+Added right-click support for Windows platform.
+Added more accessibility support for Windows platform.
+Use white-space:pre for the aria-live region.
 
 #### Version 0.51.1 of reactxp
 _Released 19 Jan 2018_
