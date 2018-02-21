@@ -84,7 +84,7 @@ const _rightClickButtonCode = 2;
 const _isMac = (typeof navigator !== 'undefined') && (typeof navigator.platform === 'string') && (navigator.platform.indexOf('Mac') >= 0);
 
 const _styles = {
-    liveRegionContainer: Styles.createViewStyle({
+    liveRegionContainer: Styles.combine({
         position: 'absolute',
         overflow: 'hidden',
         opacity: 0,
@@ -92,8 +92,9 @@ const _styles = {
         bottom: 0,
         left: 0,
         right: 0,
-        height: 30
-    })
+        height: 30,
+        whiteSpace: 'pre'
+    }),
 };
 
 const KEY_CODE_TAB = 9;
