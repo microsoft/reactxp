@@ -84,7 +84,7 @@ const _rightClickButtonCode = 2;
 const _isMac = (typeof navigator !== 'undefined') && (typeof navigator.platform === 'string') && (navigator.platform.indexOf('Mac') >= 0);
 
 const _styles = {
-    liveRegionContainer: Styles.createViewStyle({
+    liveRegionContainer: Styles.combine({
         position: 'absolute',
         overflow: 'hidden',
         opacity: 0,
@@ -92,8 +92,9 @@ const _styles = {
         bottom: 0,
         left: 0,
         right: 0,
-        height: 30
-    })
+        height: 30,
+        whiteSpace: 'pre'
+    }),
 };
 
 const KEY_CODE_TAB = 9;
@@ -146,8 +147,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 } else {
 
                     // Additionally, alternate between announcement text directly under the aria-live element and
-                    // nested in a div to work around issues with some browsers. Chrome on Windows is known to
-                    // not fire accessibility events reliably without this, for example.
+                    // nested in a div to work around issues with some readers. NVDA on Windows is known to
+                    // not announce aria-live reliably without this, for example.
                     this.setState({
                         announcementText: announcement,
                         announcementTextInNestedDiv: !this.state.announcementTextInNestedDiv
