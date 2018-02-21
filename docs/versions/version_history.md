@@ -16,11 +16,23 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.0.0-alpha.1 of reactxp
+_Released 21 Feb 2018_
+
+Switched to new versioning scheme that's independent of RN.
+Updated default RN dependency from 0.51.x to 0.53.x, although backward compatibility is maintained.
+Added support for numeric keyboards in mobile browsers.
+Fixed announceForAccessibility API for Mac.
+Added MacOS implementation of Button and Animated.
+Added valuenow attribute for slider role support.
+Fixed bug in web implementation of Animated where it wasn't properly managing listener subscriptions when animated styles were added to (or removed from) an animated component.
+Fix random Android crashes when Talkback is enabled.
+Fixed bug in web animation that caused certain CSS properties not to animate correctly because transition was specifying the attribute using camel case rather than CSS (hyphenated) case. This affected attributes like "backgroundColor".
+
 #### Version 0.51.1 of reactxp
 _Released 19 Jan 2018_
 
 Fixed regression in native implementation of Animated.View's blur() method.
-
 
 #### Version 0.2.3 of reactxp-video
 #### Version 1.0.15 of reactxp-navigator
