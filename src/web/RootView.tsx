@@ -147,8 +147,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 } else {
 
                     // Additionally, alternate between announcement text directly under the aria-live element and
-                    // nested in a div to work around issues with some browsers. Chrome on Windows is known to
-                    // not fire accessibility events reliably without this, for example.
+                    // nested in a div to work around issues with some readers. NVDA on Windows is known to
+                    // not announce aria-live reliably without this, for example.
                     this.setState({
                         announcementText: announcement,
                         announcementTextInNestedDiv: !this.state.announcementTextInNestedDiv
