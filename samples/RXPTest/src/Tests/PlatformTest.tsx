@@ -42,30 +42,13 @@ class PlatformView extends RX.Component<RX.CommonProps, PlatformState> {
     }
 
     render() {
-        let platformTypeText = '';
-        switch (this.state.platformType) {
-            case 'web':
-                platformTypeText = 'Browser (web)';
-                break;
-
-            case 'ios':
-                platformTypeText = 'iOS';
-                break;
-
-            case 'android':
-                platformTypeText = 'Android';
-                break;
-
-            case 'windows':
-                platformTypeText = 'Windows (UWP)';
-                break;
-
-            default:
-                if (this.state.platformType) {
-                    platformTypeText = 'Unknown (' + this.state.platformType + ')';
-                }
-                break;
-        }
+        const platformTypeText = RX.Platform.select({
+            'web': 'Browser (web)',
+            'ios': 'iOS',
+            'android': 'Android',
+            'windows': 'Windows (UWP)',
+            'default': `Unknown (${JSON.stringify(this.state.platformType)})`
+        });
 
         return (
             <RX.View style={ _styles.container}>

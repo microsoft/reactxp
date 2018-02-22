@@ -183,6 +183,7 @@ export abstract class Network {
 
 export abstract class Platform {
     abstract getType(): Types.PlatformType;
+    abstract select<T>(specifics: { [ platform in Types.PlatformType | 'default' ]?: T }): T | undefined;
 }
 
 export abstract class Input {

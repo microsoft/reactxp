@@ -18,5 +18,8 @@ type PlatformType = 'web' | 'ios' | 'android' | 'windows';
 ``` javascript
 // Returns the platform type
 getType(): Types.PlatformType;
+
+// Returns the value in `specifics` for the current platform type.
+select<T>(specifics: { [ platform in Types.PlatformType | 'default' ]?: T }): T | undefined;
 ```
 
