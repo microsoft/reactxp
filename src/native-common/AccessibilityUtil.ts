@@ -79,7 +79,7 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
             if (_.isArray(overrideTraits)) {
                 traits = overrideTraits.indexOf(defaultTrait) === -1 ? overrideTraits.concat([defaultTrait]) : overrideTraits;
             } else {
-                traits = overrideTraits === defaultTrait ? [overrideTraits] : [defaultTrait];
+                traits = overrideTraits === defaultTrait ? [overrideTraits] : [overrideTraits, defaultTrait];
             }
         } else {
             traits = _.isArray(overrideTraits) ? overrideTraits : [overrideTraits || defaultTrait];
