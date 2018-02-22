@@ -73,7 +73,7 @@ restrictFocusWithin: boolean = false; // web only
 // the arrow keys (or using some other behaviour).
 // WARNING: For the sake of performance, this property is readonly and
 // changing it during the View life cycle will produce an error.
-limitFocusWithin: boolean = false; // web only
+limitFocusWithin: LimitFocusType = false; // web only
 
 // Additional invisible DOM elements will be added inside the view
 // to track the size changes that are performed behind our back by

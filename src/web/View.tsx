@@ -246,7 +246,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
         if (limited && !this._isFocusLimited) {
             this._isFocusLimited = true;
-            this._focusManager.limitFocusWithin();
+            this._focusManager.limitFocusWithin(this.props.limitFocusWithin);
         } else if (!limited && this._isFocusLimited) {
             this._isFocusLimited = false;
             this._focusManager.removeFocusLimitation();
@@ -337,10 +337,10 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         super.componentWillReceiveProps(nextProps);
 
         if (AppConfig.isDevelopmentMode()) {
-            if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
+            if (this.props.restrictFocusWithin !== nextProps.restrictFocusWithin) {
                 console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
             }
-            if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
+            if (this.props.limitFocusWithin !== nextProps.limitFocusWithin) {
                 console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
             }
         }
@@ -355,7 +355,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             }
 
             if (this.props.limitFocusWithin && this._isFocusLimited) {
-                this._focusManager.limitFocusWithin();
+                this._focusManager.limitFocusWithin(this.props.limitFocusWithin);
             }
         }
     }

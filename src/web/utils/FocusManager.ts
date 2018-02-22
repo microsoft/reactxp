@@ -7,13 +7,11 @@
 * Manages focusable elements for better keyboard navigation (web version)
 */
 
-import React = require('react');
 import ReactDOM = require('react-dom');
 
 import { FocusManager as FocusManagerBase,
     FocusableComponentInternal,
-    StoredFocusableComponent,
-    OriginalAttributeValues } from '../../common/utils/FocusManager';
+    StoredFocusableComponent } from '../../common/utils/FocusManager';
 
 import UserInterface from '../UserInterface';
 
@@ -108,7 +106,11 @@ export class FocusManager extends FocusManagerBase {
     static focusFirst(last?: boolean) {
         const focusable = Object.keys(FocusManager._allFocusableComponents)
             .map(componentId => FocusManager._allFocusableComponents[componentId])
-            .filter(storedComponent => !storedComponent.removed && !storedComponent.restricted && !storedComponent.limitedCount)
+            .filter(storedComponent =>
+                !storedComponent.removed &&
+                !storedComponent.restricted &&
+                !storedComponent.limitedCount &&
+                !storedComponent.limitedCountAccessible)
             .map(storedComponent => ReactDOM.findDOMNode(storedComponent.component) as HTMLElement)
             .filter(el => el && el.focus);
 
@@ -165,32 +167,48 @@ export class FocusManager extends FocusManagerBase {
     }
 
     protected /* static */  _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
-        if ((storedComponent.restricted || (storedComponent.limitedCount > 0)) && !('origTabIndex' in storedComponent)) {
-            const origValues = FocusManager._setComponentTabIndexAndAriaHidden(storedComponent.component, -1, 'true');
-            storedComponent.origTabIndex = origValues ? origValues.tabIndex : undefined;
-            storedComponent.origAriaHidden = origValues ? origValues.ariaHidden : undefined;
-            FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, true);
-        } else if (!storedComponent.restricted && !storedComponent.limitedCount && ('origTabIndex' in storedComponent)) {
-            FocusManager._setComponentTabIndexAndAriaHidden(storedComponent.component,
-                    storedComponent.origTabIndex, storedComponent.origAriaHidden);
-            delete storedComponent.origTabIndex;
-            delete storedComponent.origAriaHidden;
-            FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, false);
-        }
-    }
+        let newAriaHidden = storedComponent.restricted || (storedComponent.limitedCount > 0) ? true : undefined;
+        let newTabIndex = newAriaHidden || (storedComponent.limitedCountAccessible > 0) ? -1 : undefined;
+        const restrictionRemoved = newTabIndex === undefined;
 
-    private static _setComponentTabIndexAndAriaHidden(
-            component: React.Component<any, any>, tabIndex: number|undefined, ariaHidden: string|undefined)
-            : OriginalAttributeValues|undefined {
+        if ((storedComponent.curTabIndex !== newTabIndex) || (storedComponent.curAriaHidden !== newAriaHidden)) {
+            const el = ReactDOM.findDOMNode(storedComponent.component) as HTMLElement;
 
-        const el = ReactDOM.findDOMNode(component) as HTMLElement;
-        return el ?
-            {
-                tabIndex: FocusManager._setTabIndex(el, tabIndex),
-                ariaHidden: FocusManager._setAriaHidden(el, ariaHidden)
+            if (el) {
+                if (storedComponent.curTabIndex !== newTabIndex) {
+                    storedComponent.curTabIndex = newTabIndex;
+
+                    if (restrictionRemoved) {
+                        FocusManager._setTabIndex(el, storedComponent.origTabIndex);
+                    } else {
+                        const prevTabIndex = FocusManager._setTabIndex(el, newTabIndex);
+                        if (!('origTabIndex' in storedComponent)) {
+                            storedComponent.origTabIndex = prevTabIndex;
+                        }
+                    }
+                }
+
+                if (storedComponent.curAriaHidden !== newAriaHidden) {
+                    storedComponent.curAriaHidden = newAriaHidden;
+
+                    if (restrictionRemoved) {
+                        FocusManager._setAriaHidden(el, storedComponent.origAriaHidden);
+                    } else {
+                        const prevAriaHidden = FocusManager._setAriaHidden(el, newAriaHidden ? 'true' : undefined);
+                        if (!('origAriaHidden' in storedComponent)) {
+                            storedComponent.origAriaHidden = prevAriaHidden;
+                        }
+                    }
+                }
+
+                if (restrictionRemoved) {
+                    delete storedComponent.origTabIndex;
+                    delete storedComponent.origAriaHidden;
+                }
             }
-            :
-            undefined;
+
+            FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, !restrictionRemoved);
+        }
     }
 
     private static _setTabIndex(element: HTMLElement, value: number|undefined): number|undefined {
