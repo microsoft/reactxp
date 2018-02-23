@@ -268,7 +268,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
         if (!ariaRole && !accessibilityLabel && !ariaLabelledBy && !ariaLive &&
                 (ariaSelected === undefined) && (ariaValueNow === undefined) && (tabIndex === undefined)) {
-            // When the accessibility properies are not specified, set role to none.
+            // When the accessibility properties are not specified, set role to none.
             // It tells the screen readers to skip the node, but unlike setting
             // aria-hidden to true, allows the sub DOM to be processed further.
             // This signigicantly improves the screen readers performance.
