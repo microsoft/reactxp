@@ -261,12 +261,13 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
         const accessibilityLabel = this.props.accessibilityLabel;
         const ariaLabelledBy = this.props.ariaLabelledBy;
+        const ariaRoleDescription = this.props.ariaRoleDescription;
         const ariaLive = this.props.accessibilityLiveRegion ?
             AccessibilityUtil.accessibilityLiveRegionToString(this.props.accessibilityLiveRegion) :
             undefined;
         const ariaValueNow = this.props.ariaValueNow;
 
-        if (!ariaRole && !accessibilityLabel && !ariaLabelledBy && !ariaLive &&
+        if (!ariaRole && !accessibilityLabel && !ariaLabelledBy && !ariaRoleDescription && !ariaLive &&
                 (ariaSelected === undefined) && (ariaValueNow === undefined) && (tabIndex === undefined)) {
             // When the accessibility properties are not specified, set role to none.
             // It tells the screen readers to skip the node, but unlike setting
@@ -284,6 +285,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             'aria-hidden': isAriaHidden,
             'aria-selected': ariaSelected,
             'aria-labelledby': ariaLabelledBy,
+            'aria-roledescription': ariaRoleDescription,
             'aria-live': ariaLive,
             'aria-valuenow': ariaValueNow,
             onContextMenu: this.props.onContextMenu,
