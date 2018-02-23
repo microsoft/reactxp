@@ -31,6 +31,8 @@ import { applyFocusableComponentMixin, FocusableComponentStateCallback } from  '
 export { applyFocusableComponentMixin, FocusableComponentStateCallback };
 
 export class FocusManager extends FocusManagerBase {
+    private static _setTabIndexTimer: number|undefined;
+    private static _setTabIndexElement: HTMLElement|undefined;
 
     constructor(parent: FocusManager | undefined) {
         super(parent);
@@ -157,10 +159,18 @@ export class FocusManager extends FocusManagerBase {
             // In order to avoid losing this first Tab press, we're making <body>
             // focusable, focusing it, removing the focus and making it unfocusable
             // back again.
-            const prevTabIndex = FocusManager._setTabIndex(document.body, 0);
-            document.body.focus();
-            document.body.blur();
-            FocusManager._setTabIndex(document.body, prevTabIndex);
+            // Defer the work to avoid triggering sync layout.
+            FocusManager._resetFocusTimer = setTimeout(() => {
+                FocusManager._resetFocusTimer = undefined;
+                const prevTabIndex = FocusManager._setTabIndex(document.body, 0);
+                const activeElement = document.activeElement;
+                document.body.focus();
+                document.body.blur();
+                FocusManager._setTabIndex(document.body, prevTabIndex);
+                if (activeElement instanceof HTMLElement) {
+                    activeElement.focus();
+                }
+            }, 0);
         }
     }
 
@@ -194,14 +204,35 @@ export class FocusManager extends FocusManagerBase {
     }
 
     private static _setTabIndex(element: HTMLElement, value: number|undefined): number|undefined {
-        const prev = element.hasAttribute(ATTR_NAME_TAB_INDEX) ? element.tabIndex : undefined;
+        // If a tabIndex assignment is pending for this element, cancel it now.
+        if (FocusManager._setTabIndexTimer && element === FocusManager._setTabIndexElement) {
+            clearTimeout(FocusManager._setTabIndexTimer);
+            FocusManager._setTabIndexTimer = undefined;
+        }
 
+        const prev = element.hasAttribute(ATTR_NAME_TAB_INDEX) ? element.tabIndex : undefined;
         if (value === undefined) {
             if (prev !== undefined) {
                 element.removeAttribute(ATTR_NAME_TAB_INDEX);
             }
-        } else {
-            element.tabIndex = value;
+        } else if (value !== prev) {
+            // Setting tabIndex to -1 on the active element would trigger sync layout. Defer it.
+            if (value === -1 && element === document.activeElement) {
+                // If a tabIndex assignment is pending for another element, run it now as we know
+                // that it's not active anymore.
+                if (FocusManager._setTabIndexTimer) {
+                    FocusManager._setTabIndexElement!!!.tabIndex = -1;
+                    clearTimeout(FocusManager._setTabIndexTimer);
+                    FocusManager._setTabIndexTimer = undefined;
+                }
+
+                FocusManager._setTabIndexElement = element;
+                FocusManager._setTabIndexTimer = setTimeout(() => {
+                    element.tabIndex = value;
+                }, 0);
+            } else {
+                element.tabIndex = value;
+            }
         }
 
         return prev;
