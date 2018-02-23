@@ -161,10 +161,15 @@ export class FocusManager extends FocusManagerBase {
             // back again.
             // Defer the work to avoid triggering sync layout.
             FocusManager._resetFocusTimer = setTimeout(() => {
+                FocusManager._resetFocusTimer = undefined;
                 const prevTabIndex = FocusManager._setTabIndex(document.body, 0);
+                const activeElement = document.activeElement;
                 document.body.focus();
                 document.body.blur();
                 FocusManager._setTabIndex(document.body, prevTabIndex);
+                if (activeElement instanceof HTMLElement) {
+                    activeElement.focus();
+                }
             }, 0);
         }
     }

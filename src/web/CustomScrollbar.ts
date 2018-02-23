@@ -513,6 +513,7 @@ export class Scrollbar {
 
         // Defer remaining init work to avoid triggering sync layout
         this._asyncInitTimer = window.setTimeout(() => {
+            this._asyncInitTimer = undefined;
             this._tryLtrOverride();
             this.update();
         }, 0);
