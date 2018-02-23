@@ -255,25 +255,39 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
     render() {
         let combinedStyles = Styles.combine([_styles.defaultStyle, this.props.style]) as any;
-        const ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
+        let ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
+        const tabIndex = this.props.tabIndex;
         const ariaSelected = AccessibilityUtil.accessibilityTraitToAriaSelected(this.props.accessibilityTraits);
         const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
+        const accessibilityLabel = this.props.accessibilityLabel;
+        const ariaLabelledBy = this.props.ariaLabelledBy;
+        const ariaRoleDescription = this.props.ariaRoleDescription;
         const ariaLive = this.props.accessibilityLiveRegion ?
             AccessibilityUtil.accessibilityLiveRegionToString(this.props.accessibilityLiveRegion) :
             undefined;
+        const ariaValueNow = this.props.ariaValueNow;
+
+        if (!ariaRole && !accessibilityLabel && !ariaLabelledBy && !ariaRoleDescription && !ariaLive &&
+                (ariaSelected === undefined) && (ariaValueNow === undefined) && (tabIndex === undefined)) {
+            // When the accessibility properties are not specified, set role to none.
+            // It tells the screen readers to skip the node, but unlike setting
+            // aria-hidden to true, allows the sub DOM to be processed further.
+            // This signigicantly improves the screen readers performance.
+            ariaRole = 'none';
+        }
 
         let props: React.HTMLAttributes<any> = {
             role: ariaRole,
-            tabIndex: this.props.tabIndex,
+            tabIndex: tabIndex,
             style: combinedStyles,
             title: this.props.title,
-            'aria-label': this.props.accessibilityLabel,
+            'aria-label': accessibilityLabel,
             'aria-hidden': isAriaHidden,
             'aria-selected': ariaSelected,
-            'aria-labelledby': this.props.ariaLabelledBy,
-            'aria-roledescription': this.props.ariaRoleDescription,
+            'aria-labelledby': ariaLabelledBy,
+            'aria-roledescription': ariaRoleDescription,
             'aria-live': ariaLive,
-            'aria-valuenow': this.props.ariaValueNow,
+            'aria-valuenow': ariaValueNow,
             onContextMenu: this.props.onContextMenu,
             onMouseEnter: this.props.onMouseEnter,
             onMouseLeave: this.props.onMouseLeave,
