@@ -350,7 +350,6 @@ export type ComponentBase = React.Component<any, any>;
 export interface CommonProps {
     ref?: string | ((obj: ComponentBase | null) => void);
     key?: string | number;
-    type?: any;
     children?: ReactNode | ReactNode[];
 }
 
