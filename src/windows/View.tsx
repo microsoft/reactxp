@@ -306,6 +306,10 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
     }
 
+    protected _isButton(viewProps: Types.ViewProps): boolean {
+        return super._isButton(viewProps) || !!viewProps.onContextMenu;
+    }
+
     private _onFocusableKeyDown = (e: React.SyntheticEvent<any>): void => {
 
         let keyEvent = EventHelpers.toKeyboardEvent(e);
