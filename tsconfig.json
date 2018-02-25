@@ -11,6 +11,7 @@
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "strictNullChecks": true,
+        "strictPropertyInitialization": true,
         "forceConsistentCasingInFileNames": true,
         "outDir": "dist/",
         "lib": [

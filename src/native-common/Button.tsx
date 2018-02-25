@@ -72,13 +72,14 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     private _mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount || noop;
     private _mixin_componentWillUnmount = RN.Touchable.Mixin.componentWillUnmount || noop;
 
-    touchableGetInitialState: () => RN.Touchable.State;
-    touchableHandleStartShouldSetResponder: () => boolean;
-    touchableHandleResponderTerminationRequest: () => boolean;
-    touchableHandleResponderGrant: (e: React.SyntheticEvent<any>) => void;
-    touchableHandleResponderMove: (e: React.SyntheticEvent<any>) => void;
-    touchableHandleResponderRelease: (e: React.SyntheticEvent<any>) => void;
-    touchableHandleResponderTerminate: (e: React.SyntheticEvent<any>) => void;
+    // These are provided by mixin applied in the constructor
+    touchableGetInitialState!: () => RN.Touchable.State;
+    touchableHandleStartShouldSetResponder!: () => boolean;
+    touchableHandleResponderTerminationRequest!: () => boolean;
+    touchableHandleResponderGrant!: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderMove!: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderRelease!: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderTerminate!: (e: React.SyntheticEvent<any>) => void;
 
     private _isMounted = false;
     protected _isMouseOver = false;

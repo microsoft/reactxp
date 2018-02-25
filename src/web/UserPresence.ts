@@ -29,8 +29,10 @@ export class UserPresence extends RX.UserPresence {
             ifvisible.on('idle', this._handleIdle.bind(this));
             ifvisible.on('focus', this._handleFocus.bind(this));
             ifvisible.on('blur', this._handleBlur.bind(this));
-            
+
             window.addEventListener('blur', this._handleWindowBlur.bind(this));
+        } else {
+            this._isPresent = false;
         }
     }
 

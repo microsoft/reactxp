@@ -117,7 +117,8 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         isRxParentAText: PropTypes.bool
     };
 
-    context: ImageContext;
+    // Provided by super, just re-typing here
+    context!: ImageContext;
 
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired

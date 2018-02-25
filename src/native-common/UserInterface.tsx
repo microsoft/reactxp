@@ -19,13 +19,13 @@ import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export class UserInterface extends RX.UserInterface {
-    private _touchLatencyThresholhdMs: number;
+    private _touchLatencyThresholhdMs: number|undefined;
 
     constructor() {
         super();
         RN.Dimensions.addEventListener('change', (event) => {
             this.contentSizeMultiplierChangedEvent.fire(event.window.fontScale);
-        });        
+        });
     }
 
     measureLayoutRelativeToWindow(component: React.Component<any, any>):

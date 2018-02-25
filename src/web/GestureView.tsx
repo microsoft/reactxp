@@ -46,23 +46,19 @@ let _idCounter = 1;
 
 export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
 
-    private _id: number;
+    private _id = _idCounter++;
 
-    private _container: HTMLElement;
+    private _container: HTMLElement|null|   undefined;
     // State for tracking double taps
     private _doubleTapTimer: number|undefined;
     private _lastTapEvent: React.MouseEvent<any>|undefined;
 
-    private _responder: MouseResponderSubscription;
+    private _responder: MouseResponderSubscription|undefined;
 
     // private _pendingGestureState: Types.PanGestureState = null;
     private _pendingGestureType = GestureType.None;
     private _gestureTypeLocked = false;
     private _skipNextTap = false;
-
-    componentWillMount() {
-        this._id = _idCounter++;
-    }
 
     componentWillUnmount() {
         // Dispose of timer before the component goes away.
@@ -88,12 +84,12 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
         );
     }
 
-    private _createMouseResponder() {
+    private _createMouseResponder(container: HTMLElement) {
         this._disposeMouseResponder();
 
         this._responder = MouseResponder.create({
             id: this._id,
-            target: this._container,
+            target: container,
             shouldBecomeFirstResponder: (event: MouseEvent) => {
                 if (!this.props.onPan && !this.props.onPanHorizontal && !this.props.onPanVertical) {
                     return false;
@@ -134,12 +130,12 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
         }
     }
 
-    private _setContainerRef = (container: any) => {
+    private _setContainerRef = (container: HTMLElement|null) => {
         // safe since div refs resolve into HTMLElement and not react element.
-        this._container = container as HTMLElement;
+        this._container = container;
 
         if (container) {
-            this._createMouseResponder();
+            this._createMouseResponder(container);
         } else {
             this._disposeMouseResponder();
         }

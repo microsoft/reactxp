@@ -61,7 +61,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         hasRxButtonAscendant: PropTypes.bool
     };
 
-    private _lastMouseDownEvent: Types.SyntheticEvent;
+    private _lastMouseDownEvent: Types.SyntheticEvent|undefined;
     private _ignoreClick = false;
     private _longPressTimer: number|undefined;
     private _isMouseOver = false;
@@ -184,10 +184,15 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
             this._lastMouseDownEvent = e;
             e.persist();
 
+            // In the unlikely event we get 2 mouse down events, clear existing timer
+            if (this._longPressTimer) {
+                window.clearTimeout(this._longPressTimer);
+            }
             this._longPressTimer = window.setTimeout(() => {
                 this._longPressTimer = undefined;
                 if (this.props.onLongPress) {
-                    this.props.onLongPress(this._lastMouseDownEvent);
+                    // lastMouseDownEvent can never be undefined at this point
+                    this.props.onLongPress(this._lastMouseDownEvent!!!);
                     this._ignoreClick = true;
                 }
             }, _longPressTime);

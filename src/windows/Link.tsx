@@ -32,7 +32,9 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool
     };
-    context: LinkContext;
+
+    // Will be assiged by super - just re-typing here
+    context!: LinkContext;
 
     private _focusableElement : RNW.FocusableWindows<RN.TextProps> | null = null;
 

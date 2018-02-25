@@ -159,9 +159,10 @@ export class Scrollbar {
     private _container: HTMLElement;
     private _verticalBar: IScrollbarInfo = {};
     private _horizontalBar: IScrollbarInfo = {};
-    private _viewport: HTMLElement;
+    // Viewport will always be initialized before it's used
+    private _viewport!: HTMLElement;
     private _dragging = false;
-    private _dragIsVertical: boolean;
+    private _dragIsVertical = false;
     private _scrollingVisible = false;
     private _hasHorizontal = false;
     private _hasVertical = true;
@@ -334,14 +335,14 @@ export class Scrollbar {
 
         if (this._hasVertical) {
             const eventOffsetY = e.pageY - target.getBoundingClientRect().top;
-            const halfHeight = this._verticalBar.slider!!!.offsetHeight / 2; 
+            const halfHeight = this._verticalBar.slider!!!.offsetHeight / 2;
             const offsetY = (eventOffsetY - this._verticalBar.slider!!!.offsetTop - halfHeight) * this._verticalBar.slider2Scroll!!!;
             this._viewport.scrollTop = offsetY + this._viewport.scrollTop;
         }
-        
+
         if (this._hasHorizontal) {
             const eventOffsetX = e.pageX - target.getBoundingClientRect().left;
-            const halfWidth = this._horizontalBar.slider!!!.offsetWidth / 2; 
+            const halfWidth = this._horizontalBar.slider!!!.offsetWidth / 2;
             const offsetX = (eventOffsetX - this._horizontalBar.slider!!!.offsetLeft - halfWidth) * this._horizontalBar.slider2Scroll!!!;
             this._viewport.scrollLeft = offsetX + this._viewport.scrollLeft;
         }

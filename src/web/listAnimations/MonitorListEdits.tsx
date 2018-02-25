@@ -143,10 +143,11 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}>
     } = {};
 
     private _isMounted = false;
-    private _childrenKeys: ChildKey[]; // Updated in componentWillUpdate
-    private _childrenMap: ChildrenMap; // Updated in componentWillUpdate
+    // These are assigned in component will mount - will get value before used
+    private _childrenKeys!: ChildKey[]; // Updated in componentWillUpdate
+    private _childrenMap!: ChildrenMap; // Updated in componentWillUpdate
     // Extracted to don't leak it, shouldn't be a problem as js is singlethreaded
-    private _childrenToRender: JSX.Element[];
+    private _childrenToRender!: JSX.Element[];
 
     private _phase: ComponentPhaseEnum = ComponentPhaseEnum.rest;
     private _willAnimatePhaseInfo: IWillAnimatePhaseInfo|undefined;

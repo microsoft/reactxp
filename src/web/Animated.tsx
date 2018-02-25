@@ -59,7 +59,7 @@ const animatedPropUnits: { [key: string]: string } = {
 
 // Every Animation subclass should extend this.
 export abstract class Animation {
-    _id: number;
+    _id: number|undefined;
 
     // Starts the animation
     abstract start(onEnd?: Types.Animated.EndCallback): void;
@@ -81,8 +81,8 @@ export interface ValueListener {
 export class Value extends Types.AnimatedValue {
     private _value: number|string;
     private _listeners: ValueListener[];
-    private _interpolationConfig: { [key: number]: string|number };
-    
+    private _interpolationConfig: { [key: number]: string|number } | undefined;
+
     // Initializes the object with the defaults and assigns the id for the animated value.
     constructor(value: number) {
         super(value);
@@ -100,6 +100,9 @@ export class Value extends Types.AnimatedValue {
     }
 
     _getInterpolatedValue(key: number): string|number {
+        if (!this._interpolationConfig) {
+            throw 'There is no interpolation config but one is required';
+        }
         return this._interpolationConfig[key];
     }
 
@@ -122,10 +125,11 @@ export class Value extends Types.AnimatedValue {
             }
         }
 
-        this._interpolationConfig = {};
+        const newInterpolationConfig: { [key: number]: string|number } = {};
         _.each(config.inputRange, (key, index) => {
-            this._interpolationConfig[key] = config.outputRange[index];
+            newInterpolationConfig[key] = config.outputRange[index];
         });
+        this._interpolationConfig = newInterpolationConfig;
 
         return this;
     }
@@ -179,7 +183,7 @@ export class Value extends Types.AnimatedValue {
 
             return;
         }
-        
+
         _.each(this._listeners, listener => {
             listener.startTransition(this, this._getValue(), toValue, duration, easing, delay, onEnd);
         });
@@ -355,13 +359,15 @@ type AnimatedValueMap = { [transform: string]: AnimatedAttribute };
 function createAnimatedComponent<PropsType extends Types.CommonProps>(Component: any): any {
     class AnimatedComponentGenerated extends React.Component<PropsType, void>
             implements RX.AnimatedComponent<PropsType, void>, ValueListener {
-                
+
         private _mountedComponent: any = null;
         private _propsWithoutStyle: any;
-        private _processedStyle: { [attribute: string]: string};
+        // Gets initialized via _updateStypes
+        private _processedStyle!: { [attribute: string]: string};
 
         private _animatedAttributes: AnimatedValueMap;
-        private _staticTransforms: { [transform: string]: string };
+        // Gets initialized via _updateStypes
+        private _staticTransforms!: { [transform: string]: string };
         private _animatedTransforms: AnimatedValueMap;
 
         constructor(props: PropsType) {
@@ -411,7 +417,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                 return;
             }
 
-            let updateTransition = false; 
+            let updateTransition = false;
 
             let attrib = this._findAnimatedAttributeByValue(this._animatedAttributes, valueObject);
             if (attrib) {
@@ -668,7 +674,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             // Update this._animatedAttributes and this._animatedTransforms so they match
             // the updated style.
 
-            // Remove any previous animated attributes that are no longer present 
+            // Remove any previous animated attributes that are no longer present
             // or associated with different value objects.
             _.each(this._animatedAttributes, (value, attrib) => {
                 if (!newAnimatedAttributes[attrib] || newAnimatedAttributes[attrib] !== value.valueObject) {
@@ -715,7 +721,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                     }
                 }
             });
-        
+
             // Update the transform attribute in this._processedStyle.
             let transformList = this._generateCssTransformList(true);
             if (transformList) {
@@ -806,7 +812,7 @@ export var createValue: (initialValue: number) => Value = function(initialValue:
     return new Value(initialValue);
 };
 
-export var interpolate: (value: Value, inputRange: number[], outputRange: string[]) => 
+export var interpolate: (value: Value, inputRange: number[], outputRange: string[]) =>
         Value = function(value: Value, inputRange: number[], outputRange: string[]) {
     return value.interpolate({ inputRange: inputRange, outputRange: outputRange });
 };

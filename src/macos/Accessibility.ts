@@ -22,7 +22,7 @@ const RetryTimeout = 3000; // 3 seconds
 export class Accessibility extends NativeAccessibility {
     // Queue of pending announcements.
     private _announcementQueue: string[] = [];
-    private _retryTimestamp: number;
+    private _retryTimestamp = NaN;
 
     constructor() {
         super();

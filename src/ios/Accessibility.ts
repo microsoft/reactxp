@@ -4,8 +4,8 @@
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
 *
-* An iOS variant of Accessibility that performs announcements by calling 
-* React Native announcement API for iOS. 
+* An iOS variant of Accessibility that performs announcements by calling
+* React Native announcement API for iOS.
 */
 
 import RN = require('react-native');
@@ -20,23 +20,23 @@ interface AnnouncementFinishedPayload {
 const RetryTimeout = 3000; // 3 seconds
 
 export class Accessibility extends NativeAccessibility {
-    // Queue of pending announcements. 
+    // Queue of pending announcements.
     private _announcementQueue: string[] = [];
-    private _retryTimestamp: number; 
+    private _retryTimestamp = NaN;
 
     constructor() {
         super();
 
         // Some versions of RN don't support this interface.
         if (RN.AccessibilityInfo) {
-            // Subscribe to an event to get notified when an announcement will finish.  
+            // Subscribe to an event to get notified when an announcement will finish.
             RN.AccessibilityInfo.addEventListener('announcementFinished', this._recalcAnnouncement);
         }
     }
 
     protected _updateScreenReaderStatus(isEnabled: boolean) {
         super._updateScreenReaderStatus(isEnabled);
-        // Empty announcement queue when screen reader is disabled. 
+        // Empty announcement queue when screen reader is disabled.
         if (!isEnabled && this._announcementQueue.length > 0) {
             this._announcementQueue = [];
         }
@@ -46,16 +46,16 @@ export class Accessibility extends NativeAccessibility {
         super.announceForAccessibility(announcement);
 
         // Update the queue only if screen reader is enabled. Else we won't receive a callback of
-        // announcement did finish and queued items will never be removed. 
+        // announcement did finish and queued items will never be removed.
         if (this._isScreenReaderEnabled) {
             this._announcementQueue.push(announcement);
-            // Post announcement if it's the only announcement in queue. 
+            // Post announcement if it's the only announcement in queue.
             if (this._announcementQueue.length === 1) {
                 this._postAnnouncement(announcement);
             }
         }
     }
-    
+
     private _postAnnouncement(announcement: string, resetTimestamp = true): void {
         if (resetTimestamp) {
             this._retryTimestamp = Date.now();
@@ -75,12 +75,12 @@ export class Accessibility extends NativeAccessibility {
         const postedAnnouncement = this._announcementQueue[0];
         // Handle retries if it's the announcement we posted. Drop other announcements.
         if (payload.announcement === postedAnnouncement) {
-            const timeElapsed = Date.now() - this._retryTimestamp; 
+            const timeElapsed = Date.now() - this._retryTimestamp;
 
             if (!payload.success && timeElapsed < RetryTimeout) {
                 this._postAnnouncement(payload.announcement, false);
             } else {
-                // Successfully announced or timed out. Schedule next announcement. 
+                // Successfully announced or timed out. Schedule next announcement.
                 this._announcementQueue.shift();
                 if (this._announcementQueue.length > 0) {
                     const nextAnnouncement = this._announcementQueue[0];

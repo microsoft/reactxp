@@ -40,7 +40,7 @@ const _defaultImportantForAccessibility = Types.ImportantForAccessibility.Yes;
 
 export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     private _panResponder: RN.PanResponderInstance;
-    private _doubleTapTimer: any = null;
+    private _doubleTapTimer: number | undefined;
 
     // State for tracking move gestures (pinch/zoom or pan)
     private _pendingGestureType: GestureType = GestureType.None;
@@ -55,21 +55,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     constructor(props: Types.GestureViewProps) {
         super(props);
 
-        this._setUpPanResponder();
-    }
-
-    componentWillUnmount() {
-        // Dispose of timer before the component goes away.
-        this._cancelDoubleTapTimer();
-    }
-
-    // Get preferred pan ratio for platform.
-    protected abstract _getPreferredPanRatio(): number;
-
-    // Returns the timestamp for the touch event in milliseconds.
-    protected abstract _getEventTimestamp(e: Types.TouchEvent): number;
-
-    private _setUpPanResponder(): void {
+        // Setup Pan Responder
         this._panResponder = RN.PanResponder.create({
             onStartShouldSetPanResponder: (e, gestureState) => {
                 const event = (e as any).nativeEvent as Types.TouchEvent;
@@ -126,7 +112,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
                     this._pendingGestureType = this._detectMoveGesture(event, gestureState);
                     initializeFromEvent = true;
                 }
-                
+
                 if (this._pendingGestureType === GestureType.MultiTouch) {
                     this._setPendingGestureState(this._sendMultiTouchEvents(event, gestureState,
                         initializeFromEvent, false));
@@ -143,6 +129,17 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
             onPanResponderTerminationRequest: (e, gestureState) => this.props.releaseOnRequest
         });
     }
+
+    componentWillUnmount() {
+        // Dispose of timer before the component goes away.
+        this._cancelDoubleTapTimer();
+    }
+
+    // Get preferred pan ratio for platform.
+    protected abstract _getPreferredPanRatio(): number;
+
+    // Returns the timestamp for the touch event in milliseconds.
+    protected abstract _getEventTimestamp(e: Types.TouchEvent): number;
 
     private _onPanResponderEnd(e: RN.GestureResponderEvent, gestureState: RN.PanResponderGestureState) {
         const event = (e as any).nativeEvent as Types.TouchEvent;
@@ -239,7 +236,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
 
         this._doubleTapTimer = setTimeout(() => {
             this._reportDelayedTap();
-            this._doubleTapTimer = null;
+            this._doubleTapTimer = undefined;
         }, _doubleTapDurationThreshold);
     }
 
@@ -247,7 +244,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     private _cancelDoubleTapTimer() {
         if (this._doubleTapTimer) {
             clearTimeout(this._doubleTapTimer);
-            this._doubleTapTimer = null;
+            this._doubleTapTimer = undefined;
         }
     }
 
@@ -446,17 +443,17 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
 
         assert.ok(this._lastGestureStartEvent, 'Gesture start event must not be null.');
 
-        let initialPageX = this._lastGestureStartEvent 
-            ? this._lastGestureStartEvent.pageX!!! 
+        let initialPageX = this._lastGestureStartEvent
+            ? this._lastGestureStartEvent.pageX!!!
             : initializeFromEvent ? pageX : state.initialPageX;
-        let initialPageY = this._lastGestureStartEvent 
-            ? this._lastGestureStartEvent.pageY!!! 
+        let initialPageY = this._lastGestureStartEvent
+            ? this._lastGestureStartEvent.pageY!!!
             : initializeFromEvent ? pageY : state.initialPageY;
-        let initialClientX = this._lastGestureStartEvent 
+        let initialClientX = this._lastGestureStartEvent
             ? this._lastGestureStartEvent.locationX!!!
             : initializeFromEvent ? clientX : state.initialClientX;
-        let initialClientY = this._lastGestureStartEvent 
-            ? this._lastGestureStartEvent.locationY!!! 
+        let initialClientY = this._lastGestureStartEvent
+            ? this._lastGestureStartEvent.locationY!!!
             : initializeFromEvent ? clientY : state.initialClientY;
 
         let velocityX = initializeFromEvent ? 0 : gestureState.vx;
