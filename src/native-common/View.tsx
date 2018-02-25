@@ -119,16 +119,17 @@ function _childrenEdited(prevChildrenKeys: ChildKey[], nextChildrenKeys: ChildKe
 export class View extends ViewBase<Types.ViewProps, {}> {
     protected _internalProps: any = {};
 
-    touchableGetInitialState: () => RN.Touchable.State;
-    touchableHandleStartShouldSetResponder: () => boolean;
-    touchableHandleResponderTerminationRequest: () => boolean;
-    touchableHandleResponderGrant: (e: React.SyntheticEvent<any>) => void;
-    touchableHandleResponderMove: (e: React.SyntheticEvent<any>) => void;
-    touchableHandleResponderRelease: (e: React.SyntheticEvent<any>) => void;
-    touchableHandleResponderTerminate: (e: React.SyntheticEvent<any>) => void;
+    // Assigned when mixin is applied
+    touchableGetInitialState!: () => RN.Touchable.State;
+    touchableHandleStartShouldSetResponder!: () => boolean;
+    touchableHandleResponderTerminationRequest!: () => boolean;
+    touchableHandleResponderGrant!: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderMove!: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderRelease!: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderTerminate!: (e: React.SyntheticEvent<any>) => void;
 
     private _mixinIsApplied = false;
-    private _childrenKeys: ChildKey[];
+    private _childrenKeys: ChildKey[]|undefined;
 
     private _mixin_componentDidMount?: () => void;
     private _mixin_componentWillUnmount?: () => void;
@@ -178,7 +179,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             ' Only callback refs are supported when using child animations on a `View`'
         );
 
-        let prevChildrenKeys = this._childrenKeys;
+        let prevChildrenKeys = this._childrenKeys || [];
         let nextChildrenKeys = extractChildrenKeys(nextProps.children);
         this._childrenKeys = nextChildrenKeys;
         if (_childrenEdited(prevChildrenKeys, nextChildrenKeys)) {

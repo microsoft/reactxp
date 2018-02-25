@@ -37,23 +37,24 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         isRxParentAText: PropTypes.bool,
         focusManager: PropTypes.object
     };
-    context: ViewContext;
+    // Context is provided by super - just re-typing here
+    context!: ViewContext;
 
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired,
         focusManager: PropTypes.object
     };
 
-    private _onKeyDown: (e: React.SyntheticEvent<any>) => void;
-    private _onMouseEnter: (e: React.SyntheticEvent<any>) => void;
-    private _onMouseLeave: (e: React.SyntheticEvent<any>) => void;
-    private _onMouseOver: (e: React.SyntheticEvent<any>) => void;
-    private _onMouseMove: (e: React.SyntheticEvent<any>) => void;
+    private _onKeyDown: ((e: React.SyntheticEvent<any>) => void) | undefined;
+    private _onMouseEnter: ((e: React.SyntheticEvent<any>) => void) | undefined;
+    private _onMouseLeave: ((e: React.SyntheticEvent<any>) => void) | undefined;
+    private _onMouseOver: ((e: React.SyntheticEvent<any>) => void) | undefined;
+    private _onMouseMove: ((e: React.SyntheticEvent<any>) => void) | undefined;
 
     private _focusableElement : RNW.FocusableWindows<RN.ViewProps> | null = null;
 
-    private _focusManager: FocusManager;
-    private _isFocusLimited: boolean;
+    private _focusManager: FocusManager|undefined;
+    private _isFocusLimited = false;
 
     constructor(props: Types.ViewProps, context: ViewContext) {
         super(props);
@@ -222,7 +223,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
             let PotentiallyAnimatedFocusableView = this._isButton(this.props) ? FocusableAnimatedView : FocusableView;
             return (
-                <PotentiallyAnimatedFocusableView 
+                <PotentiallyAnimatedFocusableView
                     { ...focusableViewProps }
                 />
             );

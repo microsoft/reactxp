@@ -53,7 +53,7 @@ export abstract class FocusManager {
     protected static _resetFocusTimer: number | undefined;
 
     private _parent: FocusManager|undefined;
-    private _isFocusLimited: boolean;
+    private _isFocusLimited = false;
     private _prevFocusedComponent: StoredFocusableComponent|undefined;
     private _myFocusableComponentIds: { [id: string]: boolean } = {};
 

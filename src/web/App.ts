@@ -39,6 +39,8 @@ export class App extends RX.App {
                     this.activationStateChangedEvent.fire(this._activationState);
                 }
             });
+        } else {
+            this._activationState = Types.AppActivationState.Active;
         }
     }
 

@@ -77,15 +77,16 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         isRxParentAText: PropTypes.bool,
         focusManager: PropTypes.object
     };
-    context: ViewContext;
+    // Context is provided by super - just re-typing here
+    context!: ViewContext;
 
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired,
         focusManager: PropTypes.object
     };
 
-    private _focusManager: FocusManager;
-    private _isFocusLimited: boolean;
+    private _focusManager: FocusManager|undefined;
+    private _isFocusLimited = false;
 
     private _resizeDetectorAnimationFrame: number|undefined;
     private _resizeDetectorNodes: { grow?: HTMLElement, shrink?: HTMLElement } = {};

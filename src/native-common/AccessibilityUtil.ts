@@ -56,15 +56,15 @@ const componentTypeMap: { [key: string]: string } = {
 };
 
 export class AccessibilityUtil extends CommonAccessibilityUtil {
-    // Handle to accessibility platform helper instance that gets initialized during ReactXP initialization using the setter. 
-    private _instance: AccessibilityPlatformUtil;
+    // Handle to accessibility platform helper instance that gets initialized during ReactXP initialization using the setter.
+    private _instance!: AccessibilityPlatformUtil;
 
     setAccessibilityPlatformUtil(instance: AccessibilityPlatformUtil) {
-        this._instance = instance; 
+        this._instance = instance;
     }
 
-    // Converts an AccessibilityTrait to a string, but the returned value is only needed for iOS and UWP. Other platforms ignore it. 
-    // Presence of an AccessibilityTrait.None can make an element non-accessible on Android. 
+    // Converts an AccessibilityTrait to a string, but the returned value is only needed for iOS and UWP. Other platforms ignore it.
+    // Presence of an AccessibilityTrait.None can make an element non-accessible on Android.
     // We use the override traits if they are present, else use the default trait.
     // If ensureDefaultTrait is true, ensure the return result contains the defaultTrait.
     accessibilityTraitToString(overrideTraits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined,
@@ -110,7 +110,7 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
         return undefined;
     }
 
-    // Platform specific accessibility APIs. 
+    // Platform specific accessibility APIs.
     setAccessibilityFocus(component: React.Component<any, any>): void {
         this._instance.setAccessibilityFocus(component);
     }
