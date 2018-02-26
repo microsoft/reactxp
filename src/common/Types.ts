@@ -567,6 +567,11 @@ export interface AnimatedTextProps extends TextPropsShared {
 
 export type ViewLayerType = 'none' | 'software' | 'hardware';
 
+// When limitFocusWithin=true, the focusable components inside the View get
+// both tabIndex=-1 and aria-hidden=true, when limitFocusWithin='accessible' the
+// components only get tabIndex=-1
+export type LimitFocusType = false | true | 'accessible';
+
 // View
 export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     title?: string;
@@ -576,7 +581,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     viewLayerTypeAndroid?: ViewLayerType; // Android only property
 
     restrictFocusWithin?: boolean; // Web-only, during the keyboard navigation, the focus will not go outside this view
-    limitFocusWithin?: boolean; // Web-only, make the view and all focusable subelements not focusable when isFocusLimited state is true
+    limitFocusWithin?: LimitFocusType; // Web-only, make the view and all focusable subelements not focusable
 
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
     id?: string; // Web-only. Needed for accessibility.

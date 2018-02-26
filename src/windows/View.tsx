@@ -71,10 +71,11 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         super.componentWillReceiveProps(nextProps);
 
         if (AppConfig.isDevelopmentMode()) {
-            if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
+            if (this.props.restrictFocusWithin !== nextProps.restrictFocusWithin) {
                 console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
             }
-            if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
+
+            if (this.props.limitFocusWithin !== nextProps.limitFocusWithin) {
                 console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
             }
         }
@@ -88,7 +89,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             }
 
             if (this.props.limitFocusWithin && this._isFocusLimited) {
-                this._focusManager.limitFocusWithin();
+                this._focusManager.limitFocusWithin(this.props.limitFocusWithin);
             }
         }
     }
@@ -222,7 +223,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
             let PotentiallyAnimatedFocusableView = this._isButton(this.props) ? FocusableAnimatedView : FocusableView;
             return (
-                <PotentiallyAnimatedFocusableView 
+                <PotentiallyAnimatedFocusableView
                     { ...focusableViewProps }
                 />
             );
@@ -290,7 +291,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
         if (limited && !this._isFocusLimited) {
             this._isFocusLimited = true;
-            this._focusManager.limitFocusWithin();
+            this._focusManager.limitFocusWithin(this.props.limitFocusWithin);
         } else if (!limited && this._isFocusLimited) {
             this._isFocusLimited = false;
             this._focusManager.removeFocusLimitation();
