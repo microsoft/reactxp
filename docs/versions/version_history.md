@@ -16,6 +16,11 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.51.10 of reactxp
+_Released 26 Feb 2018_
+
+Ability to set limitFocusWithin without automatically setting aria-hidden=true. (#518)
+
 #### Version 0.51.9 of reactxp
 _Released 20 Feb 2018_
 
