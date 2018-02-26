@@ -11,6 +11,7 @@ import React = require('react');
 import PropTypes = require('prop-types');
 
 import AppConfig from '../../common/AppConfig';
+import Types = require('../../common/Types');
 
 let _lastComponentId: number = 0;
 
@@ -27,15 +28,13 @@ export interface StoredFocusableComponent {
     onFocus: () => void;
     restricted: boolean;
     limitedCount: number;
+    limitedCountAccessible: number;
     origTabIndex?: number;
     origAriaHidden?: string;
+    curTabIndex?: number;
+    curAriaHidden?: boolean;
     removed?: boolean;
     callbacks?: FocusableComponentStateCallback[];
-}
-
-export interface OriginalAttributeValues {
-    tabIndex: number|undefined;
-    ariaHidden: string|undefined;
 }
 
 export type FocusableComponentStateCallback = (restrictedOrLimited: boolean) => void;
@@ -53,7 +52,7 @@ export abstract class FocusManager {
     protected static _resetFocusTimer: number | undefined;
 
     private _parent: FocusManager|undefined;
-    private _isFocusLimited = false;
+    private _isFocusLimited: Types.LimitFocusType = Types.LimitFocusType.Unlimited;
     private _prevFocusedComponent: StoredFocusableComponent|undefined;
     private _myFocusableComponentIds: { [id: string]: boolean } = {};
 
@@ -93,6 +92,7 @@ export abstract class FocusManager {
             component: component,
             restricted: false,
             limitedCount: 0,
+            limitedCountAccessible: 0,
             onFocus: () => {
                 FocusManager._currentFocusedComponent = storedComponent;
             }
@@ -110,7 +110,9 @@ export abstract class FocusManager {
                 withinRestrictionOwner = true;
             }
 
-            if (parent._isFocusLimited) {
+            if (parent._isFocusLimited === Types.LimitFocusType.Accessible) {
+                storedComponent.limitedCountAccessible++;
+            } else if (parent._isFocusLimited === Types.LimitFocusType.Limited) {
                 storedComponent.limitedCount++;
             }
         }
@@ -138,6 +140,7 @@ export abstract class FocusManager {
             storedComponent.removed = true;
             storedComponent.restricted = false;
             storedComponent.limitedCount = 0;
+            storedComponent.limitedCountAccessible = 0;
 
             this._updateComponentFocusRestriction(storedComponent);
 
@@ -226,8 +229,11 @@ export abstract class FocusManager {
                     needsFocusReset = false;
                 }
 
-                if (prevFocusedComponent && !prevFocusedComponent.removed &&
-                        !prevFocusedComponent.restricted && !prevFocusedComponent.limitedCount) {
+                if (prevFocusedComponent &&
+                    !prevFocusedComponent.removed &&
+                    !prevFocusedComponent.restricted &&
+                    prevFocusedComponent.limitedCount === 0 &&
+                    prevFocusedComponent.limitedCountAccessible === 0) {
                     // If possible, focus the previously focused component.
                     needsFocusReset = !this.focusComponent(prevFocusedComponent.component);
                 }
@@ -243,32 +249,46 @@ export abstract class FocusManager {
         }
     }
 
-    limitFocusWithin() {
-        if (this._isFocusLimited) {
+    limitFocusWithin(limitType: Types.LimitFocusType) {
+        if (this._isFocusLimited !== Types.LimitFocusType.Unlimited ||
+            (limitType !== Types.LimitFocusType.Limited &&
+             limitType !== Types.LimitFocusType.Accessible)) {
             return;
         }
 
-        this._isFocusLimited = true;
+        this._isFocusLimited = limitType;
 
         Object.keys(this._myFocusableComponentIds).forEach(componentId => {
             let storedComponent = FocusManager._allFocusableComponents[componentId];
-            storedComponent.limitedCount++;
+
+            if (limitType === Types.LimitFocusType.Accessible) {
+                storedComponent.limitedCountAccessible++;
+            } else if (limitType === Types.LimitFocusType.Limited) {
+                storedComponent.limitedCount++;
+            }
+
             this._updateComponentFocusRestriction(storedComponent);
         });
     }
 
     removeFocusLimitation() {
-        if (!this._isFocusLimited) {
+        if (this._isFocusLimited === Types.LimitFocusType.Unlimited) {
             return;
         }
 
         Object.keys(this._myFocusableComponentIds).forEach(componentId => {
             let storedComponent = FocusManager._allFocusableComponents[componentId];
-            storedComponent.limitedCount--;
+
+            if (this._isFocusLimited === Types.LimitFocusType.Accessible) {
+                storedComponent.limitedCountAccessible--;
+            } else if (this._isFocusLimited === Types.LimitFocusType.Limited) {
+                storedComponent.limitedCount--;
+            }
+
             this._updateComponentFocusRestriction(storedComponent);
         });
 
-        this._isFocusLimited = false;
+        this._isFocusLimited = Types.LimitFocusType.Unlimited;
     }
 
     release() {
@@ -300,7 +320,8 @@ export abstract class FocusManager {
 
     isComponentFocusRestrictedOrLimited(component: FocusableComponentInternal): boolean {
         const storedComponent = FocusManager._getStoredComponent(component);
-        return !!storedComponent && (storedComponent.restricted || storedComponent.limitedCount > 0);
+        return !!storedComponent &&
+            (storedComponent.restricted || storedComponent.limitedCount > 0 || storedComponent.limitedCountAccessible > 0);
     }
 
     static getCurrentFocusedComponent(): string | undefined {
