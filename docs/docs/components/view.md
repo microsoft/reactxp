@@ -62,7 +62,7 @@ ignorePointerEvents: boolean = false; // web only
 // setFocusRestricted() below.
 // WARNING: For the sake of performance, this property is readonly and
 // changing it during the View life cycle will produce an error.
-restrictFocusWithin?: boolean = false; // web only
+restrictFocusWithin: boolean = false;
 
 // When the keyboard navigation is happening, do not focus on this view
 // and on all focusable elements inside this view. See also the companion
@@ -77,7 +77,7 @@ restrictFocusWithin?: boolean = false; // web only
 // components inside the View get only tabIndex=-1.
 // WARNING: For the sake of performance, this property is readonly and
 // changing it during the View life cycle will produce an error.
-limitFocusWithin?: LimitFocusType = LimitFocusType.Unlimited; // web only
+limitFocusWithin: LimitFocusType = LimitFocusType.Unlimited;
 
 // Additional invisible DOM elements will be added inside the view
 // to track the size changes that are performed behind our back by
