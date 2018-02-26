@@ -62,7 +62,7 @@ ignorePointerEvents: boolean = false; // web only
 // setFocusRestricted() below.
 // WARNING: For the sake of performance, this property is readonly and
 // changing it during the View life cycle will produce an error.
-restrictFocusWithin: boolean = false; // web only
+restrictFocusWithin?: boolean = false; // web only
 
 // When the keyboard navigation is happening, do not focus on this view
 // and on all focusable elements inside this view. See also the companion
@@ -71,9 +71,13 @@ restrictFocusWithin: boolean = false; // web only
 // one list item (and item's internal focusable elements) after another
 // using the Tab key and implement the switching between the items using
 // the arrow keys (or using some other behaviour).
+// When limitFocusWithin=LimitFocusType.Limited, the View and the focusable
+// components inside the View get both tabIndex=-1 and aria-hidden=true.
+// When limitFocusWithin=LimitFocusType.Accessible, the View and the focusable
+// components inside the View get only tabIndex=-1.
 // WARNING: For the sake of performance, this property is readonly and
 // changing it during the View life cycle will produce an error.
-limitFocusWithin: boolean = false; // web only
+limitFocusWithin?: LimitFocusType = LimitFocusType.Unlimited; // web only
 
 // Additional invisible DOM elements will be added inside the view
 // to track the size changes that are performed behind our back by

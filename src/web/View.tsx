@@ -86,6 +86,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     };
 
     private _focusManager: FocusManager|undefined;
+    private _limitFocusWithin = false;
     private _isFocusLimited = false;
 
     private _resizeDetectorAnimationFrame: number|undefined;
@@ -94,10 +95,14 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     constructor(props: Types.ViewProps, context: ViewContext) {
         super(props, context);
 
-        if (props.restrictFocusWithin || props.limitFocusWithin) {
+        this._limitFocusWithin =
+            (props.limitFocusWithin === Types.LimitFocusType.Limited) ||
+            (props.limitFocusWithin === Types.LimitFocusType.Accessible);
+
+        if (props.restrictFocusWithin || this._limitFocusWithin) {
             this._focusManager = new FocusManager(context && context.focusManager);
 
-            if (props.limitFocusWithin) {
+            if (this._limitFocusWithin) {
                 this.setFocusLimited(true);
             }
         }
@@ -238,16 +243,16 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     }
 
     setFocusLimited(limited: boolean) {
-        if (!this._focusManager || !this.props.limitFocusWithin) {
+        if (!this._focusManager || !this._limitFocusWithin) {
             if (AppConfig.isDevelopmentMode()) {
-                console.error('View: setFocusLimited method requires limitFocusWithin property to be set to true');
+                console.error('View: setFocusLimited method requires limitFocusWithin property to be set');
             }
             return;
         }
 
         if (limited && !this._isFocusLimited) {
             this._isFocusLimited = true;
-            this._focusManager.limitFocusWithin();
+            this._focusManager.limitFocusWithin(this.props.limitFocusWithin!!!);
         } else if (!limited && this._isFocusLimited) {
             this._isFocusLimited = false;
             this._focusManager.removeFocusLimitation();
@@ -341,10 +346,10 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         super.componentWillReceiveProps(nextProps);
 
         if (AppConfig.isDevelopmentMode()) {
-            if (!!this.props.restrictFocusWithin !== !!nextProps.restrictFocusWithin) {
+            if (this.props.restrictFocusWithin !== nextProps.restrictFocusWithin) {
                 console.error('View: restrictFocusWithin is readonly and changing it during the component life cycle has no effect');
             }
-            if (!!this.props.limitFocusWithin !== !!nextProps.limitFocusWithin) {
+            if (this.props.limitFocusWithin !== nextProps.limitFocusWithin) {
                 console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
             }
         }
@@ -358,8 +363,8 @@ export class View extends ViewBase<Types.ViewProps, {}> {
                 this._focusManager.restrictFocusWithin();
             }
 
-            if (this.props.limitFocusWithin && this._isFocusLimited) {
-                this._focusManager.limitFocusWithin();
+            if (this._limitFocusWithin && this._isFocusLimited) {
+                this._focusManager.limitFocusWithin(this.props.limitFocusWithin!!!);
             }
         }
     }

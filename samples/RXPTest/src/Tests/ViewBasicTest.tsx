@@ -201,7 +201,7 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
 // blockPointerEvents: boolean = false; // iOS and Android only
 // ignorePointerEvents: boolean = false; // web only
 // restrictFocusWithin: boolean = false; // web only
-// limitFocusWithin: boolean = false; // web only
+// limitFocusWithin: LimitFocusType = LimitFocusType.Unlimited; // web only
 // importantForLayout: boolean = false; // web only
 // onDragEnter: (e: DragEvent) => void = undefined;
 // onDragOver: (e: DragEvent) => void = undefined;
