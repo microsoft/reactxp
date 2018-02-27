@@ -31,7 +31,7 @@ import GestureViewImpl from './GestureView';
 import InputImpl from '../native-desktop/Input';
 import InternationalImpl from '../native-common/International';
 import LinkImpl from './Link';
-import LinkingImpl from './Linking';
+import LinkingImpl from '../native-common/Linking';
 import LocationImpl from '../common/Location';
 import ModalImpl from '../native-common/Modal';
 import NetworkImpl from '../native-common/Network';
