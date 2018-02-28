@@ -1,6 +1,6 @@
 {
   "name": "reactxp",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-rc.1",
   "description": "Cross-platform abstraction layer for writing React-based applications a single time that work identically across web, React Native, and Electron distribution",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",

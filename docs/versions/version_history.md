@@ -16,6 +16,21 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.0.0-rc.1 of reactxp
+_Released 28 Feb 2018_
+
+Improved accessibility handling for Button.
+Added select<T>() method to RX.Platform namespace to make it easier to implement platform-specific behavior.
+Improved accessibility performance.
+Improved performance by avoiding triggering synchronous layout on web.
+Fixed behavior of onContextMenu.
+Removed unused "type" field from RX.CommonProps interface.
+Updated typescript compiler to 2.7.2 and enabled strictPropertyInitialization.
+Added ability to set limitFocusWithin without automatically setting aria-hidden=true on web.
+Implemented RX.Linking APIs for Windows UWP platform.
+Removed "currentTarget" from SyntheticEvent.
+Added coordinates/modifiers/button information to MouseEvent definition.
+
 #### Version 1.0.0-alpha.2 of reactxp
 _Released 21 Feb 2018_
 

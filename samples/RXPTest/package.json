@@ -20,7 +20,7 @@
     "tslint": "5.8.0",
     "tslint-microsoft-contrib": "5.0.0",
     "ts-node": "^3.2.1",
-    "typescript": "2.6.2",
+    "typescript": "2.7.2",
     "webpack": "2.2.1"
   },
   "dependencies": {
@@ -28,6 +28,6 @@
     "react-dom": "16.2.0",
     "react-native": "^0.53.3",
     "react-native-windows": "^0.51.0-rc.1",
-    "reactxp": "1.0.0-alpha.2"
+    "reactxp": "1.0.0-rc.1"
   }
 }
