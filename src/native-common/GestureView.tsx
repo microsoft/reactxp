@@ -337,7 +337,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    private _calcAngle(touches: React.TouchList): number {
+    private _calcAngle(touches: Types.TouchList): number {
         const a = touches[0];
         const b = touches[1];
 

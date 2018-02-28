@@ -1130,24 +1130,35 @@ export type SyntheticEvent = {
     readonly cancelable: boolean;
     readonly defaultPrevented: boolean;
     readonly timeStamp: number;
-    readonly currentTarget: EventTarget;
     readonly nativeEvent: any; // Platform-specific
     preventDefault(): void;
     stopPropagation(): void;
 };
+
 export interface ClipboardEvent extends SyntheticEvent {
     clipboardData: DataTransfer;
 }
+
 export type FocusEvent = SyntheticEvent;
-export type FormEvent = SyntheticEvent;
-export type MouseEvent = SyntheticEvent;
+
+export interface MouseEvent extends SyntheticEvent {
+    altKey: boolean;
+    button: number;
+    clientX: number;
+    clientY: number;
+    ctrlKey: boolean;
+    metaKey: boolean;
+    shiftKey: boolean;
+    pageX?: number;
+    pageY?: number;
+}
+
 export interface DragEvent extends MouseEvent {
     dataTransfer: DataTransfer;
 }
 
 export interface Touch {
     identifier: number;
-    target: EventTarget;
     locationX: number;
     locationY: number;
     screenX: number;
@@ -1171,7 +1182,6 @@ export interface TouchEvent extends SyntheticEvent {
     altKey: boolean;
     changedTouches: TouchList;
     ctrlKey: boolean;
-    getModifierState(key: string): boolean;
     metaKey: boolean;
     shiftKey: boolean;
     targetTouches: TouchList;
@@ -1181,6 +1191,7 @@ export interface TouchEvent extends SyntheticEvent {
     pageY?: number;
     touches: TouchList;
 }
+
 export interface WheelEvent extends SyntheticEvent {
     deltaMode: number;
     deltaX: number;

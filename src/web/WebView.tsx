@@ -122,7 +122,6 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> imple
                     bubbles: e.bubbles,
                     cancelable: e.cancelable,
                     defaultPrevented: e.defaultPrevented,
-                    currentTarget: e.currentTarget,
                     __propagationStopped: false,
                     stopPropagation: () => {
                         e.stopPropagation();
