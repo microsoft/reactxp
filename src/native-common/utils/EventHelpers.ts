@@ -91,23 +91,25 @@ export class EventHelpers {
                 }
             }
 
-            // We need to add keyCode to the original event, but React Native
+            // We need to add keyCode and other properties to the original event, but React Native
             // reuses events, so we're not allowed to modify the original.
             // Instead, we'll clone it.
             keyEvent = _.clone(keyEvent);
             keyEvent.keyCode = keyCode;
 
-            if ((e.nativeEvent as any).shiftKey) {
-                keyEvent.shiftKey = (e.nativeEvent as any).shiftKey;
+            const nativeEvent = e.nativeEvent;
+
+            if (nativeEvent.shiftKey) {
+                keyEvent.shiftKey = nativeEvent.shiftKey;
             }
-            if ((e.nativeEvent as any).ctrlKey) {
-                keyEvent.ctrlKey = (e.nativeEvent as any).ctrlKey;
+            if (nativeEvent.ctrlKey) {
+                keyEvent.ctrlKey = nativeEvent.ctrlKey;
             }
-            if ((e.nativeEvent as any).altKey) {
-                keyEvent.altKey = (e.nativeEvent as any).altKey;
+            if (nativeEvent.altKey) {
+                keyEvent.altKey = nativeEvent.altKey;
             }
-            if ((e.nativeEvent as any).metaKey) {
-                keyEvent.metaKey = (e.nativeEvent as any).metaKey;
+            if (nativeEvent.metaKey) {
+                keyEvent.metaKey = nativeEvent.metaKey;
             }
 
             keyEvent.stopPropagation = () => {
@@ -134,8 +136,57 @@ export class EventHelpers {
 
     toMouseEvent(e: Types.SyntheticEvent): Types.MouseEvent {
 
-        // Nothing for now, this will have to be enhanced based on platform support.
-        return e as Types.MouseEvent;
+        // We need to add various properties to the original event, but React Native
+        // reuses events, so we're not allowed to modify the original.
+        // Instead, we'll clone it.
+        let mouseEvent = _.clone(e as Types.MouseEvent);
+        
+        const nativeEvent = e.nativeEvent;
+
+        // We keep pageX/Y and clientX/Y in coordinates in sync, similar to the React web behavior
+        // RN (UWP flavor for this type of event) also pass coordinates in the target view (locationX/Y) that we don't use here.
+        if (nativeEvent.pageX !== undefined) {
+            mouseEvent.clientX = mouseEvent.pageX = nativeEvent.pageX;
+        }
+
+        if (nativeEvent.pageY !== undefined) {
+            mouseEvent.clientY = mouseEvent.pageY = nativeEvent.pageY;
+        }
+
+        if (!!nativeEvent.IsRightButton) {
+            mouseEvent.button = 2;
+        } else if (!!nativeEvent.IsMiddleButton) {
+            mouseEvent.button = 1;
+        } else {
+            mouseEvent.button = 0;
+        }
+
+        if (nativeEvent.shiftKey) {
+            mouseEvent.shiftKey = nativeEvent.shiftKey;
+        }
+        if (nativeEvent.ctrlKey) {
+            mouseEvent.ctrlKey = nativeEvent.ctrlKey;
+        }
+        if (nativeEvent.altKey) {
+            mouseEvent.altKey = nativeEvent.altKey;
+        }
+        if (nativeEvent.metaKey) {
+            mouseEvent.metaKey = nativeEvent.metaKey;
+        }
+
+        mouseEvent.stopPropagation = () => {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+        };
+
+        mouseEvent.preventDefault = () => {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+        };
+
+        return mouseEvent;
     }
 
     isRightMouseButton(e: Types.SyntheticEvent): boolean {
