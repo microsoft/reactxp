@@ -63,17 +63,27 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
         this._instance = instance;
     }
 
-    // Converts an AccessibilityTrait to a string, but the returned value is only needed for iOS. Other platforms ignore it. Presence
-    // of an AccessibilityTrait.None can make an element non-accessible on Android. We use the override traits if they are present, else
-    // use the deafult trait.
+    // Converts an AccessibilityTrait to a string, but the returned value is only needed for iOS and UWP. Other platforms ignore it. 
+    // Presence of an AccessibilityTrait.None can make an element non-accessible on Android. 
+    // We use the override traits if they are present, else use the default trait.
+    // If ensureDefaultTrait is true, ensure the return result contains the defaultTrait.
     accessibilityTraitToString(overrideTraits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined,
-        defaultTrait?: Types.AccessibilityTrait): string[] {
+        defaultTrait?: Types.AccessibilityTrait, ensureDefaultTrait?: boolean): string[] {
         // Check if there are valid override traits. Use them or else fallback to default traits.
         if (!overrideTraits && !defaultTrait) {
             return [];
         }
 
-        const traits = _.isArray(overrideTraits) ? overrideTraits : [overrideTraits || defaultTrait];
+        let traits : (Types.AccessibilityTrait | undefined)[];
+        if (defaultTrait && ensureDefaultTrait) {
+            if (_.isArray(overrideTraits)) {
+                traits = overrideTraits.indexOf(defaultTrait) === -1 ? overrideTraits.concat([defaultTrait]) : overrideTraits;
+            } else {
+                traits = overrideTraits === defaultTrait ? [overrideTraits] : [overrideTraits, defaultTrait];
+            }
+        } else {
+            traits = _.isArray(overrideTraits) ? overrideTraits : [overrideTraits || defaultTrait];
+        }
         return _.compact(_.map(traits, t  => t ? traitsMap[t] : undefined));
     }
 
