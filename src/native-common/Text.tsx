@@ -71,7 +71,7 @@ export class Text extends React.Component<Types.TextProps, {}> implements React.
     private _onPress = (e: RN.SyntheticEvent<any>) => {
         if (EventHelpers.isRightMouseButton(e)) {
             if (this.props.onContextMenu) {
-                this.props.onContextMenu(e);
+                this.props.onContextMenu(EventHelpers.toMouseEvent(e));
             }
         } else {
             if (this.props.onPress) {

@@ -169,7 +169,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         return combinedStyles;
     }
 
-    private _onContextMenu = (e: Types.SyntheticEvent) => {
+    private _onContextMenu = (e: React.MouseEvent<any>) => {
         if (this.props.onContextMenu) {
             this.props.onContextMenu(e);
         }

@@ -400,11 +400,11 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         );
     }
 
-    touchableHandlePress(e: Types.MouseEvent): void {
+    touchableHandlePress(e: Types.SyntheticEvent): void {
         UserInterface.evaluateTouchLatency(e);
         if (EventHelpers.isRightMouseButton(e)) {
             if (this.props.onContextMenu) {
-                this.props.onContextMenu(e);
+                this.props.onContextMenu(EventHelpers.toMouseEvent(e));
             }
         } else {
             if (this.props.onPress) {
@@ -413,7 +413,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
     }
 
-    touchableHandleLongPress(e: Types.MouseEvent): void {
+    touchableHandleLongPress(e: Types.SyntheticEvent): void {
         if (!EventHelpers.isRightMouseButton(e)) {
             if (this.props.onLongPress) {
                 this.props.onLongPress(e);
