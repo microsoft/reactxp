@@ -143,7 +143,7 @@ export class EventHelpers {
         
         const nativeEvent = e.nativeEvent;
 
-        // We keep pageX/Y and clientX/Y in coordinates in sync, similar to the React web behavior
+        // We keep pageX/Y and clientX/Y coordinates in sync, similar to the React web behavior
         // RN (UWP flavor for this type of event) also pass coordinates in the target view (locationX/Y) that we don't use here.
         if (nativeEvent.pageX !== undefined) {
             mouseEvent.clientX = mouseEvent.pageX = nativeEvent.pageX;
