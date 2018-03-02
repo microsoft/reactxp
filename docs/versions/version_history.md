@@ -16,6 +16,13 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.2.9 of reactxp-imagesvg
+#### Version 1.0.16 of reactxp-navigation
+#### Version 0.2.4 of reactxp-video
+#### Version 0.2.4 of reactxp-virtuallistview
+_Released 2 Mar 2018_
+Rebuilt using reactxp 1.0.0 and latest typescript compiler version.
+
 #### Version 1.0.0 of reactxp
 _Released 2 Mar 2018_
 Filled in fields for MouseEvent on web.
