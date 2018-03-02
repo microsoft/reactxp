@@ -32,6 +32,7 @@ export interface RootViewProps {
     autoDismiss?: boolean;
     autoDismissDelay?: number;
     onDismissPopup?: () => void;
+    popupIsHidden?: boolean;
     keyBoardFocusOutline?: string;
     mouseFocusOutline?: string;
 }
@@ -199,7 +200,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     componentDidUpdate(prevProps: RootViewProps, prevState: RootViewState) {
-        if (this.props.activePopupOptions) {
+        if (this.props.activePopupOptions && !this.props.popupIsHidden) {
             this._stopHidePopupTimer();
             this._recalcPosition();
 
@@ -228,7 +229,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     componentDidMount() {
-        if (this.props.activePopupOptions) {
+        if (this.props.activePopupOptions && !this.props.popupIsHidden) {
             this._recalcPosition();
         }
 
@@ -236,7 +237,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             this._startHidePopupTimer();
         }
 
-        if (this.props.activePopupOptions) {
+        if (this.props.activePopupOptions && !this.props.popupIsHidden) {
             this._startRepositionPopupTimer();
         }
 
@@ -301,6 +302,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             optionalPopup = (
                 <PopupContainer
                     style={ popupContainerStyle }
+                    hidden={ this.props.popupIsHidden }
                     ref={ this._onMount }
                     onMouseEnter={ e => this._onMouseEnter(e) }
                     onMouseLeave={ e => this._onMouseLeave(e) }
@@ -474,7 +476,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     private _onKeyUp = (e: KeyboardEvent) => {
-        if (this.props.activePopupOptions && (e.keyCode === KEY_CODE_ESC)) {
+        if (this.props.activePopupOptions && !this.props.popupIsHidden && (e.keyCode === KEY_CODE_ESC)) {
             if (e.stopPropagation) {
                 e.stopPropagation();
             }

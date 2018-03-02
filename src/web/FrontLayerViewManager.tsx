@@ -24,6 +24,7 @@ export class FrontLayerViewManager {
     private _activePopupAutoDismissDelay: number = 0;
     private _activePopupShowDelay: number = 0;
     private _popupShowDelayTimer: number|undefined;
+    private _activePopupIsHidden: boolean = false;
 
     setMainView(element: React.ReactElement<any>): void {
         this._mainView = element;
@@ -61,7 +62,7 @@ export class FrontLayerViewManager {
     }
 
     private _shouldPopupBeDismissed = (options: Types.PopupOptions): boolean => {
-        return !!this._activePopupOptions &&
+        return !!this._activePopupOptions && !this._activePopupIsHidden &&
             this._activePopupOptions!!!.getAnchor() === options.getAnchor();
     }
 
@@ -82,9 +83,16 @@ export class FrontLayerViewManager {
     }
 
     private _showPopup(options: Types.PopupOptions, popupId: string, showDelay?: number) : void {
-        if (this._activePopupOptions) {
+        if (this._activePopupOptions && !this._activePopupIsHidden) {
             if (this._activePopupOptions.onDismiss) {
                 this._activePopupOptions.onDismiss();
+            }
+        }
+
+        if (this._activePopupOptions && this._activePopupIsHidden && this._activePopupId === popupId) {
+            // We are re-showing a previously hidden popup.
+            if (options.onReshow) {
+                options.onReshow(this._activePopupOptions);
             }
         }
 
@@ -98,6 +106,8 @@ export class FrontLayerViewManager {
         this._activePopupAutoDismiss = false;
         this._activePopupAutoDismissDelay = 0;
         this._activePopupShowDelay = showDelay || 0;
+        this._activePopupIsHidden = false;
+
         this._renderRootView();
 
         if (this._activePopupShowDelay > 0) {
@@ -110,7 +120,7 @@ export class FrontLayerViewManager {
     }
 
     autoDismissPopup(popupId: string, dismissDelay?: number): void {
-        if (popupId === this._activePopupId && this._activePopupOptions) {
+        if (popupId === this._activePopupId && this._activePopupOptions && !this._activePopupIsHidden) {
             if (this._popupShowDelayTimer) {
                 clearTimeout(this._popupShowDelayTimer);
                 this._popupShowDelayTimer = undefined;
@@ -123,7 +133,7 @@ export class FrontLayerViewManager {
     }
 
     dismissPopup(popupId: string): void {
-        if (popupId === this._activePopupId && this._activePopupOptions) {
+        if (popupId === this._activePopupId && this._activePopupOptions && !this._activePopupIsHidden) {
             if (this._activePopupOptions.onDismiss) {
                 this._activePopupOptions.onDismiss();
             }
@@ -133,8 +143,13 @@ export class FrontLayerViewManager {
                 this._popupShowDelayTimer = undefined;
             }
 
-            this._activePopupOptions = undefined;
-            this._activePopupId = undefined;
+            if (this._activePopupOptions.hideOnDismiss) {
+                this._activePopupIsHidden = true;
+            } else {
+                this._activePopupOptions = undefined;
+                this._activePopupId = undefined;
+            }
+
             this._renderRootView();
         }
     }
@@ -159,6 +174,7 @@ export class FrontLayerViewManager {
                 autoDismiss={ this._activePopupAutoDismiss }
                 autoDismissDelay={ this._activePopupAutoDismissDelay }
                 onDismissPopup={ () => this.dismissPopup(this._activePopupId!!!) }
+                popupIsHidden={ this._activePopupIsHidden }
             />
         );
 
