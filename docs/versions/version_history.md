@@ -16,6 +16,11 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.0.0 of reactxp
+_Released 2 Mar 2018_
+Filled in fields for MouseEvent on web.
+Fixed a few style leaks in web implementation.
+
 #### Version 1.0.0-rc.1 of reactxp
 _Released 28 Feb 2018_
 
