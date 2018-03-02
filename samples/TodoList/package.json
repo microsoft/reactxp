@@ -16,7 +16,7 @@
     "awesome-typescript-loader": "3.1.2",
     "source-map-loader": "^0.1.6",
     "ts-node": "^3.2.1",
-    "typescript": "2.4.1",
+    "typescript": "2.7.2",
     "webpack": "2.2.1"
   },
   "dependencies": {
@@ -26,7 +26,7 @@
     "react-native": "^0.51.0",
     "react-native-sqlite-storage": "^3.3.1",
     "react-native-windows": "^0.51.0-rc.1",
-    "reactxp": "^0.51.0",
+    "reactxp": "^1.0.0",
     "reactxp-imagesvg": "^0.2.8",
     "reactxp-navigation": "^1.0.15",
     "reactxp-video": "^0.2.3",

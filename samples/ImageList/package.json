@@ -16,21 +16,21 @@
     "awesome-typescript-loader": "3.1.2",
     "source-map-loader": "^0.1.6",
     "ts-node": "^3.2.1",
-    "typescript": "2.6.2",
+    "typescript": "2.7.2",
     "webpack": "2.2.1"
   },
   "dependencies": {
     "react": "16.2.0",
     "react-dom": "16.2.0",
-    "react-native": "^0.51.0",
+    "react-native": "^0.53.0",
     "react-native-windows": "^0.51.0-rc.1",
-    "reactxp": "^0.51.0",
-    "reactxp-imagesvg": "^0.2.8",
-    "reactxp-navigation": "^1.0.15",
-    "reactxp-video": "^0.2.3",
+    "reactxp": "^1.0.0",
+    "reactxp-imagesvg": "^0.2.9",
+    "reactxp-navigation": "^1.0.16",
+    "reactxp-video": "^0.2.4",
     "reactxp-virtuallistview": "^0.1.7",
     "resub": "^1.0.7",
-    "simplerestclients": "^0.1.5",
+    "simplerestclients": "^0.1.6",
     "synctasks": "0.3.1"
   }
 }
