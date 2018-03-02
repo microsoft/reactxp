@@ -23,6 +23,7 @@ import Styles from './Styles';
 import Types = require('../common/Types');
 import FocusManager from './utils/FocusManager';
 import UserInterface from './UserInterface';
+import PopupContainer from './PopupContainer';
 
 export interface RootViewProps {
     mainView?: React.ReactNode;
@@ -114,7 +115,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         focusManager: PropTypes.object
     };
 
-    private _mountedComponent: HTMLDivElement|null = null;
+    private _mountedComponent: Element|undefined;
     private _hidePopupTimer: number|undefined;
     private _respositionPopupTimer: number|undefined;
     private _clickHandlerInstalled = false;
@@ -298,7 +299,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             }
 
             optionalPopup = (
-                <div
+                <PopupContainer
                     style={ popupContainerStyle }
                     ref={ this._onMount }
                     onMouseEnter={ e => this._onMouseEnter(e) }
@@ -307,7 +308,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                     { this.props.activePopupOptions.renderPopup(
                         this.state.anchorPosition, this.state.anchorOffset,
                         this.state.constrainedPopupWidth, this.state.constrainedPopupHeight) }
-                </div>
+                </PopupContainer>
             );
         }
 
@@ -344,8 +345,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         );
     }
 
-    protected _onMount = (component: HTMLDivElement|null) => {
-        this._mountedComponent = component;
+    protected _onMount = (component: PopupContainer|null) => {
+        this._mountedComponent = component ? ReactDOM.findDOMNode(component) : undefined;
     }
 
     private _tryClosePopup = (e: MouseEvent) => {
