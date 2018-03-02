@@ -646,6 +646,7 @@ export class ActivityIndicator extends React.Component<Types.ActivityIndicatorPr
         }
 
         head.appendChild(style);
+        ActivityIndicator._isStyleSheetInstalled = true;
     }
 
     constructor(props: Types.ActivityIndicatorProps) {
