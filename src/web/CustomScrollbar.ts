@@ -231,6 +231,7 @@ export class Scrollbar {
         }
 
         head.appendChild(style);
+        _isStyleSheetInstalled = true;
     }
 
     constructor(container: HTMLElement) {
