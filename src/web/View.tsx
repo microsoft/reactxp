@@ -18,6 +18,7 @@ import restyleForInlineText = require('./utils/restyleForInlineText');
 import Styles from './Styles';
 import Types = require('../common/Types');
 import ViewBase from './ViewBase';
+import { PopupContainer, PopupComponent } from './PopupContainer';
 import { FocusManager, applyFocusableComponentMixin } from './utils/FocusManager';
 
 const _styles = {
@@ -70,27 +71,34 @@ if (typeof document !== 'undefined') {
 export interface ViewContext {
     isRxParentAText?: boolean;
     focusManager?: FocusManager;
+    popupContainer?: PopupContainer;
 }
 
 export class View extends ViewBase<Types.ViewProps, {}> {
     static contextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool,
-        focusManager: PropTypes.object
+        focusManager: PropTypes.object,
+        popupContainer: PropTypes.object
     };
     // Context is provided by super - just re-typing here
     context!: ViewContext;
 
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired,
-        focusManager: PropTypes.object
+        focusManager: PropTypes.object,
+        popupContainer: PropTypes.object
     };
 
     private _focusManager: FocusManager|undefined;
     private _limitFocusWithin = false;
     private _isFocusLimited = false;
+    private _isFocusRestricted: boolean|undefined;
 
     private _resizeDetectorAnimationFrame: number|undefined;
     private _resizeDetectorNodes: { grow?: HTMLElement, shrink?: HTMLElement } = {};
+
+    private _popupContainer: PopupContainer|undefined;
+    private _popupToken: PopupComponent|undefined;
 
     constructor(props: Types.ViewProps, context: ViewContext) {
         super(props, context);
@@ -106,6 +114,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
                 this.setFocusLimited(true);
             }
         }
+        this._popupContainer = context.popupContainer;
     }
 
     private _renderResizeDetectorIfNeeded(containerStyles: any): React.ReactNode|null {
@@ -215,9 +224,12 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             isRxParentAText: false
         };
 
-        // Provide the descendants with the focus manager (if any).
+        // Provide the descendants with the focus manager and popup container (if any).
         if (this._focusManager) {
             childContext.focusManager = this._focusManager;
+        }
+        if (this._popupContainer) {
+            childContext.popupContainer = this._popupContainer;
         }
 
         return childContext;
@@ -225,6 +237,10 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
     protected _getContainer(): HTMLElement|null {
         return ReactDOM.findDOMNode(this) as HTMLElement;
+    }
+
+    private isHidden(): boolean {
+        return !!this._popupContainer && this._popupContainer.isHidden();
     }
 
     setFocusRestricted(restricted: boolean) {
@@ -235,11 +251,14 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             return;
         }
 
-        if (restricted) {
-            this._focusManager.restrictFocusWithin();
-        } else {
-            this._focusManager.removeFocusRestriction();
+        if (!this.isHidden()) {
+            if (restricted) {
+                this._focusManager.restrictFocusWithin();
+            } else {
+                this._focusManager.removeFocusRestriction();
+            }
         }
+        this._isFocusRestricted = restricted;
     }
 
     setFocusLimited(limited: boolean) {
@@ -250,13 +269,14 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             return;
         }
 
-        if (limited && !this._isFocusLimited) {
-            this._isFocusLimited = true;
-            this._focusManager.limitFocusWithin(this.props.limitFocusWithin!!!);
-        } else if (!limited && this._isFocusLimited) {
-            this._isFocusLimited = false;
-            this._focusManager.removeFocusLimitation();
+        if (!this.isHidden()) {
+            if (limited && !this._isFocusLimited) {
+                this._focusManager.limitFocusWithin(this.props.limitFocusWithin!!!);
+            } else if (!limited && this._isFocusLimited) {
+                this._focusManager.removeFocusLimitation();
+            }
         }
+        this._isFocusLimited = limited;
     }
 
     render() {
@@ -355,11 +375,9 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
     }
 
-    componentDidMount() {
-        super.componentDidMount();
-
+    enableFocusManager() {
         if (this._focusManager) {
-            if (this.props.restrictFocusWithin) {
+            if (this.props.restrictFocusWithin && this._isFocusRestricted !== false) {
                 this._focusManager.restrictFocusWithin();
             }
 
@@ -369,11 +387,33 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
     }
 
-    componentWillUnmount() {
-        super.componentWillUnmount();
-
+    disableFocusManager() {
         if (this._focusManager) {
             this._focusManager.release();
+        }
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+
+        // If we are mounted as visible, do our initialization now. If we are hidden, it will
+        // be done later when the popup is shown.
+        if (!this.isHidden()) {
+            this.enableFocusManager();
+        }
+
+        if (this._focusManager && this._popupContainer) {
+            this._popupToken = this._popupContainer.registerPopupComponent(
+                () => this.enableFocusManager(), () => this.disableFocusManager());
+        }
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        this.disableFocusManager();
+
+        if (this._popupToken) {
+            this._popupContainer!!!.unregisterPopupComponent(this._popupToken);
         }
     }
 }
