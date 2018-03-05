@@ -228,7 +228,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
                 }
             } else {
                 if (this.props.onPress) {
-                    this.props.onPress(e);
+                    this.props.onPress(EventHelpers.toMouseEvent(e));
                 }
             }
         }
@@ -236,7 +236,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
 
     touchableHandleLongPress = (e: Types.SyntheticEvent) => {
         if (!this.props.disabled && !EventHelpers.isRightMouseButton(e) && this.props.onLongPress) {
-            this.props.onLongPress(e);
+            this.props.onLongPress(EventHelpers.toMouseEvent(e));
         }
     }
 
