@@ -75,7 +75,7 @@ export class Text extends React.Component<Types.TextProps, {}> implements React.
             }
         } else {
             if (this.props.onPress) {
-                this.props.onPress(e);
+                this.props.onPress(EventHelpers.toMouseEvent(e));
             }
         }
     }

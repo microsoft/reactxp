@@ -408,7 +408,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             }
         } else {
             if (this.props.onPress) {
-                this.props.onPress(e);
+                this.props.onPress(EventHelpers.toMouseEvent(e));
             }
         }
     }
@@ -416,7 +416,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     touchableHandleLongPress(e: Types.SyntheticEvent): void {
         if (!EventHelpers.isRightMouseButton(e)) {
             if (this.props.onLongPress) {
-                this.props.onLongPress(e);
+                this.props.onLongPress(EventHelpers.toMouseEvent(e));
             }
         }
     }

@@ -58,7 +58,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
         }
 
         if (this.props.onPress) {
-            this.props.onPress(e, this.props.url);
+            this.props.onPress(EventHelpers.toMouseEvent(e), this.props.url);
             return;
         }
 
@@ -72,7 +72,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
 
     protected _onLongPress = (e: RX.Types.SyntheticEvent) => {
         if (!EventHelpers.isRightMouseButton(e) && this.props.onLongPress) {
-            this.props.onLongPress(e, this.props.url);
+            this.props.onLongPress(EventHelpers.toMouseEvent(e), this.props.url);
         }
     }
 }
