@@ -63,12 +63,12 @@ export interface VirtualListViewItemInfo extends VirtualListCellInfo {
     isNavigable?: boolean;
 }
 
-export interface VirtualListViewProps extends RX.CommonStyledProps<RX.Types.ViewStyleRuleSet> {
+export interface VirtualListViewProps<ItemInfo extends VirtualListViewItemInfo> extends RX.CommonStyledProps<RX.Types.ViewStyleRuleSet> {
     // Ordered list of descriptors for items to display in the list.
-    itemList: VirtualListViewItemInfo[];
+    itemList: ItemInfo[];
 
     // Callback for rendering item when it becomes visible within view port.
-    renderItem: (item: VirtualListViewItemInfo, hasFocus?: boolean) => JSX.Element | JSX.Element[];
+    renderItem: (item: ItemInfo, hasFocus?: boolean) => JSX.Element | JSX.Element[];
 
     // Optional padding around the scrolling content within the list.
     padding?: number;
@@ -157,7 +157,8 @@ const _keyCodeUpArrow = 38;
 const _keyCodeDownArrow = 40;
 
 // tslint:disable:override-calls-super
-export class VirtualListView extends RX.Component<VirtualListViewProps, VirtualListViewState> {
+export class VirtualListView<ItemInfo extends VirtualListViewItemInfo> 
+    extends RX.Component<VirtualListViewProps<ItemInfo>, VirtualListViewState> {
 
     private _lastScrollTop = 0;
     private _layoutHeight = 0;
@@ -238,14 +239,14 @@ export class VirtualListView extends RX.Component<VirtualListViewProps, VirtualL
     private _cullFraction = 1.0;
     private _minCullAmount = this._minOverdrawAmount * 2;
 
-    constructor(props?: VirtualListViewProps) {
+    constructor(props?: VirtualListViewProps<ItemInfo>) {
         super(props);
 
         this._updateStateFromProps(props, true);
         this.state = { lastFocusedItemKey: null };
     }
 
-    componentWillReceiveProps(nextProps: VirtualListViewProps): void {
+    componentWillReceiveProps(nextProps: VirtualListViewProps<ItemInfo>): void {
         if (!_.isEqual(this.props, nextProps)) {
             this._updateStateFromProps(nextProps, false);
         }
@@ -285,7 +286,7 @@ export class VirtualListView extends RX.Component<VirtualListViewProps, VirtualL
         return this._isScreenReaderEnabled && _isNativeAndroid;
     }
 
-    private _updateStateFromProps(props: VirtualListViewProps, initialBuild: boolean) {
+    private _updateStateFromProps(props: VirtualListViewProps<ItemInfo>, initialBuild: boolean) {
         if (props.logInfo) {
             props.logInfo('Rebuilding VirtualListView State - initial: ' + initialBuild +
                 ', items: ' + props.itemList.length);
@@ -308,7 +309,7 @@ export class VirtualListView extends RX.Component<VirtualListViewProps, VirtualL
         this._renderIfDirty(props);
     }
 
-    private _handleItemListChange(props: VirtualListViewProps) {
+    private _handleItemListChange(props: VirtualListViewProps<ItemInfo>) {
         // Build a new item map.
         const newItemMap: { [itemKey: string]: number } = {};
         _.each(props.itemList, (item, itemIndex) => {
@@ -599,7 +600,7 @@ export class VirtualListView extends RX.Component<VirtualListViewProps, VirtualL
     //   container height will never change through the course of the function. We're only deciding what
     //   to bother rendering/culling and where to place items within the container.
     // * We're going to, in order: cull unnecessary items, add new items, and position them within the container.
-    private _calcNewRenderedItemState(props: VirtualListViewProps): void {
+    private _calcNewRenderedItemState(props: VirtualListViewProps<ItemInfo>): void {
         if (this._layoutHeight === 0) {
             // Wait until we get a height before bothering.
             return;
@@ -821,7 +822,7 @@ export class VirtualListView extends RX.Component<VirtualListViewProps, VirtualL
         }
     }
 
-    private _reconcileCorrections(props: VirtualListViewProps) {
+    private _reconcileCorrections(props: VirtualListViewProps<ItemInfo>) {
         // If there are pending animations, don't adjust because it will disrupt
         // the animations. When all animations are complete, we will get called back.
         if (_.size(this._pendingAnimations) > 0) {
@@ -867,7 +868,7 @@ export class VirtualListView extends RX.Component<VirtualListViewProps, VirtualL
         }
     }
 
-    private _popInvisibleIntoView(props: VirtualListViewProps) {
+    private _popInvisibleIntoView(props: VirtualListViewProps<ItemInfo>) {
         if (props.logInfo) {
             props.logInfo('Popping invisible items into view');
         }
@@ -884,14 +885,14 @@ export class VirtualListView extends RX.Component<VirtualListViewProps, VirtualL
         }
     }
 
-    private _resizeAllItems(props: VirtualListViewProps) {
+    private _resizeAllItems(props: VirtualListViewProps<ItemInfo>) {
         if (this._layoutWidth > 0 && this._layoutWidth !== this._contentWidth) {
             this._contentWidth = this._layoutWidth;
             this.forceUpdate();
         }
     }
 
-    private _renderIfDirty(props: VirtualListViewProps): void {
+    private _renderIfDirty(props: VirtualListViewProps<ItemInfo>): void {
         if (this._isRenderDirty) {
             if (this._isMounted) {
                 this.forceUpdate();
@@ -1240,7 +1241,7 @@ export class VirtualListView extends RX.Component<VirtualListViewProps, VirtualL
         RX.Accessibility.screenReaderChangedEvent.unsubscribe(this._screenReaderStateChanged);
     }
 
-    componentDidUpdate(prevProps: VirtualListViewProps) {
+    componentDidUpdate(prevProps: VirtualListViewProps<ItemInfo>) {
         this._componentDidRender();
     }
 
@@ -1272,13 +1273,13 @@ export class VirtualListView extends RX.Component<VirtualListViewProps, VirtualL
     }
 
     // Local helper functions for item information
-    private _shouldShowItem(item: VirtualListViewItemInfo, props: VirtualListViewProps): boolean {
+    private _shouldShowItem(item: VirtualListViewItemInfo, props: VirtualListViewProps<ItemInfo>): boolean {
         const isMeasuring = !this._isItemHeightKnown(item);
         const shouldHide = isMeasuring || !this._isInitialFillComplete;
         return !shouldHide;
     }
 
-    private _calcHeightOfItems(props: VirtualListViewProps, startIndex: number, endIndex: number) {
+    private _calcHeightOfItems(props: VirtualListViewProps<ItemInfo>, startIndex: number, endIndex: number) {
         let count = 0;
         for (let i = startIndex; i <= endIndex; i++) {
             count += this._getHeightOfItem(props.itemList[i]);
