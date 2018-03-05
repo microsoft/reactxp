@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.0.1 of reactxp
+_Released 5 Mar 2018_
+Moved event handlers from ViewProps to ViewPropsShared so AnimatedView has them too.
+Fixed recent regression in handling of popups in native implementation.
+Events passed to onPress and onLongPress now include touch or mouse coordinates.
+
 #### Version 0.2.9 of reactxp-imagesvg
 #### Version 1.0.16 of reactxp-navigation
 #### Version 0.2.4 of reactxp-video
