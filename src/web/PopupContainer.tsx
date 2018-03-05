@@ -9,11 +9,13 @@
 * and re-shown.
 */
 
+import _ = require('./utils/lodashMini');
 import React = require('react');
 import PropTypes = require('prop-types');
 import FocusManager from './utils/FocusManager';
+import Types = require('../common/Types');
 
-export interface PopupContainerProps {
+export interface PopupContainerProps extends Types.CommonProps {
     style: React.CSSProperties;
     onMouseEnter?: (e: any) => void;
     onMouseLeave?: (e: any) => void;
@@ -52,9 +54,9 @@ export class PopupContainer extends React.Component<PopupContainerProps, {}> {
     }
 
     render() {
-        let style = this.props.style;
+        let style = _.clone(this.props.style);
         if (this.props.hidden) {
-            style['visibility'] = 'hidden';
+            style.visibility = 'hidden';
         }
         return (
             <div
