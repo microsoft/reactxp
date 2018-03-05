@@ -621,10 +621,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     disableTouchOpacityAnimation?: boolean;
     activeOpacity?: number;
     underlayColor?: string;
-}
 
-export interface ViewProps extends ViewPropsShared {
-    style?:  StyleRuleSetRecursive<ViewStyleRuleSet>;
     onContextMenu?: (e: MouseEvent) => void;
     onStartShouldSetResponder?: (e: SyntheticEvent) => boolean;
     onMoveShouldSetResponder?: (e: SyntheticEvent) => boolean;
@@ -638,6 +635,10 @@ export interface ViewProps extends ViewPropsShared {
     onResponderEnd?: (e: TouchEvent) => void;
     onResponderTerminate?: (e: SyntheticEvent) => void;
     onResponderTerminationRequest?: (e: SyntheticEvent) => boolean;
+}
+
+export interface ViewProps extends ViewPropsShared {
+    style?: StyleRuleSetRecursive<ViewStyleRuleSet>;
 }
 
 export interface AnimatedViewProps extends ViewPropsShared {
