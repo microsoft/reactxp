@@ -972,9 +972,6 @@ export interface PopupOptions {
     // Called when the popup is dismissed.
     onDismiss?: () => void;
 
-    // Called before the popup is re-shown. Gives the popup a chance to reset itself to its initial state.
-    onReshow?: (oldOptions: PopupOptions) => void;
-
     // Prioritized order of positions. Popup is positioned
     // relative to the anchor such that it remains on screen.
     // Default is ['bottom', 'right', 'top', 'left'].
@@ -1000,9 +997,10 @@ export interface PopupOptions {
     // dismiss is explicitly called.
     preventDismissOnPress?: boolean;
 
-    // The popup will be left in the DOM after it's dismissed and renderPopup can still be called.
-    // If the same popup (as determined by equal popupId) is shown, onReshow will be called.
-    hideOnDismiss?: boolean;
+    // The popup may be left in the DOM after it's dismissed. This is a performance optimization to
+    // make the popup appear faster when it's shown again, intended for popups that tend to be shown
+    // repeatedly. Note that this is only a hint, popups cannot be force-cached.
+    cacheable?: boolean;
 
     // Android & iOS only.
     // The id of the root view this popup is associated with.

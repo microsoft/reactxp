@@ -91,9 +91,6 @@ export class FrontLayerViewManager {
 
         if (this._activePopupOptions && this._activePopupIsHidden && this._activePopupId === popupId) {
             // We are re-showing a previously hidden popup.
-            if (options.onReshow) {
-                options.onReshow(this._activePopupOptions);
-            }
         }
 
         if (this._popupShowDelayTimer) {
@@ -143,7 +140,7 @@ export class FrontLayerViewManager {
                 this._popupShowDelayTimer = undefined;
             }
 
-            if (this._activePopupOptions.hideOnDismiss) {
+            if (this._activePopupOptions.cacheable) {
                 this._activePopupIsHidden = true;
             } else {
                 this._activePopupOptions = undefined;
