@@ -68,6 +68,10 @@ const _styles = {
         left: 10,
         bottom: 10
     }),
+    popupAnchor4: RX.Styles.createViewStyle({
+        right: 10,
+        bottom: 10
+    }),
     anchorIndicator: RX.Styles.createViewStyle({
         position: 'absolute',
         height: _indicatorWidth,
@@ -80,6 +84,7 @@ const _styles = {
 const popup1Id = 'popup1';
 const popup2Id = 'popup2';
 const popup3Id = 'popup3';
+const popup4Id = 'popup4';
 
 interface PopupBoxProps extends RX.CommonProps {
     text: string;
@@ -144,6 +149,7 @@ class PopupView extends RX.Component<RX.CommonProps, RX.Stateless> {
     private _anchor1: RX.Button;
     private _anchor2: RX.Button;
     private _anchor3: RX.Button;
+    private _anchor4: RX.Button;
     
     componentWillUnmount() {
         RX.Popup.dismissAll();
@@ -190,6 +196,15 @@ class PopupView extends RX.Component<RX.CommonProps, RX.Stateless> {
                 >
                     <RX.Text style={ _styles.anchorText }>
                         { `3: isDisplayed = ${RX.Popup.isDisplayed(popup3Id)}` }
+                    </RX.Text>
+                </RX.Button>
+                <RX.Button
+                    style={ [_styles.popupAnchor, _styles.popupAnchor4] }
+                    ref={ (comp: RX.Button) => { this._anchor4 = comp; } }
+                    onPress={ this._showPopup4 }
+                >
+                    <RX.Text style={ _styles.anchorText }>
+                        { `4: isDisplayed = ${RX.Popup.isDisplayed(popup4Id)}` }
                     </RX.Text>
                 </RX.Button>
             </RX.View>
@@ -268,6 +283,33 @@ class PopupView extends RX.Component<RX.CommonProps, RX.Stateless> {
         }, popup3Id);
 
         RX.Popup.autoDismiss(popup3Id, 2000);
+    }
+
+    private _showPopup4 = () => {
+        RX.Popup.show({
+            dismissIfShown: true,
+            cacheable: true,
+            getAnchor: () => {
+                return this._anchor4;
+            },
+            getElementTriggeringPopup: () => {
+                return this._anchor3;
+            },
+            positionPriorities: ['left', 'top', 'bottom'],
+            renderPopup: (anchorPosition: RX.Types.PopupPosition, anchorOffset: number,
+                popupWidth: number, popupHeight: number) => {
+
+                return (
+                    <PopupBox
+                        text={ 'Cacheable popup\n(may be still rendered when dismissed)' }
+                        anchorOffset={ anchorOffset }
+                        anchorPosition={ anchorPosition }
+                        popupWidth={ popupWidth }
+                        popupHeight={ popupHeight }
+                    />
+                );
+            }
+        }, popup4Id);
     }
 }
 
