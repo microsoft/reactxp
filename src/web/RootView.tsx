@@ -28,11 +28,11 @@ import PopupContainer from './PopupContainer';
 export interface RootViewProps {
     mainView?: React.ReactNode;
     modal?: React.ReactElement<Types.ViewProps>;
-    activePopupOptions?: Types.PopupOptions;
+    activePopupOptions?: { options: Types.PopupOptions, id: string };
+    cachedPopupOptions?: { options: Types.PopupOptions, id: string }[];
     autoDismiss?: boolean;
     autoDismissDelay?: number;
     onDismissPopup?: () => void;
-    popupIsHidden?: boolean;
     keyBoardFocusOutline?: string;
     mouseFocusOutline?: string;
 }
@@ -200,7 +200,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     componentDidUpdate(prevProps: RootViewProps, prevState: RootViewState) {
-        if (this.props.activePopupOptions && !this.props.popupIsHidden) {
+        if (this.props.activePopupOptions) {
             this._stopHidePopupTimer();
             this._recalcPosition();
 
@@ -229,7 +229,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     componentDidMount() {
-        if (this.props.activePopupOptions && !this.props.popupIsHidden) {
+        if (this.props.activePopupOptions) {
             this._recalcPosition();
         }
 
@@ -237,7 +237,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             this._startHidePopupTimer();
         }
 
-        if (this.props.activePopupOptions && !this.props.popupIsHidden) {
+        if (this.props.activePopupOptions) {
             this._startRepositionPopupTimer();
         }
 
@@ -272,23 +272,16 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         }
     }
 
-    render() {
-        let rootViewStyle = {
-            width: '100%',
-            height: '100%',
+    private _renderPopup(popup: { options: Types.PopupOptions, id: string }, hidden: boolean): JSX.Element {
+        let popupContainerStyle: React.CSSProperties = {
             display: 'flex',
-            cursor: 'default'
+            position: 'fixed',
+            zIndex: 100001
         };
 
-        let optionalPopup: JSX.Element|null = null;
-        if (this.props.activePopupOptions) {
-            let popupContainerStyle: React.CSSProperties = {
-                display: 'flex',
-                position: 'fixed',
-                top: this.state.popupTop,
-                left: this.state.popupLeft,
-                zIndex: 100001
-            };
+        if (!hidden) {
+            popupContainerStyle['top'] = this.state.popupTop;
+            popupContainerStyle['left'] = this.state.popupLeft;
 
             // Are we artificially constraining the width and/or height?
             if (this.state.constrainedPopupWidth && this.state.constrainedPopupWidth !== this.state.popupWidth) {
@@ -298,20 +291,43 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             if (this.state.constrainedPopupHeight && this.state.constrainedPopupHeight !== this.state.popupHeight) {
                 popupContainerStyle['height'] = this.state.constrainedPopupHeight;
             }
+        }
 
-            optionalPopup = (
-                <PopupContainer
-                    style={ popupContainerStyle }
-                    hidden={ this.props.popupIsHidden }
-                    ref={ this._onMount }
-                    onMouseEnter={ e => this._onMouseEnter(e) }
-                    onMouseLeave={ e => this._onMouseLeave(e) }
-                >
-                    { this.props.activePopupOptions.renderPopup(
-                        this.state.anchorPosition, this.state.anchorOffset,
-                        this.state.constrainedPopupWidth, this.state.constrainedPopupHeight) }
-                </PopupContainer>
+        const key = (popup.options.cacheable ? 'CP:' : 'P:') + popup.id;
+        const renderedPopup = (hidden ?
+            popup.options.renderPopup('top', 0, 0, 0) :
+            popup.options.renderPopup(
+                this.state.anchorPosition, this.state.anchorOffset,
+                this.state.constrainedPopupWidth, this.state.constrainedPopupHeight)
             );
+        return (
+            <PopupContainer
+                key={ key }
+                style={ popupContainerStyle }
+                hidden={ hidden }
+                ref={ hidden ? undefined : this._onMount }
+                onMouseEnter={ e => this._onMouseEnter(e) }
+                onMouseLeave={ e => this._onMouseLeave(e) }
+            >
+                { renderedPopup }
+            </PopupContainer>
+        );
+    }
+
+    render() {
+        let rootViewStyle = {
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            cursor: 'default'
+        };
+
+        let optionalPopups: JSX.Element[] = [];
+        if (this.props.activePopupOptions) {
+            optionalPopups.push(this._renderPopup(this.props.activePopupOptions, false));
+        }
+        if (this.props.cachedPopupOptions) {
+            this.props.cachedPopupOptions.map(options => optionalPopups.push(this._renderPopup(options, true)));
         }
 
         let optionalModal: JSX.Element|null = null;
@@ -334,7 +350,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             >
                 { this.props.mainView }
                 { optionalModal }
-                { optionalPopup }
+                { optionalPopups }
                 <div
                     style={ _styles.liveRegionContainer as any }
                     aria-live={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
@@ -370,12 +386,12 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         if (!clickInPopup && e.button !== _rightClickButtonCode ) {
             _.defer(() => {
                 if (this.props.activePopupOptions) {
-                    const anchorReference = this.props.activePopupOptions.getAnchor();
+                    const anchorReference = this.props.activePopupOptions.options.getAnchor();
                     const isClickOnAnchor = this._determineIfClickOnElement(anchorReference, e.srcElement);
 
                     let isClickOnContainer = false;
-                    if (!isClickOnAnchor && this.props.activePopupOptions.getElementTriggeringPopup) {
-                        const containerRef = this.props.activePopupOptions.getElementTriggeringPopup();
+                    if (!isClickOnAnchor && this.props.activePopupOptions.options.getElementTriggeringPopup) {
+                        const containerRef = this.props.activePopupOptions.options.getElementTriggeringPopup();
                         isClickOnContainer = this._determineIfClickOnElement(containerRef, e.srcElement);
                     }
 
@@ -384,24 +400,24 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                         // Showing another animation while dimissing the popup creates a conflict in the UI making it not doing one of the
                         // two animations (i.e.: Opening an actionsheet while dismissing a popup). We introduce this delay to make sure
                         // the popup dimissing animation has finished before we call the event handler.
-                        if (this.props.activePopupOptions.onAnchorPressed) {
+                        if (this.props.activePopupOptions.options.onAnchorPressed) {
                             setTimeout(() => {
                                 // We can't pass through the DOM event argument to the anchor event handler as the event we have at this
                                 // point is a DOM Event and the anchor expect a Synthetic event. There doesn't seem to be any way to convert
                                 // between them. Passing null for now.
-                                this.props.activePopupOptions!!!.onAnchorPressed!!!(undefined);
+                                this.props.activePopupOptions!!!.options.onAnchorPressed!!!(undefined);
                             }, 500);
                         }
 
                         // If the popup is meant to behave like a toggle, we should not dimiss the popup from here since the event came
                         // from the anchor/container of the popup. The popup will be dismissed during the click handling of the
                         // anchor/container.
-                        if (this.props.activePopupOptions.dismissIfShown) {
+                        if (this.props.activePopupOptions.options.dismissIfShown) {
                             return;
                         }
                     }
 
-                    if (this.props.activePopupOptions.preventDismissOnPress) {
+                    if (this.props.activePopupOptions.options.preventDismissOnPress) {
                         return;
                     }
                 }
@@ -476,7 +492,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     private _onKeyUp = (e: KeyboardEvent) => {
-        if (this.props.activePopupOptions && !this.props.popupIsHidden && (e.keyCode === KEY_CODE_ESC)) {
+        if (this.props.activePopupOptions && (e.keyCode === KEY_CODE_ESC)) {
             if (e.stopPropagation) {
                 e.stopPropagation();
             }
@@ -562,7 +578,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         }
 
         // Get the anchor element.
-        let anchorComponent = this.props.activePopupOptions!!!.getAnchor();
+        let anchorComponent = this.props.activePopupOptions!!!.options.getAnchor();
         // if the anchor is unmounted, dismiss the popup.
         // Prevents app crash when we try to get dom node from unmounted Component
         if (!anchorComponent) {
@@ -596,12 +612,12 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             return;
         }
 
-        let positionsToTry = this.props.activePopupOptions!!!.positionPriorities;
+        let positionsToTry = this.props.activePopupOptions!!!.options.positionPriorities;
         if (!positionsToTry || positionsToTry.length === 0) {
             positionsToTry = ['bottom', 'right', 'top', 'left'];
         }
 
-        if (this.props.activePopupOptions!!!.useInnerPositioning) {
+        if (this.props.activePopupOptions!!!.options.useInnerPositioning) {
             // If the popup is meant to be shown inside the anchor we need to recalculate
             // the position differently.
             this._recalcInnerPosition(anchorRect, newState);
@@ -728,7 +744,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
     private _recalcInnerPosition(anchorRect: ClientRect, newState: RootViewState) {
         // For inner popups we only accept the first position of the priorities since there should always be room for the bubble.
-        const pos = this.props.activePopupOptions!!!.positionPriorities!!![0];
+        const pos = this.props.activePopupOptions!!!.options.positionPriorities!!![0];
 
         switch (pos) {
             case 'top':

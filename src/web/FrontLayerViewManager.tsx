@@ -24,7 +24,7 @@ export class FrontLayerViewManager {
     private _activePopupAutoDismissDelay: number = 0;
     private _activePopupShowDelay: number = 0;
     private _popupShowDelayTimer: number|undefined;
-    private _activePopupIsHidden: boolean = false;
+    private _cachedPopups: { options: Types.PopupOptions, id: string }[] = [];
 
     setMainView(element: React.ReactElement<any>): void {
         this._mainView = element;
@@ -62,7 +62,7 @@ export class FrontLayerViewManager {
     }
 
     private _shouldPopupBeDismissed = (options: Types.PopupOptions): boolean => {
-        return !!this._activePopupOptions && !this._activePopupIsHidden &&
+        return !!this._activePopupOptions &&
             this._activePopupOptions!!!.getAnchor() === options.getAnchor();
     }
 
@@ -83,14 +83,19 @@ export class FrontLayerViewManager {
     }
 
     private _showPopup(options: Types.PopupOptions, popupId: string, showDelay?: number) : void {
-        if (this._activePopupOptions && !this._activePopupIsHidden) {
+        if (this._activePopupOptions) {
             if (this._activePopupOptions.onDismiss) {
                 this._activePopupOptions.onDismiss();
             }
         }
 
-        if (this._activePopupOptions && this._activePopupIsHidden && this._activePopupId === popupId) {
-            // We are re-showing a previously hidden popup.
+        if (options.cacheable) {
+            // New popup is transitioning from cached to active.
+            this._cachedPopups = this._cachedPopups.filter(popup => popup.id !== popupId);
+        }
+        if (this._activePopupOptions && this._activePopupOptions.cacheable) {
+            // Old popup is transitioning from active to cached.
+            this._cachedPopups.push({ options: this._activePopupOptions, id: this._activePopupId!!! });
         }
 
         if (this._popupShowDelayTimer) {
@@ -103,7 +108,6 @@ export class FrontLayerViewManager {
         this._activePopupAutoDismiss = false;
         this._activePopupAutoDismissDelay = 0;
         this._activePopupShowDelay = showDelay || 0;
-        this._activePopupIsHidden = false;
 
         this._renderRootView();
 
@@ -117,7 +121,7 @@ export class FrontLayerViewManager {
     }
 
     autoDismissPopup(popupId: string, dismissDelay?: number): void {
-        if (popupId === this._activePopupId && this._activePopupOptions && !this._activePopupIsHidden) {
+        if (popupId === this._activePopupId && this._activePopupOptions) {
             if (this._popupShowDelayTimer) {
                 clearTimeout(this._popupShowDelayTimer);
                 this._popupShowDelayTimer = undefined;
@@ -130,7 +134,7 @@ export class FrontLayerViewManager {
     }
 
     dismissPopup(popupId: string): void {
-        if (popupId === this._activePopupId && this._activePopupOptions && !this._activePopupIsHidden) {
+        if (popupId === this._activePopupId && this._activePopupOptions) {
             if (this._activePopupOptions.onDismiss) {
                 this._activePopupOptions.onDismiss();
             }
@@ -141,12 +145,12 @@ export class FrontLayerViewManager {
             }
 
             if (this._activePopupOptions.cacheable) {
-                this._activePopupIsHidden = true;
-            } else {
-                this._activePopupOptions = undefined;
-                this._activePopupId = undefined;
+                // The popup is transitioning from active to cached.
+                this._cachedPopups.push({ options: this._activePopupOptions, id: this._activePopupId });
             }
 
+            this._activePopupOptions = undefined;
+            this._activePopupId = undefined;
             this._renderRootView();
         }
     }
@@ -158,8 +162,10 @@ export class FrontLayerViewManager {
     }
 
     private _renderRootView() {
-        let topModal = this._modalStack.length > 0 ?
+        const topModal = this._modalStack.length > 0 ?
             this._modalStack[this._modalStack.length - 1].modal : undefined;
+        const activePopup = (!this._activePopupOptions || this._activePopupShowDelay > 0) ? undefined :
+            { options: this._activePopupOptions, id: this._activePopupId!!! };
 
         let rootView = (
             <RootView
@@ -167,11 +173,11 @@ export class FrontLayerViewManager {
                 keyBoardFocusOutline={ this._mainView!!!.props.keyBoardFocusOutline }
                 mouseFocusOutline={ this._mainView!!!.props.mouseFocusOutline }
                 modal={ topModal }
-                activePopupOptions={ this._activePopupShowDelay > 0 ? undefined : this._activePopupOptions }
+                activePopupOptions={ activePopup }
+                cachedPopupOptions={ this._cachedPopups }
                 autoDismiss={ this._activePopupAutoDismiss }
                 autoDismissDelay={ this._activePopupAutoDismissDelay }
                 onDismissPopup={ () => this.dismissPopup(this._activePopupId!!!) }
-                popupIsHidden={ this._activePopupIsHidden }
             />
         );
 
