@@ -14,6 +14,8 @@ import { RootView } from './RootView';
 
 import Types = require('../common/Types');
 
+const MAX_CACHED_POPUPS = 4;
+
 export class FrontLayerViewManager {
     private _mainView: React.ReactElement<any>|undefined;
     private _modalStack: { modal: React.ReactElement<Types.ViewProps>, id: string }[] = [];
@@ -96,6 +98,7 @@ export class FrontLayerViewManager {
         if (this._activePopupOptions && this._activePopupOptions.cacheable) {
             // Old popup is transitioning from active to cached.
             this._cachedPopups.push({ options: this._activePopupOptions, id: this._activePopupId!!! });
+            this._cachedPopups = this._cachedPopups.slice(-MAX_CACHED_POPUPS);
         }
 
         if (this._popupShowDelayTimer) {
@@ -147,6 +150,7 @@ export class FrontLayerViewManager {
             if (this._activePopupOptions.cacheable) {
                 // The popup is transitioning from active to cached.
                 this._cachedPopups.push({ options: this._activePopupOptions, id: this._activePopupId });
+                this._cachedPopups = this._cachedPopups.slice(-MAX_CACHED_POPUPS);
             }
 
             this._activePopupOptions = undefined;

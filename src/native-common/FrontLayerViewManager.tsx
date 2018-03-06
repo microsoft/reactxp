@@ -34,6 +34,8 @@ const _styles = {
     }
 };
 
+const MAX_CACHED_POPUPS = 4;
+
 export class FrontLayerViewManager {
     private _overlayStack: (ModalStackContext | PopupStackContext)[] = [];
     private _cachedPopups: PopupStackContext[] = [];
@@ -107,6 +109,7 @@ export class FrontLayerViewManager {
             if (popupContext.popupOptions.cacheable) {
                 // The popup is transitioning from active to cached.
                 this._cachedPopups.push(popupContext);
+                this._cachedPopups = this._cachedPopups.slice(-MAX_CACHED_POPUPS);
             }
 
             this._overlayStack.splice(index, 1);
