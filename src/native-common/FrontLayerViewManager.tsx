@@ -13,6 +13,7 @@ import React = require('react');
 import RN = require('react-native');
 import SubscribableEvent from 'subscribableevent';
 
+import App from './App';
 import { ModalContainer } from '../native-common/ModalContainer';
 import PopupContainerView from './PopupContainerView';
 import Types = require('../common/Types');
@@ -41,6 +42,12 @@ export class FrontLayerViewManager {
     private _cachedPopups: PopupStackContext[] = [];
 
     event_changed = new SubscribableEvent<() => void>();
+
+    constructor() {
+        App.memoryWarningEvent.subscribe(() => {
+            this._cachedPopups = [];
+        });
+    }
 
     public showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions): void {
         const index = this._findIndexOfModal(modalId);
@@ -164,28 +171,17 @@ export class FrontLayerViewManager {
     private _renderPopup(context: PopupStackContext, hidden: boolean): JSX.Element {
         const key = (context.popupOptions.cacheable ? 'CP:' : 'P:') + context.popupId;
         return (
-            <ModalContainer
+            <PopupContainerView
                 key={ key }
-                hidden={ hidden }>
-                <RN.TouchableWithoutFeedback
-                    onPressOut={ this._onBackgroundPressed }
-                    importantForAccessibility={ 'no' }
-                >
-                    <RN.View
-                        style={ _styles.fullScreenView }>
-                        <PopupContainerView
-                            popupOptions={ context.popupOptions }
-                            anchorHandle={ hidden ? undefined : context.anchorHandle }
-                            onDismissPopup={ hidden ? undefined : () => this.dismissPopup(context.popupId) }
-                            hidden={ hidden }
-                        />
-                    </RN.View>
-                </RN.TouchableWithoutFeedback>
-            </ModalContainer>
+                popupOptions={ context.popupOptions }
+                anchorHandle={ hidden ? undefined : context.anchorHandle }
+                onDismissPopup={ hidden ? undefined : () => this.dismissPopup(context.popupId) }
+                hidden={ hidden }
+                />
         );
     }
 
-    public getPopupLayerView(rootViewId?: string | null): JSX.Element[] | null {
+    public getPopupLayerView(rootViewId?: string | null): JSX.Element | null {
         if (rootViewId === null) {
             // The Popup layer is only supported on root views that have set an id, or
             // the default root view (which has an undefined id)
@@ -204,7 +200,22 @@ export class FrontLayerViewManager {
         }
         this._cachedPopups.map(context => popupContainerViews.push(this._renderPopup(context, true)));
 
-        return popupContainerViews;
+        if (popupContainerViews.length > 0) {
+            return (
+                <ModalContainer hidden={ !overlayContext }>
+                    <RN.TouchableWithoutFeedback
+                        onPressOut={ this._onBackgroundPressed }
+                        importantForAccessibility={ 'no' }
+                        >
+                        <RN.View
+                            style={ _styles.fullScreenView }>
+                            { popupContainerViews }
+                        </RN.View>
+                    </RN.TouchableWithoutFeedback>
+                </ModalContainer>
+            );
+        }
+        return null;
     }
 
     private _onBackgroundPressed = (e: RN.SyntheticEvent<any>) => {
