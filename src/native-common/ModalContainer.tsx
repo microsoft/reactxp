@@ -26,10 +26,15 @@ const _styles = {
         // On Android, we need to provide some color to prevent
         // removal of the view.
         backgroundColor: 'transparent'
+    },
+    hiddenContainer: {
+        width: 0,
+        height: 0
     }
 };
 
 export interface ModalContainerProps extends Types.CommonProps {
+    hidden?: boolean;
 }
 
 export class ModalContainer extends React.Component<ModalContainerProps, {}> {
@@ -39,7 +44,7 @@ export class ModalContainer extends React.Component<ModalContainerProps, {}> {
 
     render() {
         return (
-            <RN.View style={ _styles.defaultContainer }>
+            <RN.View style={ this.props.hidden ? _styles.hiddenContainer : _styles.defaultContainer }>
                 { this.props.children }
             </RN.View>
         );

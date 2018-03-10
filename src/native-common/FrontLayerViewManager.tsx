@@ -34,8 +34,11 @@ const _styles = {
     }
 };
 
+const MAX_CACHED_POPUPS = 4;
+
 export class FrontLayerViewManager {
     private _overlayStack: (ModalStackContext | PopupStackContext)[] = [];
+    private _cachedPopups: PopupStackContext[] = [];
 
     event_changed = new SubscribableEvent<() => void>();
 
@@ -82,6 +85,11 @@ export class FrontLayerViewManager {
         if (index === -1) {
             const nodeHandle = RN.findNodeHandle(popupOptions.getAnchor());
             if (nodeHandle) {
+                if (popupOptions.cacheable) {
+                    // The popup is transitioning from cached to active.
+                    this._cachedPopups = this._cachedPopups.filter(popup => popup.popupId !== popupId);
+                }
+
                 this._overlayStack.push(new PopupStackContext(popupId, popupOptions, nodeHandle));
                 this.event_changed.fire();
                 return true;    
@@ -96,6 +104,12 @@ export class FrontLayerViewManager {
             const popupContext = this._overlayStack[index] as PopupStackContext;
             if (popupContext.popupOptions.onDismiss) {
                 popupContext.popupOptions.onDismiss();
+            }
+
+            if (popupContext.popupOptions.cacheable) {
+                // The popup is transitioning from active to cached.
+                this._cachedPopups.push(popupContext);
+                this._cachedPopups = this._cachedPopups.slice(-MAX_CACHED_POPUPS);
             }
 
             this._overlayStack.splice(index, 1);
@@ -142,43 +156,62 @@ export class FrontLayerViewManager {
         return null;
     }
 
+    public releaseCachedPopups(): void {
+        this._cachedPopups = [];
+    }
+
     // Returns true if both are undefined, or if there are options and the rootViewIds are equal.
     private modalOptionsMatchesRootViewId(options?: Types.ModalOptions, rootViewId?: string): boolean {
         return !!(options === rootViewId || options && options.rootViewId === rootViewId);
     }
 
-    public getPopupLayerView(rootViewId?: string | null): React.ReactElement<any> | null {
+    private _renderPopup(context: PopupStackContext, hidden: boolean): JSX.Element {
+        const key = (context.popupOptions.cacheable ? 'CP:' : 'P:') + context.popupId;
+        return (
+            <PopupContainerView
+                key={ key }
+                popupOptions={ context.popupOptions }
+                anchorHandle={ hidden ? undefined : context.anchorHandle }
+                onDismissPopup={ hidden ? undefined : () => this.dismissPopup(context.popupId) }
+                hidden={ hidden }
+            />
+        );
+    }
+
+    public getPopupLayerView(rootViewId?: string | null): JSX.Element | null {
         if (rootViewId === null) {
             // The Popup layer is only supported on root views that have set an id, or
             // the default root view (which has an undefined id)
             return null;
         }
 
+        let popupContainerViews: JSX.Element[] = [];
+
         const overlayContext =
             _.findLast(
                 this._overlayStack,
                 context => context instanceof PopupStackContext && context.popupOptions.rootViewId === rootViewId
             ) as PopupStackContext;
-
         if (overlayContext) {
+            popupContainerViews.push(this._renderPopup(overlayContext, false));
+        }
+        this._cachedPopups.map(context => popupContainerViews.push(this._renderPopup(context, true)));
+
+        if (popupContainerViews.length > 0) {
             return (
-                <ModalContainer>
+                <ModalContainer hidden={ !overlayContext }>
                     <RN.TouchableWithoutFeedback
                         onPressOut={ this._onBackgroundPressed }
                         importantForAccessibility={ 'no' }
-                    >
-                        <RN.View style={ _styles.fullScreenView }>
-                            <PopupContainerView
-                                activePopupOptions={ overlayContext.popupOptions }
-                                anchorHandle={ overlayContext.anchorHandle }
-                                onDismissPopup={ () => this.dismissPopup(overlayContext.popupId) }
-                            />
+                        >
+                        <RN.View
+                            style={ _styles.fullScreenView }>
+                            { popupContainerViews }
                         </RN.View>
                     </RN.TouchableWithoutFeedback>
                 </ModalContainer>
             );
         }
-
         return null;
     }
 

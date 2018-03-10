@@ -25,9 +25,10 @@ const ALLEY_WIDTH = 2;
 const MIN_ANCHOR_OFFSET = 16;
 
 export interface PopupContainerViewProps extends Types.CommonProps {
-    activePopupOptions: Types.PopupOptions;
-    anchorHandle: number;
+    popupOptions: Types.PopupOptions;
+    anchorHandle?: number;
     onDismissPopup?: () => void;
+    hidden: boolean;
 }
 
 export interface PopupContainerViewState {
@@ -78,14 +79,14 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
     }
 
     componentWillReceiveProps(prevProps: PopupContainerViewProps) {
-        if (this.props.activePopupOptions !== prevProps.activePopupOptions) {
+        if (this.props.popupOptions !== prevProps.popupOptions) {
             // If the popup changes, reset our state.
             this.setState(this._getInitialState());
         }
     }
 
     componentDidUpdate(prevProps: PopupContainerViewProps, prevState: PopupContainerViewState) {
-        if (this.props.activePopupOptions) {
+        if (this.props.popupOptions && !this.props.hidden) {
             this._recalcPosition();
 
             if (!this._respositionPopupTimer) {
@@ -99,11 +100,8 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
     componentDidMount () {
         this._viewHandle = RN.findNodeHandle(this._mountedComponent);
 
-        if (this.props.activePopupOptions) {
+        if (this.props.popupOptions && !this.props.hidden) {
             this._recalcPosition();
-        }
-
-        if (this.props.activePopupOptions) {
             this._startRepositionPopupTimer();
         }
     }
@@ -113,9 +111,13 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
     }
 
     render() {
-        var popupView = this.props.activePopupOptions.renderPopup(
-            this.state.anchorPosition, this.state.anchorOffset,
-            this.state.constrainedPopupWidth, this.state.constrainedPopupHeight);
+        const popupView = (this.props.hidden ?
+            this.props.popupOptions.renderPopup('top', 0, 0, 0) :
+            this.props.popupOptions.renderPopup(
+                this.state.anchorPosition, this.state.anchorOffset,
+                this.state.constrainedPopupWidth,
+                this.state.constrainedPopupHeight)
+            );
         const isRTL = International.isRTL();
         const style = {
             position: 'absolute',
@@ -131,7 +133,7 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
         return (
             <RN.View
                 style={ style }
-                ref={ this._onMount }
+                ref={ this.props.hidden ? undefined : this._onMount }
             >
                 { popupView }
             </RN.View>
@@ -210,12 +212,12 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
                 return;
             }
 
-            let positionsToTry = this.props.activePopupOptions.positionPriorities;
+            let positionsToTry = this.props.popupOptions.positionPriorities;
             if (!positionsToTry || positionsToTry.length === 0) {
                 positionsToTry = ['bottom', 'right', 'top', 'left'];
             }
 
-            if (this.props.activePopupOptions.useInnerPositioning) {
+            if (this.props.popupOptions.useInnerPositioning) {
                 // If the popup is meant to be shown inside the anchor we need to recalculate
                 // the position differently.
                 this._recalcInnerPosition(anchorRect, newState);
@@ -344,7 +346,7 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
 
     private _recalcInnerPosition(anchorRect: ClientRect, newState: PopupContainerViewState) {
         // For inner popups we only accept the first position of the priorities since there should always be room for the bubble.
-        const pos = this.props.activePopupOptions.positionPriorities!!![0];
+        const pos = this.props.popupOptions.positionPriorities!!![0];
 
         switch (pos) {
             case 'top':

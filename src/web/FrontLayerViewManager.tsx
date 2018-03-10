@@ -10,9 +10,11 @@
 import React = require('react');
 import ReactDOM = require('react-dom');
 
-import { RootView } from './RootView';
+import { PopupDescriptor, RootView } from './RootView';
 
 import Types = require('../common/Types');
+
+const MAX_CACHED_POPUPS = 4;
 
 export class FrontLayerViewManager {
     private _mainView: React.ReactElement<any>|undefined;
@@ -24,6 +26,7 @@ export class FrontLayerViewManager {
     private _activePopupAutoDismissDelay: number = 0;
     private _activePopupShowDelay: number = 0;
     private _popupShowDelayTimer: number|undefined;
+    private _cachedPopups: PopupDescriptor[] = [];
 
     setMainView(element: React.ReactElement<any>): void {
         this._mainView = element;
@@ -88,6 +91,14 @@ export class FrontLayerViewManager {
             }
         }
 
+        // New popup is transitioning from maybe cached to active.
+        this._cachedPopups = this._cachedPopups.filter(popup => popup.popupId !== popupId);
+        if (this._activePopupOptions && this._activePopupOptions.cacheable && this._activePopupId !== popupId) {
+            // Old popup is transitioning from active to cached.
+            this._cachedPopups.push({ popupOptions: this._activePopupOptions, popupId: this._activePopupId!!! });
+            this._cachedPopups = this._cachedPopups.slice(-MAX_CACHED_POPUPS);
+        }
+
         if (this._popupShowDelayTimer) {
             clearTimeout(this._popupShowDelayTimer);
             this._popupShowDelayTimer = undefined;
@@ -98,6 +109,7 @@ export class FrontLayerViewManager {
         this._activePopupAutoDismiss = false;
         this._activePopupAutoDismissDelay = 0;
         this._activePopupShowDelay = showDelay || 0;
+
         this._renderRootView();
 
         if (this._activePopupShowDelay > 0) {
@@ -133,6 +145,12 @@ export class FrontLayerViewManager {
                 this._popupShowDelayTimer = undefined;
             }
 
+            if (this._activePopupOptions.cacheable) {
+                // The popup is transitioning from active to cached.
+                this._cachedPopups.push({ popupOptions: this._activePopupOptions, popupId: this._activePopupId });
+                this._cachedPopups = this._cachedPopups.slice(-MAX_CACHED_POPUPS);
+            }
+
             this._activePopupOptions = undefined;
             this._activePopupId = undefined;
             this._renderRootView();
@@ -146,8 +164,10 @@ export class FrontLayerViewManager {
     }
 
     private _renderRootView() {
-        let topModal = this._modalStack.length > 0 ?
+        const topModal = this._modalStack.length > 0 ?
             this._modalStack[this._modalStack.length - 1].modal : undefined;
+        const activePopup = (!this._activePopupOptions || this._activePopupShowDelay > 0) ? undefined :
+            { popupOptions: this._activePopupOptions, popupId: this._activePopupId!!! };
 
         let rootView = (
             <RootView
@@ -155,7 +175,8 @@ export class FrontLayerViewManager {
                 keyBoardFocusOutline={ this._mainView!!!.props.keyBoardFocusOutline }
                 mouseFocusOutline={ this._mainView!!!.props.mouseFocusOutline }
                 modal={ topModal }
-                activePopupOptions={ this._activePopupShowDelay > 0 ? undefined : this._activePopupOptions }
+                activePopup={ activePopup }
+                cachedPopup={ this._cachedPopups }
                 autoDismiss={ this._activePopupAutoDismiss }
                 autoDismissDelay={ this._activePopupAutoDismissDelay }
                 onDismissPopup={ () => this.dismissPopup(this._activePopupId!!!) }

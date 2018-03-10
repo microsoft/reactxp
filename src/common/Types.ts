@@ -997,6 +997,11 @@ export interface PopupOptions {
     // dismiss is explicitly called.
     preventDismissOnPress?: boolean;
 
+    // The popup may be left in the DOM after it's dismissed. This is a performance optimization to
+    // make the popup appear faster when it's shown again, intended for popups that tend to be shown
+    // repeatedly. Note that this is only a hint, popups cannot be force-cached.
+    cacheable?: boolean;
+
     // Android & iOS only.
     // The id of the root view this popup is associated with.
     // Defaults to the view set by UserInterface.setMainView();
