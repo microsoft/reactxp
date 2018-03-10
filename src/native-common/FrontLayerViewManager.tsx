@@ -13,7 +13,6 @@ import React = require('react');
 import RN = require('react-native');
 import SubscribableEvent from 'subscribableevent';
 
-import App from './App';
 import { ModalContainer } from '../native-common/ModalContainer';
 import PopupContainerView from './PopupContainerView';
 import Types = require('../common/Types');
@@ -42,12 +41,6 @@ export class FrontLayerViewManager {
     private _cachedPopups: PopupStackContext[] = [];
 
     event_changed = new SubscribableEvent<() => void>();
-
-    constructor() {
-        App.memoryWarningEvent.subscribe(() => {
-            this._cachedPopups = [];
-        });
-    }
 
     public showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions): void {
         const index = this._findIndexOfModal(modalId);
@@ -163,6 +156,10 @@ export class FrontLayerViewManager {
         return null;
     }
 
+    public releaseCachedPopups(): void {
+        this._cachedPopups = [];
+    }
+
     // Returns true if both are undefined, or if there are options and the rootViewIds are equal.
     private modalOptionsMatchesRootViewId(options?: Types.ModalOptions, rootViewId?: string): boolean {
         return !!(options === rootViewId || options && options.rootViewId === rootViewId);
@@ -177,7 +174,7 @@ export class FrontLayerViewManager {
                 anchorHandle={ hidden ? undefined : context.anchorHandle }
                 onDismissPopup={ hidden ? undefined : () => this.dismissPopup(context.popupId) }
                 hidden={ hidden }
-                />
+            />
         );
     }
 
