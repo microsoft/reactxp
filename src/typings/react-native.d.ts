@@ -497,6 +497,7 @@ declare module 'react-native' {
 
     class Image extends ReactNativeBaseComponent<ImageProperties, {}> {
         static prefetch(url: string): Promise<boolean>;
+        static prefetchAndGetCachedPath(url: string): Promise<string|undefined>;
     }
     class ActivityIndicator extends ReactNativeBaseComponent<ActivityIndicatorProps, {}> { }
     class Text extends ReactNativeBaseComponent<TextProps, {}> { }

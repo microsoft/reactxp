@@ -61,4 +61,19 @@ getNativeHeight(): number;
 getNativeWidth(): number;
 ```
 
+## Static Methods
+```javascript
+// Prefetches a remote image and stores it in a cache. This can decrease the
+// amount of time it takes when you later want to show the image because the
+// image only has to be fetched from the local cache rather than over the
+// network.
+prefetch(url: string): Promise<boolean>;
 
+// Like `prefetch` but returns the path to the cached image on disk. Due to
+// the nature of caches, there's no guarantee how long the returned path will
+// exist. Only use this method if you're okay with that limitation.
+//
+// Windows-only. On other platforms the effect is the same as `prefetch`
+// but the return value is always `undefined`.
+prefetchAndGetCachedPath(url: string): Promise<string|undefined>;
+```

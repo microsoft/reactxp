@@ -154,6 +154,12 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         return defer.promise();
     }
 
+    static prefetchAndGetCachedPath(url: string): SyncTasks.Promise<string|undefined> {
+        return Image.prefetch(url).then((value) => {
+            return undefined;
+        });
+    }
+
     private _isMounted = false;
     private _nativeImageWidth: number|undefined;
     private _nativeImageHeight: number|undefined;
