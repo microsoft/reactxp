@@ -94,7 +94,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     maxLength={ this.props.maxLength }
                     placeholder={ this.props.placeholder }
 
-                    onInput={ this._onInput }
+                    onChange={ this._onInputChanged }
                     onKeyDown={ this._onKeyDown }
                     onKeyUp={ this._checkSelectionChanged }
                     onFocus={ this.props.onFocus }
@@ -123,7 +123,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     maxLength={ this.props.maxLength }
                     placeholder={ this.props.placeholder }
 
-                    onInput={ this._onInput }
+                    onChange= { this._onInputChanged }
                     onKeyDown={ this._onKeyDown }
                     onKeyUp={ this._checkSelectionChanged }
                     onFocus={ this.props.onFocus }
@@ -193,8 +193,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         this._checkSelectionChanged();
     }
 
-    private _onInput = (e: React.FormEvent<any>) => {
-        if (!e.defaultPrevented) {
+    private _onInputChanged = (event: React.ChangeEvent<HTMLElement>) => {
+        if (!event.defaultPrevented) {
             if (this._mountedComponent) {
                 // Has the input value changed?
                 const value = this._mountedComponent.value || '';
