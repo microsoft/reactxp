@@ -46,6 +46,24 @@ export class Image extends React.Component<Types.ImageProps, {}> implements Reac
         return defer.promise();
     }
 
+    static prefetchAndGetCachedPath(url: string): SyncTasks.Promise<string|undefined> {
+        if (RN.Image.prefetchAndGetCachedPath) {
+            const defer = SyncTasks.Defer<string>();
+
+            RN.Image.prefetchAndGetCachedPath(url).then((cachedImagePath: string) => {
+                defer.resolve(cachedImagePath);
+            }).catch((error: any) => {
+                defer.reject(error);
+            });
+
+            return defer.promise();
+        } else {
+            return Image.prefetch(url).then((value) => {
+                return undefined;
+            });
+        }
+    }
+
     protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
     private _nativeImageWidth: number|undefined;
     private _nativeImageHeight: number|undefined;

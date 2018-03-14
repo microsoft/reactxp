@@ -140,6 +140,7 @@ export interface ImageConstructor {
     new (props: Types.ImageProps): Image;
 
     prefetch(url: string): SyncTasks.Promise<boolean>;
+    prefetchAndGetCachedPath(url: string): SyncTasks.Promise<string|undefined>;
 }
 
 export abstract class Image extends React.Component<Types.ImageProps, any> {
