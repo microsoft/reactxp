@@ -10,6 +10,7 @@
 import _ = require('./lodashMini');
 import RN = require('react-native');
 
+import AppConfig from '../common/AppConfig';
 import RX = require('../common/Interfaces');
 import StyleLeakDetector from './StyleLeakDetector';
 import Platform from './Platform';
@@ -147,7 +148,7 @@ export class Styles extends RX.Styles {
         return {};
     }
 
-    private _adaptStyles<S extends Types.ViewAndImageCommonStyle>(def: S, cacheStyle: boolean): Types.StyleRuleSet<S> {
+    private _adaptStyles<S extends Types.ViewAndImageCommonStyle>(def: S, cacheStyle: boolean): Readonly<Types.StyleRuleSet<S>> {
         let adaptedRuleSet = def as ReactNativeViewAndImageCommonStyle<S>;
         if (cacheStyle) {
             StyleLeakDetector.detectLeaks(def);
@@ -194,11 +195,12 @@ export class Styles extends RX.Styles {
             return RN.StyleSheet.create({ _style: adaptedRuleSet })._style;
         }
 
-        return adaptedRuleSet;
+        return AppConfig.isDevelopmentMode() ? Object.freeze(adaptedRuleSet) : adaptedRuleSet;
     }
 
-    private _adaptAnimatedStyles<T extends Types.AnimatedViewAndImageCommonStyle>(def: T): T {
-        return _.omit<T>(def, forbiddenProps) as T;
+    private _adaptAnimatedStyles<T extends Types.AnimatedViewAndImageCommonStyle>(def: T): Readonly<T> {
+        const adaptedRuleSet = _.omit<T>(def, forbiddenProps) as T;
+        return AppConfig.isDevelopmentMode() ? Object.freeze(adaptedRuleSet) : adaptedRuleSet;
     }
 }
 
