@@ -61,4 +61,11 @@ getNativeHeight(): number;
 getNativeWidth(): number;
 ```
 
-
+## Static Methods
+```javascript
+// Prefetches a remote image and stores it in a cache. This can decrease the
+// amount of time it takes when you later want to show the image because the
+// image only has to be fetched from the local cache rather than over the
+// network.
+prefetch(url: string): Promise<boolean>;
+```
