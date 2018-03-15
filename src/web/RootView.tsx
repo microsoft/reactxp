@@ -359,7 +359,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                     style={ _styles.liveRegionContainer as any }
                     aria-live={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
                     aria-atomic={ 'true' }
-                    aria-relevant={ 'text' }
+                    aria-relevant={ 'additions text' }
                 >
                     { announcement }
                 </div>
