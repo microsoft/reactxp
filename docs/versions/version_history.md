@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.0.2 of reactxp
+_Released 16 Mar 2018_
+Fixed bug in web TextInput implementation that resulted in a console warning with the latest versions of ReactJS.
+Fixed bug in native Button implementation that resulted in corrupted styles.
+Fixed accessibility (screen reader) bug in web implementation.
+
 #### Version 1.0.1 of reactxp
 _Released 5 Mar 2018_
 Moved event handlers from ViewProps to ViewPropsShared so AnimatedView has them too.
