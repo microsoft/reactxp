@@ -145,6 +145,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     }
 
     private _getStyles(): Types.ButtonStyleRuleSet {
+        let buttonStyleMutations: Types.ButtonStyle = {};
         let buttonStyles = Styles.combine(this.props.style) as any;
 
         // Specify default syle for padding only if padding is not already specified
@@ -152,21 +153,19 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
                 buttonStyles.paddingRight === undefined && buttonStyles.paddingLeft === undefined &&
                 buttonStyles.paddingBottom === undefined && buttonStyles.paddingTop === undefined  &&
                 buttonStyles.paddingHorizontal === undefined && buttonStyles.paddingVertical === undefined) {
-            buttonStyles['padding'] = '0';
+            buttonStyleMutations.padding = 0;
         }
 
-        let combinedStyles = Styles.combine([_styles.defaultButton, buttonStyles]);
-
         if (this.props.disabled) {
-            combinedStyles.opacity = 0.5;
+            buttonStyleMutations.opacity = 0.5;
         }
 
         // Default to 'pointer' cursor for enabled buttons unless otherwise specified.
-        if (!combinedStyles['cursor']) {
-            combinedStyles['cursor'] = this.props.disabled ? 'default' : 'pointer';
+        if (!buttonStyleMutations.cursor) {
+            buttonStyleMutations.cursor = this.props.disabled ? 'default' : 'pointer';
         }
 
-        return combinedStyles;
+        return Styles.combine([_styles.defaultButton, buttonStyles, buttonStyleMutations]);
     }
 
     private _onContextMenu = (e: React.MouseEvent<any>) => {
