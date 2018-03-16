@@ -250,7 +250,7 @@ export class Styles extends RX.Styles {
         return parentConstructor.name ? parentConstructor.name : parentConstructor;
     }
 
-    private _adaptStyles(def: any, validate: boolean): any {
+    private _adaptStyles(def: any, validate: boolean): Readonly<any> {
         if (validate) {
             StyleLeakDetector.detectLeaks(def);
         }
@@ -437,7 +437,7 @@ export class Styles extends RX.Styles {
             def['wordWrap'] = 'break-word';
         }
 
-        return def;
+        return AppConfig.isDevelopmentMode() ? Object.freeze(def) : def;
     }
 }
 
