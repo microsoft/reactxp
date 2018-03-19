@@ -207,10 +207,6 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
 // onDragOver: (e: DragEvent) => void = undefined;
 // onDragLeave: (e: DragEvent) => void = undefined;
 // onDrop: (e: DragEvent) => void = undefined;
-// onMouseEnter: (e: MouseEvent) => void = undefined;
-// onMouseLeave: (e: MouseEvent) => void = undefined;
-// onMouseMove: (e: MouseEvent) => void = undefined;
-// onMouseOver: (e: MouseEvent) => void = undefined;
 // onContextMenu: (e: React.SyntheticEvent) => void;
 // onMoveShouldSetResponder: (e: React.SyntheticEvent) => boolean =
 // onMoveShouldSetResponderCapture: (e: React.SyntheticEvent) => boolean =
