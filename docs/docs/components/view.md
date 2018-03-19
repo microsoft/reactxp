@@ -94,6 +94,7 @@ onMouseEnter: (e: MouseEvent) => void = undefined;
 onMouseLeave: (e: MouseEvent) => void = undefined;
 onMouseMove: (e: MouseEvent) => void = undefined;
 onMouseOver: (e: MouseEvent) => void = undefined;
+onWheel?: (e: WheelEvent) => void;
 
 // Mouse & Touch Events
 onContextMenu: (e: React.SyntheticEvent) => void;
