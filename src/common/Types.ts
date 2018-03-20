@@ -610,6 +610,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     onDrop?: (e: DragEvent) => void;
     onMouseOver?: (e: MouseEvent) => void;
     onMouseMove?: (e: MouseEvent) => void;
+    onWheel?: (e: WheelEvent) => void;
 
     onPress?: (e: SyntheticEvent) => void;
     onLongPress?: (e: SyntheticEvent) => void;

@@ -35,6 +35,7 @@ import TextInputInteractiveTest from './Tests/TextInputInteractiveTest';
 import UserInterfaceTest from './Tests/UserInterfaceTest';
 import UserPresenceTest from './Tests/UserPresenceTest';
 import ViewBasicTest from './Tests/ViewBasicTest';
+import ViewMouseTest from './Tests/ViewMouseTest';
 import WebViewBasicTest from './Tests/WebViewBasicTest';
 import WebViewDynamicTest from './Tests/WebViewDynamicTest';
 
@@ -76,6 +77,7 @@ class TestRegistry {
         this.registerTest(TextInputApiTest);
         this.registerTest(TextInputInteractiveTest);
         this.registerTest(ViewBasicTest);
+        this.registerTest(ViewMouseTest);
         this.registerTest(WebViewBasicTest);
         this.registerTest(WebViewDynamicTest);
 
