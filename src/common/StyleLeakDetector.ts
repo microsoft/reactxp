@@ -6,7 +6,7 @@
 *
 * Detects style memory-leaks in react-native.
 * To fix warning you could:
-*  - use not cached styles by providing cacheStyle == falst to Style.create... method
+*  - use not cached styles by providing cacheStyle == false to Style.create... method
 *  - for colors you could use StylesRegestry component
 *  - for rx component you could temporary disable validation by calling pause method and restore by calling resume,
 *    but please make sure that it doesn't leaks first please
