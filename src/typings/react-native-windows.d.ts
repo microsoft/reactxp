@@ -31,6 +31,7 @@ declare module 'react-native-windows' {
         onKeyDown?: Function;
         onKeyUp?: Function;
         componentRef?: Function;
+        onAccessibilityTap?: Function;
     };
 
     interface FocusableWindows<P> extends RN.ReactNativeBaseComponent<FocusableWindowsProps<P>, {}>{

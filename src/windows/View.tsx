@@ -224,7 +224,8 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                 onKeyDown: this._onFocusableKeyDown,
                 onKeyUp: this._onFocusableKeyUp,
                 onFocus: this._onFocus,
-                onBlur: this._onBlur
+                onBlur: this._onBlur,
+                onAccessibilityTap: this._internalProps.onPress
             };
 
             let PotentiallyAnimatedFocusableView = this._isButton(this.props) ? FocusableAnimatedView : FocusableView;
