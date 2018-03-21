@@ -66,7 +66,8 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
                 handledKeyUpKeys: UP_KEYCODES,
                 onKeyDown: this._onKeyDown,
                 onKeyUp: this._onKeyUp,
-                onFocus: this._onFocus
+                onFocus: this._onFocus,
+                onAccessibilityTap: this._onPress
             };
 
             return (
@@ -103,24 +104,20 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     }
 
     private _onKeyDown = (e: React.SyntheticEvent<any>): void => {
-        if (this.props.onPress) {
-            let keyEvent = EventHelpers.toKeyboardEvent(e);
-            let key = keyEvent.keyCode;
-            // ENTER triggers press on key down
-            if (key === KEY_CODE_ENTER) {
-                // Defer to base class
-                this._onPress(keyEvent);
-            }
+        let keyEvent = EventHelpers.toKeyboardEvent(e);
+        let key = keyEvent.keyCode;
+        // ENTER triggers press on key down
+        if (key === KEY_CODE_ENTER) {
+            // Defer to base class
+            this._onPress(keyEvent);
         }
     }
 
     private _onKeyUp = (e: React.SyntheticEvent<any>): void => {
-        if (this.props.onPress) {
-            let keyEvent = EventHelpers.toKeyboardEvent(e);
-            if (keyEvent.keyCode === KEY_CODE_SPACE) {
-                 // Defer to base class
-                this._onPress(keyEvent);
-            }
+        let keyEvent = EventHelpers.toKeyboardEvent(e);
+        if (keyEvent.keyCode === KEY_CODE_SPACE) {
+            // Defer to base class
+            this._onPress(keyEvent);
         }
     }
 
