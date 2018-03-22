@@ -102,7 +102,7 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
     public render() {
         const theme = this.props.theme;
 
-        var buttons = this.props.buttons && this.props.buttons.map((btnSpec, i) => {
+        const buttons = this.props.buttons && this.props.buttons.map((btnSpec, i) => {
             let isCancel = btnSpec.style === 'cancel';
             let buttonStyle = [_styles.defaultButton, isCancel ? _styles.defaultCancelButton : undefined];
             let buttonTextStyle = [_styles.defaultBtnText, isCancel ? _styles.defaultCancelBtnText : undefined];
