@@ -199,6 +199,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     selectAll() {
         this._selectionToSet = { start: 0, end: this.state.inputValue.length };
+        this._selection = this._selectionToSet;
         this.forceUpdate();
     }
 
@@ -207,6 +208,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         const constrainedEnd = Math.min(end, this.state.inputValue.length);
 
         this._selectionToSet = { start: constrainedStart, end: constrainedEnd };
+        this._selection = this._selectionToSet;
         this.forceUpdate();
     }
 
