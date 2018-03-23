@@ -35,9 +35,7 @@ interface Selection {
 export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
     private _selectionToSet: Selection | undefined;
     private _selection: Selection = { start: 0, end: 0 };
-    private _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
-
-    protected _textInputRef: RN.TextInput|null = null;
+    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
 
     constructor(props: Types.TextInputProps) {
         super(props);
