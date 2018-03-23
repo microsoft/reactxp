@@ -48,9 +48,9 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
     }
 
     updateNativeTabIndex(): void {
-        if (this._textInputRef) {
+        if (this._mountedComponent) {
             let tabIndex: number | undefined = this.getTabIndex();
-            this._textInputRef.setNativeProps({
+            this._mountedComponent.setNativeProps({
                 tabIndex: tabIndex,
                 value: this.state.inputValue // mandatory for some reason
             });
