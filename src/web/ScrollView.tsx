@@ -151,7 +151,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
         super.componentDidMount();
         this._mounted = true;
 
-        this.createCustomScrollbarsIfNeeded();
+        this.createCustomScrollbarsIfNeeded(this.props);
     }
 
     componentWillReceiveProps(newProps: Types.ScrollViewProps) {
@@ -207,16 +207,35 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
     private _onPropsChange(props: Types.ScrollViewProps) {
         this._customScrollbarEnabled = ScrollViewConfig.useCustomScrollbars();
 
-        // If we're turning on custom scrollbars, we need to create the scrollbar when this prop
-        this.createCustomScrollbarsIfNeeded();
+        // If we're turning on custom scrollbars or toggling vertical and/or horizontal, we need to re-create
+        // the scrollbar.
+        this.createCustomScrollbarsIfNeeded(props);
     }
 
-    private createCustomScrollbarsIfNeeded() {
-        if (this._mounted && this._customScrollbarEnabled && !this._customScrollbar) {
+    private createCustomScrollbarsIfNeeded(props: Types.ScrollViewProps) {
+        if (this._mounted && this._customScrollbarEnabled) {
+            if (this._customScrollbar) {
+                if (this.props.horizontal === props.horizontal &&
+                    this.props.vertical === props.vertical &&
+                    this.props.showsHorizontalScrollIndicator === props.showsHorizontalScrollIndicator &&
+                    this.props.showsVerticalScrollIndicator === props.showsVerticalScrollIndicator) {
+                    // No need to re-create the scrollbar.
+                    return;
+                }
+                this._customScrollbar.dispose();
+                this._customScrollbar = undefined;
+            }
+
             let element = ReactDOM.findDOMNode(this) as HTMLElement;
             if (element) {
                 this._customScrollbar = new CustomScrollbar(element);
-                this._customScrollbar.init({ horizontal: this.props.horizontal, vertical: this.props.vertical });
+                const horizontalHidden = (props.horizontal && props.showsHorizontalScrollIndicator === false);
+                const verticalHidden = (props.vertical && props.showsVerticalScrollIndicator === false);
+                this._customScrollbar.init({
+                    horizontal: props.horizontal && !horizontalHidden,
+                    vertical: props.vertical && !verticalHidden,
+                    hiddenScrollbar: horizontalHidden || verticalHidden
+                });
             }
         }
     }

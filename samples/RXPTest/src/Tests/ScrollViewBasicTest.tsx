@@ -59,12 +59,28 @@ const _styles = {
         borderWidth: 1,
         borderColor: '#eee',
         justifyContent: 'center'
+    }),
+    button: RX.Styles.createButtonStyle({
+        backgroundColor: '#ddd',
+        borderWidth: 1,
+        margin: 16,
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 8,
+        borderColor: 'black'
+    }),
+    buttonText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.buttonFontSize,
+        marginHorizontal: 12,
+        color: CommonStyles.buttonTextColor
     })
 };
 
 const _colors = ['red', 'green', 'blue'];
 
 interface ScrollViewState {
+    horizontalIndicator: boolean;
+    verticalIndicator: boolean;
 }
 
 class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
@@ -72,6 +88,8 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
         super(props);
 
         this.state = {
+            horizontalIndicator: true,
+            verticalIndicator: true
         };
     }
 
@@ -103,9 +121,32 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation1' }>
                     <RX.Text style={ _styles.explainText }>
                         { 'Scroll view with both vertical and horizontal scrolling. ' +
-                          'Bouncing (iOS) and over-scroll (Android) are disabled. ' }
+                          'Bouncing (iOS) and over-scroll (Android) are disabled. ' +
+                          'Press buttons to toggle scroll indicators.' }
                     </RX.Text>
                 </RX.View>
+
+                <RX.Button
+                    style={ _styles.button }
+                    onPress={ () => {
+                        this.setState({ horizontalIndicator: !this.state.horizontalIndicator })
+                    } }
+                >
+                    <RX.Text style={ _styles.buttonText }>
+                        { 'Horizontal indicator: ' + (this.state.horizontalIndicator ? 'On' : 'Off') }
+                    </RX.Text>
+                </RX.Button>
+                <RX.Button
+                    style={ _styles.button }
+                    onPress={ () => {
+                        this.setState({ verticalIndicator: !this.state.verticalIndicator })
+                    } }
+                >
+                    <RX.Text style={ _styles.buttonText }>
+                        { 'Vertical indicator: ' + (this.state.verticalIndicator ? 'On' : 'Off') }
+                    </RX.Text>
+                </RX.Button>
+
                 <RX.View style={ _styles.scrollViewContainer }>
                     <RX.ScrollView
                         style={ _styles.scrollView1 }
@@ -113,6 +154,8 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
                         horizontal={ true }
                         bounces={ false }
                         overScrollMode={ 'never' }
+                        showsHorizontalScrollIndicator={ this.state.horizontalIndicator }
+                        showsVerticalScrollIndicator={ this.state.verticalIndicator }
                     >
                         <RX.View style={ _styles.numberGrid }>
                             { numberBoxes }
