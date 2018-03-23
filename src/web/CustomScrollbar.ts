@@ -30,6 +30,7 @@ interface IScrollbarInfo {
 export interface ScrollbarOptions {
     horizontal?: boolean;
     vertical?: boolean;
+    hiddenScrollbar?: boolean;
 }
 
 var _nativeSrollBarWidth: number = -1;
@@ -166,6 +167,7 @@ export class Scrollbar {
     private _scrollingVisible = false;
     private _hasHorizontal = false;
     private _hasVertical = true;
+    private _hasHiddenScrollbar = false;
     private _stopDragCallback = this._stopDrag.bind(this);
     private _startDragVCallback = this._startDrag.bind(this, true);
     private _startDragHCallback = this._startDrag.bind(this, false);
@@ -433,7 +435,7 @@ export class Scrollbar {
     }
 
     private _calcNewBarSize(bar: IScrollbarInfo, newSize: number, newScrollSize: number, hasBoth: boolean) {
-        if (hasBoth) {
+        if (hasBoth || this._hasHiddenScrollbar) {
             newSize -= SCROLLER_NEGATIVE_MARGIN;
             newScrollSize -= SCROLLER_NEGATIVE_MARGIN - Scrollbar.getNativeScrollbarWidth();
         }
@@ -501,12 +503,16 @@ export class Scrollbar {
 
     init(options?: ScrollbarOptions) {
         if (options) {
-            this._hasHorizontal = options.horizontal!!!;
+            this._hasHorizontal = !!options.horizontal;
 
             // Only if vertical is explicitly false as opposed to null, set it to false (default is true)
             if (options.vertical === false) {
                 this._hasVertical = options.vertical;
             }
+
+            // Our container may be scrollable even if the corresponding scrollbar is hidden (i.e. vertical
+            // or horizontal is false). We have to take it into account when calculating scroll bar sizes.
+            this._hasHiddenScrollbar = !!options.hiddenScrollbar;
         }
         Scrollbar._installStyleSheet();
         this._addScrollbars();
