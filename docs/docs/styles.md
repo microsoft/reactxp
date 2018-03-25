@@ -74,7 +74,7 @@ ReactXP adopts the simplified flexbox rules and defaults defined by React Native
 + While it is possible to specify flexGrow, flexShrink and flexBasis values independently, it is more common to specify the flex parameters using a shortcut called "flex". It accepts an integer value and covers the following common cases.
     * "flex: 0" implies "flex: 0 0 auto"
     * "flex: n" (where n is negative) implies "flex: 0 n auto"
-    * "flex: p" (where p is positive) implies "flex: n 1 auto"
+    * "flex: p" (where p is positive) implies "flex: p 1 auto"
 
 + The default flexDirection is 'column' rather than 'row'.
 
