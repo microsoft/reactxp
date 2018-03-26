@@ -16,6 +16,14 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.1.0-rc.1 of reactxp
+_Released 26 Mar 2018_
+Added support for "cacheable" popups. This is useful for popups that involve many views and are costly to recreate from scratch.
+Fixed keyboard handler in RX.Link, it was defferring to base class only when onPress was defined, and that was wrong.
+Fixed bug in native implementation of TextInput where selection was sometimes lost.
+Fixed TextInput reference for focus control on windows.
+Implemented hidden scroll indicators in web/ScrollView.
+
 #### Version 1.0.2 of reactxp
 _Released 16 Mar 2018_
 Fixed bug in web TextInput implementation that resulted in a console warning with the latest versions of ReactJS.
