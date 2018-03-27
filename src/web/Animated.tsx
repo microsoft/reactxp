@@ -119,9 +119,7 @@ export class Value extends Types.AnimatedValue {
         // expensive from a performance and responsiveness perspective.
         if (config.inputRange.length !== 2) {
             if (AppConfig.isDevelopmentMode()) {
-                if (AppConfig.isDevelopmentMode()) {
-                    console.log('Web implementation of interpolate API currently supports only two interpolation values.');
-                }
+                console.log('Web implementation of interpolate API currently supports only two interpolation values.');
             }
         }
 
