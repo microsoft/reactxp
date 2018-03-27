@@ -374,18 +374,39 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
             duration: _test4Duration,
             easing: RX.Animated.Easing.InOut()
         });
-        animation.start();
+
+        let isFinished: boolean|undefined;
+        let wasCompletionCalled = false;
+        animation.start(completeInfo => {
+            if (isFinished !== undefined) {
+                this._testResult.errors.push('Completion callback "finished" called multiple times');
+            }
+            isFinished = completeInfo.finished;
+            wasCompletionCalled = true;
+        });
 
         // Set a timer for half-way through the animation. This will
         // stop the animation and start it again in the opposite direction.
         _.delay(() => {
             if (this._isMounted) {
                 animation.stop();
+
+                // Make sure the completion was executed and the "finished" parameter was false.
+                if (!wasCompletionCalled) {
+                    this._testResult.errors.push('Completion callback was not called when animation was stopped');
+                } else if (isFinished === undefined || isFinished !== false) {
+                    this._testResult.errors.push('Completion callback "finished" parameter was not false as expected');
+                }
+
                 RX.Animated.timing(this._test4OffsetH, {
                     toValue: -100,
                     duration: _test4Duration / 2,
                     easing: RX.Animated.Easing.InOut()
-                }).start(() => {
+                }).start(completeInfo => {
+                    if (!completeInfo.finished) {
+                        this._testResult.errors.push('Completion callback "finished" parameter was not true as expected');
+                    }
+    
                     if (this._isMounted) {
                         this.setState({ isRunningTest4: false });
                     }
