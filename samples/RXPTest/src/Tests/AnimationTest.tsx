@@ -307,27 +307,27 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
 
         let animation = RX.Animated.sequence([
             RX.Animated.parallel([
-                RX.Animated.timing(this._test2OffsetH, {
-                    toValue: 100,
-                    duration: _test2Duration,
-                    easing: RX.Animated.Easing.InOut()
-                }),
                 RX.Animated.timing(this._test2Color, {
                     toValue: 1,
                     duration: _test2Duration,
                     easing: RX.Animated.Easing.InOut()
+                }),
+                RX.Animated.timing(this._test2OffsetH, {
+                    toValue: 100,
+                    duration: _test2Duration,
+                    easing: RX.Animated.Easing.Linear()
                 })
             ]),
             RX.Animated.parallel([
-                RX.Animated.timing(this._test2OffsetH, {
-                    toValue: -100,
-                    duration: _test2Duration,
-                    easing: RX.Animated.Easing.InOut()
-                }),
                 RX.Animated.timing(this._test2Color, {
                     toValue: 0,
                     duration: _test2Duration,
                     easing: RX.Animated.Easing.InOut()
+                }),
+                RX.Animated.timing(this._test2OffsetH, {
+                    toValue: -100,
+                    duration: _test2Duration,
+                    easing: RX.Animated.Easing.Linear()
                 })
             ])
         ]);
@@ -372,7 +372,7 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
         let animation = RX.Animated.timing(this._test4OffsetH, {
             toValue: 0,
             duration: _test4Duration,
-            easing: RX.Animated.Easing.InOut()
+            easing: RX.Animated.Easing.Linear()
         });
 
         let isFinished: boolean|undefined;
@@ -401,7 +401,7 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
                 RX.Animated.timing(this._test4OffsetH, {
                     toValue: -100,
                     duration: _test4Duration / 2,
-                    easing: RX.Animated.Easing.InOut()
+                    easing: RX.Animated.Easing.Linear()
                 }).start(completeInfo => {
                     if (!completeInfo.finished) {
                         this._testResult.errors.push('Completion callback "finished" parameter was not true as expected');
