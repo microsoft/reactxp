@@ -16,6 +16,10 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.1.0-rc.2 of reactxp
+_Released 28 Mar 2018_
+Fixed bug in web implementation of animation where completion callback was called multiple times in some cases.
+
 #### Version 1.1.0-rc.1 of reactxp
 _Released 26 Mar 2018_
 Added support for "cacheable" popups. This is useful for popups that involve many views and are costly to recreate from scratch.
