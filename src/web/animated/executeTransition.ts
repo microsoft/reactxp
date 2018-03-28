@@ -69,19 +69,19 @@ export function executeTransition(element: HTMLElement, transitions: ITransition
         if (!didFinish) {
             clearTimeout(timeoutId);
 
-            // TODO: Cross-browser equivalent of 'transitionEnd' event (e.g. vendor prefixed).
-            element.removeEventListener('webkitTransitionEnd', onTransitionEnd);
-            element.removeEventListener('transitionEnd', onTransitionEnd);
-
-            // Only clean the transition if we are ending the same transition it was initially set.
-            // There are cases where transitions may be overriden before the transition before ends.
+            // Only complete the transition if we are ending the same transition it was initially set.
+            // There are cases where transitions may be overriden before the transition ends.
             if (element.dataset['transitionId'] === timeoutId.toString()) {
+                // TODO: Cross-browser equivalent of 'transitionEnd' event (e.g. vendor prefixed).
+                element.removeEventListener('webkitTransitionEnd', onTransitionEnd);
+                element.removeEventListener('transitionEnd', onTransitionEnd);
+
                 delete element.dataset['transitionId'];
                 element.style.transition = 'none';
-            }
 
-            didFinish = true;
-            done();
+                didFinish = true;
+                done();
+            }
         }
     };
 
