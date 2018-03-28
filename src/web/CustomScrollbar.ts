@@ -520,7 +520,7 @@ export class Scrollbar {
         this._container.addEventListener('mouseenter', this._updateCallback);
 
         // Defer remaining init work to avoid triggering sync layout
-        this._asyncInitTimer = window.setTimeout(() => {
+        this._asyncInitTimer = setTimeout(() => {
             this._asyncInitTimer = undefined;
             this._tryLtrOverride();
             this.update();
@@ -529,7 +529,7 @@ export class Scrollbar {
 
     dispose() {
         if (this._asyncInitTimer) {
-            window.clearInterval(this._asyncInitTimer);
+            clearInterval(this._asyncInitTimer);
             this._asyncInitTimer = undefined;
         }
         this._stopDrag();

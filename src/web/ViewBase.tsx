@@ -41,7 +41,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
 
             // Cancel any existing timers.
             if (ViewBase._viewCheckingTimer) {
-                window.clearInterval(ViewBase._viewCheckingTimer);
+                clearInterval(ViewBase._viewCheckingTimer);
                 ViewBase._viewCheckingTimer = undefined;
             }
 
@@ -82,7 +82,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         this._layoutReportList.push(func);
 
         if (!ViewBase._layoutReportingTimer) {
-            ViewBase._layoutReportingTimer = window.setTimeout(() => {
+            ViewBase._layoutReportingTimer = setTimeout(() => {
                 ViewBase._layoutReportingTimer = undefined;
                 ViewBase._reportDeferredLayoutChanges();
             }, 0);

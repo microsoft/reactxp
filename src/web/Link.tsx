@@ -102,7 +102,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
         if (this.props.onLongPress) {
             e.persist();
 
-            this._longPressTimer = window.setTimeout(() => {
+            this._longPressTimer = setTimeout(() => {
                 this._longPressTimer = undefined;
                 if (this.props.onLongPress) {
                     this.props.onLongPress(e, this.props.url);
@@ -113,7 +113,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
 
     private _onMouseUp = (e: Types.SyntheticEvent) => {
         if (this._longPressTimer) {
-            window.clearTimeout(this._longPressTimer);
+            clearTimeout(this._longPressTimer);
             this._longPressTimer = undefined;
         }
     }

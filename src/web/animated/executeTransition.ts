@@ -86,7 +86,7 @@ export function executeTransition(element: HTMLElement, transitions: ITransition
     };
 
     // Watchdog timeout for cases where transitionEnd event doesn't fire.
-    timeoutId = window.setTimeout(function () {
+    timeoutId = setTimeout(function () {
         // If the item was removed from the DOM (which can happen if a
         // rerender occurred), don't bother finishing. We don't want to do
         // this in the transition event finish path because it's expensive

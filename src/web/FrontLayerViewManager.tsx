@@ -113,7 +113,7 @@ export class FrontLayerViewManager {
         this._renderRootView();
 
         if (this._activePopupShowDelay > 0) {
-            this._popupShowDelayTimer = window.setTimeout(() => {
+            this._popupShowDelayTimer = setTimeout(() => {
                 this._activePopupShowDelay = 0;
                 this._popupShowDelayTimer = undefined;
                 this._renderRootView();

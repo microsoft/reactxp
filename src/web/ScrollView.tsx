@@ -329,7 +329,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 var position = this._easeInOut(elapsedTime, start, change, duration);
                 container.scrollTop = position;
                 if (elapsedTime < duration) {
-                    window.setTimeout(function() {
+                    setTimeout(function() {
                         animateScroll(elapsedTime);
                     }, increment);
                 }
@@ -358,7 +358,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
                 var position = this._easeInOut(elapsedTime, start, change, duration);
                 container.scrollLeft = position;
                 if (elapsedTime < duration) {
-                    window.setTimeout(function() {
+                    setTimeout(function() {
                         animateScroll(elapsedTime);
                     }, increment);
                 }

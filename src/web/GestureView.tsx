@@ -306,7 +306,7 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
     private _startDoubleTapTimer(e: React.MouseEvent<any>) {
         this._lastTapEvent = _.clone(e);
 
-        this._doubleTapTimer = window.setTimeout(() => {
+        this._doubleTapTimer = setTimeout(() => {
             this._reportDelayedTap();
             this._doubleTapTimer = undefined;
         }, _doubleTapDurationThreshold);

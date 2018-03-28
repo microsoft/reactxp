@@ -185,9 +185,9 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
 
             // In the unlikely event we get 2 mouse down events, clear existing timer
             if (this._longPressTimer) {
-                window.clearTimeout(this._longPressTimer);
+                clearTimeout(this._longPressTimer);
             }
-            this._longPressTimer = window.setTimeout(() => {
+            this._longPressTimer = setTimeout(() => {
                 this._longPressTimer = undefined;
                 if (this.props.onLongPress) {
                     // lastMouseDownEvent can never be undefined at this point
@@ -204,7 +204,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         }
 
         if (this._longPressTimer) {
-            window.clearTimeout(this._longPressTimer);
+            clearTimeout(this._longPressTimer);
         }
     }
 

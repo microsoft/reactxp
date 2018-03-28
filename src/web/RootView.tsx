@@ -459,7 +459,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             const activeElement = document.activeElement;
 
             if (this._isNavigatingWithKeyboardUpateTimer) {
-                window.clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
+                clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
             }
 
             this._isNavigatingWithKeyboardUpateTimer = window.setTimeout(() => {
@@ -474,7 +474,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
     private _updateKeyboardNavigationState(isNavigatingWithKeyboard: boolean) {
         if (this._isNavigatingWithKeyboardUpateTimer) {
-            window.clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
+            clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
             this._isNavigatingWithKeyboardUpateTimer = undefined;
         }
 
