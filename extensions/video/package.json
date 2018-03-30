@@ -17,7 +17,7 @@
   "peerDependencies": {
     "react-dom": "16.2.0",
     "react-native": "^0.51.0",
-    "react-native-windows": "^0.51.0"
+    "react-native-windows": "^0.51.0-rc.1"
   },
   "devDependencies": {
     "typescript": "2.7.2",
