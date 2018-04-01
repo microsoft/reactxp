@@ -25,7 +25,7 @@
     "react-dom": "16.2.0",
     "react-native": "^0.51.0",
     "react-native-sqlite-storage": "^3.3.1",
-    "react-native-windows": "^0.51.0-rc.1",
+    "react-native-windows": "^0.53.0",
     "reactxp": "^1.0.0",
     "reactxp-imagesvg": "^0.2.8",
     "reactxp-navigation": "^1.0.15",
