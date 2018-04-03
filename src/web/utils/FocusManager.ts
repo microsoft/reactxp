@@ -25,12 +25,17 @@ UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
     _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 });
 
-import { applyFocusableComponentMixin, FocusableComponentStateCallback } from  '../../common/utils/FocusManager';
-export { applyFocusableComponentMixin, FocusableComponentStateCallback };
+import {
+    applyFocusableComponentMixin as applyFocusableComponentMixinCommon,
+    FocusableComponentStateCallback
+} from  '../../common/utils/FocusManager';
+
+export { FocusableComponentStateCallback };
 
 export class FocusManager extends FocusManagerBase {
     private static _setTabIndexTimer: number|undefined;
     private static _setTabIndexElement: HTMLElement|undefined;
+    private static _lastFocusedProgrammatically: HTMLElement|undefined;
 
     constructor(parent: FocusManager | undefined) {
         super(parent);
@@ -99,10 +104,23 @@ export class FocusManager extends FocusManagerBase {
     protected /* static */ focusComponent(component: FocusableComponentInternal): boolean {
         const el = ReactDOM.findDOMNode(component) as HTMLElement;
         if (el && el.focus) {
+            FocusManager.setLastFocusedProgrammatically(el);
             el.focus();
             return true;
         }
         return false;
+    }
+
+    static setLastFocusedProgrammatically(element: HTMLElement|undefined) {
+        this._lastFocusedProgrammatically = element;
+    }
+
+    static getLastFocusedProgrammatically(reset?: boolean): HTMLElement|undefined {
+        const ret = FocusManager._lastFocusedProgrammatically;
+        if (ret && reset) {
+            FocusManager._lastFocusedProgrammatically = undefined;
+        }
+        return ret;
     }
 
     static focusFirst(last?: boolean) {
@@ -126,7 +144,9 @@ export class FocusManager extends FocusManagerBase {
                 return a.compareDocumentPosition(b) & document.DOCUMENT_POSITION_PRECEDING ? 1 : -1;
             });
 
-            focusable[last ? focusable.length - 1 : 0].focus();
+            const elementToFocus = focusable[last ? focusable.length - 1 : 0];
+            FocusManager.setLastFocusedProgrammatically(elementToFocus);
+            elementToFocus.focus();
         }
     }
 
@@ -166,10 +186,12 @@ export class FocusManager extends FocusManagerBase {
                 FocusManager._resetFocusTimer = undefined;
                 const prevTabIndex = FocusManager._setTabIndex(document.body, 0);
                 const activeElement = document.activeElement;
+                FocusManager.setLastFocusedProgrammatically(document.body);
                 document.body.focus();
                 document.body.blur();
                 FocusManager._setTabIndex(document.body, prevTabIndex);
                 if (activeElement instanceof HTMLElement) {
+                    FocusManager.setLastFocusedProgrammatically(activeElement);
                     activeElement.focus();
                 }
             }, 0);
@@ -268,6 +290,23 @@ export class FocusManager extends FocusManagerBase {
         }
 
         return prev;
+    }
+}
+
+export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function) {
+    applyFocusableComponentMixinCommon(Component, isConditionallyFocusable);
+
+    const origFocus = Component.prototype.focus;
+
+    if (origFocus) {
+        Component.prototype.focus = function () {
+            const el = ReactDOM.findDOMNode(this) as HTMLElement;
+            if (el) {
+                FocusManager.setLastFocusedProgrammatically(el);
+            }
+
+            origFocus.apply(this, arguments);
+        };
     }
 }
 
