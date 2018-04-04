@@ -16,6 +16,17 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 0.2.10 of reactxp-imagesvg
+#### Version 1.0.17 of reactxp-navigation
+#### Version 0.2.5 of reactxp-video
+#### Version 0.1.9 of reactxp-virtuallistview
+_Released 4 Apr 2018_
+Rebuilt using reactxp 1.1.0.
+
+#### Version 1.1.0 of reactxp
+_Released 4 Apr 2018_
+Added workaround to enable the keyboard navigation mode when the screen reader is used.
+
 #### Version 1.1.0-rc.2 of reactxp
 _Released 28 Mar 2018_
 Fixed bug in web implementation of animation where completion callback was called multiple times in some cases.
@@ -43,7 +54,7 @@ Events passed to onPress and onLongPress now include touch or mouse coordinates.
 #### Version 0.2.9 of reactxp-imagesvg
 #### Version 1.0.16 of reactxp-navigation
 #### Version 0.2.4 of reactxp-video
-#### Version 0.2.4 of reactxp-virtuallistview
+#### Version 0.1.8 of reactxp-virtuallistview
 _Released 2 Mar 2018_
 Rebuilt using reactxp 1.0.0 and latest typescript compiler version.
 
