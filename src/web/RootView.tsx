@@ -130,6 +130,11 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _isNavigatingWithKeyboard: boolean = false;
     private _isNavigatingWithKeyboardUpateTimer: number|undefined;
 
+    private _shouldEnableKeyboardNavigationModeOnFocus = false;
+    private _applicationIsNotActive = false;
+    private _applicationIsNotActiveTimer: number|undefined;
+    private _prevFocusedElement: HTMLElement|undefined;
+
     constructor(props: RootViewProps) {
         super(props);
 
@@ -251,6 +256,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
             window.addEventListener('keydown', this._onKeyDownCapture, true); // Capture!
             window.addEventListener('mousedown', this._onMouseDownCapture, true); // Capture!
+            window.addEventListener('focusin', this._onFocusIn);
+            window.addEventListener('focusout', this._onFocusOut);
 
             this._keyboardHandlerInstalled = true;
         }
@@ -271,6 +278,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
             window.removeEventListener('keydown', this._onKeyDownCapture, true);
             window.removeEventListener('mousedown', this._onMouseDownCapture, true);
+            window.removeEventListener('focusin', this._onFocusIn);
+            window.removeEventListener('focusout', this._onFocusOut);
 
             this._keyboardHandlerInstalled = false;
         }
@@ -342,7 +351,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 </ModalContainer>
             );
         }
-    
+
         let announcement: any = this.state.announcementTextInNestedDiv ?
             ( <div> { this.state.announcementText } </div> ) :
             this.state.announcementText;
@@ -445,6 +454,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             // Space is pressed, do not dismiss the keyboard navigation mode.
             return;
         }
+
+        this._shouldEnableKeyboardNavigationModeOnFocus = false;
         this._updateKeyboardNavigationState(false);
     }
 
@@ -469,6 +480,60 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                     this._updateKeyboardNavigationState(false);
                 }
             }, 500);
+        }
+    }
+
+    private _onFocusIn = (e: FocusEvent) => {
+        // When the screen reader is being used, we need to enable the keyboard navigation
+        // mode. It's not possible to detect the screen reader on web. To work it around we
+        // apply the following assumption: if the focus is moved without using the mouse and
+        // not from the application code with focus() method, it is most likely moved by the
+        // screen reader.
+        this._cancelApplicationIsNotActive();
+
+        const target = e.target as HTMLElement;
+        const prev = this._prevFocusedElement;
+        const curShouldEnable = this._shouldEnableKeyboardNavigationModeOnFocus;
+
+        this._prevFocusedElement = target;
+        this._shouldEnableKeyboardNavigationModeOnFocus = true;
+
+        if (this._applicationIsNotActive) {
+            this._applicationIsNotActive = false;
+            return;
+        }
+
+        if ((prev === target) || (target === FocusManager.getLastFocusedProgrammatically(true))) {
+            return;
+        }
+
+        if (!this._isNavigatingWithKeyboard && curShouldEnable) {
+            this._updateKeyboardNavigationState(true);
+        }
+    }
+
+    private _onFocusOut = (e: FocusEvent) => {
+        // If the focus is out and nothing is focused after some time, most likely
+        // the application has been deactivated, so the next focusin will be about
+        // activating the application back again and should be ignored.
+        // This is a safety pillow for checking that _prevFocusedElement is changed,
+        // as _prevFocusedElement might be gone while the application is not active.
+        this._requestApplicationIsNotActive();
+    }
+
+    private _requestApplicationIsNotActive() {
+        this._cancelApplicationIsNotActive();
+
+        this._applicationIsNotActiveTimer = setTimeout(() => {
+            this._applicationIsNotActiveTimer = undefined;
+            this._applicationIsNotActive = true;
+        }, 100);
+    }
+
+    private _cancelApplicationIsNotActive() {
+        if (this._applicationIsNotActiveTimer) {
+            clearTimeout(this._applicationIsNotActiveTimer);
+            this._applicationIsNotActiveTimer = undefined;
         }
     }
 
