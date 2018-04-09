@@ -45,7 +45,7 @@ import TextImpl from '../native-common/Text';
 import TextInputImpl from './TextInput';
 import UserInterfaceImpl from '../native-common/UserInterface';
 import UserPresenceImpl from '../native-common/UserPresence';
-import ViewImpl from '../native-common/View';
+import ViewImpl from './View';
 import WebViewImpl from '../native-common/WebView';
 import ViewBase from '../native-common/ViewBase';
 
