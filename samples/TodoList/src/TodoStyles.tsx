@@ -26,13 +26,13 @@ class TodoStyles {
         radius: 6,
         margins: 16,
         margin: 8
-    }
+    };
 
     static fontSizes = {
         size14: 14,
         size20: 20,
         size36: 36
-    }
+    };
 
     static styles = {
         headerWithStatusBar: RX.Styles.createViewStyle({
