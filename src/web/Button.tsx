@@ -33,9 +33,6 @@ const _styles = {
         borderColor: 'transparent',
         textAlign: 'left',
         borderWidth: '0'
-    },
-    disabled: {
-        opacity: 0.5
     }
 };
 
@@ -157,7 +154,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         }
 
         if (this.props.disabled) {
-            buttonStyleMutations.opacity = 0.5;
+            buttonStyleMutations.opacity = this.props.disabledOpacity || 0.5;
         }
 
         // Default to 'pointer' cursor for enabled buttons unless otherwise specified.

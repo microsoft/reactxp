@@ -457,6 +457,7 @@ export interface CommonStyledProps<T> extends CommonProps {
 export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, CommonAccessibilityProps {
     title?: string;
     disabled?: boolean;
+    disabledOpacity?: number;
     delayLongPress?: number;
 
     onAccessibilityTapIOS?: Function; // iOS-only prop, call when a button is double tapped in accessibility mode
