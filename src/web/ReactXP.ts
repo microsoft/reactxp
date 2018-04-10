@@ -57,6 +57,10 @@ import ViewImpl from './View';
 import { ViewBase } from './ViewBase';
 import { WebView as WebViewImpl } from './WebView';
 
+// Initialize AutofocusHelper.
+import { initAutoFocus } from '../common/utils/AutoFocusHelper';
+initAutoFocus('web', () => UserInterfaceImpl.isNavigatingWithKeyboard());
+
 // -- STRANGE THINGS GOING ON HERE --
 //
 // 1) 'export type Foo = FooImpl; export var Foo = FooImpl;'

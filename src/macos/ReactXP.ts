@@ -16,6 +16,10 @@ import RXInterfaces = require('../common/Interfaces');
 import RXModuleInterface = require('../common/ModuleInterface');
 import RXTypes = require('../common/Types');
 
+// Initialize AutofocusHelper.
+import { initAutoFocus } from '../common/utils/AutoFocusHelper';
+initAutoFocus('macos', () => UserInterfaceImpl.isNavigatingWithKeyboard());
+
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 

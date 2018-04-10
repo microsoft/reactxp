@@ -14,6 +14,7 @@ import PropTypes = require('prop-types');
 import AccessibilityUtil from './AccessibilityUtil';
 import AnimateListEdits from './listAnimations/AnimateListEdits';
 import AppConfig from '../common/AppConfig';
+import { autoFocusIfNeeded } from '../common/utils/AutoFocusHelper';
 import restyleForInlineText = require('./utils/restyleForInlineText');
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -395,6 +396,10 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
     componentDidMount() {
         super.componentDidMount();
+
+        if (this.props.autoFocus) {
+            autoFocusIfNeeded(this.props.autoFocus, () => this.focus(), () => this._isMounted);
+        }
 
         // If we are mounted as visible, do our initialization now. If we are hidden, it will
         // be done later when the popup is shown.

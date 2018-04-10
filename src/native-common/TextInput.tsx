@@ -11,6 +11,7 @@ import React = require('react');
 import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
+import { autoFocusIfNeeded } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -54,6 +55,12 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
+    componentDidMount() {
+        if (this.props.autoFocus) {
+            autoFocusIfNeeded(this.props.autoFocus, () => this.focus(), () => !!this._mountedComponent);
+        }
+    }
+
     protected _render(props: RN.TextInputProps): JSX.Element {
         return (
             <RN.TextInput
@@ -75,7 +82,6 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             autoCorrect: this.props.autoCorrect,
             spellCheck: this.props.spellCheck,
             autoCapitalize: this.props.autoCapitalize,
-            autoFocus: this.props.autoFocus,
             keyboardType: this.props.keyboardType,
             editable: editable,
             selectionColor: this.props.selectionColor,
@@ -105,7 +111,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         };
 
         this._selectionToSet = undefined;
-        
+
         return this._render(internalProps);
     }
 

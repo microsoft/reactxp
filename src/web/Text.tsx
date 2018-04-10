@@ -12,6 +12,7 @@ import ReactDOM = require('react-dom');
 import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
+import { autoFocusIfNeeded } from '../common/utils/AutoFocusHelper';
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -53,6 +54,8 @@ export class Text extends React.Component<Types.TextProps, {}> {
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired
     };
+
+    private _isMounted = false;
 
     getChildContext() {
         // Let descendant Types components know that their nearest Types ancestor is an Types.Text.
@@ -98,6 +101,18 @@ export class Text extends React.Component<Types.TextProps, {}> {
         }
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+
+        if (this.props.autoFocus) {
+            autoFocusIfNeeded(this.props.autoFocus, () => this.focus(), () => this._isMounted);
+        }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     _getStyles(): Types.TextStyleRuleSet {
         // There's no way in HTML to properly handle numberOfLines > 1,
         // but we can correctly handle the common case where numberOfLines is 1.
@@ -123,14 +138,14 @@ export class Text extends React.Component<Types.TextProps, {}> {
     }
 
     blur() {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
+        let el = ReactDOM.findDOMNode(this) as HTMLDivElement;
         if (el) {
             el.blur();
         }
     }
 
     focus() {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
+        let el = ReactDOM.findDOMNode(this) as HTMLDivElement;
         if (el) {
             el.focus();
         }

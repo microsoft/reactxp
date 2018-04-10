@@ -9,6 +9,7 @@
 
 import React = require('react');
 
+import { autoFocusIfNeeded } from '../common/utils/AutoFocusHelper';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
@@ -42,6 +43,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     private _selectionStart: number = 0;
     private _selectionEnd: number = 0;
 
+    private _isFocused = false;
+    private _ariaLiveEnabled = false;
+
     constructor(props: Types.TextInputProps) {
         super(props);
 
@@ -60,7 +64,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     componentDidMount() {
         if (this.props.autoFocus) {
-            this.focus();
+            autoFocusIfNeeded(this.props.autoFocus, () => this.focus(), () => !!this._mountedComponent);
         }
     }
 
@@ -97,20 +101,19 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onChange={ this._onInputChanged }
                     onKeyDown={ this._onKeyDown }
                     onKeyUp={ this._checkSelectionChanged }
-                    onFocus={ this.props.onFocus }
-                    onBlur={ this.props.onBlur }
+                    onInput={ this._onInput }
+                    onFocus={ this._onFocus }
+                    onBlur={ this._onBlur }
                     onMouseDown={ this._checkSelectionChanged }
                     onMouseUp={ this._checkSelectionChanged }
                     onPaste={ this._onPaste }
                     onScroll={ this._onScroll }
                     aria-label={ this.props.accessibilityLabel }
-                    // VoiceOver does not handle text inputs properly at the moment, aria-live is a temporary workaround.
-                    aria-live={ _isMac ? 'assertive' : undefined }
                 />
             );
         } else {
             let { keyboardTypeValue, wrapInForm, pattern } = this._getKeyboardType();
-            
+
             let input = (
                 <input
                     ref={ this._onMount }
@@ -126,19 +129,18 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onChange= { this._onInputChanged }
                     onKeyDown={ this._onKeyDown }
                     onKeyUp={ this._checkSelectionChanged }
-                    onFocus={ this.props.onFocus }
-                    onBlur={ this.props.onBlur }
+                    onInput={ this._onInput }
+                    onFocus={ this._onFocus }
+                    onBlur={ this._onBlur }
                     onMouseDown={ this._checkSelectionChanged }
                     onMouseUp={ this._checkSelectionChanged }
                     onPaste={ this._onPaste }
                     aria-label={ this.props.accessibilityLabel }
-                    // VoiceOver does not handle text inputs properly at the moment, aria-live is a temporary workaround.
-                    aria-live={ _isMac ? 'assertive' : undefined }
                     type={ keyboardTypeValue }
                     pattern={ pattern }
                 />
             );
-            
+
             if (wrapInForm) {
                 // Wrap the input in a form tag if required
                 input = (
@@ -155,6 +157,41 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     private _onMount = (comp: HTMLInputElement|HTMLTextAreaElement|null) => {
         this._mountedComponent = comp;
+    }
+
+    private _onInput = () => {
+        if (_isMac && this._mountedComponent && this._isFocused && !this._ariaLiveEnabled) {
+            // VoiceOver does not handle text inputs properly at the moment, aria-live is a temporary workaround.
+            // And we're adding aria-live only for the focused input which is being edited, otherwise it might
+            // interrupt some required announcements.
+            this._mountedComponent.setAttribute('aria-live', 'assertive');
+            this._ariaLiveEnabled = true;
+        }
+    }
+
+    private _onFocus = (e: Types.FocusEvent) => {
+        if (this._mountedComponent) {
+            this._isFocused = true;
+
+            if (this.props.onFocus) {
+                this.props.onFocus(e);
+            }
+        }
+    }
+
+    private _onBlur = () => {
+        if (this._mountedComponent) {
+            this._isFocused = false;
+
+            if (_isMac && this._ariaLiveEnabled) {
+                this._mountedComponent.removeAttribute('aria-live');
+                this._ariaLiveEnabled = false;
+            }
+
+            if (this.props.onBlur) {
+                this.props.onBlur();
+            }
+        }
     }
 
     private _getKeyboardType(): { keyboardTypeValue: string, wrapInForm: boolean, pattern: string|undefined } {

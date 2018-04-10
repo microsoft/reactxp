@@ -30,7 +30,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
 
     abstract render(): JSX.Element;
     protected abstract _getContainer(): HTMLElement|null;
-    private _isMounted = false;
+    protected _isMounted = false;
     private _isPopupDisplayed = false;
 
     // Sets the activation state so we can stop our periodic timer
@@ -232,14 +232,14 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
     }
 
     blur() {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
+        let el = ReactDOM.findDOMNode(this) as HTMLDivElement;
         if (el) {
             el.blur();
         }
     }
 
     focus() {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
+        let el = ReactDOM.findDOMNode(this) as HTMLDivElement;
         if (el) {
             el.focus();
         }

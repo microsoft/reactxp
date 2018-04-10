@@ -449,6 +449,44 @@ export enum AccessibilityTrait {
     None
 }
 
+// The autofocusing logic should behave differently on different platforms,
+// to avoid having complex logic on the application level, we're letting to
+// specify the autofocusing conditions in autoFocus property of the component.
+export enum AutoFocusOnMount {
+    No = 0,
+    Yes = 1, // All platforms, any state of the keyboard navigation mode, default
+             // priority, no delay.
+
+    // We can target the keyboard navigation mode (if none of
+    // WhenNavigatingWithKeyboard and WhenNavigatingWithoutKeyboard are specified,
+    // both are assumed to be enabled).
+    WhenNavigatingWithKeyboard,
+    WhenNavigatingWithoutKeyboard,
+
+    // We can target the platform (if none of the platforms are specified, all
+    // platforms are assumed to be enabled).
+    Android,
+    IOS,
+    Web,
+    Windows,
+    Mac,
+
+    // Sometimes a common high level component has default autofocusable
+    // (for example, close button for a modal), but the subcomponents want
+    // to be autofocused too (for example, some input inside the modal).
+    // We can specify the priority (Low for the close button, High for the
+    // input) without forking the logic on the application level.
+    // Default priority is PriorityLow.
+    PriorityHigh,
+    PriorityLow,
+
+    // Sometimes it might be needed to delay the autofocusing a little (if no
+    // delay is specified, the component will be focused without the delay).
+    Delay100, // 100 ms
+    Delay500, // 500 ms
+    Delay1000 // 1000 ms
+}
+
 export interface CommonStyledProps<T> extends CommonProps {
     style?: StyleRuleSetRecursive<T>;
 }
@@ -459,6 +497,7 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     disabled?: boolean;
     delayLongPress?: number;
 
+    autoFocus?: AutoFocusOnMount|AutoFocusOnMount[]; // Should autofocus depending on the set of the specified conditions
     onAccessibilityTapIOS?: Function; // iOS-only prop, call when a button is double tapped in accessibility mode
     onContextMenu?: (e: MouseEvent) => void;
     onPress?: (e: SyntheticEvent) => void;
@@ -550,6 +589,8 @@ export interface TextPropsShared extends CommonProps {
 
     importantForAccessibility?: ImportantForAccessibility;
 
+    autoFocus?: AutoFocusOnMount|AutoFocusOnMount[]; // Should autofocus depending on the set of the specified conditions
+
     onPress?: (e: SyntheticEvent) => void;
 
     id?: string; // Web only. Needed for accessibility.
@@ -586,6 +627,8 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
 
     restrictFocusWithin?: boolean; // Web-only, during the keyboard navigation, the focus will not go outside this view
     limitFocusWithin?: LimitFocusType; // Web-only, make the view and all focusable subelements not focusable
+
+    autoFocus?: AutoFocusOnMount|AutoFocusOnMount[]; // Should autofocus depending on the set of the specified conditions
 
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
     id?: string; // Web-only. Needed for accessibility.
@@ -835,7 +878,7 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
 export interface TextInputPropsShared extends CommonProps, CommonAccessibilityProps {
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
     autoCorrect?: boolean;
-    autoFocus?: boolean;
+    autoFocus?: AutoFocusOnMount|AutoFocusOnMount[]; // Should autofocus depending on the set of the specified conditions
     blurOnSubmit?: boolean;
     defaultValue?: string;
     editable?: boolean;
