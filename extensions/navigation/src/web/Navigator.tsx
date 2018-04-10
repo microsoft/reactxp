@@ -265,6 +265,9 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
             transitionQueue: []
         }, () => {
             this._handleSpringUpdate();
+            if (destIndex >= 0) {
+                this._enableScene(destIndex, true);
+            }
         });
     }
 
@@ -390,7 +393,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
 
     // Add styles on the scene - At this time, the scene should be mounted and sitting in the
     // DOM. We are just adding giving styles to this current scene.
-    private _enableScene(sceneIndex: number) {
+    private _enableScene(sceneIndex: number, force = false) {
         let sceneStyle = Styles.combine([_styles.baseScene, _styles.sceneStyle, _styles.defaultSceneStyle]) as any;
 
         // Then restore the top value for this scene.
@@ -398,11 +401,13 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
             style: {
                 top: sceneStyle['top'],
                 bottom: sceneStyle['bottom'],
-                zIndex: 0
+                opacity: 1,
+                zIndex: 0,
+                transform: ''
             }
         };
 
-        if (sceneIndex !== this.state.transitionFromIndex &&
+        if (!force && sceneIndex !== this.state.transitionFromIndex &&
             sceneIndex !== this.state.presentedIndex) {
             // If we are not in a transition from this index, make sure opacity is 0 to prevent the enabled scene from
             // flashing over the presented scene.
