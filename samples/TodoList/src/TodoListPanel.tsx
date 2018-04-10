@@ -7,7 +7,7 @@
 import RX = require('reactxp');
 
 import TodoStyles = require('./TodoStyles');
-import TodoList = require('./TodoList')
+import TodoList = require('./TodoList');
 
 interface SecondPanelProps {
     onNavigateBack: () => void;
