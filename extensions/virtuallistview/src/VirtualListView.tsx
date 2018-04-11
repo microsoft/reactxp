@@ -1010,8 +1010,11 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         // Set the "live" values as well.
         let cell = this.refs[cellInfo.virtualKey] as VirtualListCell;
         if (cell) {
+            // on screen when full message is within layoutHeight area.
+            let isOnScreen = top > this._lastScrollTop && (top + cellInfo.height) < this._lastScrollTop + this._layoutHeight;
             cell.setVisibility(isVisibile);
             cell.setTop(top, animate);
+            cell.setIsOnScreen(isOnScreen);
         }
     }
 
