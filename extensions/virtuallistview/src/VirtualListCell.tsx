@@ -12,6 +12,7 @@ import RX = require('reactxp');
 
 export interface VirtualListCellInfo {
     key: string;
+    onScreenChanged?: (isOnScreen: boolean) => void;
 }
 
 export interface VirtualListCellProps extends RX.CommonProps {
@@ -91,6 +92,7 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
     private static _hiddenTopValue = -32768;
 
     private _isVisible = false;
+    private _isOnScreen = false;
     private _top: number = VirtualListCell._hiddenTopValue;
     private _calculatedHeight = 0;
 
@@ -221,6 +223,13 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
 
     isVisible() {
         return this._isVisible;
+    }
+
+    setIsOnScreen(isOnScreen: boolean) {
+        if (isOnScreen !== this._isOnScreen && typeof this.props.item.onScreenChanged === 'function') {
+            this._isOnScreen = isOnScreen;
+            this.props.item.onScreenChanged(isOnScreen);
+        }
     }
 
     setTop(top: number, animate = false, animationDelay = 0, animationOvershoot = 0) {
