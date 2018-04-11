@@ -154,7 +154,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         }
 
         if (this.props.disabled) {
-            buttonStyleMutations.opacity = this.props.disabledOpacity || 0.5;
+            buttonStyleMutations.opacity = this.props.disabledOpacity !== undefined ? this.props.disabledOpacity : 0.5;
         }
 
         // Default to 'pointer' cursor for enabled buttons unless otherwise specified.
