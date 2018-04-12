@@ -15,7 +15,7 @@ import RXTypes = require('../common/Types');
 
 export declare module ReactXP {
     export type Accessibility = Interfaces.Accessibility;
-    export var Accessibility: Interfaces.Accessibility;    
+    export var Accessibility: Interfaces.Accessibility;
     export type ActivityIndicator = Interfaces.ActivityIndicator;
     export var ActivityIndicator: typeof Interfaces.ActivityIndicator;
     export type Alert = Interfaces.Alert;
@@ -73,6 +73,9 @@ export declare module ReactXP {
 
     export type Animated = Interfaces.Animated;
     export var Animated: Interfaces.Animated;
+
+    export type FocusUtils = Interfaces.FocusUtils;
+    export var FocusUtils: Interfaces.FocusUtils;
 
     export import CommonProps = RXTypes.CommonProps;
     export import CommonStyledProps = RXTypes.CommonStyledProps;

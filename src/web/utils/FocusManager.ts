@@ -12,7 +12,9 @@ import ReactDOM = require('react-dom');
 import { FocusManager as FocusManagerBase,
     FocusableComponentInternal,
     StoredFocusableComponent } from '../../common/utils/FocusManager';
+import { autoFocusIfNeeded } from '../../common/utils/AutoFocusHelper';
 
+import Types = require('../../common/Types');
 import UserInterface from '../UserInterface';
 
 const ATTR_NAME_TAB_INDEX = 'tabindex';
@@ -78,6 +80,7 @@ export class FocusManager extends FocusManagerBase {
                 _checkFocusTimer = undefined;
 
                 if (_isNavigatingWithKeyboard &&
+                        (!FocusManager._currentFocusedComponent || !FocusManager._currentFocusedComponent.removed) &&
                         (!document.activeElement || (document.activeElement === document.body))) {
                     // This should work for Electron and the browser should
                     // send the focus to the address bar anyway.
@@ -123,16 +126,17 @@ export class FocusManager extends FocusManagerBase {
         return ret;
     }
 
-    static focusFirst(last?: boolean) {
+    private static _getFirstFocusable(last?: boolean, parent?: FocusManager) {
         const focusable = Object.keys(FocusManager._allFocusableComponents)
+            .filter(componentId => !parent || (componentId in parent._myFocusableComponentIds))
             .map(componentId => FocusManager._allFocusableComponents[componentId])
             .filter(storedComponent =>
                 !storedComponent.removed &&
                 !storedComponent.restricted &&
                 storedComponent.limitedCount === 0 &&
                 storedComponent.limitedCountAccessible === 0)
-            .map(storedComponent => ReactDOM.findDOMNode(storedComponent.component) as HTMLElement)
-            .filter(el => el && el.focus && ((el.tabIndex || 0) >= 0));
+            .map(storedComponent => { return { storedComponent, el: ReactDOM.findDOMNode(storedComponent.component) as HTMLElement }; })
+            .filter(f => f.el && f.el.focus && ((f.el.tabIndex || 0) >= 0));
 
         if (focusable.length) {
             focusable.sort((a, b) => {
@@ -141,12 +145,21 @@ export class FocusManager extends FocusManagerBase {
                 if (a === b) {
                     return 0;
                 }
-                return a.compareDocumentPosition(b) & document.DOCUMENT_POSITION_PRECEDING ? 1 : -1;
+                return a.el.compareDocumentPosition(b.el) & document.DOCUMENT_POSITION_PRECEDING ? 1 : -1;
             });
 
-            const elementToFocus = focusable[last ? focusable.length - 1 : 0];
-            FocusManager.setLastFocusedProgrammatically(elementToFocus);
-            elementToFocus.focus();
+            return focusable[last ? focusable.length - 1 : 0];
+        }
+
+        return undefined;
+    }
+
+    static focusFirst(last?: boolean) {
+        const elementToFocus = FocusManager._getFirstFocusable(last);
+
+        if (elementToFocus) {
+            FocusManager.setLastFocusedProgrammatically(elementToFocus.el);
+            elementToFocus.el.focus();
         }
     }
 
@@ -161,11 +174,17 @@ export class FocusManager extends FocusManagerBase {
             // first focusable component to be focused straight away, without the
             // necessity to press Tab.
 
-            // Defer the focusing to let the view finish its initialization.
-            FocusManager._resetFocusTimer = setTimeout(() => {
-                FocusManager._resetFocusTimer = undefined;
-                FocusManager.focusFirst();
-            }, 0);
+            // Using autoFocusIfNeeded() with high priority to avoid racing with
+            // the elements which are scheduled for autofocus.
+            const first = FocusManager._getFirstFocusable(false, FocusManager._currentRestrictionOwner as FocusManager);
+
+            if (first) {
+                autoFocusIfNeeded(
+                    Types.AutoFocus.PriorityHigh,
+                    () => first.el.focus(),
+                    () => (!first.storedComponent.removed && !first.storedComponent.restricted)
+                );
+            }
         } else if ((typeof document !== 'undefined') && document.body && document.body.focus && document.body.blur) {
             // An example to explain this part:
             // We've shown a modal dialog which is higher in the DOM by clicking
@@ -182,9 +201,16 @@ export class FocusManager extends FocusManagerBase {
             // focusable, focusing it, removing the focus and making it unfocusable
             // back again.
             // Defer the work to avoid triggering sync layout.
+            const currentFocused = FocusManager._currentFocusedComponent;
+            if (currentFocused && !currentFocused.removed && !currentFocused.restricted) {
+                // No need to reset the focus because it's moved inside the restricted area
+                // already (manually or with autofocus).
+                return;
+            }
+
             FocusManager._resetFocusTimer = setTimeout(() => {
                 FocusManager._resetFocusTimer = undefined;
-                const prevTabIndex = FocusManager._setTabIndex(document.body, 0);
+                const prevTabIndex = FocusManager._setTabIndex(document.body, -1);
                 const activeElement = document.activeElement;
                 FocusManager.setLastFocusedProgrammatically(document.body);
                 document.body.focus();

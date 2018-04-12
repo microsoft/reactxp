@@ -1,11 +1,11 @@
 /**
-* AutofocusHelper.ts
+* AutoFocusHelper.ts
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
 *
 * Provides the logic to decide if the component needs to be autofocused
-* on mount, depending on a combination of AutofocusOnMount enum.
+* on mount, depending on a combination of AutoFocus enum values.
 */
 
 import Types = require('../Types');
@@ -19,16 +19,16 @@ let _isMac = false;
 let _isNavigatingWithKeyboard: () => boolean;
 
 let _autoFocusTimer: number|undefined;
-let _pendingAutoFocusItems: AutoFocusAction[] = [];
+let _pendingAutoFocusItems: AutoFocusItem[] = [];
 
 enum AutoFocusPriority {
     High,
     Low
 }
 
-interface AutoFocusAction {
+interface AutoFocusItem {
     focus: () => void;
-    isMounted: () => boolean;
+    isAvailable: () => boolean;
     delay: number;
     priority: AutoFocusPriority;
     order: number;
@@ -60,7 +60,7 @@ export function initAutoFocus(platform: Types.PlatformType, isNavigatingWithKeyb
     _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 }
 
-export function autoFocusIfNeeded(value: Types.AutoFocusOnMount|Types.AutoFocusOnMount[], focus: () => void, isMounted: () => boolean) {
+export function autoFocusIfNeeded(value: Types.AutoFocus|Types.AutoFocus[], focus: () => void, isAvailable: () => boolean): boolean {
     if (!(value instanceof Array)) {
         value = [value];
     }
@@ -81,59 +81,59 @@ export function autoFocusIfNeeded(value: Types.AutoFocusOnMount|Types.AutoFocusO
 
     for (let i = 0; i < value.length; i++) {
         switch (value[i]) {
-            case Types.AutoFocusOnMount.No:
-                return;
+            case Types.AutoFocus.No:
+                return false;
 
-            case Types.AutoFocusOnMount.Yes:
+            case Types.AutoFocus.Yes:
                 isPlatformSpecified = shouldFocusAndroid = shouldFocusIOS = shouldFocusWeb = shouldFocusWindows = shouldFocusMac = true;
                 isKeyboardSpecified = shouldFocusWhenNavigatingWithKeyboard = shouldFocusWhenNavigatingWithoutKeyboard = true;
                 break;
 
-            case Types.AutoFocusOnMount.WhenNavigatingWithKeyboard:
+            case Types.AutoFocus.WhenNavigatingWithKeyboard:
                 shouldFocusWhenNavigatingWithKeyboard = isKeyboardSpecified = true;
                 break;
 
-            case Types.AutoFocusOnMount.WhenNavigatingWithoutKeyboard:
+            case Types.AutoFocus.WhenNavigatingWithoutKeyboard:
                 shouldFocusWhenNavigatingWithoutKeyboard = isKeyboardSpecified = true;
                 break;
 
-            case Types.AutoFocusOnMount.Android:
+            case Types.AutoFocus.Android:
                 shouldFocusAndroid = isPlatformSpecified = true;
                 break;
 
-            case Types.AutoFocusOnMount.IOS:
+            case Types.AutoFocus.IOS:
                 shouldFocusIOS = isPlatformSpecified = true;
                 break;
 
-            case Types.AutoFocusOnMount.Web:
+            case Types.AutoFocus.Web:
                 shouldFocusWeb = isPlatformSpecified = true;
                 break;
 
-            case Types.AutoFocusOnMount.Windows:
+            case Types.AutoFocus.Windows:
                 shouldFocusWindows = isPlatformSpecified = true;
                 break;
 
-            case Types.AutoFocusOnMount.Mac:
+            case Types.AutoFocus.Mac:
                 shouldFocusMac = isPlatformSpecified = true;
                 break;
 
-            case Types.AutoFocusOnMount.PriorityHigh:
+            case Types.AutoFocus.PriorityHigh:
                 priority = AutoFocusPriority.High;
                 break;
 
-            case Types.AutoFocusOnMount.PriorityLow:
+            case Types.AutoFocus.PriorityLow:
                 priority = AutoFocusPriority.Low;
                 break;
 
-            case Types.AutoFocusOnMount.Delay100:
+            case Types.AutoFocus.Delay100:
                 delay = 100;
                 break;
 
-            case Types.AutoFocusOnMount.Delay500:
+            case Types.AutoFocus.Delay500:
                 delay = 500;
                 break;
 
-            case Types.AutoFocusOnMount.Delay1000:
+            case Types.AutoFocus.Delay1000:
                 delay = 1000;
                 break;
         }
@@ -145,19 +145,20 @@ export function autoFocusIfNeeded(value: Types.AutoFocusOnMount|Types.AutoFocusO
         if ((isNavigatingWithKeyboard && !shouldFocusWhenNavigatingWithKeyboard) ||
             (!isNavigatingWithKeyboard && !shouldFocusWhenNavigatingWithoutKeyboard)) {
 
-            return;
+            return false;
         }
     }
 
-    if (isPlatformSpecified && (_isAndroid && !shouldFocusAndroid) || (_isIOS && !shouldFocusIOS)
-        || (_isWeb && !shouldFocusWeb) || (_isWindows && !shouldFocusWindows) || (_isMac && !shouldFocusMac)) {
+    if (isPlatformSpecified &&
+        ((_isAndroid && !shouldFocusAndroid) || (_isIOS && !shouldFocusIOS) || (_isWeb && !shouldFocusWeb) ||
+         (_isWindows && !shouldFocusWindows) || (_isMac && !shouldFocusMac))) {
 
-        return;
+        return false;
     }
 
     _pendingAutoFocusItems.push({
         focus,
-        isMounted,
+        isAvailable,
         delay,
         priority,
         order: _pendingAutoFocusItems.length
@@ -167,7 +168,8 @@ export function autoFocusIfNeeded(value: Types.AutoFocusOnMount|Types.AutoFocusO
         clearTimeout(_autoFocusTimer);
     }
 
-    // Defer the action to wait for all components mounted at the same tick.
+    // Defer the action to wait for all components which are being mounted at
+    // the same tick.
     _autoFocusTimer = setTimeout(() => {
         _autoFocusTimer = undefined;
 
@@ -183,7 +185,7 @@ export function autoFocusIfNeeded(value: Types.AutoFocusOnMount|Types.AutoFocusO
 
         if (autoFocusItem) {
             const autoFocusAction = () => {
-                if (autoFocusItem.isMounted()) {
+                if (autoFocusItem.isAvailable()) {
                     autoFocusItem.focus();
                 }
             };
@@ -198,4 +200,6 @@ export function autoFocusIfNeeded(value: Types.AutoFocusOnMount|Types.AutoFocusO
             }
         }
     }, 0);
+
+    return true;
 }

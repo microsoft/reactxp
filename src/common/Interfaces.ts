@@ -309,3 +309,7 @@ export interface International {
     forceRTL(force: boolean): void;
     isRTL(): boolean;
 }
+
+export interface FocusUtils {
+    autoFocus(value: Types.AutoFocus|Types.AutoFocus[], focus: () => void, isAvailable: () => boolean): boolean;
+}

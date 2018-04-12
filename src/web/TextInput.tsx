@@ -63,8 +63,12 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     componentDidMount() {
-        if (this.props.autoFocus) {
-            autoFocusIfNeeded(this.props.autoFocus, () => this.focus(), () => !!this._mountedComponent);
+        this._autoFocusIfNeeded();
+    }
+
+    componentDidUpdate(prevProps: Types.TextInputProps, prevState: TextInputState) {
+        if (this.props.editable !== prevProps.editable) {
+            this._autoFocusIfNeeded();
         }
     }
 
@@ -157,6 +161,12 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     private _onMount = (comp: HTMLInputElement|HTMLTextAreaElement|null) => {
         this._mountedComponent = comp;
+    }
+
+    private _autoFocusIfNeeded() {
+        if (this.props.autoFocus && (this.props.editable !== false)) {
+            autoFocusIfNeeded(this.props.autoFocus, () => this.focus(), () => !!this._mountedComponent);
+        }
     }
 
     private _onInput = () => {
