@@ -174,13 +174,13 @@ export class FocusManager extends FocusManagerBase {
             // first focusable component to be focused straight away, without the
             // necessity to press Tab.
 
-            // Using autoFocusIfNeeded() with high priority to avoid racing with
+            // Using autoFocusIfNeeded() with highest priority to avoid racing with
             // the elements which are scheduled for autofocus.
             const first = FocusManager._getFirstFocusable(false, FocusManager._currentRestrictionOwner as FocusManager);
 
             if (first) {
                 autoFocusIfNeeded(
-                    Types.AutoFocus.PriorityHigh,
+                    Types.AutoFocus.PriorityHighest,
                     () => first.el.focus(),
                     () => (!first.storedComponent.removed && !first.storedComponent.restricted)
                 );
@@ -211,15 +211,10 @@ export class FocusManager extends FocusManagerBase {
             FocusManager._resetFocusTimer = setTimeout(() => {
                 FocusManager._resetFocusTimer = undefined;
                 const prevTabIndex = FocusManager._setTabIndex(document.body, -1);
-                const activeElement = document.activeElement;
                 FocusManager.setLastFocusedProgrammatically(document.body);
                 document.body.focus();
                 document.body.blur();
                 FocusManager._setTabIndex(document.body, prevTabIndex);
-                if (activeElement instanceof HTMLElement) {
-                    FocusManager.setLastFocusedProgrammatically(activeElement);
-                    activeElement.focus();
-                }
             }, 0);
         }
     }

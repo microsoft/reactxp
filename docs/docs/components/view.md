@@ -79,6 +79,10 @@ restrictFocusWithin: boolean = false;
 // changing it during the View life cycle will produce an error.
 limitFocusWithin: LimitFocusType = LimitFocusType.Unlimited;
 
+// Should be focused when the component is mounted,
+// see https://microsoft.github.io/reactxp/docs/apis/focusutils.html
+autoFocus: AutoFocus | AutoFocus[] = AutoFocus.No;
+
 // Additional invisible DOM elements will be added inside the view
 // to track the size changes that are performed behind our back by
 // the browser's layout engine faster (ViewBase checks for the layout

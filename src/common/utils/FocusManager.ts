@@ -44,7 +44,6 @@ export abstract class FocusManager {
 
     private static _restrictionStack: FocusManager[] = [];
     protected static _currentRestrictionOwner: FocusManager|undefined;
-    private static _restrictionTimer: number|undefined;
     private static _restoreRestrictionTimer: number|undefined;
     private static _pendingPrevFocusedComponent: StoredFocusableComponent|undefined;
     protected static _currentFocusedComponent: StoredFocusableComponent|undefined;
@@ -172,7 +171,7 @@ export abstract class FocusManager {
             this._prevFocusedComponent = FocusManager._pendingPrevFocusedComponent || FocusManager._currentFocusedComponent;
         }
 
-        FocusManager._clearRestrictionTimeouts();
+        FocusManager._clearRestoreRestrictionTimeout();
 
         FocusManager._restrictionStack.push(this);
         FocusManager._currentRestrictionOwner = this;
@@ -181,19 +180,13 @@ export abstract class FocusManager {
             this.resetFocus();
         }
 
-        // Defer the actual restriction to let new view with restrictFocusWithin to
-        // mount.
-        FocusManager._restrictionTimer = setTimeout(() => {
-            FocusManager._restrictionTimer = undefined;
-
-            Object.keys(FocusManager._allFocusableComponents).forEach(componentId => {
-                if (!(componentId in this._myFocusableComponentIds)) {
-                    const storedComponent = FocusManager._allFocusableComponents[componentId];
-                    storedComponent.restricted = true;
-                    this._updateComponentFocusRestriction(storedComponent);
-                }
-            });
-        }, 100);
+        Object.keys(FocusManager._allFocusableComponents).forEach(componentId => {
+            if (!(componentId in this._myFocusableComponentIds)) {
+                const storedComponent = FocusManager._allFocusableComponents[componentId];
+                storedComponent.restricted = true;
+                this._updateComponentFocusRestriction(storedComponent);
+            }
+        });
     }
 
     removeFocusRestriction() {
@@ -215,7 +208,7 @@ export abstract class FocusManager {
             // Defer the previous restriction restoration to wait for the current view
             // to be unmounted, or for the next restricted view to be mounted (like
             // showing a modal after a popup).
-            FocusManager._clearRestrictionTimeouts();
+            FocusManager._clearRestoreRestrictionTimeout();
             FocusManager._pendingPrevFocusedComponent = prevFocusedComponent;
 
             FocusManager._restoreRestrictionTimer = setTimeout(() => {
@@ -363,12 +356,7 @@ export abstract class FocusManager {
         });
     }
 
-    private static _clearRestrictionTimeouts() {
-        if (FocusManager._restrictionTimer) {
-            clearTimeout(FocusManager._restrictionTimer);
-            FocusManager._restrictionTimer = undefined;
-        }
-
+    private static _clearRestoreRestrictionTimeout() {
         if (FocusManager._restoreRestrictionTimer) {
             clearTimeout(FocusManager._restoreRestrictionTimer);
             FocusManager._restoreRestrictionTimer = undefined;

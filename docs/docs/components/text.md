@@ -20,11 +20,11 @@ Another difference between Text and other components is that Text children are n
 allowFontScaling: boolean = true; // Android and iOS only
 
 // When numberOfLines is set, this prop defines how text will be truncated.
-// head: The line is displayed so that the end fits in the container and the missing 
+// head: The line is displayed so that the end fits in the container and the missing
 //       text at the beginning of the line is indicated by an ellipsis glyph. e.g., "...wxyz"
 // middle: The line is displayed so that the beginning and end fit in the container and
 //         the missing text in the middle is indicated by an ellipsis glyph. "ab...yz"
-// tail: The line is displayed so that the beginning fits in the container and the missing 
+// tail: The line is displayed so that the beginning fits in the container and the missing
 //       text at the end of the line is indicated by an ellipsis glyph. e.g., "abcd..."
 ellipsizeMode: 'head' | 'middle' | 'tail'; // Android & iOS only
 
@@ -34,12 +34,16 @@ id: string = undefined; // Web only
 // Expose the element and/or its children as accessible to Screen readers
 importantForAccessibility: ImportantForAccessibility = ImportantForAccessibility.Yes;
 
+// Should be focused when the component is mounted,
+// see https://microsoft.github.io/reactxp/docs/apis/focusutils.html
+autoFocus: AutoFocus | AutoFocus[] = AutoFocus.No;
+
 // Should the scale multiplier be capped when allowFontScaling is set to true?
 // Possible values include the following:
 // null/undefined (default) - inheret from parent/global default
 // 0 - no max
 // >= 1 - sets the maxContentSizeMultiplier of this node to this value
-// Note: Older versions of React Native don’t support this interface. 
+// Note: Older versions of React Native don’t support this interface.
 maxContentSizeMultiplier: number = null; // Android and iOS only
 
 // For non-zero values, truncates with ellipsis if necessary

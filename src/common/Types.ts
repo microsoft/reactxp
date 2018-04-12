@@ -472,14 +472,16 @@ export enum AutoFocus {
     Mac,
 
     // Sometimes a common high level component has default autofocusable (for
-    // example, close button for a modal), but the subcomponents want to be
-    // autofocused too (for example, some input inside a particular modal).
+    // example, close button in a dialog), but the subcomponents want to be
+    // autofocused too (for example, some input inside a particular kind of dialog).
     // We can specify the priority (Low for the close button, High for the
     // input) without forking the logic on the application level (the input will
     // win if present, otherwise the close button will be focused).
     // Default priority is PriorityLow.
-    PriorityHigh,
     PriorityLow,
+    PriorityHigh,
+    PriorityHighest, // Highest priority is used internally and you shouldn't use
+                     // it unless you are really sure what you're up to.
 
     // Sometimes it might be needed to delay the autofocusing a little (if no
     // delay is specified, the component will be focused without the delay).

@@ -21,16 +21,11 @@ let _isNavigatingWithKeyboard: () => boolean;
 let _autoFocusTimer: number|undefined;
 let _pendingAutoFocusItems: AutoFocusItem[] = [];
 
-enum AutoFocusPriority {
-    High,
-    Low
-}
-
 interface AutoFocusItem {
     focus: () => void;
     isAvailable: () => boolean;
     delay: number;
-    priority: AutoFocusPriority;
+    priority: number;
     order: number;
 }
 
@@ -76,7 +71,7 @@ export function autoFocusIfNeeded(value: Types.AutoFocus|Types.AutoFocus[], focu
     let shouldFocusWhenNavigatingWithKeyboard = false;
     let shouldFocusWhenNavigatingWithoutKeyboard = false;
 
-    let priority = AutoFocusPriority.Low;
+    let priority = Types.AutoFocus.PriorityLow;
     let delay = 0;
 
     for (let i = 0; i < value.length; i++) {
@@ -117,12 +112,10 @@ export function autoFocusIfNeeded(value: Types.AutoFocus|Types.AutoFocus[], focu
                 shouldFocusMac = isPlatformSpecified = true;
                 break;
 
-            case Types.AutoFocus.PriorityHigh:
-                priority = AutoFocusPriority.High;
-                break;
-
             case Types.AutoFocus.PriorityLow:
-                priority = AutoFocusPriority.Low;
+            case Types.AutoFocus.PriorityHigh:
+            case Types.AutoFocus.PriorityHighest:
+                priority = value[i];
                 break;
 
             case Types.AutoFocus.Delay100:
@@ -177,7 +170,7 @@ export function autoFocusIfNeeded(value: Types.AutoFocus|Types.AutoFocus[], focu
         _pendingAutoFocusItems.sort((a, b) => {
             return a.priority === b.priority
                 ? (a.order === b.order ? 0 : (a.order < b.order ? -1 : 1))
-                : (a.priority === AutoFocusPriority.High ? -1 : 1);
+                : (a.priority === b.priority ? 0 : (a.priority > b.priority ? -1 : 1));
         });
 
         const autoFocusItem = _pendingAutoFocusItems[0];
