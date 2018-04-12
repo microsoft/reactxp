@@ -47,7 +47,8 @@ interface PopupOptions {
     // with button and chevron icon.
     getElementTriggeringPopup?: () => React.Component<any, any>;
 
-    // Called when the popup is dismissed.
+    // Called when the popup is dismissed. Popup.isDisplayed() will return
+    // false for the popup being dismissed when this callback runs.
     onDismiss?: () => void;
 
     // Prioritized order of positions. Popup is positioned

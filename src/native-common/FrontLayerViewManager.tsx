@@ -102,10 +102,6 @@ export class FrontLayerViewManager {
         const index = this._findIndexOfPopup(popupId);
         if (index >= 0) {
             const popupContext = this._overlayStack[index] as PopupStackContext;
-            if (popupContext.popupOptions.onDismiss) {
-                popupContext.popupOptions.onDismiss();
-            }
-
             if (popupContext.popupOptions.cacheable) {
                 // The popup is transitioning from active to cached.
                 this._cachedPopups.push(popupContext);
@@ -113,6 +109,11 @@ export class FrontLayerViewManager {
             }
 
             this._overlayStack.splice(index, 1);
+
+            if (popupContext.popupOptions.onDismiss) {
+                popupContext.popupOptions.onDismiss();
+            }
+
             this.event_changed.fire();
         }
     }
