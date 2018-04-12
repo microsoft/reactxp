@@ -116,12 +116,33 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation2' }>
                     <RX.Text style={ _styles.explainText }>
                         { 'This button should be disabled and respond to no clicks, presses, or hovers. ' + 
-                          'The mouse pointer should not turn into a pointer.' }
+                          'The mouse pointer should not turn into a pointer.' + 
+                          'The opacity of the disabled button should be its default value of 0.5' }
                     </RX.Text>
                 </RX.View>
                 <RX.Button
                     style={ _styles.button2 }
                     disabled={ true }
+                    onPress={ () => {
+                        // no-op
+                    } }
+                >
+                    <RX.Text style={ _styles.button2Text }>
+                        { 'Disabled Button' }
+                    </RX.Text>
+                </RX.Button>
+
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation2' }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'This button should be disabled and respond to no clicks, presses, or hovers. ' + 
+                          'The mouse pointer should not turn into a pointer.' + 
+                          'The opacity of the disabled button should be 0.3' }
+                    </RX.Text>
+                </RX.View>
+                <RX.Button
+                    style={ _styles.button2 }
+                    disabled={ true }
+                    disabledOpacity={ 0.3 }
                     onPress={ () => {
                         // no-op
                     } }

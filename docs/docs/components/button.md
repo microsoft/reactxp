@@ -34,6 +34,9 @@ delayLongPress: number = 1000;
 // If disabled, touch and mouse input events are ignored
 disabled: boolean = false;
 
+// By default, opacity of a disabled element is 0.5. This value can be overriden with this property
+disabledOpacity: number = undefined;
+
 // Called when VoiceOver is on and the user double tapped to
 // activate a control
 onAccessibilityTapIOS: (e: SyntheticEvent) => void; // iOS Only
