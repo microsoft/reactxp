@@ -85,12 +85,6 @@ export class FrontLayerViewManager {
     }
 
     private _showPopup(options: Types.PopupOptions, popupId: string, showDelay?: number) : void {
-        if (this._activePopupOptions) {
-            if (this._activePopupOptions.onDismiss) {
-                this._activePopupOptions.onDismiss();
-            }
-        }
-
         // New popup is transitioning from maybe cached to active.
         this._cachedPopups = this._cachedPopups.filter(popup => popup.popupId !== popupId);
         if (this._activePopupOptions && this._activePopupOptions.cacheable && this._activePopupId !== popupId) {
@@ -99,19 +93,18 @@ export class FrontLayerViewManager {
             this._cachedPopups = this._cachedPopups.slice(-MAX_CACHED_POPUPS);
         }
 
-        if (this._popupShowDelayTimer) {
-            clearTimeout(this._popupShowDelayTimer);
-            this._popupShowDelayTimer = undefined;
-        }
-
+        // Update fields before calling onDismiss to guard against reentry.
+        const oldPopupOptions = this._activePopupOptions;
         this._activePopupOptions = options;
         this._activePopupId = popupId;
         this._activePopupAutoDismiss = false;
         this._activePopupAutoDismissDelay = 0;
         this._activePopupShowDelay = showDelay || 0;
 
-        this._renderRootView();
-
+        if (this._popupShowDelayTimer) {
+            clearTimeout(this._popupShowDelayTimer);
+            this._popupShowDelayTimer = undefined;
+        }
         if (this._activePopupShowDelay > 0) {
             this._popupShowDelayTimer = setTimeout(() => {
                 this._activePopupShowDelay = 0;
@@ -119,6 +112,14 @@ export class FrontLayerViewManager {
                 this._renderRootView();
             }, this._activePopupShowDelay);
         }
+
+        if (oldPopupOptions) {
+            if (oldPopupOptions.onDismiss) {
+                oldPopupOptions.onDismiss();
+            }
+        }
+
+        this._renderRootView();
     }
 
     autoDismissPopup(popupId: string, dismissDelay?: number): void {
@@ -136,10 +137,6 @@ export class FrontLayerViewManager {
 
     dismissPopup(popupId: string): void {
         if (popupId === this._activePopupId && this._activePopupOptions) {
-            if (this._activePopupOptions.onDismiss) {
-                this._activePopupOptions.onDismiss();
-            }
-
             if (this._popupShowDelayTimer) {
                 clearTimeout(this._popupShowDelayTimer);
                 this._popupShowDelayTimer = undefined;
@@ -151,8 +148,15 @@ export class FrontLayerViewManager {
                 this._cachedPopups = this._cachedPopups.slice(-MAX_CACHED_POPUPS);
             }
 
+            // Reset fields before calling onDismiss to guard against reentry.
+            const activePopupOptions = this._activePopupOptions;
             this._activePopupOptions = undefined;
             this._activePopupId = undefined;
+
+            if (activePopupOptions.onDismiss) {
+                activePopupOptions.onDismiss();
+            }
+
             this._renderRootView();
         }
     }
