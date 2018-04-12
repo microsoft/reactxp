@@ -13,7 +13,10 @@ import SyncTasks = require('synctasks');
 export class Clipboard extends RX.Clipboard {
     public setText(text: string) {
         let node = Clipboard._createInvisibleNode();
-        node.textContent = text;
+        // Replace carraige return /r with /r/n, so that pasting outside browser environment
+        // (eg in a native app) preserves this new line format
+        text = text.replace(/(?:\\[r])+/g, '\r\n');
+        node.innerHTML = text;
         document.body.appendChild(node);
         Clipboard._copyNode(node);
         document.body.removeChild(node);
@@ -24,8 +27,8 @@ export class Clipboard extends RX.Clipboard {
        return SyncTasks.Rejected<string>('Not supported on web');
     }
 
-    private static _createInvisibleNode(): HTMLSpanElement {
-        const node = document.createElement('span');
+    private static _createInvisibleNode(): HTMLTextAreaElement {
+        const node = document.createElement('textarea');
         node.style.position = 'absolute';
         node.style.left = '-10000px';
 
@@ -51,13 +54,11 @@ export class Clipboard extends RX.Clipboard {
         return node;
     }
 
-    private static _copyNode(node: Node) {
+    private static _copyNode(node: HTMLTextAreaElement) {
         const selection = getSelection();
         selection.removeAllRanges();
 
-        const range = document.createRange();
-        range.selectNodeContents(node);
-        selection.addRange(range);
+        node.select();
 
         document.execCommand('copy');
         selection.removeAllRanges();
