@@ -44,7 +44,7 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
 
     getTabIndex(): number | undefined {
         // Focus Manager may override this
-        return this.props.tabIndex;
+        return this.props.tabIndex || 0;
     }
 
     updateNativeTabIndex(): void {
@@ -52,7 +52,8 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
             let tabIndex: number | undefined = this.getTabIndex();
             this._mountedComponent.setNativeProps({
                 tabIndex: tabIndex,
-                value: this.state.inputValue // mandatory for some reason
+                value: this.state.inputValue, // mandatory for some reason
+                isTabStop: this.props.editable && tabIndex >= 0
             });
         }
     }
