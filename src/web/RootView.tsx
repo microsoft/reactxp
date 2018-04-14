@@ -303,7 +303,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     protected _onMount = (component: PopupContainer|null) => {
-        this._mountedComponent = component ? ReactDOM.findDOMNode(component) : undefined;
+        this._mountedComponent = component ? ReactDOM.findDOMNode(component) as HTMLElement : undefined;
     }
 
     private _tryClosePopup = (e: MouseEvent) => {

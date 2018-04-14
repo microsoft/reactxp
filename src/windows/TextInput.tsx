@@ -42,14 +42,14 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
         // Focus Manager hook
     }
 
-    getTabIndex(): number | undefined {
+    getTabIndex(): number {
         // Focus Manager may override this
         return this.props.tabIndex || 0;
     }
 
     updateNativeTabIndex(): void {
         if (this._mountedComponent) {
-            let tabIndex: number | undefined = this.getTabIndex();
+            let tabIndex = this.getTabIndex();
             this._mountedComponent.setNativeProps({
                 tabIndex: tabIndex,
                 value: this.state.inputValue, // mandatory for some reason
