@@ -16,6 +16,14 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.1.1 of reactxp
+_Released 13 Apr 2018_
+Fixed reentrancy issue in popup support. Displaying a popup from within the onDismiss callback was recently broken.
+Added disabledOpacity prop for RX.Button component.
+Improved handling of RX.Clipboard.setText on web. It now properly handles carriage returns.
+Fixed TextInput focusability after focus restriction on Windows.
+Fixed accessibility issue related to voice over on web.
+
 #### Version 0.2.10 of reactxp-imagesvg
 #### Version 1.0.17 of reactxp-navigation
 #### Version 0.2.5 of reactxp-video
