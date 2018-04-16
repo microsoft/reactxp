@@ -155,11 +155,19 @@ export class FocusManager extends FocusManagerBase {
     }
 
     static focusFirst(last?: boolean) {
-        const elementToFocus = FocusManager._getFirstFocusable(last);
+        const first = FocusManager._getFirstFocusable(last);
 
-        if (elementToFocus) {
-            FocusManager.setLastFocusedProgrammatically(elementToFocus.el);
-            elementToFocus.el.focus();
+        if (first && !first.storedComponent.removed && !first.storedComponent.restricted) {
+            requestFocus(
+                FirstFocusableId,
+                first.storedComponent.component,
+                () => {
+                    if (!first.storedComponent.removed) {
+                        FocusManager.setLastFocusedProgrammatically(first.el);
+                        first.el.focus();
+                    }
+                }
+            );
         }
     }
 
@@ -179,7 +187,12 @@ export class FocusManager extends FocusManagerBase {
                 requestFocus(
                     FirstFocusableId,
                     first.storedComponent.component,
-                    () => first.el.focus()
+                    () => {
+                        if (!first.storedComponent.removed) {
+                            FocusManager.setLastFocusedProgrammatically(first.el);
+                            first.el.focus();
+                        }
+                    }
                 );
             }
         } else if ((typeof document !== 'undefined') && document.body && document.body.focus && document.body.blur) {
