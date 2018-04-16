@@ -452,8 +452,8 @@ export enum AccessibilityTrait {
 // This is the definition of the autoFocus value for the components
 // which support it (Button, View, etc.)
 export interface AutoFocusValue {
-    id: string; // This id will be passed back to you application's FocusArbitrator
-                // function and you will be able to using while choosing the proper
+    id: string; // This id will be passed back to your application's FocusArbitrator
+                // function and you will be able to use it while choosing the proper
                 // component to focus.
     focus?: () => void; // By default the default focusing logic is used for the component
                         // when you specify autoFocus property. Optionally you can override
