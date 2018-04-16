@@ -34,6 +34,9 @@ delayLongPress: number = 1000;
 // If disabled, touch and mouse input events are ignored
 disabled: boolean = false;
 
+// By default, opacity of a disabled element is 0.5. This value can be overriden with this property
+disabledOpacity: number = undefined;
+
 // Should be focused when the component is mounted,
 // see https://microsoft.github.io/reactxp/docs/apis/focusutils.html
 autoFocus: AutoFocusValue = undefined;

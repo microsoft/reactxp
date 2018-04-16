@@ -27,7 +27,7 @@ class TodosStore extends StoreBase {
             creationTime: now,
             text: todoText,
             _searchTerms: todoText
-        }
+        };
 
         this._todos = this._todos.concat(newTodo);
 

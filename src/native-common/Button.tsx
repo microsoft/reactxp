@@ -129,11 +129,18 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
             _defaultAccessibilityTrait);
 
         const opacityStyle = !this.props.disableTouchOpacityAnimation && this._opacityAnimatedStyle;
+        let disabledStyle = this.props.disabled && _styles.disabled;
+
+        if (this.props.disabled && this.props.disabledOpacity !== undefined) {
+            disabledStyle = Styles.createButtonStyle({
+                opacity: this.props.disabledOpacity
+            }, false);
+        }
 
         let internalProps: RN.ViewProps = {
             ref: this._onButtonRef,
             style: Styles.combine([_styles.defaultButton, this.props.style, opacityStyle,
-                this.props.disabled && _styles.disabled]),
+                disabledStyle]),
             accessibilityLabel: this.props.accessibilityLabel || this.props.title,
             accessibilityTraits: accessibilityTrait,
             accessibilityComponentType: accessibilityComponentType,

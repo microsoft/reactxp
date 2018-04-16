@@ -7,7 +7,7 @@
 
 import RX = require('reactxp');
 import TodoStyles = require('./TodoStyles');
-import TodosStore = require('./TodosStore')
+import TodosStore = require('./TodosStore');
 
 interface TodoPanelProps {
     onNavigateBack: () => void;
@@ -81,8 +81,8 @@ class EditTodoPanel extends RX.Component<TodoPanelProps, TodoPanelState> {
 
     private _onPressSave = () => {
         if (this.state.todoText) {
-            TodosStore.addTodo(this.state.todoText)
-
+            TodosStore.addTodo(this.state.todoText);
+    
             this.setState({ todoText: '' });
             this.props.onNavigateBack();
         }

@@ -16,6 +16,10 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.0.18 of reactxp-navigation
+_Released 10 Apr 2018_
+Fixed bug in web implementation that caused a problem when popping multiple items from the navigation stack.
+
 #### Version 0.2.10 of reactxp-imagesvg
 #### Version 1.0.17 of reactxp-navigation
 #### Version 0.2.5 of reactxp-video

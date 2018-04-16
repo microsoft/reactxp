@@ -9,4 +9,3 @@ export interface Todo {
     _searchTerms: string;
 }
 
-

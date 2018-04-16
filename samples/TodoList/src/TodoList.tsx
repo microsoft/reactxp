@@ -51,7 +51,7 @@ class TodoList extends ComponentBase<{}, TodoListState> {
                     text: todo.text
                 };
             })
-        }
+        };
     }
 
     render() {

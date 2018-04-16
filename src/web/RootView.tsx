@@ -12,14 +12,11 @@
 import _ = require('./utils/lodashMini');
 import React = require('react');
 import ReactDOM = require('react-dom');
-import { SubscriptionToken } from 'subscribableevent';
 import PropTypes = require('prop-types');
 
-import Accessibility from './Accessibility';
-import AccessibilityUtil from './AccessibilityUtil';
+import AccessibilityAnnouncer from './AccessibilityAnnouncer';
 import Input from './Input';
 import ModalContainer from './ModalContainer';
-import Styles from './Styles';
 import Types = require('../common/Types');
 import FocusManager from './utils/FocusManager';
 import UserInterface from './UserInterface';
@@ -68,13 +65,6 @@ export interface RootViewState {
 
     // Assign css focus class if focus is due to Keyboard or mouse
     focusClass: string|undefined;
-
-    // Screen Reader text to be announced.
-    announcementText: string;
-
-    // Render announcementText in a nested div to work around browser quirks for windows.
-    // Nested divs break mac.
-    announcementTextInNestedDiv: boolean;
 }
 
 // Width of the "alley" around popups so they don't get too close to the boundary of the window.
@@ -86,22 +76,6 @@ const _minAnchorOffset = 16;
 
 // Button code for when right click is pressed in a mouse event
 const _rightClickButtonCode = 2;
-
-const _isMac = (typeof navigator !== 'undefined') && (typeof navigator.platform === 'string') && (navigator.platform.indexOf('Mac') >= 0);
-
-const _styles = {
-    liveRegionContainer: Styles.combine({
-        position: 'absolute',
-        overflow: 'hidden',
-        opacity: 0,
-        top: -30,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: 30,
-        whiteSpace: 'pre'
-    }),
-};
 
 const KEY_CODE_TAB = 9;
 const KEY_CODE_ESC = 27;
@@ -125,7 +99,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _respositionPopupTimer: number|undefined;
     private _clickHandlerInstalled = false;
     private _keyboardHandlerInstalled = false;
-    private _newAnnouncementEventChangedSubscription: SubscriptionToken|undefined;
     private _focusManager: FocusManager;
     private _isNavigatingWithKeyboard: boolean = false;
     private _isNavigatingWithKeyboardUpateTimer: number|undefined;
@@ -137,35 +110,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
     constructor(props: RootViewProps) {
         super(props);
-
-        // Update announcement text.
-        this._newAnnouncementEventChangedSubscription =
-            Accessibility.newAnnouncementReadyEvent.subscribe(announcement => {
-                if (this.state.announcementText === announcement) {
-                    // If the previous announcement is the same as the current announcement
-                    // we will append a ' ' to it. This ensures that the text in DOM of aria-live region changes
-                    // and  will be read by screen Reader
-
-                    announcement += ' ';
-                }
-
-                if (_isMac) {
-                    // annnouncementText should never be in nested div for mac.
-                    // Voice over ignores reading nested divs in aria-live container.
-                    this.setState({
-                        announcementText: announcement
-                    });
-                } else {
-
-                    // Additionally, alternate between announcement text directly under the aria-live element and
-                    // nested in a div to work around issues with some readers. NVDA on Windows is known to
-                    // not announce aria-live reliably without this, for example.
-                    this.setState({
-                        announcementText: announcement,
-                        announcementTextInNestedDiv: !this.state.announcementTextInNestedDiv
-                    });
-                }
-            });
 
         this.state = this._getInitialState();
 
@@ -193,9 +137,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             constrainedPopupWidth: 0,
             constrainedPopupHeight: 0,
             isMouseInPopup: false,
-            focusClass: this.props.mouseFocusOutline,
-            announcementText: '',
-            announcementTextInNestedDiv: false
+            focusClass: this.props.mouseFocusOutline
         };
     }
 
@@ -266,11 +208,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     componentWillUnmount() {
         this._stopHidePopupTimer();
         this._stopRepositionPopupTimer();
-
-        if (this._newAnnouncementEventChangedSubscription) {
-            this._newAnnouncementEventChangedSubscription.unsubscribe();
-            this._newAnnouncementEventChangedSubscription = undefined;
-        }
 
         if (this._keyboardHandlerInstalled) {
             window.removeEventListener('keydown', this._onKeyDown);
@@ -352,10 +289,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             );
         }
 
-        let announcement: any = this.state.announcementTextInNestedDiv ?
-            ( <div> { this.state.announcementText } </div> ) :
-            this.state.announcementText;
-
         return (
             <div
                 className={ this.state.focusClass }
@@ -364,20 +297,13 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 { this.props.mainView }
                 { optionalModal }
                 { optionalPopups }
-                <div
-                    style={ _styles.liveRegionContainer as any }
-                    aria-live={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
-                    aria-atomic={ 'true' }
-                    aria-relevant={ 'additions text' }
-                >
-                    { announcement }
-                </div>
+                <AccessibilityAnnouncer />
             </div>
         );
     }
 
     protected _onMount = (component: PopupContainer|null) => {
-        this._mountedComponent = component ? ReactDOM.findDOMNode(component) : undefined;
+        this._mountedComponent = component ? ReactDOM.findDOMNode(component) as HTMLElement : undefined;
     }
 
     private _tryClosePopup = (e: MouseEvent) => {
