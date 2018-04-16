@@ -36,7 +36,7 @@ importantForAccessibility: ImportantForAccessibility = ImportantForAccessibility
 
 // Should be focused when the component is mounted,
 // see https://microsoft.github.io/reactxp/docs/apis/focusutils.html
-autoFocus: AutoFocus | AutoFocus[] = AutoFocus.No;
+autoFocus: AutoFocusValue = undefined;
 
 // Should the scale multiplier be capped when allowFontScaling is set to true?
 // Possible values include the following:

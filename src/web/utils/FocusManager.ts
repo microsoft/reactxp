@@ -9,12 +9,12 @@
 
 import ReactDOM = require('react-dom');
 
+import Types = require('../../common/Types');
 import { FocusManager as FocusManagerBase,
     FocusableComponentInternal,
     StoredFocusableComponent } from '../../common/utils/FocusManager';
-import { autoFocusIfNeeded } from '../../common/utils/AutoFocusHelper';
+import { requestFocus, FirstFocusableId } from '../../common/utils/AutoFocusHelper';
 
-import Types = require('../../common/Types');
 import UserInterface from '../UserInterface';
 
 const ATTR_NAME_TAB_INDEX = 'tabindex';
@@ -173,16 +173,13 @@ export class FocusManager extends FocusManagerBase {
             // When we're in the keyboard navigation mode, we want to have the
             // first focusable component to be focused straight away, without the
             // necessity to press Tab.
-
-            // Using autoFocusIfNeeded() with highest priority to avoid racing with
-            // the elements which are scheduled for autofocus.
             const first = FocusManager._getFirstFocusable(false, FocusManager._currentRestrictionOwner as FocusManager);
 
-            if (first) {
-                autoFocusIfNeeded(
-                    Types.AutoFocus.PriorityHighest,
-                    () => first.el.focus(),
-                    () => (!first.storedComponent.removed && !first.storedComponent.restricted)
+            if (first && !first.storedComponent.removed && !first.storedComponent.restricted) {
+                requestFocus(
+                    FirstFocusableId,
+                    first.storedComponent.component,
+                    () => first.el.focus()
                 );
             }
         } else if ((typeof document !== 'undefined') && document.body && document.body.focus && document.body.blur) {
@@ -311,6 +308,34 @@ export class FocusManager extends FocusManagerBase {
         }
 
         return prev;
+    }
+
+    static sortAndFilterAutoFocusCandidates(candidates: Types.FocusCandidate[]): Types.FocusCandidate[] {
+        return candidates
+            .filter(candidate => {
+                const id = (candidate.component as FocusableComponentInternal).focusableComponentId;
+                if (id) {
+                    const storedComponent = FocusManager._allFocusableComponents[id];
+                    if (storedComponent && (
+                            storedComponent.removed ||
+                            storedComponent.restricted ||
+                            storedComponent.limitedCount > 0 ||
+                            storedComponent.limitedCountAccessible > 0)) {
+                        return false;
+                    }
+                }
+                return true;
+            })
+            .map(candidate => { return { candidate, el: ReactDOM.findDOMNode(candidate.component) as HTMLElement }; })
+            .sort((a, b) => {
+                // Some element which is mounted later could come earlier in the DOM,
+                // so, we sort the elements by their appearance in the DOM.
+                if (a === b) {
+                    return 0;
+                }
+                return a.el.compareDocumentPosition(b.el) & document.DOCUMENT_POSITION_PRECEDING ? 1 : -1;
+            })
+            .map(ce => ce.candidate);
     }
 }
 

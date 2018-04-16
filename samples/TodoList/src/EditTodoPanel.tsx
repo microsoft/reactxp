@@ -64,7 +64,7 @@ class EditTodoPanel extends RX.Component<TodoPanelProps, TodoPanelState> {
                     placeholder={ 'Enter reminder' }
                     placeholderTextColor={ TodoStyles.controlColors.placeholderText }
                     onChangeText={ this._onChangeText }
-                    autoFocus={ true }
+                    autoFocus={ { id: 'EditTodoPanelTextInput' } }
                 />
             </RX.View>
         );
@@ -82,7 +82,7 @@ class EditTodoPanel extends RX.Component<TodoPanelProps, TodoPanelState> {
     private _onPressSave = () => {
         if (this.state.todoText) {
             TodosStore.addTodo(this.state.todoText)
-    
+
             this.setState({ todoText: '' });
             this.props.onNavigateBack();
         }

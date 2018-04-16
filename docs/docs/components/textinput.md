@@ -26,7 +26,7 @@ autoCorrect: boolean = true;
 
 // Should be focused when the component is mounted,
 // see https://microsoft.github.io/reactxp/docs/apis/focusutils.html
-autoFocus: AutoFocus | AutoFocus[] = AutoFocus.No;
+autoFocus: AutoFocusValue = undefined;
 
 // Should focus be lost after submitting?
 blurOnSubmit: boolean = false;

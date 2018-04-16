@@ -81,7 +81,7 @@ limitFocusWithin: LimitFocusType = LimitFocusType.Unlimited;
 
 // Should be focused when the component is mounted,
 // see https://microsoft.github.io/reactxp/docs/apis/focusutils.html
-autoFocus: AutoFocus | AutoFocus[] = AutoFocus.No;
+autoFocus: AutoFocusValue = undefined;
 
 // Additional invisible DOM elements will be added inside the view
 // to track the size changes that are performed behind our back by

@@ -11,7 +11,7 @@ import React = require('react');
 import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import { autoFocusIfNeeded } from '../common/utils/AutoFocusHelper';
+import { requestFocus } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -56,12 +56,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     componentDidMount() {
-        this._autoFocusIfNeeded();
-    }
-
-    componentDidUpdate(prevProps: Types.TextInputProps, prevState: TextInputState) {
-        if (this.props.editable !== prevProps.editable) {
-            this._autoFocusIfNeeded();
+        const autoFocus = this.props.autoFocus;
+        if (autoFocus) {
+            requestFocus(autoFocus.id, this, autoFocus.focus || (() => this.focus()));
         }
     }
 
@@ -121,12 +118,6 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
         this._mountedComponent = component;
-    }
-
-    private _autoFocusIfNeeded() {
-        if (this.props.autoFocus && (this.props.editable !== false)) {
-            autoFocusIfNeeded(this.props.autoFocus, () => this.focus(), () => !!this._mountedComponent);
-        }
     }
 
     private _onFocus = (e: Types.FocusEvent) => {

@@ -4,157 +4,41 @@
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
 *
-* Provides the logic to decide if the component needs to be autofocused
-* on mount, depending on a combination of AutoFocus enum values.
+* Provides the functions which allow to handle the selection of a proper component
+* to focus out of the candidates which claim to be focused on mount with either
+* autoFocus property or which were queued to focus using FocusUtils.requestFocus().
 */
 
+import React = require('react');
 import Types = require('../Types');
 
-let _isAndroid = false;
-let _isIOS = false;
-let _isWeb = false;
-let _isWindows = false;
-let _isMac = false;
-
-let _isNavigatingWithKeyboard: () => boolean;
-
+let _sortAndFilter: SortAndFilterFunc|undefined;
+let _arbitrator: Types.FocusArbitrator|undefined;
 let _autoFocusTimer: number|undefined;
-let _pendingAutoFocusItems: AutoFocusItem[] = [];
+let _pendingAutoFocusItems: Types.FocusCandidate[] = [];
 
-interface AutoFocusItem {
-    focus: () => void;
-    isAvailable: () => boolean;
-    delay: number;
-    priority: number;
-    order: number;
+// The default behaviour in the keyboard navigation mode is to focus first
+// focusable component when a View with restrictFocusWithin is mounted.
+// This is the id for the first focusable which is used by FocusManager.
+// The implementors could use this id from their implementations of
+// FocusArbitrator.
+export const FirstFocusableId = 'reactxp-first-focusable';
+
+export type SortAndFilterFunc = (candidates: Types.FocusCandidate[]) => Types.FocusCandidate[];
+
+export function setSortAndFilterFunc(sortAndFilter: SortAndFilterFunc) {
+    _sortAndFilter = sortAndFilter;
 }
 
-export function initAutoFocus(platform: Types.PlatformType, isNavigatingWithKeyboard: () => boolean) {
-    switch (platform) {
-        case 'web':
-            _isWeb = true;
-            break;
-
-        case 'ios':
-            _isIOS = true;
-            break;
-
-        case 'android':
-            _isAndroid = true;
-            break;
-
-        case 'windows':
-            _isWindows = true;
-            break;
-
-        case 'macos':
-            _isMac = true;
-            break;
-    }
-
-    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
+export function setFocusArbitrator(arbitrator: Types.FocusArbitrator) {
+    _arbitrator = arbitrator;
 }
 
-export function autoFocusIfNeeded(value: Types.AutoFocus|Types.AutoFocus[], focus: () => void, isAvailable: () => boolean): boolean {
-    if (!(value instanceof Array)) {
-        value = [value];
-    }
-
-    let isPlatformSpecified = false;
-    let shouldFocusAndroid = false;
-    let shouldFocusIOS = false;
-    let shouldFocusWeb = false;
-    let shouldFocusWindows = false;
-    let shouldFocusMac = false;
-
-    let isKeyboardSpecified = false;
-    let shouldFocusWhenNavigatingWithKeyboard = false;
-    let shouldFocusWhenNavigatingWithoutKeyboard = false;
-
-    let priority = Types.AutoFocus.PriorityLow;
-    let delay = 0;
-
-    for (let i = 0; i < value.length; i++) {
-        switch (value[i]) {
-            case Types.AutoFocus.No:
-                return false;
-
-            case Types.AutoFocus.Yes:
-                isPlatformSpecified = shouldFocusAndroid = shouldFocusIOS = shouldFocusWeb = shouldFocusWindows = shouldFocusMac = true;
-                isKeyboardSpecified = shouldFocusWhenNavigatingWithKeyboard = shouldFocusWhenNavigatingWithoutKeyboard = true;
-                break;
-
-            case Types.AutoFocus.WhenNavigatingWithKeyboard:
-                shouldFocusWhenNavigatingWithKeyboard = isKeyboardSpecified = true;
-                break;
-
-            case Types.AutoFocus.WhenNavigatingWithoutKeyboard:
-                shouldFocusWhenNavigatingWithoutKeyboard = isKeyboardSpecified = true;
-                break;
-
-            case Types.AutoFocus.Android:
-                shouldFocusAndroid = isPlatformSpecified = true;
-                break;
-
-            case Types.AutoFocus.IOS:
-                shouldFocusIOS = isPlatformSpecified = true;
-                break;
-
-            case Types.AutoFocus.Web:
-                shouldFocusWeb = isPlatformSpecified = true;
-                break;
-
-            case Types.AutoFocus.Windows:
-                shouldFocusWindows = isPlatformSpecified = true;
-                break;
-
-            case Types.AutoFocus.Mac:
-                shouldFocusMac = isPlatformSpecified = true;
-                break;
-
-            case Types.AutoFocus.PriorityLow:
-            case Types.AutoFocus.PriorityHigh:
-            case Types.AutoFocus.PriorityHighest:
-                priority = value[i];
-                break;
-
-            case Types.AutoFocus.Delay100:
-                delay = 100;
-                break;
-
-            case Types.AutoFocus.Delay500:
-                delay = 500;
-                break;
-
-            case Types.AutoFocus.Delay1000:
-                delay = 1000;
-                break;
-        }
-    }
-
-    if (isKeyboardSpecified) {
-        const isNavigatingWithKeyboard = _isNavigatingWithKeyboard();
-
-        if ((isNavigatingWithKeyboard && !shouldFocusWhenNavigatingWithKeyboard) ||
-            (!isNavigatingWithKeyboard && !shouldFocusWhenNavigatingWithoutKeyboard)) {
-
-            return false;
-        }
-    }
-
-    if (isPlatformSpecified &&
-        ((_isAndroid && !shouldFocusAndroid) || (_isIOS && !shouldFocusIOS) || (_isWeb && !shouldFocusWeb) ||
-         (_isWindows && !shouldFocusWindows) || (_isMac && !shouldFocusMac))) {
-
-        return false;
-    }
-
+export function requestFocus(id: string, component: React.Component<any, any>, focus: () => void): void {
     _pendingAutoFocusItems.push({
-        focus,
-        isAvailable,
-        delay,
-        priority,
-        order: _pendingAutoFocusItems.length
+        id,
+        component,
+        focus
     });
 
     if (_autoFocusTimer) {
@@ -166,33 +50,35 @@ export function autoFocusIfNeeded(value: Types.AutoFocus|Types.AutoFocus[], focu
     _autoFocusTimer = setTimeout(() => {
         _autoFocusTimer = undefined;
 
-        // Sorting by (Autofocus priority, Order of mount).
-        _pendingAutoFocusItems.sort((a, b) => {
-            return a.priority === b.priority
-                ? (a.order === b.order ? 0 : (a.order < b.order ? -1 : 1))
-                : (a.priority === b.priority ? 0 : (a.priority > b.priority ? -1 : 1));
-        });
+        if (_sortAndFilter) {
+            _pendingAutoFocusItems = _sortAndFilter(_pendingAutoFocusItems);
+        }
 
-        const autoFocusItem = _pendingAutoFocusItems[0];
+        if (_arbitrator && _arbitrator(_pendingAutoFocusItems)) {
+            _pendingAutoFocusItems = [];
+            return;
+        }
+
+        let autoFocusItem: Types.FocusCandidate|undefined;
+
+        // If no sorting function is specified and the arbitrator hasn't handled
+        // the focus, we choose the first focusable component provided by FocusManager
+        // or the last one queued.
+        for (let i = 0; i < _pendingAutoFocusItems.length; i++) {
+            if (_pendingAutoFocusItems[i].id === FirstFocusableId) {
+                autoFocusItem = _pendingAutoFocusItems[i];
+                break;
+            }
+        }
+
+        if (!autoFocusItem) {
+            autoFocusItem = _pendingAutoFocusItems[_pendingAutoFocusItems.length - 1];
+        }
+
         _pendingAutoFocusItems = [];
 
         if (autoFocusItem) {
-            const autoFocusAction = () => {
-                if (autoFocusItem.isAvailable()) {
-                    autoFocusItem.focus();
-                }
-            };
-
-            if (autoFocusItem.delay > 0) {
-                _autoFocusTimer = setTimeout(() => {
-                    _autoFocusTimer = undefined;
-                    autoFocusAction();
-                }, autoFocusItem.delay);
-            } else {
-                autoFocusAction();
-            }
+            autoFocusItem.focus();
         }
     }, 0);
-
-    return true;
 }

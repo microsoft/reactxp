@@ -64,10 +64,6 @@ import AccessibilityPlatformUtil from './AccessibilityUtil';
 
 AccessibilityUtil.setAccessibilityPlatformUtil(AccessibilityPlatformUtil);
 
-// Initialize AutofocusHelper.
-import { initAutoFocus } from '../common/utils/AutoFocusHelper';
-initAutoFocus('ios', () => UserInterfaceImpl.isNavigatingWithKeyboard());
-
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 

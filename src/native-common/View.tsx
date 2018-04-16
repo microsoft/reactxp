@@ -14,7 +14,7 @@ import React = require('react');
 import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import { autoFocusIfNeeded } from '../common/utils/AutoFocusHelper';
+import { requestFocus } from '../common/utils/AutoFocusHelper';
 
 import Animated from './Animated';
 import EventHelpers from './utils/EventHelpers';
@@ -217,8 +217,9 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             this._mixin_componentDidMount();
         }
 
-        if (this.props.autoFocus) {
-            autoFocusIfNeeded(this.props.autoFocus, () => this.focus(), () => this._isMounted);
+        const autoFocus = this.props.autoFocus;
+        if (autoFocus) {
+            requestFocus(autoFocus.id, this, autoFocus.focus || (() => { if (this._isMounted) { this.focus(); } }));
         }
     }
 

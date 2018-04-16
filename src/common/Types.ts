@@ -449,45 +449,38 @@ export enum AccessibilityTrait {
     None
 }
 
-// The autofocusing logic should behave differently on different platforms,
-// to avoid having complex logic on the application level, we're letting to
-// specify the autofocusing conditions in autoFocus property of the component.
-export enum AutoFocus {
-    No = 0,
-    Yes = 1, // All platforms, any state of the keyboard navigation mode, default
-             // priority, no delay.
+// This is the definition of the autoFocus value for the components
+// which support it (Button, View, etc.)
+export interface AutoFocusValue {
+    id: string; // This id will be passed back to you application's FocusArbitrator
+                // function and you will be able to using while choosing the proper
+                // component to focus.
+    focus?: () => void; // By default the default focusing logic is used for the component
+                        // when you specify autoFocus property. Optionally you can override
+                        // the default logic (for example you might want to delay the actual
+                        // focus to wait for the animation to end).
+                        // WARNING: Due to asynchronous nature of the autofocus logic, you
+                        // must check if the component is still mounted inside this function.
+}
 
-    // We can target the keyboard navigation mode (if none of
-    // WhenNavigatingWithKeyboard and WhenNavigatingWithoutKeyboard are specified,
-    // both are assumed to be enabled).
-    WhenNavigatingWithKeyboard,
-    WhenNavigatingWithoutKeyboard,
+// Your application can specify a function which will choose the proper element to focus
+// and focus it when more than one component is scheduled to be focused. Return true from
+// the function if your application is processed the focusing, otherwise return false and
+// the default logic will be used (which is to focus last component queued or first focusable
+// inside a View with restrictFocusWithin when it's mounted).
+// See https://microsoft.github.io/reactxp/docs/apis/focusutils.html
+export type FocusArbitrator = (candidates: FocusCandidate[]) => boolean;
 
-    // We can target the platform (if none of the platforms are specified, all
-    // platforms are assumed to be enabled).
-    Android,
-    IOS,
-    Web,
-    Windows,
-    Mac,
-
-    // Sometimes a common high level component has default autofocusable (for
-    // example, close button in a dialog), but the subcomponents want to be
-    // autofocused too (for example, some input inside a particular kind of dialog).
-    // We can specify the priority (Low for the close button, High for the
-    // input) without forking the logic on the application level (the input will
-    // win if present, otherwise the close button will be focused).
-    // Default priority is PriorityLow.
-    PriorityLow,
-    PriorityHigh,
-    PriorityHighest, // Highest priority is used internally and you shouldn't use
-                     // it unless you are really sure what you're up to.
-
-    // Sometimes it might be needed to delay the autofocusing a little (if no
-    // delay is specified, the component will be focused without the delay).
-    Delay100, // 100 ms
-    Delay500, // 500 ms
-    Delay1000 // 1000 ms
+// FocusArbitrator function will be called with an array of FocusCandidate.
+// See https://microsoft.github.io/reactxp/docs/apis/focusutils.html
+export interface FocusCandidate {
+    id: string; // id you've specified in AutoFocusValue or FocusUtils.FirstFocusableId.
+    component: React.Component<any, any>; // An instance of the component which wants to
+                                          // be focused.
+    focus: () => void; // A function to call to focus the component. It's either
+                       // AutoFocusValue.focus() function you've specified, or the default
+                       // function to focus the component when AutoFocusValue.focus() is
+                       // not specified.
 }
 
 export interface CommonStyledProps<T> extends CommonProps {
@@ -500,7 +493,7 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     disabled?: boolean;
     delayLongPress?: number;
 
-    autoFocus?: AutoFocus | AutoFocus[]; // Should autofocus depending on the set of the specified conditions
+    autoFocus?: AutoFocusValue; // The component is a candidate for being autofocused.
     onAccessibilityTapIOS?: Function; // iOS-only prop, call when a button is double tapped in accessibility mode
     onContextMenu?: (e: MouseEvent) => void;
     onPress?: (e: SyntheticEvent) => void;
@@ -592,7 +585,7 @@ export interface TextPropsShared extends CommonProps {
 
     importantForAccessibility?: ImportantForAccessibility;
 
-    autoFocus?: AutoFocus | AutoFocus[]; // Should autofocus depending on the set of the specified conditions
+    autoFocus?: AutoFocusValue; // The component is a candidate for being autofocused.
 
     onPress?: (e: SyntheticEvent) => void;
 
@@ -631,7 +624,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     restrictFocusWithin?: boolean; // Web-only, during the keyboard navigation, the focus will not go outside this view
     limitFocusWithin?: LimitFocusType; // Web-only, make the view and all focusable subelements not focusable
 
-    autoFocus?: AutoFocus | AutoFocus[]; // Should autofocus depending on the set of the specified conditions
+    autoFocus?: AutoFocusValue; // The component is a candidate for being autofocused.
 
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
     id?: string; // Web-only. Needed for accessibility.
@@ -881,7 +874,7 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
 export interface TextInputPropsShared extends CommonProps, CommonAccessibilityProps {
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
     autoCorrect?: boolean;
-    autoFocus?: AutoFocus | AutoFocus[]; // Should autofocus depending on the set of the specified conditions
+    autoFocus?: AutoFocusValue; // The component is a candidate for being autofocused.
     blurOnSubmit?: boolean;
     defaultValue?: string;
     editable?: boolean;

@@ -311,5 +311,7 @@ export interface International {
 }
 
 export interface FocusUtils {
-    autoFocus(value: Types.AutoFocus|Types.AutoFocus[], focus: () => void, isAvailable: () => boolean): boolean;
+    FirstFocusableId: string;
+    setFocusArbitrator(arbitrator: Types.FocusArbitrator): void;
+    requestFocus(id: string, component: React.Component<any, any>, focus: () => void): void;
 }

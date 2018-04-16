@@ -9,7 +9,7 @@
 
 import React = require('react');
 
-import { autoFocusIfNeeded } from '../common/utils/AutoFocusHelper';
+import { requestFocus } from '../common/utils/AutoFocusHelper';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
@@ -63,12 +63,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     componentDidMount() {
-        this._autoFocusIfNeeded();
-    }
-
-    componentDidUpdate(prevProps: Types.TextInputProps, prevState: TextInputState) {
-        if (this.props.editable !== prevProps.editable) {
-            this._autoFocusIfNeeded();
+        const autoFocus = this.props.autoFocus;
+        if (autoFocus) {
+            requestFocus(autoFocus.id, this, autoFocus.focus || this._focus);
         }
     }
 
@@ -161,12 +158,6 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     private _onMount = (comp: HTMLInputElement|HTMLTextAreaElement|null) => {
         this._mountedComponent = comp;
-    }
-
-    private _autoFocusIfNeeded() {
-        if (this.props.autoFocus && (this.props.editable !== false)) {
-            autoFocusIfNeeded(this.props.autoFocus, () => this.focus(), () => !!this._mountedComponent);
-        }
     }
 
     private _onInput = () => {

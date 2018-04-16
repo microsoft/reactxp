@@ -48,7 +48,7 @@ class ImageListPanel extends RX.Component<{}, ImageListPanelState> {
                     style={ _styles.textInput }
                     value={ this.state.inputValue }
                     onChangeText={ this._onTextInputChanged }
-                    autoFocus={ true }
+                    autoFocus={ { id: 'ImageListPanelTextInput' } }
                     placeholder={ 'Search for a GIF' }
                 />
                 <ImageList />

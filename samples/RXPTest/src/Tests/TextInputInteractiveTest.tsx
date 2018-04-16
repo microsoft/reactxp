@@ -118,7 +118,7 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
                         returnKeyType={ 'done' }
                         value={ this.state.test1Input }
                         autoCorrect={ false }
-                        autoFocus={ true }
+                        autoFocus={ { id: 'TextInputViewTextInput' } }
                         maxContentSizeMultiplier={ 1.5 }
                         onChangeText={ val => this.setState({ test1Input: val }) }
                     />
@@ -203,7 +203,7 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation6' }>
                     <RX.Text style={ _styles.explainText }>
                         { 'This is a multi-line text input box. ' +
-                          'It records and displays all events (displayed in reverse order). Try focus, blur, typing, ' + 
+                          'It records and displays all events (displayed in reverse order). Try focus, blur, typing, ' +
                           'pasting, scrolling, changing selections, and submitting (hit return). ' }
                     </RX.Text>
                 </RX.View>
@@ -223,7 +223,7 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
                 />
                 <RX.ScrollView style={ _styles.eventHistoryScrollView }>
                     <RX.Text style={ _styles.eventHistoryText }>
-                        { this.state.test6EventHistory.length ? 
+                        { this.state.test6EventHistory.length ?
                             this.state.test6EventHistory.join('\n') :
                             'Event history will appear here'
                         }
@@ -288,7 +288,7 @@ class TextInputTest implements Test {
     getPath(): string {
         return 'Components/TextInput/Interactive';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

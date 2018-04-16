@@ -8,14 +8,13 @@
 */
 
 import RXInterfaces = require('./Interfaces');
-import RXTypes = require('./Types');
 
-import { autoFocusIfNeeded } from './utils/AutoFocusHelper';
+import { FirstFocusableId, requestFocus, setFocusArbitrator } from './utils/AutoFocusHelper';
 
 export class FocusUtils implements RXInterfaces.FocusUtils {
-    autoFocus(value: RXTypes.AutoFocus|RXTypes.AutoFocus[], focus: () => void, isAvailable: () => boolean): boolean {
-        return autoFocusIfNeeded(value, focus, isAvailable);
-    }
+    FirstFocusableId = FirstFocusableId;
+    setFocusArbitrator = setFocusArbitrator;
+    requestFocus = requestFocus;
 }
 
 export default new FocusUtils();
