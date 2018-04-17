@@ -703,6 +703,7 @@ export interface TapGestureState extends GestureState {
     clientY: number;
     pageX: number;
     pageY: number;
+    isRightButton?: boolean; // UWP only, for desktop context menu
 }
 
 export enum GestureMouseCursor {
@@ -1197,6 +1198,7 @@ export interface TouchEvent extends SyntheticEvent {
     pageX?: number;
     pageY?: number;
     touches: TouchList;
+    isRightButton?: boolean; // UWP only
 }
 
 export interface WheelEvent extends SyntheticEvent {

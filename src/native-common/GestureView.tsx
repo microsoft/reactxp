@@ -500,7 +500,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         return panEvent;
     }
 
-    private _sendTapEvent(e: Types.TouchEvent) {
+    protected _sendTapEvent(e: Types.TouchEvent) {
         if (this.props.onTap) {
             const tapEvent: Types.TapGestureState = {
                 pageX: e.pageX!!!,
