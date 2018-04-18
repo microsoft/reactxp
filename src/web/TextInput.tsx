@@ -102,6 +102,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onMouseDown={ this._checkSelectionChanged }
                     onMouseUp={ this._checkSelectionChanged }
                     onPaste={ this._onPaste }
+                    onCut={ this._onCut }
                     onScroll={ this._onScroll }
                     aria-label={ this.props.accessibilityLabel }
                     // VoiceOver does not handle text inputs properly at the moment, aria-live is a temporary workaround.
@@ -110,7 +111,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             );
         } else {
             let { keyboardTypeValue, wrapInForm, pattern } = this._getKeyboardType();
-            
+
             let input = (
                 <input
                     ref={ this._onMount }
@@ -123,7 +124,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     maxLength={ this.props.maxLength }
                     placeholder={ this.props.placeholder }
 
-                    onChange= { this._onInputChanged }
+                    onChange={ this._onInputChanged }
                     onKeyDown={ this._onKeyDown }
                     onKeyUp={ this._checkSelectionChanged }
                     onFocus={ this.props.onFocus }
@@ -131,6 +132,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onMouseDown={ this._checkSelectionChanged }
                     onMouseUp={ this._checkSelectionChanged }
                     onPaste={ this._onPaste }
+                    onCut={ this._onCut }
                     aria-label={ this.props.accessibilityLabel }
                     // VoiceOver does not handle text inputs properly at the moment, aria-live is a temporary workaround.
                     aria-live={ _isMac ? 'assertive' : undefined }
@@ -138,7 +140,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     pattern={ pattern }
                 />
             );
-            
+
             if (wrapInForm) {
                 // Wrap the input in a form tag if required
                 input = (
@@ -188,6 +190,14 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     private _onPaste = (e: Types.ClipboardEvent) => {
         if (this.props.onPaste) {
             this.props.onPaste(e);
+        }
+
+        this._checkSelectionChanged();
+    }
+
+    private _onCut = (e: Types.ClipboardEvent) => {
+        if (this.props.onCut) {
+            this.props.onCut(e);
         }
 
         this._checkSelectionChanged();
