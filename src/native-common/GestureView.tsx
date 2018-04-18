@@ -15,6 +15,7 @@ import React = require('react');
 import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
+import EventHelpers from './utils/EventHelpers';
 
 import Types = require('../common/Types');
 import UserInterface from './UserInterface';
@@ -500,14 +501,15 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         return panEvent;
     }
 
-    protected _sendTapEvent(e: Types.TouchEvent) {
+    private _sendTapEvent(e: Types.TouchEvent) {
         if (this.props.onTap) {
             const tapEvent: Types.TapGestureState = {
                 pageX: e.pageX!!!,
                 pageY: e.pageY!!!,
                 clientX: e.locationX!!!,
                 clientY: e.locationY!!!,
-                timeStamp: e.timeStamp
+                timeStamp: e.timeStamp,
+                button: EventHelpers.toMouseButton(e)
             };
 
             this.props.onTap(tapEvent);
@@ -521,7 +523,8 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
                 pageY: e.pageY!!!,
                 clientX: e.locationX!!!,
                 clientY: e.locationY!!!,
-                timeStamp: e.timeStamp
+                timeStamp: e.timeStamp,
+                button: EventHelpers.toMouseButton(e)
             };
 
             this.props.onDoubleTap(tapEvent);

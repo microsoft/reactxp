@@ -703,7 +703,7 @@ export interface TapGestureState extends GestureState {
     clientY: number;
     pageX: number;
     pageY: number;
-    isRightButton?: boolean; // UWP only, for desktop context menu
+    button: MouseButton;
 }
 
 export enum GestureMouseCursor {
@@ -1149,9 +1149,15 @@ export interface ClipboardEvent extends SyntheticEvent {
 
 export type FocusEvent = SyntheticEvent;
 
+export enum MouseButton {
+    Primary,
+    Auxiliary,
+    Secondary
+}
+
 export interface MouseEvent extends SyntheticEvent {
     altKey: boolean;
-    button: number;
+    button: MouseButton;
     clientX: number;
     clientY: number;
     ctrlKey: boolean;

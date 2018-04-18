@@ -346,7 +346,8 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
                     pageY: e.pageY,
                     clientX: e.clientX - clientRect.left,
                     clientY: e.clientY - clientRect.top,
-                    timeStamp: e.timeStamp
+                    timeStamp: e.timeStamp,
+                    button: e.button
                 };
 
                 this.props.onTap(tapEvent);
@@ -364,7 +365,8 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
                     pageY: e.pageY,
                     clientX: e.clientX - clientRect.left,
                     clientY: e.clientY - clientRect.top,
-                    timeStamp: e.timeStamp
+                    timeStamp: e.timeStamp,
+                    button: e.button
                 };
 
                 this.props.onDoubleTap(tapEvent);

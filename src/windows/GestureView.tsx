@@ -37,21 +37,6 @@ export class GestureView extends BaseGestureView {
 
         return timestamp.valueOf();
     }
-
-    protected _sendTapEvent(e: Types.TouchEvent) {
-        if (this.props.onTap) {
-            const tapEvent: Types.TapGestureState = {
-                pageX: e.pageX!!!,
-                pageY: e.pageY!!!,
-                clientX: e.locationX!!!,
-                clientY: e.locationY!!!,
-                timeStamp: e.timeStamp,
-                isRightButton: e.isRightButton
-            };
-
-            this.props.onTap(tapEvent);
-        }
-    }
 }
 
 export default GestureView;

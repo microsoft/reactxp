@@ -140,7 +140,7 @@ export class EventHelpers {
         // reuses events, so we're not allowed to modify the original.
         // Instead, we'll clone it.
         let mouseEvent = _.clone(e as Types.MouseEvent);
-        
+
         const nativeEvent = e.nativeEvent;
 
         // We keep pageX/Y and clientX/Y coordinates in sync, similar to the React web behavior
@@ -153,13 +153,7 @@ export class EventHelpers {
             mouseEvent.clientY = mouseEvent.pageY = nativeEvent.pageY;
         }
 
-        if (!!nativeEvent.IsRightButton) {
-            mouseEvent.button = 2;
-        } else if (!!nativeEvent.IsMiddleButton) {
-            mouseEvent.button = 1;
-        } else {
-            mouseEvent.button = 0;
-        }
+        mouseEvent.button = this.toMouseButton(e);
 
         if (nativeEvent.shiftKey) {
             mouseEvent.shiftKey = nativeEvent.shiftKey;
@@ -189,8 +183,22 @@ export class EventHelpers {
         return mouseEvent;
     }
 
+    toMouseButton(e: Types.SyntheticEvent): number {
+        if (this.isRightMouseButton(e)) {
+            return Types.MouseButton.Secondary;
+        } else if (this.isMiddleMouseButton(e)) {
+            return Types.MouseButton.Auxiliary;
+        }
+
+        return Types.MouseButton.Primary;
+    }
+
     isRightMouseButton(e: Types.SyntheticEvent): boolean {
-        return !!e.nativeEvent.isRightButton;
+        return !!e.nativeEvent.isRightButton || !!e.nativeEvent.IsRightButton;
+    }
+
+    isMiddleMouseButton(e: Types.SyntheticEvent): boolean {
+        return !!e.nativeEvent.isMiddleButton || !!e.nativeEvent.IsMiddleButton;
     }
 }
 
