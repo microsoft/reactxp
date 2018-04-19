@@ -76,9 +76,11 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
                 />
             );
         } else {
-            // TODO: The "in text parent" case requires a React Native view that maps to
-            // XAML Hyperlink but this RN view isn't implemented yet.
-            return super._render(internalProps);
+            return (
+                <RNW.HyperlinkWindows
+                    { ...internalProps }
+                />
+            );
         }
     }
 
