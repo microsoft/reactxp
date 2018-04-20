@@ -28,6 +28,11 @@ export class EventHelpers {
                 keyCode = keyName.charCodeAt(0);
             } else {
                 switch (keyName) {
+                    // Comma in UWP is not in VirtualKey enum and so comes as stringified int value.
+                    case '188':
+                        keyCode = 188;
+                        break;
+
                     case 'Backspace':
                     case 'Back':
                         keyCode = 8;
