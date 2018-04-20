@@ -104,6 +104,14 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
             Input.dispatchKeyDown(kbdEvent);
         }
 
+        _onKeyPress = (e: SyntheticEvent) => {
+            let kbdEvent = EventHelpers.toKeyboardEvent(e);
+            // This is temporary fix while we still have both keyPress and keyDown 
+            // events bubbling up for the same situation of user pressing down a key.
+            // TODO: consolidate key events #602
+            Input.dispatchKeyDown(kbdEvent);
+        }
+
         _onKeyUp = (e: SyntheticEvent) => {
             let kbdEvent = EventHelpers.toKeyboardEvent(e);
 
@@ -133,6 +141,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
             // Yet the handlers are called as part of capturing/bubbling events for/from children.
             let internalProps: any = {
                 onKeyDown: this._onKeyDown,
+                onKeyPress: this._onKeyPress,
                 onKeyDownCapture: this._onKeyDownCapture,
                 onKeyUp: this._onKeyUp,
                 onTouchStartCapture: this._onTouchStartCapture
