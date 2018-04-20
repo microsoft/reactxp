@@ -1,5 +1,5 @@
 /*
-* Tests the functionality of a GestureView component 
+* Tests the functionality of a GestureView component
 * through user interaction.
 */
 
@@ -38,10 +38,12 @@ const _styles = {
 };
 
 const _colors = ['red', 'green', 'blue'];
+const _shades = ['#000', '#333', '#666', '#999', '#CCC', '#FFF'];
 
 interface GestureViewState {
     test1ColorIndex?: number;
     test2ColorIndex?: number;
+    test4ColorIndex?: number;
 }
 
 class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
@@ -51,7 +53,7 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
     private _test1AnimatedStyle = RX.Styles.createAnimatedViewStyle({
         transform: [{
             scale: this._test1ScaleValue
-        }, { 
+        }, {
             rotate: this._test1RotateValue.interpolate({
                 inputRange: [0, 360],
                 outputRange: ['0deg', '360deg']
@@ -79,12 +81,23 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
         }]
     });
 
+    private _test4HorizontalOffset = new RX.Animated.Value(0);
+    private _test4VerticalOffset = new RX.Animated.Value(0);
+    private _test4AnimatedStyle = RX.Styles.createAnimatedViewStyle({
+        transform: [{
+            translateX: this._test4HorizontalOffset
+        }, {
+            translateY: this._test4VerticalOffset
+        }]
+    });
+
     constructor(props: RX.CommonProps) {
         super(props);
 
         this.state = {
             test1ColorIndex: 0,
-            test2ColorIndex: 1
+            test2ColorIndex: 1,
+            test4ColorIndex: 2
         };
     }
 
@@ -96,6 +109,10 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
 
         let test2ColorStyle = RX.Styles.createViewStyle({
             backgroundColor: _colors[this.state.test2ColorIndex]
+        }, false);
+
+        let test4ColorStyle = RX.Styles.createViewStyle({
+            backgroundColor: _shades[this.state.test4ColorIndex]
         }, false);
 
         return (
@@ -152,6 +169,23 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
                 >
                     <RX.Animated.View
                         style={ [_styles.smallBox, this._test3AnimatedStyle] }
+                    />
+                </RX.GestureView>
+
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation4' }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'Desktop platforms: Left click will make the box lighter. ' +
+                          'Right click (context menu) will make the box darker.' }
+                    </RX.Text>
+                </RX.View>
+                <RX.GestureView
+                    style={ _styles.gestureView }
+                    onTap={ state => this._onTapTest4(state) }
+                    onContextMenuGesture={ e => this._onContextMenu4(e) }
+                    mouseOverCursor={ RX.Types.GestureMouseCursor.Pointer }
+                >
+                    <RX.Animated.View
+                        style={ [_styles.smallBox, test4ColorStyle, this._test4AnimatedStyle] }
                     />
                 </RX.GestureView>
             </RX.View>
@@ -222,6 +256,19 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
             this._test3VerticalOffset.setValue(state.pageY - state.initialPageY);
         }
     }
+
+    private _onTapTest4(gestureState: RX.Types.TapGestureState) {
+        // Change the color.
+        this.setState({
+            test4ColorIndex: (this.state.test4ColorIndex + 1) % _shades.length
+        });
+    }
+
+    private _onContextMenu4(gestureState: RX.Types.TapGestureState) {
+        this.setState({
+            test4ColorIndex: (this.state.test4ColorIndex - 1) % _shades.length
+        });
+    }
 }
 
 class GestureViewTest implements Test {
@@ -230,7 +277,7 @@ class GestureViewTest implements Test {
     getPath(): string {
         return 'Components/GestureView';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

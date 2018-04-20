@@ -153,7 +153,7 @@ export class EventHelpers {
             mouseEvent.clientY = mouseEvent.pageY = nativeEvent.pageY;
         }
 
-        mouseEvent.button = this.toMouseButton(e);
+        mouseEvent.button = this.toMouseButton(e.nativeEvent as Types.TouchEvent);
 
         if (nativeEvent.shiftKey) {
             mouseEvent.shiftKey = nativeEvent.shiftKey;
@@ -183,10 +183,10 @@ export class EventHelpers {
         return mouseEvent;
     }
 
-    toMouseButton(e: Types.SyntheticEvent): number {
-        if (this.isRightMouseButton(e)) {
+    toMouseButton(e: Types.TouchEvent): number {
+        if (e.isRightButton) {
             return Types.MouseButton.Secondary;
-        } else if (this.isMiddleMouseButton(e)) {
+        } else if (e.isMiddleButton) {
             return Types.MouseButton.Auxiliary;
         }
 
@@ -194,11 +194,7 @@ export class EventHelpers {
     }
 
     isRightMouseButton(e: Types.SyntheticEvent): boolean {
-        return !!e.nativeEvent.isRightButton || !!e.nativeEvent.IsRightButton;
-    }
-
-    isMiddleMouseButton(e: Types.SyntheticEvent): boolean {
-        return !!e.nativeEvent.isMiddleButton || !!e.nativeEvent.IsMiddleButton;
+        return !!e.nativeEvent.isRightButton;
     }
 }
 

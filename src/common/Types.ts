@@ -703,7 +703,6 @@ export interface TapGestureState extends GestureState {
     clientY: number;
     pageX: number;
     pageY: number;
-    button: MouseButton;
 }
 
 export enum GestureMouseCursor {
@@ -733,6 +732,7 @@ export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet>, C
     onPanHorizontal?: (gestureState: PanGestureState) => void;
     onTap?: (gestureState: TapGestureState) => void;
     onDoubleTap?: (gestureState: TapGestureState) => void;
+    onContextMenuGesture?: (gestureState: TapGestureState) => void;
 
     // We can set vertical or horizontal as preferred
     preferredPan?: PreferredPanGesture;
@@ -1205,6 +1205,7 @@ export interface TouchEvent extends SyntheticEvent {
     pageY?: number;
     touches: TouchList;
     isRightButton?: boolean; // UWP only
+    isMiddleButton?: boolean;
 }
 
 export interface WheelEvent extends SyntheticEvent {

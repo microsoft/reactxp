@@ -78,6 +78,7 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
                 role={ ariaRole }
                 aria-label={ this.props.accessibilityLabel }
                 aria-hidden={ isAriaHidden }
+                onContextMenu={ this.props.onContextMenuGesture ? this._sendContextMenuEvent : undefined }
             >
                 { this.props.children }
             </div>
@@ -180,6 +181,25 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
             // timer so we can determine whether the current tap is a single or double.
             this._reportDelayedTap();
             this._startDoubleTapTimer(e);
+        }
+    }
+
+    private _sendContextMenuEvent = (e: React.MouseEvent<any>) => {
+        if (this.props.onContextMenuGesture) {
+            const clientRect = this._getGestureViewClientRect();
+
+            if (clientRect) {
+                const tapEvent: Types.TapGestureState = {
+                    pageX: e.pageX,
+                    pageY: e.pageY,
+                    clientX: e.clientX - clientRect.left,
+                    clientY: e.clientY - clientRect.top,
+                    timeStamp: e.timeStamp
+                };
+
+                this.props.onContextMenuGesture(tapEvent);
+                e.preventDefault();
+            }
         }
     }
 
@@ -346,8 +366,7 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
                     pageY: e.pageY,
                     clientX: e.clientX - clientRect.left,
                     clientY: e.clientY - clientRect.top,
-                    timeStamp: e.timeStamp,
-                    button: e.button
+                    timeStamp: e.timeStamp
                 };
 
                 this.props.onTap(tapEvent);
@@ -365,8 +384,7 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
                     pageY: e.pageY,
                     clientX: e.clientX - clientRect.left,
                     clientY: e.clientY - clientRect.top,
-                    timeStamp: e.timeStamp,
-                    button: e.button
+                    timeStamp: e.timeStamp
                 };
 
                 this.props.onDoubleTap(tapEvent);
