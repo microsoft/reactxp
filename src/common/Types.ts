@@ -1149,15 +1149,9 @@ export interface ClipboardEvent extends SyntheticEvent {
 
 export type FocusEvent = SyntheticEvent;
 
-export enum MouseButton {
-    Primary,
-    Auxiliary,
-    Secondary
-}
-
 export interface MouseEvent extends SyntheticEvent {
     altKey: boolean;
-    button: MouseButton;
+    button: number;
     clientX: number;
     clientY: number;
     ctrlKey: boolean;
@@ -1204,9 +1198,6 @@ export interface TouchEvent extends SyntheticEvent {
     pageX?: number;
     pageY?: number;
     touches: TouchList;
-    button?: number; // Mac, web native events
-    isRightButton?: boolean; // UWP only
-    isMiddleButton?: boolean;
 }
 
 export interface WheelEvent extends SyntheticEvent {

@@ -503,8 +503,8 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
 
     private _sendTapEvent(e: Types.TouchEvent) {
         const button = EventHelpers.toMouseButton(e);
-        if (button === Types.MouseButton.Secondary) {
-            // always handle secondary button, even if context menu is not set - it shouldn't trigger onTap
+        if (button === 2) {
+            // Always handle secondary button, even if context menu is not set - it shouldn't trigger onTap.
             if (this.props.onContextMenuGesture) {
                 const tapEvent: Types.TapGestureState = {
                     pageX: e.pageX!!!,
@@ -530,11 +530,11 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
     }
 
     private _sendDoubleTapEvent(e: Types.TouchEvent) {
-        // if user did a double click with different mouse buttons, eg. left (50ms) right
-        // both clicks need to be registered as separate events
+        // If user did a double click with different mouse buttons, eg. left (50ms) right
+        // both clicks need to be registered as separate events.
         const lastButton = EventHelpers.toMouseButton(this._lastTapEvent!!!);
         const button = EventHelpers.toMouseButton(e);
-        if (lastButton !== button || button === Types.MouseButton.Secondary) {
+        if (lastButton !== button || button === 2) {
             this._sendTapEvent(this._lastTapEvent!!!);
             this._sendTapEvent(e);
             return;

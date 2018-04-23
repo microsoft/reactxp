@@ -184,15 +184,16 @@ export class EventHelpers {
     }
 
     toMouseButton(e: Types.TouchEvent): number {
-        if (e.button !== undefined) {
-            return e.button;
-        } else if (e.isRightButton) {
-            return Types.MouseButton.Secondary;
-        } else if (e.isMiddleButton) {
-            return Types.MouseButton.Auxiliary;
+        const nativeEvent = e as any;
+        if (nativeEvent.button !== undefined) {
+            return nativeEvent.button;
+        } else if (nativeEvent.isRightButton) {
+            return 2;
+        } else if (nativeEvent.isMiddleButton) {
+            return 1;
         }
 
-        return Types.MouseButton.Primary;
+        return 0;
     }
 
     isRightMouseButton(e: Types.SyntheticEvent): boolean {
