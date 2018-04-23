@@ -184,7 +184,9 @@ export class EventHelpers {
     }
 
     toMouseButton(e: Types.TouchEvent): number {
-        if (e.isRightButton) {
+        if (e.button !== undefined) {
+            return e.button;
+        } else if (e.isRightButton) {
             return Types.MouseButton.Secondary;
         } else if (e.isMiddleButton) {
             return Types.MouseButton.Auxiliary;

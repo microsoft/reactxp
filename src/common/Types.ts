@@ -1204,6 +1204,7 @@ export interface TouchEvent extends SyntheticEvent {
     pageX?: number;
     pageY?: number;
     touches: TouchList;
+    button?: number; // Mac, web native events
     isRightButton?: boolean; // UWP only
     isMiddleButton?: boolean;
 }
