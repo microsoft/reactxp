@@ -27,5 +27,5 @@ FirstFocusableId: string;
 // with autoFocus property specified might be mounting. Use requestFocus() method
 // to get all the candidates to focus into the same queue. And your application
 // will be able to decide what should actually be focused using FocusArbitrator.
-requestFocus(id: string, component: React.Component<any, any>, focus: () => void): void;
+requestFocus(component: React.Component<any, any>, focus: () => void, isAvailable: () => boolean, accessibilityId?: string): void;
 ```
