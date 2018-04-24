@@ -126,17 +126,20 @@ export class FocusManager extends FocusManagerBase {
         return ret;
     }
 
+    private static _isComponentAvailable(storedComponent: StoredFocusableComponent): boolean {
+        return !storedComponent.removed &&
+            !storedComponent.restricted &&
+            storedComponent.limitedCount === 0 &&
+            storedComponent.limitedCountAccessible === 0;
+    }
+
     private static _getFirstFocusable(last?: boolean, parent?: FocusManager) {
         const focusable = Object.keys(FocusManager._allFocusableComponents)
             .filter(componentId => !parent || (componentId in parent._myFocusableComponentIds))
             .map(componentId => FocusManager._allFocusableComponents[componentId])
-            .filter(storedComponent =>
-                !storedComponent.removed &&
-                !storedComponent.restricted &&
-                storedComponent.limitedCount === 0 &&
-                storedComponent.limitedCountAccessible === 0)
+            .filter(FocusManager._isComponentAvailable)
             .map(storedComponent => { return { storedComponent, el: ReactDOM.findDOMNode(storedComponent.component) as HTMLElement }; })
-            .filter(f => f.el && f.el.focus && ((f.el.tabIndex || 0) >= 0));
+            .filter(f => f.el && f.el.focus && ((f.el.tabIndex || 0) >= 0) && !(f.el as any).disabled);
 
         if (focusable.length) {
             focusable.sort((a, b) => {
@@ -157,16 +160,17 @@ export class FocusManager extends FocusManagerBase {
     static focusFirst(last?: boolean) {
         const first = FocusManager._getFirstFocusable(last);
 
-        if (first && !first.storedComponent.removed && !first.storedComponent.restricted) {
+        if (first) {
+            const storedComponent = first.storedComponent;
+
             requestFocus(
-                FirstFocusableId,
-                first.storedComponent.component,
+                storedComponent.component,
                 () => {
-                    if (!first.storedComponent.removed) {
-                        FocusManager.setLastFocusedProgrammatically(first.el);
-                        first.el.focus();
-                    }
-                }
+                    FocusManager.setLastFocusedProgrammatically(first.el);
+                    first.el.focus();
+                },
+                () => FocusManager._isComponentAvailable(storedComponent),
+                FirstFocusableId
             );
         }
     }
@@ -183,16 +187,17 @@ export class FocusManager extends FocusManagerBase {
             // necessity to press Tab.
             const first = FocusManager._getFirstFocusable(false, FocusManager._currentRestrictionOwner as FocusManager);
 
-            if (first && !first.storedComponent.removed && !first.storedComponent.restricted) {
+            if (first) {
+                const storedComponent = first.storedComponent;
+
                 requestFocus(
-                    FirstFocusableId,
-                    first.storedComponent.component,
+                    storedComponent.component,
                     () => {
-                        if (!first.storedComponent.removed) {
-                            FocusManager.setLastFocusedProgrammatically(first.el);
-                            first.el.focus();
-                        }
-                    }
+                        FocusManager.setLastFocusedProgrammatically(first.el);
+                        first.el.focus();
+                    },
+                    () => FocusManager._isComponentAvailable(storedComponent),
+                    FirstFocusableId
                 );
             }
         } else if ((typeof document !== 'undefined') && document.body && document.body.focus && document.body.blur) {
@@ -329,11 +334,7 @@ export class FocusManager extends FocusManagerBase {
                 const id = (candidate.component as FocusableComponentInternal).focusableComponentId;
                 if (id) {
                     const storedComponent = FocusManager._allFocusableComponents[id];
-                    if (storedComponent && (
-                            storedComponent.removed ||
-                            storedComponent.restricted ||
-                            storedComponent.limitedCount > 0 ||
-                            storedComponent.limitedCountAccessible > 0)) {
+                    if (storedComponent && !FocusManager._isComponentAvailable(storedComponent)) {
                         return false;
                     }
                 }

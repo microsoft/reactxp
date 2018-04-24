@@ -12,7 +12,7 @@ import ReactDOM = require('react-dom');
 import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import { requestFocus } from '../common/utils/AutoFocusHelper';
+import { FocusArbitratorProvider, requestFocus } from '../common/utils/AutoFocusHelper';
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -50,7 +50,18 @@ const _styles = {
     }
 };
 
+export interface TextContext {
+    isRxParentAText: boolean;
+    focusArbitrator?: FocusArbitratorProvider;
+}
+
 export class Text extends React.Component<Types.TextProps, {}> {
+    static contextTypes = {
+        focusArbitrator: PropTypes.object
+    };
+
+    context!: TextContext;
+
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired
     };
@@ -104,9 +115,8 @@ export class Text extends React.Component<Types.TextProps, {}> {
     componentDidMount() {
         this._isMounted = true;
 
-        const autoFocus = this.props.autoFocus;
-        if (autoFocus) {
-            requestFocus(autoFocus.id, this, autoFocus.focus || (() => { if (this._isMounted) { this.focus(); } }));
+        if (this.props.autoFocus) {
+            requestFocus(this, () => this.focus(), () => this._isMounted, this.props.accessibilityId);
         }
     }
 

@@ -13,7 +13,7 @@ import RN = require('react-native');
 import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import { requestFocus } from '../common/utils/AutoFocusHelper';
+import { FocusArbitratorProvider, requestFocus } from '../common/utils/AutoFocusHelper';
 import Animated from './Animated';
 import AppConfig from '../common/AppConfig';
 import EventHelpers from './utils/EventHelpers';
@@ -59,12 +59,16 @@ function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, properti
 
 export interface ButtonContext {
     hasRxButtonAscendant?: boolean;
+    focusArbitrator?: FocusArbitratorProvider;
 }
 
 export class Button extends React.Component<Types.ButtonProps, {}> {
     static contextTypes = {
-        hasRxButtonAscendant: PropTypes.bool
+        hasRxButtonAscendant: PropTypes.bool,
+        focusArbitrator: PropTypes.object
     };
+
+    context!: ButtonContext;
 
     static childContextTypes = {
         hasRxButtonAscendant: PropTypes.bool
@@ -164,9 +168,8 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         this._mixin_componentDidMount();
         this._isMounted = true;
 
-        const autoFocus = this.props.autoFocus;
-        if (autoFocus) {
-            requestFocus(autoFocus.id, this, autoFocus.focus || (() => { if (this._isMounted) { this.focus(); } }));
+        if (this.props.autoFocus) {
+            requestFocus(this, () => this.focus(), () => this._isMounted, this.props.accessibilityId);
         }
     }
 

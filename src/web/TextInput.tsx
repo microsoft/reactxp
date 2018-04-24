@@ -8,8 +8,9 @@
 */
 
 import React = require('react');
+import PropTypes = require('prop-types');
 
-import { requestFocus } from '../common/utils/AutoFocusHelper';
+import { FocusArbitratorProvider, requestFocus } from '../common/utils/AutoFocusHelper';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
@@ -38,7 +39,17 @@ let _styles = {
     }
 };
 
+export interface TextInputContext {
+    focusArbitrator?: FocusArbitratorProvider;
+}
+
 export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
+    static contextTypes: React.ValidationMap<any> = {
+        focusArbitrator: PropTypes.object
+    };
+
+    context!: TextInputContext;
+
     private _mountedComponent: HTMLInputElement|HTMLTextAreaElement|null = null;
     private _selectionStart: number = 0;
     private _selectionEnd: number = 0;
@@ -46,8 +57,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     private _isFocused = false;
     private _ariaLiveEnabled = false;
 
-    constructor(props: Types.TextInputProps) {
-        super(props);
+    constructor(props: Types.TextInputProps, context: TextInputContext) {
+        super(props, context);
 
         this.state = {
             inputValue: props.value !== undefined ? props.value : (props.defaultValue || '')
@@ -63,9 +74,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     componentDidMount() {
-        const autoFocus = this.props.autoFocus;
-        if (autoFocus) {
-            requestFocus(autoFocus.id, this, autoFocus.focus || this._focus);
+        if (this.props.autoFocus) {
+            requestFocus(this, () => this.focus(), () => !!this._mountedComponent, this.props.accessibilityId);
         }
     }
 

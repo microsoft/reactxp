@@ -14,7 +14,7 @@ import PropTypes = require('prop-types');
 import AccessibilityUtil from './AccessibilityUtil';
 import AnimateListEdits from './listAnimations/AnimateListEdits';
 import AppConfig from '../common/AppConfig';
-import { requestFocus } from '../common/utils/AutoFocusHelper';
+import { FocusArbitratorProvider, requestFocus } from '../common/utils/AutoFocusHelper';
 import restyleForInlineText = require('./utils/restyleForInlineText');
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -73,13 +73,15 @@ export interface ViewContext {
     isRxParentAText?: boolean;
     focusManager?: FocusManager;
     popupContainer?: PopupContainer;
+    focusArbitrator?: FocusArbitratorProvider;
 }
 
 export class View extends ViewBase<Types.ViewProps, {}> {
     static contextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool,
         focusManager: PropTypes.object,
-        popupContainer: PropTypes.object
+        popupContainer: PropTypes.object,
+        focusArbitrator: PropTypes.object
     };
     // Context is provided by super - just re-typing here
     context!: ViewContext;
@@ -87,13 +89,16 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired,
         focusManager: PropTypes.object,
-        popupContainer: PropTypes.object
+        popupContainer: PropTypes.object,
+        focusArbitrator: PropTypes.object
     };
 
     private _focusManager: FocusManager|undefined;
     private _limitFocusWithin = false;
     private _isFocusLimited = false;
     private _isFocusRestricted: boolean|undefined;
+
+    private _focusArbitratorProvider: FocusArbitratorProvider|undefined;
 
     private _resizeDetectorAnimationFrame: number|undefined;
     private _resizeDetectorNodes: { grow?: HTMLElement, shrink?: HTMLElement } = {};
@@ -115,7 +120,12 @@ export class View extends ViewBase<Types.ViewProps, {}> {
                 this.setFocusLimited(true);
             }
         }
+
         this._popupContainer = context.popupContainer;
+
+        if (props.arbitrateFocus) {
+            this._updateFocusArbitratorProvider(props);
+        }
     }
 
     private _renderResizeDetectorIfNeeded(containerStyles: any): React.ReactNode|null {
@@ -229,8 +239,13 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         if (this._focusManager) {
             childContext.focusManager = this._focusManager;
         }
+
         if (this._popupContainer) {
             childContext.popupContainer = this._popupContainer;
+        }
+
+        if (this._focusArbitratorProvider) {
+            childContext.focusArbitrator = this._focusArbitratorProvider;
         }
 
         return childContext;
@@ -242,6 +257,18 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
     private isHidden(): boolean {
         return !!this._popupContainer && this._popupContainer.isHidden();
+    }
+
+    private _updateFocusArbitratorProvider(props: Types.ViewProps) {
+        if (props.arbitrateFocus) {
+            if (this._focusArbitratorProvider) {
+                this._focusArbitratorProvider.setCallback(props.arbitrateFocus);
+            } else {
+                this._focusArbitratorProvider = new FocusArbitratorProvider(this, props.arbitrateFocus);
+            }
+        } else if (this._focusArbitratorProvider) {
+            delete this._focusArbitratorProvider;
+        }
     }
 
     setFocusRestricted(restricted: boolean) {
@@ -374,6 +401,10 @@ export class View extends ViewBase<Types.ViewProps, {}> {
                 console.error('View: limitFocusWithin is readonly and changing it during the component life cycle has no effect');
             }
         }
+
+        if (('arbitrateFocus' in nextProps) && (this.props.arbitrateFocus !== nextProps.arbitrateFocus)) {
+            this._updateFocusArbitratorProvider(nextProps);
+        }
     }
 
     enableFocusManager() {
@@ -397,9 +428,8 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     componentDidMount() {
         super.componentDidMount();
 
-        const autoFocus = this.props.autoFocus;
-        if (autoFocus) {
-            requestFocus(autoFocus.id, this, autoFocus.focus || (() => { if (this._isMounted) { this.focus(); } }));
+        if (this.props.autoFocus) {
+            requestFocus(this, () => this.focus(), () => this._isMounted, this.props.accessibilityId);
         }
 
         // If we are mounted as visible, do our initialization now. If we are hidden, it will

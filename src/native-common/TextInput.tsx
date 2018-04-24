@@ -9,9 +9,10 @@
 
 import React = require('react');
 import RN = require('react-native');
+import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import { requestFocus } from '../common/utils/AutoFocusHelper';
+import { FocusArbitratorProvider, requestFocus } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -28,18 +29,28 @@ export interface TextInputState {
     isFocused: boolean;
 }
 
+export interface TextInputContext {
+    focusArbitrator?: FocusArbitratorProvider;
+}
+
 interface Selection {
     start: number;
     end: number;
 }
 
 export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
+    static contextTypes: React.ValidationMap<any> = {
+        focusArbitrator: PropTypes.object
+    };
+
+    context!: TextInputContext;
+
     private _selectionToSet: Selection | undefined;
     private _selection: Selection = { start: 0, end: 0 };
     protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
 
-    constructor(props: Types.TextInputProps) {
-        super(props);
+    constructor(props: Types.TextInputProps, context: TextInputContext) {
+        super(props, context);
 
         this.state = {
             inputValue: props.value || '',
@@ -56,9 +67,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     componentDidMount() {
-        const autoFocus = this.props.autoFocus;
-        if (autoFocus) {
-            requestFocus(autoFocus.id, this, autoFocus.focus || (() => this.focus()));
+        if (this.props.autoFocus) {
+            requestFocus(this, () => this.focus(), () => !!this._mountedComponent, this.props.accessibilityId);
         }
     }
 

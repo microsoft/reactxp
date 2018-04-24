@@ -107,6 +107,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _applicationIsNotActive = false;
     private _applicationIsNotActiveTimer: number|undefined;
     private _prevFocusedElement: HTMLElement|undefined;
+    private _updateKeyboardNavigationModeOnFocusTimer: number|undefined;
 
     constructor(props: RootViewProps) {
         super(props);
@@ -418,24 +419,33 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         this._cancelApplicationIsNotActive();
 
         const target = e.target as HTMLElement;
-        const prev = this._prevFocusedElement;
-        const curShouldEnable = this._shouldEnableKeyboardNavigationModeOnFocus;
 
-        this._prevFocusedElement = target;
-        this._shouldEnableKeyboardNavigationModeOnFocus = true;
-
-        if (this._applicationIsNotActive) {
-            this._applicationIsNotActive = false;
-            return;
+        if (this._updateKeyboardNavigationModeOnFocusTimer) {
+            clearTimeout(this._updateKeyboardNavigationModeOnFocusTimer);
         }
 
-        if ((prev === target) || (target === FocusManager.getLastFocusedProgrammatically(true))) {
-            return;
-        }
+        this._updateKeyboardNavigationModeOnFocusTimer = setTimeout(() => {
+            this._updateKeyboardNavigationModeOnFocusTimer = undefined;
 
-        if (!this._isNavigatingWithKeyboard && curShouldEnable) {
-            this._updateKeyboardNavigationState(true);
-        }
+            const prev = this._prevFocusedElement;
+            const curShouldEnable = this._shouldEnableKeyboardNavigationModeOnFocus;
+
+            this._prevFocusedElement = target;
+            this._shouldEnableKeyboardNavigationModeOnFocus = true;
+
+            if (this._applicationIsNotActive) {
+                this._applicationIsNotActive = false;
+                return;
+            }
+
+            if ((prev === target) || (target === FocusManager.getLastFocusedProgrammatically(true))) {
+                return;
+            }
+
+            if (!this._isNavigatingWithKeyboard && curShouldEnable) {
+                this._updateKeyboardNavigationState(true);
+            }
+        }, 0);
     }
 
     private _onFocusOut = (e: FocusEvent) => {

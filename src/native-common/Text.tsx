@@ -13,7 +13,7 @@ import React = require('react');
 import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import { requestFocus } from '../common/utils/AutoFocusHelper';
+import { FocusArbitratorProvider, requestFocus } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -25,13 +25,21 @@ const _styles = {
 };
 
 export interface TextContext {
-    isRxParentAText?: boolean;
+    isRxParentAText: boolean;
+    focusArbitrator?: FocusArbitratorProvider;
 }
 
 export class Text extends React.Component<Types.TextProps, {}> implements React.ChildContextProvider<TextContext> {
+    static contextTypes = {
+        focusArbitrator: PropTypes.object
+    };
+
+    context!: TextContext;
+
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired,
     };
+
     protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
 
     // To be able to use Text inside TouchableHighlight/TouchableOpacity
@@ -66,9 +74,8 @@ export class Text extends React.Component<Types.TextProps, {}> implements React.
     }
 
     componentDidMount() {
-        const autoFocus = this.props.autoFocus;
-        if (autoFocus) {
-            requestFocus(autoFocus.id, this, autoFocus.focus || (() => { if (this._mountedComponent) { this.focus(); } }));
+        if (this.props.autoFocus) {
+            requestFocus(this, () => this.focus(), () => !!this._mountedComponent,  this.props.accessibilityId);
         }
     }
 
