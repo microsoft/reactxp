@@ -753,7 +753,7 @@ export interface ScrollIndicatorInsets {
 }
 
 // ScrollView
-export interface ScrollViewProps extends ViewProps {
+export interface ScrollViewProps extends CommonProps, CommonAccessibilityProps {
     style?: StyleRuleSetRecursive<ScrollViewStyleRuleSet>;
     children?: ReactNode;
 
@@ -770,6 +770,10 @@ export interface ScrollViewProps extends ViewProps {
     onScroll?: (newScrollTop: number, newScrollLeft: number) => void;
     onScrollBeginDrag?: () => void;
     onScrollEndDrag?: () => void;
+    onKeyPress?: (e: KeyboardEvent) => void;
+    onFocus?: (e: FocusEvent) => void;
+    onBlur?: (e: FocusEvent) => void;
+
     showsHorizontalScrollIndicator?: boolean;
     showsVerticalScrollIndicator?: boolean;
     scrollEnabled?: boolean;

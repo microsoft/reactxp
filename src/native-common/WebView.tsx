@@ -22,7 +22,7 @@ const _styles = {
     })
 };
 
-export class WebView extends RX.ViewBase<Types.WebViewProps, {}> implements RX.WebView {
+export class WebView extends React.Component<Types.WebViewProps, Types.Stateless> implements RX.WebView {
     private _mountedComponent: RN.WebView|null = null;
 
     render() {

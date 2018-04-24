@@ -38,7 +38,7 @@ const _doubleTapPixelThreshold = 20;
 
 const _defaultImportantForAccessibility = Types.ImportantForAccessibility.Yes;
 
-export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
+export abstract class GestureView extends React.Component<Types.GestureViewProps, Types.Stateless> {
     private _panResponder: RN.PanResponderInstance;
     private _doubleTapTimer: number | undefined;
 
@@ -536,7 +536,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
 
         return (
             <RN.View
-                style={ this._getStyles(this.props) }
+                style={ [ViewBase.getDefaultViewStyle(), this.props.style] }
                 importantForAccessibility={ importantForAccessibility }
                 accessibilityTraits={ accessibilityTrait }
                 accessibilityComponentType={ accessibilityComponentType }

@@ -24,6 +24,10 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         ViewBase._defaultViewStyle = defaultViewStyle;
     }
 
+    static getDefaultViewStyle() {
+        return ViewBase._defaultViewStyle;
+    }
+
     // To be able to use View inside TouchableHighlight/TouchableOpacity
     public setNativeProps(nativeProps: RN.ViewProps) {
         if (this._nativeView) {
