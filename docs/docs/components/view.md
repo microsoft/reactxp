@@ -79,9 +79,15 @@ restrictFocusWithin: boolean = false;
 // changing it during the View life cycle will produce an error.
 limitFocusWithin: LimitFocusType = LimitFocusType.Unlimited;
 
-// Should be focused when the component is mounted,
-// see https://microsoft.github.io/reactxp/docs/apis/focusutils.html
-autoFocus: AutoFocusValue = undefined;
+// Should be focused when the component is mounted, see also UserInterface.setFocusArbitrator() and arbitrateFocus below.
+autoFocus: boolean = false;
+
+// When multiple components inside this View are setting autoFocus=true,
+// this callback will be called so that the application can decide which one
+// needs to be focused. The chosen candidate will be passed to the parent
+// View's arbitrateFocus callback (if any), and eventually to the top-most
+// callback which might be set using UserInterface.setFocusArbitrator().
+arbitrateFocus: FocusArbitrator = undefined;
 
 // Additional invisible DOM elements will be added inside the view
 // to track the size changes that are performed behind our back by

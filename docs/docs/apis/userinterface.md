@@ -17,6 +17,31 @@ interface LayoutInfo {
     width: number;
     height: number;
 }
+
+// A callback signature. It is used in UserInterface.setFocusArbitrator() method and
+// in arbitrateFocus property of View.
+type FocusArbitrator = (candidates: FocusCandidate[]) => FocusCandidate | undefined;
+
+interface FocusCandidate {
+    // Optional accessibilityId might be specified in the properties of the component with
+    // autoFocus=true or it can be to FocusUtils.FirstFocusableId (see
+    // https://microsoft.github.io/reactxp/docs/apis/focusutils.html for more details).
+    accessibilityId?: string;
+
+    // If the candidate is inside the View with arbitrateFocus property specified, this
+    // will be accessibilityId of that View.
+    parentAccessibilityId?: string;
+
+    // An instance of the component which wants to be focused.
+    component: React.Component<any, any>;
+
+    // A function to call to focus the component.
+    focus: () => void;
+
+    // Due to asynchronous nature of the focus arbitrator, we need a flag to find out
+    // that the component is still mounted and ready to be focused.
+    isAvailable: () => boolean;
+}
 ```
 
 ## Methods
@@ -27,7 +52,7 @@ setMainView(element: React.ReactElement<any>): void;
 
 // Android & iOS only.
 // Wrapper around RN.AppRegistry.registerComponent();
-// IMPORTANT: Some APIs, e.g. Popup & Modal, require a string 
+// IMPORTANT: Some APIs, e.g. Popup & Modal, require a string
 // `reactxp_rootViewId` prop to be set on the component from the
 // native-side.
 registerRootView(viewKey: string, getComponentFunc: Function);
@@ -74,6 +99,30 @@ enableTouchLatencyEvents(latencyThresholdMs: number): void;
 // when the user is using Tab key to navigate through the focusable
 // elements (on applicalbe platforms).
 isNavigatingWithKeyboard(): boolean;
+
+// Moving the focus manually from the application code might lead to a complex
+// logic on the application level and to race conditions when several components
+// want to be focused on mount at the same time. Those race conditions might
+// result in an unreliable behaviour, especially for the screen reader users.
+// For example, when some element inside the dialog is focused, the screen reader
+// announces the dialog, but only when nothing inside the dialog was focused before,
+// and if the focus is moved inside the dialog, the second focused element
+// might interrupt the dialog announcement and the screen reader users won't be
+// able to understand where they are.
+// Another thing is that it is often required to have different autofocusing logic
+// on different platforms. For example it is often ok to automatically focus the
+// input field on desktop when something shows, but on mobile it will bring up the
+// keyboard which is not always the desired behaviour and you might want to delay
+// the focus.
+// And sometimes several just mounted components have the autoFocus property set.
+// This method allows you specify a callback which will be called every time the
+// actual focusing should be done. This method sets a top-most callback, you can
+// also narrow down the scope of the focus arbitrator callback (see View's
+// arbitrateFocus property for more details).
+// When no callback is specified the default logic is used: if present, focus a
+// candidate with accessibilityId===FocusUtils.FirstFocusableId (see above),
+// otherwise focus last candidate from the array.
+setFocusArbitrator(arbitrator: FocusArbitrator | undefined): void
 ```
 
 ## Events

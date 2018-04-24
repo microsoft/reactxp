@@ -24,9 +24,8 @@ autoCapitalize: 'none' | 'sentences' | 'words' | 'characters';
 // Should auto-correction be applied to contents?
 autoCorrect: boolean = true;
 
-// Should be focused when the component is mounted,
-// see https://microsoft.github.io/reactxp/docs/apis/focusutils.html
-autoFocus: AutoFocusValue = undefined;
+// Should be focused when the component is mounted, see also UserInterface.setFocusArbitrator().
+autoFocus: boolean = false;
 
 // Should focus be lost after submitting?
 blurOnSubmit: boolean = false;

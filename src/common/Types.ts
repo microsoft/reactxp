@@ -450,11 +450,7 @@ export enum AccessibilityTrait {
     None
 }
 
-// Your application can specify a function which will choose the proper element to focus
-// and focus it when more than one component is scheduled to be focused. Return true from
-// the function if your application is processed the focusing, otherwise return false and
-// the default logic will be used (which is to focus last component queued or first focusable
-// inside a View with restrictFocusWithin when it's mounted).
+// Your application can specify a function which will choose the proper element to focus.
 // See https://microsoft.github.io/reactxp/docs/apis/focusutils.html
 export type FocusArbitrator = (candidates: FocusCandidate[]) => FocusCandidate | undefined;
 

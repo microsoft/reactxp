@@ -34,9 +34,8 @@ id: string = undefined; // Web only
 // Expose the element and/or its children as accessible to Screen readers
 importantForAccessibility: ImportantForAccessibility = ImportantForAccessibility.Yes;
 
-// Should be focused when the component is mounted,
-// see https://microsoft.github.io/reactxp/docs/apis/focusutils.html
-autoFocus: AutoFocusValue = undefined;
+// Should be focused when the component is mounted, see also UserInterface.setFocusArbitrator().
+autoFocus: boolean = false;
 
 // Should the scale multiplier be capped when allowFontScaling is set to true?
 // Possible values include the following:
