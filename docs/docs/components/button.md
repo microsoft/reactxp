@@ -38,6 +38,10 @@ disabled: boolean = false;
 disabledOpacity: number = undefined;
 
 // Should be focused when the component is mounted, see also UserInterface.setFocusArbitrator().
+// WARNING: autoFocus=true means that this Button's focus() method will be called,
+// however calling focus() might have no effect (for example the button is disabled),
+// your application has to handle this either while setting this property or in the
+// FocusArbitrator callback.
 autoFocus: boolean = false;
 
 // Called when VoiceOver is on and the user double tapped to

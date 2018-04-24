@@ -80,6 +80,10 @@ restrictFocusWithin: boolean = false;
 limitFocusWithin: LimitFocusType = LimitFocusType.Unlimited;
 
 // Should be focused when the component is mounted, see also UserInterface.setFocusArbitrator() and arbitrateFocus below.
+// WARNING: autoFocus=true means that this View's focus() method will be called,
+// however calling focus() might have no effect (for example on web View is
+// focusable only when tabIndex is specified), your application has to handle
+// this either while setting this property or in the FocusArbitrator callback.
 autoFocus: boolean = false;
 
 // When multiple components inside this View are setting autoFocus=true,

@@ -35,6 +35,9 @@ id: string = undefined; // Web only
 importantForAccessibility: ImportantForAccessibility = ImportantForAccessibility.Yes;
 
 // Should be focused when the component is mounted, see also UserInterface.setFocusArbitrator().
+// WARNING: autoFocus=true means that this Text's focus() method will be called,
+// however calling focus() for Text might make sense only mobile for the accessibility
+// reasons, on web it has no effect.
 autoFocus: boolean = false;
 
 // Should the scale multiplier be capped when allowFontScaling is set to true?
