@@ -75,7 +75,7 @@ export interface ViewContext {
     popupContainer?: PopupContainerView;
 }
 
-export class View extends ViewBase<Types.ViewProps, {}> {
+export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     static contextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool,
         focusManager: PropTypes.object,

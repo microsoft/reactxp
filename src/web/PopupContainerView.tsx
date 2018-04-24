@@ -9,7 +9,9 @@
 
 import _ = require('./utils/lodashMini');
 import React = require('react');
+
 import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext } from '../common/PopupContainerViewBase';
+import Types = require('../common/Types');
 
 export interface PopupContainerViewProps extends PopupContainerViewBaseProps {
     style: React.CSSProperties;
@@ -17,7 +19,7 @@ export interface PopupContainerViewProps extends PopupContainerViewBaseProps {
     onMouseLeave?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-export class PopupContainerView extends PopupContainerViewBase<PopupContainerViewProps, {}> {
+export class PopupContainerView extends PopupContainerViewBase<PopupContainerViewProps, Types.Stateless> {
     constructor(props: PopupContainerViewProps, context: PopupContainerViewContext) {
         super(props, context);
     }

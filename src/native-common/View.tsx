@@ -116,7 +116,7 @@ function _childrenEdited(prevChildrenKeys: ChildKey[], nextChildrenKeys: ChildKe
     return false;
 }
 
-export class View extends ViewBase<Types.ViewProps, {}> {
+export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     protected _internalProps: any = {};
 
     // Assigned when mixin is applied

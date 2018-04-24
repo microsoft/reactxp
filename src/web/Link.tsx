@@ -37,7 +37,7 @@ const _styles = {
 
 const _longPressTime = 1000;
 
-export class Link extends React.Component<Types.LinkProps, {}> {
+export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
 
     private _longPressTimer: number|undefined;
 
