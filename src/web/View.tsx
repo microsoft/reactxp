@@ -18,7 +18,8 @@ import restyleForInlineText = require('./utils/restyleForInlineText');
 import Styles from './Styles';
 import Types = require('../common/Types');
 import ViewBase from './ViewBase';
-import { PopupContainer, PopupComponent } from './PopupContainer';
+import PopupContainerView from './PopupContainerView';
+import { PopupComponent } from '../common/PopupContainerViewBase';
 import { FocusManager, applyFocusableComponentMixin } from './utils/FocusManager';
 
 const _styles = {
@@ -71,7 +72,7 @@ if (typeof document !== 'undefined') {
 export interface ViewContext {
     isRxParentAText?: boolean;
     focusManager?: FocusManager;
-    popupContainer?: PopupContainer;
+    popupContainer?: PopupContainerView;
 }
 
 export class View extends ViewBase<Types.ViewProps, {}> {
@@ -97,7 +98,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     private _resizeDetectorAnimationFrame: number|undefined;
     private _resizeDetectorNodes: { grow?: HTMLElement, shrink?: HTMLElement } = {};
 
-    private _popupContainer: PopupContainer|undefined;
+    private _popupContainer: PopupContainerView|undefined;
     private _popupToken: PopupComponent|undefined;
 
     constructor(props: Types.ViewProps, context: ViewContext) {
