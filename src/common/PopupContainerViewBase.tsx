@@ -12,13 +12,14 @@
 import React = require('react');
 import PropTypes = require('prop-types');
 import Types = require('./Types');
+import FocusManagerBase from './utils/FocusManager';
 
 export interface PopupContainerViewBaseProps extends Types.CommonProps {
     hidden?: boolean;
 }
 
 export interface PopupContainerViewContext {
-    focusManager?: any;
+    focusManager?: FocusManagerBase;
 }
 
 export interface PopupComponent {

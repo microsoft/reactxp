@@ -240,7 +240,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         return ReactDOM.findDOMNode(this) as HTMLElement;
     }
 
-    private isHidden(): boolean {
+    private _isHidden(): boolean {
         return !!this._popupContainer && this._popupContainer.isHidden();
     }
 
@@ -252,7 +252,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             return;
         }
 
-        if (!this.isHidden()) {
+        if (!this._isHidden()) {
             if (restricted) {
                 this._focusManager.restrictFocusWithin();
             } else {
@@ -270,7 +270,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
             return;
         }
 
-        if (!this.isHidden()) {
+        if (!this._isHidden()) {
             if (limited && !this._isFocusLimited) {
                 this._focusManager.limitFocusWithin(this.props.limitFocusWithin!!!);
             } else if (!limited && this._isFocusLimited) {
@@ -399,7 +399,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
         // If we are mounted as visible, do our initialization now. If we are hidden, it will
         // be done later when the popup is shown.
-        if (!this.isHidden()) {
+        if (!this._isHidden()) {
             this.enableFocusManager();
         }
 

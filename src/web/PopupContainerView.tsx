@@ -13,8 +13,8 @@ import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerView
 
 export interface PopupContainerViewProps extends PopupContainerViewBaseProps {
     style: React.CSSProperties;
-    onMouseEnter?: (e: any) => void;
-    onMouseLeave?: (e: any) => void;
+    onMouseEnter?: (e: React.MouseEvent<HTMLDivElement>) => void;
+    onMouseLeave?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 export class PopupContainerView extends PopupContainerViewBase<PopupContainerViewProps, {}> {
