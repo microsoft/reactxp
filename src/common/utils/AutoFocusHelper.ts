@@ -106,16 +106,18 @@ export class FocusArbitratorProvider {
             candidates = _sortAndFilter(candidates);
         }
 
-        let candidate = arbitrator && arbitrator(candidates);
+        if (arbitrator) {
+            return arbitrator(candidates);
+        }
 
-        if (!candidate) {
-            // If the arbitrator hasn't handled the focus, we choose the first focusable component provided
-            // by FocusManager or the last one queued.
-            for (let i = 0; i < candidates.length; i++) {
-                if (candidates[i].accessibilityId === FirstFocusableId) {
-                    candidate = candidates[i];
-                    break;
-                }
+        let candidate: Types.FocusCandidate | undefined;
+
+        // If there is no arbitrator, we choose the first focusable component provided
+        // by FocusManager or the last one queued.
+        for (let i = 0; i < candidates.length; i++) {
+            if (candidates[i].accessibilityId === FirstFocusableId) {
+                candidate = candidates[i];
+                break;
             }
         }
 
