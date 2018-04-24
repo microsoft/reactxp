@@ -36,8 +36,9 @@ importantForAccessibility: ImportantForAccessibility = ImportantForAccessibility
 
 // Should be focused when the component is mounted, see also UserInterface.setFocusArbitrator().
 // WARNING: autoFocus=true means that this Text's focus() method will be called,
-// however calling focus() for Text might make sense only mobile for the accessibility
-// reasons, on web it has no effect.
+// however calling focus() for Text might make sense only on mobile for the accessibility
+// reasons, on web it has no effect, your application has to handle this either while
+// setting this property or in the FocusArbitrator callback.
 autoFocus: boolean = false;
 
 // Should the scale multiplier be capped when allowFontScaling is set to true?
