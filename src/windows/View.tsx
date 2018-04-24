@@ -17,6 +17,8 @@ import AppConfig from '../common/AppConfig';
 import { View as ViewCommon } from '../native-common/View';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent, FocusManager } from '../native-desktop/utils/FocusManager';
+import PopupContainerView from '../native-common/PopupContainerView';
+import { PopupComponent } from '../common/PopupContainerViewBase';
 
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_SPACE = 32;
@@ -27,6 +29,7 @@ const UP_KEYCODES = [KEY_CODE_SPACE];
 export interface ViewContext {
     isRxParentAText?: boolean;
     focusManager?: FocusManager;
+    popupContainer?: PopupContainerView;
 }
 
 let FocusableView = RNW.createFocusableComponent(RN.View);
@@ -35,14 +38,16 @@ let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
 export class View extends ViewCommon implements React.ChildContextProvider<ViewContext>, FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool,
-        focusManager: PropTypes.object
+        focusManager: PropTypes.object,
+        popupContainer: PropTypes.object
     };
     // Context is provided by super - just re-typing here
     context!: ViewContext;
 
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired,
-        focusManager: PropTypes.object
+        focusManager: PropTypes.object,
+        popupContainer: PropTypes.object
     };
 
     private _onKeyDown: ((e: React.SyntheticEvent<any>) => void) | undefined;
@@ -56,6 +61,10 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     private _focusManager: FocusManager|undefined;
     private _limitFocusWithin = false;
     private _isFocusLimited = false;
+    private _isFocusRestricted: boolean|undefined;
+
+    private _popupContainer: PopupContainerView|undefined;
+    private _popupToken: PopupComponent|undefined;
 
     constructor(props: Types.ViewProps, context: ViewContext) {
         super(props);
@@ -71,6 +80,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                 this.setFocusLimited(true);
             }
         }
+        this._popupContainer = context.popupContainer;
     }
 
     componentWillReceiveProps(nextProps: Types.ViewProps) {
@@ -87,10 +97,9 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
     }
 
-    componentDidMount() {
-        super.componentDidMount();
+    enableFocusManager() {
         if (this._focusManager) {
-            if (this.props.restrictFocusWithin) {
+            if (this.props.restrictFocusWithin && this._isFocusRestricted !== false) {
                 this._focusManager.restrictFocusWithin();
             }
 
@@ -100,10 +109,33 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
     }
 
-    componentWillUnmount() {
-        super.componentWillUnmount();
+    disableFocusManager() {
         if (this._focusManager) {
             this._focusManager.release();
+        }
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+
+        // If we are mounted as visible, do our initialization now. If we are hidden, it will
+        // be done later when the popup is shown.
+        if (!this.isHidden()) {
+            this.enableFocusManager();
+        }
+
+        if (this._focusManager && this._popupContainer) {
+            this._popupToken = this._popupContainer.registerPopupComponent(
+                () => this.enableFocusManager(), () => this.disableFocusManager());
+        }
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        this.disableFocusManager();
+
+        if (this._popupToken) {
+            this._popupContainer!!!.unregisterPopupComponent(this._popupToken);
         }
     }
 
@@ -273,8 +305,15 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         if (this._focusManager) {
             childContext.focusManager = this._focusManager;
         }
+        if (this._popupContainer) {
+            childContext.popupContainer = this._popupContainer;
+        }
 
         return childContext;
+    }
+
+    private isHidden(): boolean {
+        return !!this._popupContainer && this._popupContainer.isHidden();
     }
 
     setFocusRestricted(restricted: boolean) {
@@ -283,11 +322,14 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             return;
         }
 
-        if (restricted) {
-            this._focusManager.restrictFocusWithin();
-        } else {
-            this._focusManager.removeFocusRestriction();
+        if (!this.isHidden()) {
+            if (restricted) {
+                this._focusManager.restrictFocusWithin();
+            } else {
+                this._focusManager.removeFocusRestriction();
+            }
         }
+        this._isFocusRestricted = restricted;
     }
 
     setFocusLimited(limited: boolean) {
@@ -296,13 +338,14 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             return;
         }
 
-        if (limited && !this._isFocusLimited) {
-            this._isFocusLimited = true;
-            this._focusManager.limitFocusWithin(this.props.limitFocusWithin!!!);
-        } else if (!limited && this._isFocusLimited) {
-            this._isFocusLimited = false;
-            this._focusManager.removeFocusLimitation();
+        if (!this.isHidden()) {
+            if (limited && !this._isFocusLimited) {
+                this._focusManager.limitFocusWithin(this.props.limitFocusWithin!!!);
+            } else if (!limited && this._isFocusLimited) {
+                this._focusManager.removeFocusLimitation();
+            }
         }
+        this._isFocusLimited = limited;
     }
 
     public setNativeProps(nativeProps: RN.ViewProps) {

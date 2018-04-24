@@ -1,5 +1,5 @@
 ﻿/**
-* PopupContainerView.ts
+* PopupContainerView.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
@@ -16,6 +16,7 @@ import RN = require('react-native');
 
 import International from './International';
 import Types = require('../common/Types');
+import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext } from '../common/PopupContainerViewBase';
 
 // Width of the "alley" around popups so they don't get too close to the boundary of the screen boundary.
 const ALLEY_WIDTH = 2;
@@ -24,11 +25,10 @@ const ALLEY_WIDTH = 2;
 // attempting a different position?
 const MIN_ANCHOR_OFFSET = 16;
 
-export interface PopupContainerViewProps extends Types.CommonProps {
+export interface PopupContainerViewProps extends PopupContainerViewBaseProps {
     popupOptions: Types.PopupOptions;
     anchorHandle?: number;
     onDismissPopup?: () => void;
-    hidden: boolean;
 }
 
 export interface PopupContainerViewState {
@@ -54,13 +54,13 @@ export interface PopupContainerViewState {
     constrainedPopupHeight: number;
 }
 
-export class PopupContainerView extends React.Component<PopupContainerViewProps, PopupContainerViewState> {
+export class PopupContainerView extends PopupContainerViewBase<PopupContainerViewProps, PopupContainerViewState> {
     private _mountedComponent: RN.View|null = null;
     private _viewHandle: number | null = null;
     private _respositionPopupTimer: number|undefined;
 
-    constructor(props: PopupContainerViewProps) {
-        super(props);
+    constructor(props: PopupContainerViewProps, context: PopupContainerViewContext) {
+        super(props, context);
         this.state = this._getInitialState();
     }
 
@@ -86,6 +86,8 @@ export class PopupContainerView extends React.Component<PopupContainerViewProps,
     }
 
     componentDidUpdate(prevProps: PopupContainerViewProps, prevState: PopupContainerViewState) {
+        super.componentDidUpdate(prevProps, prevState);
+
         if (this.props.popupOptions && !this.props.hidden) {
             this._recalcPosition();
 
