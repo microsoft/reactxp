@@ -129,7 +129,9 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
             alignItems: 'flex-start',
             alignSelf: 'flex-start',
             opacity: this.state.isMeasuringPopup ? 0 : 1,
-            overflow: 'visible'
+            overflow: 'visible',
+            width: this.props.hidden ? 0 : undefined,
+            height: this.props.hidden ? 0 : undefined
         };
 
         return (
