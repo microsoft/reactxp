@@ -64,7 +64,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
                 this._lastGestureStartEvent = event;
                 // If we're trying to detect a tap, set this as the responder immediately.
-                if (this.props.onTap || this.props.onDoubleTap || this.props.onContextMenuGesture) {
+                if (this.props.onTap || this.props.onDoubleTap || this.props.onContextMenu) {
                     return true;
                 }
                 return false;
@@ -505,7 +505,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         const button = EventHelpers.toMouseButton(e);
         if (button === 2) {
             // Always handle secondary button, even if context menu is not set - it shouldn't trigger onTap.
-            if (this.props.onContextMenuGesture) {
+            if (this.props.onContextMenu) {
                 const tapEvent: Types.TapGestureState = {
                     pageX: e.pageX!!!,
                     pageY: e.pageY!!!,
@@ -514,7 +514,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
                     timeStamp: e.timeStamp
                 };
 
-                this.props.onContextMenuGesture(tapEvent);
+                this.props.onContextMenu(tapEvent);
             }
         } else if (this.props.onTap) {
             const tapEvent: Types.TapGestureState = {

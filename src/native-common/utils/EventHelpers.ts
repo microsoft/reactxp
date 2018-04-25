@@ -98,7 +98,7 @@ export class EventHelpers {
                     case 'ArrowDown':
                         keyCode = 20;
                         break;
-                    
+
                     case 'Number0':
                         keyCode = 48;
                         break;
@@ -237,9 +237,9 @@ export class EventHelpers {
         const nativeEvent = e as any;
         if (nativeEvent.button !== undefined) {
             return nativeEvent.button;
-        } else if (nativeEvent.isRightButton) {
+        } else if (nativeEvent.isRightButton || nativeEvent.IsRightButton) {
             return 2;
-        } else if (nativeEvent.isMiddleButton) {
+        } else if (nativeEvent.isMiddleButton || nativeEvent.IsMiddleButton) {
             return 1;
         }
 

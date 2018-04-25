@@ -77,7 +77,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
                 role={ ariaRole }
                 aria-label={ this.props.accessibilityLabel }
                 aria-hidden={ isAriaHidden }
-                onContextMenu={ this.props.onContextMenuGesture ? this._sendContextMenuEvent : undefined }
+                onContextMenu={ this.props.onContextMenu ? this._sendContextMenuEvent : undefined }
             >
                 { this.props.children }
             </div>
@@ -184,7 +184,10 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
     }
 
     private _sendContextMenuEvent = (e: React.MouseEvent<any>) => {
-        if (this.props.onContextMenuGesture) {
+        if (this.props.onContextMenu) {
+            e.preventDefault();
+            e.stopPropagation();
+
             const clientRect = this._getGestureViewClientRect();
 
             if (clientRect) {
@@ -196,8 +199,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
                     timeStamp: e.timeStamp
                 };
 
-                this.props.onContextMenuGesture(tapEvent);
-                e.preventDefault();
+                this.props.onContextMenu(tapEvent);
             }
         }
     }

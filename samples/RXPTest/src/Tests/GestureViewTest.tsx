@@ -181,7 +181,7 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
                 <RX.GestureView
                     style={ _styles.gestureView }
                     onTap={ state => this._onTapTest4(state) }
-                    onContextMenuGesture={ e => this._onContextMenu4(e) }
+                    onContextMenu={ e => this._onContextMenu4(e) }
                     mouseOverCursor={ RX.Types.GestureMouseCursor.Pointer }
                 >
                     <RX.Animated.View
@@ -260,13 +260,13 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
     private _onTapTest4(gestureState: RX.Types.TapGestureState) {
         // Change the color.
         this.setState({
-            test4ColorIndex: (this.state.test4ColorIndex + 1) % _shades.length
+            test4ColorIndex: Math.min(this.state.test4ColorIndex + 1, _shades.length - 1)
         });
     }
 
     private _onContextMenu4(gestureState: RX.Types.TapGestureState) {
         this.setState({
-            test4ColorIndex: (this.state.test4ColorIndex - 1) % _shades.length
+            test4ColorIndex: Math.max(this.state.test4ColorIndex - 1, 0)
         });
     }
 }
