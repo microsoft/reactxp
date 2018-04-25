@@ -25,7 +25,7 @@ const _layoutTimerInactiveDuration = 10000;
 export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase<P, S> {
     private static _viewCheckingTimer: number|undefined;
     private static _isResizeHandlerInstalled = false;
-    private static _viewCheckingList: ViewBase<Types.ViewProps, {}>[] = [];
+    private static _viewCheckingList: ViewBase<Types.ViewProps, Types.Stateless>[] = [];
     private static _appActivationState = Types.AppActivationState.Active;
 
     abstract render(): JSX.Element;

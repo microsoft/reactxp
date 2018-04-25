@@ -17,22 +17,18 @@ const _styles = {
     defaultStyle: {
         position: 'relative',
         display: 'inline',
-        flexDirection: 'column',
         flexGrow: 0,
         flexShrink: 0,
         overflow: 'hidden',
-        alignItems: 'stretch',
         overflowWrap: 'break-word',
         msHyphens: 'auto'
     },
     ellipsis: {
         position: 'relative',
         display: 'inline',
-        flexDirection: 'column',
         flexGrow: 0,
         flexShrink: 0,
         overflow: 'hidden',
-        alignItems: 'stretch',
 
         whiteSpace: 'pre',
         textOverflow: 'ellipsis'
@@ -41,7 +37,7 @@ const _styles = {
 
 const _longPressTime = 1000;
 
-export class Link extends React.Component<Types.LinkProps, {}> {
+export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
 
     private _longPressTimer: number|undefined;
 

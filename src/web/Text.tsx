@@ -49,7 +49,7 @@ const _styles = {
     }
 };
 
-export class Text extends React.Component<Types.TextProps, {}> {
+export class Text extends React.Component<Types.TextProps, Types.Stateless> {
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired
     };

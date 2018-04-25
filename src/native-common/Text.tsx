@@ -27,7 +27,7 @@ export interface TextContext {
     isRxParentAText?: boolean;
 }
 
-export class Text extends React.Component<Types.TextProps, {}> implements React.ChildContextProvider<TextContext> {
+export class Text extends React.Component<Types.TextProps, Types.Stateless> implements React.ChildContextProvider<TextContext> {
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired,
     };

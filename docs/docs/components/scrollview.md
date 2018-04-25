@@ -34,6 +34,13 @@ keyboardShouldPersistTaps: boolean = false; // Native only
 // Invoked when the contents of the scroll view change
 onContentSizeChange: (width: number, height: number) => void = undefined;
 
+// Focus Events
+onFocus: (e: FocusEvent) => void = undefined;
+onBlur: (e: FocusEvent) => void = undefined;
+
+// Keyboard Events
+onKeyPress: (e: KeyboardEvent) => void = undefined;
+
 // Invoked when view dimensions or position changes
 onLayout: (e: ViewOnLayoutEvent) => void = undefined;
 

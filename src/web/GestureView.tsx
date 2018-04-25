@@ -13,7 +13,6 @@ import React = require('react');
 
 import AccessibilityUtil from './AccessibilityUtil';
 import MouseResponder, { MouseResponderSubscription } from './utils/MouseResponder';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -44,7 +43,7 @@ enum GestureType {
 
 let _idCounter = 1;
 
-export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
+export class GestureView extends React.Component<Types.GestureViewProps, Types.Stateless> {
 
     private _id = _idCounter++;
 
