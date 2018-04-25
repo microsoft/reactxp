@@ -41,7 +41,8 @@ const traitsMap: { [key: string]: string } = {
     [Types.AccessibilityTrait.FrequentUpdates]: 'frequentUpdates',
     [Types.AccessibilityTrait.StartsMedia]: 'startsMedia',
     [Types.AccessibilityTrait.AllowsDirectInteraction]: 'allowsDirectionInteraction',
-    [Types.AccessibilityTrait.PageTurn]: 'pageTurn'
+    [Types.AccessibilityTrait.PageTurn]: 'pageTurn',
+    [Types.AccessibilityTrait.ListItem]: 'listItem'
 };
 
 // Android supported map.
