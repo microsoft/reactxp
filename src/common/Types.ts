@@ -450,23 +450,32 @@ export enum AccessibilityTrait {
     None
 }
 
-// Your application can specify a function which will choose the proper element to focus.
+// When multiple components with autoFocus=true are mounting at the same time,
+// the application can specify a callback which will choose one from those multiple.
+// To set this callback use View's arbitrateFocus property and/or
+// FocusUtils.setDefaultFocusArbitrator() method.
 // See https://microsoft.github.io/reactxp/docs/apis/focusutils.html
 export type FocusArbitrator = (candidates: FocusCandidate[]) => FocusCandidate | undefined;
 
 // FocusArbitrator function will be called with an array of FocusCandidate.
 // See https://microsoft.github.io/reactxp/docs/apis/focusutils.html
-export interface FocusCandidate {
-    accessibilityId?: string; // Optional accessibilityId might specify in the properties of the
-                              // component with autoFocus=true or FocusUtils.FirstFocusableId.
-    parentAccessibilityId?: string; // If the candidate is inside the View with arbitrateFocus property
-                                    // specified, this will be accessibilityId of that View.
-    component: React.Component<any, any>; // An instance of the component which wants to
-                                          // be focused.
-    focus: () => void; // A function to call to focus the component.
-    isAvailable: () => boolean; // Due to asynchronous nature of the focus arbitrator,
-                                // we need a flag to find out that the component is still
-                                // mounted and ready to be focused.
+export abstract class FocusCandidate {
+    // An instance of the component which wants to be focused.
+    abstract component: React.Component<any, any>;
+
+    // A function to call to focus the component.
+    abstract focus: () => void;
+
+    // Due to asynchronous nature of the focus arbitrator, we need a flag to find
+    // out that the component is still mounted and ready to be focused.
+    abstract isAvailable: () => boolean;
+
+    // Returns component.props.accessibilityId (if specified).
+    abstract getAccessibilityId: () => string | undefined;
+
+    // If the candidate is inside the View with arbitrateFocus property specified,
+    // returns accessibilityId of that View.
+    abstract getParentAccessibilityId: () => string | undefined;
 }
 
 export interface CommonStyledProps<T> extends CommonProps {

@@ -9,11 +9,10 @@
 
 import ReactDOM = require('react-dom');
 
-import Types = require('../../common/Types');
 import { FocusManager as FocusManagerBase,
     FocusableComponentInternal,
     StoredFocusableComponent } from '../../common/utils/FocusManager';
-import { requestFocus, FirstFocusableId } from '../../common/utils/AutoFocusHelper';
+import { FocusArbitratorProvider, FocusCandidate } from '../../common/utils/AutoFocusHelper';
 
 import UserInterface from '../UserInterface';
 
@@ -163,14 +162,14 @@ export class FocusManager extends FocusManagerBase {
         if (first) {
             const storedComponent = first.storedComponent;
 
-            requestFocus(
+            FocusArbitratorProvider.requestFocus(
                 storedComponent.component,
                 () => {
                     FocusManager.setLastFocusedProgrammatically(first.el);
                     first.el.focus();
                 },
                 () => FocusManager._isComponentAvailable(storedComponent),
-                FirstFocusableId
+                true
             );
         }
     }
@@ -190,14 +189,14 @@ export class FocusManager extends FocusManagerBase {
             if (first) {
                 const storedComponent = first.storedComponent;
 
-                requestFocus(
+                FocusArbitratorProvider.requestFocus(
                     storedComponent.component,
                     () => {
                         FocusManager.setLastFocusedProgrammatically(first.el);
                         first.el.focus();
                     },
                     () => FocusManager._isComponentAvailable(storedComponent),
-                    FirstFocusableId
+                    true
                 );
             }
         } else if ((typeof document !== 'undefined') && document.body && document.body.focus && document.body.blur) {
@@ -328,7 +327,7 @@ export class FocusManager extends FocusManagerBase {
         return prev;
     }
 
-    static sortAndFilterAutoFocusCandidates(candidates: Types.FocusCandidate[]): Types.FocusCandidate[] {
+    static sortAndFilterAutoFocusCandidates(candidates: FocusCandidate[]): FocusCandidate[] {
         return candidates
             .filter(candidate => {
                 const id = (candidate.component as FocusableComponentInternal).focusableComponentId;

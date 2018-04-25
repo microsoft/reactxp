@@ -14,7 +14,7 @@ import PropTypes = require('prop-types');
 import AccessibilityUtil from './AccessibilityUtil';
 import AnimateListEdits from './listAnimations/AnimateListEdits';
 import AppConfig from '../common/AppConfig';
-import { FocusArbitratorProvider, requestFocus } from '../common/utils/AutoFocusHelper';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import restyleForInlineText = require('./utils/restyleForInlineText');
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -429,7 +429,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         super.componentDidMount();
 
         if (this.props.autoFocus) {
-            requestFocus(this, () => this.focus(), () => this._isMounted, this.props.accessibilityId);
+            FocusArbitratorProvider.requestFocus(this, () => this.focus(), () => this._isMounted);
         }
 
         // If we are mounted as visible, do our initialization now. If we are hidden, it will

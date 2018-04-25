@@ -37,11 +37,14 @@ disabled: boolean = false;
 // By default, opacity of a disabled element is 0.5. This value can be overriden with this property
 disabledOpacity: number = undefined;
 
-// Should be focused when the component is mounted, see also UserInterface.setFocusArbitrator().
+// Should be focused when the component is mounted, see also View's arbitrateFocus
+// property and FocusUtils.setDefaultFocusArbitrator() method.
 // WARNING: autoFocus=true means that this Button's focus() method will be called,
 // however calling focus() might have no effect (for example the button is disabled),
 // your application has to handle this either while setting this property or in the
 // FocusArbitrator callback.
+// NOTE: The focus() call will be performed on the next tick after the current
+// render cycle.
 autoFocus: boolean = false;
 
 // Called when VoiceOver is on and the user double tapped to

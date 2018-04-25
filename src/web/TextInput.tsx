@@ -10,7 +10,7 @@
 import React = require('react');
 import PropTypes = require('prop-types');
 
-import { FocusArbitratorProvider, requestFocus } from '../common/utils/AutoFocusHelper';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
@@ -75,7 +75,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     componentDidMount() {
         if (this.props.autoFocus) {
-            requestFocus(this, () => this.focus(), () => !!this._mountedComponent, this.props.accessibilityId);
+            FocusArbitratorProvider.requestFocus(this, () => this.focus(), () => !!this._mountedComponent);
         }
     }
 

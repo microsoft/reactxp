@@ -24,11 +24,14 @@ autoCapitalize: 'none' | 'sentences' | 'words' | 'characters';
 // Should auto-correction be applied to contents?
 autoCorrect: boolean = true;
 
-// Should be focused when the component is mounted, see also UserInterface.setFocusArbitrator().
+// Should be focused when the component is mounted, see also View's arbitrateFocus
+// property and FocusUtils.setDefaultFocusArbitrator() method.
 // WARNING: autoFocus=true means that this TextInput's focus() method will be called,
 // however calling focus() might have no effect (for example the input is disabled),
 // your application has to handle this either while setting this property or in the
 // FocusArbitrator callback.
+// NOTE: The focus() call will be performed on the next tick after the current
+// render cycle.
 autoFocus: boolean = false;
 
 // Should focus be lost after submitting?

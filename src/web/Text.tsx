@@ -12,7 +12,7 @@ import ReactDOM = require('react-dom');
 import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import { FocusArbitratorProvider, requestFocus } from '../common/utils/AutoFocusHelper';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -116,7 +116,7 @@ export class Text extends React.Component<Types.TextProps, {}> {
         this._isMounted = true;
 
         if (this.props.autoFocus) {
-            requestFocus(this, () => this.focus(), () => this._isMounted, this.props.accessibilityId);
+            FocusArbitratorProvider.requestFocus(this, () => this.focus(), () => this._isMounted);
         }
     }
 

@@ -8,12 +8,21 @@
 */
 
 import RXInterfaces = require('./Interfaces');
-
-import { FirstFocusableId, requestFocus } from './utils/AutoFocusHelper';
+import { FocusArbitrator } from './Types';
+import { FocusArbitratorProvider, setFocusFirstEnabled, setRootFocusArbitrator } from './utils/AutoFocusHelper';
 
 export class FocusUtils implements RXInterfaces.FocusUtils {
-    FirstFocusableId = FirstFocusableId;
-    requestFocus = requestFocus;
+    setFocusFirstEnabled(enabled: boolean): void {
+        setFocusFirstEnabled(enabled);
+    }
+
+    requestFocus(component: React.Component<any, any>, focus: () => void, isAvailable: () => boolean): void {
+        FocusArbitratorProvider.requestFocus(component, focus, isAvailable);
+    }
+
+    setDefaultFocusArbitrator(arbitrator: FocusArbitrator | undefined): void {
+        setRootFocusArbitrator(arbitrator);
+    }
 }
 
 export default new FocusUtils();

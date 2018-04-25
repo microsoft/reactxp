@@ -16,7 +16,6 @@ import SyncTasks = require('synctasks');
 import { default as FrontLayerViewManager } from './FrontLayerViewManager';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
-import { setRootFocusArbitrator } from '../common/utils/AutoFocusHelper';
 
 export class UserInterface extends RX.UserInterface {
     private _isNavigatingWithKeyboard: boolean = false;
@@ -144,10 +143,6 @@ export class UserInterface extends RX.UserInterface {
 
     private _keyboardNavigationStateChanged = (isNavigatingWithKeyboard: boolean) => {
         this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-    }
-
-    setFocusArbitrator(arbitrator: Types.FocusArbitrator | undefined): void {
-        setRootFocusArbitrator(arbitrator);
     }
 }
 

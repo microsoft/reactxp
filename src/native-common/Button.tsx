@@ -13,7 +13,7 @@ import RN = require('react-native');
 import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import { FocusArbitratorProvider, requestFocus } from '../common/utils/AutoFocusHelper';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import Animated from './Animated';
 import AppConfig from '../common/AppConfig';
 import EventHelpers from './utils/EventHelpers';
@@ -169,7 +169,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         this._isMounted = true;
 
         if (this.props.autoFocus) {
-            requestFocus(this, () => this.focus(), () => this._isMounted, this.props.accessibilityId);
+            FocusArbitratorProvider.requestFocus(this, () => this.focus(), () => this._isMounted);
         }
     }
 

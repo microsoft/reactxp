@@ -89,9 +89,6 @@ export abstract class UserInterface {
     // Keyboard navigation
     abstract isNavigatingWithKeyboard(): boolean;
     keyboardNavigationEvent = new SubscribableEvent<(isNavigatingWithKeyboard: boolean) => void>();
-
-    // Focus management
-    abstract setFocusArbitrator(arbitrator: Types.FocusArbitrator | undefined): void;
 }
 
 export abstract class Modal {
@@ -314,6 +311,7 @@ export interface International {
 }
 
 export interface FocusUtils {
-    FirstFocusableId: string;
-    requestFocus(component: React.Component<any, any>, focus: () => void, isAvailable: () => boolean, accessibilityId?: string): void;
+    setFocusFirstEnabled(enabled: boolean): void;
+    setDefaultFocusArbitrator(arbitrator: Types.FocusArbitrator | undefined): void;
+    requestFocus(component: React.Component<any, any>, focus: () => void, isAvailable: () => boolean): void;
 }

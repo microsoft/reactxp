@@ -17,7 +17,6 @@ import MainViewStore from './MainViewStore';
 import { RootViewUsingProps } from './RootView';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
-import { setRootFocusArbitrator } from '../common/utils/AutoFocusHelper';
 
 export class UserInterface extends RX.UserInterface {
     private _touchLatencyThresholhdMs: number|undefined;
@@ -180,10 +179,6 @@ export class UserInterface extends RX.UserInterface {
 
     isNavigatingWithKeyboard(): boolean {
         return false;
-    }
-
-    setFocusArbitrator(arbitrator: Types.FocusArbitrator | undefined): void {
-        setRootFocusArbitrator(arbitrator);
     }
 }
 

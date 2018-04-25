@@ -15,7 +15,7 @@ import RN = require('react-native');
 import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
-import { FocusArbitratorProvider, requestFocus } from '../common/utils/AutoFocusHelper';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 
 import Animated from './Animated';
 import EventHelpers from './utils/EventHelpers';
@@ -243,7 +243,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
 
         if (this.props.autoFocus) {
-            requestFocus(this, () => this.focus(), () => this._isMounted, this.props.accessibilityId);
+            FocusArbitratorProvider.requestFocus(this, () => this.focus(), () => this._isMounted);
         }
     }
 

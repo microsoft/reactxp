@@ -34,11 +34,14 @@ id: string = undefined; // Web only
 // Expose the element and/or its children as accessible to Screen readers
 importantForAccessibility: ImportantForAccessibility = ImportantForAccessibility.Yes;
 
-// Should be focused when the component is mounted, see also UserInterface.setFocusArbitrator().
+// Should be focused when the component is mounted, see also View's arbitrateFocus
+// property and FocusUtils.setDefaultFocusArbitrator() method.
 // WARNING: autoFocus=true means that this Text's focus() method will be called,
 // however calling focus() for Text might make sense only on mobile for the accessibility
 // reasons, on web it has no effect, your application has to handle this either while
 // setting this property or in the FocusArbitrator callback.
+// NOTE: The focus() call will be performed on the next tick after the current
+// render cycle.
 autoFocus: boolean = false;
 
 // Should the scale multiplier be capped when allowFontScaling is set to true?

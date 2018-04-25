@@ -5,8 +5,7 @@
 * Licensed under the MIT license.
 *
 * Provides the functions which allow to handle the selection of a proper component
-* to focus out of the candidates which claim to be focused on mount with either
-* autoFocus property or which were queued to focus using FocusUtils.requestFocus().
+* to focus from the multiple candidates with autoFocus=true.
 */
 
 import React = require('react');
@@ -15,19 +14,13 @@ import Interfaces = require('../Interfaces');
 
 let _sortAndFilter: SortAndFilterFunc|undefined;
 let _autoFocusTimer: number|undefined;
+let _isFocusFirstEnabled = true;
 
 let _lastFocusArbitratorProviderId = 0;
 
 let rootFocusArbitratorProvider: FocusArbitratorProvider;
 
-// The default behaviour in the keyboard navigation mode is to focus first
-// focusable component when a View with restrictFocusWithin is mounted.
-// This is the id for the first focusable which is used by FocusManager.
-// The implementors could use this id from their implementations of
-// FocusArbitrator.
-export const FirstFocusableId = 'reactxp-first-focusable';
-
-export type SortAndFilterFunc = (candidates: Types.FocusCandidate[]) => Types.FocusCandidate[];
+export type SortAndFilterFunc = (candidates: FocusCandidate[]) => FocusCandidate[];
 
 export function setSortAndFilterFunc(sortAndFilter: SortAndFilterFunc): void {
     _sortAndFilter = sortAndFilter;
@@ -37,13 +30,41 @@ export function setRootFocusArbitrator(arbitrator: Types.FocusArbitrator | undef
     rootFocusArbitratorProvider.setCallback(arbitrator);
 }
 
+export function setFocusFirstEnabled(enabled: boolean): void {
+    _isFocusFirstEnabled = enabled;
+}
+
+export class FocusCandidate implements Types.FocusCandidate {
+    component: React.Component<any, any>;
+    focus: () => void;
+    isAvailable: () => boolean;
+    getParentAccessibilityId: () => string | undefined;
+
+    constructor(component: React.Component<any, any>, focus: () => void, isAvailable: () => boolean,
+            parentAccessibilityId: string | undefined) {
+
+        this.component = component;
+        this.focus = focus;
+        this.isAvailable = isAvailable;
+        this.getParentAccessibilityId = () => parentAccessibilityId;
+    }
+
+    getAccessibilityId(): string | undefined {
+        return this.component.props && this.component.props.accessibilityId;
+    }
+}
+
+export class FirstFocusCandidate extends FocusCandidate {
+    // A FocusCandidate for the first focusable to check instanceof.
+}
+
 export class FocusArbitratorProvider {
     private _id: number;
     private _parentArbitratorProvider: FocusArbitratorProvider | undefined;
     private _view: Interfaces.View | undefined;
 
     private _arbitratorCallback: Types.FocusArbitrator | undefined;
-    private _candidates: Types.FocusCandidate[] = [];
+    private _candidates: FocusCandidate[] = [];
     private _pendingChildren: { [key: string]: FocusArbitratorProvider } = {};
 
     constructor(view?: Interfaces.View, arbitrator?: Types.FocusArbitrator) {
@@ -62,15 +83,8 @@ export class FocusArbitratorProvider {
         }
     }
 
-    private _arbitrate(): Types.FocusCandidate | undefined {
+    private _arbitrate(): FocusCandidate | undefined {
         const candidates = this._candidates;
-        const viewId = this._view && this._view.props && this._view.props.accessibilityId;
-
-        if (viewId) {
-            candidates.forEach(candidate => {
-                candidate.parentAccessibilityId = viewId;
-            });
-        }
 
         Object.keys(this._pendingChildren).forEach(key => {
             const candidate = this._pendingChildren[key]._arbitrate();
@@ -86,19 +100,23 @@ export class FocusArbitratorProvider {
     }
 
     private _requestFocus(component: React.Component<any, any>, focus: () => void, isAvailable: () => boolean,
-            accessibilityId?: string): void {
+            isFirstFocusable?: boolean): void {
 
-        this._candidates.push({
-            accessibilityId,
-            component,
-            focus,
-            isAvailable
-        });
+        const parentProvider = this._parentArbitratorProvider;
+        const parentAccessibilityId = parentProvider
+            ? parentProvider._view && parentProvider._view.props && parentProvider._view.props.accessibilityId
+            : undefined;
+
+        this._candidates.push(
+            isFirstFocusable && _isFocusFirstEnabled
+                ? new FirstFocusCandidate(component, focus, isAvailable, parentAccessibilityId)
+                : new FocusCandidate(component, focus, isAvailable, parentAccessibilityId)
+        );
 
         this._notifyParent();
     }
 
-    private static _arbitrate(candidates: Types.FocusCandidate[], arbitrator?: Types.FocusArbitrator): Types.FocusCandidate | undefined {
+    private static _arbitrate(candidates: FocusCandidate[], arbitrator?: Types.FocusArbitrator): FocusCandidate | undefined {
         // Filtering out everything which is already unmounted.
         candidates = candidates.filter(item => item.isAvailable());
 
@@ -106,26 +124,17 @@ export class FocusArbitratorProvider {
             candidates = _sortAndFilter(candidates);
         }
 
+        for (let i = 0; i < candidates.length; i++) {
+            if (candidates[i] instanceof FirstFocusCandidate) {
+                return candidates[i];
+            }
+        }
+
         if (arbitrator) {
             return arbitrator(candidates);
         }
 
-        let candidate: Types.FocusCandidate | undefined;
-
-        // If there is no arbitrator, we choose the first focusable component provided
-        // by FocusManager or the last one queued.
-        for (let i = 0; i < candidates.length; i++) {
-            if (candidates[i].accessibilityId === FirstFocusableId) {
-                candidate = candidates[i];
-                break;
-            }
-        }
-
-        if (!candidate) {
-            candidate = candidates[candidates.length - 1];
-        }
-
-        return candidate;
+        return candidates[candidates.length - 1];
     }
 
     setCallback(arbitrator?: Types.FocusArbitrator) {
@@ -133,7 +142,7 @@ export class FocusArbitratorProvider {
     }
 
     static requestFocus(component: React.Component<any, any>, focus: () => void, isAvailable: () => boolean,
-            accessibilityId?: string): void {
+            isFirstFocusable?: boolean): void {
 
         if (_autoFocusTimer) {
             clearTimeout(_autoFocusTimer);
@@ -145,7 +154,7 @@ export class FocusArbitratorProvider {
             (component.context && component.context.focusArbitrator) ||
             rootFocusArbitratorProvider;
 
-        focusArbitratorProvider._requestFocus(component, focus, isAvailable, accessibilityId);
+        focusArbitratorProvider._requestFocus(component, focus, isAvailable, isFirstFocusable);
 
         _autoFocusTimer = setTimeout(() => {
             _autoFocusTimer = undefined;
@@ -157,11 +166,6 @@ export class FocusArbitratorProvider {
             }
         }, 0);
     }
-}
-
-export function requestFocus(component: React.Component<any, any>, focus: () => void, isAvailable: () => boolean,
-        accessibilityId?: string): void {
-    FocusArbitratorProvider.requestFocus(component, focus, isAvailable, accessibilityId);
 }
 
 rootFocusArbitratorProvider = new FocusArbitratorProvider();
