@@ -732,6 +732,7 @@ export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet>, C
     onPanHorizontal?: (gestureState: PanGestureState) => void;
     onTap?: (gestureState: TapGestureState) => void;
     onDoubleTap?: (gestureState: TapGestureState) => void;
+    onContextMenu?: (gestureState: TapGestureState) => void;
 
     // We can set vertical or horizontal as preferred
     preferredPan?: PreferredPanGesture;

@@ -15,6 +15,7 @@ import React = require('react');
 import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
+import EventHelpers from './utils/EventHelpers';
 
 import Types = require('../common/Types');
 import UserInterface from './UserInterface';
@@ -63,7 +64,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
                 this._lastGestureStartEvent = event;
                 // If we're trying to detect a tap, set this as the responder immediately.
-                if (this.props.onTap || this.props.onDoubleTap) {
+                if (this.props.onTap || this.props.onDoubleTap || this.props.onContextMenu) {
                     return true;
                 }
                 return false;
@@ -501,7 +502,21 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
     }
 
     private _sendTapEvent(e: Types.TouchEvent) {
-        if (this.props.onTap) {
+        const button = EventHelpers.toMouseButton(e);
+        if (button === 2) {
+            // Always handle secondary button, even if context menu is not set - it shouldn't trigger onTap.
+            if (this.props.onContextMenu) {
+                const tapEvent: Types.TapGestureState = {
+                    pageX: e.pageX!!!,
+                    pageY: e.pageY!!!,
+                    clientX: e.locationX!!!,
+                    clientY: e.locationY!!!,
+                    timeStamp: e.timeStamp
+                };
+
+                this.props.onContextMenu(tapEvent);
+            }
+        } else if (this.props.onTap) {
             const tapEvent: Types.TapGestureState = {
                 pageX: e.pageX!!!,
                 pageY: e.pageY!!!,
@@ -515,6 +530,16 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
     }
 
     private _sendDoubleTapEvent(e: Types.TouchEvent) {
+        // If user did a double click with different mouse buttons, eg. left (50ms) right
+        // both clicks need to be registered as separate events.
+        const lastButton = EventHelpers.toMouseButton(this._lastTapEvent!!!);
+        const button = EventHelpers.toMouseButton(e);
+        if (lastButton !== button || button === 2) {
+            this._sendTapEvent(this._lastTapEvent!!!);
+            this._sendTapEvent(e);
+            return;
+        }
+
         if (this.props.onDoubleTap) {
             const tapEvent: Types.TapGestureState = {
                 pageX: e.pageX!!!,
