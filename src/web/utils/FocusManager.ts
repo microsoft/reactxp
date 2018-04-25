@@ -215,21 +215,22 @@ export class FocusManager extends FocusManagerBase {
             // focusable, focusing it, removing the focus and making it unfocusable
             // back again.
             // Defer the work to avoid triggering sync layout.
-            const currentFocused = FocusManager._currentFocusedComponent;
-            if (currentFocused && !currentFocused.removed && !currentFocused.restricted) {
-                // No need to reset the focus because it's moved inside the restricted area
-                // already (manually or with autofocus).
-                return;
-            }
-
             FocusManager._resetFocusTimer = setTimeout(() => {
                 FocusManager._resetFocusTimer = undefined;
+
+                const currentFocused = FocusManager._currentFocusedComponent;
+                if (currentFocused && !currentFocused.removed && !currentFocused.restricted) {
+                    // No need to reset the focus because it's moved inside the restricted area
+                    // already (manually or with autofocus).
+                    return;
+                }
+
                 const prevTabIndex = FocusManager._setTabIndex(document.body, -1);
                 FocusManager.setLastFocusedProgrammatically(document.body);
                 document.body.focus();
                 document.body.blur();
                 FocusManager._setTabIndex(document.body, prevTabIndex);
-            }, 0);
+            }, 100);
         }
     }
 
