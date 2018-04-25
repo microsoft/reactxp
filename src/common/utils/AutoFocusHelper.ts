@@ -102,7 +102,7 @@ export class FocusArbitratorProvider {
     private _requestFocus(component: React.Component<any, any>, focus: () => void, isAvailable: () => boolean,
             isFirstFocusable?: boolean): void {
 
-        const parentProvider = this._parentArbitratorProvider;
+        const parentProvider = this._view !== component ? this : this._parentArbitratorProvider;
         const parentAccessibilityId = parentProvider
             ? parentProvider._view && parentProvider._view.props && parentProvider._view.props.accessibilityId
             : undefined;
