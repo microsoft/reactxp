@@ -36,61 +36,96 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
     // Will be assiged by super - just re-typing here
     context!: LinkContext;
 
+    protected _render(internalProps: RN.TextProps) {
+        if (this.context && !this.context.isRxParentAText) {
+            return this._renderLinkAsFocusableText(internalProps);
+        } else if (RNW.HyperlinkWindows) {
+            return this._renderLinkAsNativeHyperlink(internalProps);
+        } else {
+            return super._render(internalProps);
+        }
+    }
+
+    private _renderLinkAsFocusableText(internalProps: RN.TextProps) {
+        let focusableTextProps = this._createFocusableTextProps(internalProps);
+        return (
+            <FocusableText
+                { ...focusableTextProps }
+            />
+        );    
+    }
+
     private _focusableElement : RNW.FocusableWindows<RN.TextProps> | null = null;
 
     private _onFocusableRef = (btn: RNW.FocusableWindows<RN.TextProps> | null): void => {
         this._focusableElement = btn;
     }
 
-    protected _render(internalProps: RN.TextProps) {
-        if (this.context && !this.context.isRxParentAText) {
+    private _createFocusableTextProps(internalProps: RN.TextProps) {
+        let tabIndex: number | undefined = this.getTabIndex();
+        let windowsTabFocusable: boolean =  tabIndex !== undefined && tabIndex >= 0;
 
-            let tabIndex: number | undefined = this.getTabIndex();
-            let windowsTabFocusable: boolean =  tabIndex !== undefined && tabIndex >= 0;
-
-            // We don't use 'string' ref type inside ReactXP
-            let originalRef = internalProps.ref;
-            if (typeof originalRef === 'string') {
-                throw new Error('Link: ReactXP must not use string refs internally');
-            }
-            let componentRef: Function = originalRef as Function;
-
-            let focusableTextProps: RNW.FocusableWindowsProps<RN.TextProps> = {
-                ...internalProps,
-                componentRef: componentRef,
-                ref: this._onFocusableRef,
-                isTabStop: windowsTabFocusable,
-                tabIndex: tabIndex,
-                disableSystemFocusVisuals: false,
-                handledKeyDownKeys: DOWN_KEYCODES,
-                handledKeyUpKeys: UP_KEYCODES,
-                onKeyDown: this._onKeyDown,
-                onKeyUp: this._onKeyUp,
-                onFocus: this._onFocus,
-                onAccessibilityTap: this._onPress
-            };
-
-            return (
-                <FocusableText
-                    { ...focusableTextProps }
-                />
-            );
-        } else {
-            // TODO: The "in text parent" case requires a React Native view that maps to
-            // XAML Hyperlink but this RN view isn't implemented yet.
-            return super._render(internalProps);
+        // We don't use 'string' ref type inside ReactXP
+        let originalRef = internalProps.ref;
+        if (typeof originalRef === 'string') {
+            throw new Error('Link: ReactXP must not use string refs internally');
         }
+        let componentRef: Function = originalRef as Function;
+
+        let focusableTextProps: RNW.FocusableWindowsProps<RN.TextProps> = {
+            ...internalProps,
+            componentRef: componentRef,
+            ref: this._onFocusableRef,
+            isTabStop: windowsTabFocusable,
+            tabIndex: tabIndex,
+            disableSystemFocusVisuals: false,
+            handledKeyDownKeys: DOWN_KEYCODES,
+            handledKeyUpKeys: UP_KEYCODES,
+            onKeyDown: this._onKeyDown,
+            onKeyUp: this._onKeyUp,
+            onFocus: this._onFocus,
+            onAccessibilityTap: this._onPress
+        };
+        
+        return focusableTextProps;
+    }
+
+    private _nativeHyperlinkElement : RNW.HyperlinkWindows | null = null;
+
+    private _onNativeHyperlinkRef = (ref: RNW.HyperlinkWindows | null): void => {
+        this._nativeHyperlinkElement = ref;
+    }
+
+    private _renderLinkAsNativeHyperlink(internalProps: RN.TextProps) {
+
+        // We don't use 'string' ref type inside ReactXP
+        let originalRef = internalProps.ref;
+        if (typeof originalRef === 'string') {
+            throw new Error('Link: ReactXP must not use string refs internally');
+        }
+
+        return (
+            <RNW.HyperlinkWindows
+                { ...internalProps }
+                ref={this._onNativeHyperlinkRef}
+                onFocus={this._onFocus}
+            />
+        );
     }
 
     focus() {
         if (this._focusableElement && this._focusableElement.focus) {
             this._focusableElement.focus();
+        } else if (this._nativeHyperlinkElement && this._nativeHyperlinkElement.focus) {
+            this._nativeHyperlinkElement.focus();
         }
     }
 
     blur() {
         if (this._focusableElement && this._focusableElement.blur) {
             this._focusableElement.blur();
+        } else if (this._nativeHyperlinkElement && this._nativeHyperlinkElement.blur) {
+            this._nativeHyperlinkElement.blur();
         }
     }
 
