@@ -43,5 +43,10 @@ declare module 'react-native-windows' {
 
     function createFocusableComponent<P>(Component: any): FocusableComponentConstructor<P>;
 
-    class HyperlinkWindows extends RN.ReactNativeBaseComponent<RN.TextProps, {}> { }
+    type HyperlinkWindowsProps = RN.TextProps & {
+        onFocus?: Function;
+        onBlur?: Function;
+    }
+
+    class HyperlinkWindows extends RN.ReactNativeBaseComponent<HyperlinkWindowsProps, {}> { }
 }
