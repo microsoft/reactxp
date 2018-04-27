@@ -48,5 +48,8 @@ declare module 'react-native-windows' {
         onBlur?: Function;
     }
 
-    class HyperlinkWindows extends RN.ReactNativeBaseComponent<HyperlinkWindowsProps, {}> { }
+    class HyperlinkWindows extends RN.ReactNativeBaseComponent<HyperlinkWindowsProps, {}> { 
+        focus(): void;
+        blur(): void;
+    }
 }
