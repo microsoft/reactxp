@@ -761,11 +761,6 @@ export interface ScrollViewProps extends CommonProps, CommonAccessibilityProps {
     vertical?: boolean; // By default true
     horizontal?: boolean; // By default false
 
-    // If the contents are smaller than the view port,
-    // should they be justified to the top of the view
-    // (i.e. flex-start) or the end (flex-end)?
-    justifyEnd?: boolean; // By default false
-
     onLayout?: (e: ViewOnLayoutEvent) => void;
     onContentSizeChange?: (width: number, height: number) => void;
     onScroll?: (newScrollTop: number, newScrollLeft: number) => void;

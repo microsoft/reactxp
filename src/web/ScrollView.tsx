@@ -273,9 +273,6 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
 
     private _renderWithCustomScrollbar() {
         let containerStyles: any = _customStyles.customScrollContainer;
-        if (this.props.justifyEnd) {
-            containerStyles = _.extend({ justifyContent: 'flex-end' }, containerStyles);
-        }
 
         let scrollComponentClassNames = ['scrollViewport'];
         if (this.props.horizontal) {

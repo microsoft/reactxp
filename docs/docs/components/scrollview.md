@@ -20,10 +20,6 @@ bounces: boolean = true; // iOS only
 horizontal: boolean = false;
 vertical: boolean = true;
 
-// If the contents are smaller than the view port, should they be justified
-// to the top of the view (i.e. flex-start) or the end (flex-end)?
-justifyEnd: boolean = false;
-
 // When the user scrolls the view, how should the on-screen keyboard react?
 keyboardDismissMode: 'none' | 'interactive' | 'on-drag'; // Native only
 

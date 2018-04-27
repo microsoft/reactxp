@@ -1,5 +1,5 @@
 /*
-* Tests the functionality of a ScrollView event callbacks 
+* Tests the functionality of a ScrollView event callbacks
 * through user interaction.
 *
 * We need to split the ScrollView tests into multiple pages because
@@ -195,7 +195,6 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
 }
 
 // TODO: need to add tests for the following props
-// justifyEnd?: boolean;
 // showsHorizontalScrollIndicator?: boolean;
 // showsVerticalScrollIndicator?: boolean;
 // scrollEnabled?: boolean;
@@ -215,7 +214,7 @@ class ScrollViewTest implements Test {
     getPath(): string {
         return 'Components/ScrollView/Events';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }
