@@ -153,7 +153,8 @@ export class Button extends React.Component<Types.ButtonProps, Types.Stateless> 
             shouldRasterizeIOS: this.props.shouldRasterizeIOS,
             onAccessibilityTapIOS: this.props.onAccessibilityTapIOS,
             onMouseEnter: this._onMouseEnter,
-            onMouseLeave: this._onMouseLeave
+            onMouseLeave: this._onMouseLeave,
+            collapsable: false
         };
 
         return this._render(internalProps);

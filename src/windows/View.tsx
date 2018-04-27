@@ -230,6 +230,11 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             }
             this._internalProps.onMouseMove = this._onMouseMove;
         }
+
+        // Stop layout only optimizations if handlers for these direct events are specified
+        if (props.onMouseEnter || props.onMouseLeave) {
+            this._internalProps.collapsable = false;
+        }
     }
 
     render(): JSX.Element {
