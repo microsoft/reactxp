@@ -28,7 +28,7 @@ class StorageBasicTest implements AutoExecutableTest {
     getPath(): string {
         return 'APIs/Storage';
     }
-    
+
     getTestType(): TestType {
         return TestType.AutoExecutable;
     }

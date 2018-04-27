@@ -13,7 +13,7 @@ To install: ```npm install reactxp-video```
 
 ## Types
 ``` javascript
-// Used to return progress information in the onProgress callback 
+// Used to return progress information in the onProgress callback
 interface VideoProgress {
     currentTime: number;
     playableDuration: number;

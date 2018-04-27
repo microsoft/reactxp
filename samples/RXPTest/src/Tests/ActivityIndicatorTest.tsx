@@ -113,7 +113,7 @@ class ActivityIndicatorTest implements AutoExecutableTest {
     getPath(): string {
         return 'Components/ActivityIndicator';
     }
-    
+
     getTestType(): TestType {
         return TestType.AutoExecutable;
     }

@@ -14,7 +14,7 @@ export class ScrollViewConfig {
     setUseCustomScrollbars(value: boolean): void {
         this._useCustomScrollbars = value;
     }
-    
+
     useCustomScrollbars(): boolean {
         return this._useCustomScrollbars;
     }

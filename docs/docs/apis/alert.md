@@ -27,25 +27,25 @@ interface AlertButtonSpec {
 interface AlertModalTheme {
     // Modal background style
     bodyStyle?: StyleRuleSet<ViewStyle>;
-    
+
     // Style for title text
     titleTextStyle?: StyleRuleSet<TextStyle>;
-    
+
     // Style for message text
     messageTextStyle?: StyleRuleSet<TextStyle>;
-    
+
     // Style for button control
     buttonStyle?: StyleRuleSet<ButtonStyle>;
-    
+
     // Style applied when hovering over button
     buttonHoverStyle?: StyleRuleSet<ButtonStyle>;
 
     // Style for button text
     buttonTextStyle?: StyleRuleSet<TextStyle>;
-    
+
     // Override style for cancel button
     cancelButtonStyle?: StyleRuleSet<ButtonStyle>;
-    
+
     // Override style for cancel button hover state
     cancelButtonHoverStyle?: StyleRuleSet<ButtonStyle>;
 

@@ -16,7 +16,7 @@ This interface provides events that are triggered when specific user input event
 // Pass true to stop propagation.
 backButtonEvent: SubscribableEvent<() => boolean>();
 
-// Triggered when a hardware key up/down event occurs. Events are triggered 
+// Triggered when a hardware key up/down event occurs. Events are triggered
 // in the reverse order in which they were registered. Pass true to stop
 // propagation.
 keyDownEvent: SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();

@@ -27,7 +27,7 @@ setMainView(element: React.ReactElement<any>): void;
 
 // Android & iOS only.
 // Wrapper around RN.AppRegistry.registerComponent();
-// IMPORTANT: Some APIs, e.g. Popup & Modal, require a string 
+// IMPORTANT: Some APIs, e.g. Popup & Modal, require a string
 // `reactxp_rootViewId` prop to be set on the component from the
 // native-side.
 registerRootView(viewKey: string, getComponentFunc: Function);

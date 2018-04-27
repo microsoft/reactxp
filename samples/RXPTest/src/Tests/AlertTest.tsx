@@ -168,7 +168,7 @@ class AlertTest implements Test {
     getPath(): string {
         return 'APIs/Alert';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

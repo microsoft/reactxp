@@ -92,7 +92,7 @@ export class FrontLayerViewManager {
 
                 this._overlayStack.push(new PopupStackContext(popupId, popupOptions, nodeHandle));
                 this.event_changed.fire();
-                return true;    
+                return true;
             }
         }
         return false;
@@ -286,7 +286,7 @@ export class FrontLayerViewManager {
                 const popups = _.filter(this._overlayStack, iter => (iter instanceof PopupStackContext));
                 return popups.length > 0;
             }
-            
+
             return false;
         }
     }

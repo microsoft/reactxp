@@ -25,7 +25,7 @@ export class Styles extends RX.Styles {
         }
 
         let ruleSet = ruleSet1 ? (ruleSet2 ? [ruleSet1, ruleSet2] : ruleSet1) : ruleSet2;
-        
+
         if (ruleSet instanceof Array) {
             let combinedStyles: any = {};
 
@@ -50,7 +50,7 @@ export class Styles extends RX.Styles {
                 }
             }
 
-            if (combinedStyles.borderWidth || 
+            if (combinedStyles.borderWidth ||
                     combinedStyles.borderTopWidth || combinedStyles.borderRightWidth ||
                     combinedStyles.borderBottomWidth || combinedStyles.borderLeftWidth) {
                 // If the caller specified a non-zero border width
@@ -441,8 +441,8 @@ export class Styles extends RX.Styles {
     }
 }
 
-export function memoize<T extends (...args: any[]) => any>(func: T, resolver?: (...args: any[]) => any): T { 
+export function memoize<T extends (...args: any[]) => any>(func: T, resolver?: (...args: any[]) => any): T {
     return _.memoize(func, resolver);
 }
- 
+
 export default new Styles();

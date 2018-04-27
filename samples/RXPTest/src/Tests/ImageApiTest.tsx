@@ -167,7 +167,7 @@ class ImageApiTest implements AutoExecutableTest {
     getPath(): string {
         return 'Components/Image/APIs';
     }
-    
+
     getTestType(): TestType {
         return TestType.AutoExecutable;
     }

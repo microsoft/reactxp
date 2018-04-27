@@ -261,7 +261,7 @@ class LinkingView extends RX.Component<RX.CommonProps, LinkingState> {
             case RX.Types.LinkingErrorCode.NoAppFound:
                 errString = 'No App Found';
                 break;
-            
+
             case RX.Types.LinkingErrorCode.UnexpectedFailure:
                 errString = 'Unexpected Error';
                 break;
@@ -283,7 +283,7 @@ class LinkingTest implements Test {
     getPath(): string {
         return 'APIs/Linking';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

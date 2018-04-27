@@ -135,7 +135,7 @@ class LinkTest implements Test {
     getPath(): string {
         return 'Components/Link';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

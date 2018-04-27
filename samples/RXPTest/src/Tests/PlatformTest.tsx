@@ -77,7 +77,7 @@ class PlatformTest implements AutoExecutableTest {
     getPath(): string {
         return 'APIs/Platform';
     }
-    
+
     getTestType(): TestType {
         return TestType.AutoExecutable;
     }

@@ -38,7 +38,7 @@ export class Modal extends RX.Modal {
         if (!modalId || modalId === '') {
             throw new Error(`modalId must be a non-empty string. Actual: ${modalId}`);
         }
-        
+
         FrontLayerViewManager.dismissModal(modalId);
     }
 

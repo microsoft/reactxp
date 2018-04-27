@@ -133,7 +133,7 @@ class ClipboardTest implements Test {
     getPath(): string {
         return 'APIs/Clipboard';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

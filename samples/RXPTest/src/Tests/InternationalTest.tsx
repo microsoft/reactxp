@@ -131,7 +131,7 @@ class InternationalTest implements Test {
     getPath(): string {
         return 'APIs/International';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

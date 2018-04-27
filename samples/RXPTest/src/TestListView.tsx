@@ -111,7 +111,7 @@ export class TestListView extends RX.Component<TestListViewProps, TestListViewSt
 
     render() {
         let tests = TestRegistry.getAllTests();
-        
+
         let testListItems: JSX.Element[] = _.map(tests, (test, path) => {
             let testPath = test.getPath();
             let testType = test.getTestType();

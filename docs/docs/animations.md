@@ -7,7 +7,7 @@ permalink: docs/animations.html
 next: accessibility
 ---
 
-ReactXP supports a powerful animation abstraction. Inidividual style elements (e.g. transforms, opacity, or backgroundColor) can be animated. 
+ReactXP supports a powerful animation abstraction. Inidividual style elements (e.g. transforms, opacity, or backgroundColor) can be animated.
 
 ## Animatable Components
 
@@ -21,7 +21,7 @@ Three base RX classes can have animatable styles:
 
 * Animated.TextInput
 
-These component types should be used in place of the normal [View](components/view), [Image](components/image), [Text](components/text) or [TextInput](components/textinput) in the render method. In general, style properties expressed as numeric values or colors can be animated. Properties with text values (e.g. flexDirection or fontWeight) cannot be animated. 
+These component types should be used in place of the normal [View](components/view), [Image](components/image), [Text](components/text) or [TextInput](components/textinput) in the render method. In general, style properties expressed as numeric values or colors can be animated. Properties with text values (e.g. flexDirection or fontWeight) cannot be animated.
 
 ## Animated Values
 The following example shows how to create animated values with an initial value. Animated values are typically stored as instance variables within a component class. They can also be stored in the state structure.
@@ -40,7 +40,7 @@ let interpolatedValue = RX.Animated.interpolate(animatedColorValue,
 ```
 
 ## Animated Styles
-Once an animated value is created, it can be associated with an animated style. 
+Once an animated value is created, it can be associated with an animated style.
 
 Some animated style values are more expensive than others. Some affect the layout of elements (e.g. width, height, top, left), so the layout engine needs to be invoked during each stage of the animations. It's faster to avoid these and stick to styles that don't affect the layout (e.g. opacity and transforms).
 

@@ -40,7 +40,7 @@ interface NetworkState {
 class NetworkView extends RX.Component<RX.CommonProps, NetworkState> {
     private _isMounted = false;
     private _connectivityChangedEvent: RX.Types.SubscriptionToken;
-    
+
     constructor(props: RX.CommonProps) {
         super(props);
 
@@ -159,7 +159,7 @@ class NetworkTest implements Test {
     getPath(): string {
         return 'APIs/Network';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

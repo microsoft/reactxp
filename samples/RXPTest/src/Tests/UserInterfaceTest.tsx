@@ -189,7 +189,7 @@ class UserInterfaceTest implements AutoExecutableTest {
     getPath(): string {
         return 'APIs/UserInterface';
     }
-    
+
     getTestType(): TestType {
         return TestType.AutoExecutable;
     }

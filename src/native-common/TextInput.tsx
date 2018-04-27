@@ -105,7 +105,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         };
 
         this._selectionToSet = undefined;
-        
+
         return this._render(internalProps);
     }
 

@@ -158,7 +158,7 @@ class TextInputApiTest implements AutoExecutableTest {
     getPath(): string {
         return 'Components/TextInput/APIs';
     }
-    
+
     getTestType(): TestType {
         return TestType.AutoExecutable;
     }

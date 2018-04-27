@@ -129,7 +129,7 @@ class PopupBox extends RX.Component<PopupBoxProps, RX.Stateless> {
             top,
             left,
             bottom,
-            right 
+            right
         }, false);
 
         return (
@@ -150,7 +150,7 @@ class PopupView extends RX.Component<RX.CommonProps, RX.Stateless> {
     private _anchor2: RX.Button;
     private _anchor3: RX.Button;
     private _anchor4: RX.Button;
-    
+
     componentWillUnmount() {
         RX.Popup.dismissAll();
     }
@@ -319,7 +319,7 @@ class PopupTest implements Test {
     getPath(): string {
         return 'APIs/Popup';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

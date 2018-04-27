@@ -113,7 +113,7 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
             // Set up the global event.
             WebView._onMessageReceived = new RX.Types.SubscribableEvent<
                 (e: WebViewMessageEventInternal) => void>(true);
-            
+
             window.addEventListener('message', (e: MessageEvent) => {
                 let event: WebViewMessageEventInternal = {
                     data: e.data,

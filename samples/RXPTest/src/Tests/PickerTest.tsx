@@ -90,7 +90,7 @@ class PickerView extends RX.Component<RX.CommonProps, PickerViewState> {
                     />
                     <RX.Text style={ _styles.resultText }>
                         { 'You selected "' +
-                            _.find(picker1Items, item => item.value === 
+                            _.find(picker1Items, item => item.value ===
                             this.state.test1Value).label + '"'}
                     </RX.Text>
                 </RX.View>
@@ -108,7 +108,7 @@ class PickerTest implements Test {
     getPath(): string {
         return 'Components/Picker';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

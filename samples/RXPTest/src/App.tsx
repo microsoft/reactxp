@@ -49,7 +49,7 @@ class App extends RX.Component<RX.CommonProps, AppState> {
         if (this.state.runAll) {
             let testPaths = _.keys(TestRegistry.getAllTests());
             let curTestIndex = _.indexOf(testPaths, this.state.selectedTest);
-            
+
             // If there are more tests to run, move on to the next one.
             if (curTestIndex + 1 < testPaths.length) {
                 this.setState({ selectedTest: testPaths[curTestIndex + 1] });

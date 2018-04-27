@@ -15,7 +15,7 @@ import RXTypes = require('../common/Types');
 
 export declare module ReactXP {
     export type Accessibility = Interfaces.Accessibility;
-    export var Accessibility: Interfaces.Accessibility;    
+    export var Accessibility: Interfaces.Accessibility;
     export type ActivityIndicator = Interfaces.ActivityIndicator;
     export var ActivityIndicator: typeof Interfaces.ActivityIndicator;
     export type Alert = Interfaces.Alert;

@@ -96,7 +96,7 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
             <RX.View style={ _styles.container}>
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation1' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'This button should change in appearance when the mouse pointer is above ' + 
+                        { 'This button should change in appearance when the mouse pointer is above ' +
                           'it (valid only on mouse-based platforms).' }
                     </RX.Text>
                 </RX.View>
@@ -115,8 +115,8 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
 
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation2' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'This button should be disabled and respond to no clicks, presses, or hovers. ' + 
-                          'The mouse pointer should not turn into a pointer.' + 
+                        { 'This button should be disabled and respond to no clicks, presses, or hovers. ' +
+                          'The mouse pointer should not turn into a pointer.' +
                           'The opacity of the disabled button should be its default value of 0.5' }
                     </RX.Text>
                 </RX.View>
@@ -134,8 +134,8 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
 
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation3' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'This button should be disabled and respond to no clicks, presses, or hovers. ' + 
-                          'The mouse pointer should not turn into a pointer.' + 
+                        { 'This button should be disabled and respond to no clicks, presses, or hovers. ' +
+                          'The mouse pointer should not turn into a pointer.' +
                           'The opacity of the disabled button should be 0.3' }
                     </RX.Text>
                 </RX.View>
@@ -200,7 +200,7 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
 
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation6' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'This button should differentiate between press and long-press actions. ' + 
+                        { 'This button should differentiate between press and long-press actions. ' +
                           'Click or tap and hold for more than one second for a long press.' }
                     </RX.Text>
                 </RX.View>
@@ -227,7 +227,7 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
 
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation7' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'This button should change opacity to 25% when pressing (touch-based platforms only). ' + 
+                        { 'This button should change opacity to 25% when pressing (touch-based platforms only). ' +
                           'The underlay color should appear red.' }
                     </RX.Text>
                 </RX.View>
@@ -271,7 +271,7 @@ class ButtonTest implements Test {
     getPath(): string {
         return 'Components/Button';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

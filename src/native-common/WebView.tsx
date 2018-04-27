@@ -63,7 +63,7 @@ export class WebView extends React.Component<Types.WebViewProps, Types.Stateless
         if (this.props.onMessage) {
             // Clone the original event because RN reuses events.
             let event: RX.Types.WebViewMessageEvent = _.clone(e) as any;
-            
+
             // Add the data element.
             event.data = (e.nativeEvent as any).data;
             event.origin = '*';
@@ -79,7 +79,7 @@ export class WebView extends React.Component<Types.WebViewProps, Types.Stateless
                     e.preventDefault();
                 }
             };
-            
+
             this.props.onMessage(event);
         }
     }
@@ -89,7 +89,7 @@ export class WebView extends React.Component<Types.WebViewProps, Types.Stateless
             this._mountedComponent.postMessage(message);
         }
     }
-        
+
     reload() {
         if (this._mountedComponent) {
             this._mountedComponent.reload();
@@ -101,7 +101,7 @@ export class WebView extends React.Component<Types.WebViewProps, Types.Stateless
             this._mountedComponent.goBack();
         }
     }
-    
+
     goForward() {
         if (this._mountedComponent) {
             this._mountedComponent.goForward();

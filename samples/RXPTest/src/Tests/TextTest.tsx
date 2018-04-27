@@ -129,17 +129,17 @@ class TextView extends RX.Component<RX.CommonProps, TextViewState> {
                 </RX.View>
                 <RX.View style={ _styles.resultContainer }>
                     <RX.Text style={ _styles.test2Text }>
-                        { 'A really long string that will wrap to multiple lines if necessary ' + 
+                        { 'A really long string that will wrap to multiple lines if necessary ' +
                           'but only if there is insufficient space. ' +
-                          'A really long string that will wrap to multiple lines if necessary ' + 
+                          'A really long string that will wrap to multiple lines if necessary ' +
                           'but only if there is insufficient space.' }
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.resultContainer }>
                     <RX.Text style={ _styles.test2Text } numberOfLines={ 2 }>
-                    { 'A really long string that will wrap to two lines if necessary ' + 
+                    { 'A really long string that will wrap to two lines if necessary ' +
                           'but only if there is insufficient space. ' +
-                          'A really long string that will wrap to two lines if necessary ' + 
+                          'A really long string that will wrap to two lines if necessary ' +
                           'but only if there is insufficient space. ' }
                     </RX.Text>
                 </RX.View>
@@ -151,19 +151,19 @@ class TextView extends RX.Component<RX.CommonProps, TextViewState> {
                 </RX.View>
                 <RX.View style={ _styles.resultContainer }>
                     <RX.Text style={ _styles.test2Text } numberOfLines={ 1 } ellipsizeMode={ 'head' }>
-                        { 'A really long string that will trunctate to one line if necessary ' + 
+                        { 'A really long string that will trunctate to one line if necessary ' +
                         'but only if there is insufficient space. (Head truncation)' }
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.resultContainer }>
                     <RX.Text style={ _styles.test2Text } numberOfLines={ 1 } ellipsizeMode={ 'middle' }>
-                        { '(Middle truncation) A really long string that will trunctate to one line if necessary ' + 
+                        { '(Middle truncation) A really long string that will trunctate to one line if necessary ' +
                         'but only if there is insufficient space.' }
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.resultContainer }>
                     <RX.Text style={ _styles.test2Text } numberOfLines={ 1 } ellipsizeMode={ 'tail' }>
-                        { '(Tail truncation) A really long string that will trunctate to one line if necessary ' + 
+                        { '(Tail truncation) A really long string that will trunctate to one line if necessary ' +
                         'but only if there is insufficient space.' }
                     </RX.Text>
                 </RX.View>
@@ -279,7 +279,7 @@ class TextTest implements Test {
     getPath(): string {
         return 'Components/Text';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

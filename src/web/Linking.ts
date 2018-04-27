@@ -43,7 +43,7 @@ export class Linking extends CommonLinking {
         // Format email info
         const emailUrl = this._createEmailUrl(emailInfo);
         window.location.href = emailUrl;
-        
+
         return SyncTasks.Resolved<void>();
     }
 

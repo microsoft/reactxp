@@ -110,7 +110,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             );
         } else {
             let { keyboardTypeValue, wrapInForm, pattern } = this._getKeyboardType();
-            
+
             let input = (
                 <input
                     ref={ this._onMount }
@@ -138,7 +138,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     pattern={ pattern }
                 />
             );
-            
+
             if (wrapInForm) {
                 // Wrap the input in a form tag if required
                 input = (

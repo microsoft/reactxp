@@ -50,7 +50,7 @@ keyboardType: 'default' | 'numeric' | 'email-address' | 'number-pad';
 // null/undefined (default) - inheret from parent/global default
 // 0 - no max
 // >= 1 - sets the maxContentSizeMultiplier of this node to this value
-// Note: Older versions of React Native don’t support this interface. 
+// Note: Older versions of React Native don’t support this interface.
 maxContentSizeMultiplier: number = null; // Android and iOS only
 
 // Maximum character count
@@ -80,7 +80,7 @@ onScroll: (newScrollLeft: number, newScrollTop: number) => void = undefined;
 // Called when the selection range or insertion point location changes
 onSelectionChange: (start: number, end: number) => void = undefined;
 
-// Called when the text input submit button is pressed; invalid if 
+// Called when the text input submit button is pressed; invalid if
 // multiline is true
 onSubmitEditing: () => void = undefined;
 
@@ -128,7 +128,7 @@ focus(): void;
 
 // Gives the control accessibility-only focus
 // E.g. screen reader focus is needed, but popping up of native
-// keyboard is undesirable 
+// keyboard is undesirable
 setAccessibilityFocus(): void;
 
 // Does control currently have focus?

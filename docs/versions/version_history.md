@@ -191,7 +191,7 @@ Removed use of deprecated RX.NetInfo.fetch method.
 #### Version 0.46.6 of reactxp
 _Released 13 Dec 2017_
 
-Fixed potential crash in web implementation of RX.ScrollView. 
+Fixed potential crash in web implementation of RX.ScrollView.
 Fixed bug in UWP implementation of RX.Popup, allowing background to be clickable.
 In web implementation of RX.ScrollView, added support for clicking on scroll bar to adjust position of thumb.
 Added dev warning when using nested RX.Button items.
@@ -405,7 +405,7 @@ Fixed accessibility bug relating to Modal dialogs.
 _Released 18 Apr 2017_
 
 Added missing box-sizing CSS directives for web.
-Fixed bug in native implementation of View related to accessibility. 
+Fixed bug in native implementation of View related to accessibility.
 
 
 #### Version 0.1.0 of reactxp-imagesvg

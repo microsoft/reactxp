@@ -151,7 +151,7 @@ class LocationView extends RX.Component<RX.CommonProps, LocationState> {
                 }
 
                 this.setState({
-                    polledPositionHistory: this.state.polledPositionHistory + 
+                    polledPositionHistory: this.state.polledPositionHistory +
                         '(' + this._formatError(err.code as RX.Types.LocationErrorType) + ')\n'
                 });
             }).always(() => {
@@ -187,7 +187,7 @@ class LocationView extends RX.Component<RX.CommonProps, LocationState> {
             }
 
             this.setState({
-                watchPositionHistory: this.state.watchPositionHistory + 
+                watchPositionHistory: this.state.watchPositionHistory +
                     '(' + this._formatError(err as RX.Types.LocationErrorType) + ')\n'
             });
         };
@@ -242,7 +242,7 @@ class LocationTest implements AutoExecutableTest {
     getPath(): string {
         return 'APIs/Location';
     }
-    
+
     getTestType(): TestType {
         return TestType.AutoExecutable;
     }

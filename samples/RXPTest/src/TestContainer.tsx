@@ -134,7 +134,7 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
                     </RX.View>
                 );
             });
-        
+
             if (resultText.length === 0) {
                 resultText.push(
                     <RX.View style={ _styles.resultItem } key={ 'success' }>
@@ -155,7 +155,7 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
                         { resultText }
                     </RX.ScrollView>
                 </RX.View>
-            );         
+            );
         }
 
         let rightButton: JSX.Element;
