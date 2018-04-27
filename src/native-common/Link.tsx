@@ -15,7 +15,7 @@ import Linking from '../native-common/Linking';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
-export class Link extends React.Component<Types.LinkProps, {}> {
+export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
     protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
 
     // To be able to use Link inside TouchableHighlight/TouchableOpacity

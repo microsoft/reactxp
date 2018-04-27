@@ -28,16 +28,16 @@ export abstract class AnimatedComponent<P extends Types.CommonProps, T> extends 
     abstract setNativeProps(props: P): void;
 }
 
-export abstract class AnimatedImage extends AnimatedComponent<Types.AnimatedImageProps, {}> {
+export abstract class AnimatedImage extends AnimatedComponent<Types.AnimatedImageProps, Types.Stateless> {
 }
 
-export abstract class AnimatedText extends AnimatedComponent<Types.AnimatedTextProps, {}> {
+export abstract class AnimatedText extends AnimatedComponent<Types.AnimatedTextProps, Types.Stateless> {
 }
 
-export abstract class AnimatedTextInput extends AnimatedComponent<Types.AnimatedTextInputProps, {}> {
+export abstract class AnimatedTextInput extends AnimatedComponent<Types.AnimatedTextInputProps, Types.Stateless> {
 }
 
-export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewProps, {}> {
+export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewProps, Types.Stateless> {
     abstract focus(): void;
     abstract setFocusRestricted(restricted: boolean): void;
     abstract setFocusLimited(limited: boolean): void;
@@ -132,7 +132,7 @@ export abstract class Button extends React.Component<Types.ButtonProps, any> {
     abstract blur(): void;
 }
 
-export abstract class Picker extends React.Component<Types.PickerProps, {}> {}
+export abstract class Picker extends React.Component<Types.PickerProps, Types.Stateless> {}
 
 export class Component<P, T> extends React.Component<P, T> {}
 

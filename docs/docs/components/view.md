@@ -99,6 +99,13 @@ onMouseOver: (e: MouseEvent) => void = undefined;
 onContextMenu: (e: React.SyntheticEvent) => void;
 onPress: (e: SyntheticEvent) => void = undefined;
 
+// Focus Events
+onFocus: (e: FocusEvent) => void = undefined;
+onBlur: (e: FocusEvent) => void = undefined;
+
+// Keyboard Events
+onKeyPress: (e: KeyboardEvent) => void = undefined;
+
 // Touch-specific Events
 onLongPress: (e: SyntheticEvent) => void = undefined;
 onMoveShouldSetResponder: (e: React.SyntheticEvent) => boolean =

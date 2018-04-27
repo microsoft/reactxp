@@ -28,8 +28,13 @@ export class EventHelpers {
                 keyCode = keyName.charCodeAt(0);
             } else {
                 switch (keyName) {
+                    // Comma in UWP is not in VirtualKey enum and so comes as stringified int value.
+                    case '188':
+                        keyCode = 188;
+                        break;
+
                     case 'Backspace':
-                    case 'Delete':
+                    case 'Back':
                         keyCode = 8;
                         break;
 
@@ -50,6 +55,7 @@ export class EventHelpers {
                         break;
 
                     case 'Alt':
+                    case 'Menu':
                         keyCode = 18;
                         break;
 
@@ -59,6 +65,10 @@ export class EventHelpers {
 
                     case 'Space':
                         keyCode = 32;
+                        break;
+
+                    case 'Delete':
+                        keyCode = 46;
                         break;
 
                     case 'PageUp':
@@ -87,6 +97,46 @@ export class EventHelpers {
                     case 'Down':
                     case 'ArrowDown':
                         keyCode = 20;
+                        break;
+
+                    case 'Number0':
+                        keyCode = 48;
+                        break;
+
+                    case 'Number1':
+                        keyCode = 49;
+                        break;
+
+                    case 'Number2':
+                        keyCode = 50;
+                        break;
+
+                    case 'Number3':
+                        keyCode = 51;
+                        break;
+
+                    case 'Number4':
+                        keyCode = 52;
+                        break;
+
+                    case 'Number5':
+                        keyCode = 53;
+                        break;
+
+                    case 'Number6':
+                        keyCode = 54;
+                        break;
+
+                    case 'Number7':
+                        keyCode = 55;
+                        break;
+
+                    case 'Number8':
+                        keyCode = 56;
+                        break;
+
+                    case 'Number9':
+                        keyCode = 57;
                         break;
                 }
             }
@@ -140,7 +190,7 @@ export class EventHelpers {
         // reuses events, so we're not allowed to modify the original.
         // Instead, we'll clone it.
         let mouseEvent = _.clone(e as Types.MouseEvent);
-        
+
         const nativeEvent = e.nativeEvent;
 
         // We keep pageX/Y and clientX/Y coordinates in sync, similar to the React web behavior
@@ -153,13 +203,7 @@ export class EventHelpers {
             mouseEvent.clientY = mouseEvent.pageY = nativeEvent.pageY;
         }
 
-        if (!!nativeEvent.IsRightButton) {
-            mouseEvent.button = 2;
-        } else if (!!nativeEvent.IsMiddleButton) {
-            mouseEvent.button = 1;
-        } else {
-            mouseEvent.button = 0;
-        }
+        mouseEvent.button = this.toMouseButton(e.nativeEvent as Types.TouchEvent);
 
         if (nativeEvent.shiftKey) {
             mouseEvent.shiftKey = nativeEvent.shiftKey;
@@ -187,6 +231,19 @@ export class EventHelpers {
         };
 
         return mouseEvent;
+    }
+
+    toMouseButton(e: Types.TouchEvent): number {
+        const nativeEvent = e as any;
+        if (nativeEvent.button !== undefined) {
+            return nativeEvent.button;
+        } else if (nativeEvent.isRightButton || nativeEvent.IsRightButton) {
+            return 2;
+        } else if (nativeEvent.isMiddleButton || nativeEvent.IsMiddleButton) {
+            return 1;
+        }
+
+        return 0;
     }
 
     isRightMouseButton(e: Types.SyntheticEvent): boolean {

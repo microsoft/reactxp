@@ -13,7 +13,6 @@ import React = require('react');
 
 import AccessibilityUtil from './AccessibilityUtil';
 import MouseResponder, { MouseResponderSubscription } from './utils/MouseResponder';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -44,7 +43,7 @@ enum GestureType {
 
 let _idCounter = 1;
 
-export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
+export class GestureView extends React.Component<Types.GestureViewProps, Types.Stateless> {
 
     private _id = _idCounter++;
 
@@ -78,6 +77,7 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
                 role={ ariaRole }
                 aria-label={ this.props.accessibilityLabel }
                 aria-hidden={ isAriaHidden }
+                onContextMenu={ this.props.onContextMenu ? this._sendContextMenuEvent : undefined }
             >
                 { this.props.children }
             </div>
@@ -180,6 +180,27 @@ export class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
             // timer so we can determine whether the current tap is a single or double.
             this._reportDelayedTap();
             this._startDoubleTapTimer(e);
+        }
+    }
+
+    private _sendContextMenuEvent = (e: React.MouseEvent<any>) => {
+        if (this.props.onContextMenu) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const clientRect = this._getGestureViewClientRect();
+
+            if (clientRect) {
+                const tapEvent: Types.TapGestureState = {
+                    pageX: e.pageX,
+                    pageY: e.pageY,
+                    clientX: e.clientX - clientRect.left,
+                    clientY: e.clientY - clientRect.top,
+                    timeStamp: e.timeStamp
+                };
+
+                this.props.onContextMenu(tapEvent);
+            }
         }
     }
 

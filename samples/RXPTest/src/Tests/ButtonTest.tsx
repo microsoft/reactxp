@@ -132,7 +132,7 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                     </RX.Text>
                 </RX.Button>
 
-                <RX.View style={ _styles.explainTextContainer } key={ 'explanation2' }>
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation3' }>
                     <RX.Text style={ _styles.explainText }>
                         { 'This button should be disabled and respond to no clicks, presses, or hovers. ' + 
                           'The mouse pointer should not turn into a pointer.' + 
@@ -152,7 +152,7 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                     </RX.Text>
                 </RX.Button>
 
-                <RX.View style={ _styles.explainTextContainer } key={ 'explanation3' }>
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation4' }>
                     <RX.Text style={ _styles.explainText }>
                         { 'This button have a tooltip when hovering over it (mouse-based platforms only).' }
                     </RX.Text>
@@ -169,7 +169,7 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                     </RX.Text>
                 </RX.Button>
 
-                <RX.View style={ _styles.explainTextContainer } key={ 'explanation4' }>
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation5' }>
                     <RX.Text style={ _styles.explainText }>
                         { 'This button should receive pressIn, pressOut and press events when you click or tap on it.' }
                     </RX.Text>
@@ -198,7 +198,7 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                     </RX.View>
                 </RX.View>
 
-                <RX.View style={ _styles.explainTextContainer } key={ 'explanation5' }>
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation6' }>
                     <RX.Text style={ _styles.explainText }>
                         { 'This button should differentiate between press and long-press actions. ' + 
                           'Click or tap and hold for more than one second for a long press.' }
@@ -225,7 +225,7 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                     </RX.View>
                 </RX.View>
 
-                <RX.View style={ _styles.explainTextContainer } key={ 'explanation6' }>
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation7' }>
                     <RX.Text style={ _styles.explainText }>
                         { 'This button should change opacity to 25% when pressing (touch-based platforms only). ' + 
                           'The underlay color should appear red.' }
@@ -245,7 +245,7 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                     </RX.Text>
                 </RX.Button>
 
-                <RX.View style={ _styles.explainTextContainer } key={ 'explanation7' }>
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation8' }>
                     <RX.Text style={ _styles.explainText }>
                         { 'This button should not exhibit any opacity animation when pressed (touch-based platforms only).' }
                     </RX.Text>

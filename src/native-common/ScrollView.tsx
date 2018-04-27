@@ -14,7 +14,7 @@ import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 import ViewBase from './ViewBase';
 
-export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements RX.ScrollView {
+export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless> implements RX.ScrollView {
     private _scrollTop = 0;
     private _scrollLeft = 0;
     protected _nativeView: RN.ScrollView|undefined;
@@ -77,7 +77,6 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
             bounces: this.props.bounces,
             pagingEnabled: this.props.pagingEnabled,
             snapToInterval: this.props.snapToInterval,
-            onMoveShouldSetResponder: this.props.onMoveShouldSetResponder,
             scrollsToTop: this.props.scrollsToTop,
             removeClippedSubviews: false,
             overScrollMode: this.props.overScrollMode,

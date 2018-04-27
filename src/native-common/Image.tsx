@@ -29,7 +29,7 @@ export interface ImageContext {
     isRxParentAText?: boolean;
 }
 
-export class Image extends React.Component<Types.ImageProps, {}> implements React.ChildContextProvider<ImageContext> {
+export class Image extends React.Component<Types.ImageProps, Types.Stateless> implements React.ChildContextProvider<ImageContext> {
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired,
     };

@@ -14,6 +14,8 @@ import assert = require('assert');
 import React = require('react');
 import ReactDOM = require('react-dom');
 
+import Types = require('../../common/Types');
+
 function getPosition(el: HTMLElement): { left: number; top: number; } {
     return {
         left: el.offsetLeft,
@@ -133,7 +135,7 @@ export interface MonitorListEditsProps extends React.HTMLAttributes<any> {
     componentWillAnimate: (edits: IEdits, done: () => void) => void;
 }
 
-export class MonitorListEdits extends React.Component<MonitorListEditsProps, {}> {
+export class MonitorListEdits extends React.Component<MonitorListEditsProps, Types.Stateless> {
     private _itemRefs: { [key: string]: MountedChildrenRef } = {}; // Updated after render but before componentDidUpdate
     private _refReplacementCache: {
         [key: string]: {

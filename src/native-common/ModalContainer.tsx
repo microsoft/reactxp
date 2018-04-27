@@ -37,7 +37,7 @@ export interface ModalContainerProps extends Types.CommonProps {
     hidden?: boolean;
 }
 
-export class ModalContainer extends React.Component<ModalContainerProps, {}> {
+export class ModalContainer extends React.Component<ModalContainerProps, Types.Stateless> {
     constructor(props: ModalContainerProps) {
         super(props);
     }

@@ -49,7 +49,7 @@ export interface ButtonContext {
     hasRxButtonAscendant?: boolean;
 }
 
-export class Button extends React.Component<Types.ButtonProps, {}> {
+export class Button extends React.Component<Types.ButtonProps, Types.Stateless> {
     static contextTypes = {
         hasRxButtonAscendant: PropTypes.bool
     };

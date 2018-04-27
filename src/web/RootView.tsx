@@ -20,7 +20,7 @@ import ModalContainer from './ModalContainer';
 import Types = require('../common/Types');
 import FocusManager from './utils/FocusManager';
 import UserInterface from './UserInterface';
-import PopupContainer from './PopupContainer';
+import PopupContainerView from './PopupContainerView';
 
 export class PopupDescriptor {
     constructor(public popupId: string, public popupOptions: Types.PopupOptions) {}
@@ -251,7 +251,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 this.state.constrainedPopupWidth, this.state.constrainedPopupHeight)
             );
         return (
-            <PopupContainer
+            <PopupContainerView
                 key={ key }
                 style={ popupContainerStyle }
                 hidden={ hidden }
@@ -260,7 +260,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 onMouseLeave={ e => this._onMouseLeave(e) }
             >
                 { renderedPopup }
-            </PopupContainer>
+            </PopupContainerView>
         );
     }
 
@@ -302,7 +302,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         );
     }
 
-    protected _onMount = (component: PopupContainer|null) => {
+    protected _onMount = (component: PopupContainerView|null) => {
         this._mountedComponent = component ? ReactDOM.findDOMNode(component) as HTMLElement : undefined;
     }
 

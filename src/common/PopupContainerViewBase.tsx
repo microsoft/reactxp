@@ -1,29 +1,25 @@
 /**
-* PopupContainer.tsx
+* PopupContainerViewBase.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
 *
 * Common parent of all components rendered into a popup. Calls onShow and onHide
 * callbacks when the popup is hidden (i.e. "closed" but still rendered as hidden)
-* and re-shown.
+* and re-shown. Abstract class to be overriden per platform.
 */
 
-import _ = require('./utils/lodashMini');
 import React = require('react');
 import PropTypes = require('prop-types');
-import FocusManager from './utils/FocusManager';
-import Types = require('../common/Types');
+import Types = require('./Types');
+import FocusManagerBase from './utils/FocusManager';
 
-export interface PopupContainerProps extends Types.CommonProps {
-    style: React.CSSProperties;
-    onMouseEnter?: (e: any) => void;
-    onMouseLeave?: (e: any) => void;
+export interface PopupContainerViewBaseProps extends Types.CommonProps {
     hidden?: boolean;
 }
 
-export interface PopupContainerContext {
-    focusManager?: FocusManager;
+export interface PopupContainerViewContext {
+    focusManager?: FocusManagerBase;
 }
 
 export interface PopupComponent {
@@ -31,7 +27,7 @@ export interface PopupComponent {
     onHide: () => void;
 }
 
-export class PopupContainer extends React.Component<PopupContainerProps, {}> {
+export abstract class PopupContainerViewBase<P extends PopupContainerViewBaseProps, S> extends React.Component<P, S> {
     static contextTypes: React.ValidationMap<any> = {
         focusManager: PropTypes.object
     };
@@ -42,31 +38,15 @@ export class PopupContainer extends React.Component<PopupContainerProps, {}> {
 
     private _popupComponentStack: PopupComponent[] = [];
 
-    constructor(props: PopupContainerProps, context: PopupContainerContext) {
+    constructor(props: P, context: PopupContainerViewContext) {
         super(props, context);
     }
 
     getChildContext() {
         return {
             focusManager: this.context.focusManager,
-            popupContainer: this as PopupContainer
+            popupContainer: this as PopupContainerViewBase<P, S>
         };
-    }
-
-    render() {
-        let style = _.clone(this.props.style);
-        if (this.props.hidden) {
-            style.visibility = 'hidden';
-        }
-        return (
-            <div
-                style={ style }
-                onMouseEnter={ this.props.onMouseEnter }
-                onMouseLeave={ this.props.onMouseLeave }
-            >
-                { this.props.children }
-            </div>
-        );
     }
 
     public registerPopupComponent(onShow: () => void, onHide: () => void): PopupComponent {
@@ -83,10 +63,10 @@ export class PopupContainer extends React.Component<PopupContainerProps, {}> {
     }
 
     public isHidden(): boolean {
-        return this.props.hidden || false;
+        return !!this.props.hidden;
     }
 
-    componentDidUpdate(prevProps: PopupContainerProps) {
+    componentDidUpdate(prevProps: P, prevState: S) {
         if (prevProps.hidden && !this.props.hidden) {
             // call onShow on all registered components (iterate front to back)
             for (let i = 0; i < this._popupComponentStack.length; i++) {
@@ -101,6 +81,7 @@ export class PopupContainer extends React.Component<PopupContainerProps, {}> {
         }
     }
 
+    abstract render(): JSX.Element;
 }
 
-export default PopupContainer;
+export default PopupContainerViewBase;
