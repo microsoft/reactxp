@@ -137,7 +137,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
         return (
             <RN.View
                 style={ style }
-                ref={ this.props.hidden ? undefined : this._onMount }
+                ref={ this._onMount }
             >
                 { popupView }
             </RN.View>
