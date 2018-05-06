@@ -19,6 +19,7 @@ import AppConfig from '../common/AppConfig';
 import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
 import Types = require('../common/Types');
+import { Button as ButtonBase } from '../common/Interfaces';
 import { isEqual } from '../common/lodashMini';
 import UserInterface from './UserInterface';
 
@@ -62,7 +63,7 @@ export interface ButtonContext {
     focusArbitrator?: FocusArbitratorProvider;
 }
 
-export class Button extends React.Component<Types.ButtonProps, {}> {
+export class Button extends ButtonBase {
     static contextTypes = {
         hasRxButtonAscendant: PropTypes.bool,
         focusArbitrator: PropTypes.object
@@ -169,7 +170,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         this._isMounted = true;
 
         if (this.props.autoFocus) {
-            FocusArbitratorProvider.requestFocus(this, () => this.focus(), () => this._isMounted);
+            this.focus();
         }
     }
 
@@ -265,11 +266,21 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     }
 
     focus() {
-        AccessibilityUtil.setAccessibilityFocus(this);
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.realFocus(),
+            () => this._isMounted
+        );
     }
 
     blur() {
          // native mobile platforms doesn't have the notion of blur for buttons, so ignore.
+    }
+
+    realFocus() {
+        if (this._isMounted) {
+            AccessibilityUtil.setAccessibilityFocus(this);
+        }
     }
 
     private _setOpacityStyles(props: Types.ButtonProps, prevProps?: Types.ButtonProps) {

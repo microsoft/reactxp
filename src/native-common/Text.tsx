@@ -75,7 +75,7 @@ export class Text extends React.Component<Types.TextProps, {}> implements React.
 
     componentDidMount() {
         if (this.props.autoFocus) {
-            FocusArbitratorProvider.requestFocus(this, () => this.focus(), () => !!this._mountedComponent);
+            this.focus();
         }
     }
 
@@ -107,7 +107,17 @@ export class Text extends React.Component<Types.TextProps, {}> implements React.
     }
 
     focus() {
-        AccessibilityUtil.setAccessibilityFocus(this);
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.realFocus(),
+            () => !!this._mountedComponent
+        );
+    }
+
+    realFocus() {
+        if (this._mountedComponent) {
+            AccessibilityUtil.setAccessibilityFocus(this);
+        }
     }
 
     blur() {

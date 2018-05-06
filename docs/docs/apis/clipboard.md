@@ -4,7 +4,7 @@ title: Clipboard
 layout: docs
 category: Interfaces
 permalink: docs/apis/clipboard.html
-next: apis/focusutils
+next: apis/input
 ---
 
 This interface provides access to the system's clipboard.

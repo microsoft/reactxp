@@ -243,7 +243,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
 
         if (this.props.autoFocus) {
-            FocusArbitratorProvider.requestFocus(this, () => this.focus(), () => this._isMounted);
+            this.focus();
         }
     }
 
@@ -513,16 +513,30 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         return {top: 20, left: 20, right: 20, bottom: 100};
     }
 
-    focus() {
-        AccessibilityUtil.setAccessibilityFocus(this);
-    }
-
     setFocusRestricted(restricted: boolean) {
         // Nothing to do.
     }
 
     setFocusLimited(limited: boolean) {
         // Nothing to do.
+    }
+
+    blur() {
+        // Nothing to do.
+    }
+
+    focus() {
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.realFocus(),
+            () => this._isMounted
+        );
+    }
+
+    realFocus() {
+        if (this._isMounted) {
+            AccessibilityUtil.setAccessibilityFocus(this);
+        }
     }
 }
 

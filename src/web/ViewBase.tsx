@@ -8,7 +8,6 @@
 */
 
 import _ = require('./utils/lodashMini');
-import ReactDOM = require('react-dom');
 
 import { default as FrontLayerViewManager } from './FrontLayerViewManager';
 import AppConfig from '../common/AppConfig';
@@ -228,20 +227,6 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
 
         if (this.props.onLayout) {
             this._checkViewCheckerUnbuild();
-        }
-    }
-
-    blur() {
-        let el = ReactDOM.findDOMNode(this) as HTMLDivElement;
-        if (el) {
-            el.blur();
-        }
-    }
-
-    focus() {
-        let el = ReactDOM.findDOMNode(this) as HTMLDivElement;
-        if (el) {
-            el.focus();
         }
     }
 }

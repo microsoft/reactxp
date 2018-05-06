@@ -80,20 +80,19 @@ restrictFocusWithin: boolean = false;
 limitFocusWithin: LimitFocusType = LimitFocusType.Unlimited;
 
 // Should be focused when the component is mounted, see also arbitrateFocus
-// property below and FocusUtils.setDefaultFocusArbitrator() method.
+// property below.
 // WARNING: autoFocus=true means that this View's focus() method will be called,
 // however calling focus() might have no effect (for example on web View is
-// focusable only when tabIndex is specified), your application has to handle
+// focusable only when tabIndex is specified), the application has to handle
 // this either while setting this property or in the FocusArbitrator callback.
 // NOTE: The focus() call will be performed on the next tick after the current
 // render cycle.
 autoFocus: boolean = false;
 
-// When multiple components inside this View are setting autoFocus=true,
-// this callback will be called so that the application can decide which one
-// needs to be focused.
-// See https://microsoft.github.io/reactxp/docs/apis/focusutils.html for more
-// details.
+// When multiple components with autoFocus=true inside this View are mounting at
+// the same time, and/or multiple components inside this view have received focus()
+// call during the same render cycle, this callback will be called so that it's
+// possible for the application to decide which one should actually be focused.
 arbitrateFocus: FocusArbitrator = undefined;
 
 // Additional invisible DOM elements will be added inside the view

@@ -18,6 +18,7 @@ import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
 import UserInterface from './UserInterface';
+import { Button as ButtonBase } from '../common/Interfaces';
 
 const _styles = {
     defaultButton: {
@@ -51,7 +52,7 @@ export interface ButtonContext {
     focusArbitrator?: FocusArbitratorProvider;
 }
 
-export class Button extends React.Component<Types.ButtonProps, {}> {
+export class Button extends ButtonBase {
     static contextTypes = {
         hasRxButtonAscendant: PropTypes.bool,
         focusArbitrator: PropTypes.object
@@ -128,7 +129,7 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
         this._isMounted = true;
 
         if (this.props.autoFocus) {
-            FocusArbitratorProvider.requestFocus(this, () => this.focus(), () => this._isMounted);
+            this.focus();
         }
     }
 
@@ -137,16 +138,28 @@ export class Button extends React.Component<Types.ButtonProps, {}> {
     }
 
     focus() {
-        let el = ReactDOM.findDOMNode(this) as HTMLButtonElement;
-        if (el) {
-            el.focus();
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.realFocus(),
+            () => this._isMounted
+        );
+    }
+
+    realFocus() {
+        if (this._isMounted) {
+            const el = ReactDOM.findDOMNode(this) as HTMLButtonElement;
+            if (el) {
+                el.focus();
+            }
         }
     }
 
     blur() {
-        let el = ReactDOM.findDOMNode(this) as HTMLButtonElement;
-        if (el) {
-            el.blur();
+        if (this._isMounted) {
+            const el = ReactDOM.findDOMNode(this) as HTMLButtonElement;
+            if (el) {
+                el.blur();
+            }
         }
     }
 

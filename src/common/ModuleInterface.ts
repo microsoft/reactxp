@@ -74,9 +74,6 @@ export declare module ReactXP {
     export type Animated = Interfaces.Animated;
     export var Animated: Interfaces.Animated;
 
-    export type FocusUtils = Interfaces.FocusUtils;
-    export var FocusUtils: Interfaces.FocusUtils;
-
     export import CommonProps = RXTypes.CommonProps;
     export import CommonStyledProps = RXTypes.CommonStyledProps;
     export import Types = RXTypes;

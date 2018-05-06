@@ -83,8 +83,7 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
         );
     }
 
-    focus() {
-        super.focus();
+    realFocus() {
         if (this._focusableElement && this._focusableElement.focus) {
             this._focusableElement.focus();
         }
@@ -92,7 +91,6 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
     }
 
     blur() {
-        super.blur();
         if (this._focusableElement && this._focusableElement.blur) {
             this._focusableElement.blur();
         }

@@ -12,7 +12,7 @@ import ReactDOM = require('react-dom');
 import { FocusManager as FocusManagerBase,
     FocusableComponentInternal,
     StoredFocusableComponent } from '../../common/utils/FocusManager';
-import { FocusArbitratorProvider, FocusCandidate } from '../../common/utils/AutoFocusHelper';
+import { FocusArbitratorProvider, FocusCandidateType, FocusCandidateInternal } from '../../common/utils/AutoFocusHelper';
 
 import UserInterface from '../UserInterface';
 
@@ -85,7 +85,7 @@ export class FocusManager extends FocusManagerBase {
                     // send the focus to the address bar anyway.
                     FocusManager.focusFirst(_isShiftPressed);
                 }
-            }, 0);
+            }, 100);
         });
     }
 
@@ -169,18 +169,18 @@ export class FocusManager extends FocusManagerBase {
                     first.el.focus();
                 },
                 () => FocusManager._isComponentAvailable(storedComponent),
-                true
+                FocusCandidateType.FocusFirst
             );
         }
     }
 
-    protected /* static */ resetFocus() {
+    protected /* static */ resetFocus(focusFirstWhenNavigatingWithKeyboard: boolean) {
         if (FocusManager._resetFocusTimer) {
             clearTimeout(FocusManager._resetFocusTimer);
             FocusManager._resetFocusTimer = undefined;
         }
 
-        if (_isNavigatingWithKeyboard) {
+        if (_isNavigatingWithKeyboard && focusFirstWhenNavigatingWithKeyboard) {
             // When we're in the keyboard navigation mode, we want to have the
             // first focusable component to be focused straight away, without the
             // necessity to press Tab.
@@ -196,7 +196,7 @@ export class FocusManager extends FocusManagerBase {
                         first.el.focus();
                     },
                     () => FocusManager._isComponentAvailable(storedComponent),
-                    true
+                    FocusCandidateType.FocusFirst
                 );
             }
         } else if ((typeof document !== 'undefined') && document.body && document.body.focus && document.body.blur) {
@@ -328,13 +328,15 @@ export class FocusManager extends FocusManagerBase {
         return prev;
     }
 
-    static sortAndFilterAutoFocusCandidates(candidates: FocusCandidate[]): FocusCandidate[] {
+    static sortAndFilterAutoFocusCandidates(candidates: FocusCandidateInternal[]): FocusCandidateInternal[] {
         return candidates
             .filter(candidate => {
                 const id = (candidate.component as FocusableComponentInternal).focusableComponentId;
                 if (id) {
                     const storedComponent = FocusManager._allFocusableComponents[id];
-                    if (storedComponent && !FocusManager._isComponentAvailable(storedComponent)) {
+                    if (storedComponent &&
+                        (storedComponent.removed ||
+                            (storedComponent.limitedCount > 0) || (storedComponent.limitedCountAccessible > 0))) {
                         return false;
                     }
                 }
@@ -356,10 +358,10 @@ export class FocusManager extends FocusManagerBase {
 export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function) {
     applyFocusableComponentMixinCommon(Component, isConditionallyFocusable);
 
-    const origFocus = Component.prototype.focus;
+    const origFocus = Component.prototype.realFocus;
 
     if (origFocus) {
-        Component.prototype.focus = function () {
+        Component.prototype.realFocus = function () {
             const el = ReactDOM.findDOMNode(this) as HTMLElement;
             if (el) {
                 FocusManager.setLastFocusedProgrammatically(el);

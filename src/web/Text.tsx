@@ -15,6 +15,7 @@ import AccessibilityUtil from './AccessibilityUtil';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import Styles from './Styles';
 import Types = require('../common/Types');
+import { Text as TextBase } from '../common/Interfaces';
 
 // Adding a CSS rule to display non-selectable texts. Those texts
 // will be displayed as pseudo elements to prevent them from being copied
@@ -55,7 +56,7 @@ export interface TextContext {
     focusArbitrator?: FocusArbitratorProvider;
 }
 
-export class Text extends React.Component<Types.TextProps, {}> {
+export class Text extends TextBase {
     static contextTypes = {
         focusArbitrator: PropTypes.object
     };
@@ -116,7 +117,7 @@ export class Text extends React.Component<Types.TextProps, {}> {
         this._isMounted = true;
 
         if (this.props.autoFocus) {
-            FocusArbitratorProvider.requestFocus(this, () => this.focus(), () => this._isMounted);
+            this.focus();
         }
     }
 
@@ -149,16 +150,28 @@ export class Text extends React.Component<Types.TextProps, {}> {
     }
 
     blur() {
-        let el = ReactDOM.findDOMNode(this) as HTMLDivElement;
-        if (el) {
-            el.blur();
+        if (this._isMounted) {
+            const el = ReactDOM.findDOMNode(this) as HTMLDivElement;
+            if (el) {
+                el.blur();
+            }
         }
     }
 
     focus() {
-        let el = ReactDOM.findDOMNode(this) as HTMLDivElement;
-        if (el) {
-            el.focus();
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.realFocus(),
+            () => this._isMounted
+        );
+    }
+
+    realFocus() {
+        if (this._isMounted) {
+            const el = ReactDOM.findDOMNode(this) as HTMLDivElement;
+            if (el) {
+                el.focus();
+            }
         }
     }
 }

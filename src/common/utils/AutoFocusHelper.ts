@@ -14,48 +14,27 @@ import Interfaces = require('../Interfaces');
 
 let _sortAndFilter: SortAndFilterFunc|undefined;
 let _autoFocusTimer: number|undefined;
-let _isFocusFirstEnabled = true;
-
 let _lastFocusArbitratorProviderId = 0;
-
 let rootFocusArbitratorProvider: FocusArbitratorProvider;
 
-export type SortAndFilterFunc = (candidates: FocusCandidate[]) => FocusCandidate[];
-
-export function setSortAndFilterFunc(sortAndFilter: SortAndFilterFunc): void {
-    _sortAndFilter = sortAndFilter;
+export enum FocusCandidateType {
+    Focus = 1,
+    FocusFirst = 2
 }
 
-export function setRootFocusArbitrator(arbitrator: Types.FocusArbitrator | undefined): void {
-    rootFocusArbitratorProvider.setCallback(arbitrator);
-}
-
-export function setFocusFirstEnabled(enabled: boolean): void {
-    _isFocusFirstEnabled = enabled;
-}
-
-export class FocusCandidate implements Types.FocusCandidate {
+export interface FocusCandidateInternal {
     component: React.Component<any, any>;
     focus: () => void;
     isAvailable: () => boolean;
-    getParentAccessibilityId: () => string | undefined;
-
-    constructor(component: React.Component<any, any>, focus: () => void, isAvailable: () => boolean,
-            parentAccessibilityId: string | undefined) {
-
-        this.component = component;
-        this.focus = focus;
-        this.isAvailable = isAvailable;
-        this.getParentAccessibilityId = () => parentAccessibilityId;
-    }
-
-    getAccessibilityId(): string | undefined {
-        return this.component.props && this.component.props.accessibilityId;
-    }
+    type: FocusCandidateType;
+    accessibilityId?: string;
+    parentAccessibilityId?: string;
 }
 
-export class FirstFocusCandidate extends FocusCandidate {
-    // A FocusCandidate for the first focusable to check instanceof.
+export type SortAndFilterFunc = (candidates: FocusCandidateInternal[]) => FocusCandidateInternal[];
+
+export function setSortAndFilterFunc(sortAndFilter: SortAndFilterFunc): void {
+    _sortAndFilter = sortAndFilter;
 }
 
 export class FocusArbitratorProvider {
@@ -64,7 +43,7 @@ export class FocusArbitratorProvider {
     private _view: Interfaces.View | undefined;
 
     private _arbitratorCallback: Types.FocusArbitrator | undefined;
-    private _candidates: FocusCandidate[] = [];
+    private _candidates: FocusCandidateInternal[] = [];
     private _pendingChildren: { [key: string]: FocusArbitratorProvider } = {};
 
     constructor(view?: Interfaces.View, arbitrator?: Types.FocusArbitrator) {
@@ -83,7 +62,7 @@ export class FocusArbitratorProvider {
         }
     }
 
-    private _arbitrate(): FocusCandidate | undefined {
+    private _arbitrate(): FocusCandidateInternal | undefined {
         const candidates = this._candidates;
 
         Object.keys(this._pendingChildren).forEach(key => {
@@ -100,23 +79,28 @@ export class FocusArbitratorProvider {
     }
 
     private _requestFocus(component: React.Component<any, any>, focus: () => void, isAvailable: () => boolean,
-            isFirstFocusable?: boolean): void {
+            type: FocusCandidateType): void {
 
         const parentProvider = this._view !== component ? this : this._parentArbitratorProvider;
+        const accessibilityId = component.props && component.props.accessibilityId;
         const parentAccessibilityId = parentProvider
             ? parentProvider._view && parentProvider._view.props && parentProvider._view.props.accessibilityId
             : undefined;
 
-        this._candidates.push(
-            isFirstFocusable && _isFocusFirstEnabled
-                ? new FirstFocusCandidate(component, focus, isAvailable, parentAccessibilityId)
-                : new FocusCandidate(component, focus, isAvailable, parentAccessibilityId)
-        );
+        this._candidates.push({
+            component,
+            focus,
+            isAvailable,
+            type,
+            accessibilityId,
+            parentAccessibilityId
+        });
 
         this._notifyParent();
     }
 
-    private static _arbitrate(candidates: FocusCandidate[], arbitrator?: Types.FocusArbitrator): FocusCandidate | undefined {
+    private static _arbitrate(candidates: FocusCandidateInternal[],
+            arbitrator?: Types.FocusArbitrator): FocusCandidateInternal | undefined {
         // Filtering out everything which is already unmounted.
         candidates = candidates.filter(item => item.isAvailable());
 
@@ -125,13 +109,44 @@ export class FocusArbitratorProvider {
         }
 
         for (let i = 0; i < candidates.length; i++) {
-            if (candidates[i] instanceof FirstFocusCandidate) {
+            if (candidates[i].type === FocusCandidateType.FocusFirst) {
                 return candidates[i];
             }
         }
 
         if (arbitrator) {
-            return arbitrator(candidates);
+            // There is an application specified focus arbitrator.
+            const toArbitrate: Types.FocusCandidate[] = [];
+
+            candidates.forEach(candidate => {
+                const component = candidate.component as any;
+
+                // Make sure to pass FocusableComponents only.
+                if (component.focus && component.blur && component.realFocus) {
+                    component.__focusCandidateInternal = candidate;
+
+                    toArbitrate.push({
+                        component,
+                        accessibilityId: candidate.accessibilityId,
+                        parentAccessibilityId: candidate.parentAccessibilityId
+                    });
+                }
+            });
+
+            if (toArbitrate.length) {
+                const candidate = arbitrator(toArbitrate);
+                let ret: FocusCandidateInternal | undefined;
+
+                if (candidate && candidate.component && (candidate.component as any).__focusCandidateInternal) {
+                    ret = (candidate.component as any).__focusCandidateInternal as FocusCandidateInternal;
+                }
+
+                toArbitrate.forEach(candidate => {
+                    delete (candidate.component as any).__focusCandidateInternal;
+                });
+
+                return ret;
+            }
         }
 
         return candidates[candidates.length - 1];
@@ -142,7 +157,7 @@ export class FocusArbitratorProvider {
     }
 
     static requestFocus(component: React.Component<any, any>, focus: () => void, isAvailable: () => boolean,
-            isFirstFocusable?: boolean): void {
+            type?: FocusCandidateType): void {
 
         if (_autoFocusTimer) {
             clearTimeout(_autoFocusTimer);
@@ -154,7 +169,7 @@ export class FocusArbitratorProvider {
             (component.context && component.context.focusArbitrator) ||
             rootFocusArbitratorProvider;
 
-        focusArbitratorProvider._requestFocus(component, focus, isAvailable, isFirstFocusable);
+        focusArbitratorProvider._requestFocus(component, focus, isAvailable, type || FocusCandidateType.Focus);
 
         _autoFocusTimer = setTimeout(() => {
             _autoFocusTimer = undefined;

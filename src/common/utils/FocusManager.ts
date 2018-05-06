@@ -53,6 +53,7 @@ export abstract class FocusManager {
 
     private _parent: FocusManager|undefined;
     private _isFocusLimited: Types.LimitFocusType = Types.LimitFocusType.Unlimited;
+    private _currentRestrictType: Types.RestrictFocusType = Types.RestrictFocusType.Unrestricted;
     private _prevFocusedComponent: StoredFocusableComponent|undefined;
     protected _myFocusableComponentIds: { [id: string]: boolean } = {};
 
@@ -72,7 +73,7 @@ export abstract class FocusManager {
     protected abstract /* static */ removeFocusListenerFromComponent(component: FocusableComponentInternal, onFocus: () => void): void;
     protected abstract /* static */ focusComponent(component: FocusableComponentInternal): boolean;
 
-    protected abstract /* static */ resetFocus() : void;
+    protected abstract /* static */ resetFocus(focusFirstWhenNavigatingWithKeyboard: boolean) : void;
     protected abstract /* static */ _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent): void;
 
     // Whenever the focusable element is mounted, we let the application
@@ -155,13 +156,15 @@ export abstract class FocusManager {
         }
     }
 
-    restrictFocusWithin(noFocusReset?: boolean) {
+    restrictFocusWithin(restrictType: Types.RestrictFocusType, noFocusReset?: boolean) {
         // Limit the focus received by the keyboard navigation to all
         // the descendant focusable elements by setting tabIndex of all
         // other elements to -1.
-        if (FocusManager._currentRestrictionOwner === this) {
+        if ((FocusManager._currentRestrictionOwner === this) || (restrictType === Types.RestrictFocusType.Unrestricted)) {
             return;
         }
+
+        this._currentRestrictType = restrictType;
 
         if (FocusManager._currentRestrictionOwner) {
             this._removeFocusRestriction();
@@ -177,7 +180,7 @@ export abstract class FocusManager {
         FocusManager._currentRestrictionOwner = this;
 
         if (!noFocusReset) {
-            this.resetFocus();
+            this.resetFocus(restrictType === Types.RestrictFocusType.RestrictedFocusFirst);
         }
 
         Object.keys(FocusManager._allFocusableComponents).forEach(componentId => {
@@ -239,11 +242,9 @@ export abstract class FocusManager {
                 }
 
                 if (prevRestrictionOwner) {
-                    prevRestrictionOwner.restrictFocusWithin(true);
-                }
-
-                if (needsFocusReset) {
-                    this.resetFocus();
+                    prevRestrictionOwner.restrictFocusWithin(prevRestrictionOwner._currentRestrictType, !needsFocusReset);
+                } else if (needsFocusReset) {
+                    this.resetFocus(this._currentRestrictType === Types.RestrictFocusType.RestrictedFocusFirst);
                 }
             }, 100);
         }

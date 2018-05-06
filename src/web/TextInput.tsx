@@ -75,7 +75,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     componentDidMount() {
         if (this.props.autoFocus) {
-            FocusArbitratorProvider.requestFocus(this, () => this.focus(), () => !!this._mountedComponent);
+            this.focus();
         }
     }
 
@@ -307,9 +307,11 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     private _focus = () => {
-        if (this._mountedComponent) {
-            this._mountedComponent.focus();
-        }
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.realFocus(),
+            () => !!this._mountedComponent
+        );
     }
 
     blur() {
@@ -320,6 +322,12 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     focus() {
         this._focus();
+    }
+
+    realFocus() {
+        if (this._mountedComponent) {
+            this._mountedComponent.focus();
+        }
     }
 
     setAccessibilityFocus() {

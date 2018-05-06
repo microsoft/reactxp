@@ -7,8 +7,11 @@
 * Web-specific implementation of the cross-platform Link abstraction.
 */
 
+import PropTypes = require('prop-types');
 import React = require('react');
+import ReactDOM = require('react-dom');
 
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
@@ -37,8 +40,18 @@ const _styles = {
 
 const _longPressTime = 1000;
 
-export class Link extends React.Component<Types.LinkProps, {}> {
+export interface LinkContext {
+    focusArbitrator?: FocusArbitratorProvider;
+}
 
+export class Link extends React.Component<Types.LinkProps, {}> {
+    static contextTypes = {
+        focusArbitrator: PropTypes.object
+    };
+
+    context!: LinkContext;
+
+    private _isMounted = false;
     private _longPressTimer: number|undefined;
 
     render() {
@@ -51,8 +64,8 @@ export class Link extends React.Component<Types.LinkProps, {}> {
                 style={ this._getStyles() as any }
                 title={ this.props.title }
                 href={ this.props.url }
-                target='_blank'
-                rel='noreferrer'
+                target={ '_blank' }
+                rel={ 'noreferrer' }
                 onClick={ this._onClick }
                 onMouseEnter={ this.props.onHoverStart }
                 onMouseLeave={ this.props.onHoverEnd }
@@ -63,6 +76,44 @@ export class Link extends React.Component<Types.LinkProps, {}> {
                 { this.props.children }
             </a>
         );
+    }
+
+    componentDidMount() {
+        this._isMounted = true;
+
+        if (this.props.autoFocus) {
+            this.focus();
+        }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
+    focus() {
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.realFocus(),
+            () => this._isMounted
+        );
+    }
+
+    realFocus() {
+        if (this._isMounted) {
+            const el = ReactDOM.findDOMNode(this) as HTMLAnchorElement;
+            if (el) {
+                el.focus();
+            }
+        }
+    }
+
+    blur() {
+        if (this._isMounted) {
+            const el = ReactDOM.findDOMNode(this) as HTMLAnchorElement;
+            if (el) {
+                el.blur();
+            }
+        }
     }
 
     _getStyles(): Types.LinkStyleRuleSet {

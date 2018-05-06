@@ -11,7 +11,6 @@ import React = require('react');
 import RN = require('react-native');
 import RNW = require('react-native-windows');
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
-import PropTypes = require('prop-types');
 
 import EventHelpers from '../native-common/utils/EventHelpers';
 import { Link as LinkCommon } from '../native-common/Link';
@@ -22,20 +21,9 @@ const KEY_CODE_SPACE = 32;
 const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER];
 const UP_KEYCODES = [KEY_CODE_SPACE];
 
-export interface LinkContext {
-    isRxParentAText?: boolean;
-}
-
 let FocusableText = RNW.createFocusableComponent(RN.Text);
 
 export class Link extends LinkCommon implements FocusManagerFocusableComponent {
-    static contextTypes: React.ValidationMap<any> = {
-        isRxParentAText: PropTypes.bool
-    };
-
-    // Will be assiged by super - just re-typing here
-    context!: LinkContext;
-
     private _focusableElement : RNW.FocusableWindows<RN.TextProps> | null = null;
 
     private _onFocusableRef = (btn: RNW.FocusableWindows<RN.TextProps> | null): void => {
@@ -82,7 +70,7 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
         }
     }
 
-    focus() {
+    realFocus() {
         if (this._focusableElement && this._focusableElement.focus) {
             this._focusableElement.focus();
         }

@@ -94,13 +94,13 @@ export class FocusManager extends FocusManagerBase {
         }
     }
 
-    protected /* static */ resetFocus() {
+    protected /* static */ resetFocus(focusFirstWhenNavigatingWithKeyboard: boolean) {
         if (FocusManager._resetFocusTimer) {
             clearTimeout(FocusManager._resetFocusTimer);
             FocusManager._resetFocusTimer = undefined;
         }
 
-        if (_isNavigatingWithKeyboard) {
+        if (_isNavigatingWithKeyboard && focusFirstWhenNavigatingWithKeyboard) {
             // When we're in the keyboard navigation mode, we want to have the
             // first focusable component to be focused straight away, without the
             // necessity to press Tab.

@@ -451,31 +451,23 @@ export enum AccessibilityTrait {
 }
 
 // When multiple components with autoFocus=true are mounting at the same time,
-// the application can specify a callback which will choose one from those multiple.
-// To set this callback use View's arbitrateFocus property and/or
-// FocusUtils.setDefaultFocusArbitrator() method.
-// See https://microsoft.github.io/reactxp/docs/apis/focusutils.html
+// and/or multiple focus() calls are happening during the same render cycle,
+// it is possible to specify a callback which will choose one from those multiple.
+// To set this callback use View's arbitrateFocus property.
 export type FocusArbitrator = (candidates: FocusCandidate[]) => FocusCandidate | undefined;
 
-// FocusArbitrator function will be called with an array of FocusCandidate.
-// See https://microsoft.github.io/reactxp/docs/apis/focusutils.html
-export abstract class FocusCandidate {
+// FocusArbitrator callback will be called with an array of FocusCandidate.
+// See View's arbitrateFocus property.
+export interface FocusCandidate {
     // An instance of the component which wants to be focused.
-    abstract component: React.Component<any, any>;
-
-    // A function to call to focus the component.
-    abstract focus: () => void;
-
-    // Due to asynchronous nature of the focus arbitrator, we need a flag to find
-    // out that the component is still mounted and ready to be focused.
-    abstract isAvailable: () => boolean;
+    component: RX.FocusableComponent;
 
     // Returns component.props.accessibilityId (if specified).
-    abstract getAccessibilityId: () => string | undefined;
+    accessibilityId?: string;
 
     // If the candidate is inside the View with arbitrateFocus property specified,
     // returns accessibilityId of that View.
-    abstract getParentAccessibilityId: () => string | undefined;
+    parentAccessibilityId?: string;
 }
 
 export interface CommonStyledProps<T> extends CommonProps {
@@ -600,6 +592,17 @@ export interface AnimatedTextProps extends TextPropsShared {
 
 export type ViewLayerType = 'none' | 'software' | 'hardware';
 
+export enum RestrictFocusType {
+    Unrestricted = 0,
+    // When restrictFocusWithin=Restricted, the focus will not go outside of this View
+    // when you're using Tab navigation.
+    Restricted = 1,
+    // The same as Restricted, but will also focus first focusable component inside
+    // this View when UserInterface.isNavigatingWithKeyboard() is true, to save a Tab
+    // press for the cases the user is tabbing already.
+    RestrictedFocusFirst = 2
+}
+
 export enum LimitFocusType {
     Unlimited = 0,
     // When limitFocusWithin=Limited, the View and the focusable components inside
@@ -618,12 +621,14 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
     viewLayerTypeAndroid?: ViewLayerType; // Android only property
 
-    restrictFocusWithin?: boolean; // Web-only, during the keyboard navigation, the focus will not go outside this view
+    restrictFocusWithin?: RestrictFocusType; // Web-only, during the keyboard navigation, the focus will not go outside this view
     limitFocusWithin?: LimitFocusType; // Web-only, make the view and all focusable subelements not focusable
 
     autoFocus?: boolean; // The component is a candidate for being autofocused.
-    arbitrateFocus?: FocusArbitrator; // When multiple components inside this View are setting autoFocus=true, this callback
-                                      // will be called so that the application can decide which one needs to be focused.
+    arbitrateFocus?: FocusArbitrator; // When multiple components with autoFocus=true inside this View are mounting at the same time,
+                                      // and/or multiple components inside this view have received focus() call during the same
+                                      // render cycle, this callback will be called so that it's possible for the application to
+                                      // decide which one should actually be focused.
 
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
     id?: string; // Web-only. Needed for accessibility.
@@ -862,6 +867,7 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
     allowFontScaling?: boolean;
     maxContentSizeMultiplier?: number;
     tabIndex?: number;
+    autoFocus?: boolean; // The component is a candidate for being autofocused.
 
     onPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
     onLongPress?: (e: RX.Types.SyntheticEvent, url: string) => void;

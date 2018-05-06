@@ -27,7 +27,6 @@ import ButtonImpl from './Button';
 import PickerImpl from '../native-common/Picker';
 import ImageImpl from '../native-common/Image';
 import ClipboardImpl from '../native-common/Clipboard';
-import FocusUtilsImpl from '../common/FocusUtils';
 import GestureViewImpl from './GestureView';
 import InputImpl from '../native-desktop/Input';
 import InternationalImpl from '../native-common/International';
@@ -84,8 +83,6 @@ module ReactXP {
     export type Clipboard = RXInterfaces.Clipboard;
     export var Clipboard: RXInterfaces.Clipboard = ClipboardImpl;
     export type GestureView = RXInterfaces.GestureView;
-    export type FocusUtils = RXInterfaces.FocusUtils;
-    export var FocusUtils: RXInterfaces.FocusUtils = FocusUtilsImpl;
     export var GestureView: typeof RXInterfaces.GestureView = GestureViewImpl;
     export type Image = RXInterfaces.Image;
     export var Image: RXInterfaces.ImageConstructor = ImageImpl;

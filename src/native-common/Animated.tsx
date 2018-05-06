@@ -48,6 +48,10 @@ class AnimatedWrapper<P, T> extends RX.AnimatedComponent<P, T> {
         // Native mobile platform doesn't have the notion of focus for AnimatedViews
     }
 
+    realFocus() {
+        // Native mobile platform doesn't have the notion of focus for AnimatedViews, so ignore.
+    }
+
     blur() {
         // Native mobile platform doesn't have the notion of blur for AnimatedViews, so ignore.
     }
@@ -113,7 +117,7 @@ class AnimatedTextInput extends AnimatedWrapper<Types.AnimatedTextInputProps, {}
     }
 }
 
-class AnimatedView extends AnimatedWrapper<Types.AnimatedTextInputProps, {}> {
+class AnimatedView extends AnimatedWrapper<Types.AnimatedViewProps, {}> {
     setFocusRestricted(restricted: boolean) {
         // Nothing to do.
     }
@@ -140,6 +144,13 @@ class FocusRestrictedAnimatedView extends AnimatedView {
         const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
         if (innerComponent && innerComponent.focus) {
             innerComponent.focus();
+        }
+    }
+
+    realFocus() {
+        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
+        if (innerComponent && innerComponent.realFocus) {
+            innerComponent.realFocus();
         }
     }
 
