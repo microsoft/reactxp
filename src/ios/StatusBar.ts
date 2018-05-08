@@ -19,7 +19,7 @@ export class StatusBar extends RX.StatusBar {
     }
 
     setBarStyle(style: 'default' | 'light-content' | 'dark-content', animated: boolean): void {
-        RN.StatusBar.setBarStyle(style, true);
+        RN.StatusBar.setBarStyle(style, animated);
     }
 
     setHidden(hidden: boolean, showHideTransition: 'fade' | 'slide'): void {
