@@ -79,44 +79,46 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
 
     render() {
         return (
-            <RX.ScrollView style={ styles.scroll }>
-                <RX.View style={ styles.container }>
-                    <RX.Button style={ styles.roundButton } onPress={ this._onPressBack }>
-                        <RX.Text style={ styles.buttonText }>
-                            Go Back
+            <RX.View useSafeInsets={true}>
+                <RX.ScrollView style={ styles.scroll }>
+                    <RX.View style={ styles.container }>
+                        <RX.Button style={ styles.roundButton } onPress={ this._onPressBack }>
+                            <RX.Text style={ styles.buttonText }>
+                                Go Back
+                            </RX.Text>
+                        </RX.Button>
+
+                        <RX.Text style={ styles.titleText }>
+                            Here is a simple control built using ReactXP
                         </RX.Text>
-                    </RX.Button>
+                        <ToggleSwitch
+                            value={ this.state.toggleValue }
+                            onChange={ this._onChangeToggle }
+                        />
 
-                    <RX.Text style={ styles.titleText }>
-                        Here is a simple control built using ReactXP
-                    </RX.Text>
-                    <ToggleSwitch
-                        value={ this.state.toggleValue }
-                        onChange={ this._onChangeToggle }
-                    />
+                        <RX.Text style={ styles.titleText }>
+                            Here is an SVG image using the ImageSvg extension
+                        </RX.Text>
+                        <ProgressIndicator
+                            style={ styles.progressMargin as any }
+                            progress={ this.state.progressValue }
+                            fillColor={ '#ddd' }
+                            size={ 32 }
+                        />
 
-                    <RX.Text style={ styles.titleText }>
-                        Here is an SVG image using the ImageSvg extension
-                    </RX.Text>
-                    <ProgressIndicator
-                        style={ styles.progressMargin as any }
-                        progress={ this.state.progressValue }
-                        fillColor={ '#ddd' }
-                        size={ 32 }
-                    />
-
-                    <RX.Text style={ [styles.titleText, styles.videoTitleText] }>
-                        Here is a video using the Video extension
-                    </RX.Text>
-                    <RXVideo
-                        ref={ this._onMountVideo }
-                        style={ styles.video as any }
-                        source={ 'https://www.w3schools.com/html/mov_bbb.mp4' }
-                        loop={ true }
-                        onCanPlay={ this._playVideo }
-                    />
-                </RX.View>
-            </RX.ScrollView>
+                        <RX.Text style={ [styles.titleText, styles.videoTitleText] }>
+                            Here is a video using the Video extension
+                        </RX.Text>
+                        <RXVideo
+                            ref={ this._onMountVideo }
+                            style={ styles.video as any }
+                            source={ 'https://www.w3schools.com/html/mov_bbb.mp4' }
+                            loop={ true }
+                            onCanPlay={ this._playVideo }
+                        />
+                    </RX.View>
+                </RX.ScrollView>
+            </RX.View>
         );
     }
 

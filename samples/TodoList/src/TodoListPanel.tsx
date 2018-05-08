@@ -28,7 +28,7 @@ const _styles = {
 class TodoListPanel extends RX.Component<SecondPanelProps, null> {
     render() {
         return (
-            <RX.View style={ TodoStyles.styles.container }>
+            <RX.View useSafeInsets={true} style={ TodoStyles.styles.container }>
                 <RX.View style={ [TodoStyles.styles.header, RX.StatusBar.isOverlay() && TodoStyles.styles.headerWithStatusBar] }>
                     <RX.Button style={ TodoStyles.styles.submitButton } onPress={ this._onPressCreateNewTodo }>
                         <RX.Text style={ TodoStyles.styles.buttonText }>

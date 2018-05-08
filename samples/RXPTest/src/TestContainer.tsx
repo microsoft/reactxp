@@ -204,7 +204,7 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
         }
 
         return (
-            <RX.View style={ _styles.container }>
+            <RX.View useSafeInsets={true} style={ _styles.container }>
                 <RX.View style={ [_styles.header, RX.StatusBar.isOverlay() && _styles.headerSpacer] }>
                     <RX.Button
                         style={ _styles.button }

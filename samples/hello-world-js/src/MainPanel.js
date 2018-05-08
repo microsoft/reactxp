@@ -73,28 +73,30 @@ export default class MainPanel extends RX.Component{
 
     render() {
         return (
-            <RX.ScrollView style={ styles.scroll }>
-                <RX.View style={ styles.container }>
-                    <RX.Animated.Text style={ [styles.helloWorld, this._animatedStyle] }>
-                        Hello World
-                    </RX.Animated.Text>
-                    <RX.Text style={ styles.welcome }>
-                        Welcome to ReactXP
-                    </RX.Text>
-                    <RX.Text style={ styles.instructions }>
-                        Edit App.js to get started
-                    </RX.Text>
-                    <RX.Link style={ styles.docLink } url={ 'https://microsoft.github.io/reactxp/docs' }>
-                        View ReactXP documentation
-                    </RX.Link>
-
-                    <RX.Button style={ styles.roundButton } onPress={ this.props.onPressNavigate }>
-                        <RX.Text style={ styles.buttonText }>
-                            See More Examples
+            <RX.View useSafeInsets={true}>
+                <RX.ScrollView style={ styles.scroll }>
+                    <RX.View style={ styles.container }>
+                        <RX.Animated.Text style={ [styles.helloWorld, this._animatedStyle] }>
+                            Hello World
+                        </RX.Animated.Text>
+                        <RX.Text style={ styles.welcome }>
+                            Welcome to ReactXP
                         </RX.Text>
-                    </RX.Button>
-                </RX.View>
-            </RX.ScrollView>
+                        <RX.Text style={ styles.instructions }>
+                            Edit App.js to get started
+                        </RX.Text>
+                        <RX.Link style={ styles.docLink } url={ 'https://microsoft.github.io/reactxp/docs' }>
+                            View ReactXP documentation
+                        </RX.Link>
+
+                        <RX.Button style={ styles.roundButton } onPress={ this.props.onPressNavigate }>
+                            <RX.Text style={ styles.buttonText }>
+                                See More Examples
+                            </RX.Text>
+                        </RX.Button>
+                    </RX.View>
+                </RX.ScrollView>
+            </RX.View>
         );
     }
 }
