@@ -80,7 +80,7 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
 
     render() {
         return (
-            <RX.View useSafeInsets={true}>
+            <RX.View useSafeInsets={ true }>
                 <RX.ScrollView style={ styles.scroll }>
                     <RX.View style={ styles.container }>
                         <RX.Animated.Text style={ [styles.helloWorld, this._animatedStyle] }>

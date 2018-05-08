@@ -73,7 +73,7 @@ export default class SecondPanel extends RX.Component {
 
     render() {
         return (
-            <RX.View useSafeInsets={true}>
+            <RX.View useSafeInsets={ true }>
                 <RX.ScrollView style={ styles.scroll }>
                     <RX.View style={ styles.container }>
                         <RX.Button style={ styles.roundButton } onPress={ this.props.onNavigateBack }>

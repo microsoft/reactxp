@@ -163,7 +163,7 @@ export class TestListView extends RX.Component<TestListViewProps, TestListViewSt
         });
 
         return (
-            <RX.View useSafeInsets={true} style={ _styles.container }>
+            <RX.View useSafeInsets={ true } style={ _styles.container }>
                 <RX.View style={ [_styles.header, RX.StatusBar.isOverlay() && _styles.headerSpacer] }>
                     <RX.Text style={ _styles.explainText }>
                         { 'Select test to run' }

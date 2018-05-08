@@ -39,7 +39,7 @@ class EditTodoPanel extends RX.Component<TodoPanelProps, TodoPanelState> {
 
     render() {
         return (
-            <RX.View useSafeInsets={true} style={ TodoStyles.styles.container }>
+            <RX.View useSafeInsets={ true } style={ TodoStyles.styles.container }>
                 <RX.View style={ [TodoStyles.styles.header, RX.StatusBar.isOverlay() && TodoStyles.styles.headerWithStatusBar] }>
                     <RX.Button style={ TodoStyles.styles.cancelButton } onPress={ this._onPressBack }>
                         <RX.Text style={ TodoStyles.styles.buttonText }>
