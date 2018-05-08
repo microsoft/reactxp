@@ -506,6 +506,7 @@ declare module 'react-native' {
     class TouchableHighlight extends ReactNativeBaseComponent<TouchableHighlightProps, {}> { }
     class TouchableWithoutFeedback extends ReactNativeBaseComponent<TouchableWithoutFeedbackProps, {}> { }
     class View extends ReactNativeBaseComponent<ViewProps, {}> { }
+    class SafeAreaView extends ReactNativeBaseComponent<ViewProps, {}> { }
     class ScrollView extends ReactNativeBaseComponent<ScrollViewProps, {}> {
         getInnerViewNode(): number;
         // TODO: Define ScrollResponder type

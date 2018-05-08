@@ -640,6 +640,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
 
 export interface ViewProps extends ViewPropsShared {
     style?: StyleRuleSetRecursive<ViewStyleRuleSet>;
+    useSafeInsets?: boolean;
 }
 
 export interface AnimatedViewProps extends ViewPropsShared {

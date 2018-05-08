@@ -156,6 +156,13 @@ activeOpacity: number = undefined; // iOS and Android only
 // Background color that will be visible on touch on views that have onPress
 // handlers
 underlayColor: string = undefined; // iOS and Android only
+
+// When true
+//  - renders children within the safe area boundaries of a device, i.e. with 
+//    padding with ensure the children don't cover navigation bars, toolbars etc.
+//  - Applies a style of { flex: 1, alignSelf: 'stretch' } to this view.
+//  - Some ViewProps may be ignored.
+useSafeInsets: boolean = false; // iOS only
 ```
 
 ## Styles

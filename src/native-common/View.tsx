@@ -31,6 +31,8 @@ const _activeOpacityAnimationDuration = 0;
 const _hideUnderlayTimeout = 100;
 const _underlayInactive = 'transparent';
 
+const safeInsetsStyle = Styles.createViewStyle({ flex: 1, alignSelf: 'stretch' });
+
 function noop() { /* noop */ }
 
 function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, propertiesToSkip: string[]) {
@@ -330,6 +332,10 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
                 this._internalProps.style = Styles.combine([baseStyle, this._opacityAnimatedStyle]);
             }
         }
+
+        if (this.props.useSafeInsets) {
+            this._internalProps.style = Styles.combine([this._internalProps.style, safeInsetsStyle]);
+        }
     }
     private _isTouchFeedbackApplicable() {
         return this._isMounted && this._mixinIsApplied && this._nativeView;
@@ -392,11 +398,18 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     }
 
     render() {
-        let PotentiallyAnimatedView = this._isButton(this.props) ? RN.Animated.View : RN.View;
+        let ViewToRender = RN.View;
+
+        if (this._isButton(this.props)) {
+            ViewToRender = RN.Animated.View;
+        } else if (this.props.useSafeInsets) {
+            ViewToRender = RN.SafeAreaView;
+        }
+
         return (
-            <PotentiallyAnimatedView { ...this._internalProps }>
+            <ViewToRender { ...this._internalProps }>
                 { this.props.children }
-            </PotentiallyAnimatedView>
+            </ViewToRender>
         );
     }
 
