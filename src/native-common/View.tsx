@@ -31,7 +31,7 @@ const _activeOpacityAnimationDuration = 0;
 const _hideUnderlayTimeout = 100;
 const _underlayInactive = 'transparent';
 
-const safeInsetsStyle = Styles.createViewStyle({ flex: 1 });
+const safeInsetsStyle = Styles.createViewStyle({ flex: 1, alignSelf: 'stretch' });
 
 function noop() { /* noop */ }
 
