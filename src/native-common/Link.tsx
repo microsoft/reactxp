@@ -54,6 +54,9 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
 
     protected _onPress = (e: RX.Types.SyntheticEvent) => {
         if (EventHelpers.isRightMouseButton(e)) {
+            if (this.props.onContextMenu) {
+                this.props.onContextMenu(EventHelpers.toMouseEvent(e));
+            }
             return;
         }
 
@@ -71,6 +74,14 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
     }
 
     protected _onLongPress = (e: RX.Types.SyntheticEvent) => {
+        // Right mouse button doesn't change behavior based on press length.
+        if (EventHelpers.isRightMouseButton(e)) {
+            if (this.props.onContextMenu) {
+                this.props.onContextMenu(EventHelpers.toMouseEvent(e));
+            }
+            return;
+        }
+
         if (!EventHelpers.isRightMouseButton(e) && this.props.onLongPress) {
             this.props.onLongPress(EventHelpers.toMouseEvent(e), this.props.url);
         }

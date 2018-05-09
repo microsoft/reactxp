@@ -70,7 +70,8 @@ class LinkView extends RX.Component<RX.CommonProps, LinkViewState> {
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation1' }>
                     <RX.Text style={ _styles.explainText }>
                         { 'Press on this link to test press callback. Hold to test long presses. ' +
-                          'Move mouse pointer to test hovering.' }
+                          'Right click to test context menu callback. ' +
+                          ' Move mouse pointer to test hovering.' }
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.linkContainer }>
@@ -81,6 +82,7 @@ class LinkView extends RX.Component<RX.CommonProps, LinkViewState> {
                         onLongPress={ () => { this.setState({ test1Result: 'Long press detected' }); } }
                         onHoverStart={ () => { this.setState({ test1Hovering: true }); } }
                         onHoverEnd={ () => { this.setState({ test1Hovering: false }); } }
+                        onContextMenu={ () => { this.setState({ test1Result: 'Context menu detected' }); } }
                         allowFontScaling={ false }
                     >
                         { 'Press or hold' }
