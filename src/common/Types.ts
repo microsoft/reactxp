@@ -831,6 +831,7 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
     onLongPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
     onHoverStart?: (e: SyntheticEvent) => void;
     onHoverEnd?: (e: SyntheticEvent) => void;
+    onContextMenu?: (e: MouseEvent) => void;
 }
 
 // TextInput

@@ -37,6 +37,10 @@ onPress: (e: SyntheticEvent, url: string) => void = undefined;
 // within the bounds of the view and the press has not been canceled
 onLongPress: (e: SyntheticEvent, url:string) => void = undefined;
 
+// Event called when context menu is triggered, either by
+// right mouse button click or context menu key
+onContextMenu: (e: MouseEvent) => void = undefined;
+
 // Can the link be included in a text selection?
 selectable: boolean = false;
 
