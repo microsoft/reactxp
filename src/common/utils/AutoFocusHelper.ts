@@ -28,7 +28,6 @@ export interface FocusCandidateInternal {
     isAvailable: () => boolean;
     type: FocusCandidateType;
     accessibilityId?: string;
-    parentAccessibilityId?: string;
 }
 
 export type SortAndFilterFunc = (candidates: FocusCandidateInternal[]) => FocusCandidateInternal[];
@@ -40,7 +39,6 @@ export function setSortAndFilterFunc(sortAndFilter: SortAndFilterFunc): void {
 export class FocusArbitratorProvider {
     private _id: number;
     private _parentArbitratorProvider: FocusArbitratorProvider | undefined;
-    private _view: Interfaces.View | undefined;
 
     private _arbitratorCallback: Types.FocusArbitrator | undefined;
     private _candidates: FocusCandidateInternal[] = [];
@@ -48,7 +46,6 @@ export class FocusArbitratorProvider {
 
     constructor(view?: Interfaces.View, arbitrator?: Types.FocusArbitrator) {
         this._id = ++_lastFocusArbitratorProviderId;
-        this._view = view;
         this._parentArbitratorProvider = view
             ? ((view.context && view.context.focusArbitrator) || rootFocusArbitratorProvider)
             : undefined;
@@ -81,19 +78,14 @@ export class FocusArbitratorProvider {
     private _requestFocus(component: React.Component<any, any>, focus: () => void, isAvailable: () => boolean,
             type: FocusCandidateType): void {
 
-        const parentProvider = this._view !== component ? this : this._parentArbitratorProvider;
         const accessibilityId = component.props && component.props.accessibilityId;
-        const parentAccessibilityId = parentProvider
-            ? parentProvider._view && parentProvider._view.props && parentProvider._view.props.accessibilityId
-            : undefined;
 
         this._candidates.push({
             component,
             focus,
             isAvailable,
             type,
-            accessibilityId,
-            parentAccessibilityId
+            accessibilityId
         });
 
         this._notifyParent();
@@ -127,8 +119,7 @@ export class FocusArbitratorProvider {
 
                     toArbitrate.push({
                         component,
-                        accessibilityId: candidate.accessibilityId,
-                        parentAccessibilityId: candidate.parentAccessibilityId
+                        accessibilityId: candidate.accessibilityId
                     });
                 }
             });

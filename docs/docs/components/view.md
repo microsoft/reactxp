@@ -85,8 +85,6 @@ limitFocusWithin: LimitFocusType = LimitFocusType.Unlimited;
 // however calling focus() might have no effect (for example on web View is
 // focusable only when tabIndex is specified), the application has to handle
 // this either while setting this property or in the FocusArbitrator callback.
-// NOTE: The focus() call will be performed on the next tick after the current
-// render cycle.
 autoFocus: boolean = false;
 
 // When multiple components with autoFocus=true inside this View are mounting at
@@ -174,7 +172,7 @@ activeOpacity: number = undefined; // iOS and Android only
 underlayColor: string = undefined; // iOS and Android only
 
 // When true
-//  - renders children within the safe area boundaries of a device, i.e. with 
+//  - renders children within the safe area boundaries of a device, i.e. with
 //    padding with ensure the children don't cover navigation bars, toolbars etc.
 //  - Applies a style of { flex: 1, alignSelf: 'stretch' } to this view.
 //  - Some ViewProps may be ignored.
@@ -190,8 +188,23 @@ useSafeInsets: boolean = false; // iOS only
 
 ## Methods
 ``` javascript
-// Sets the accessibility focus to the component.
+// Sets the focus to the component.
 focus(): void;
+
+// The preferable way to focus the component. When requestFocus() is called,
+// the actual focus() will be deferred, and if requestFocus() has been
+// called for several components, only one of those components will actually
+// get a focus() call. By default, last component for which requestFocus() is
+// called will get a focus() call, but you can specify arbitrateFocus property
+// of a parent View and provide the callback to decide which one of that View's
+// descendants should be focused. This is useful for the accessibility: when
+// cosecutive focus() calls happen one after another, the next one interrupts
+// the screen reader announcement for the previous one and the user gets
+// confused. autoFocus property of focusable components also uses requestFocus().
+requestFocus(): void;
+
+// Blurs the component.
+blur(): void;
 
 // The focus does not go outside the view with restrictFocusWithin by default,
 // setFocusRestricted() allows to turn this restricton off and back on.

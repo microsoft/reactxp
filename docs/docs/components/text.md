@@ -40,8 +40,6 @@ importantForAccessibility: ImportantForAccessibility = ImportantForAccessibility
 // however calling focus() for Text might make sense only on mobile for the accessibility
 // reasons, on web it has no effect, the application has to handle this either while
 // setting this property or in the FocusArbitrator callback.
-// NOTE: The focus() call will be performed on the next tick after the current
-// render cycle.
 autoFocus: boolean = false;
 
 // Should the scale multiplier be capped when allowFontScaling is set to true?
@@ -80,6 +78,21 @@ style: TextStyleRuleSet | TextStyleRuleSet[] = [];
 ``` javascript
 // Sets the accessibility focus to the component.
 focus(): void;
+
+// The preferable way to focus the component. When requestFocus() is called,
+// the actual focus() will be deferred, and if requestFocus() has been
+// called for several components, only one of those components will actually
+// get a focus() call. By default, last component for which requestFocus() is
+// called will get a focus() call, but you can specify arbitrateFocus property
+// of a parent View and provide the callback to decide which one of that View's
+// descendants should be focused. This is useful for the accessibility: when
+// cosecutive focus() calls happen one after another, the next one interrupts
+// the screen reader announcement for the previous one and the user gets
+// confused. autoFocus property of focusable components also uses requestFocus().
+requestFocus(): void;
+
+// Blurs the component.
+blur(): void;
 ```
 
 ## Sample Usage

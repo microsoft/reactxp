@@ -462,12 +462,8 @@ export interface FocusCandidate {
     // An instance of the component which wants to be focused.
     component: RX.FocusableComponent;
 
-    // Returns component.props.accessibilityId (if specified).
+    // Value of component.props.accessibilityId (if specified).
     accessibilityId?: string;
-
-    // If the candidate is inside the View with arbitrateFocus property specified,
-    // returns accessibilityId of that View.
-    parentAccessibilityId?: string;
 }
 
 export interface CommonStyledProps<T> extends CommonProps {
