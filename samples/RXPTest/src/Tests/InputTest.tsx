@@ -36,7 +36,7 @@ interface InputState {
     keyDownCount?: number;
     lastKeyDownKey?: string;
     lastKeyDownModifiers?: string;
-    
+
     keyUpCount?: number;
     lastKeyUpKey?: string;
     lastKeyUpModifiers?: string;
@@ -46,7 +46,7 @@ class InputView extends RX.Component<RX.CommonProps, InputState> {
     private _backButtonEvent: RX.Types.SubscriptionToken;
     private _keyDownEvent: RX.Types.SubscriptionToken;
     private _keyUpEvent: RX.Types.SubscriptionToken;
-    
+
     constructor(props: RX.CommonProps) {
         super(props);
 
@@ -149,7 +149,7 @@ class InputTest implements Test {
     getPath(): string {
         return 'APIs/Input';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

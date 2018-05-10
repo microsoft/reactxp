@@ -130,7 +130,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
                 </RX.View>
                 <RX.ScrollView style={ _styles.eventHistoryScrollView }>
                     <RX.Text style={ _styles.eventHistoryText }>
-                        { this.state.test1EventHistory.length ? 
+                        { this.state.test1EventHistory.length ?
                             this.state.test1EventHistory.join('\n') :
                             'Event history will appear here'
                         }
@@ -145,7 +145,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
         // on the window, others on the document. We'll install it on both here.
         const receiverScript = 'window.onload=function() {' +
             'function receiveMessage(e) { document.getElementById("msg").innerHTML = "Message Received: " + e.data; };' +
-            'document.getElementById("sendButton").onclick=function() { window.parent.postMessage("Posted message ' + 
+            'document.getElementById("sendButton").onclick=function() { window.parent.postMessage("Posted message ' +
             'from WebView!", "*"); };' +
             'document.addEventListener("message", receiveMessage);' +
             'window.addEventListener("message", receiveMessage);' +
@@ -155,7 +155,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
 
         const htmlContent = '<html><head><script>' + receiverScript +
             '</script></head><body style="font-size: 36px; background-color: #eef">' +
-            bodyContent + '<div id="msg">Tap &ldquo;Post Message&rdquo; to send message to web view.</div>' + 
+            bodyContent + '<div id="msg">Tap &ldquo;Post Message&rdquo; to send message to web view.</div>' +
             '<button id="sendButton" style="margin: 20px; font-size: 36px">Send Message</button>' +
             '</body></html>';
 
@@ -211,7 +211,7 @@ class WebViewDynamicTest implements Test {
     getPath(): string {
         return 'Components/WebView/Dynamic';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

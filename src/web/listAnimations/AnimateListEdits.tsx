@@ -13,6 +13,7 @@ import ReactDOM = require('react-dom');
 
 import MonitorListEdits = require('./MonitorListEdits');
 import executeTransition from '../animated/executeTransition';
+import Types = require('../../common/Types');
 
 export interface AnimateListEditsProps {
     animateChildEnter?: boolean;
@@ -20,7 +21,7 @@ export interface AnimateListEditsProps {
     animateChildMove?: boolean;
 }
 
-export class AnimateListEdits extends React.Component<AnimateListEditsProps, {}> {
+export class AnimateListEdits extends React.Component<AnimateListEditsProps, Types.Stateless> {
     _handleWillAnimate(edits: MonitorListEdits.IEdits, done: () => void) {
         let counter = 1;
         let animationCompleted = function () {

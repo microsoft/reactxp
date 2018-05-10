@@ -671,6 +671,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
 
 export interface ViewProps extends ViewPropsShared {
     style?: StyleRuleSetRecursive<ViewStyleRuleSet>;
+    useSafeInsets?: boolean;
 }
 
 export interface AnimatedViewProps extends ViewPropsShared {
@@ -763,6 +764,7 @@ export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet>, C
     onPanHorizontal?: (gestureState: PanGestureState) => void;
     onTap?: (gestureState: TapGestureState) => void;
     onDoubleTap?: (gestureState: TapGestureState) => void;
+    onContextMenu?: (gestureState: TapGestureState) => void;
 
     // We can set vertical or horizontal as preferred
     preferredPan?: PreferredPanGesture;
@@ -784,23 +786,22 @@ export interface ScrollIndicatorInsets {
 }
 
 // ScrollView
-export interface ScrollViewProps extends ViewProps {
+export interface ScrollViewProps extends CommonProps, CommonAccessibilityProps {
     style?: StyleRuleSetRecursive<ScrollViewStyleRuleSet>;
     children?: ReactNode;
 
     vertical?: boolean; // By default true
     horizontal?: boolean; // By default false
 
-    // If the contents are smaller than the view port,
-    // should they be justified to the top of the view
-    // (i.e. flex-start) or the end (flex-end)?
-    justifyEnd?: boolean; // By default false
-
     onLayout?: (e: ViewOnLayoutEvent) => void;
     onContentSizeChange?: (width: number, height: number) => void;
     onScroll?: (newScrollTop: number, newScrollLeft: number) => void;
     onScrollBeginDrag?: () => void;
     onScrollEndDrag?: () => void;
+    onKeyPress?: (e: KeyboardEvent) => void;
+    onFocus?: (e: FocusEvent) => void;
+    onBlur?: (e: FocusEvent) => void;
+
     showsHorizontalScrollIndicator?: boolean;
     showsVerticalScrollIndicator?: boolean;
     scrollEnabled?: boolean;
@@ -862,6 +863,7 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
     onLongPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
     onHoverStart?: (e: SyntheticEvent) => void;
     onHoverEnd?: (e: SyntheticEvent) => void;
+    onContextMenu?: (e: MouseEvent) => void;
 }
 
 // TextInput

@@ -51,7 +51,7 @@ export class Styles extends RX.Styles {
             let resultArray: Types.StyleRuleSet<S>[] = [];
             for (let i = 0; i < ruleSet.length; i++) {
                 let subRuleSet = this.combine(ruleSet[i]);
-                
+
                 if (subRuleSet) {
                     if (subRuleSet instanceof Array) {
                         resultArray = resultArray.concat(subRuleSet);

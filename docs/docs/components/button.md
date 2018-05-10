@@ -51,12 +51,19 @@ autoFocus: boolean = false;
 // activate a control
 onAccessibilityTapIOS: (e: SyntheticEvent) => void; // iOS Only
 
-// Called when the user has pressed and held for a specified duration
-onLongPress: (e: SyntheticEvent) => void;
+// Focus Events
+onFocus: (e: FocusEvent) => void = undefined;
+onBlur: (e: FocusEvent) => void = undefined;
 
 // Called when the mouse cursor enters or leaves the view bounds
 onHoverStart: (e: SyntheticEvent) => void;
 onHoverEnd: (e: SyntheticEvent) => void;
+
+// Keyboard Events
+onKeyPress: (e: KeyboardEvent) => void = undefined;
+
+// Called when the user has pressed and held for a specified duration
+onLongPress: (e: SyntheticEvent) => void;
 
 // Called when the touch or mouse button is released within the
 // bounds of the view and the press has not been canceled

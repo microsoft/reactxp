@@ -16,6 +16,21 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.1.2-rc.1 of reactxp
+_Released 9 May 2018_
+Fixed bug in Windows implementation that prevented RX.Input.keyDownEvent from being dispatched.
+Fixed bugs in Windows implementation that reported wrong key codes for keyboard events.
+Fixed focus management for cacheable popups in Windows implementation.
+Fixed type definitions of GestureView, ScrollView and WebView. They were incorrectly extending ViewBase, which pulled in a number of unsupported props.
+Fixed bug that caused cached popups to appear on screen when not appropriate.
+Added onContextMenu prop to GestureView.
+Added accessibility trait for ListItem.
+In Windows implementation, use RNW.Hyperlink for rendering RX.Link.
+Removed "justifyEnd" prop from RX.ScrollView. It was never implemented as documented.
+Added useSafeInsets prop onR X.View to support rendering within safe area on iOS.
+Fixed bug RX.StatusBar.setBarStyle where animated parameter was not properly passed to RN.
+Added onContextMenu to RX.Link.
+
 #### Version 1.1.1 of reactxp
 _Released 13 Apr 2018_
 Fixed reentrancy issue in popup support. Displaying a popup from within the onDismiss callback was recently broken.
@@ -191,7 +206,7 @@ Removed use of deprecated RX.NetInfo.fetch method.
 #### Version 0.46.6 of reactxp
 _Released 13 Dec 2017_
 
-Fixed potential crash in web implementation of RX.ScrollView. 
+Fixed potential crash in web implementation of RX.ScrollView.
 Fixed bug in UWP implementation of RX.Popup, allowing background to be clickable.
 In web implementation of RX.ScrollView, added support for clicking on scroll bar to adjust position of thumb.
 Added dev warning when using nested RX.Button items.
@@ -405,7 +420,7 @@ Fixed accessibility bug relating to Modal dialogs.
 _Released 18 Apr 2017_
 
 Added missing box-sizing CSS directives for web.
-Fixed bug in native implementation of View related to accessibility. 
+Fixed bug in native implementation of View related to accessibility.
 
 
 #### Version 0.1.0 of reactxp-imagesvg

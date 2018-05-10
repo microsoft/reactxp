@@ -27,6 +27,7 @@ onPanVertical: (gestureState: PanGestureState) => void = undefined;
 onPanHorizontal: (gestureState: PanGestureState) => void = undefined;
 onTap: (gestureState: TapGestureState) => void = undefined;
 onDoubleTap: (gestureState: TapGestureState) => void = undefined;
+onContextMenu: (gestureState: TapGestureState) => void = undefined;
 
 // We can set vertical or horizontal as preferred
 preferredPan: PreferredPanGesture = undefined; // Horizontal or vertical

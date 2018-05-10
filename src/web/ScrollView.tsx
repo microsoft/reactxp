@@ -77,7 +77,7 @@ let _customStyles = {
 // Default to once per frame.
 const _defaultScrollThrottleValue = 1000 / 60;
 
-export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements RX.ScrollView {
+export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless> implements RX.ScrollView {
     private _mountedComponent: HTMLElement|null = null;
 
     constructor(props: Types.ScrollViewProps) {
@@ -273,9 +273,6 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, {}> implements R
 
     private _renderWithCustomScrollbar() {
         let containerStyles: any = _customStyles.customScrollContainer;
-        if (this.props.justifyEnd) {
-            containerStyles = _.extend({ justifyContent: 'flex-end' }, containerStyles);
-        }
 
         let scrollComponentClassNames = ['scrollViewport'];
         if (this.props.horizontal) {

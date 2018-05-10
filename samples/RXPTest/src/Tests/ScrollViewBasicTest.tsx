@@ -1,5 +1,5 @@
 /*
-* Tests the functionality of a ScrollView component 
+* Tests the functionality of a ScrollView component
 * through user interaction.
 *
 * We need to split the ScrollView tests into multiple pages because
@@ -191,7 +191,7 @@ class ScrollViewTest implements Test {
     getPath(): string {
         return 'Components/ScrollView/Basic';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

@@ -14,6 +14,7 @@ import ReactDOM = require('react-dom');
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import Styles from './Styles';
 import Types = require('../common/Types');
+import EventHelpers from '../native-common/utils/EventHelpers';
 import { applyFocusableComponentMixin } from './utils/FocusManager';
 
 const _styles = {
@@ -44,7 +45,7 @@ export interface LinkContext {
     focusArbitrator?: FocusArbitratorProvider;
 }
 
-export class Link extends React.Component<Types.LinkProps, {}> {
+export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
     static contextTypes = {
         focusArbitrator: PropTypes.object
     };
@@ -72,6 +73,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
                 onMouseDown={ this._onMouseDown }
                 onMouseUp={ this._onMouseUp }
                 tabIndex={ this.props.tabIndex }
+                onContextMenu={ this.props.onContextMenu ? this._onContextMenu : undefined }
             >
                 { this.props.children }
             </a>
@@ -151,7 +153,11 @@ export class Link extends React.Component<Types.LinkProps, {}> {
 
             this._longPressTimer = setTimeout(() => {
                 this._longPressTimer = undefined;
-                if (this.props.onLongPress) {
+
+                const mouseEvent = e as React.MouseEvent<any>;
+                // Ignore right mouse button for long press. Context menu will
+                // be always displayed on mouseUp no matter the press length.
+                if (this.props.onLongPress && mouseEvent.button !== 2) {
                     this.props.onLongPress(e, this.props.url);
                 }
             }, _longPressTime);
@@ -162,6 +168,14 @@ export class Link extends React.Component<Types.LinkProps, {}> {
         if (this._longPressTimer) {
             clearTimeout(this._longPressTimer);
             this._longPressTimer = undefined;
+        }
+    }
+
+    private _onContextMenu = (e: Types.SyntheticEvent) => {
+        if (this.props.onContextMenu) {
+            e.stopPropagation();
+            e.preventDefault();
+            this.props.onContextMenu(EventHelpers.toMouseEvent(e));
         }
     }
 }

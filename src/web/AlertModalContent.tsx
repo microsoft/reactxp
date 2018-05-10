@@ -176,7 +176,7 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
     private _onPressBody = (e: Types.SyntheticEvent) => {
         e.stopPropagation();
     }
-    
+
     private _onPressBackground = (e: Types.SyntheticEvent) => {
         Modal.dismiss(this.props.modalId);
     }

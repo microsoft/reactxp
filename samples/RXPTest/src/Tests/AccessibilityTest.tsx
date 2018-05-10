@@ -53,7 +53,7 @@ interface AccessibilityState {
 class AccessibilityView extends RX.Component<RX.CommonProps, AccessibilityState> {
     private _highContrastEvent: RX.Types.SubscriptionToken;
     private _screenReaderEvent: RX.Types.SubscriptionToken;
-    
+
     constructor(props: RX.CommonProps) {
         super(props);
 
@@ -144,7 +144,7 @@ class AccessibilityTest implements Test {
     getPath(): string {
         return 'APIs/Accessibility';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

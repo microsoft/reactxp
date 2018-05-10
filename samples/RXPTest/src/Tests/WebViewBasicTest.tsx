@@ -136,7 +136,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
                 </RX.View>
                 <RX.ScrollView style={ _styles.eventHistoryScrollView }>
                     <RX.Text style={ _styles.eventHistoryText }>
-                        { this.state.test1EventHistory.length ? 
+                        { this.state.test1EventHistory.length ?
                             this.state.test1EventHistory.join('\n') :
                             'Event history will appear here'
                         }
@@ -199,7 +199,7 @@ class WebViewBasicTest implements Test {
     getPath(): string {
         return 'Components/WebView/Basic';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

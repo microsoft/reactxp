@@ -70,7 +70,7 @@ class AnimatedWrapper<P, T> extends RX.AnimatedComponent<P, T> {
     }
 }
 
-class AnimatedImage extends AnimatedWrapper<Types.AnimatedImageProps, {}> {
+class AnimatedImage extends AnimatedWrapper<Types.AnimatedImageProps, Types.Stateless> {
     render() {
         const additionalProps = { ref: this._onMount, style: this.props.style };
         return (
@@ -84,7 +84,7 @@ class AnimatedImage extends AnimatedWrapper<Types.AnimatedImageProps, {}> {
     }
 }
 
-class AnimatedText extends AnimatedWrapper<Types.AnimatedTextProps, {}>  {
+class AnimatedText extends AnimatedWrapper<Types.AnimatedTextProps, Types.Stateless>  {
     render() {
         const additionalProps = { ref: this._onMount, style: this.props.style };
         return (
@@ -98,7 +98,7 @@ class AnimatedText extends AnimatedWrapper<Types.AnimatedTextProps, {}>  {
     }
 }
 
-class AnimatedTextInput extends AnimatedWrapper<Types.AnimatedTextInputProps, {}>   {
+class AnimatedTextInput extends AnimatedWrapper<Types.AnimatedTextInputProps, Types.Stateless>   {
     render() {
         const additionalProps = {ref: this._onMount, style: this.props.style };
         return (
@@ -112,7 +112,7 @@ class AnimatedTextInput extends AnimatedWrapper<Types.AnimatedTextInputProps, {}
     }
 }
 
-class AnimatedView extends AnimatedWrapper<Types.AnimatedViewProps, {}> {
+class AnimatedView extends AnimatedWrapper<Types.AnimatedViewProps, Types.Stateless> {
     setFocusRestricted(restricted: boolean) {
         // Nothing to do.
     }

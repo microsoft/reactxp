@@ -42,7 +42,7 @@ import WebViewDynamicTest from './Tests/WebViewDynamicTest';
 class TestRegistry {
     private _tests: {[path: string]: Test } = {};
     private _results: {[path: string]: TestResult } = {};
-    
+
     constructor() {
         // API tests
         this.registerTest(AccessibilityTest);
@@ -62,7 +62,7 @@ class TestRegistry {
         this.registerTest(StorageTest);
         this.registerTest(UserInterfaceTest);
         this.registerTest(UserPresenceTest);
-        
+
         // Component tests
         this.registerTest(ActivityIndicatorTest);
         this.registerTest(ButtonTest);

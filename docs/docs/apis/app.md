@@ -22,7 +22,7 @@ enum AppActivationState {
     // App is inactive (not actively running)
     Inactive = 3,
 
-    // iOS specific activation state for extensions implemented 
+    // iOS specific activation state for extensions implemented
     // with react-native
     Extension = 4
 }
@@ -31,7 +31,7 @@ enum AppActivationState {
 ## Methods
 ``` javascript
 // Initializes the app. This should be one of the first calls made.
-// Specifies whether app is running in "debug" mode, typically with 
+// Specifies whether app is running in "debug" mode, typically with
 // asserts and unminified code. Also specifies whether in "development"
 // mode, which can indicate that additional logging or fewer security
 // checks are appropriate.

@@ -18,7 +18,7 @@ import { default as Modal } from './Modal';
 export class Alert extends RX.Alert {
     private _modalId = 'RX.Alert_WebModal';
 
-    public show(title: string, message?: string, buttons?: Types.AlertButtonSpec[], 
+    public show(title: string, message?: string, buttons?: Types.AlertButtonSpec[],
             options?: Types.AlertOptions): void {
         Modal.show(
             (

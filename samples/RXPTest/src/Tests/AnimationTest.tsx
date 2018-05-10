@@ -354,7 +354,7 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
         });
 
         animation.start();
-        
+
         // Allow it to run for a while.
         _.delay(() => {
             animation.stop();
@@ -406,7 +406,7 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
                     if (!completeInfo.finished) {
                         this._testResult.errors.push('Completion callback "finished" parameter was not true as expected');
                     }
-    
+
                     if (this._isMounted) {
                         this.setState({ isRunningTest4: false });
                     }
@@ -435,7 +435,7 @@ class AnimationTest implements AutoExecutableTest {
     getPath(): string {
         return 'APIs/Animation';
     }
-    
+
     getTestType(): TestType {
         return TestType.AutoExecutable;
     }

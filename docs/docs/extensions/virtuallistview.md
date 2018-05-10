@@ -93,7 +93,7 @@ class FruitListView extends RX.Component<null, FruitListState> {
                 '#ddd' : '#fff',
             alignItems: 'center'
         }, false);
-        
+
         return (
             <RX.View style={ viewStyle }>
                 <RX.Text>
@@ -118,7 +118,7 @@ interface VirtualListViewItemInfo {
 
     // Specifies that the height is not known and needs to be measured
     // dynamically. This has a big perf overhead because it requires a
-    // double layout (once offscreen to measure the item). It also 
+    // double layout (once offscreen to measure the item). It also
     // disables cell recycling. Wherever possible, it should be avoided,
     // especially for perf-critical views.
     measureHeight?: boolean;

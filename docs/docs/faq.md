@@ -40,7 +40,7 @@ ReactXP builds upon React Native. ReactXP's components and APIs are inspired by 
 
 ReactXP is neither a proper subset nor a proper superset of React Native. It doesn't expose every component provided by React Native. In particular, it doesn't expose any components that are platform-specific (such as PickerIOS or MapView). It also exposes some components and APIs that are not implemented in React Native, such as [GestureView](components/gestureview.html) and [UserPresence](apis/userpresence.html).
 
-Apps that use ReactXP can directly access React Native components and APIs. They can also directly access React DOM elements on the web. But such code will need to include build-time or run-time conditionals to avoid using these components or APIs on platforms where they don't apply. 
+Apps that use ReactXP can directly access React Native components and APIs. They can also directly access React DOM elements on the web. But such code will need to include build-time or run-time conditionals to avoid using these components or APIs on platforms where they don't apply.
 
 All components and APIs exposed through ReactXP are implemented for all supported platforms. In some cases, API calls are no-ops, but they are guaranteed to be implemented. For example, Input.backButtonEvent is a no-op on iOS and the web, and StatusBar APIs are no-ops on the web. Apps that use only ReactXP abstractions can generally avoid per-platform conditional checks.
 

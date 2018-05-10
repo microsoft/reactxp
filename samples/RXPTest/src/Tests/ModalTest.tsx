@@ -131,7 +131,7 @@ class ModalTest implements AutoExecutableTest {
     getPath(): string {
         return 'APIs/Modal';
     }
-    
+
     getTestType(): TestType {
         return TestType.AutoExecutable;
     }

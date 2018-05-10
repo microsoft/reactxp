@@ -4,7 +4,7 @@
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
 *
-* A simple class to store application config. 
+* A simple class to store application config.
 */
 
 export class AppConfig {
@@ -13,7 +13,7 @@ export class AppConfig {
 
     setAppConfig(isDebug: boolean, isDevelopment: boolean) {
         this._isDebug = isDebug;
-        this._isDevelopment = isDevelopment; 
+        this._isDevelopment = isDevelopment;
     }
 
     isDebugMode(): boolean {

@@ -29,7 +29,7 @@ export interface TextContext {
     focusArbitrator?: FocusArbitratorProvider;
 }
 
-export class Text extends React.Component<Types.TextProps, {}> implements React.ChildContextProvider<TextContext> {
+export class Text extends React.Component<Types.TextProps, Types.Stateless> implements React.ChildContextProvider<TextContext> {
     static contextTypes = {
         focusArbitrator: PropTypes.object
     };

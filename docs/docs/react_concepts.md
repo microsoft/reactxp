@@ -55,7 +55,7 @@ We will modify the Hello World example to introduce an optional "userName" prop.
 ## Styles
 The example above renders a string using default styles (font, size, color, etc.). You can override style defaults by specifying a "style" prop. In this example, we render bold text on a green background. Note that styles within React (and ReactXP) borrow heavily from CSS.
 
-    // By convention, styles are created statically and referenced  
+    // By convention, styles are created statically and referenced
     // through a private (not exported) _styles object.
     const _styles = {
         container: RX.Styles.createViewStyle({
@@ -84,7 +84,7 @@ For more details about style attributes, refer to the [styles](/reactxp/docs/sty
 
 ## Layout Directives
 
-React uses flexbox directives for component layout. These directives are specified along with styling information. A number of flexbox tutorials are available online. [Here](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) is one we especially recommend. Using flexbox directives, you can specify the primary layout direction (row or column), justification, alignment, and spacing. 
+React uses flexbox directives for component layout. These directives are specified along with styling information. A number of flexbox tutorials are available online. [Here](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) is one we especially recommend. Using flexbox directives, you can specify the primary layout direction (row or column), justification, alignment, and spacing.
 
 React also adopts the notion of margin and padding from CSS. Margin is the amount of space around a component, and padding is the amount of space between the boundary of the component and its children.
 
@@ -135,7 +135,7 @@ React components can define a *state* object. When this object is updated throug
 
     interface StopLightState {
         // Fields within a state object are usually defined as optional
-        // (hence the question mark below) because calls to setState 
+        // (hence the question mark below) because calls to setState
         // typically update only a subset of the fields.
         isStopped?: boolean;
     }
@@ -162,11 +162,11 @@ React components can define a *state* object. When this object is updated throug
 
         render() {
             // Choose the appropriate style for the current state.
-            var buttonStyle = this.state.isStopped ? 
+            var buttonStyle = this.state.isStopped ?
                 _styles.redButton : _styles.greenButton;
 
             return (
-                <RX.Button style={ buttonStyle } 
+                <RX.Button style={ buttonStyle }
                     onPress={ this._onToggleState } />
             );
         }

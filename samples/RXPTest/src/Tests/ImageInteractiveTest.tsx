@@ -101,7 +101,7 @@ class ImageInteractiveTest implements Test {
     getPath(): string {
         return 'Components/Image/Interactive';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

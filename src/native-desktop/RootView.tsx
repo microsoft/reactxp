@@ -106,7 +106,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
 
         _onKeyPress = (e: SyntheticEvent) => {
             let kbdEvent = EventHelpers.toKeyboardEvent(e);
-            // This is temporary fix while we still have both keyPress and keyDown 
+            // This is temporary fix while we still have both keyPress and keyDown
             // events bubbling up for the same situation of user pressing down a key.
             // TODO: consolidate key events #602
             Input.dispatchKeyDown(kbdEvent);

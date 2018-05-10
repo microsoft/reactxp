@@ -46,7 +46,7 @@ interface AppState {
 class AppView extends RX.Component<RX.CommonProps, AppState> {
     private _appActivationEvent: RX.Types.SubscriptionToken;
     private _memoryWarningEvent: RX.Types.SubscriptionToken;
-    
+
     constructor(props: RX.CommonProps) {
         super(props);
 
@@ -140,7 +140,7 @@ class AppTest implements Test {
     getPath(): string {
         return 'APIs/App';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

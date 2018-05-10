@@ -37,7 +37,7 @@ interface WebViewMessageEventInternal extends RX.Types.WebViewMessageEvent {
     __propagationStopped: boolean;
 }
 
-export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> implements RX.WebView {
+export class WebView extends React.Component<Types.WebViewProps, WebViewState> implements RX.WebView {
     private static _webFrameNumber = 1;
     private static _onMessageReceived: RX.Types.SubscribableEvent<(e: WebViewMessageEventInternal) => void>;
     private static _messageListenerInstalled = false;
@@ -113,7 +113,7 @@ export class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> imple
             // Set up the global event.
             WebView._onMessageReceived = new RX.Types.SubscribableEvent<
                 (e: WebViewMessageEventInternal) => void>(true);
-            
+
             window.addEventListener('message', (e: MessageEvent) => {
                 let event: WebViewMessageEventInternal = {
                     data: e.data,

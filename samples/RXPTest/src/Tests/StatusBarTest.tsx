@@ -233,7 +233,7 @@ class StatusBarTest implements Test {
     getPath(): string {
         return 'APIs/StatusBar';
     }
-    
+
     getTestType(): TestType {
         return TestType.Interactive;
     }

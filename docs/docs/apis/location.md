@@ -14,7 +14,7 @@ This interface provides access to geolocation data.
 enum LocationErrorType {
     // User has not granted the app access to location data
     PermissionDenied,
-    
+
     // Geolocation information is not currently available
     PositionUnavailable,
 
@@ -51,7 +51,7 @@ isAvailable(): boolean;
 getCurrentPosition(options?: PositionOptions): SyncTasks.Promise<Position>;
 
 // Requests a callback when the position changes; useful for geofencing
-watchPosition(successCallback: LocationSuccessCallback, 
+watchPosition(successCallback: LocationSuccessCallback,
     errorCallback?: LocationFailureCallback,
     options?: PositionOptions): SyncTasks.Promise<LocationWatchId>;
 

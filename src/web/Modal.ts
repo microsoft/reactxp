@@ -15,10 +15,6 @@ import Types = require('../common/Types');
 
 export class Modal extends RX.Modal {
     isDisplayed(modalId?: string): boolean {
-        if (modalId === '') {
-            throw new Error(`modalId must be a non-empty string. Actual: ${modalId}`);
-        }
-
         return FrontLayerViewManager.isModalDisplayed(modalId);
     }
 
@@ -27,7 +23,7 @@ export class Modal extends RX.Modal {
             throw new Error(`modal must be valid. Actual ${modal}`);
         }
 
-        if (!modalId || modalId === '') {
+        if (!modalId) {
             throw new Error(`modalId must be a non-empty string. Actual: ${modalId}`);
         }
 
@@ -35,10 +31,10 @@ export class Modal extends RX.Modal {
     }
 
     dismiss(modalId: string): void {
-        if (!modalId || modalId === '') {
+        if (!modalId) {
             throw new Error(`modalId must be a non-empty string. Actual: ${modalId}`);
         }
-        
+
         FrontLayerViewManager.dismissModal(modalId);
     }
 

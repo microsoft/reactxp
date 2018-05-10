@@ -11,9 +11,9 @@ A popup is not technically a component. Rather, it's a collection of methods on 
 
 When a popup is displayed, the caller specifies a PopupOptions structure that includes several callbacks, including a renderPopup method.
 
-Popups by default will not act like a toggle. When Popup.show is called, it will always show the Popup. If a Popup is required to act like a toggle, PopupOptions.dismissIfShown should be set to true. In this case, if Popup.show is called once for a component, it will show the popup. A subsequent call from the same component will dismiss the popup and so on. 
+Popups by default will not act like a toggle. When Popup.show is called, it will always show the Popup. If a Popup is required to act like a toggle, PopupOptions.dismissIfShown should be set to true. In this case, if Popup.show is called once for a component, it will show the popup. A subsequent call from the same component will dismiss the popup and so on.
 
-The overall dimensions of a popup are assumed to remain constant for the lifetime of the popup. This allows the dimensions to be measured once, and the popup can then be positioned relative to the anchor. 
+The overall dimensions of a popup are assumed to remain constant for the lifetime of the popup. This allows the dimensions to be measured once, and the popup can then be positioned relative to the anchor.
 
 Popups are identified by a caller-specified ID that should be unique.
 
@@ -63,13 +63,13 @@ interface PopupOptions {
     // On pressed handler to notify whoever wanted to create the popup
     // that its anchor has been pressed.
     // IMPORTANT NOTE: This handler may be called when the component is
-    // already unmounted as it uses a time delay accommodate 
+    // already unmounted as it uses a time delay accommodate
     // fade-out animations.
     onAnchorPressed?: (e: SyntheticEvent) => void;
 
-    // Determines if the anchor invoking the popup should behave like a toggle. 
+    // Determines if the anchor invoking the popup should behave like a toggle.
     // If true, calling Popup.show will show the popup. A subsequent call
-    // will hide the popup. If false or undefined (default), calling Popup.show 
+    // will hide the popup. If false or undefined (default), calling Popup.show
     // will always show the popup.
     dismissIfShown?: boolean;
 

@@ -18,10 +18,10 @@ export class GestureView extends BaseGestureView {
         super(props);
     }
 
-    protected _getPreferredPanRatio(): number { 
+    protected _getPreferredPanRatio(): number {
         return _preferredPanRatio;
     }
-    
+
     protected _getEventTimestamp(e: Types.TouchEvent): number {
         let timestamp = e.timeStamp;
 

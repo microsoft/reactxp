@@ -18,7 +18,7 @@ export class GestureView extends BaseGestureView {
         super(props);
     }
 
-    protected _getPreferredPanRatio(): number { 
+    protected _getPreferredPanRatio(): number {
         return _preferredPanRatio;
     }
 

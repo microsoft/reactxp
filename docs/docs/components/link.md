@@ -19,7 +19,7 @@ allowFontScaling: boolean = true; // Android and iOS only
 // null/undefined (default) - inheret from parent/global default
 // 0 - no max
 // >= 1 - sets the maxContentSizeMultiplier of this node to this value
-// Note: Older versions of React Native don’t support this interface. 
+// Note: Older versions of React Native don’t support this interface.
 maxContentSizeMultiplier: number = null; // Android and iOS only
 
 // For non-zero values, truncates with ellipsis if necessary
@@ -29,13 +29,17 @@ numberOfLines: number = 0;
 onHoverStart: (e: SyntheticEvent) => void = undefined;
 onHoverEnd: (e: SyntheticEvent) => void = undefined;
 
-// Event called when the touch or mouse button is released 
+// Event called when the touch or mouse button is released
 // within the bounds of the view and the press has not been canceled
 onPress: (e: SyntheticEvent, url: string) => void = undefined;
 
-// Event called when a long touch or mouse (> 1000ms) button is released 
+// Event called when a long touch or mouse (> 1000ms) button is released
 // within the bounds of the view and the press has not been canceled
 onLongPress: (e: SyntheticEvent, url:string) => void = undefined;
+
+// Event called when context menu is triggered, either by
+// right mouse button click or context menu key
+onContextMenu: (e: MouseEvent) => void = undefined;
 
 // Can the link be included in a text selection?
 selectable: boolean = false;

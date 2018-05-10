@@ -182,19 +182,19 @@ These types apply only to React Native platforms, and they currently rely on the
 // Additional options that affect card transitions
 type CustomNavigatorSceneConfig = {
   // Optional transition styles
-  transitionStyle?: (sceneIndex: number, 
+  transitionStyle?: (sceneIndex: number,
     sceneDimensions: Dimensions) =>
     NavigationTransitionStyleConfig;
 
   // Optional overrides for duration, easing, and timing
   transitionSpec?: NavigationTransitionSpec;
- 
+
   // Optional cardStyle override
   cardStyle?: ViewStyleRuleSet;
- 
+
   // Optionally hide drop shadow
   hideShadow?: boolean;
- 
+
   // Optionally flip the visual order of the last two scenes
   presentBelowPrevious?: boolean;
 };
@@ -227,7 +227,7 @@ These props apply only to React Native platforms, and they currently rely on the
 navigateBackCompleted: () => void;
 
 // Called when a transition begins; works only
-// on native 
+// on native
 transitionStarted: (progress?: RX.AnimatedValue,
     toRouteId?: string, fromRouteId?: string,
     toIndex?: number, fromIndex?: number) => void = undefined;
