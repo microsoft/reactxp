@@ -451,7 +451,7 @@ export enum AccessibilityTrait {
 }
 
 // When multiple components with autoFocus=true are mounting at the same time,
-// and/or multiple focus() calls are happening during the same render cycle,
+// and/or multiple requestFocus() calls are happening during the same render cycle,
 // it is possible to specify a callback which will choose one from those multiple.
 // To set this callback use View's arbitrateFocus property.
 export type FocusArbitrator = (candidates: FocusCandidate[]) => FocusCandidate | undefined;
@@ -592,17 +592,6 @@ export interface AnimatedTextProps extends TextPropsShared {
 
 export type ViewLayerType = 'none' | 'software' | 'hardware';
 
-export enum RestrictFocusType {
-    Unrestricted = 0,
-    // When restrictFocusWithin=Restricted, the focus will not go outside of this View
-    // when you're using Tab navigation.
-    Restricted = 1,
-    // The same as Restricted, but will also focus first focusable component inside
-    // this View when UserInterface.isNavigatingWithKeyboard() is true, to save a Tab
-    // press for the cases the user is tabbing already.
-    RestrictedFocusFirst = 2
-}
-
 export enum LimitFocusType {
     Unlimited = 0,
     // When limitFocusWithin=Limited, the View and the focusable components inside
@@ -621,12 +610,12 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
     viewLayerTypeAndroid?: ViewLayerType; // Android only property
 
-    restrictFocusWithin?: RestrictFocusType; // Web-only, during the keyboard navigation, the focus will not go outside this view
+    restrictFocusWithin?: boolean; // Web-only, during the keyboard navigation, the focus will not go outside this view
     limitFocusWithin?: LimitFocusType; // Web-only, make the view and all focusable subelements not focusable
 
     autoFocus?: boolean; // The component is a candidate for being autofocused.
     arbitrateFocus?: FocusArbitrator; // When multiple components with autoFocus=true inside this View are mounting at the same time,
-                                      // and/or multiple components inside this view have received focus() call during the same
+                                      // and/or multiple components inside this view have received requestFocus() call during the same
                                       // render cycle, this callback will be called so that it's possible for the application to
                                       // decide which one should actually be focused.
 

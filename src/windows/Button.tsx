@@ -83,7 +83,7 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
         );
     }
 
-    realFocus() {
+    focus() {
         if (this._focusableElement && this._focusableElement.focus) {
             this._focusableElement.focus();
         }

@@ -170,7 +170,7 @@ export class Button extends ButtonBase {
         this._isMounted = true;
 
         if (this.props.autoFocus) {
-            this.focus();
+            this.requestFocus();
         }
     }
 
@@ -265,10 +265,10 @@ export class Button extends ButtonBase {
         return {top: 20, left: 20, right: 20, bottom: 100};
     }
 
-    focus() {
+    requestFocus() {
         FocusArbitratorProvider.requestFocus(
             this,
-            () => this.realFocus(),
+            () => this.focus(),
             () => this._isMounted
         );
     }
@@ -277,7 +277,7 @@ export class Button extends ButtonBase {
          // native mobile platforms doesn't have the notion of blur for buttons, so ignore.
     }
 
-    realFocus() {
+    focus() {
         if (this._isMounted) {
             AccessibilityUtil.setAccessibilityFocus(this);
         }

@@ -16,6 +16,7 @@ import PropTypes = require('prop-types');
 import AppConfig from '../common/AppConfig';
 import { View as ViewCommon, ViewContext as ViewContextCommon } from '../native-common/View';
 import EventHelpers from '../native-common/utils/EventHelpers';
+import { RestrictFocusType } from '../common/utils/FocusManager';
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent, FocusManager } from '../native-desktop/utils/FocusManager';
 
 const KEY_CODE_ENTER = 13;
@@ -56,22 +57,17 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     private _focusableElement : RNW.FocusableWindows<RN.ViewProps> | null = null;
 
     private _focusManager: FocusManager|undefined;
-    private _restrictFocusWithin = false;
     private _limitFocusWithin = false;
     private _isFocusLimited = false;
 
     constructor(props: Types.ViewProps, context: ViewContext) {
         super(props, context);
 
-        this._restrictFocusWithin =
-            (props.restrictFocusWithin === Types.RestrictFocusType.Restricted) ||
-            (props.restrictFocusWithin === Types.RestrictFocusType.RestrictedFocusFirst);
-
         this._limitFocusWithin =
             (props.limitFocusWithin === Types.LimitFocusType.Limited) ||
             (props.limitFocusWithin === Types.LimitFocusType.Accessible);
 
-        if (this._restrictFocusWithin || this._limitFocusWithin) {
+        if (this.props.restrictFocusWithin || this._limitFocusWithin) {
             this._focusManager = new FocusManager(context && context.focusManager);
 
             if (this._limitFocusWithin) {
@@ -97,8 +93,8 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     componentDidMount() {
         super.componentDidMount();
         if (this._focusManager) {
-            if (this._restrictFocusWithin) {
-                this._focusManager.restrictFocusWithin(this.props.restrictFocusWithin!!!);
+            if (this.props.restrictFocusWithin) {
+                this._focusManager.restrictFocusWithin(RestrictFocusType.RestrictedFocusFirst);
             }
 
             if (this._limitFocusWithin && this._isFocusLimited) {
@@ -250,7 +246,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         this._focusableElement = btn;
     }
 
-    realFocus() {
+    focus() {
         // Only forward to Button.
         // The other cases are RN.View based elements with no meaningful focus support
         if (this._focusableElement) {
@@ -283,13 +279,13 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 
     setFocusRestricted(restricted: boolean) {
-        if (!this._focusManager || !this._restrictFocusWithin) {
+        if (!this._focusManager || !this.props.restrictFocusWithin) {
             console.error('View: setFocusRestricted method requires restrictFocusWithin property to be set');
             return;
         }
 
         if (restricted) {
-            this._focusManager.restrictFocusWithin(this.props.restrictFocusWithin!!!);
+            this._focusManager.restrictFocusWithin(RestrictFocusType.RestrictedFocusFirst);
         } else {
             this._focusManager.removeFocusRestriction();
         }

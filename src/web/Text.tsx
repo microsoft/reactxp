@@ -117,7 +117,7 @@ export class Text extends TextBase {
         this._isMounted = true;
 
         if (this.props.autoFocus) {
-            this.focus();
+            this.requestFocus();
         }
     }
 
@@ -158,15 +158,15 @@ export class Text extends TextBase {
         }
     }
 
-    focus() {
+    requestFocus() {
         FocusArbitratorProvider.requestFocus(
             this,
-            () => this.realFocus(),
+            () => this.focus(),
             () => this._isMounted
         );
     }
 
-    realFocus() {
+    focus() {
         if (this._isMounted) {
             const el = ReactDOM.findDOMNode(this) as HTMLDivElement;
             if (el) {

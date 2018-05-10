@@ -20,6 +20,7 @@ import Styles from './Styles';
 import Types = require('../common/Types');
 import ViewBase from './ViewBase';
 import { PopupContainer, PopupComponent } from './PopupContainer';
+import { RestrictFocusType } from '../common/utils/FocusManager';
 import { FocusManager, applyFocusableComponentMixin } from './utils/FocusManager';
 
 const _styles = {
@@ -94,7 +95,6 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     };
 
     private _focusManager: FocusManager|undefined;
-    private _restrictFocusWithin = false;
     private _limitFocusWithin = false;
     private _isFocusLimited = false;
     private _isFocusRestricted: boolean|undefined;
@@ -110,15 +110,11 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     constructor(props: Types.ViewProps, context: ViewContext) {
         super(props, context);
 
-        this._restrictFocusWithin =
-            (props.restrictFocusWithin === Types.RestrictFocusType.Restricted) ||
-            (props.restrictFocusWithin === Types.RestrictFocusType.RestrictedFocusFirst);
-
         this._limitFocusWithin =
             (props.limitFocusWithin === Types.LimitFocusType.Limited) ||
             (props.limitFocusWithin === Types.LimitFocusType.Accessible);
 
-        if (this._restrictFocusWithin || this._limitFocusWithin) {
+        if (this.props.restrictFocusWithin || this._limitFocusWithin) {
             this._focusManager = new FocusManager(context && context.focusManager);
 
             if (this._limitFocusWithin) {
@@ -277,7 +273,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
     }
 
     setFocusRestricted(restricted: boolean) {
-        if (!this._focusManager || !this._restrictFocusWithin) {
+        if (!this._focusManager || !this.props.restrictFocusWithin) {
             if (AppConfig.isDevelopmentMode()) {
                 console.error('View: setFocusRestricted method requires restrictFocusWithin property to be set');
             }
@@ -286,7 +282,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
         if (!this.isHidden()) {
             if (restricted) {
-                this._focusManager.restrictFocusWithin(this.props.restrictFocusWithin!!!);
+                this._focusManager.restrictFocusWithin(RestrictFocusType.RestrictedFocusFirst);
             } else {
                 this._focusManager.removeFocusRestriction();
             }
@@ -416,8 +412,8 @@ export class View extends ViewBase<Types.ViewProps, {}> {
 
     enableFocusManager() {
         if (this._focusManager) {
-            if (this._restrictFocusWithin && this._isFocusRestricted !== false) {
-                this._focusManager.restrictFocusWithin(this.props.restrictFocusWithin!!!);
+            if (this.props.restrictFocusWithin && this._isFocusRestricted !== false) {
+                this._focusManager.restrictFocusWithin(RestrictFocusType.RestrictedFocusFirst);
             }
 
             if (this._limitFocusWithin && this._isFocusLimited) {
@@ -469,15 +465,15 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
     }
 
-    focus() {
+    requestFocus() {
         FocusArbitratorProvider.requestFocus(
             this,
-            () => this.realFocus(),
+            () => this.focus(),
             () => this._isMounted
         );
     }
 
-    realFocus() {
+    focus() {
         if (this._isMounted) {
             const el = ReactDOM.findDOMNode(this) as HTMLDivElement;
             if (el) {

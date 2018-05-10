@@ -129,7 +129,7 @@ export class Button extends ButtonBase {
         this._isMounted = true;
 
         if (this.props.autoFocus) {
-            this.focus();
+            this.requestFocus();
         }
     }
 
@@ -137,15 +137,15 @@ export class Button extends ButtonBase {
         this._isMounted = false;
     }
 
-    focus() {
+    requestFocus() {
         FocusArbitratorProvider.requestFocus(
             this,
-            () => this.realFocus(),
+            () => this.focus(),
             () => this._isMounted
         );
     }
 
-    realFocus() {
+    focus() {
         if (this._isMounted) {
             const el = ReactDOM.findDOMNode(this) as HTMLButtonElement;
             if (el) {

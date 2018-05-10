@@ -122,7 +122,7 @@ export class FocusArbitratorProvider {
                 const component = candidate.component as any;
 
                 // Make sure to pass FocusableComponents only.
-                if (component.focus && component.blur && component.realFocus) {
+                if (component.focus && component.blur && component.requestFocus) {
                     component.__focusCandidateInternal = candidate;
 
                     toArbitrate.push({

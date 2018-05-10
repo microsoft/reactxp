@@ -82,7 +82,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
         this._isMounted = true;
 
         if (this.props.autoFocus) {
-            this.focus();
+            this.requestFocus();
         }
     }
 
@@ -90,15 +90,15 @@ export class Link extends React.Component<Types.LinkProps, {}> {
         this._isMounted = false;
     }
 
-    focus() {
+    requestFocus() {
         FocusArbitratorProvider.requestFocus(
             this,
-            () => this.realFocus(),
+            () => this.focus(),
             () => this._isMounted
         );
     }
 
-    realFocus() {
+    focus() {
         if (this._isMounted) {
             const el = ReactDOM.findDOMNode(this) as HTMLAnchorElement;
             if (el) {

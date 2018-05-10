@@ -41,7 +41,7 @@ export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewP
     abstract setFocusRestricted(restricted: boolean): void;
     abstract setFocusLimited(limited: boolean): void;
     abstract focus(): void;
-    abstract realFocus(): void;
+    abstract requestFocus(): void;
     abstract blur(): void;
 }
 
@@ -131,13 +131,13 @@ export abstract class Accessibility {
 
 export interface FocusableComponent {
     focus(): void;
-    realFocus(): void;
+    requestFocus(): void;
     blur(): void;
 }
 
 export abstract class Button extends React.Component<Types.ButtonProps, any> implements FocusableComponent {
     abstract focus(): void;
-    abstract realFocus(): void;
+    abstract requestFocus(): void;
     abstract blur(): void;
 }
 
@@ -163,7 +163,7 @@ export abstract class Clipboard {
 
 export abstract class Link extends React.Component<Types.LinkProps, any> implements FocusableComponent {
     abstract focus(): void;
-    abstract realFocus(): void;
+    abstract requestFocus(): void;
     abstract blur(): void;
 }
 
@@ -257,7 +257,7 @@ export abstract class Styles {
 
 export abstract class Text extends React.Component<Types.TextProps, any> implements FocusableComponent {
     abstract focus(): void;
-    abstract realFocus(): void;
+    abstract requestFocus(): void;
     abstract blur(): void;
 }
 
@@ -272,7 +272,7 @@ export abstract class TextInput extends React.Component<Types.TextInputProps, an
     };
     abstract setValue(value: string): void;
     abstract focus(): void;
-    abstract realFocus(): void;
+    abstract requestFocus(): void;
     abstract blur(): void;
 }
 
@@ -287,7 +287,7 @@ export abstract class View extends ViewBase<Types.ViewProps, any> implements Foc
     abstract setFocusRestricted(restricted: boolean): void;
     abstract setFocusLimited(limited: boolean): void;
     abstract focus(): void;
-    abstract realFocus(): void;
+    abstract requestFocus(): void;
     abstract blur(): void;
 }
 

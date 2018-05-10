@@ -358,10 +358,10 @@ export class FocusManager extends FocusManagerBase {
 export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function) {
     applyFocusableComponentMixinCommon(Component, isConditionallyFocusable);
 
-    const origFocus = Component.prototype.realFocus;
+    const origFocus = Component.prototype.focus;
 
     if (origFocus) {
-        Component.prototype.realFocus = function () {
+        Component.prototype.focus = function () {
             const el = ReactDOM.findDOMNode(this) as HTMLElement;
             if (el) {
                 FocusManager.setLastFocusedProgrammatically(el);

@@ -45,15 +45,24 @@ class AnimatedWrapper<P, T> extends RX.AnimatedComponent<P, T> {
     }
 
     focus() {
-        // Native mobile platform doesn't have the notion of focus for AnimatedViews
+        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
+        if (innerComponent && innerComponent.focus) {
+            innerComponent.focus();
+        }
     }
 
-    realFocus() {
-        // Native mobile platform doesn't have the notion of focus for AnimatedViews, so ignore.
+    requestFocus() {
+        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
+        if (innerComponent && innerComponent.requestFocus) {
+            innerComponent.requestFocus();
+        }
     }
 
     blur() {
-        // Native mobile platform doesn't have the notion of blur for AnimatedViews, so ignore.
+        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
+        if (innerComponent && innerComponent.blur) {
+            innerComponent.blur();
+        }
     }
 
     protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
@@ -63,7 +72,7 @@ class AnimatedWrapper<P, T> extends RX.AnimatedComponent<P, T> {
 
 class AnimatedImage extends AnimatedWrapper<Types.AnimatedImageProps, {}> {
     render() {
-        const additionalProps = {ref: this._onMount, style: this.props.style };
+        const additionalProps = { ref: this._onMount, style: this.props.style };
         return (
             <animatedClasses.Image
                 { ...this.props }
@@ -77,7 +86,7 @@ class AnimatedImage extends AnimatedWrapper<Types.AnimatedImageProps, {}> {
 
 class AnimatedText extends AnimatedWrapper<Types.AnimatedTextProps, {}>  {
     render() {
-        const additionalProps = {ref: this._onMount, style: this.props.style };
+        const additionalProps = { ref: this._onMount, style: this.props.style };
         return (
             <animatedClasses.Text
                 { ...this.props }
@@ -90,20 +99,6 @@ class AnimatedText extends AnimatedWrapper<Types.AnimatedTextProps, {}>  {
 }
 
 class AnimatedTextInput extends AnimatedWrapper<Types.AnimatedTextInputProps, {}>   {
-    focus() {
-        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
-        if (innerComponent && innerComponent.focus) {
-            innerComponent.focus();
-        }
-    }
-
-    blur() {
-        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
-        if (innerComponent && innerComponent.focus) {
-            innerComponent.blur();
-        }
-    }
-
     render() {
         const additionalProps = {ref: this._onMount, style: this.props.style };
         return (
@@ -140,27 +135,6 @@ class AnimatedView extends AnimatedWrapper<Types.AnimatedViewProps, {}> {
 }
 
 class FocusRestrictedAnimatedView extends AnimatedView {
-    focus() {
-        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
-        if (innerComponent && innerComponent.focus) {
-            innerComponent.focus();
-        }
-    }
-
-    realFocus() {
-        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
-        if (innerComponent && innerComponent.realFocus) {
-            innerComponent.realFocus();
-        }
-    }
-
-    blur() {
-        const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
-        if (innerComponent && innerComponent.focus) {
-            innerComponent.blur();
-        }
-    }
-
     setFocusRestricted(restricted: boolean) {
         const innerComponent = this._mountedComponent ? (this._mountedComponent as any)._component : undefined;
         if (innerComponent && innerComponent.setFocusRestricted) {

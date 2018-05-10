@@ -57,7 +57,7 @@ export class Link extends React.Component<Types.LinkProps, {}> {
 
     componentDidMount() {
         if (this.props.autoFocus) {
-            this.focus();
+            this.requestFocus();
         }
     }
 
@@ -97,15 +97,15 @@ export class Link extends React.Component<Types.LinkProps, {}> {
         }
     }
 
-    focus() {
+    requestFocus() {
         FocusArbitratorProvider.requestFocus(
             this,
-            () => this.realFocus(),
+            () => this.focus(),
             () => !!this._mountedComponent
         );
     }
 
-    realFocus() {
+    focus() {
         if (this._mountedComponent) {
             AccessibilityUtil.setAccessibilityFocus(this);
         }

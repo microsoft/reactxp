@@ -243,7 +243,7 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         }
 
         if (this.props.autoFocus) {
-            this.focus();
+            this.requestFocus();
         }
     }
 
@@ -525,15 +525,15 @@ export class View extends ViewBase<Types.ViewProps, {}> {
         // Nothing to do.
     }
 
-    focus() {
+    requestFocus() {
         FocusArbitratorProvider.requestFocus(
             this,
-            () => this.realFocus(),
+            () => this.focus(),
             () => this._isMounted
         );
     }
 
-    realFocus() {
+    focus() {
         if (this._isMounted) {
             AccessibilityUtil.setAccessibilityFocus(this);
         }

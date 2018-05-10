@@ -68,7 +68,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     componentDidMount() {
         if (this.props.autoFocus) {
-            this.focus();
+            this.requestFocus();
         }
     }
 
@@ -198,15 +198,15 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    focus() {
+    requestFocus() {
         FocusArbitratorProvider.requestFocus(
             this,
-            () => this.realFocus(),
+            () => this.focus(),
             () => !!this._mountedComponent
         );
     }
 
-    realFocus() {
+    focus() {
         if (this._mountedComponent) {
             this._mountedComponent.focus();
         }
