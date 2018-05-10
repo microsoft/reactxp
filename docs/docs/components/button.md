@@ -19,7 +19,8 @@ accessibilityLabel: boolean = false;
 // Traits used to hint screen readers, etc.
 accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 
-// Id of an expandable element revealed by the button. Describes a relation between button and element to screen reader.
+// Id of an expandable element revealed by the button. Describes a relation
+// between button and element to screen reader.
 ariaControls: string = undefined; // Web only
 
 // Specifies a unique id for an HTML element
@@ -34,7 +35,8 @@ delayLongPress: number = 1000;
 // If disabled, touch and mouse input events are ignored
 disabled: boolean = false;
 
-// By default, opacity of a disabled element is 0.5. This value can be overriden with this property
+// By default, opacity of a disabled element is 0.5. This value can be
+// overriden with this property
 disabledOpacity: number = undefined;
 
 // Called when VoiceOver is on and the user double tapped to

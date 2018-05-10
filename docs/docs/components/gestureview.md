@@ -47,7 +47,8 @@ accessibilityLabel: string = undefined;
 accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 
 // Expose the element and/or its children as accessible to Screen readers
-importantForAccessibility?: ImportantForAccessibility = ImportantForAccessibility.Yes;
+importantForAccessibility?: ImportantForAccessibility =
+    ImportantForAccessibility.Yes;
 ```
 
 ## Styles
