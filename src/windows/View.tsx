@@ -7,6 +7,7 @@
 * Windows-specific implementation of View.
 */
 
+import _ = require('../native-common/lodashMini');
 import React = require('react');
 import RN = require('react-native');
 import RNW = require('react-native-windows');
@@ -19,6 +20,7 @@ import EventHelpers from '../native-common/utils/EventHelpers';
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent, FocusManager } from '../native-desktop/utils/FocusManager';
 import PopupContainerView from '../native-common/PopupContainerView';
 import { PopupComponent } from '../common/PopupContainerViewBase';
+import { AccessibilityTrait } from '../common/Types';
 
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_SPACE = 32;
@@ -142,6 +144,14 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     protected _buildInternalProps(props: Types.ViewProps) {
         // Base class does the bulk of _internalprops creation
         super._buildInternalProps(props);
+
+        // Group view descendants should be visible to UI automation.
+        if (((props && props.accessibilityTraits === AccessibilityTrait.Group) ||
+            (_.isArray(props.accessibilityTraits) && (props.accessibilityTraits.indexOf(AccessibilityTrait.Group) !== -1))) &&
+            ((props.importantForAccessibility === Types.ImportantForAccessibility.Yes) ||
+             (props.accessibilityLabel && props.accessibilityLabel.length > 0))) {
+            this._internalProps.importantForAccessibility = 'yes-dont-hide-descendants';
+        }
 
         if (props.onKeyPress) {
 
