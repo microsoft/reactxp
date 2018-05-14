@@ -853,6 +853,7 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
     allowFontScaling?: boolean;
     maxContentSizeMultiplier?: number;
     tabIndex?: number;
+    accessibilityId?: string;
     autoFocus?: boolean; // The component is a candidate for being autofocused.
 
     onPress?: (e: RX.Types.SyntheticEvent, url: string) => void;

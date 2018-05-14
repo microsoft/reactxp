@@ -24,6 +24,12 @@ accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 accessibilityLiveRegion: AccessibilityLiveRegion =
     undefined; // Android and web only
 
+// It is hard or impossible to tell by a reference to an instance of a component
+// from where this component has been instantiated. You can assign this property
+// and check instance.props.accessibilityId. For example accessibilityId is used
+// in View's FocusArbitrator callback.
+accessibilityId: string = undefined;
+
 // Expose the element and/or its children as accessible to Screen readers
 importantForAccessibility?: ImportantForAccessibility = Auto;
 
@@ -81,10 +87,10 @@ limitFocusWithin: LimitFocusType = LimitFocusType.Unlimited;
 
 // Should be focused when the component is mounted, see also arbitrateFocus
 // property below.
-// WARNING: autoFocus=true means that this View's focus() method will be called,
-// however calling focus() might have no effect (for example on web View is
-// focusable only when tabIndex is specified), the application has to handle
-// this either while setting this property or in the FocusArbitrator callback.
+// WARNING: autoFocus=true means that this View's requestFocus() method will be
+// called, however calling requestFocus() might have no effect (for example on web
+// View is focusable only when tabIndex is specified), the application has to handle
+// this either while setting this property or in the View's FocusArbitrator callback.
 autoFocus: boolean = false;
 
 // When multiple components with autoFocus=true inside this View are mounting at
@@ -198,7 +204,7 @@ focus(): void;
 // called will get a focus() call, but you can specify arbitrateFocus property
 // of a parent View and provide the callback to decide which one of that View's
 // descendants should be focused. This is useful for the accessibility: when
-// cosecutive focus() calls happen one after another, the next one interrupts
+// consecutive focus() calls happen one after another, the next one interrupts
 // the screen reader announcement for the previous one and the user gets
 // confused. autoFocus property of focusable components also uses requestFocus().
 requestFocus(): void;
