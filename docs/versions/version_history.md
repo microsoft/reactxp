@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.1.2-rc.2 of reactxp
+_Released 15 May 2018_
+Improved keyboard focus support. Added focus, blur and requestFocus methods to several existing components. Added new focusArbitrator prop to RX.View, which allows callback to arbitrate between multiple children that are requesting autofocus.
+Fixed bug that caused group view children to be invisible to UI automation.
+Improved keyboard support for Windows implementation.
+
 #### Version 1.1.2-rc.1 of reactxp
 _Released 9 May 2018_
 Fixed bug in Windows implementation that prevented RX.Input.keyDownEvent from being dispatched.
