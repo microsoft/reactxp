@@ -116,22 +116,28 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
             AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.NoHideDescendants)   :
             undefined;  // default
 
-        return (
-            <RN.Animated.View style={ _styles.rootViewStyle }>
-                <RN.View 
-                    style={ _styles.rootViewStyle }
-                    importantForAccessibility={ importantForAccessibility }>
-                    { this.state.mainView }
-                </RN.View>
-                { modalLayerView }
-                { popupLayerView }
+        let content = (
+            <RN.Animated.View style={ _styles.rootViewStyle }>
+                <RN.View 
+                    style={ _styles.rootViewStyle }
+                    importantForAccessibility={ importantForAccessibility }>
+                    { this.state.mainView }
+                </RN.View>
+                { modalLayerView }
+                { popupLayerView }
                 <RN.View
                     style={ _styles.liveRegionContainer }
                     accessibilityLabel={ this.state.announcementText }
                     accessibilityLiveRegion={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
                 />
-            </RN.Animated.View>
-        );
+            </RN.Animated.View>
+        );
+
+        return this.renderTopView(content);
+    }
+
+    renderTopView(content: JSX.Element): JSX.Element {
+        return  content;
     }
 }
 

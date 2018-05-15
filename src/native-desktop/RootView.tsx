@@ -14,7 +14,7 @@ import PropTypes = require('prop-types');
 import { RootView as RootViewBase, RootViewUsingProps as RootViewUsingPropsBase,
     BaseRootViewProps, RootViewPropsWithMainViewType, RootViewState, BaseRootView } from '../native-common/RootView';
 import Input from './Input';
-import UserInterface from './UserInterface';
+import UserInterface from '../native-common/UserInterface';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import FocusManager from './utils/FocusManager';
 import FrontLayerViewManager from '../native-common/FrontLayerViewManager';
@@ -24,9 +24,9 @@ type SyntheticEvent = React.SyntheticEvent<any>;
 const KEY_CODE_TAB = 9;
 const KEY_CODE_ESC = 27;
 
-const styles = RN.StyleSheet.create({
-    appWrapper: {
-      flex: 1
+const _styles = RN.StyleSheet.create({
+    appWrapperStyle : {
+        flex: 1
     }
   });
 
@@ -34,7 +34,7 @@ const styles = RN.StyleSheet.create({
 // Mixin with keyboard management behaviors. It enhances the two RootView flavors by adding:
 // 1. Support for maintaining UserInterface.keyboardNavigationEvent
 //   React Native doesn't offer a convenient mechanism to peek into keyboard/mouse events globally (the way
-// addEventListener achieves in the Web counterpart), so we rely on a spying view we render.
+// addEventListener achieves in the Web counterpart), so we rely on a spying view we render and/or more custom mechanisms.
 // 2. Redirection to Input.ts
 // 3. A place for the root FocusManager
 type Constructor<T extends React.Component> = new (...args: any[]) => T;
@@ -134,8 +134,12 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
             };
         }
 
-        render() {
-            let content = super.render();
+        renderTopView(content: JSX.Element) : JSX.Element {
+            //
+            // As a default implementation we use a regular RN.View to intercept keyboard/touches.
+            // this is not perfect since the keyboard events are not standardized in RN.
+            // Per platform specializations may provide a better way
+            //
 
             // Using "any" since onKeyDown/onKeyUp/etc. are not defined at RN.View property level
             // Yet the handlers are called as part of capturing/bubbling events for/from children.
@@ -144,17 +148,18 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
                 onKeyPress: this._onKeyPress,
                 onKeyDownCapture: this._onKeyDownCapture,
                 onKeyUp: this._onKeyUp,
-                onTouchStartCapture: this._onTouchStartCapture
+                onTouchStartCapture: this._onTouchStartCapture,
+                collapsable: false
             };
 
-            return (
+            return  (
                 <RN.View 
                     { ...internalProps }
-                    style={ styles.appWrapper }
+                     style={ _styles.appWrapperStyle }
                 >
                     { content }
                 </RN.View>
-            );
+            );
         }
     };
 }

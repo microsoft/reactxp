@@ -10,7 +10,7 @@
 import React = require('react');
 import { Button as ButtonBase } from '../native-common/Button';
 import EventHelpers from '../native-common/utils/EventHelpers';
-import UserInterface from '../native-desktop/UserInterface';
+import UserInterface from '../native-common/UserInterface';
 import RN = require('react-native');
 import RNW = require('react-native-windows');
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
