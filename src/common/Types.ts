@@ -1308,7 +1308,7 @@ export enum LinkingErrorCode {
 
 export interface LinkingErrorInfo {
     code: LinkingErrorCode;
-    url: string;
+    url?: string;
     description?: string;
 }
 
