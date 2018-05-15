@@ -7,6 +7,7 @@
 * Windows-specific implementation of View.
 */
 
+import _ = require('../native-common/lodashMini');
 import React = require('react');
 import RN = require('react-native');
 import RNW = require('react-native-windows');
@@ -145,6 +146,17 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     protected _buildInternalProps(props: Types.ViewProps) {
         // Base class does the bulk of _internalprops creation
         super._buildInternalProps(props);
+
+        // On Windows a view with importantForAccessibility='Yes' or non-empty accessibilityLabel will hide its children.
+        // However, a view that is also a group should keep children visible to UI Automation. The following condition checks
+        // and sets RNW importantForAccessibility property to 'yes-dont-hide-descendants' to keep view children visible.
+        if (((props.accessibilityTraits === Types.AccessibilityTrait.Group) ||
+            (_.isArray(props.accessibilityTraits) && (props.accessibilityTraits.indexOf(Types.AccessibilityTrait.Group) !== -1))) &&
+            ((props.importantForAccessibility === Types.ImportantForAccessibility.Yes) ||
+             (props.importantForAccessibility === Types.ImportantForAccessibility.Auto &&
+                props.accessibilityLabel && props.accessibilityLabel.length > 0))) {
+            this._internalProps.importantForAccessibility = 'yes-dont-hide-descendants';
+        }
 
         if (props.onKeyPress) {
 
