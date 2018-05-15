@@ -14,7 +14,7 @@ import PropTypes = require('prop-types');
 import { RootView as RootViewBase, RootViewUsingProps as RootViewUsingPropsBase,
     BaseRootViewProps, RootViewPropsWithMainViewType, RootViewState, BaseRootView } from '../native-common/RootView';
 import Input from './Input';
-import UserInterface from './UserInterface';
+import UserInterface from '../native-common/UserInterface';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import FocusManager from './utils/FocusManager';
 import FrontLayerViewManager from '../native-common/FrontLayerViewManager';

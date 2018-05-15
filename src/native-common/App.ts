@@ -9,9 +9,10 @@
 
 import RN = require('react-native');
 
-import { RootView } from './RootView';
+import { RootView, RootViewUsingProps } from './RootView';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
+import UserInterface from './UserInterface';
 
 const _rnStateToRxState: {[key: string]: Types.AppActivationState} = {
     'unknown': Types.AppActivationState.Active,
@@ -42,6 +43,7 @@ export class App extends RX.App {
         super.initialize(debug, development);
         window['rxdebug'] = debug;
         RN.AppRegistry.registerComponent('RXApp', this.getRootViewFactory());
+        UserInterface.registerRootViewUsingPropsFactory(this.getRootViewUsingPropsFactory());
     }
 
     getActivationState(): Types.AppActivationState {
@@ -50,6 +52,10 @@ export class App extends RX.App {
 
     protected getRootViewFactory(): RN.ComponentProvider {
         return () => RootView;
+    }
+
+    protected getRootViewUsingPropsFactory(): RN.ComponentProvider {
+        return () => RootViewUsingProps;
     }
 }
 

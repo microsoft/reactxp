@@ -14,7 +14,7 @@ import { FocusManager as FocusManagerBase,
 
 import AppConfig from '../../common/AppConfig';
 import Platform from '../../native-common/Platform';
-import UserInterface from '../UserInterface';
+import UserInterface from '../../native-common/UserInterface';
 
 const isNativeWindows: boolean = Platform.getType() === 'windows';
 

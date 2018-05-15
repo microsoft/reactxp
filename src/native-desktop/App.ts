@@ -8,13 +8,17 @@
 */
 
 import { ComponentProvider } from 'react-native';
-import { RootView } from './RootView';
+import { RootView, RootViewUsingProps } from './RootView';
 import { App as AppCommon } from '../native-common/App';
 
 export class App extends AppCommon {
 
     protected getRootViewFactory(): ComponentProvider {
         return () => RootView;
+    }
+
+    protected getRootViewUsingPropsFactory(): ComponentProvider {
+        return () => RootViewUsingProps;
     }
 }
 

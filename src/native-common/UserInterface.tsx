@@ -14,18 +14,20 @@ import RN = require('react-native');
 import SyncTasks = require('synctasks');
 
 import MainViewStore from './MainViewStore';
-import { RootViewUsingProps } from './RootView';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export class UserInterface extends RX.UserInterface {
     private _touchLatencyThresholhdMs: number|undefined;
+    private _isNavigatingWithKeyboard: boolean = false;
+    private _rootViewUsingPropsFactory: RN.ComponentProvider | undefined;
 
     constructor() {
         super();
         RN.Dimensions.addEventListener('change', (event) => {
             this.contentSizeMultiplierChangedEvent.fire(event.window.fontScale);
         });
+        this.keyboardNavigationEvent.subscribe(this._keyboardNavigationStateChanged);
     }
 
     measureLayoutRelativeToWindow(component: React.Component<any, any>):
@@ -143,21 +145,28 @@ export class UserInterface extends RX.UserInterface {
         MainViewStore.setMainView(element);
     }
 
-    registerRootView(viewKey: string, getComponentFunc: Function) {
-        RN.AppRegistry.registerComponent(viewKey, () => {
-            class RootViewWrapper extends React.Component<any, any> {
-                render() {
-                    return (
-                        <RootViewUsingProps
-                            reactxp_mainViewType={ getComponentFunc() }
-                            { ...this.props }
-                        />
-                    );
-                }
-            }
+    registerRootViewUsingPropsFactory(factory: RN.ComponentProvider) {
+        this._rootViewUsingPropsFactory = factory;
+    }
 
-            return RootViewWrapper;
-        });
+    registerRootView(viewKey: string, getComponentFunc: Function) {
+        if (this._rootViewUsingPropsFactory) {
+            const RootViewUsingProps = this._rootViewUsingPropsFactory();
+            RN.AppRegistry.registerComponent(viewKey, () => {
+                class RootViewWrapper extends React.Component<any, any> {
+                    render() {
+                        return (
+                            <RootViewUsingProps
+                                reactxp_mainViewType={ getComponentFunc() }
+                                { ...this.props }
+                            />
+                        );
+                    }
+                }
+
+                return RootViewWrapper;
+            });
+        }
     }
 
     renderMainView() {
@@ -178,7 +187,11 @@ export class UserInterface extends RX.UserInterface {
     }
 
     isNavigatingWithKeyboard(): boolean {
-        return false;
+        return this._isNavigatingWithKeyboard;
+    }
+
+    private _keyboardNavigationStateChanged = (isNavigatingWithKeyboard: boolean) => {
+        this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
     }
 }
 
