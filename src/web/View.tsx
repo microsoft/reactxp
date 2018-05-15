@@ -433,7 +433,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         super.componentDidMount();
 
         if (this.props.autoFocus) {
-            this.focus();
+            this.requestFocus();
         }
 
         // If we are mounted as visible, do our initialization now. If we are hidden, it will
