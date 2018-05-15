@@ -50,7 +50,7 @@ export class Linking extends CommonLinking {
         return defer.promise();
     }
 
-    getInitialUrl(): SyncTasks.Promise<string> {
+    getInitialUrl(): SyncTasks.Promise<string|null> {
         let defer = SyncTasks.Defer<string>();
 
         RN.Linking.getInitialURL().then(url => {
@@ -58,7 +58,7 @@ export class Linking extends CommonLinking {
         }).catch(error => {
             defer.reject({
                 code: Types.LinkingErrorCode.InitialUrlNotFound,
-                url: '',
+                url: null,
                 description: error
             } as Types.LinkingErrorInfo);
         });

@@ -110,7 +110,7 @@ export abstract class Popup {
 
 export abstract class Linking {
     // Incoming deep links
-    abstract getInitialUrl(): SyncTasks.Promise<string|undefined>;
+    abstract getInitialUrl(): SyncTasks.Promise<string|null>;
     deepLinkRequestEvent = new SubscribableEvent<(url: string) => void>();
 
     // Outgoing deep links
