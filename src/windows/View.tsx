@@ -150,7 +150,8 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         if (((props.accessibilityTraits === Types.AccessibilityTrait.Group) ||
             (_.isArray(props.accessibilityTraits) && (props.accessibilityTraits.indexOf(Types.AccessibilityTrait.Group) !== -1))) &&
             ((props.importantForAccessibility === Types.ImportantForAccessibility.Yes) ||
-             (props.accessibilityLabel && props.accessibilityLabel.length > 0))) {
+             (props.importantForAccessibility === Types.ImportantForAccessibility.Auto &&
+                props.accessibilityLabel && props.accessibilityLabel.length > 0))) {
             this._internalProps.importantForAccessibility = 'yes-dont-hide-descendants';
         }
 
