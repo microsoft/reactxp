@@ -8,7 +8,9 @@
 */
 
 import React = require('react');
+import PropTypes = require('prop-types');
 
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
@@ -37,13 +39,26 @@ let _styles = {
     }
 };
 
+export interface TextInputContext {
+    focusArbitrator?: FocusArbitratorProvider;
+}
+
 export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
+    static contextTypes: React.ValidationMap<any> = {
+        focusArbitrator: PropTypes.object
+    };
+
+    context!: TextInputContext;
+
     private _mountedComponent: HTMLInputElement|HTMLTextAreaElement|null = null;
     private _selectionStart: number = 0;
     private _selectionEnd: number = 0;
 
-    constructor(props: Types.TextInputProps) {
-        super(props);
+    private _isFocused = false;
+    private _ariaLiveEnabled = false;
+
+    constructor(props: Types.TextInputProps, context: TextInputContext) {
+        super(props, context);
 
         this.state = {
             inputValue: props.value !== undefined ? props.value : (props.defaultValue || '')
@@ -60,7 +75,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     componentDidMount() {
         if (this.props.autoFocus) {
-            this.focus();
+            this.requestFocus();
         }
     }
 
@@ -97,15 +112,14 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onChange={ this._onInputChanged }
                     onKeyDown={ this._onKeyDown }
                     onKeyUp={ this._checkSelectionChanged }
-                    onFocus={ this.props.onFocus }
-                    onBlur={ this.props.onBlur }
+                    onInput={ this._onInput }
+                    onFocus={ this._onFocus }
+                    onBlur={ this._onBlur }
                     onMouseDown={ this._checkSelectionChanged }
                     onMouseUp={ this._checkSelectionChanged }
                     onPaste={ this._onPaste }
                     onScroll={ this._onScroll }
                     aria-label={ this.props.accessibilityLabel }
-                    // VoiceOver does not handle text inputs properly at the moment, aria-live is a temporary workaround.
-                    aria-live={ _isMac ? 'assertive' : undefined }
                 />
             );
         } else {
@@ -126,14 +140,13 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onChange= { this._onInputChanged }
                     onKeyDown={ this._onKeyDown }
                     onKeyUp={ this._checkSelectionChanged }
-                    onFocus={ this.props.onFocus }
-                    onBlur={ this.props.onBlur }
+                    onInput={ this._onInput }
+                    onFocus={ this._onFocus }
+                    onBlur={ this._onBlur }
                     onMouseDown={ this._checkSelectionChanged }
                     onMouseUp={ this._checkSelectionChanged }
                     onPaste={ this._onPaste }
                     aria-label={ this.props.accessibilityLabel }
-                    // VoiceOver does not handle text inputs properly at the moment, aria-live is a temporary workaround.
-                    aria-live={ _isMac ? 'assertive' : undefined }
                     type={ keyboardTypeValue }
                     pattern={ pattern }
                 />
@@ -155,6 +168,41 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     private _onMount = (comp: HTMLInputElement|HTMLTextAreaElement|null) => {
         this._mountedComponent = comp;
+    }
+
+    private _onInput = () => {
+        if (_isMac && this._mountedComponent && this._isFocused && !this._ariaLiveEnabled) {
+            // VoiceOver does not handle text inputs properly at the moment, aria-live is a temporary workaround.
+            // And we're adding aria-live only for the focused input which is being edited, otherwise it might
+            // interrupt some required announcements.
+            this._mountedComponent.setAttribute('aria-live', 'assertive');
+            this._ariaLiveEnabled = true;
+        }
+    }
+
+    private _onFocus = (e: Types.FocusEvent) => {
+        if (this._mountedComponent) {
+            this._isFocused = true;
+
+            if (this.props.onFocus) {
+                this.props.onFocus(e);
+            }
+        }
+    }
+
+    private _onBlur = () => {
+        if (this._mountedComponent) {
+            this._isFocused = false;
+
+            if (_isMac && this._ariaLiveEnabled) {
+                this._mountedComponent.removeAttribute('aria-live');
+                this._ariaLiveEnabled = false;
+            }
+
+            if (this.props.onBlur) {
+                this.props.onBlur();
+            }
+        }
     }
 
     private _getKeyboardType(): { keyboardTypeValue: string, wrapInForm: boolean, pattern: string|undefined } {
@@ -259,9 +307,11 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     private _focus = () => {
-        if (this._mountedComponent) {
-            this._mountedComponent.focus();
-        }
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.focus(),
+            () => !!this._mountedComponent
+        );
     }
 
     blur() {
@@ -270,8 +320,14 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    focus() {
+    requestFocus() {
         this._focus();
+    }
+
+    focus() {
+        if (this._mountedComponent) {
+            this._mountedComponent.focus();
+        }
     }
 
     setAccessibilityFocus() {

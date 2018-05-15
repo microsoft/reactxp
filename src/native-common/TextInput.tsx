@@ -9,8 +9,10 @@
 
 import React = require('react');
 import RN = require('react-native');
+import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -27,18 +29,28 @@ export interface TextInputState {
     isFocused: boolean;
 }
 
+export interface TextInputContext {
+    focusArbitrator?: FocusArbitratorProvider;
+}
+
 interface Selection {
     start: number;
     end: number;
 }
 
 export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
+    static contextTypes: React.ValidationMap<any> = {
+        focusArbitrator: PropTypes.object
+    };
+
+    context!: TextInputContext;
+
     private _selectionToSet: Selection | undefined;
     private _selection: Selection = { start: 0, end: 0 };
     protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
 
-    constructor(props: Types.TextInputProps) {
-        super(props);
+    constructor(props: Types.TextInputProps, context: TextInputContext) {
+        super(props, context);
 
         this.state = {
             inputValue: props.value || '',
@@ -54,6 +66,12 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
+    componentDidMount() {
+        if (this.props.autoFocus) {
+            this.requestFocus();
+        }
+    }
+
     protected _render(props: RN.TextInputProps): JSX.Element {
         return (
             <RN.TextInput
@@ -63,7 +81,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     render() {
-        const editable = (this.props.editable !== undefined ? this.props.editable : true);
+        const editable = this.props.editable !== false;
         const blurOnSubmit = this.props.blurOnSubmit || !this.props.multiline;
 
         const internalProps: RN.TextInputProps = {
@@ -75,7 +93,6 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             autoCorrect: this.props.autoCorrect,
             spellCheck: this.props.spellCheck,
             autoCapitalize: this.props.autoCapitalize,
-            autoFocus: this.props.autoFocus,
             keyboardType: this.props.keyboardType,
             editable: editable,
             selectionColor: this.props.selectionColor,
@@ -181,6 +198,14 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
+    requestFocus() {
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.focus(),
+            () => !!this._mountedComponent
+        );
+    }
+
     focus() {
         if (this._mountedComponent) {
             this._mountedComponent.focus();
@@ -188,7 +213,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     setAccessibilityFocus() {
-        AccessibilityUtil.setAccessibilityFocus(this);
+        if (this._mountedComponent) {
+            AccessibilityUtil.setAccessibilityFocus(this);
+        }
     }
 
     isFocused() {

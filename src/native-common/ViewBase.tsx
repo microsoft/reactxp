@@ -65,14 +65,6 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
             }
         }
     }
-
-    focus() {
-        // native mobile platforms doesn't have the notion of focus for Views, so ignore.
-    }
-
-    blur() {
-         // native mobile platforms doesn't have the notion of blur for Views, so ignore.
-    }
 }
 
 export default ViewBase;

@@ -19,6 +19,12 @@ accessibilityLabel: boolean = false;
 // Traits used to hint screen readers, etc.
 accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 
+// It is hard or impossible to tell by a reference to an instance of a component
+// from where this component has been instantiated. You can assign this property
+// and check instance.props.accessibilityId. For example accessibilityId is used
+// in View's FocusArbitrator callback.
+accessibilityId: string = undefined;
+
 // Id of an expandable element revealed by the button. Describes a relation
 // between button and element to screen reader.
 ariaControls: string = undefined; // Web only
@@ -38,6 +44,14 @@ disabled: boolean = false;
 // By default, opacity of a disabled element is 0.5. This value can be
 // overriden with this property
 disabledOpacity: number = undefined;
+
+// Should be focused when the component is mounted, see also View's arbitrateFocus
+// property.
+// WARNING: autoFocus=true means that this Button's requestFocus() method will be
+// called, however calling requestFocus() might have no effect (for example the
+// button is disabled), the application has to handle this either while setting
+// this property or in the View's FocusArbitrator callback.
+autoFocus: boolean = false;
 
 // Called when VoiceOver is on and the user double tapped to
 // activate a control
@@ -103,5 +117,20 @@ underlayColor: string = undefined; // iOS and Android only
 ``` javascript
 // Sets the accessibility focus to the component.
 focus(): void;
+
+// The preferable way to focus the component. When requestFocus() is called,
+// the actual focus() will be deferred, and if requestFocus() has been
+// called for several components, only one of those components will actually
+// get a focus() call. By default, last component for which requestFocus() is
+// called will get a focus() call, but you can specify arbitrateFocus property
+// of a parent View and provide the callback to decide which one of that View's
+// descendants should be focused. This is useful for the accessibility: when
+// consecutive focus() calls happen one after another, the next one interrupts
+// the screen reader announcement for the previous one and the user gets
+// confused. autoFocus property of focusable components also uses requestFocus().
+requestFocus(): void;
+
+// Blurs the component.
+blur(): void;
 ```
 

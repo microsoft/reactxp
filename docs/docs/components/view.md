@@ -24,6 +24,12 @@ accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 accessibilityLiveRegion: AccessibilityLiveRegion =
     undefined; // Android and web only
 
+// It is hard or impossible to tell by a reference to an instance of a component
+// from where this component has been instantiated. You can assign this property
+// and check instance.props.accessibilityId. For example accessibilityId is used
+// in View's FocusArbitrator callback.
+accessibilityId: string = undefined;
+
 // Expose the element and/or its children as accessible to Screen readers
 importantForAccessibility?: ImportantForAccessibility = Auto;
 
@@ -78,6 +84,20 @@ restrictFocusWithin: boolean = false;
 // WARNING: For the sake of performance, this property is readonly and
 // changing it during the View life cycle will produce an error.
 limitFocusWithin: LimitFocusType = LimitFocusType.Unlimited;
+
+// Should be focused when the component is mounted, see also arbitrateFocus
+// property below.
+// WARNING: autoFocus=true means that this View's requestFocus() method will be
+// called, however calling requestFocus() might have no effect (for example on web
+// View is focusable only when tabIndex is specified), the application has to handle
+// this either while setting this property or in the View's FocusArbitrator callback.
+autoFocus: boolean = false;
+
+// When multiple components with autoFocus=true inside this View are mounting at
+// the same time, and/or multiple components inside this view have received focus()
+// call during the same render cycle, this callback will be called so that it's
+// possible for the application to decide which one should actually be focused.
+arbitrateFocus: FocusArbitrator = undefined;
 
 // Additional invisible DOM elements will be added inside the view
 // to track the size changes that are performed behind our back by
@@ -175,8 +195,23 @@ useSafeInsets: boolean = false; // iOS only
 
 ## Methods
 ``` javascript
-// Sets the accessibility focus to the component.
+// Sets the focus to the component.
 focus(): void;
+
+// The preferable way to focus the component. When requestFocus() is called,
+// the actual focus() will be deferred, and if requestFocus() has been
+// called for several components, only one of those components will actually
+// get a focus() call. By default, last component for which requestFocus() is
+// called will get a focus() call, but you can specify arbitrateFocus property
+// of a parent View and provide the callback to decide which one of that View's
+// descendants should be focused. This is useful for the accessibility: when
+// consecutive focus() calls happen one after another, the next one interrupts
+// the screen reader announcement for the previous one and the user gets
+// confused. autoFocus property of focusable components also uses requestFocus().
+requestFocus(): void;
+
+// Blurs the component.
+blur(): void;
 
 // The focus does not go outside the view with restrictFocusWithin by default,
 // setFocusRestricted() allows to turn this restricton off and back on.

@@ -12,6 +12,7 @@ import ReactDOM = require('react-dom');
 import { FocusManager as FocusManagerBase,
     FocusableComponentInternal,
     StoredFocusableComponent } from '../../common/utils/FocusManager';
+import { FocusArbitratorProvider, FocusCandidateType, FocusCandidateInternal } from '../../common/utils/AutoFocusHelper';
 
 import UserInterface from '../UserInterface';
 
@@ -78,12 +79,13 @@ export class FocusManager extends FocusManagerBase {
                 _checkFocusTimer = undefined;
 
                 if (_isNavigatingWithKeyboard &&
+                        (!FocusManager._currentFocusedComponent || !FocusManager._currentFocusedComponent.removed) &&
                         (!document.activeElement || (document.activeElement === document.body))) {
                     // This should work for Electron and the browser should
                     // send the focus to the address bar anyway.
                     FocusManager.focusFirst(_isShiftPressed);
                 }
-            }, 0);
+            }, 100);
         });
     }
 
@@ -123,16 +125,20 @@ export class FocusManager extends FocusManagerBase {
         return ret;
     }
 
-    static focusFirst(last?: boolean) {
+    private static _isComponentAvailable(storedComponent: StoredFocusableComponent): boolean {
+        return !storedComponent.removed &&
+            !storedComponent.restricted &&
+            storedComponent.limitedCount === 0 &&
+            storedComponent.limitedCountAccessible === 0;
+    }
+
+    private static _getFirstFocusable(last?: boolean, parent?: FocusManager) {
         const focusable = Object.keys(FocusManager._allFocusableComponents)
+            .filter(componentId => !parent || (componentId in parent._myFocusableComponentIds))
             .map(componentId => FocusManager._allFocusableComponents[componentId])
-            .filter(storedComponent =>
-                !storedComponent.removed &&
-                !storedComponent.restricted &&
-                storedComponent.limitedCount === 0 &&
-                storedComponent.limitedCountAccessible === 0)
-            .map(storedComponent => ReactDOM.findDOMNode(storedComponent.component) as HTMLElement)
-            .filter(el => el && el.focus && ((el.tabIndex || 0) >= 0));
+            .filter(FocusManager._isComponentAvailable)
+            .map(storedComponent => { return { storedComponent, el: ReactDOM.findDOMNode(storedComponent.component) as HTMLElement }; })
+            .filter(f => f.el && f.el.focus && ((f.el.tabIndex || 0) >= 0) && !(f.el as any).disabled);
 
         if (focusable.length) {
             focusable.sort((a, b) => {
@@ -141,31 +147,58 @@ export class FocusManager extends FocusManagerBase {
                 if (a === b) {
                     return 0;
                 }
-                return a.compareDocumentPosition(b) & document.DOCUMENT_POSITION_PRECEDING ? 1 : -1;
+                return a.el.compareDocumentPosition(b.el) & document.DOCUMENT_POSITION_PRECEDING ? 1 : -1;
             });
 
-            const elementToFocus = focusable[last ? focusable.length - 1 : 0];
-            FocusManager.setLastFocusedProgrammatically(elementToFocus);
-            elementToFocus.focus();
+            return focusable[last ? focusable.length - 1 : 0];
+        }
+
+        return undefined;
+    }
+
+    static focusFirst(last?: boolean) {
+        const first = FocusManager._getFirstFocusable(last);
+
+        if (first) {
+            const storedComponent = first.storedComponent;
+
+            FocusArbitratorProvider.requestFocus(
+                storedComponent.component,
+                () => {
+                    FocusManager.setLastFocusedProgrammatically(first.el);
+                    first.el.focus();
+                },
+                () => FocusManager._isComponentAvailable(storedComponent),
+                FocusCandidateType.FocusFirst
+            );
         }
     }
 
-    protected /* static */ resetFocus() {
+    protected /* static */ resetFocus(focusFirstWhenNavigatingWithKeyboard: boolean) {
         if (FocusManager._resetFocusTimer) {
             clearTimeout(FocusManager._resetFocusTimer);
             FocusManager._resetFocusTimer = undefined;
         }
 
-        if (_isNavigatingWithKeyboard) {
+        if (_isNavigatingWithKeyboard && focusFirstWhenNavigatingWithKeyboard) {
             // When we're in the keyboard navigation mode, we want to have the
             // first focusable component to be focused straight away, without the
             // necessity to press Tab.
+            const first = FocusManager._getFirstFocusable(false, FocusManager._currentRestrictionOwner as FocusManager);
 
-            // Defer the focusing to let the view finish its initialization.
-            FocusManager._resetFocusTimer = setTimeout(() => {
-                FocusManager._resetFocusTimer = undefined;
-                FocusManager.focusFirst();
-            }, 0);
+            if (first) {
+                const storedComponent = first.storedComponent;
+
+                FocusArbitratorProvider.requestFocus(
+                    storedComponent.component,
+                    () => {
+                        FocusManager.setLastFocusedProgrammatically(first.el);
+                        first.el.focus();
+                    },
+                    () => FocusManager._isComponentAvailable(storedComponent),
+                    FocusCandidateType.FocusFirst
+                );
+            }
         } else if ((typeof document !== 'undefined') && document.body && document.body.focus && document.body.blur) {
             // An example to explain this part:
             // We've shown a modal dialog which is higher in the DOM by clicking
@@ -184,17 +217,20 @@ export class FocusManager extends FocusManagerBase {
             // Defer the work to avoid triggering sync layout.
             FocusManager._resetFocusTimer = setTimeout(() => {
                 FocusManager._resetFocusTimer = undefined;
-                const prevTabIndex = FocusManager._setTabIndex(document.body, 0);
-                const activeElement = document.activeElement;
+
+                const currentFocused = FocusManager._currentFocusedComponent;
+                if (currentFocused && !currentFocused.removed && !currentFocused.restricted) {
+                    // No need to reset the focus because it's moved inside the restricted area
+                    // already (manually or with autofocus).
+                    return;
+                }
+
+                const prevTabIndex = FocusManager._setTabIndex(document.body, -1);
                 FocusManager.setLastFocusedProgrammatically(document.body);
                 document.body.focus();
                 document.body.blur();
                 FocusManager._setTabIndex(document.body, prevTabIndex);
-                if (activeElement instanceof HTMLElement) {
-                    FocusManager.setLastFocusedProgrammatically(activeElement);
-                    activeElement.focus();
-                }
-            }, 0);
+            }, 100);
         }
     }
 
@@ -290,6 +326,32 @@ export class FocusManager extends FocusManagerBase {
         }
 
         return prev;
+    }
+
+    static sortAndFilterAutoFocusCandidates(candidates: FocusCandidateInternal[]): FocusCandidateInternal[] {
+        return candidates
+            .filter(candidate => {
+                const id = (candidate.component as FocusableComponentInternal).focusableComponentId;
+                if (id) {
+                    const storedComponent = FocusManager._allFocusableComponents[id];
+                    if (storedComponent &&
+                        (storedComponent.removed ||
+                            (storedComponent.limitedCount > 0) || (storedComponent.limitedCountAccessible > 0))) {
+                        return false;
+                    }
+                }
+                return true;
+            })
+            .map(candidate => { return { candidate, el: ReactDOM.findDOMNode(candidate.component) as HTMLElement }; })
+            .sort((a, b) => {
+                // Some element which is mounted later could come earlier in the DOM,
+                // so, we sort the elements by their appearance in the DOM.
+                if (a === b) {
+                    return 0;
+                }
+                return a.el.compareDocumentPosition(b.el) & document.DOCUMENT_POSITION_PRECEDING ? 1 : -1;
+            })
+            .map(ce => ce.candidate);
     }
 }
 

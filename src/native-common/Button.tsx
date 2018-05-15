@@ -13,11 +13,13 @@ import RN = require('react-native');
 import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import Animated from './Animated';
 import AppConfig from '../common/AppConfig';
 import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
 import Types = require('../common/Types');
+import { Button as ButtonBase } from '../common/Interfaces';
 import { isEqual } from '../common/lodashMini';
 import UserInterface from './UserInterface';
 
@@ -58,12 +60,16 @@ function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, properti
 
 export interface ButtonContext {
     hasRxButtonAscendant?: boolean;
+    focusArbitrator?: FocusArbitratorProvider;
 }
 
-export class Button extends React.Component<Types.ButtonProps, Types.Stateless> {
+export class Button extends ButtonBase {
     static contextTypes = {
-        hasRxButtonAscendant: PropTypes.bool
+        hasRxButtonAscendant: PropTypes.bool,
+        focusArbitrator: PropTypes.object
     };
+
+    context!: ButtonContext;
 
     static childContextTypes = {
         hasRxButtonAscendant: PropTypes.bool
@@ -162,6 +168,10 @@ export class Button extends React.Component<Types.ButtonProps, Types.Stateless> 
     componentDidMount() {
         this._mixin_componentDidMount();
         this._isMounted = true;
+
+        if (this.props.autoFocus) {
+            this.requestFocus();
+        }
     }
 
     componentWillUnmount() {
@@ -255,12 +265,22 @@ export class Button extends React.Component<Types.ButtonProps, Types.Stateless> 
         return {top: 20, left: 20, right: 20, bottom: 100};
     }
 
-    focus() {
-        AccessibilityUtil.setAccessibilityFocus(this);
+    requestFocus() {
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.focus(),
+            () => this._isMounted
+        );
     }
 
     blur() {
          // native mobile platforms doesn't have the notion of blur for buttons, so ignore.
+    }
+
+    focus() {
+        if (this._isMounted) {
+            AccessibilityUtil.setAccessibilityFocus(this);
+        }
     }
 
     private _setOpacityStyles(props: Types.ButtonProps, prevProps?: Types.ButtonProps) {

@@ -12,8 +12,10 @@ import ReactDOM = require('react-dom');
 import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import Styles from './Styles';
 import Types = require('../common/Types');
+import { Text as TextBase } from '../common/Interfaces';
 
 // Adding a CSS rule to display non-selectable texts. Those texts
 // will be displayed as pseudo elements to prevent them from being copied
@@ -49,10 +51,23 @@ const _styles = {
     }
 };
 
-export class Text extends React.Component<Types.TextProps, Types.Stateless> {
+export interface TextContext {
+    isRxParentAText: boolean;
+    focusArbitrator?: FocusArbitratorProvider;
+}
+
+export class Text extends TextBase {
+    static contextTypes = {
+        focusArbitrator: PropTypes.object
+    };
+
+    context!: TextContext;
+
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired
     };
+
+    private _isMounted = false;
 
     getChildContext() {
         // Let descendant Types components know that their nearest Types ancestor is an Types.Text.
@@ -98,6 +113,18 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> {
         }
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+
+        if (this.props.autoFocus) {
+            this.requestFocus();
+        }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     _getStyles(): Types.TextStyleRuleSet {
         // There's no way in HTML to properly handle numberOfLines > 1,
         // but we can correctly handle the common case where numberOfLines is 1.
@@ -123,16 +150,28 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> {
     }
 
     blur() {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-        if (el) {
-            el.blur();
+        if (this._isMounted) {
+            const el = ReactDOM.findDOMNode(this) as HTMLDivElement;
+            if (el) {
+                el.blur();
+            }
         }
     }
 
+    requestFocus() {
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.focus(),
+            () => this._isMounted
+        );
+    }
+
     focus() {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-        if (el) {
-            el.focus();
+        if (this._isMounted) {
+            const el = ReactDOM.findDOMNode(this) as HTMLDivElement;
+            if (el) {
+                el.focus();
+            }
         }
     }
 }

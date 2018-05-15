@@ -12,8 +12,10 @@ import _ = require('./lodashMini');
 import assert = require('assert');
 import React = require('react');
 import RN = require('react-native');
+import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 
 import Animated from './Animated';
 import EventHelpers from './utils/EventHelpers';
@@ -118,7 +120,21 @@ function _childrenEdited(prevChildrenKeys: ChildKey[], nextChildrenKeys: ChildKe
     return false;
 }
 
+export interface ViewContext {
+    focusArbitrator?: FocusArbitratorProvider;
+}
+
 export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
+    static contextTypes: React.ValidationMap<any> = {
+        focusArbitrator: PropTypes.object
+    };
+
+    context!: ViewContext;
+
+    static childContextTypes: React.ValidationMap<any> = {
+        focusArbitrator: PropTypes.object
+    };
+
     protected _internalProps: any = {};
 
     // Assigned when mixin is applied
@@ -142,15 +158,25 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     private _opacityAnimatedValue: RN.Animated.Value|undefined;
     private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet|undefined;
 
-    constructor(props: Types.ViewProps) {
-        super(props);
+    private _focusArbitratorProvider: FocusArbitratorProvider|undefined;
+
+    constructor(props: Types.ViewProps, context: ViewContext) {
+        super(props, context);
         this._updateMixin(props, true);
         this._buildInternalProps(props);
+
+        if (props.arbitrateFocus) {
+            this._updateFocusArbitratorProvider(props);
+        }
     }
 
     componentWillReceiveProps(nextProps: Types.ViewProps) {
         this._updateMixin(nextProps, false);
         this._buildInternalProps(nextProps);
+
+        if (('arbitrateFocus' in nextProps) && (this.props.arbitrateFocus !== nextProps.arbitrateFocus)) {
+            this._updateFocusArbitratorProvider(nextProps);
+        }
     }
 
     componentWillUpdate(nextProps: Types.ViewProps, nextState: {}) {
@@ -217,6 +243,10 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         if (this._mixin_componentDidMount) {
             this._mixin_componentDidMount();
         }
+
+        if (this.props.autoFocus) {
+            this.requestFocus();
+        }
     }
 
     componentWillUnmount() {
@@ -272,6 +302,16 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
 
             this._mixinIsApplied = false;
         }
+    }
+
+    getChildContext() {
+        let childContext: ViewContext = {};
+
+        if (this._focusArbitratorProvider) {
+            childContext.focusArbitrator = this._focusArbitratorProvider;
+        }
+
+        return childContext;
     }
 
     /**
@@ -397,6 +437,18 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         return !!(viewProps.onPress || viewProps.onLongPress);
     }
 
+    private _updateFocusArbitratorProvider(props: Types.ViewProps) {
+        if (props.arbitrateFocus) {
+            if (this._focusArbitratorProvider) {
+                this._focusArbitratorProvider.setCallback(props.arbitrateFocus);
+            } else {
+                this._focusArbitratorProvider = new FocusArbitratorProvider(this, props.arbitrateFocus);
+            }
+        } else if (this._focusArbitratorProvider) {
+            delete this._focusArbitratorProvider;
+        }
+    }
+
     render() {
         let ViewToRender = RN.View;
 
@@ -474,16 +526,30 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         return {top: 20, left: 20, right: 20, bottom: 100};
     }
 
-    focus() {
-        AccessibilityUtil.setAccessibilityFocus(this);
-    }
-
     setFocusRestricted(restricted: boolean) {
         // Nothing to do.
     }
 
     setFocusLimited(limited: boolean) {
         // Nothing to do.
+    }
+
+    blur() {
+        // Nothing to do.
+    }
+
+    requestFocus() {
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.focus(),
+            () => this._isMounted
+        );
+    }
+
+    focus() {
+        if (this._isMounted) {
+            AccessibilityUtil.setAccessibilityFocus(this);
+        }
     }
 }
 

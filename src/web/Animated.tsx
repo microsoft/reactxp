@@ -755,6 +755,12 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             }
         }
 
+        requestFocus() {
+            if (this._mountedComponent && this._mountedComponent.requestFocus) {
+                this._mountedComponent.requestFocus();
+            }
+        }
+
         blur() {
             if (this._mountedComponent && this._mountedComponent.blur) {
                 this._mountedComponent.blur();

@@ -8,7 +8,6 @@
 */
 
 import _ = require('./utils/lodashMini');
-import ReactDOM = require('react-dom');
 
 import { default as FrontLayerViewManager } from './FrontLayerViewManager';
 import AppConfig from '../common/AppConfig';
@@ -30,7 +29,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
 
     abstract render(): JSX.Element;
     protected abstract _getContainer(): HTMLElement|null;
-    private _isMounted = false;
+    protected _isMounted = false;
     private _isPopupDisplayed = false;
 
     // Sets the activation state so we can stop our periodic timer
@@ -228,20 +227,6 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
 
         if (this.props.onLayout) {
             this._checkViewCheckerUnbuild();
-        }
-    }
-
-    blur() {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-        if (el) {
-            el.blur();
-        }
-    }
-
-    focus() {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-        if (el) {
-            el.focus();
         }
     }
 }

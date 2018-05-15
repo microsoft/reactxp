@@ -14,8 +14,9 @@ import Types = require('../common/Types');
 import PropTypes = require('prop-types');
 
 import AppConfig from '../common/AppConfig';
-import { View as ViewCommon } from '../native-common/View';
+import { View as ViewCommon, ViewContext as ViewContextCommon } from '../native-common/View';
 import EventHelpers from '../native-common/utils/EventHelpers';
+import { RestrictFocusType } from '../common/utils/FocusManager';
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent, FocusManager } from '../native-desktop/utils/FocusManager';
 import PopupContainerView from '../native-common/PopupContainerView';
 import { PopupComponent } from '../common/PopupContainerViewBase';
@@ -26,7 +27,7 @@ const KEY_CODE_SPACE = 32;
 const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER];
 const UP_KEYCODES = [KEY_CODE_SPACE];
 
-export interface ViewContext {
+export interface ViewContext extends ViewContextCommon {
     isRxParentAText?: boolean;
     focusManager?: FocusManager;
     popupContainer?: PopupContainerView;
@@ -39,7 +40,8 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     static contextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool,
         focusManager: PropTypes.object,
-        popupContainer: PropTypes.object
+        popupContainer: PropTypes.object,
+        ...ViewCommon.contextTypes
     };
     // Context is provided by super - just re-typing here
     context!: ViewContext;
@@ -47,7 +49,8 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired,
         focusManager: PropTypes.object,
-        popupContainer: PropTypes.object
+        popupContainer: PropTypes.object,
+        ...ViewCommon.childContextTypes
     };
 
     private _onKeyDown: ((e: React.SyntheticEvent<any>) => void) | undefined;
@@ -67,13 +70,13 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     private _popupToken: PopupComponent|undefined;
 
     constructor(props: Types.ViewProps, context: ViewContext) {
-        super(props);
+        super(props, context);
 
         this._limitFocusWithin =
             (props.limitFocusWithin === Types.LimitFocusType.Limited) ||
             (props.limitFocusWithin === Types.LimitFocusType.Accessible);
 
-        if (props.restrictFocusWithin || this._limitFocusWithin) {
+        if (this.props.restrictFocusWithin || this._limitFocusWithin) {
             this._focusManager = new FocusManager(context && context.focusManager);
 
             if (this._limitFocusWithin) {
@@ -100,7 +103,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     enableFocusManager() {
         if (this._focusManager) {
             if (this.props.restrictFocusWithin && this._isFocusRestricted !== false) {
-                this._focusManager.restrictFocusWithin();
+                this._focusManager.restrictFocusWithin(RestrictFocusType.RestrictedFocusFirst);
             }
 
             if (this._limitFocusWithin && this._isFocusLimited) {
@@ -276,7 +279,6 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 
     focus() {
-        super.focus();
         // Only forward to Button.
         // The other cases are RN.View based elements with no meaningful focus support
         if (this._focusableElement) {
@@ -285,7 +287,6 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 
     blur() {
-        super.blur();
         // Only forward to Button.
         // The other cases are RN.View based elements with no meaningful focus support
         if (this._focusableElement) {
@@ -297,9 +298,9 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         // Let descendant RX components know that their nearest RX ancestor is not an RX.Text.
         // Because they're in an RX.View, they should use their normal styling rather than their
         // special styling for appearing inline with text.
-        let childContext: ViewContext = {
-            isRxParentAText: false
-        };
+        let childContext: ViewContext = super.getChildContext();
+
+        childContext.isRxParentAText = false;
 
         // Provide the descendants with the focus manager (if any).
         if (this._focusManager) {
@@ -318,13 +319,13 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
     setFocusRestricted(restricted: boolean) {
         if (!this._focusManager || !this.props.restrictFocusWithin) {
-            console.error('View: setFocusRestricted method requires restrictFocusWithin property to be set to true');
+            console.error('View: setFocusRestricted method requires restrictFocusWithin property to be set');
             return;
         }
 
         if (!this._isHidden()) {
             if (restricted) {
-                this._focusManager.restrictFocusWithin();
+                this._focusManager.restrictFocusWithin(RestrictFocusType.RestrictedFocusFirst);
             } else {
                 this._focusManager.removeFocusRestriction();
             }

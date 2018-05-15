@@ -12,11 +12,13 @@ import ReactDOM = require('react-dom');
 import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import AppConfig from '../common/AppConfig';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
 import UserInterface from './UserInterface';
+import { Button as ButtonBase } from '../common/Interfaces';
 
 const _styles = {
     defaultButton: {
@@ -47,17 +49,22 @@ UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
 
 export interface ButtonContext {
     hasRxButtonAscendant?: boolean;
+    focusArbitrator?: FocusArbitratorProvider;
 }
 
-export class Button extends React.Component<Types.ButtonProps, Types.Stateless> {
+export class Button extends ButtonBase {
     static contextTypes = {
-        hasRxButtonAscendant: PropTypes.bool
+        hasRxButtonAscendant: PropTypes.bool,
+        focusArbitrator: PropTypes.object
     };
+
+    context!: ButtonContext;
 
     static childContextTypes = {
         hasRxButtonAscendant: PropTypes.bool
     };
 
+    private _isMounted = false;
     private _lastMouseDownEvent: Types.SyntheticEvent|undefined;
     private _ignoreClick = false;
     private _longPressTimer: number|undefined;
@@ -118,17 +125,41 @@ export class Button extends React.Component<Types.ButtonProps, Types.Stateless> 
         );
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+
+        if (this.props.autoFocus) {
+            this.requestFocus();
+        }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
+    requestFocus() {
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.focus(),
+            () => this._isMounted
+        );
+    }
+
     focus() {
-        let el = ReactDOM.findDOMNode(this) as HTMLElement;
-        if (el) {
-            el.focus();
+        if (this._isMounted) {
+            const el = ReactDOM.findDOMNode(this) as HTMLButtonElement;
+            if (el) {
+                el.focus();
+            }
         }
     }
 
     blur() {
-        let el = ReactDOM.findDOMNode(this) as HTMLInputElement;
-        if (el) {
-            el.blur();
+        if (this._isMounted) {
+            const el = ReactDOM.findDOMNode(this) as HTMLButtonElement;
+            if (el) {
+                el.blur();
+            }
         }
     }
 

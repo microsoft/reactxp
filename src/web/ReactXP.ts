@@ -57,6 +57,11 @@ import ViewImpl from './View';
 import { ViewBase } from './ViewBase';
 import { WebView as WebViewImpl } from './WebView';
 
+// Initialize AutofocusHelper.
+import FocusManager from './utils/FocusManager';
+import { setSortAndFilterFunc } from '../common/utils/AutoFocusHelper';
+setSortAndFilterFunc(FocusManager.sortAndFilterAutoFocusCandidates);
+
 // -- STRANGE THINGS GOING ON HERE --
 //
 // 1) 'export type Foo = FooImpl; export var Foo = FooImpl;'

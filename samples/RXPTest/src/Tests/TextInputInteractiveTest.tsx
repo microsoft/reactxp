@@ -118,6 +118,7 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
                         returnKeyType={ 'done' }
                         value={ this.state.test1Input }
                         autoCorrect={ false }
+                        accessibilityId={ 'TextInputViewTextInput' }
                         autoFocus={ true }
                         maxContentSizeMultiplier={ 1.5 }
                         onChangeText={ val => this.setState({ test1Input: val }) }

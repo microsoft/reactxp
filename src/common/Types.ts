@@ -362,6 +362,7 @@ export interface Stateless {}
 export interface CommonAccessibilityProps {
     // iOS, Android, and Desktop
     importantForAccessibility?: ImportantForAccessibility;
+    accessibilityId?: string;
     accessibilityLabel?: string;
     accessibilityTraits?: AccessibilityTrait | AccessibilityTrait[];
 
@@ -449,6 +450,22 @@ export enum AccessibilityTrait {
     None
 }
 
+// When multiple components with autoFocus=true are mounting at the same time,
+// and/or multiple requestFocus() calls are happening during the same render cycle,
+// it is possible to specify a callback which will choose one from those multiple.
+// To set this callback use View's arbitrateFocus property.
+export type FocusArbitrator = (candidates: FocusCandidate[]) => FocusCandidate | undefined;
+
+// FocusArbitrator callback will be called with an array of FocusCandidate.
+// See View's arbitrateFocus property.
+export interface FocusCandidate {
+    // An instance of the component which wants to be focused.
+    component: RX.FocusableComponent;
+
+    // Value of component.props.accessibilityId (if specified).
+    accessibilityId?: string;
+}
+
 export interface CommonStyledProps<T> extends CommonProps {
     style?: StyleRuleSetRecursive<T>;
 }
@@ -460,6 +477,7 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     disabledOpacity?: number;
     delayLongPress?: number;
 
+    autoFocus?: boolean; // The component is a candidate for being autofocused.
     onAccessibilityTapIOS?: Function; // iOS-only prop, call when a button is double tapped in accessibility mode
     onContextMenu?: (e: MouseEvent) => void;
     onPress?: (e: SyntheticEvent) => void;
@@ -550,6 +568,9 @@ export interface TextPropsShared extends CommonProps {
     textBreakStrategy?: 'highQuality' | 'simple' | 'balanced';
 
     importantForAccessibility?: ImportantForAccessibility;
+    accessibilityId?: string;
+
+    autoFocus?: boolean; // The component is a candidate for being autofocused.
 
     onPress?: (e: SyntheticEvent) => void;
 
@@ -587,6 +608,12 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
 
     restrictFocusWithin?: boolean; // Web-only, during the keyboard navigation, the focus will not go outside this view
     limitFocusWithin?: LimitFocusType; // Web-only, make the view and all focusable subelements not focusable
+
+    autoFocus?: boolean; // The component is a candidate for being autofocused.
+    arbitrateFocus?: FocusArbitrator; // When multiple components with autoFocus=true inside this View are mounting at the same time,
+                                      // and/or multiple components inside this view have received requestFocus() call during the same
+                                      // render cycle, this callback will be called so that it's possible for the application to
+                                      // decide which one should actually be focused.
 
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
     id?: string; // Web-only. Needed for accessibility.
@@ -826,6 +853,8 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
     allowFontScaling?: boolean;
     maxContentSizeMultiplier?: number;
     tabIndex?: number;
+    accessibilityId?: string;
+    autoFocus?: boolean; // The component is a candidate for being autofocused.
 
     onPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
     onLongPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
@@ -838,7 +867,7 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
 export interface TextInputPropsShared extends CommonProps, CommonAccessibilityProps {
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
     autoCorrect?: boolean;
-    autoFocus?: boolean;
+    autoFocus?: boolean; // The component is a candidate for being autofocused.
     blurOnSubmit?: boolean;
     defaultValue?: string;
     editable?: boolean;

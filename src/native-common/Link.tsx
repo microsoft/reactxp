@@ -7,15 +7,30 @@
 * RN-specific implementation of the cross-platform Link abstraction.
 */
 
+import PropTypes = require('prop-types');
 import React = require('react');
 import RN = require('react-native');
 
+import AccessibilityUtil from './AccessibilityUtil';
 import EventHelpers from './utils/EventHelpers';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import Linking from '../native-common/Linking';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
-export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
+export interface LinkContext {
+    focusArbitrator?: FocusArbitratorProvider;
+    isRxParentAText?: boolean;
+}
+
+export class Link extends React.Component<Types.LinkProps, {}> {
+    static contextTypes = {
+        focusArbitrator: PropTypes.object,
+        isRxParentAText: PropTypes.bool
+    };
+
+    context!: LinkContext;
+
     protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
 
     // To be able to use Link inside TouchableHighlight/TouchableOpacity
@@ -38,6 +53,12 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
         };
 
         return this._render(internalProps);
+    }
+
+    componentDidMount() {
+        if (this.props.autoFocus) {
+            this.requestFocus();
+        }
     }
 
     protected _render(internalProps: RN.TextProps) {
@@ -85,6 +106,24 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
         if (!EventHelpers.isRightMouseButton(e) && this.props.onLongPress) {
             this.props.onLongPress(EventHelpers.toMouseEvent(e), this.props.url);
         }
+    }
+
+    requestFocus() {
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.focus(),
+            () => !!this._mountedComponent
+        );
+    }
+
+    focus() {
+        if (this._mountedComponent) {
+            AccessibilityUtil.setAccessibilityFocus(this);
+        }
+    }
+
+    blur() {
+        // No-op
     }
 }
 

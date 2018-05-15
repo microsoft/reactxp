@@ -37,10 +37,12 @@ export abstract class AnimatedText extends AnimatedComponent<Types.AnimatedTextP
 export abstract class AnimatedTextInput extends AnimatedComponent<Types.AnimatedTextInputProps, Types.Stateless> {
 }
 
-export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewProps, Types.Stateless> {
-    abstract focus(): void;
+export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewProps, Types.Stateless> implements FocusableComponent {
     abstract setFocusRestricted(restricted: boolean): void;
     abstract setFocusLimited(limited: boolean): void;
+    abstract focus(): void;
+    abstract requestFocus(): void;
+    abstract blur(): void;
 }
 
 export abstract class App {
@@ -127,8 +129,15 @@ export abstract class Accessibility {
     highContrastChangedEvent = new SubscribableEvent<(isEnabled: boolean) => void>();
 }
 
-export abstract class Button extends React.Component<Types.ButtonProps, any> {
+export interface FocusableComponent {
+    focus(): void;
+    requestFocus(): void;
+    blur(): void;
+}
+
+export abstract class Button extends React.Component<Types.ButtonProps, any> implements FocusableComponent {
     abstract focus(): void;
+    abstract requestFocus(): void;
     abstract blur(): void;
 }
 
@@ -152,7 +161,11 @@ export abstract class Clipboard {
     abstract getText(): SyncTasks.Promise<string>;
 }
 
-export abstract class Link extends React.Component<Types.LinkProps, any> {}
+export abstract class Link extends React.Component<Types.LinkProps, any> implements FocusableComponent {
+    abstract focus(): void;
+    abstract requestFocus(): void;
+    abstract blur(): void;
+}
 
 export abstract class Storage {
     abstract getItem(key: string): SyncTasks.Promise<string|undefined>;
@@ -239,17 +252,16 @@ export abstract class Styles {
     // This method isn't part of the documented ReactXP interface and shouldn't be used by
     // app-level code, but it is needed for some ReactXP extensions (e.g. reactxp-imagesvg),
     // so we export it here.
-    abstract getCssPropertyAliasesCssStyle(): {[key: string]: string};
+    abstract getCssPropertyAliasesCssStyle(): { [key: string]: string };
 }
 
-export abstract class Text extends React.Component<Types.TextProps, any> {
+export abstract class Text extends React.Component<Types.TextProps, any> implements FocusableComponent {
     abstract focus(): void;
+    abstract requestFocus(): void;
     abstract blur(): void;
 }
 
-export abstract class TextInput extends React.Component<Types.TextInputProps, any> {
-    abstract blur(): void;
-    abstract focus(): void;
+export abstract class TextInput extends React.Component<Types.TextInputProps, any> implements FocusableComponent {
     abstract setAccessibilityFocus(): void;
     abstract isFocused(): boolean;
     abstract selectAll(): void;
@@ -259,6 +271,9 @@ export abstract class TextInput extends React.Component<Types.TextInputProps, an
         end: number;
     };
     abstract setValue(value: string): void;
+    abstract focus(): void;
+    abstract requestFocus(): void;
+    abstract blur(): void;
 }
 
 export abstract class UserPresence {
@@ -266,17 +281,17 @@ export abstract class UserPresence {
     userPresenceChangedEvent = new SubscribableEvent<(isPresent: boolean) => void>();
 }
 
-export abstract class ViewBase<P, S> extends React.Component<P, S> {
-}
+export abstract class ViewBase<P, S> extends React.Component<P, S> {}
 
-export abstract class View extends ViewBase<Types.ViewProps, any> {
-    abstract focus(): void;
+export abstract class View extends ViewBase<Types.ViewProps, any> implements FocusableComponent {
     abstract setFocusRestricted(restricted: boolean): void;
     abstract setFocusLimited(limited: boolean): void;
+    abstract focus(): void;
+    abstract requestFocus(): void;
+    abstract blur(): void;
 }
 
-export abstract class GestureView extends ViewBase<Types.GestureViewProps, any> {
-}
+export abstract class GestureView extends ViewBase<Types.GestureViewProps, any> {}
 
 export interface WebViewConstructor {
     new(props: Types.WebViewProps): WebView;
