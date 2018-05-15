@@ -20,19 +20,23 @@ Another difference between Text and other components is that Text children are n
 allowFontScaling: boolean = true; // Android and iOS only
 
 // When numberOfLines is set, this prop defines how text will be truncated.
-// head: The line is displayed so that the end fits in the container and the missing
-//       text at the beginning of the line is indicated by an ellipsis glyph. e.g., "...wxyz"
-// middle: The line is displayed so that the beginning and end fit in the container and
-//         the missing text in the middle is indicated by an ellipsis glyph. "ab...yz"
-// tail: The line is displayed so that the beginning fits in the container and the missing
-//       text at the end of the line is indicated by an ellipsis glyph. e.g., "abcd..."
+// head: The line is displayed so that the end fits in the container and
+//   the missing text at the beginning of the line is indicated by an
+//   ellipsis glyph. e.g., "...wxyz"
+// middle: The line is displayed so that the beginning and end fit in
+//   the container and the missing text in the middle is indicated by an
+//   ellipsis glyph. "ab...yz"
+// tail: The line is displayed so that the beginning fits in the container
+//   and the missing text at the end of the line is indicated by an ellipsis
+//   glyph. e.g., "abcd..."
 ellipsizeMode: 'head' | 'middle' | 'tail'; // Android & iOS only
 
 // Specifies a unique id for an HTML element
 id: string = undefined; // Web only
 
 // Expose the element and/or its children as accessible to Screen readers
-importantForAccessibility: ImportantForAccessibility = ImportantForAccessibility.Yes;
+importantForAccessibility: ImportantForAccessibility =
+    ImportantForAccessibility.Yes;
 
 // It is hard or impossible to tell by a reference to an instance of a component
 // from where this component has been instantiated. You can assign this property

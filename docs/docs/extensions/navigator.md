@@ -9,11 +9,11 @@ next: extensions/restclient
 
 This component provides a way for the app to present a virtual stack of "cards", allowing the user to push or pop those cards onto the stack in an animated manner. The caller can control the animation type and direction.
 
-When a new card is presented, the Navitator calls the renderScene method, allowing the caller to render the contents. Cards are identified by "routes", which contain a unique ID and configuration parameters that control the behavior of the transition.
+When a new card is presented, the Navigator calls the renderScene method, allowing the caller to render the contents. Cards are identified by "routes", which contain a unique ID and configuration parameters that control the behavior of the transition.
 
 When a Navigator is first mounted, the stack is empty. The caller must wait for the mount to complete, then specify the list of routes to present.
 
-The current implementation of Navitator on React Native makes use of the deprecated "Navigator Experimental". We will look at moving away from this implementation to the now-recommended "react-navigation" in the near future. Some of the more advanced interfaces may need to change. These are listed at the end of this article. Use these with caution.
+The current implementation of Navigator on React Native makes use of the deprecated "Navigator Experimental". We will look at moving away from this implementation to the now-recommended "react-navigation" in the near future. Some of the more advanced interfaces may need to change. These are listed at the end of this article. Use these with caution.
 
 To install: ```npm install reactxp-navigation```
 
