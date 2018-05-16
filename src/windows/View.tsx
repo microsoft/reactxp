@@ -143,18 +143,26 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
     }
 
+    private hasTrait(trait: Types.AccessibilityTrait, traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined) {
+        return traits === trait || (_.isArray(traits) && traits.indexOf(trait) !== -1);
+    }
+
     protected _buildInternalProps(props: Types.ViewProps) {
         // Base class does the bulk of _internalprops creation
         super._buildInternalProps(props);
 
-        // On Windows a view with importantForAccessibility='Yes' or non-empty accessibilityLabel will hide its children.
-        // However, a view that is also a group should keep children visible to UI Automation. The following condition checks
-        // and sets RNW importantForAccessibility property to 'yes-dont-hide-descendants' to keep view children visible.
-        if (((props.accessibilityTraits === Types.AccessibilityTrait.Group) ||
-            (_.isArray(props.accessibilityTraits) && (props.accessibilityTraits.indexOf(Types.AccessibilityTrait.Group) !== -1))) &&
-            ((props.importantForAccessibility === Types.ImportantForAccessibility.Yes) ||
-             (props.importantForAccessibility === Types.ImportantForAccessibility.Auto &&
-                props.accessibilityLabel && props.accessibilityLabel.length > 0))) {
+        // On Windows a view with importantForAccessibility='Yes' or 
+        // non-empty accessibilityLabel and importantForAccessibility='Auto' (or unspecified) will hide its children.
+        // However, a view that is also a group or a dialog should keep children visible to UI Automation. 
+        // The following condition checks and sets RNW importantForAccessibility property 
+        // to 'yes-dont-hide-descendants' to keep view children visible.
+        const hasGroup = this.hasTrait(Types.AccessibilityTrait.Group, props.accessibilityTraits);
+        const hasDialog = this.hasTrait(Types.AccessibilityTrait.Dialog, props.accessibilityTraits);
+        const i4aYes = props.importantForAccessibility === Types.ImportantForAccessibility.Yes;
+        const i4aAuto = (props.importantForAccessibility === Types.ImportantForAccessibility.Auto 
+            || props.importantForAccessibility === undefined);
+        const hasLabel = props.accessibilityLabel && props.accessibilityLabel.length > 0;
+        if ((hasGroup || hasDialog) && (i4aYes || (i4aAuto && hasLabel))) {
             this._internalProps.importantForAccessibility = 'yes-dont-hide-descendants';
         }
 
