@@ -67,6 +67,7 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
                 selectable={ this.props.selectable }
                 textBreakStrategy={ 'simple' }
                 ellipsizeMode={ this.props.ellipsizeMode }
+                disableContextMenu={ this.props.disableContextMenu }
             >
                 { this.props.children }
             </RN.Text>

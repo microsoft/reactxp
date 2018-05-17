@@ -576,6 +576,10 @@ export interface TextPropsShared extends CommonProps {
 
     id?: string; // Web only. Needed for accessibility.
     onContextMenu?: (e: MouseEvent) => void;
+
+    // Disables the default context menu displayed by the OS.
+    // Windows only
+    disableContextMenu?: boolean;
 }
 
 export interface TextProps extends TextPropsShared {

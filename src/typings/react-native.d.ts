@@ -150,6 +150,9 @@ declare module 'react-native' {
         // Android
         textBreakStrategy?: 'highQuality' | 'simple'| 'balanced';
         elevation?: number;
+
+        // Windows
+        disableContextMenu?: boolean;
     }
 
     export interface PickerProps extends ComponentPropsStyleBase {

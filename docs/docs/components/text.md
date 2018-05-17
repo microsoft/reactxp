@@ -71,6 +71,13 @@ selectable: boolean = false;
 onPress?: (e: SyntheticEvent) => void = undefined;
 onContextMenu?: (e: SyntheticEvent) => void = undefined;
 
+// Disables the default context menu displayed by the OS.
+// By default Windows displays a default context menu on right clicking a selectable 
+// text with a non empty selection, usually with a Copy menu item.
+// Applications that want to provide their own context menu can use this property
+// to prevent the default behavior
+disableContextMenu: boolean = false; // Windows only
+
 // See below for supported styles
 style: TextStyleRuleSet | TextStyleRuleSet[] = [];
 ```
