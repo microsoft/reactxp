@@ -127,7 +127,8 @@ module ReactXP {
 
     const windowsAnimatedClasses =  {
         ...CommonAnimatedClasses,
-        View: RN.Animated.createAnimatedComponent(ViewImpl)
+        View: RN.Animated.createAnimatedComponent(ViewImpl),
+        TextInput:  RN.Animated.createAnimatedComponent(TextInputImpl)
     };
 
     export const Animated = makeAnimated(windowsAnimatedClasses, true);
