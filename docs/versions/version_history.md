@@ -16,6 +16,13 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.1.2-rc.3 of reactxp
+_Released 21 May 2018_
+Fixed bug in RX.Linking.getInitialUrl, which was returning null rather than undefined for the url in some cases.
+Added support for Dilaog trait to trigger yes-dont-hide importantForAccessibility behavior in Windows implementation.
+Fixed UWP accessibility announce to make it act the same way as Android.
+Create correct Animated.TextInput for Windows.
+
 #### Version 1.1.2-rc.2 of reactxp
 _Released 15 May 2018_
 Improved keyboard focus support. Added focus, blur and requestFocus methods to several existing components. Added new focusArbitrator prop to RX.View, which allows callback to arbitrate between multiple children that are requesting autofocus.
