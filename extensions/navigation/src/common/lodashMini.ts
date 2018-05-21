@@ -10,7 +10,6 @@
 import assign = require('lodash/assign');
 import clone = require('lodash/clone');
 import cloneDeep = require('lodash/cloneDeep');
-import findIndex = require('lodash/findIndex');
 import flatten = require('lodash/flatten');
 import get = require('lodash/get');
 import isArray = require('lodash/isArray');
@@ -28,7 +27,6 @@ export {
     assign,
     clone,
     cloneDeep,
-    findIndex,
     flatten,
     get,
     isArray,
