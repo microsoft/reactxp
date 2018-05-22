@@ -71,7 +71,7 @@ export class Button extends ButtonBase {
 
     context!: ButtonContext;
 
-    static childContextTypes = {
+    static childContextTypes: React.ValidationMap<any> = {
         hasRxButtonAscendant: PropTypes.bool
     };
 
