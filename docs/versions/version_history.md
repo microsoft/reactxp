@@ -16,6 +16,13 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.2.0 of reactxp-imagesvg
+#### Version 1.2.0 of reactxp-navigation
+#### Version 1.2.0 of reactxp-video
+#### Version 1.2.0 of reactxp-virtuallistview
+_Released 22 May 2018_
+Automatically suppressed system context menu for selectable RX.Text items on Windows if containing view has onContextMenu handler.
+
 #### Version 1.2.0 of reactxp
 _Released 22 May 2018_
 Automatically suppressed system context menu for selectable RX.Text items on Windows if containing view has onContextMenu handler.
