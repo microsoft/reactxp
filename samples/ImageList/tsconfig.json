@@ -19,7 +19,8 @@
     "outDir": "./dist/",
     "typeRoots": [
         "node_modules/@types"
-    ]
+    ],
+    "types" : ["lodash", "react", "react-dom"]
   },
   "include": [
     "./src/**/*"

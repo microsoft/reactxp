@@ -14,9 +14,7 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "outDir": "./dist/",
-    "types": [
-      "node"
-    ]
+    "types" : ["lodash", "react", "react-dom"]
   },
   "include": [
     "./src/**/*"
