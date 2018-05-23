@@ -260,7 +260,8 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
     private _renderNormal() {
         return (
             <div
-                    ref={ this._onMount }
+                ref={ this._onMount }
+                role={ 'none' }
                 onScroll={ this._onScroll }
                 onTouchStart={ this._onTouchStart }
                 onTouchEnd={ this._onTouchEnd }
@@ -285,11 +286,13 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
 
         return (
             <div
+                role={ 'none' }
                 className = 'rxCustomScroll'
                 style={ containerStyles }
             >
                 <div
                     ref={ this._onMount }
+                    role={ 'none' }
                     className={ scrollComponentClassNames.join(' ') }
                     onScroll={ this._onScroll }
                     style={ this._getContainerStyle() as any }
