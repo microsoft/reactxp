@@ -32,6 +32,7 @@ export interface ViewContext extends ViewContextCommon {
     isRxParentAText?: boolean;
     focusManager?: FocusManager;
     popupContainer?: PopupContainerView;
+    isRxParentAContextMenuResponder?: boolean;
 }
 
 let FocusableView = RNW.createFocusableComponent(RN.View);
@@ -51,6 +52,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         isRxParentAText: PropTypes.bool.isRequired,
         focusManager: PropTypes.object,
         popupContainer: PropTypes.object,
+        isRxParentAContextMenuResponder: PropTypes.bool,
         ...ViewCommon.childContextTypes
     };
 
@@ -328,6 +330,16 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
         if (this._popupContainer) {
             childContext.popupContainer = this._popupContainer;
+        }
+
+        // We use a context field to signal any component in the subtree to disable any system provided context menus.
+        // This is not a bulletproof mechanism, context changes not being guaranteed to be detected by children, depending on factors
+        // like shouldComponentUpdate methods on intermediate nodes, etc.
+        // Fortunately press handlers are pretty stable.
+        if (this._isButton(this.props)) {
+            // This instance can be a responder. It may or may not have to invoke an onContextMenu handler, but
+            // it will consume all corresponding touch events, so overwriting any parent-set value is the correct thing to do.
+            childContext.isRxParentAContextMenuResponder = !!this.props.onContextMenu;
         }
 
         return childContext;

@@ -27,11 +27,13 @@ const _styles = {
 export interface TextContext {
     isRxParentAText: boolean;
     focusArbitrator?: FocusArbitratorProvider;
+    isRxParentAContextMenuResponder?: boolean;
 }
 
 export class Text extends React.Component<Types.TextProps, Types.Stateless> implements React.ChildContextProvider<TextContext> {
     static contextTypes = {
-        focusArbitrator: PropTypes.object
+        focusArbitrator: PropTypes.object,
+        isRxParentAContextMenuResponder: PropTypes.bool
     };
 
     context!: TextContext;
@@ -55,6 +57,10 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
         // The presence of any of the onPress or onContextMenu makes the RN.Text a potential touch responder
         const onPress = (this.props.onPress || this.props.onContextMenu) ? this._onPress : undefined;
 
+        // The presence of an onContextMenu on this instance or on the first responder parent up the tree 
+        // should disable any system provided context menu
+        const disableContextMenu = !!this.props.onContextMenu || !!this.context.isRxParentAContextMenuResponder;
+
         return (
             <RN.Text
                 style={ this._getStyles() }
@@ -67,6 +73,7 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
                 selectable={ this.props.selectable }
                 textBreakStrategy={ 'simple' }
                 ellipsizeMode={ this.props.ellipsizeMode }
+                disableContextMenu={ disableContextMenu }
             >
                 { this.props.children }
             </RN.Text>

@@ -8,12 +8,13 @@
 */
 
 import React = require('react');
-import { Button as ButtonBase } from '../native-common/Button';
+import { Button as ButtonBase, ButtonContext as ButtonContextBase } from '../native-common/Button';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import UserInterface from '../native-common/UserInterface';
 import RN = require('react-native');
 import RNW = require('react-native-windows');
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
+import PropTypes = require('prop-types');
 
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_SPACE = 32;
@@ -29,7 +30,19 @@ UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
 
 let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
 
-export class Button extends ButtonBase implements FocusManagerFocusableComponent {
+export interface ButtonContext extends ButtonContextBase {
+    isRxParentAContextMenuResponder?: boolean;
+}
+
+export class Button extends ButtonBase implements React.ChildContextProvider<ButtonContext>, FocusManagerFocusableComponent {
+
+    // Context is provided by super - just re-typing here
+    context!: ButtonContext;
+
+    static childContextTypes: React.ValidationMap<any> = {
+        isRxParentAContextMenuResponder: PropTypes.bool,
+        ...ButtonBase.childContextTypes
+    };
 
     private _focusableElement : RNW.FocusableWindows<RN.ViewProps> | null = null;
 
@@ -103,6 +116,21 @@ export class Button extends ButtonBase implements FocusManagerFocusableComponent
         } else {
             super.setNativeProps(nativeProps);
         }
+    }
+
+    getChildContext(): ButtonContext {
+        let childContext: ButtonContext = super.getChildContext();
+
+        // We use a context field to signal any component in the subtree to disable any system provided context menus.
+        // This is not a bulletproof mechanism, context changes not being guaranteed to be detected by children, depending on factors
+        // like shouldComponentUpdate methods on intermediate nodes, etc.
+        // Fortunately press handlers are pretty stable.
+
+        // This instance can be a responder (even when button is disabled). It may or may not have to invoke an onContextMenu handler, but
+        // it will consume all corresponding touch events, so overwriting any parent-set value is the correct thing to do.
+        childContext.isRxParentAContextMenuResponder = !!this.props.onContextMenu;
+
+        return childContext;
     }
 
     private _onAccessibilityTap = (e: React.SyntheticEvent<any>): void => {
