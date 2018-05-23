@@ -153,15 +153,15 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         // Base class does the bulk of _internalprops creation
         super._buildInternalProps(props);
 
-        // On Windows a view with importantForAccessibility='Yes' or 
+        // On Windows a view with importantForAccessibility='Yes' or
         // non-empty accessibilityLabel and importantForAccessibility='Auto' (or unspecified) will hide its children.
-        // However, a view that is also a group or a dialog should keep children visible to UI Automation. 
-        // The following condition checks and sets RNW importantForAccessibility property 
+        // However, a view that is also a group or a dialog should keep children visible to UI Automation.
+        // The following condition checks and sets RNW importantForAccessibility property
         // to 'yes-dont-hide-descendants' to keep view children visible.
         const hasGroup = this.hasTrait(Types.AccessibilityTrait.Group, props.accessibilityTraits);
         const hasDialog = this.hasTrait(Types.AccessibilityTrait.Dialog, props.accessibilityTraits);
         const i4aYes = props.importantForAccessibility === Types.ImportantForAccessibility.Yes;
-        const i4aAuto = (props.importantForAccessibility === Types.ImportantForAccessibility.Auto 
+        const i4aAuto = (props.importantForAccessibility === Types.ImportantForAccessibility.Auto
             || props.importantForAccessibility === undefined);
         const hasLabel = props.accessibilityLabel && props.accessibilityLabel.length > 0;
         if ((hasGroup || hasDialog) && (i4aYes || (i4aAuto && hasLabel))) {
@@ -300,11 +300,27 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         this._focusableElement = btn;
     }
 
+    requestFocus() {
+        if (!this._focusableElement) {
+            // Views with no tabIndex (even if -1) can't receive focus
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('View: requestFocus called on a non focusable element');
+            }
+            return;
+        }
+
+        super.requestFocus();
+    }
+
     focus() {
         // Only forward to Button.
         // The other cases are RN.View based elements with no meaningful focus support
         if (this._focusableElement) {
             this._focusableElement.focus();
+        } else {
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('View: focus called on a non focusable element');
+            }
         }
     }
 
