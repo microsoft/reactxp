@@ -269,8 +269,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         if (this._mountedComponent) {
             if (this._selectionStart !== this._mountedComponent.selectionStart ||
                     this._selectionEnd !== this._mountedComponent.selectionEnd) {
-                this._selectionStart = this._mountedComponent.selectionStart;
-                this._selectionEnd = this._mountedComponent.selectionEnd;
+                this._selectionStart = this._mountedComponent.selectionStart || 0;
+                this._selectionEnd = this._mountedComponent.selectionEnd || 0;
 
                 if (this.props.onSelectionChange) {
                     this.props.onSelectionChange(this._selectionStart, this._selectionEnd);
@@ -360,8 +360,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             end: 0
         };
         if (this._mountedComponent) {
-            range.start = this._mountedComponent.selectionStart;
-            range.end = this._mountedComponent.selectionEnd;
+            range.start = this._mountedComponent.selectionStart || 0;
+            range.end = this._mountedComponent.selectionEnd || 0;
         }
 
         return range;
