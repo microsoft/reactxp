@@ -392,6 +392,7 @@ export class Scrollbar {
 
     private _createDivWithClass(className: string): HTMLElement {
         const div = document.createElement('div');
+        div.setAttribute('role', 'none');
         div.className = className;
         return div;
     }
