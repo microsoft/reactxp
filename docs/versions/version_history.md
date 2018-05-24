@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.2.1 of reactxp
+_Released 24 May 2018_
+Wired up onPaste handler for Windows implementation.
+Fixed bug that resulted in cached popups to appear when they shouldn't.
+Fixed bug in web implementation of RX.ScrollView that resulted in incorrect screen reader announcements.
+
 #### Version 1.2.0 of reactxp-imagesvg
 #### Version 1.2.0 of reactxp-navigation
 #### Version 1.2.0 of reactxp-video
