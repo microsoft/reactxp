@@ -254,7 +254,8 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
             var xhr = new Request(props.source, {
                 method: 'GET',
                 headers: headers,
-                mode: 'cors'
+                mode: 'cors',
+                credentials: props.crossorigin ? 'include' : 'same-origin'
             });
 
             fetch(xhr)
@@ -272,7 +273,9 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         } else {
             var req = new XMLHttpRequest();
             req.open('GET', props.source, true);
-
+            if (props.crossorigin) {
+                req.withCredentials = true;
+            }
             req.responseType = 'blob';
             if (props.headers) {
                 Object.keys(props.headers).forEach(key => {
