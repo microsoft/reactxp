@@ -20,6 +20,9 @@ accessibilityLabel: string = undefined;
 // HTTP headers to include when fetching the URL.
 headers: { [headerName: string]: string } = undefined;
 
+// Web only, sets the withCredentials flag on the hxr request. Only used if headers are present
+withCredentials: boolean = false; 
+
 // Called when an error occurs that prevents the image from loading
 onError: (err?: Error) => void;
 
