@@ -242,6 +242,14 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
 
     private _actuallyStartXhrImageFetch(props: Types.ImageProps) {
         // Fetch Implementation
+
+        var withCredentials = false;
+        // If an 'origin' header is passed, we assume this is intended to be a crossorigin request.
+        // In order to send the cookies with the request, the withCredentials: true / credentials: 'include' flag needs to be set.
+        if (props.headers && Object.keys(props.headers).some(header => header.toLowerCase() === 'origin')) {
+            withCredentials = true;
+        }
+
         if (window.fetch) {
             var headers = new Headers();
 
@@ -255,7 +263,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
                 method: 'GET',
                 headers: headers,
                 mode: 'cors',
-                credentials: props.withCredentials ? 'include' : 'same-origin'
+                credentials: withCredentials ? 'include' : 'same-origin'
             });
 
             fetch(xhr)
@@ -273,7 +281,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         } else {
             var req = new XMLHttpRequest();
             req.open('GET', props.source, true);
-            if (props.withCredentials) {
+            if (withCredentials) {
                 req.withCredentials = true;
             }
             req.responseType = 'blob';

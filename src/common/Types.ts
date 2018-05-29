@@ -529,8 +529,6 @@ export interface ImagePropsShared extends CommonProps {
     onError?: (err?: Error) => void;
 
     shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
-
-    withCredentials?: boolean; // web-only prop, if set, 'withCredentials' flag will be set on the request
 }
 
 export interface ImageProps extends ImagePropsShared {
