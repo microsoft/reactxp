@@ -169,6 +169,8 @@ borderTopLeftRadius: number = 0;
 
 **Shadows**
 ```javascript
+// NOTE: If applied to a Text element, these properties translate to text shadows, 
+// not a box shadow.
 shadowOffset: { height: number; width: number } = { 0, 0 };
 shadowRadius: number = 0;
 shadowColor: color = 'black';
