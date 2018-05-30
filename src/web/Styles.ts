@@ -97,7 +97,7 @@ export class Styles extends RX.Styles {
 
     // Creates opaque styles that can be used for Text
     createTextStyle(ruleSet: Types.TextStyle, cacheStyle: boolean = true): Types.TextStyleRuleSet {
-        return this._adaptStyles(ruleSet, cacheStyle);
+        return this._adaptStyles(ruleSet, cacheStyle, true);
     }
 
     // Creates opaque styles that can be used for Text
@@ -107,7 +107,7 @@ export class Styles extends RX.Styles {
 
     // Creates opaque styles that can be used for TextInput
     createTextInputStyle(ruleSet: Types.TextInputStyle, cacheStyle: boolean = true): Types.TextInputStyleRuleSet {
-        return this._adaptStyles(ruleSet, cacheStyle);
+        return this._adaptStyles(ruleSet, cacheStyle, true);
     }
 
     // Creates opaque styles that can be used for TextInput
@@ -250,7 +250,7 @@ export class Styles extends RX.Styles {
         return parentConstructor.name ? parentConstructor.name : parentConstructor;
     }
 
-    private _adaptStyles(def: any, validate: boolean): Readonly<any> {
+    private _adaptStyles(def: any, validate: boolean, isTextStyle = false): Readonly<any> {
         if (validate) {
             StyleLeakDetector.detectLeaks(def);
         }
@@ -346,7 +346,11 @@ export class Styles extends RX.Styles {
                 delete def.shadowColor;
             }
 
-            def['boxShadow'] = width + 'px ' + height + 'px ' + radius + 'px 0px ' + color;
+            if (isTextStyle) {
+                def['textShadow'] = width + 'px ' + height + 'px ' + radius + 'px ' + color;
+            } else {
+                def['boxShadow'] = width + 'px ' + height + 'px ' + radius + 'px 0px ' + color;
+            }
         }
 
         // CSS (and React JS) support lineHeight defined as either a multiple of the font
