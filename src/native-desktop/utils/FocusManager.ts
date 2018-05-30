@@ -18,7 +18,7 @@ import UserInterface from '../../native-common/UserInterface';
 
 const isNativeWindows: boolean = Platform.getType() === 'windows';
 
-let _isNavigatingWithKeyboard: boolean;
+let _isNavigatingWithKeyboard: boolean = UserInterface.isNavigatingWithKeyboard();
 
 UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
     _isNavigatingWithKeyboard = isNavigatingWithKeyboard;

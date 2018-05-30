@@ -22,7 +22,7 @@ const KEY_CODE_SPACE = 32;
 const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER];
 const UP_KEYCODES = [KEY_CODE_SPACE];
 
-let _isNavigatingWithKeyboard = false;
+let _isNavigatingWithKeyboard: boolean = UserInterface.isNavigatingWithKeyboard();
 
 UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
@@ -98,6 +98,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
     focus() {
         if (this._focusableElement && this._focusableElement.focus) {
+            console.trace();
             this._focusableElement.focus();
         }
 

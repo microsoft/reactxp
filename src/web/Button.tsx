@@ -41,7 +41,7 @@ const _styles = {
 const _longPressTime = 1000;
 const _defaultAccessibilityTrait = Types.AccessibilityTrait.Button;
 
-let _isNavigatingWithKeyboard = false;
+let _isNavigatingWithKeyboard: boolean = UserInterface.isNavigatingWithKeyboard();
 
 UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
     _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
