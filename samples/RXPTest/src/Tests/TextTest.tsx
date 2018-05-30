@@ -53,6 +53,12 @@ const _styles = {
     test7Text: RX.Styles.createTextStyle({
         fontSize: 16
     }),
+    test9Text: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.generalFontSize,
+        shadowColor: 'red',
+        shadowOffset: { width: 1, height: 4 },
+        shadowRadius: 5
+    }),
     inlineImageContainer: RX.Styles.createViewStyle({
         height: 24,
         width: 20,
@@ -263,6 +269,17 @@ class TextView extends RX.Component<RX.CommonProps, TextViewState> {
                             { ' light bulb inlined within it. It is meant to demonstrate a' +
                               ' larger-than-normal line height.' }
                         </RX.Text>
+                    </RX.Text>
+                </RX.View>
+
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation9' }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'Text shadows can be applied with the shadow style props.' }
+                    </RX.Text>
+                </RX.View>
+                <RX.View style={ _styles.resultContainer }>
+                    <RX.Text style={ _styles.test9Text }>
+                        { 'Text with a red shadow.' }
                     </RX.Text>
                 </RX.View>
             </RX.View>
