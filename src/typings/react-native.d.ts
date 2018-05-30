@@ -278,6 +278,9 @@ declare module 'react-native' {
         onMouseLeave?: Function;
         onMouseOver?: Function;
         onMouseMove?: Function;
+
+        // Windows
+        tabNavigation?: 'local' | 'cycle' | 'once';
     }
 
     interface ScrollViewProps extends ViewProps {

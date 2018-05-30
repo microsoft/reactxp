@@ -18,7 +18,8 @@ import AppConfig from '../common/AppConfig';
 import { View as ViewCommon, ViewContext as ViewContextCommon } from '../native-common/View';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import { RestrictFocusType } from '../common/utils/FocusManager';
-import { applyFocusableComponentMixin, FocusManagerFocusableComponent, FocusManager } from '../native-desktop/utils/FocusManager';
+import { applyFocusableComponentMixin, FocusManagerFocusableComponent, FocusManager }
+    from '../native-desktop/utils/FocusManager';
 import PopupContainerView from '../native-common/PopupContainerView';
 import { PopupComponent } from '../common/PopupContainerViewBase';
 
@@ -124,6 +125,10 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     componentDidMount() {
         super.componentDidMount();
 
+        if (this._focusManager) {
+            this._focusManager.setRestrictionStateCallback(this._focusRestrictionCallback.bind(this));
+        }
+
         // If we are mounted as visible, do our initialization now. If we are hidden, it will
         // be done later when the popup is shown.
         if (!this._isHidden()) {
@@ -140,6 +145,9 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         super.componentWillUnmount();
         this.disableFocusManager();
 
+        if (this._focusManager) {
+            this._focusManager.setRestrictionStateCallback(undefined);
+        }
         if (this._popupToken) {
             this._popupContainer!!!.unregisterPopupComponent(this._popupToken);
         }
@@ -395,6 +403,16 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             }
         }
         this._isFocusLimited = limited;
+    }
+
+    private _focusRestrictionCallback(restricted: RestrictFocusType) {
+        // Complementary mechanism to ensure focus cannot get out (through tabbing) of this view
+        // when restriction is enabled.
+        // This covers cases where outside the view focusable controls are not controlled and/or not controllable
+        // by FocusManager
+        this.setNativeProps({
+            tabNavigation: restricted !== RestrictFocusType.Unrestricted ? 'cycle' : 'local'
+        });
     }
 
     public setNativeProps(nativeProps: RN.ViewProps) {
