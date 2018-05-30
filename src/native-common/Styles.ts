@@ -165,21 +165,22 @@ export class Styles extends RX.Styles {
             adaptedRuleSet = _.omit<S>(adaptedRuleSet, forbiddenProps) as ReactNativeViewAndImageCommonStyle<S>;
         }
 
-        if (isTextStyle) {
-            // Convert text styling
-            let textStyle = adaptedRuleSet as Types.TextStyle;
-            if (textStyle.font) {
-                if (textStyle.font.fontFamily !== undefined) {
-                    textStyle.fontFamily = textStyle.font.fontFamily;
-                }
-                if (textStyle.font.fontWeight !== undefined) {
-                    textStyle.fontWeight = textStyle.font.fontWeight;
-                }
-                if (textStyle.font.fontStyle !== undefined) {
-                    textStyle.fontStyle = textStyle.font.fontStyle;
-                }
-                delete textStyle.font;
+        // Convert text styling
+        let textStyle = adaptedRuleSet as Types.TextStyle;
+        if (textStyle.font) {
+            if (textStyle.font.fontFamily !== undefined) {
+                textStyle.fontFamily = textStyle.font.fontFamily;
             }
+            if (textStyle.font.fontWeight !== undefined) {
+                textStyle.fontWeight = textStyle.font.fontWeight;
+            }
+            if (textStyle.font.fontStyle !== undefined) {
+                textStyle.fontStyle = textStyle.font.fontStyle;
+            }
+            delete textStyle.font;
+        }
+
+        if (isTextStyle) {
             if (textStyle.shadowColor !== undefined) {
                 adaptedRuleSet.textShadowColor = textStyle.shadowColor;
                 delete textStyle.shadowColor;
