@@ -47,7 +47,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
 
         _focusManager: FocusManager;
         _keyboardHandlerInstalled = false;
-        _isNavigatingWithKeyboard: boolean = false;
+        _isNavigatingWithKeyboard: boolean;
         _isNavigatingWithKeyboardUpateTimer: number | undefined;
 
         constructor(...args: any[]) {
@@ -55,6 +55,12 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
             // Initialize the root FocusManager which is aware of all
             // focusable elements.
             this._focusManager = new FocusManager(undefined);
+
+            // Keep current state in sync with the truth in UserInterface, to accomodate the multiple root views case
+            UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
+                this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
+            });
+            this._isNavigatingWithKeyboard = UserInterface.isNavigatingWithKeyboard();
         }
 
         _onTouchStartCapture = (e: SyntheticEvent) => {

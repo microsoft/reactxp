@@ -41,11 +41,12 @@ const _styles = {
 const _longPressTime = 1000;
 const _defaultAccessibilityTrait = Types.AccessibilityTrait.Button;
 
-let _isNavigatingWithKeyboard: boolean = UserInterface.isNavigatingWithKeyboard();
+let _isNavigatingWithKeyboard: boolean;
 
 UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
     _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 });
+_isNavigatingWithKeyboard = UserInterface.isNavigatingWithKeyboard();
 
 export interface ButtonContext {
     hasRxButtonAscendant?: boolean;

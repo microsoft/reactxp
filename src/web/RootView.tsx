@@ -117,6 +117,13 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         // Initialize the root FocusManager which is aware of all
         // focusable elements.
         this._focusManager = new FocusManager(undefined);
+
+        // Keep current state in sync with the truth in UserInterface, to keep the code consistent with
+        // the native counterpart that supports multiple root views.
+        UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
+            this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
+        });
+        this._isNavigatingWithKeyboard = UserInterface.isNavigatingWithKeyboard();
     }
 
     getChildContext() {

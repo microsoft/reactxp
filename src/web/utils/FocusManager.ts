@@ -19,12 +19,13 @@ import UserInterface from '../UserInterface';
 const ATTR_NAME_TAB_INDEX = 'tabindex';
 const ATTR_NAME_ARIA_HIDDEN = 'aria-hidden';
 
-let _isNavigatingWithKeyboard: boolean = UserInterface.isNavigatingWithKeyboard();
+let _isNavigatingWithKeyboard: boolean;
 let _isShiftPressed: boolean;
 
 UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
     _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 });
+_isNavigatingWithKeyboard = UserInterface.isNavigatingWithKeyboard();
 
 import {
     applyFocusableComponentMixin as applyFocusableComponentMixinCommon,

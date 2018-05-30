@@ -18,11 +18,12 @@ import UserInterface from '../../native-common/UserInterface';
 
 const isNativeWindows: boolean = Platform.getType() === 'windows';
 
-let _isNavigatingWithKeyboard: boolean = UserInterface.isNavigatingWithKeyboard();
+let _isNavigatingWithKeyboard: boolean;
 
 UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
     _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 });
+_isNavigatingWithKeyboard = UserInterface.isNavigatingWithKeyboard();
 
 import { FocusableComponentStateCallback } from  '../../common/utils/FocusManager';
 export { FocusableComponentStateCallback };
