@@ -89,6 +89,15 @@ if (typeof document !== 'undefined') {
     document.head.appendChild(style);
 }
 
+let _isNavigatingWithKeyboard: boolean;
+
+// Keep current state in sync with the truth in UserInterface, to keep the code consistent with
+// the native counterpart that supports multiple root views.
+UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
+    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
+});
+_isNavigatingWithKeyboard = UserInterface.isNavigatingWithKeyboard();
+
 export class RootView extends React.Component<RootViewProps, RootViewState> {
     static childContextTypes: React.ValidationMap<any> = {
         focusManager: PropTypes.object
@@ -100,7 +109,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _clickHandlerInstalled = false;
     private _keyboardHandlerInstalled = false;
     private _focusManager: FocusManager;
-    private _isNavigatingWithKeyboard: boolean = false;
     private _isNavigatingWithKeyboardUpateTimer: number|undefined;
 
     private _shouldEnableKeyboardNavigationModeOnFocus = false;
@@ -117,13 +125,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         // Initialize the root FocusManager which is aware of all
         // focusable elements.
         this._focusManager = new FocusManager(undefined);
-
-        // Keep current state in sync with the truth in UserInterface, to keep the code consistent with
-        // the native counterpart that supports multiple root views.
-        UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
-            this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-        });
-        this._isNavigatingWithKeyboard = UserInterface.isNavigatingWithKeyboard();
     }
 
     getChildContext() {
@@ -449,7 +450,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 return;
             }
 
-            if (!this._isNavigatingWithKeyboard && curShouldEnable) {
+            if (!_isNavigatingWithKeyboard && curShouldEnable) {
                 this._updateKeyboardNavigationState(true);
             }
         }, 0);
@@ -486,8 +487,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             this._isNavigatingWithKeyboardUpateTimer = undefined;
         }
 
-        if (this._isNavigatingWithKeyboard !== isNavigatingWithKeyboard) {
-            this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
+        if (_isNavigatingWithKeyboard !== isNavigatingWithKeyboard) {
+            _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 
             UserInterface.keyboardNavigationEvent.fire(isNavigatingWithKeyboard);
 

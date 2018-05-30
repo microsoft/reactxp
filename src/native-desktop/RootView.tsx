@@ -30,6 +30,14 @@ const _styles = RN.StyleSheet.create({
     }
   });
 
+let _isNavigatingWithKeyboard: boolean;
+
+// Keep current state in sync with the truth in UserInterface, to accomodate the multiple root views case
+UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
+    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
+});
+_isNavigatingWithKeyboard = UserInterface.isNavigatingWithKeyboard();
+
 //
 // Mixin with keyboard management behaviors. It enhances the two RootView flavors by adding:
 // 1. Support for maintaining UserInterface.keyboardNavigationEvent
@@ -47,7 +55,6 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
 
         _focusManager: FocusManager;
         _keyboardHandlerInstalled = false;
-        _isNavigatingWithKeyboard: boolean;
         _isNavigatingWithKeyboardUpateTimer: number | undefined;
 
         constructor(...args: any[]) {
@@ -55,12 +62,6 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
             // Initialize the root FocusManager which is aware of all
             // focusable elements.
             this._focusManager = new FocusManager(undefined);
-
-            // Keep current state in sync with the truth in UserInterface, to accomodate the multiple root views case
-            UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
-                this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-            });
-            this._isNavigatingWithKeyboard = UserInterface.isNavigatingWithKeyboard();
         }
 
         _onTouchStartCapture = (e: SyntheticEvent) => {
@@ -98,8 +99,8 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
                 this._isNavigatingWithKeyboardUpateTimer = undefined;
             }
 
-            if (this._isNavigatingWithKeyboard !== isNavigatingWithKeyboard) {
-                this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
+            if (_isNavigatingWithKeyboard !== isNavigatingWithKeyboard) {
+                _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
 
                 UserInterface.keyboardNavigationEvent.fire(isNavigatingWithKeyboard);
             }
