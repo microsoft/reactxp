@@ -60,6 +60,17 @@ const _styles = {
         padding: 4,
         borderColor: '#999'
     }),
+    textInput7: RX.Styles.createTextInputStyle({
+        flex: 1,
+        maxWidth: 200,
+        borderWidth: 1,
+        fontSize: CommonStyles.generalFontSize,
+        padding: 4,
+        borderColor: '#999',
+        shadowColor: 'red',
+        shadowOffset: { width: 1, height: 4 },
+        shadowRadius: 5
+    }),
     eventHistoryScrollView: RX.Styles.createScrollViewStyle({
         margin: 12,
         padding: 8,
@@ -81,6 +92,7 @@ interface TextInputViewState {
     test2Input?: string;
     test6Input?: string;
     test6EventHistory?: string[];
+    test7Input?: string;
 }
 
 class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
@@ -91,7 +103,8 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
             test1Input: '',
             test2Input: '',
             test6Input: '',
-            test6EventHistory: []
+            test6EventHistory: [],
+            test7Input: ''
         };
     }
 
@@ -230,6 +243,22 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
                         }
                     </RX.Text>
                 </RX.ScrollView>
+
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation7' }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'The text entered in this input box will have a red shadow.' }
+                    </RX.Text>
+                </RX.View>
+                <RX.View style={ _styles.resultContainer }>
+                    <RX.TextInput
+                        style={ _styles.textInput7 }
+                        value={ this.state.test7Input }
+                        onChangeText={ val => this.setState({ test7Input: val }) }
+                    />
+                    <RX.Text style={ _styles.resultText }>
+                        { this.state.test1Input }
+                    </RX.Text>
+                </RX.View>
 
                 <RX.View style={ _styles.placeholder }/>
 

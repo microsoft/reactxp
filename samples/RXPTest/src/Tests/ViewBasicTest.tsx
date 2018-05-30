@@ -36,6 +36,15 @@ const _styles = {
         alignItems: 'center',
         justifyContent: 'center'
     }),
+    view4: RX.Styles.createViewStyle({
+        backgroundColor: 'green',
+        width: 50,
+        height: 50,
+        margin: 20,
+        shadowColor: 'red',
+        shadowOffset: { width: 1, height: 4 },
+        shadowRadius: 5
+    }),
     explainTextContainer: RX.Styles.createViewStyle({
         margin: 12
     }),
@@ -192,6 +201,16 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
                 <RX.View style={ _styles.labelContainer }>
                     { accessibilityLabelAndImportantForAccessibilityTestUI(RX.Types.ImportantForAccessibility.No) }
                 </RX.View>
+
+                <RX.View
+                    style={ _styles.explainTextContainer }
+                    key={ 'explanation4' }
+                >
+                    <RX.Text style={ _styles.explainText }>
+                        { 'Box shadow can be applied with the shadow props.' }
+                    </RX.Text>
+                </RX.View>
+                <RX.View style={ _styles.view4 } />
             </RX.View>
         );
     }
