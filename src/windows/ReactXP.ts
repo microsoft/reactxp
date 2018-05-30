@@ -41,7 +41,7 @@ import ScrollViewImpl from './ScrollView';
 import StatusBarImpl from './StatusBar';
 import StorageImpl from '../native-common/Storage';
 import StylesImpl from '../native-common/Styles';
-import TextImpl from '../native-common/Text';
+import TextImpl from './Text';
 import TextInputImpl from './TextInput';
 import UserInterfaceImpl from '../native-common/UserInterface';
 import UserPresenceImpl from '../native-common/UserPresence';
@@ -128,7 +128,8 @@ module ReactXP {
     const windowsAnimatedClasses =  {
         ...CommonAnimatedClasses,
         View: RN.Animated.createAnimatedComponent(ViewImpl),
-        TextInput:  RN.Animated.createAnimatedComponent(TextInputImpl)
+        TextInput:  RN.Animated.createAnimatedComponent(TextInputImpl),
+        Text:  RN.Animated.createAnimatedComponent(TextImpl)
     };
 
     export const Animated = makeAnimated(windowsAnimatedClasses, true);
