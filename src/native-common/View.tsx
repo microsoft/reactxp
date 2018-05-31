@@ -371,6 +371,8 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
                 }
                 this._internalProps.style = Styles.combine([baseStyle, this._opacityAnimatedStyle]);
             }
+
+            this._internalProps.collapsable = false;
         }
 
         if (this.props.useSafeInsets) {
