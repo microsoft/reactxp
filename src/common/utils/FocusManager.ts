@@ -53,8 +53,6 @@ export type FocusableComponentStateCallback = (restrictedOrLimited: boolean) => 
 export type FocusManagerRestrictionStateCallback = (restricted: RestrictFocusType) => void;
 
 export abstract class FocusManager {
-    private static _rootFocusManager: FocusManager;
-
     private static _restrictionStack: FocusManager[] = [];
     protected static _currentRestrictionOwner: FocusManager|undefined;
     private static _restoreRestrictionTimer: number|undefined;
@@ -72,15 +70,7 @@ export abstract class FocusManager {
     private _restrictionStateCallback: FocusManagerRestrictionStateCallback|undefined;
 
     constructor(parent: FocusManager|undefined) {
-        if (parent) {
-            this._parent = parent;
-        } else if (FocusManager._rootFocusManager) {
-            if (AppConfig.isDevelopmentMode()) {
-                console.error('FocusManager: root is already set');
-            }
-        } else {
-            FocusManager._rootFocusManager = this;
-        }
+        this._parent = parent;
     }
 
     protected abstract /* static */ addFocusListenerOnComponent(component: FocusableComponentInternal, onFocus: () => void): void;

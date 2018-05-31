@@ -47,7 +47,6 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
 
         _focusManager: FocusManager;
         _keyboardHandlerInstalled = false;
-        _isNavigatingWithKeyboard: boolean = false;
         _isNavigatingWithKeyboardUpateTimer: number | undefined;
 
         constructor(...args: any[]) {
@@ -92,9 +91,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
                 this._isNavigatingWithKeyboardUpateTimer = undefined;
             }
 
-            if (this._isNavigatingWithKeyboard !== isNavigatingWithKeyboard) {
-                this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-
+            if (UserInterface.isNavigatingWithKeyboard() !== isNavigatingWithKeyboard) {
                 UserInterface.keyboardNavigationEvent.fire(isNavigatingWithKeyboard);
             }
         }

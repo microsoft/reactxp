@@ -19,12 +19,7 @@ import UserInterface from '../UserInterface';
 const ATTR_NAME_TAB_INDEX = 'tabindex';
 const ATTR_NAME_ARIA_HIDDEN = 'aria-hidden';
 
-let _isNavigatingWithKeyboard: boolean;
 let _isShiftPressed: boolean;
-
-UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
-    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-});
 
 import {
     applyFocusableComponentMixin as applyFocusableComponentMixinCommon,
@@ -59,7 +54,7 @@ export class FocusManager extends FocusManagerBase {
         });
 
         document.body.addEventListener('focusout', event => {
-            if (!_isNavigatingWithKeyboard || (event.target === document.body)) {
+            if (!UserInterface.isNavigatingWithKeyboard() || (event.target === document.body)) {
                 return;
             }
 
@@ -78,7 +73,7 @@ export class FocusManager extends FocusManagerBase {
             _checkFocusTimer = setTimeout(() => {
                 _checkFocusTimer = undefined;
 
-                if (_isNavigatingWithKeyboard &&
+                if (UserInterface.isNavigatingWithKeyboard() &&
                         (!FocusManager._currentFocusedComponent || !FocusManager._currentFocusedComponent.removed) &&
                         (!document.activeElement || (document.activeElement === document.body))) {
                     // This should work for Electron and the browser should
@@ -180,7 +175,7 @@ export class FocusManager extends FocusManagerBase {
             FocusManager._resetFocusTimer = undefined;
         }
 
-        if (_isNavigatingWithKeyboard && focusFirstWhenNavigatingWithKeyboard) {
+        if (UserInterface.isNavigatingWithKeyboard() && focusFirstWhenNavigatingWithKeyboard) {
             // When we're in the keyboard navigation mode, we want to have the
             // first focusable component to be focused straight away, without the
             // necessity to press Tab.
