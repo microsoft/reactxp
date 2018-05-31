@@ -18,13 +18,6 @@ import UserInterface from '../../native-common/UserInterface';
 
 const isNativeWindows: boolean = Platform.getType() === 'windows';
 
-let _isNavigatingWithKeyboard: boolean;
-
-UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
-    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-});
-_isNavigatingWithKeyboard = UserInterface.isNavigatingWithKeyboard();
-
 import { FocusableComponentStateCallback } from  '../../common/utils/FocusManager';
 export { FocusableComponentStateCallback };
 
@@ -101,7 +94,7 @@ export class FocusManager extends FocusManagerBase {
             FocusManager._resetFocusTimer = undefined;
         }
 
-        if (_isNavigatingWithKeyboard && focusFirstWhenNavigatingWithKeyboard) {
+        if (UserInterface.isNavigatingWithKeyboard() && focusFirstWhenNavigatingWithKeyboard) {
             // When we're in the keyboard navigation mode, we want to have the
             // first focusable component to be focused straight away, without the
             // necessity to press Tab.

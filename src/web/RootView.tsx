@@ -89,15 +89,6 @@ if (typeof document !== 'undefined') {
     document.head.appendChild(style);
 }
 
-let _isNavigatingWithKeyboard: boolean;
-
-// Keep current state in sync with the truth in UserInterface, to keep the code consistent with
-// the native counterpart that supports multiple root views.
-UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
-    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-});
-_isNavigatingWithKeyboard = UserInterface.isNavigatingWithKeyboard();
-
 export class RootView extends React.Component<RootViewProps, RootViewState> {
     static childContextTypes: React.ValidationMap<any> = {
         focusManager: PropTypes.object
@@ -450,7 +441,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 return;
             }
 
-            if (!_isNavigatingWithKeyboard && curShouldEnable) {
+            if (!UserInterface.isNavigatingWithKeyboard() && curShouldEnable) {
                 this._updateKeyboardNavigationState(true);
             }
         }, 0);
@@ -487,9 +478,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             this._isNavigatingWithKeyboardUpateTimer = undefined;
         }
 
-        if (_isNavigatingWithKeyboard !== isNavigatingWithKeyboard) {
-            _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-
+        if (UserInterface.isNavigatingWithKeyboard() !== isNavigatingWithKeyboard) {
             UserInterface.keyboardNavigationEvent.fire(isNavigatingWithKeyboard);
 
             const focusClass = isNavigatingWithKeyboard ? this.props.keyBoardFocusOutline : this.props.mouseFocusOutline;

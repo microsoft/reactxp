@@ -30,14 +30,6 @@ const _styles = RN.StyleSheet.create({
     }
   });
 
-let _isNavigatingWithKeyboard: boolean;
-
-// Keep current state in sync with the truth in UserInterface, to accomodate the multiple root views case
-UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
-    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-});
-_isNavigatingWithKeyboard = UserInterface.isNavigatingWithKeyboard();
-
 //
 // Mixin with keyboard management behaviors. It enhances the two RootView flavors by adding:
 // 1. Support for maintaining UserInterface.keyboardNavigationEvent
@@ -99,9 +91,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
                 this._isNavigatingWithKeyboardUpateTimer = undefined;
             }
 
-            if (_isNavigatingWithKeyboard !== isNavigatingWithKeyboard) {
-                _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-
+            if (UserInterface.isNavigatingWithKeyboard() !== isNavigatingWithKeyboard) {
                 UserInterface.keyboardNavigationEvent.fire(isNavigatingWithKeyboard);
             }
         }

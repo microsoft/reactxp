@@ -22,13 +22,6 @@ const KEY_CODE_SPACE = 32;
 const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER];
 const UP_KEYCODES = [KEY_CODE_SPACE];
 
-let _isNavigatingWithKeyboard: boolean;
-
-UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
-   _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-});
-_isNavigatingWithKeyboard = UserInterface.isNavigatingWithKeyboard();
-
 let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
 
 export interface ButtonContext extends ButtonContextBase {
@@ -175,7 +168,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
             this.onFocus();
         }
 
-        this._isFocusedWithKeyboard = _isNavigatingWithKeyboard;
+        this._isFocusedWithKeyboard = UserInterface.isNavigatingWithKeyboard();
         this._onHoverStart(e);
 
         if (this.props.onFocus) {
