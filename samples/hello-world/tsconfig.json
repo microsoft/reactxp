@@ -13,11 +13,7 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
-    "outDir": "./dist/",
-    "lib": ["es5", "es6", "dom"],
-    "types": [
-      "node"
-    ]
+    "outDir": "./dist/"
   },
   "include": [
     "./src/**/*"
