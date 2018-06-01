@@ -154,6 +154,30 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         return defer.promise();
     }
 
+    static getMetadata(url: string): SyncTasks.Promise<Types.ImageMetadata> {
+        const defer = SyncTasks.Defer<Types.ImageMetadata>();
+
+        const img = new (window as any).Image();
+        img.src = url;
+
+        img.onload = ((event: Event) => {
+            defer.resolve({
+                width: img.naturalWidth,
+                height: img.naturalHeight
+            });
+        });
+
+        img.onerror = ((event: Event) => {
+            defer.reject('Failed to prefetch url ' + url);
+        });
+
+        img.onabort = ((event: Event) => {
+            defer.reject('Prefetch cancelled for url ' + url);
+        });
+
+        return defer.promise();
+    }
+
     private _isMounted = false;
     private _nativeImageWidth: number|undefined;
     private _nativeImageHeight: number|undefined;

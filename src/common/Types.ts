@@ -535,6 +535,11 @@ export interface ImageProps extends ImagePropsShared {
     style?: StyleRuleSetRecursive<ImageStyleRuleSet>;
 }
 
+export interface ImageMetadata {
+    width: number;
+    height: number;
+}
+
 export interface AnimatedImageProps extends ImagePropsShared {
     style?: StyleRuleSetRecursive<AnimatedImageStyleRuleSet | ImageStyleRuleSet>;
 }

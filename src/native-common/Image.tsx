@@ -46,6 +46,29 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
         return defer.promise();
     }
 
+    static getMetadata(url: string): SyncTasks.Promise<Types.ImageMetadata> {
+        const defer = SyncTasks.Defer<Types.ImageMetadata>();
+
+        Image.prefetch(url).then(success => {
+            if (!success) {
+                defer.reject('Prefetching url ' + url + ' not succeeded.');
+            } else {
+                RN.Image.getSize(url, (width, height) => {
+                    defer.resolve({
+                        width: width,
+                        height: height
+                    });
+                }, error => {
+                    defer.reject(error);
+                });
+            }
+        }).catch((error: any) => {
+            defer.reject(error);
+        });
+
+        return defer.promise();
+    }
+
     protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
     private _nativeImageWidth: number|undefined;
     private _nativeImageHeight: number|undefined;
