@@ -52,7 +52,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
 
                 ViewBase._viewCheckingTimer = setInterval(ViewBase._checkViews,
                     newState === Types.AppActivationState.Active ?
-                        _layoutTimerActiveDuration : _layoutTimerInactiveDuration) as any as number;
+                        _layoutTimerActiveDuration : _layoutTimerInactiveDuration);
             }
         }
     }
@@ -161,7 +161,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         if (!ViewBase._viewCheckingTimer) {
             ViewBase._viewCheckingTimer = setInterval(ViewBase._checkViews,
                 ViewBase._appActivationState === Types.AppActivationState.Active ?
-                    _layoutTimerActiveDuration : _layoutTimerInactiveDuration) as any as number;
+                    _layoutTimerActiveDuration : _layoutTimerInactiveDuration);
         }
 
         if (!ViewBase._isResizeHandlerInstalled) {

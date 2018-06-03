@@ -528,7 +528,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 this._hidePopupTimer = window.setTimeout(() => {
                     this._hidePopupTimer = undefined;
                     this._dismissPopup();
-                }, this.props.autoDismissDelay) as any as number;
+                }, this.props.autoDismissDelay);
             } else {
                 this._dismissPopup();
             }
@@ -551,7 +551,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _startRepositionPopupTimer() {
         this._respositionPopupTimer = setInterval(() => {
             this._recalcPosition();
-        }, 500) as any as number;
+        }, 500);
     }
 
     private _stopRepositionPopupTimer() {
