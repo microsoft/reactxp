@@ -56,7 +56,7 @@ export interface PopupContainerViewState {
 
 export class PopupContainerView extends PopupContainerViewBase<PopupContainerViewProps, PopupContainerViewState> {
     private _mountedComponent: RN.View|null = null;
-    private _viewHandle: number | null = null;
+    private _viewHandle: number|null = null;
     private _respositionPopupTimer: number|undefined;
 
     constructor(props: PopupContainerViewProps, context: PopupContainerViewContext) {
@@ -394,7 +394,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
     private _startRepositionPopupTimer() {
         this._respositionPopupTimer = setInterval(() => {
             this._recalcPosition();
-        }, 1000) as any as number;
+        }, 1000);
     }
 
     private _stopRepositionPopupTimer() {
