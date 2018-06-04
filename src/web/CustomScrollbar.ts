@@ -7,8 +7,6 @@
 * Custom scrollbar implementation for web.
 */
 
-'use strict';
-
 import React = require('react');
 
 var UNIT = 'px';
