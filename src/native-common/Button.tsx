@@ -159,7 +159,8 @@ export class Button extends ButtonBase {
             shouldRasterizeIOS: this.props.shouldRasterizeIOS,
             onAccessibilityTapIOS: this.props.onAccessibilityTapIOS,
             onMouseEnter: this._onMouseEnter,
-            onMouseLeave: this._onMouseLeave
+            onMouseLeave: this._onMouseLeave,
+            tooltip: this.props.title
         };
 
         return this._render(internalProps);

@@ -123,6 +123,9 @@ declare module 'react-native' {
         onLoadEnd?: (e: SyntheticEvent<Image>) => void;
         onLoadStart?: Function;
         onProgress?: Function;
+
+        //windows
+        tooltip?: string;
     }
 
     interface ActivityIndicatorProps extends ComponentPropsBase {
@@ -154,6 +157,7 @@ declare module 'react-native' {
 
         // Windows
         disableContextMenu?: boolean;
+        tooltip?: string;
     }
 
     export interface PickerProps extends ComponentPropsStyleBase {
@@ -281,6 +285,7 @@ declare module 'react-native' {
 
         // Windows
         tabNavigation?: 'local' | 'cycle' | 'once';
+        tooltip?: string;
     }
 
     interface ScrollViewProps extends ViewProps {

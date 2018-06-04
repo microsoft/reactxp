@@ -91,6 +91,7 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
                 onError={ this._onError }
                 shouldRasterizeIOS= { this.props.shouldRasterizeIOS }
                 { ...additionalProps }
+                tooltip = { this.props.title }
             >
                 { this.props.children }
             </RN.Image>
