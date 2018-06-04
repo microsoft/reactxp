@@ -124,7 +124,7 @@ declare module 'react-native' {
         onLoadStart?: Function;
         onProgress?: Function;
 
-        //windows
+        // Windows
         tooltip?: string;
     }
 

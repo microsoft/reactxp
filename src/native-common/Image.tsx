@@ -89,9 +89,9 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
                 accessibilityLabel={ this.props.accessibilityLabel }
                 onLoad={ this.props.onLoad ? this._onLoad : undefined }
                 onError={ this._onError }
-                shouldRasterizeIOS= { this.props.shouldRasterizeIOS }
+                shouldRasterizeIOS={ this.props.shouldRasterizeIOS }
+                tooltip={ this.props.title }
                 { ...additionalProps }
-                tooltip = { this.props.title }
             >
                 { this.props.children }
             </RN.Image>
