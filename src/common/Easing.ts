@@ -7,14 +7,14 @@
 * Easing functions for animations.
 */
 
-import Bezier = require('./Bezier');
+import * as Bezier from 'bezier-easing';
 import Types = require('./Types');
 
 export class Easing implements Types.Animated.Easing {
     CubicBezier(x1: number, y1: number, x2: number, y2: number): Types.Animated.EasingFunction {
         return {
             cssName: 'cubic-bezier(' + x1 + ', ' + y1 + ', ' + x2 + ', ' + y2 + ')',
-            function: Bezier.bezier(x1, y1, x2, y2)
+            function: Bezier(x1, y1, x2, y2)
         };
     }
 
