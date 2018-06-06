@@ -10,6 +10,7 @@ import React = require('react');
 import Types = require('../common/Types');
 
 import { View as ViewCommon } from '../native-common/View';
+import EventHelpers from '../native-common/utils/EventHelpers';
 
 export class View extends ViewCommon {
 
@@ -25,21 +26,9 @@ export class View extends ViewCommon {
                 this._internalProps.allowDrop = true;
 
                 this._internalProps[name] = (e: React.SyntheticEvent<View>) => {
-                    handler({
-                        dataTransfer: (e.nativeEvent as any).dataTransfer,
-
-                        stopPropagation() {
-                            if (e.stopPropagation) {
-                                e.stopPropagation();
-                            }
-                        },
-
-                        preventDefault() {
-                            if (e.preventDefault) {
-                                e.preventDefault();
-                            }
-                        },
-                    });
+                    const dndEvent: any = EventHelpers.toMouseEvent(e);
+                    dndEvent.dataTransfer = (e.nativeEvent as any).dataTransfer;
+                    handler(dndEvent);
                 };
             }
         }
