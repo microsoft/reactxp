@@ -85,6 +85,27 @@ export class UserInterface extends RX.UserInterface {
         };
     }
 
+    measureRootViewWindow(rootViewId: string | undefined): Types.LayoutInfo {
+        let dimensions = RN.Dimensions.get('window');
+
+        if (rootViewId && RN.Platform.OS === 'windows') {
+            try {
+                dimensions = RN.Dimensions.get(rootViewId);
+            } catch (e) {
+                // Can happen if RNW doesn't support multi view dimensions tracking yet
+                console.warn('Couldn\'t get dimensions for rootViewId ' + rootViewId +
+                 ' check if RNW already supports multi view dimensions tracking');
+            }
+        }
+
+        return {
+            x: 0,
+            y: 0,
+            width: dimensions.width,
+            height: dimensions.height
+        };
+    }
+
     getContentSizeMultiplier(): SyncTasks.Promise<number> {
         let deferred = SyncTasks.Defer<number>();
 

@@ -82,6 +82,11 @@ export class UserInterface extends RX.UserInterface {
         };
     }
 
+    measureRootViewWindow(rootViewId: string | undefined): Types.LayoutInfo {
+        // Mo multi window support, default to main window
+        return this.measureWindow();
+    }
+
     getContentSizeMultiplier(): SyncTasks.Promise<number> {
         // Browsers don't support font-specific scaling. They scale all of their
         // UI elements the same.

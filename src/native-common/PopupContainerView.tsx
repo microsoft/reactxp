@@ -17,6 +17,7 @@ import RN = require('react-native');
 import International from './International';
 import Types = require('../common/Types');
 import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext } from '../common/PopupContainerViewBase';
+import UserInterface = require('./UserInterface');
 
 // Width of the "alley" around popups so they don't get too close to the boundary of the screen boundary.
 const ALLEY_WIDTH = 2;
@@ -204,8 +205,9 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
             newState.constrainedPopupHeight = newState.popupHeight;
             newState.constrainedPopupWidth = newState.popupWidth;
 
-            // Get the width/height of the full window.
-            let window = RN.Dimensions.get('window');
+            // Get the width/height of root view window.
+            let window = UserInterface.default.measureRootViewWindow(this.props.popupOptions.rootViewId);
+
             let windowWidth = window.width;
             let windowHeight = window.height;
 
