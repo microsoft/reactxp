@@ -53,11 +53,6 @@ measureLayoutRelativeToAncestor(component: React.Component<any, any>,
 // callback
 measureWindow(rootViewId?: string): Types.Dimensions;
 
-// Measures the dimension of the specified root view window or defaults to
-// main window (or screen, in the case of non-windowed platforms);
-// Support measuring for platforms with multi window (UWP)
-measureRootViewWindow(rootViewId: string | undefined): Types.Dimensions;
-
 // Indicates the "size multiplier" for text increase or decrease, which
 // can be adjusted by users on some platforms; defaults to 1.0
 getContentSizeMultiplier(): SyncTasks.Promise<number>;
