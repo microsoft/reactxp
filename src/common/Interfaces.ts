@@ -74,8 +74,7 @@ export abstract class UserInterface {
         SyncTasks.Promise<Types.LayoutInfo>;
     abstract measureLayoutRelativeToAncestor(component: React.Component<any, any>,
         ancestor: React.Component<any, any>): SyncTasks.Promise<Types.LayoutInfo>;
-    abstract measureWindow(): Types.Dimensions;
-    abstract measureRootViewWindow(rootViewId: string | undefined): Types.Dimensions;
+    abstract measureWindow(rootViewId?: string): Types.Dimensions;
 
     // Content Size Multiplier
     abstract getContentSizeMultiplier(): SyncTasks.Promise<number>;

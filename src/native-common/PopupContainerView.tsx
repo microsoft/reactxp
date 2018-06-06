@@ -206,7 +206,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
             newState.constrainedPopupWidth = newState.popupWidth;
 
             // Get the width/height of root view window.
-            let window = UserInterface.measureRootViewWindow(this.props.popupOptions.rootViewId);
+            let window = UserInterface.measureWindow(this.props.popupOptions.rootViewId);
 
             let windowWidth = window.width;
             let windowHeight = window.height;

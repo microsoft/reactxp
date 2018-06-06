@@ -75,17 +75,7 @@ export class UserInterface extends RX.UserInterface {
         return deferred.promise();
     }
 
-    measureWindow(): Types.LayoutInfo {
-        const dimensions = RN.Dimensions.get('window');
-        return {
-            x: 0,
-            y: 0,
-            width: dimensions.width,
-            height: dimensions.height
-        };
-    }
-
-    measureRootViewWindow(rootViewId: string | undefined): Types.LayoutInfo {
+    measureWindow(rootViewId?: string): Types.LayoutInfo {
         let dimensions = RN.Dimensions.get('window');
 
         if (rootViewId && RN.Platform.OS === 'windows') {

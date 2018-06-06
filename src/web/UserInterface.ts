@@ -73,18 +73,14 @@ export class UserInterface extends RX.UserInterface {
         return deferred.promise();
     }
 
-    measureWindow(): Types.LayoutInfo {
+    measureWindow(rootViewId?: string): Types.LayoutInfo {
+        // Mo multi window support, default to main window
         return {
             x: 0,
             y: 0,
             width: window.innerWidth,
             height: window.innerHeight
         };
-    }
-
-    measureRootViewWindow(rootViewId: string | undefined): Types.LayoutInfo {
-        // Mo multi window support, default to main window
-        return this.measureWindow();
     }
 
     getContentSizeMultiplier(): SyncTasks.Promise<number> {
