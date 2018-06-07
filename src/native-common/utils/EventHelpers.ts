@@ -233,6 +233,12 @@ export class EventHelpers {
         return mouseEvent;
     }
 
+    toDragEvent(e: Types.SyntheticEvent): Types.DragEvent {
+        const dndEvent: any = this.toMouseEvent(e);
+        dndEvent.dataTransfer = (e.nativeEvent as any).dataTransfer;
+        return dndEvent;
+    }
+
     toMouseButton(e: Types.TouchEvent): number {
         const nativeEvent = e as any;
         if (nativeEvent.button !== undefined) {
