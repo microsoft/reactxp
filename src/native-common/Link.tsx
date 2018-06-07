@@ -1,4 +1,4 @@
-﻿/**
+/**
 * Link.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -23,7 +23,7 @@ export interface LinkContext {
     isRxParentAText?: boolean;
 }
 
-export class Link extends React.Component<Types.LinkProps, {}> {
+export class LinkBase<S> extends React.Component<Types.LinkProps, S> {
     static contextTypes = {
         focusArbitrator: PropTypes.object,
         isRxParentAText: PropTypes.bool
@@ -126,6 +126,10 @@ export class Link extends React.Component<Types.LinkProps, {}> {
     blur() {
         // No-op
     }
+}
+
+export class Link extends LinkBase<{}> {
+
 }
 
 export default Link;

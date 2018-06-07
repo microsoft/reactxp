@@ -116,11 +116,13 @@ export class FocusManager extends FocusManagerBase {
     }
 
     protected /* static */ _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
-        if ((storedComponent.restricted || (storedComponent.limitedCount > 0)) && !('origTabIndex' in storedComponent)) {
+        if ((storedComponent.restricted || (storedComponent.limitedCount > 0) || (storedComponent.limitedCountAccessible > 0))
+            && !('origTabIndex' in storedComponent)) {
             storedComponent.origTabIndex = FocusManager._setComponentTabIndexOverride(
                 storedComponent.component as FocusableComponentInternal, -1);
             FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, true);
-        } else if (!storedComponent.restricted && !storedComponent.limitedCount && ('origTabIndex' in storedComponent)) {
+        } else if (!storedComponent.restricted && !storedComponent.limitedCount && !storedComponent.limitedCountAccessible
+            && ('origTabIndex' in storedComponent)) {
             FocusManager._removeComponentTabIndexOverride(storedComponent.component as FocusableComponentInternal);
             delete storedComponent.origTabIndex;
             FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, false);
