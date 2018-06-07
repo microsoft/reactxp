@@ -26,8 +26,7 @@ export class View extends ViewCommon {
                 this._internalProps.allowDrop = true;
 
                 this._internalProps[name] = (e: React.SyntheticEvent<View>) => {
-                    const dndEvent: any = EventHelpers.toMouseEvent(e);
-                    dndEvent.dataTransfer = (e.nativeEvent as any).dataTransfer;
+                    const dndEvent = EventHelpers.toDragEvent(e);
                     handler(dndEvent);
                 };
             }
