@@ -309,7 +309,7 @@ export abstract class FocusManager {
         this.removeFocusLimitation();
     }
 
-    subscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback) {
+    static subscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback) {
         const storedComponent = FocusManager._getStoredComponent(component);
 
         if (storedComponent) {
@@ -321,7 +321,7 @@ export abstract class FocusManager {
         }
     }
 
-    unsubscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback) {
+    static unsubscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback) {
         const storedComponent = FocusManager._getStoredComponent(component);
 
         if (storedComponent && storedComponent.callbacks) {
@@ -335,7 +335,7 @@ export abstract class FocusManager {
         this._restrictionStateCallback = callback;
     }
 
-    isComponentFocusRestrictedOrLimited(component: FocusableComponentInternal): boolean {
+    static isComponentFocusRestrictedOrLimited(component: FocusableComponentInternal): boolean {
         const storedComponent = FocusManager._getStoredComponent(component);
         return !!storedComponent &&
             (storedComponent.restricted || storedComponent.limitedCount > 0 || storedComponent.limitedCountAccessible > 0);
