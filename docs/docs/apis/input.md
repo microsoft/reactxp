@@ -24,6 +24,6 @@ keyUpEvent: SubscribableEvent<(e: Types.KeyboardEvent) => boolean>();
 
 // Triggered when a pointer up event occurs. Events are triggered
 // in the reverse order in which they were registered. Pass true to stop
-// propagation (Web only).
+// propagation.
 pointerUpEvent: SubscribableEvent<(e: Types.MouseEvent) => boolean>();
 ```
