@@ -137,7 +137,6 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         const defer = SyncTasks.Defer<boolean>();
 
         const img = new (window as any).Image();
-        img.src = url;
 
         img.onload = ((event: Event) => {
             defer.resolve(true);
@@ -150,6 +149,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         img.onabort = ((event: Event) => {
             defer.reject('Prefetch cancelled for url ' + url);
         });
+        img.src = url;
 
         return defer.promise();
     }
@@ -158,7 +158,6 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         const defer = SyncTasks.Defer<Types.ImageMetadata>();
 
         const img = new (window as any).Image();
-        img.src = url;
 
         img.onload = ((event: Event) => {
             defer.resolve({
@@ -174,6 +173,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         img.onabort = ((event: Event) => {
             defer.reject('Prefetch cancelled for url ' + url);
         });
+        img.src = url;
 
         return defer.promise();
     }

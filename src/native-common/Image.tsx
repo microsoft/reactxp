@@ -51,7 +51,7 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
 
         Image.prefetch(url).then(success => {
             if (!success) {
-                defer.reject('Prefetching url ' + url + ' not succeeded.');
+                defer.reject('Prefetching url ' + url + ' did not succeed.');
             } else {
                 RN.Image.getSize(url, (width, height) => {
                     defer.resolve({
