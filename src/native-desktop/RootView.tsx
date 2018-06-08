@@ -109,6 +109,10 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
             Input.dispatchKeyDown(kbdEvent);
         }
 
+        _onResponderRelease = (e: SyntheticEvent) => {
+            Input.dispatchPointerUpEvent(EventHelpers.toMouseEvent(e));
+        }
+
         _onKeyUp = (e: SyntheticEvent) => {
             let kbdEvent = EventHelpers.toKeyboardEvent(e);
 
@@ -146,7 +150,8 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
                 onKeyDownCapture: this._onKeyDownCapture,
                 onKeyUp: this._onKeyUp,
                 onTouchStartCapture: this._onTouchStartCapture,
-                collapsable: false
+                onResponderRelease: this._onResponderRelease,
+                collapsable: false,
             };
 
             return  (

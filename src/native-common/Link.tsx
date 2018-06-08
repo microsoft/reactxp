@@ -14,6 +14,7 @@ import RN = require('react-native');
 import AccessibilityUtil from './AccessibilityUtil';
 import EventHelpers from './utils/EventHelpers';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import Input from './Input';
 import Linking from '../native-common/Linking';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
@@ -79,11 +80,13 @@ export class LinkBase<S> extends React.Component<Types.LinkProps, S> {
             if (this.props.onContextMenu) {
                 this.props.onContextMenu(EventHelpers.toMouseEvent(e));
             }
+            Input.dispatchPointerUpEvent(EventHelpers.toMouseEvent(e));
             return;
         }
 
         if (this.props.onPress) {
             this.props.onPress(EventHelpers.toMouseEvent(e), this.props.url);
+            Input.dispatchPointerUpEvent(EventHelpers.toMouseEvent(e));
             return;
         }
 
@@ -92,6 +95,7 @@ export class LinkBase<S> extends React.Component<Types.LinkProps, S> {
             Linking.openUrl(this.props.url).catch(err => {
                 // Catch the exception so it doesn't propagate.
             });
+            Input.dispatchPointerUpEvent(EventHelpers.toMouseEvent(e));
         }
     }
 

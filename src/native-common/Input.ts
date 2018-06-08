@@ -8,16 +8,28 @@
 */
 
 import RN = require('react-native');
+import SubscribableEvent from 'subscribableevent';
 
 import RX = require('../common/Interfaces');
+import Types = require('../common/Types');
 
 export class Input extends RX.Input {
+    
+    static nativeCommonPointerUpEvent = new SubscribableEvent<(e: Types.MouseEvent) => void>();
+    
     constructor() {
         super();
 
         RN.BackHandler.addEventListener('hardwareBackPress', () => {
             return this.backButtonEvent.fire();
         });
+    }
+
+    dispatchPointerUpEvent(e: Types.MouseEvent) {
+        if (this.pointerUpEvent.fire(e)) {
+            e.stopPropagation();
+        }
+        Input.nativeCommonPointerUpEvent.fire(e);
     }
 }
 

@@ -98,7 +98,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _hidePopupTimer: number|undefined;
     private _respositionPopupTimer: number|undefined;
     private _clickHandlerInstalled = false;
-    private _keyboardHandlerInstalled = false;
+    private _inputDevicedHandlerInstalled = false;
     private _focusManager: FocusManager;
     private _isNavigatingWithKeyboardUpateTimer: number|undefined;
 
@@ -192,16 +192,17 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             this._startRepositionPopupTimer();
         }
 
-        if (!this._keyboardHandlerInstalled) {
+        if (!this._inputDevicedHandlerInstalled) {
             window.addEventListener('keydown', this._onKeyDown);
             window.addEventListener('keyup', this._onKeyUp);
 
             window.addEventListener('keydown', this._onKeyDownCapture, true); // Capture!
             window.addEventListener('mousedown', this._onMouseDownCapture, true); // Capture!
+            window.addEventListener('mouseup', this._onMouseUp);
             window.addEventListener('focusin', this._onFocusIn);
             window.addEventListener('focusout', this._onFocusOut);
 
-            this._keyboardHandlerInstalled = true;
+            this._inputDevicedHandlerInstalled = true;
         }
     }
 
@@ -209,16 +210,17 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         this._stopHidePopupTimer();
         this._stopRepositionPopupTimer();
 
-        if (this._keyboardHandlerInstalled) {
+        if (this._inputDevicedHandlerInstalled) {
             window.removeEventListener('keydown', this._onKeyDown);
             window.removeEventListener('keyup', this._onKeyUp);
 
             window.removeEventListener('keydown', this._onKeyDownCapture, true);
             window.removeEventListener('mousedown', this._onMouseDownCapture, true);
+            window.removeEventListener('mouseup', this._onMouseUp);
             window.removeEventListener('focusin', this._onFocusIn);
             window.removeEventListener('focusout', this._onFocusOut);
 
-            this._keyboardHandlerInstalled = false;
+            this._inputDevicedHandlerInstalled = false;
         }
     }
 
@@ -503,6 +505,10 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         }
 
         Input.dispatchKeyUp(e as any);
+    }
+    
+    private _onMouseUp = (e: MouseEvent) => {
+        Input.dispatchPointerUpEvent(e as any);
     }
 
     private _onMouseEnter(e: React.MouseEvent<any>) {

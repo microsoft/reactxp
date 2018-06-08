@@ -15,6 +15,7 @@ import RN = require('react-native');
 import AccessibilityUtil from './AccessibilityUtil';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
+import Input from './Input';
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -91,15 +92,17 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
     }
 
     private _onPress = (e: RN.SyntheticEvent<any>) => {
+        const mouseEvent = EventHelpers.toMouseEvent(e);
         if (EventHelpers.isRightMouseButton(e)) {
             if (this.props.onContextMenu) {
-                this.props.onContextMenu(EventHelpers.toMouseEvent(e));
+                this.props.onContextMenu(mouseEvent);
             }
         } else {
             if (this.props.onPress) {
-                this.props.onPress(EventHelpers.toMouseEvent(e));
+                this.props.onPress(mouseEvent);
             }
         }
+        Input.dispatchPointerUpEvent(mouseEvent);
     }
 
     getChildContext() {
