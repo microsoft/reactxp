@@ -972,7 +972,7 @@ declare module 'react-native' {
         class Text extends ReactNativeBaseComponent<TextProps, {}> { }
      }
 
-     interface IUpdateLayoutAnimationConfig {
+     interface UpdateLayoutAnimationConfig {
         duration?: number;
         delay?: number;
 
@@ -982,18 +982,18 @@ declare module 'react-native' {
         type?: string;
     }
 
-    interface ICreateLayoutAnimationConfig extends IUpdateLayoutAnimationConfig {
+    interface CreateLayoutAnimationConfig extends UpdateLayoutAnimationConfig {
         property?: string;
     }
 
-     interface ILayoutAnimationConfig {
+     interface LayoutAnimationConfig {
          duration: number;
-         create?: ICreateLayoutAnimationConfig;
-         update?: IUpdateLayoutAnimationConfig;
+         create?: CreateLayoutAnimationConfig;
+         update?: UpdateLayoutAnimationConfig;
      }
 
      module LayoutAnimation {
-         function configureNext(config: ILayoutAnimationConfig): void;
+         function configureNext(config: LayoutAnimationConfig): void;
 
          module Types {
             var spring: string;

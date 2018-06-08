@@ -211,18 +211,18 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         let nextChildrenKeys = extractChildrenKeys(nextProps.children);
         this._childrenKeys = nextChildrenKeys;
         if (_childrenEdited(prevChildrenKeys, nextChildrenKeys)) {
-            let updateConfig: RN.IUpdateLayoutAnimationConfig = {
+            let updateConfig: RN.UpdateLayoutAnimationConfig = {
                 delay: 0,
                 duration: 300,
                 type: LayoutAnimation.Types.easeOut
             };
-            let createConfig: RN.ICreateLayoutAnimationConfig = {
+            let createConfig: RN.CreateLayoutAnimationConfig = {
                 delay: 75,
                 duration: 150,
                 type: LayoutAnimation.Types.linear,
                 property: LayoutAnimation.Properties.opacity
             };
-            var configDictionary: RN.ILayoutAnimationConfig = {
+            var configDictionary: RN.LayoutAnimationConfig = {
                 duration: 300,
             };
 
