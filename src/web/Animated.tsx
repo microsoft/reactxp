@@ -13,7 +13,7 @@ import ReactDOM = require('react-dom');
 
 import AppConfig from '../common/AppConfig';
 import Easing from '../common/Easing';
-import { executeTransition, ITransitionSpec } from './animated/executeTransition';
+import { executeTransition, TransitionSpec } from './animated/executeTransition';
 import RXImage from './Image';
 import RXView from './View';
 import RXText from './Text';
@@ -341,7 +341,7 @@ export var parallel: Types.Animated.ParallelFunction = function (
     return result;
 };
 
-interface ExtendedTransition extends ITransitionSpec {
+interface ExtendedTransition extends TransitionSpec {
     onEnd?: RX.Types.Animated.EndCallback;
     toValue?: number|string;
 }
@@ -545,7 +545,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                 return;
             }
 
-            let activeTransitions: ITransitionSpec[] = [];
+            let activeTransitions: TransitionSpec[] = [];
             _.each(this._animatedAttributes, attrib => {
                 if (attrib.activeTransition) {
                     activeTransitions.push(attrib.activeTransition);
