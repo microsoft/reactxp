@@ -14,7 +14,6 @@ import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export class Input extends RX.Input {
-    
     static nativeCommonPointerUpEvent = new SubscribableEvent<(e: Types.MouseEvent) => void>();
     
     constructor() {

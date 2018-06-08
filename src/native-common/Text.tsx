@@ -92,17 +92,16 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
     }
 
     private _onPress = (e: RN.SyntheticEvent<any>) => {
-        const mouseEvent = EventHelpers.toMouseEvent(e);
         if (EventHelpers.isRightMouseButton(e)) {
             if (this.props.onContextMenu) {
-                this.props.onContextMenu(mouseEvent);
+                this.props.onContextMenu(EventHelpers.toMouseEvent(e));
             }
         } else {
             if (this.props.onPress) {
-                this.props.onPress(mouseEvent);
+                this.props.onPress(EventHelpers.toMouseEvent(e));
             }
         }
-        Input.dispatchPointerUpEvent(mouseEvent);
+        Input.dispatchPointerUpEvent(EventHelpers.toMouseEvent(e));
     }
 
     getChildContext() {
