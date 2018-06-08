@@ -137,7 +137,6 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         const defer = SyncTasks.Defer<boolean>();
 
         const img = new (window as any).Image();
-        img.src = url;
 
         img.onload = ((event: Event) => {
             defer.resolve(true);
@@ -150,6 +149,31 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         img.onabort = ((event: Event) => {
             defer.reject('Prefetch cancelled for url ' + url);
         });
+        img.src = url;
+
+        return defer.promise();
+    }
+
+    static getMetadata(url: string): SyncTasks.Promise<Types.ImageMetadata> {
+        const defer = SyncTasks.Defer<Types.ImageMetadata>();
+
+        const img = new (window as any).Image();
+
+        img.onload = ((event: Event) => {
+            defer.resolve({
+                width: img.naturalWidth,
+                height: img.naturalHeight
+            });
+        });
+
+        img.onerror = ((event: Event) => {
+            defer.reject('Failed to prefetch url ' + url);
+        });
+
+        img.onabort = ((event: Event) => {
+            defer.reject('Prefetch cancelled for url ' + url);
+        });
+        img.src = url;
 
         return defer.promise();
     }
