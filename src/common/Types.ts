@@ -908,7 +908,7 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
 
     onKeyPress?: (e: KeyboardEvent) => void;
     onFocus?: (e: FocusEvent) => void;
-    onBlur?: () => void;
+    onBlur?: (e: FocusEvent) => void;
     onPaste?: (e: ClipboardEvent) => void;
     onChangeText?: (newValue: string) => void;
     onSelectionChange?: (start: number, end: number) => void;
