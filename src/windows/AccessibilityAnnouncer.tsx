@@ -20,10 +20,9 @@ const _styles = {
         position: 'absolute',
         opacity: 0,
         top: -30,
-        bottom: 0,
+        height: 30,
         left: 0,
-        right: 0,
-        height: 30
+        right: 0
     })
 };
 
@@ -68,7 +67,10 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
 
     private _onViewRef = (view: RN.View|null): void => {
         this._viewElement = view;
-        this._tryDequeueAndAnnounce();
+        if (view !== null)
+        {
+            this._tryDequeueAndAnnounce();
+        }
     }
 
     private _tryDequeueAndAnnounce() {
@@ -77,17 +79,15 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
         }
     }
 
-    // Has to be arrow function to capture 'this' since it's passed as callback to setTimeout.
     private _dequeueAndPostAnnouncement = () => {
         if (this._viewElement && this._announcementQueue.length > 0) {
             const announcement = this._announcementQueue.shift();
             // This hack was copied from android/Accessibility.ts in order to not increase variety of hacks in codebase.
             //
             // Screen reader fails to announce, if the new announcement is the same as the last one.
-            // The reason is probably that the announcement text is held in state and passed as a prop to RN.View.
-            // If the announcement is the same, the props don't change and RN doesn't see a reason to re-render
-            // the view - retrigger the announcement. This behaviour is actually expected. We work around this by checking
-            // the new announcement text and comparing it with the last one. If they are the same, append a space at the end.
+            // The behavior is screen reader specific. NVDA is better than Narrator in this situation but
+            // ultimately does not fully support this case. Narrator tends to ignore subsequent identical texts at all.
+            // NVDA tends to announce 2 or 3 subsequent identical texts but usually ignores 4+ ones.
             const textToAnnounce = (announcement === this._lastAnnouncement) ? announcement + ' ' : announcement;
 
             this._viewElement.setNativeProps({
