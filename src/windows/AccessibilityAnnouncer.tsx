@@ -80,26 +80,29 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
     }
 
     private _dequeueAndPostAnnouncement = () => {
-        if (this._viewElement && this._announcementQueue.length > 0) {
-            const announcement = this._announcementQueue.shift();
-            // This hack was copied from android/Accessibility.ts in order to not increase variety of hacks in codebase.
-            //
-            // Screen reader fails to announce, if the new announcement is the same as the last one.
-            // The behavior is screen reader specific. NVDA is better than Narrator in this situation but
-            // ultimately does not fully support this case. Narrator tends to ignore subsequent identical texts at all.
-            // NVDA tends to announce 2 or 3 subsequent identical texts but usually ignores 4+ ones.
-            const textToAnnounce = (announcement === this._lastAnnouncement) ? announcement + ' ' : announcement;
+        if (this._announcementQueue.length > 0) {
+            if (this._viewElement)
+            {
+                const announcement = this._announcementQueue.shift();
+                // This hack was copied from android/Accessibility.ts in order to not increase variety of hacks in codebase.
+                //
+                // Screen reader fails to announce, if the new announcement is the same as the last one.
+                // The behavior is screen reader specific. NVDA is better than Narrator in this situation but
+                // ultimately does not fully support this case. Narrator tends to ignore subsequent identical texts at all.
+                // NVDA tends to announce 2 or 3 subsequent identical texts but usually ignores 4+ ones.
+                const textToAnnounce = (announcement === this._lastAnnouncement) ? announcement + ' ' : announcement;
 
-            this._viewElement.setNativeProps({
-                accessibilityLabel : textToAnnounce
-            });
-            this._lastAnnouncement = textToAnnounce;
+                this._viewElement.setNativeProps({
+                    accessibilityLabel : textToAnnounce
+                });
+                this._lastAnnouncement = textToAnnounce;
 
-            // 2 seconds is probably enough for screen reader to finally receive UIA live region event
-            // and go query the accessible name of the region to put into its own queue, so that we can
-            // set name of the region to next announcement and fire the UIA live region event again.
-            // The magic number is copied from web/AccessibilityAnnouncer clear timer.
-            this._announcementQueueTimer = setTimeout(this._dequeueAndPostAnnouncement, 2000);
+                // 2 seconds is probably enough for screen reader to finally receive UIA live region event
+                // and go query the accessible name of the region to put into its own queue, so that we can
+                // set name of the region to next announcement and fire the UIA live region event again.
+                // The magic number is copied from web/AccessibilityAnnouncer clear timer.
+                this._announcementQueueTimer = setTimeout(this._dequeueAndPostAnnouncement, 2000);
+            }
         } else {
             if (this._viewElement) {
                 // We want to hide the view used for announcement from screen reader so user cannot navigate to it.
