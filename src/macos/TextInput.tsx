@@ -122,11 +122,11 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    private _onBlur = () => {
+    private _onBlur = (e: Types.FocusEvent) => {
         this.setState({ isFocused: false });
 
         if (this.props.onBlur) {
-            this.props.onBlur();
+            this.props.onBlur(e);
         }
     }
 
