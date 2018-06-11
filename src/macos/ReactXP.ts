@@ -127,7 +127,8 @@ module ReactXP {
 
     const macAnimatedClasses =  {
         ...CommonAnimatedClasses,
-        TextInput: RN.Animated.createAnimatedComponent(TextInputImpl)
+        TextInput: RN.Animated.createAnimatedComponent(TextInputImpl),
+        View: RN.Animated.createAnimatedComponent(ViewImpl)
     };
 
     export const Animated = makeAnimated(macAnimatedClasses);
