@@ -22,7 +22,7 @@ export interface AnimateListEditsProps {
 }
 
 export class AnimateListEdits extends React.Component<AnimateListEditsProps, Types.Stateless> {
-    _handleWillAnimate(edits: MonitorListEdits.IEdits, done: () => void) {
+    _handleWillAnimate(edits: MonitorListEdits.Edits, done: () => void) {
         let counter = 1;
         let animationCompleted = function () {
             --counter;
@@ -88,7 +88,7 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, Typ
     render() {
         return (
             <MonitorListEdits.MonitorListEdits
-                componentWillAnimate={ (edits: MonitorListEdits.IEdits, done: () => void) => this._handleWillAnimate(edits, done) }
+                componentWillAnimate={ (edits: MonitorListEdits.Edits, done: () => void) => this._handleWillAnimate(edits, done) }
                 {...this.props}
             >
                 {this.props.children}

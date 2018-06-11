@@ -27,19 +27,18 @@ This makes it difficult to write cross-platform code that runs on both web and n
 
 ### AppAssets Module
 
-We created an "AppAssets" interface that includes an accessor method for each of the assets in our app. 
+We created an "Assets" interface that includes an accessor method for each of the assets in our app.
 
 ``` javascript
 // File: AppAssets.d.ts
 
 declare module 'AppAssets' {
-    interface IAppAssets {
+    interface Assets {
         appLogoSmall: string;
         appLogoLarge: string;
         notificationIcon: string;
         // ... etc.
     }
-    const Assets: IAppAssets;
 }
 ```
 
@@ -51,14 +50,14 @@ We then implemented this interface for both web and native platforms.
 import AppAssets = require('AppAssets');
 import AppConfig = require('./AppConfig');
 
-class AppAssetsImpl implements AppAssets.IAppAssets {
+class AppAssetsImpl implements AppAssets.Assets {
     appLogoSmall = AppConfig.getImagePath('skypeLogoSmall.png');
     appLogoLarge = AppConfig.getImagePath('skypeLogoLarge.png');
     notificationIcon = AppConfig.getImagePath('notificationIcon.gif');
     // ... etc.
 }
 
-export const Assets: AppAssets.IAppAssets = new AppAssetsImpl();
+export const Assets: AppAssets.Assets = new AppAssetsImpl();
 ```
 
 ``` javascript
@@ -66,14 +65,14 @@ export const Assets: AppAssets.IAppAssets = new AppAssetsImpl();
 
 import AppAssets = require('AppAssets');
 
-class AppAssetsImpl implements IAppAssets.Collection {
+class AppAssetsImpl implements Assets.Collection {
     get appLogoSmall() { return require('..images/skypeLogoSmall.png'); }
     get appLogoLarge() { return require('..images/skypeLogoLarge.png'); }
     get notificationIcon() { return require('../images/notificationIcon.gif'); }
     // ... etc.
 }
 
-export const Assets: AppAssets.IAppAssets = new AppAssetsImpl();
+export const Assets: AppAssets.Assets = new AppAssetsImpl();
 ```
 
 There are a few things worth noting in the code above. First, we're making use of an interface to ensure that the web and native implementations stay in sync. If you forget to add an asset to both files, the TypeScript compiler will detect the error at build time.
