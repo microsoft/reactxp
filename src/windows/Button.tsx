@@ -10,6 +10,7 @@
 import PropTypes = require('prop-types');
 import React = require('react');
 import RN = require('react-native');
+import RNW = require('react-native-windows');
 
 import { Button as ButtonBase, ButtonContext as ButtonContextBase } from '../native-common/Button';
 import EventHelpers from '../native-common/utils/EventHelpers';
@@ -22,7 +23,7 @@ const KEY_CODE_SPACE = 32;
 const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER];
 const UP_KEYCODES = [KEY_CODE_SPACE];
 
-let FocusableAnimatedView = RN.createFocusableComponent(RN.Animated.View);
+let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
 
 export interface ButtonContext extends ButtonContextBase {
     isRxParentAContextMenuResponder?: boolean;
@@ -63,10 +64,10 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         }
         let componentRef: Function = originalRef as Function;
 
-        let focusableViewProps: RN.FocusableWindowsProps<RN.ExtendedViewProps> = {
+        let focusableViewProps: RNW.FocusableWindowsProps<RN.ExtendedViewProps> = {
             ...internalProps,
-            componentRef: componentRef,
             ref: this._onFocusableRef,
+            componentRef: componentRef,
             onMouseEnter: this._onMouseEnter,
             onMouseLeave: this._onMouseLeave,
             isTabStop: windowsTabFocusable,
@@ -82,9 +83,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         };
 
         return (
-            <FocusableAnimatedView
-                { ...focusableViewProps }
-            >
+            <FocusableAnimatedView { ...focusableViewProps }>
                 { this.props.children }
             </FocusableAnimatedView>
         );

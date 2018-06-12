@@ -9,6 +9,7 @@
 
 import React = require('react');
 import RN = require('react-native');
+import RNW = require('react-native-windows');
 import Types = require('../common/Types');
 
 import { applyFocusableComponentMixin, FocusManager, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
@@ -23,7 +24,7 @@ const KEY_CODE_SPACE = 32;
 const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER];
 const UP_KEYCODES = [KEY_CODE_SPACE];
 
-let FocusableText = RN.createFocusableComponent(RN.Text);
+let FocusableText = RNW.createFocusableComponent(RN.Text);
 
 export interface LinkState {
     isRestrictedOrLimited: boolean;
@@ -63,7 +64,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         if (this.context && !this.context.isRxParentAText) {
             // Standalone link. We use a keyboard focusable RN.Text
             return this._renderLinkAsFocusableText(internalProps);
-        } else if (RN.HyperlinkWindows && !this.state.isRestrictedOrLimited) {
+        } else if (RNW.HyperlinkWindows && !this.state.isRestrictedOrLimited) {
             // Inline Link. We use a native Hyperlink inline if RN supports it and element is not "focus restricted/limited"
             return this._renderLinkAsNativeHyperlink(internalProps);
         } else {
@@ -81,9 +82,9 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         );
     }
 
-    private _focusableElement : RN.FocusableWindows<RN.TextProps> | null = null;
+    private _focusableElement : RNW.FocusableWindows<RN.TextProps> | null = null;
 
-    private _onFocusableRef = (btn: RN.FocusableWindows<RN.TextProps> | null): void => {
+    private _onFocusableRef = (btn: RNW.FocusableWindows<RN.TextProps> | null): void => {
         this._focusableElement = btn;
     }
 
@@ -98,7 +99,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         }
         let componentRef: Function = originalRef as Function;
 
-        let focusableTextProps: RN.FocusableWindowsProps<RN.TextProps> = {
+        let focusableTextProps: RNW.FocusableWindowsProps<RN.TextProps> = {
             ...internalProps,
             componentRef: componentRef,
             ref: this._onFocusableRef,
@@ -116,9 +117,9 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         return focusableTextProps;
     }
 
-    private _nativeHyperlinkElement : RN.HyperlinkWindows | null = null;
+    private _nativeHyperlinkElement : RNW.HyperlinkWindows | null = null;
 
-    private _onNativeHyperlinkRef = (ref: RN.HyperlinkWindows | null): void => {
+    private _onNativeHyperlinkRef = (ref: RNW.HyperlinkWindows | null): void => {
         this._nativeHyperlinkElement = ref;
     }
 
@@ -131,7 +132,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         }
 
         return (
-            <RN.HyperlinkWindows
+            <RNW.HyperlinkWindows
                 { ...internalProps }
                 ref={this._onNativeHyperlinkRef}
                 onFocus={this._onFocus}

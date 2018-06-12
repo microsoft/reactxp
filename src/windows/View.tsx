@@ -10,6 +10,7 @@
 import _ = require('../native-common/lodashMini');
 import React = require('react');
 import RN = require('react-native');
+import RNW = require('react-native-windows');
 import Types = require('../common/Types');
 import PropTypes = require('prop-types');
 
@@ -35,8 +36,8 @@ export interface ViewContext extends ViewContextCommon {
     isRxParentAContextMenuResponder?: boolean;
 }
 
-let FocusableView = RN.createFocusableComponent(RN.View);
-let FocusableAnimatedView = RN.createFocusableComponent(RN.Animated.View);
+let FocusableView = RNW.createFocusableComponent(RN.View);
+let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
 
 export class View extends ViewCommon implements React.ChildContextProvider<ViewContext>, FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
@@ -62,7 +63,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     private _onMouseOver: ((e: React.SyntheticEvent<any>) => void) | undefined;
     private _onMouseMove: ((e: React.SyntheticEvent<any>) => void) | undefined;
 
-    private _focusableElement : RN.FocusableWindows<RN.ViewProps> | null = null;
+    private _focusableElement : RNW.FocusableWindows<RN.ViewProps> | null = null;
 
     private _focusManager: FocusManager|undefined;
     private _limitFocusWithin = false;
@@ -276,7 +277,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             }
             let componentRef: Function = originalRef as Function;
 
-            let focusableViewProps: RN.FocusableWindowsProps<RN.ViewProps> = {
+            let focusableViewProps: RNW.FocusableWindowsProps<RN.ViewProps> = {
                 ...this._internalProps,
                 ref: this._onFocusableRef,
                 componentRef: componentRef,
@@ -303,7 +304,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
     }
 
-    private _onFocusableRef = (btn: RN.FocusableWindows<RN.ViewProps>): void => {
+    private _onFocusableRef = (btn: RNW.FocusableWindows<RN.ViewProps>): void => {
         this._focusableElement = btn;
     }
 

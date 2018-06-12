@@ -11,56 +11,9 @@ import React = require('react');
 import RN = require('react-native');
 
 declare module 'react-native' {
-    //
-    // Focusable view related declarations
-    // ----------------------------------------------------------------------
-    type FocusableWindowsProps<P={}> = P & {
-        ref?: Function;
-        isTabStop?: boolean;
-        tabIndex?: number;
-        tabNavigation?: 'local' | 'cycle' | 'once';
-        disableSystemFocusVisuals?: boolean;
-        onFocus?: Function;
-        onBlur?: Function;
-        handledKeyDownKeys?: number[];
-        handledKeyUpKeys?: number[];
-        onKeyDown?: Function;
-        onKeyUp?: Function;
-        componentRef?: Function;
-        onAccessibilityTap?: Function;
-    };
-
-    class FocusableWindows<P> extends React.Component<FocusableWindowsProps<P>> implements RN.Constructor<RN.NativeMethodsMixin> {
-        setNativeProps(props: FocusableWindowsProps<P>);
-        focus(): void;
-        blur(): void;
-    }
-
-    type FocusableComponentConstructor<P> = new() => FocusableWindows;
-
-    function createFocusableComponent<P>(Component: any): FocusableComponentConstructor<P>;
-
-    type HyperlinkWindowsProps = RN.TextProps & {
-        onFocus?: Function;
-        onBlur?: Function;
-    }
-
-    class HyperlinkWindows extends React.Component<HyperlinkWindowsProps> {
-        focus(): void;
-        blur(): void;
-    }
-
-    type RootInputViewWindowsProps = RN.ViewProps & {
-        onAccelKeyDown?: Function;
-        onAccelKeyUp?: Function;
-        onTouchStartCapture?: Function;
-    }
-
-    class RootInputViewWindows extends React.Component<RootInputViewWindowsProps> {}
-
     interface ExtendedViewProps extends RN.ViewProps {
-        onMouseEnter: Function;
-        onMouseLeave: Function;
+        onMouseEnter?: Function;
+        onMouseLeave?: Function;
     }
 
     abstract class ReactNativeBaseComponent<P, S> extends React.Component<P, S> {
