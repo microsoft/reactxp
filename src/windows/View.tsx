@@ -480,7 +480,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         return this.props.tabIndex;
     }
 
-    updateNativeTabIndex(): void {
+    updateNativeTabIndexAndIFA(): void {
         if (this._focusableElement) {
             let tabIndex: number = this.getTabIndex() || 0;
             let windowsTabFocusable: boolean = tabIndex >= 0;

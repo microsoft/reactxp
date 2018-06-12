@@ -10,7 +10,7 @@
 import { FocusManager as FocusManagerBase,
     FocusableComponentInternal as FocusableComponentInternalBase,
     applyFocusableComponentMixin as applyFocusableComponentMixinBase,
-    StoredFocusableComponent } from '../../common/utils/FocusManager';
+    StoredFocusableComponent as StoredFocusableComponentBase } from '../../common/utils/FocusManager';
 
 import AppConfig from '../../common/AppConfig';
 import Platform from '../../native-common/Platform';
@@ -21,17 +21,31 @@ const isNativeWindows: boolean = Platform.getType() === 'windows';
 import { FocusableComponentStateCallback } from  '../../common/utils/FocusManager';
 export { FocusableComponentStateCallback };
 
+export enum OverrideType {
+    // No overriding is active (the falsy value)
+    None = 0,
+    // tabIndex overriding is active
+    Accessible = 1,
+    // Both tabIndex and importantForAccessibility are overriden
+    Limited = 2
+}
+
+export interface StoredFocusableComponent extends StoredFocusableComponentBase {
+    curOverrideType?:  OverrideType;
+}
+
 export interface FocusManagerFocusableComponent {
     getTabIndex(): number | undefined;
     onFocus(): void;
     focus(): void;
-    updateNativeTabIndex(): void;
+    updateNativeTabIndexAndIFA(): void;
 }
 
 export interface FocusableComponentInternal extends FocusManagerFocusableComponent, FocusableComponentInternalBase {
     tabIndexOverride?: number;
     tabIndexLocalOverride?: number;
     tabIndexLocalOverrideTimer?: number;
+    importantForAccessibilityOverride? : string;
     onFocusSink?: () => void;
 }
 
@@ -120,46 +134,58 @@ export class FocusManager extends FocusManagerBase {
     }
 
     protected /* static */ _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
-        if ((storedComponent.restricted || (storedComponent.limitedCount > 0) || (storedComponent.limitedCountAccessible > 0))
-            && !('origTabIndex' in storedComponent)) {
-            storedComponent.origTabIndex = FocusManager._setComponentTabIndexOverride(
-                storedComponent.component as FocusableComponentInternal, -1);
-            FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, true);
-        } else if (!storedComponent.restricted && !storedComponent.limitedCount && !storedComponent.limitedCountAccessible
-            && ('origTabIndex' in storedComponent)) {
-            FocusManager._removeComponentTabIndexOverride(storedComponent.component as FocusableComponentInternal);
-            delete storedComponent.origTabIndex;
-            FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, false);
+
+        let newOverrideType: OverrideType = OverrideType.None;
+        if (storedComponent.restricted || (storedComponent.limitedCount > 0)) {
+            newOverrideType = OverrideType.Limited;
+        } else if (storedComponent.limitedCountAccessible > 0) {
+            newOverrideType = OverrideType.Accessible;
+        }
+
+        let curOverrideType: OverrideType = storedComponent.curOverrideType || OverrideType.None;
+
+        if (newOverrideType !== curOverrideType) {
+            FocusManager._updateComponentTabIndexAndIFAOverrides(storedComponent.component as FocusableComponentInternal,
+                newOverrideType !== OverrideType.None,
+                newOverrideType ===  OverrideType.Limited);
+
+            if (newOverrideType !== OverrideType.None) {
+                storedComponent.curOverrideType = newOverrideType;
+                FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, true);
+            } else {
+                delete storedComponent.curOverrideType;
+                FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, false);
+            }
         }
     }
 
-    private static _setComponentTabIndexOverride(component: FocusableComponentInternal, tabIndex: number): number | undefined {
-        // Save the override on a custom property
-        component.tabIndexOverride = tabIndex;
+    private static _updateComponentTabIndexAndIFAOverrides(component: FocusableComponentInternal,
+        tabIndexOverride: boolean, accessibleOverride: boolean): void {
+
+        if (tabIndexOverride) {
+            component.tabIndexOverride = -1;
+        } else {
+            delete component.tabIndexOverride;
+        }
+
+        if (accessibleOverride) {
+            component.importantForAccessibilityOverride = 'no-hide-descendants';
+        } else {
+            delete component.importantForAccessibilityOverride;
+        }
 
         // Refresh the native view
-        updateNativeTabIndex(component);
-
-        // Original value is not used for desktop implementation
-        return undefined;
-    }
-
-    private static  _removeComponentTabIndexOverride(component: FocusableComponentInternal): void {
-        // Remove any override
-        delete component.tabIndexOverride;
-
-        // Refresh the native view
-        updateNativeTabIndex(component);
+        updateNativeTabIndexAndIFA(component);
     }
 }
 
-function updateNativeTabIndex(component: FocusableComponentInternal) {
+function updateNativeTabIndexAndIFA(component: FocusableComponentInternal) {
     // Call special method on component avoiding state changes/re-renderings
-    if (component.updateNativeTabIndex) {
-        component.updateNativeTabIndex();
+    if (component.updateNativeTabIndexAndIFA) {
+        component.updateNativeTabIndexAndIFA();
     } else {
         if (AppConfig.isDevelopmentMode()) {
-            console.error('FocusableComponentMixin: updateNativeTabIndex doesn\'t exist!');
+            console.error('FocusableComponentMixin: updateNativeTabIndexAndIFA doesn\'t exist!');
         }
     }
 }
@@ -218,7 +244,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
                 this.tabIndexLocalOverride = 0;
 
                 // Refresh the native view
-                updateNativeTabIndex(this);
+                updateNativeTabIndexAndIFA(this);
 
                 this.tabIndexLocalOverrideTimer = setTimeout(() => {
                     if (this.tabIndexLocalOverrideTimer !== undefined) {
@@ -227,7 +253,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
                         delete this.tabIndexLocalOverride;
 
                         // Refresh the native view
-                        updateNativeTabIndex(this);
+                        updateNativeTabIndexAndIFA(this);
                     }
                 }, 500);
             }

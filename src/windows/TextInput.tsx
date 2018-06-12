@@ -53,7 +53,7 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
         return this.props.tabIndex || 0;
     }
 
-    updateNativeTabIndex(): void {
+    updateNativeTabIndexAndIFA(): void {
         if (this._mountedComponent) {
             let tabIndex = this.getTabIndex();
             this._mountedComponent.setNativeProps({

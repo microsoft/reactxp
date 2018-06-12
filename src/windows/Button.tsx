@@ -210,7 +210,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         return this.props.tabIndex || 0;
     }
 
-    updateNativeTabIndex(): void {
+    updateNativeTabIndexAndIFA(): void {
         if (this._buttonElement) {
             let tabIndex: number | undefined = this.getTabIndex();
             let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;

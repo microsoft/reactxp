@@ -212,7 +212,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         return this.props.tabIndex || 0;
     }
 
-    updateNativeTabIndex(): void {
+    updateNativeTabIndexAndIFA(): void {
         if (this._focusableElement) {
             let tabIndex: number | undefined = this.getTabIndex();
             let windowsTabFocusable: boolean = tabIndex !== undefined && tabIndex >= 0;
