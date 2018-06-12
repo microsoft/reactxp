@@ -9,7 +9,6 @@
 
 import React = require('react');
 import RN = require('react-native');
-import RNW = require('react-native-windows');
 
 import { RootView as RootViewBase, RootViewUsingProps as RootViewUsingPropsBase,
     BaseRootViewProps, RootViewPropsWithMainViewType, RootViewState, BaseRootView } from '../native-desktop/RootView';
@@ -18,7 +17,7 @@ import { AccessibilityAnnouncer } from './AccessibilityAnnouncer';
 //
 // We use a custom RNW provided component to capture key input before being dispatched to native controls.
 // If support not present, we fallback to the base class implementation.
-const _isRootInputViewSupported = !!RNW.RootInputViewWindows;
+const _isRootInputViewSupported = !!RN.RootInputViewWindows;
 
 const _styles = RN.StyleSheet.create({
     appWrapperStyle : {
@@ -26,19 +25,19 @@ const _styles = RN.StyleSheet.create({
     }
   });
 
-type Handler = (e: RN.SyntheticEvent<any>) => void;
+type Handler = (e: RN.NativeSyntheticEvent<any>) => void;
 
 function _renderTopView(
     content: JSX.Element, onKeyDown: Handler, onKeyDownCapture: Handler, onKeyUp: Handler, onTouchStartCapture: Handler): JSX.Element {
     return (
-        <RNW.RootInputViewWindows
+        <RN.RootInputViewWindows
             onTouchStartCapture={ onTouchStartCapture }
-            onAccelKeyDown={ (e: RN.SyntheticEvent<any>) => {onKeyDownCapture(e); onKeyDown(e); } }
+            onAccelKeyDown={ (e: RN.NativeSyntheticEvent<any>) => {onKeyDownCapture(e); onKeyDown(e); } }
             onAccelKeyUp={ onKeyUp }
             style={ _styles.appWrapperStyle }
         >
             { content }
-        </RNW.RootInputViewWindows>
+        </RN.RootInputViewWindows>
     );
 }
 

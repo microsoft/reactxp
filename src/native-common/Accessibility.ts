@@ -22,7 +22,7 @@ export class Accessibility extends CommonAccessibility {
         // Some versions of RN don't support this interface.
         if (RN.AccessibilityInfo) {
             // Subscribe to an event to get notified when screen reader is enabled or disabled.
-            RN.AccessibilityInfo.addEventListener('change', isEnabled => {
+            RN.AccessibilityInfo.addEventListener('change', (isEnabled: boolean) => {
                 initialStateChanged = true;
                 this._updateScreenReaderStatus(isEnabled);
             });

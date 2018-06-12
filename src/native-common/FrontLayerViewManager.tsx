@@ -204,9 +204,9 @@ export class FrontLayerViewManager {
                     <RN.TouchableWithoutFeedback
                         onPressOut={ this._onBackgroundPressed }
                         importantForAccessibility={ 'no' }
-                        >
+                    >
                         <RN.View
-                            style={ _styles.fullScreenView }>
+                            style={ _styles.fullScreenView as RN.StyleProp<RN.ViewStyle>}>
                             { popupContainerViews }
                         </RN.View>
                     </RN.TouchableWithoutFeedback>
@@ -216,8 +216,11 @@ export class FrontLayerViewManager {
         return null;
     }
 
-    private _onBackgroundPressed = (e: RN.SyntheticEvent<any>) => {
-        e.persist();
+    private _onBackgroundPressed = (e: RN.GestureResponderEvent) => {
+        let synthEvent: React.SyntheticEvent<any> = e as any;
+        if (synthEvent.persist) {
+            synthEvent.persist();
+        }
 
         const activePopupContext = this._getActiveOverlay();
         if (!(activePopupContext instanceof PopupStackContext)) {

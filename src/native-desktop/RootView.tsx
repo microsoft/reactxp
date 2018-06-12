@@ -19,8 +19,6 @@ import EventHelpers from '../native-common/utils/EventHelpers';
 import FocusManager from './utils/FocusManager';
 import FrontLayerViewManager from '../native-common/FrontLayerViewManager';
 
-type SyntheticEvent = React.SyntheticEvent<any>;
-
 const KEY_CODE_TAB = 9;
 const KEY_CODE_ESC = 27;
 
@@ -56,11 +54,11 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
             this._focusManager = new FocusManager(undefined);
         }
 
-        _onTouchStartCapture = (e: SyntheticEvent) => {
+        _onTouchStartCapture = (e: RN.NativeSyntheticEvent<any>) => {
             this._updateKeyboardNavigationState(false);
         }
 
-        _onKeyDownCapture = (e: SyntheticEvent) => {
+        _onKeyDownCapture = (e: RN.NativeSyntheticEvent<any>) => {
             let kbdEvent = EventHelpers.toKeyboardEvent(e);
             if (kbdEvent.keyCode === KEY_CODE_TAB) {
                 this._updateKeyboardNavigationState(true);
@@ -96,12 +94,12 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
             }
         }
 
-        _onKeyDown = (e: SyntheticEvent) => {
+        _onKeyDown = (e: RN.NativeSyntheticEvent<any>) => {
             let kbdEvent = EventHelpers.toKeyboardEvent(e);
             Input.dispatchKeyDown(kbdEvent);
         }
 
-        _onKeyPress = (e: SyntheticEvent) => {
+        _onKeyPress = (e: RN.NativeSyntheticEvent<any>) => {
             let kbdEvent = EventHelpers.toKeyboardEvent(e);
             // This is temporary fix while we still have both keyPress and keyDown
             // events bubbling up for the same situation of user pressing down a key.
@@ -109,7 +107,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
             Input.dispatchKeyDown(kbdEvent);
         }
 
-        _onKeyUp = (e: SyntheticEvent) => {
+        _onKeyUp = (e: RN.NativeSyntheticEvent<any>) => {
             let kbdEvent = EventHelpers.toKeyboardEvent(e);
 
             let activePopupId = FrontLayerViewManager.getActivePopupId();

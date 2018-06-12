@@ -42,7 +42,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     private _selectionStart: number = 0;
     private _selectionEnd: number = 0;
-    private _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+    private _mountedComponent: any;
 
     constructor(props: Types.TextInputProps, context: TextInputContext) {
         super(props, context);
@@ -70,11 +70,19 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     render() {
         const editable = this.props.editable !== false;
         const blurOnSubmit = this.props.blurOnSubmit || !this.props.multiline;
+
+        // The react-native interface file doesn't currently define
+        // onFocus or onBlur. Work around this limitation here.
+        let undefinedProps: any = {
+            onFocus: this._onFocus,
+            onBlur: this._onBlur
+        };
+
         return (
             <RN.TextInput
                 ref={ this._onMount }
                 multiline={ this.props.multiline }
-                style={ Styles.combine([_styles.defaultTextInput, this.props.style]) }
+                style={ Styles.combine([_styles.defaultTextInput, this.props.style]) as RN.StyleProp<RN.TextStyle> }
                 value={ this.state.inputValue }
 
                 autoCorrect={ this.props.autoCorrect }
@@ -91,8 +99,6 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 onKeyPress={ this._onKeyPress as any }
                 onChangeText={ this._onChangeText }
                 onSelectionChange={ this._onSelectionChange as any }
-                onFocus={ this._onFocus }
-                onBlur={ this._onBlur }
                 onScroll={ this._onScroll }
                 selection={{ start: this._selectionStart, end: this._selectionEnd }}
                 secureTextEntry={ this.props.secureTextEntry }
@@ -106,11 +112,12 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 allowFontScaling={ this.props.allowFontScaling }
                 maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
                 underlineColorAndroid='transparent'
+                { ...undefinedProps }
             />
         );
     }
 
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+    protected _onMount = (component: any) => {
         this._mountedComponent = component;
     }
 

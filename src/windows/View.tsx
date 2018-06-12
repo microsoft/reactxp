@@ -10,7 +10,6 @@
 import _ = require('../native-common/lodashMini');
 import React = require('react');
 import RN = require('react-native');
-import RNW = require('react-native-windows');
 import Types = require('../common/Types');
 import PropTypes = require('prop-types');
 
@@ -36,8 +35,8 @@ export interface ViewContext extends ViewContextCommon {
     isRxParentAContextMenuResponder?: boolean;
 }
 
-let FocusableView = RNW.createFocusableComponent(RN.View);
-let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
+let FocusableView = RN.createFocusableComponent(RN.View);
+let FocusableAnimatedView = RN.createFocusableComponent(RN.Animated.View);
 
 export class View extends ViewCommon implements React.ChildContextProvider<ViewContext>, FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
@@ -63,7 +62,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     private _onMouseOver: ((e: React.SyntheticEvent<any>) => void) | undefined;
     private _onMouseMove: ((e: React.SyntheticEvent<any>) => void) | undefined;
 
-    private _focusableElement : RNW.FocusableWindows<RN.ViewProps> | null = null;
+    private _focusableElement : RN.FocusableWindows<RN.ViewProps> | null = null;
 
     private _focusManager: FocusManager|undefined;
     private _limitFocusWithin = false;
@@ -164,7 +163,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         // On Windows a view with importantForAccessibility='Yes' or
         // non-empty accessibilityLabel and importantForAccessibility='Auto' (or unspecified) will hide its children.
         // However, a view that is also a group or a dialog should keep children visible to UI Automation.
-        // The following condition checks and sets RNW importantForAccessibility property
+        // The following condition checks and sets RN importantForAccessibility property
         // to 'yes-dont-hide-descendants' to keep view children visible.
         const hasGroup = this.hasTrait(Types.AccessibilityTrait.Group, props.accessibilityTraits);
         const hasDialog = this.hasTrait(Types.AccessibilityTrait.Dialog, props.accessibilityTraits);
@@ -277,7 +276,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             }
             let componentRef: Function = originalRef as Function;
 
-            let focusableViewProps: RNW.FocusableWindowsProps<RN.ViewProps> = {
+            let focusableViewProps: RN.FocusableWindowsProps<RN.ViewProps> = {
                 ...this._internalProps,
                 ref: this._onFocusableRef,
                 componentRef: componentRef,
@@ -304,7 +303,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
     }
 
-    private _onFocusableRef = (btn: RNW.FocusableWindows<RN.ViewProps>): void => {
+    private _onFocusableRef = (btn: RN.FocusableWindows<RN.ViewProps>): void => {
         this._focusableElement = btn;
     }
 
@@ -412,7 +411,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         // by FocusManager
         this.setNativeProps({
             tabNavigation: restricted !== RestrictFocusType.Unrestricted ? 'cycle' : 'local'
-        });
+        } as RN.ViewProps);
     }
 
     public setNativeProps(nativeProps: RN.ViewProps) {

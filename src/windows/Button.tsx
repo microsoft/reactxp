@@ -7,14 +7,14 @@
 * RN Windows-specific implementation of the cross-platform Button abstraction.
 */
 
+import PropTypes = require('prop-types');
 import React = require('react');
+import RN = require('react-native');
+
 import { Button as ButtonBase, ButtonContext as ButtonContextBase } from '../native-common/Button';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import UserInterface from '../native-common/UserInterface';
-import RN = require('react-native');
-import RNW = require('react-native-windows');
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
-import PropTypes = require('prop-types');
 
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_SPACE = 32;
@@ -22,7 +22,7 @@ const KEY_CODE_SPACE = 32;
 const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER];
 const UP_KEYCODES = [KEY_CODE_SPACE];
 
-let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
+let FocusableAnimatedView = RN.createFocusableComponent(RN.Animated.View);
 
 export interface ButtonContext extends ButtonContextBase {
     isRxParentAContextMenuResponder?: boolean;
@@ -38,11 +38,11 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         ...ButtonBase.childContextTypes
     };
 
-    private _focusableElement : RNW.FocusableWindows<RN.ViewProps> | null = null;
+    private _focusableElement : any = null;
 
     private _isFocusedWithKeyboard = false;
 
-    private _onFocusableRef = (btn: RNW.FocusableWindows<RN.ViewProps> | null): void => {
+    private _onFocusableRef = (btn: any): void => {
         this._focusableElement = btn;
     }
 
@@ -57,13 +57,13 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
 
         // We don't use 'string' ref type inside ReactXP
-        let originalRef = internalProps.ref;
+        let originalRef = (internalProps as any).ref;
         if (typeof originalRef === 'string') {
             throw new Error('Button: ReactXP must not use string refs internally');
         }
         let componentRef: Function = originalRef as Function;
 
-        let focusableViewProps: RNW.FocusableWindowsProps<RN.ViewProps> = {
+        let focusableViewProps: RN.FocusableWindowsProps<RN.ExtendedViewProps> = {
             ...internalProps,
             componentRef: componentRef,
             ref: this._onFocusableRef,

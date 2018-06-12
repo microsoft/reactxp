@@ -84,7 +84,7 @@ export class Network extends RX.Network {
             return Types.DeviceNetworkType.Mobile3G;
         } else if (info.effectiveType === '4g') {
             return Types.DeviceNetworkType.Mobile4G;
-        } else if (info.type === 'wifi' || info.type === 'ethernet') {
+        } else if (info.type === 'wifi' || info.type === 'ETHERNET') {
             return Types.DeviceNetworkType.Wifi;
         } else if (info.type === 'none') {
             return Types.DeviceNetworkType.None;

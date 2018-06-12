@@ -79,12 +79,12 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
 
     render() {
         // Check if require'd image resource
-        let imageSource: RN.ImageSource | number;
+        let imageSource: RN.ImageURISource | number;
         if ( _.isNumber(this.props.source)) {
             // Cast to any since the inbound types mismatch a bit for RN
             imageSource = this.props.source as any as number;
         } else {
-            const imageSourceReq: RN.ImageSource = { uri: this.props.source as string };
+            const imageSourceReq: RN.ImageURISource = { uri: this.props.source as string };
             if (this.props.headers) {
                 imageSourceReq.headers = this.props.headers;
             }
@@ -102,19 +102,25 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
 
         const additionalProps = this._getAdditionalProps();
 
+        // Work around the fact that the current react-native type definition
+        // doesn't include shouldRasterizeIOS.
+        const undefinedProps: any = {
+            shouldRasterizeIOS: this.props.shouldRasterizeIOS
+        };
+
         return (
             <RN.Image
-                ref={ this._onMount }
-                style={ this.getStyles() }
+                ref={ this._onMount as any }
+                style={ this.getStyles() as RN.StyleProp<RN.ImageStyle> }
                 source={ imageSource }
-                resizeMode={ resizeMode }
+                resizeMode={ resizeMode as any }
                 resizeMethod={ this.props.resizeMethod }
                 accessibilityLabel={ this.props.accessibilityLabel }
-                onLoad={ this.props.onLoad ? this._onLoad : undefined }
+                onLoad={ this.props.onLoad ? this._onLoad as any : undefined }
                 onError={ this._onError }
-                shouldRasterizeIOS={ this.props.shouldRasterizeIOS }
                 tooltip={ this.props.title }
                 { ...additionalProps }
+                { ...undefinedProps }
             >
                 { this.props.children }
             </RN.Image>

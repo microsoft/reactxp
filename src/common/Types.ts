@@ -1242,7 +1242,7 @@ export interface WheelEvent extends SyntheticEvent {
     deltaZ: number;
 }
 
-export interface WebViewShouldStartLoadEvent extends SyntheticEvent {
+export interface WebViewShouldStartLoadEvent {
     url: string;
 }
 

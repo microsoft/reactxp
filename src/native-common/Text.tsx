@@ -57,23 +57,29 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
         // The presence of any of the onPress or onContextMenu makes the RN.Text a potential touch responder
         const onPress = (this.props.onPress || this.props.onContextMenu) ? this._onPress : undefined;
 
-        // The presence of an onContextMenu on this instance or on the first responder parent up the tree 
+        // The presence of an onContextMenu on this instance or on the first responder parent up the tree
         // should disable any system provided context menu
         const disableContextMenu = !!this.props.onContextMenu || !!this.context.isRxParentAContextMenuResponder;
 
+        // Work around the fact that the react-native type definition file doesn't
+        // define some props.
+        const undefinedProps: any = {
+            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier
+        };
+
         return (
             <RN.Text
-                style={ this._getStyles() }
-                ref={ this._onMount }
+                style={ this._getStyles() as RN.StyleProp<RN.TextStyle> }
+                ref={ this._onMount as any }
                 importantForAccessibility={ importantForAccessibility }
                 numberOfLines={ this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
-                maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
                 onPress={ onPress }
                 selectable={ this.props.selectable }
                 textBreakStrategy={ 'simple' }
                 ellipsizeMode={ this.props.ellipsizeMode }
                 disableContextMenu={ disableContextMenu }
+                { ...undefinedProps }
             >
                 { this.props.children }
             </RN.Text>
@@ -90,7 +96,7 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
         this._mountedComponent = component;
     }
 
-    private _onPress = (e: RN.SyntheticEvent<any>) => {
+    private _onPress = (e: RN.GestureResponderEvent) => {
         if (EventHelpers.isRightMouseButton(e)) {
             if (this.props.onContextMenu) {
                 this.props.onContextMenu(EventHelpers.toMouseEvent(e));

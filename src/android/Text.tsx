@@ -33,17 +33,24 @@ export class Text extends CommonText {
     // to null to indicate the default behavior.
     render() {
         const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility);
+        const undefinedProps: any = {
+            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier
+        };
         return (
             <RN.Text
-                style={ this._getStyles() }
+                style={ this._getStyles() as RN.StyleProp<RN.TextStyle> }
                 ref={ this._onMount }
                 importantForAccessibility={ importantForAccessibility }
                 numberOfLines={ this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
-                maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
                 ellipsizeMode={ this.props.ellipsizeMode }
                 onPress={ this.props.onPress }
                 textBreakStrategy={ this.props.textBreakStrategy }
+
+                // Use spread operator to work around the fact that
+                // maxContentSizeMultiplier isn't defined in the public
+                // react-native.d.ts currently.
+                { ...undefinedProps }
             >
                 { this.props.children }
             </RN.Text>

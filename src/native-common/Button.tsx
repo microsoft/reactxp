@@ -91,7 +91,7 @@ export class Button extends ButtonBase {
     protected _isMouseOver = false;
     protected _isHoverStarted = false;
     private _hideTimeout: number|undefined;
-    private _buttonElement: RN.Animated.View|null = null;
+    private _buttonElement: any = null;
     private _defaultOpacityValue: number|undefined;
     private _opacityAnimatedValue: RN.Animated.Value|undefined;
     private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet|undefined;
@@ -142,8 +142,16 @@ export class Button extends ButtonBase {
             }, false);
         }
 
-        let internalProps: RN.ViewProps = {
+        // Work around the fact that the current react-native type
+        // definition is incomplete.
+        let undefinedProps: any = {
             ref: this._onButtonRef,
+            onAccessibilityTapIOS: this.props.onAccessibilityTapIOS,
+            onMouseEnter: this._onMouseEnter,
+            onMouseLeave: this._onMouseLeave,
+            tooltip: this.props.title
+        };
+        let internalProps: RN.ViewProps = {
             style: Styles.combine([_styles.defaultButton, this.props.style, opacityStyle,
                 disabledStyle]),
             accessibilityLabel: this.props.accessibilityLabel || this.props.title,
@@ -157,10 +165,7 @@ export class Button extends ButtonBase {
             onResponderRelease: this.touchableHandleResponderRelease,
             onResponderTerminate: this.touchableHandleResponderTerminate,
             shouldRasterizeIOS: this.props.shouldRasterizeIOS,
-            onAccessibilityTapIOS: this.props.onAccessibilityTapIOS,
-            onMouseEnter: this._onMouseEnter,
-            onMouseLeave: this._onMouseLeave,
-            tooltip: this.props.title
+            ...undefinedProps
         };
 
         return this._render(internalProps);
@@ -295,7 +300,7 @@ export class Button extends ButtonBase {
         }
     }
 
-    private _onButtonRef = (btn: RN.Animated.View|null): void => {
+    private _onButtonRef = (btn: any): void => {
         this._buttonElement = btn;
     }
 
@@ -314,7 +319,7 @@ export class Button extends ButtonBase {
     private _getDefaultOpacityValue(props: Types.ButtonProps): number {
         let flattenedStyles: { [key: string]: any }|undefined;
         if (props && props.style) {
-            flattenedStyles = RN.StyleSheet.flatten(props.style);
+            flattenedStyles = RN.StyleSheet.flatten(props.style as RN.StyleProp<RN.ViewProps>);
         }
 
         return flattenedStyles && (flattenedStyles as Types.ButtonStyle).opacity || 1;

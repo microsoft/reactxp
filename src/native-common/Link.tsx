@@ -41,7 +41,7 @@ export class LinkBase<S> extends React.Component<Types.LinkProps, S> {
     }
 
     render() {
-        let internalProps: RN.TextProps = {
+        let internalProps: any = {
             ref: this._onMount,
             style: this.props.style,
             numberOfLines: this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines,
@@ -70,7 +70,7 @@ export class LinkBase<S> extends React.Component<Types.LinkProps, S> {
         );
     }
 
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+    protected _onMount = (component: any) => {
         this._mountedComponent = component;
     }
 
