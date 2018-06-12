@@ -61,7 +61,11 @@ export class FocusManager extends FocusManagerBase {
     private static focusFirst() {
         const focusable = Object.keys(FocusManager._allFocusableComponents)
             .map(componentId => FocusManager._allFocusableComponents[componentId])
-            .filter(storedComponent => !storedComponent.removed && !storedComponent.restricted && !storedComponent.limitedCount);
+            .filter(storedComponent =>
+                !storedComponent.removed &&
+                !storedComponent.restricted &&
+                !storedComponent.limitedCount &&
+                !storedComponent.limitedCountAccessible);
 
         if (focusable.length) {
             focusable.sort((a, b) => {
