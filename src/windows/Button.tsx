@@ -39,15 +39,9 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         ...ButtonBase.childContextTypes
     };
 
-    private _focusableElement : any = null;
-
     private _isFocusedWithKeyboard = false;
 
-    private _onFocusableRef = (btn: any): void => {
-        this._focusableElement = btn;
-    }
-
-    protected _render(internalProps: RN.ViewProps): JSX.Element {
+    protected _render(internalProps: RN.ViewProps, onMount: (btn: any) => void): JSX.Element {
         // RNW.FocusableProps tabIndex: default is 0.
         // -1 has no special semantic similar to DOM.
         let tabIndex: number | undefined = this.getTabIndex();
@@ -66,7 +60,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
         let focusableViewProps: RNW.FocusableWindowsProps<RN.ExtendedViewProps> = {
             ...internalProps,
-            ref: this._onFocusableRef,
+            ref: onMount,
             componentRef: componentRef,
             onMouseEnter: this._onMouseEnter,
             onMouseLeave: this._onMouseLeave,
@@ -90,22 +84,22 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
     }
 
     focus() {
-        if (this._focusableElement && this._focusableElement.focus) {
-            this._focusableElement.focus();
+        if (this._buttonElement && this._buttonElement.focus) {
+            this._buttonElement.focus();
         }
 
     }
 
     blur() {
-        if (this._focusableElement && this._focusableElement.blur) {
-            this._focusableElement.blur();
+        if (this._buttonElement && this._buttonElement.blur) {
+            this._buttonElement.blur();
         }
     }
 
     setNativeProps(nativeProps: RN.ViewProps) {
         // Redirect to focusable component if present.
-        if (this._focusableElement) {
-            this._focusableElement.setNativeProps(nativeProps);
+        if (this._buttonElement) {
+            this._buttonElement.setNativeProps(nativeProps);
         } else {
             super.setNativeProps(nativeProps);
         }
@@ -217,11 +211,11 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
     }
 
     updateNativeTabIndex(): void {
-        if (this._focusableElement) {
+        if (this._buttonElement) {
             let tabIndex: number | undefined = this.getTabIndex();
             let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
 
-            this._focusableElement.setNativeProps({
+            this._buttonElement.setNativeProps({
                 tabIndex: tabIndex,
                 isTabStop: windowsTabFocusable
             });

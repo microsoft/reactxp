@@ -17,7 +17,7 @@ export class Accessibility extends NativeAccessibility {
     // Work around the fact that the public react-native type definition doesn't
     // include initialHighContrast in RN.AccessibilityInfoStatic.
     private _isHighContrast = (RN.AccessibilityInfo as
-        RN.AccessibilityInfoStaticExtended).initialHighContrast || false;
+        RN.ExtendedAccessibilityInfoStatic).initialHighContrast || false;
 
     constructor() {
         super();

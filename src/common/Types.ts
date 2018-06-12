@@ -478,7 +478,7 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     delayLongPress?: number;
 
     autoFocus?: boolean; // The component is a candidate for being autofocused.
-    onAccessibilityTapIOS?: Function; // iOS-only prop, call when a button is double tapped in accessibility mode
+    onAccessibilityTapIOS?: (e: SyntheticEvent) => void; // iOS-only prop, call when a button is double tapped in accessibility mode
     onContextMenu?: (e: MouseEvent) => void;
     onPress?: (e: SyntheticEvent) => void;
     onPressIn?: (e: SyntheticEvent) => void;

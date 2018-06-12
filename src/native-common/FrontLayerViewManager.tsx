@@ -217,7 +217,7 @@ export class FrontLayerViewManager {
     }
 
     private _onBackgroundPressed = (e: RN.GestureResponderEvent) => {
-        let synthEvent: React.SyntheticEvent<any> = e as any;
+        let synthEvent: RN.ExtendedNativeSyntheticEvent = e as RN.ExtendedNativeSyntheticEvent;
         if (synthEvent.persist) {
             synthEvent.persist();
         }

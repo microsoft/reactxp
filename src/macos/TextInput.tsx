@@ -73,9 +73,11 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
         // The react-native interface file doesn't currently define
         // onFocus or onBlur. Work around this limitation here.
-        let undefinedProps: any = {
+        let extendedProps: RN.ExtendedTextInputProps = {
             onFocus: this._onFocus,
-            onBlur: this._onBlur
+            onBlur: this._onBlur,
+            onScroll: this._onScroll,
+            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier
         };
 
         return (
@@ -99,7 +101,6 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 onKeyPress={ this._onKeyPress as any }
                 onChangeText={ this._onChangeText }
                 onSelectionChange={ this._onSelectionChange as any }
-                onScroll={ this._onScroll }
                 selection={{ start: this._selectionStart, end: this._selectionEnd }}
                 secureTextEntry={ this.props.secureTextEntry }
 
@@ -110,9 +111,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 textBreakStrategy={ 'simple' }
                 accessibilityLabel={ this.props.accessibilityLabel }
                 allowFontScaling={ this.props.allowFontScaling }
-                maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
                 underlineColorAndroid='transparent'
-                { ...undefinedProps }
+                { ...extendedProps }
             />
         );
     }

@@ -101,26 +101,23 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
         }
 
         const additionalProps = this._getAdditionalProps();
-
-        // Work around the fact that the current react-native type definition
-        // doesn't include shouldRasterizeIOS.
-        const undefinedProps: any = {
-            shouldRasterizeIOS: this.props.shouldRasterizeIOS
+        const extendedProps: RN.ExtendedImageProps = {
+            source: imageSource,
+            shouldRasterizeIOS: this.props.shouldRasterizeIOS,
+            tooltip: this.props.title
         };
 
         return (
             <RN.Image
                 ref={ this._onMount as any }
                 style={ this.getStyles() as RN.StyleProp<RN.ImageStyle> }
-                source={ imageSource }
                 resizeMode={ resizeMode as any }
                 resizeMethod={ this.props.resizeMethod }
                 accessibilityLabel={ this.props.accessibilityLabel }
                 onLoad={ this.props.onLoad ? this._onLoad as any : undefined }
                 onError={ this._onError }
-                tooltip={ this.props.title }
                 { ...additionalProps }
-                { ...undefinedProps }
+                { ...extendedProps }
             >
                 { this.props.children }
             </RN.Image>

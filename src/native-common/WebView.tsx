@@ -37,7 +37,7 @@ export class WebView extends React.Component<Types.WebViewProps, Types.Stateless
 
         return (
             <RN.WebView
-                ref={ this._onMount as any }
+                ref={ this._onMount }
                 style={ styles as RN.StyleProp<RN.ViewStyle> }
                 onNavigationStateChange={ this.props.onNavigationStateChange }
                 onShouldStartLoadWithRequest={ this.props.onShouldStartLoadWithRequest }
@@ -55,7 +55,7 @@ export class WebView extends React.Component<Types.WebViewProps, Types.Stateless
         );
     }
 
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+    protected _onMount = (component: any) => {
         this._mountedComponent = component;
     }
 

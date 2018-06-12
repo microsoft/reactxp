@@ -61,10 +61,9 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
         // should disable any system provided context menu
         const disableContextMenu = !!this.props.onContextMenu || !!this.context.isRxParentAContextMenuResponder;
 
-        // Work around the fact that the react-native type definition file doesn't
-        // define some props.
-        const undefinedProps: any = {
-            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier
+        const extendedProps: RN.ExtendedTextProps = {
+            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
+            disableContextMenu: disableContextMenu
         };
 
         return (
@@ -78,8 +77,7 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
                 selectable={ this.props.selectable }
                 textBreakStrategy={ 'simple' }
                 ellipsizeMode={ this.props.ellipsizeMode }
-                disableContextMenu={ disableContextMenu }
-                { ...undefinedProps }
+                { ...extendedProps }
             >
                 { this.props.children }
             </RN.Text>
@@ -92,7 +90,7 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
         }
     }
 
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+    protected _onMount = (component: any) => {
         this._mountedComponent = component;
     }
 

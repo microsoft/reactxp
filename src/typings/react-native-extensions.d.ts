@@ -12,8 +12,30 @@ import RN = require('react-native');
 
 declare module 'react-native' {
     interface ExtendedViewProps extends RN.ViewProps {
-        onMouseEnter?: Function;
-        onMouseLeave?: Function;
+        onMouseEnter?: (e: RN.NativeSyntheticEvent) => void;
+        onMouseLeave?: (e: RN.NativeSyntheticEvent) => void;
+        onAccessibilityTapIOS?: (e: RN.NativeSyntheticEvent) => void;
+        tooltip?: string;
+    }
+
+    interface ExtendedTextProps extends RN.TextProps {
+        maxContentSizeMultiplier?: number;
+        disableContextMenu?: boolean;
+        tooltip?: string;
+    }
+
+    interface ExtendedTextInputProps extends RN.TextInputProps {
+        onFocus?: (e: RN.NativeSyntheticEvent) => void;
+        onBlur?: (e: RN.NativeSyntheticEvent) => void;
+        onScroll?: (e: RN.NativeSyntheticEvent) => void;
+        onPaste?: (e: RN.NativeSyntheticEvent) => void;
+        maxContentSizeMultiplier?: number;
+        tabIndex?: number;
+    }
+
+    interface ExtendedImageProps extends RN.ImageProps {
+        shouldRasterizeIOS?: boolean;
+        tooltip?: string;
     }
 
     abstract class ReactNativeBaseComponent<P, S> extends React.Component<P, S> {
@@ -58,7 +80,11 @@ declare module 'react-native' {
         var Mixin: TouchableMixin;
     }
 
-    interface AccessibilityInfoStaticExtended extends RN.AccessibilityInfoStatic {
+    interface ExtendedAccessibilityInfoStatic extends RN.AccessibilityInfoStatic {
         static initialHighContrast: boolean|undefined;
+    }
+
+    interface ExtendedNativeSyntheticEvent extends NativeSyntheticEvent {
+        persist?: () => void;
     }
 }
