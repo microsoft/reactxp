@@ -6,6 +6,7 @@
     "eofline": true,
     "forin": true,
     "indent": [true, "spaces"],
+    "interface-name": [true, "never-prefix"],
     "label-position": true,
     "max-line-length": [ true, 140 ],
     "no-arg": true,
