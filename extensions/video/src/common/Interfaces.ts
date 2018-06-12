@@ -21,6 +21,6 @@ export abstract class Video extends RX.Component<Types.VideoProps, any> {
 
 export interface PluginInterface {
     Types: typeof Types;
-    
+
     default: typeof Video;
 }

@@ -46,11 +46,12 @@ measureLayoutRelativeToWindow(component: React.Component<any, any>):
 measureLayoutRelativeToAncestor(component: React.Component<any, any>,
     ancestor: React.Component<any, any>): SyncTasks.Promise<LayoutInfo>;
 
-// Measures the dimension of the full window (or screen, in the case
+// Measures the dimension of window (based on specified root view id or 
+// defaults to main window or screen, in the case
 // of non-windowed platforms); the dimensions can also be obtained for any
 // view (including your app's top-level view) using the onLayout
 // callback
-measureWindow(): Types.Dimensions;
+measureWindow(rootViewId?: string): Types.Dimensions;
 
 // Indicates the "size multiplier" for text increase or decrease, which
 // can be adjusted by users on some platforms; defaults to 1.0

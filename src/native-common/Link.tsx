@@ -1,4 +1,4 @@
-﻿/**
+/**
 * Link.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -23,7 +23,7 @@ export interface LinkContext {
     isRxParentAText?: boolean;
 }
 
-export class Link extends React.Component<Types.LinkProps, {}> {
+export class LinkBase<S> extends React.Component<Types.LinkProps, S> {
     static contextTypes = {
         focusArbitrator: PropTypes.object,
         isRxParentAText: PropTypes.bool
@@ -49,7 +49,8 @@ export class Link extends React.Component<Types.LinkProps, {}> {
             onLongPress: this._onLongPress,
             allowFontScaling: this.props.allowFontScaling,
             maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
-            children: this.props.children
+            children: this.props.children,
+            tooltip: this.props.title
         };
 
         return this._render(internalProps);
@@ -125,6 +126,10 @@ export class Link extends React.Component<Types.LinkProps, {}> {
     blur() {
         // No-op
     }
+}
+
+export class Link extends LinkBase<{}> {
+
 }
 
 export default Link;

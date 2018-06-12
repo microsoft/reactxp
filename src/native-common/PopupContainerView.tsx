@@ -17,6 +17,7 @@ import RN = require('react-native');
 import International from './International';
 import Types = require('../common/Types');
 import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext } from '../common/PopupContainerViewBase';
+import UserInterface from './UserInterface';
 
 // Width of the "alley" around popups so they don't get too close to the boundary of the screen boundary.
 const ALLEY_WIDTH = 2;
@@ -56,7 +57,7 @@ export interface PopupContainerViewState {
 
 export class PopupContainerView extends PopupContainerViewBase<PopupContainerViewProps, PopupContainerViewState> {
     private _mountedComponent: RN.View|null = null;
-    private _viewHandle: number | null = null;
+    private _viewHandle: number|null = null;
     private _respositionPopupTimer: number|undefined;
 
     constructor(props: PopupContainerViewProps, context: PopupContainerViewContext) {
@@ -204,8 +205,9 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
             newState.constrainedPopupHeight = newState.popupHeight;
             newState.constrainedPopupWidth = newState.popupWidth;
 
-            // Get the width/height of the full window.
-            let window = RN.Dimensions.get('window');
+            // Get the width/height of root view window.
+            let window = UserInterface.measureWindow(this.props.popupOptions.rootViewId);
+
             let windowWidth = window.width;
             let windowHeight = window.height;
 
@@ -394,7 +396,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
     private _startRepositionPopupTimer() {
         this._respositionPopupTimer = setInterval(() => {
             this._recalcPosition();
-        }, 1000) as any as number;
+        }, 1000);
     }
 
     private _stopRepositionPopupTimer() {

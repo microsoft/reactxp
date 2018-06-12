@@ -73,7 +73,8 @@ export class UserInterface extends RX.UserInterface {
         return deferred.promise();
     }
 
-    measureWindow(): Types.LayoutInfo {
+    measureWindow(rootViewId?: string): Types.LayoutInfo {
+        // Mo multi window support, default to main window
         return {
             x: 0,
             y: 0,

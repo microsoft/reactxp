@@ -10,10 +10,13 @@
 import React = require('react');
 import RN = require('react-native');
 import RNW = require('react-native-windows');
-import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
+import Types = require('../common/Types');
+
+import { applyFocusableComponentMixin, FocusManager, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 
 import EventHelpers from '../native-common/utils/EventHelpers';
-import { Link as LinkCommon } from '../native-common/Link';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import { LinkBase } from '../native-common/Link';
 
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_SPACE = 32;
@@ -23,13 +26,49 @@ const UP_KEYCODES = [KEY_CODE_SPACE];
 
 let FocusableText = RNW.createFocusableComponent(RN.Text);
 
-export class Link extends LinkCommon implements FocusManagerFocusableComponent {
+export interface LinkState {
+    isRestrictedOrLimited: boolean;
+}
+
+export class Link extends LinkBase<LinkState> implements FocusManagerFocusableComponent {
+    constructor(props: Types.LinkProps) {
+        super(props);
+
+        this.state = {
+            isRestrictedOrLimited: false
+        };
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+        // Retrieve focus restriction state and subscribe for further changes.
+        // This is the earliest point this can be done since Focus Manager uses a pre-"componentDidMount" hook
+        // to connect to component instances
+        this._restrictedOrLimitedCallback(FocusManager.isComponentFocusRestrictedOrLimited(this));
+        FocusManager.subscribe(this, this._restrictedOrLimitedCallback);
+    }
+
+    componentWillUnmount() {
+        // This is for symmetry, but the callbacks have already been deleted by FocusManager since its
+        // hook executes first
+        FocusManager.unsubscribe(this, this._restrictedOrLimitedCallback);
+    }
+
+    private _restrictedOrLimitedCallback = (restrictedOrLimited: boolean): void => {
+        this.setState({
+            isRestrictedOrLimited: restrictedOrLimited
+        });
+    }
+
     protected _render(internalProps: RN.TextProps) {
         if (this.context && !this.context.isRxParentAText) {
+            // Standalone link. We use a keyboard focusable RN.Text
             return this._renderLinkAsFocusableText(internalProps);
-        } else if (RNW.HyperlinkWindows) {
+        } else if (RNW.HyperlinkWindows && !this.state.isRestrictedOrLimited) {
+            // Inline Link. We use a native Hyperlink inline if RNW supports it and element is not "focus restricted/limited"
             return this._renderLinkAsNativeHyperlink(internalProps);
         } else {
+            // Inline Link. We defer to base class (that uses a plain RN.Text) for the rest of the cases.
             return super._render(internalProps);
         }
     }
@@ -40,7 +79,7 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
             <FocusableText
                 { ...focusableTextProps }
             />
-        );    
+        );
     }
 
     private _focusableElement : RNW.FocusableWindows<RN.TextProps> | null = null;
@@ -74,7 +113,7 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
             onFocus: this._onFocus,
             onAccessibilityTap: this._onPress
         };
-        
+
         return focusableTextProps;
     }
 
@@ -124,6 +163,19 @@ export class Link extends LinkCommon implements FocusManagerFocusableComponent {
         } else {
             super.setNativeProps(nativeProps);
         }
+    }
+
+    requestFocus() {
+        FocusArbitratorProvider.requestFocus(
+            this,
+            () => this.focus(),
+            () => this._isAvailableToFocus()
+        );
+    }
+
+    private _isAvailableToFocus(): boolean {
+        return !!((this._focusableElement && this._focusableElement.focus) ||
+         (this._nativeHyperlinkElement && this._nativeHyperlinkElement.focus));
     }
 
     private _onKeyDown = (e: React.SyntheticEvent<any>): void => {

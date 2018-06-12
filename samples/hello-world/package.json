@@ -11,7 +11,6 @@
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios"
   },
   "devDependencies": {
-    "@types/node": "^10.1.2",
     "@types/webpack": "^4.4.0",
     "awesome-typescript-loader": "^5.0.0",
     "source-map-loader": "^0.2.3",

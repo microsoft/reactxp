@@ -13,10 +13,7 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
-    "outDir": "./dist/",
-    "types": [
-      "node"
-    ]
+    "outDir": "./dist/"
   },
   "include": [
     "./src/**/*"

@@ -36,6 +36,9 @@ type ReactNativeViewAndImageCommonStyle<Style extends Types.ViewAndImageCommonSt
     flexGrow?: number;
     flexShrink?: number;
     flexBasis?: number;
+    textShadowColor?: string;
+    textShadowOffset?: Types.ShadowOffset;
+    textShadowRadius?: number;
 };
 
 export class Styles extends RX.Styles {
@@ -105,7 +108,7 @@ export class Styles extends RX.Styles {
 
     // Creates opaque styles that can be used for Text
     createTextStyle(ruleSet: Types.TextStyle, cacheStyle: boolean = true): Types.TextStyleRuleSet {
-        return this._adaptStyles(ruleSet, cacheStyle);
+        return this._adaptStyles(ruleSet, cacheStyle, true);
     }
 
     // Creates opaque styles that can be used for Text
@@ -115,7 +118,7 @@ export class Styles extends RX.Styles {
 
     // Creates opaque styles that can be used for TextInput
     createTextInputStyle(ruleSet: Types.TextInputStyle, cacheStyle: boolean = true): Types.TextInputStyleRuleSet {
-        return this._adaptStyles(ruleSet, cacheStyle);
+        return this._adaptStyles(ruleSet, cacheStyle, true);
     }
 
     // Creates opaque styles that can be used for TextInput
@@ -148,7 +151,11 @@ export class Styles extends RX.Styles {
         return {};
     }
 
-    private _adaptStyles<S extends Types.ViewAndImageCommonStyle>(def: S, cacheStyle: boolean): Readonly<Types.StyleRuleSet<S>> {
+    private _adaptStyles<S extends Types.ViewAndImageCommonStyle>(
+        def: S, 
+        cacheStyle: boolean, 
+        isTextStyle = false
+    ): Readonly<Types.StyleRuleSet<S>> {
         let adaptedRuleSet = def as ReactNativeViewAndImageCommonStyle<S>;
         if (cacheStyle) {
             StyleLeakDetector.detectLeaks(def);
@@ -171,6 +178,21 @@ export class Styles extends RX.Styles {
                 textStyle.fontStyle = textStyle.font.fontStyle;
             }
             delete textStyle.font;
+        }
+
+        if (isTextStyle) {
+            if (textStyle.shadowColor !== undefined) {
+                adaptedRuleSet.textShadowColor = textStyle.shadowColor;
+                delete textStyle.shadowColor;
+            }
+            if (textStyle.shadowOffset !== undefined) {
+                adaptedRuleSet.textShadowOffset = textStyle.shadowOffset;
+                delete textStyle.shadowOffset;
+            }
+            if (textStyle.shadowRadius !== undefined) {
+                adaptedRuleSet.textShadowRadius = textStyle.shadowRadius;
+                delete textStyle.shadowRadius;
+            }
         }
 
         if (def.flex !== undefined) {

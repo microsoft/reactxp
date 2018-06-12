@@ -19,7 +19,12 @@ export class Network extends RX.Network {
 
         let onEventOccuredHandler = this._onEventOccured.bind(this);
 
-        RN.NetInfo.isConnected.addEventListener('change', onEventOccuredHandler);
+        // The "change" event is being deprecated. See if the newer "connectionchange"
+        // event is available instead. We can't determine this directly, but we can
+        // check whether the accompanying RN.NetInfo.getConnectionInfo is available.
+        RN.NetInfo.isConnected.addEventListener(
+            RN.NetInfo.getConnectionInfo ? 'connectionChange' : 'change',
+            onEventOccuredHandler);
     }
 
     isConnected(): SyncTasks.Promise<boolean> {

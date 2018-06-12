@@ -18,7 +18,8 @@ import AppConfig from '../common/AppConfig';
 import { View as ViewCommon, ViewContext as ViewContextCommon } from '../native-common/View';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import { RestrictFocusType } from '../common/utils/FocusManager';
-import { applyFocusableComponentMixin, FocusManagerFocusableComponent, FocusManager } from '../native-desktop/utils/FocusManager';
+import { applyFocusableComponentMixin, FocusManagerFocusableComponent, FocusManager }
+    from '../native-desktop/utils/FocusManager';
 import PopupContainerView from '../native-common/PopupContainerView';
 import { PopupComponent } from '../common/PopupContainerViewBase';
 
@@ -124,6 +125,10 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     componentDidMount() {
         super.componentDidMount();
 
+        if (this._focusManager) {
+            this._focusManager.setRestrictionStateCallback(this._focusRestrictionCallback.bind(this));
+        }
+
         // If we are mounted as visible, do our initialization now. If we are hidden, it will
         // be done later when the popup is shown.
         if (!this._isHidden()) {
@@ -140,6 +145,9 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         super.componentWillUnmount();
         this.disableFocusManager();
 
+        if (this._focusManager) {
+            this._focusManager.setRestrictionStateCallback(undefined);
+        }
         if (this._popupToken) {
             this._popupContainer!!!.unregisterPopupComponent(this._popupToken);
         }
@@ -153,15 +161,15 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         // Base class does the bulk of _internalprops creation
         super._buildInternalProps(props);
 
-        // On Windows a view with importantForAccessibility='Yes' or 
+        // On Windows a view with importantForAccessibility='Yes' or
         // non-empty accessibilityLabel and importantForAccessibility='Auto' (or unspecified) will hide its children.
-        // However, a view that is also a group or a dialog should keep children visible to UI Automation. 
-        // The following condition checks and sets RNW importantForAccessibility property 
+        // However, a view that is also a group or a dialog should keep children visible to UI Automation.
+        // The following condition checks and sets RNW importantForAccessibility property
         // to 'yes-dont-hide-descendants' to keep view children visible.
         const hasGroup = this.hasTrait(Types.AccessibilityTrait.Group, props.accessibilityTraits);
         const hasDialog = this.hasTrait(Types.AccessibilityTrait.Dialog, props.accessibilityTraits);
         const i4aYes = props.importantForAccessibility === Types.ImportantForAccessibility.Yes;
-        const i4aAuto = (props.importantForAccessibility === Types.ImportantForAccessibility.Auto 
+        const i4aAuto = (props.importantForAccessibility === Types.ImportantForAccessibility.Auto
             || props.importantForAccessibility === undefined);
         const hasLabel = props.accessibilityLabel && props.accessibilityLabel.length > 0;
         if ((hasGroup || hasDialog) && (i4aYes || (i4aAuto && hasLabel))) {
@@ -300,11 +308,27 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         this._focusableElement = btn;
     }
 
+    requestFocus() {
+        if (!this._focusableElement) {
+            // Views with no tabIndex (even if -1) can't receive focus
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('View: requestFocus called on a non focusable element');
+            }
+            return;
+        }
+
+        super.requestFocus();
+    }
+
     focus() {
         // Only forward to Button.
         // The other cases are RN.View based elements with no meaningful focus support
         if (this._focusableElement) {
             this._focusableElement.focus();
+        } else {
+            if (AppConfig.isDevelopmentMode()) {
+                console.error('View: focus called on a non focusable element');
+            }
         }
     }
 
@@ -379,6 +403,16 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             }
         }
         this._isFocusLimited = limited;
+    }
+
+    private _focusRestrictionCallback(restricted: RestrictFocusType) {
+        // Complementary mechanism to ensure focus cannot get out (through tabbing) of this view
+        // when restriction is enabled.
+        // This covers cases where outside the view focusable controls are not controlled and/or not controllable
+        // by FocusManager
+        this.setNativeProps({
+            tabNavigation: restricted !== RestrictFocusType.Unrestricted ? 'cycle' : 'local'
+        });
     }
 
     public setNativeProps(nativeProps: RN.ViewProps) {

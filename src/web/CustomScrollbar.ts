@@ -7,8 +7,6 @@
 * Custom scrollbar implementation for web.
 */
 
-'use strict';
-
 import React = require('react');
 
 var UNIT = 'px';
@@ -16,7 +14,7 @@ var SCROLLER_MIN_SIZE = 15;
 var SCROLLER_NEGATIVE_MARGIN = 30;
 var NEUTRAL_OVERRIDE_CLASS = 'neutraloverride';
 
-interface IScrollbarInfo {
+interface ScrollbarInfo {
     size?: number;
     scrollSize?: number;
     scroll2Slider?: number;
@@ -158,8 +156,8 @@ const _customScrollbarCss = `
 
 export class Scrollbar {
     private _container: HTMLElement;
-    private _verticalBar: IScrollbarInfo = {};
-    private _horizontalBar: IScrollbarInfo = {};
+    private _verticalBar: ScrollbarInfo = {};
+    private _horizontalBar: ScrollbarInfo = {};
     // Viewport will always be initialized before it's used
     private _viewport!: HTMLElement;
     private _dragging = false;
@@ -397,7 +395,7 @@ export class Scrollbar {
         return div;
     }
 
-    private _addScrollBar(scrollbarInfo: IScrollbarInfo, railClass: string, hasBoth: boolean) {
+    private _addScrollBar(scrollbarInfo: ScrollbarInfo, railClass: string, hasBoth: boolean) {
         const slider = this._createDivWithClass('slider');
 
         scrollbarInfo.rail = this._createDivWithClass('rail ' + railClass + (hasBoth ? ' railBoth' : ''));
@@ -435,7 +433,7 @@ export class Scrollbar {
         }
     }
 
-    private _calcNewBarSize(bar: IScrollbarInfo, newSize: number, newScrollSize: number, hasBoth: boolean) {
+    private _calcNewBarSize(bar: ScrollbarInfo, newSize: number, newScrollSize: number, hasBoth: boolean) {
         if (hasBoth || this._hasHiddenScrollbar) {
             newSize -= SCROLLER_NEGATIVE_MARGIN;
             newScrollSize -= SCROLLER_NEGATIVE_MARGIN - Scrollbar.getNativeScrollbarWidth();

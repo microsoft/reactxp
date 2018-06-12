@@ -10,7 +10,7 @@
 
 import _ = require('./../utils/lodashMini');
 
-export interface ITransitionSpec {
+export interface TransitionSpec {
     property: string;
     duration: number;
     timing?: string;
@@ -20,12 +20,12 @@ export interface ITransitionSpec {
 }
 
 // Convenient API for applying a CSS transition to a DOM element. Calls `done` when the transition is completed.
-export function executeTransition(element: HTMLElement, transitions: ITransitionSpec[], done: () => void): void {
+export function executeTransition(element: HTMLElement, transitions: TransitionSpec[], done: () => void): void {
     let longestDurationPlusDelay = 0;
     let longestDurationProperty = '';
     let cssTransitions: string[] = [];
 
-    _.each(transitions, (transition: ITransitionSpec) => {
+    _.each(transitions, (transition: TransitionSpec) => {
         const property = transition.property;
         const duration = transition.duration;
         const timing = transition.timing === undefined ? 'linear' : transition.timing;
@@ -99,7 +99,7 @@ export function executeTransition(element: HTMLElement, transitions: ITransition
     element.dataset['transitionId'] = timeoutId.toString();
 
     // Set the "to" values.
-    _.each(transitions, (transition: ITransitionSpec) => {
+    _.each(transitions, (transition: TransitionSpec) => {
         const property = transition.property;
         const to = transition.to;
         (element.style as any)[property] = to;

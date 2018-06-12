@@ -79,24 +79,24 @@ function computePositions(refs: { [key: string]: MountedChildrenRef }) {
     return positions;
 }
 
-export interface IAddEdit {
+export interface AddEdit {
     element: React.Component<any, any> | Element;
 }
-export interface IMoveEdit {
+export interface MoveEdit {
     element: React.Component<any, any> | Element;
     leftDelta: number;
     topDelta: number;
 }
-export interface IRemoveEdit {
+export interface RemoveEdit {
     element: React.Component<any, any> | Element;
     leftDelta: number;
     topDelta: number;
 }
 
-export interface IEdits {
-    added: IAddEdit[];
-    moved: IMoveEdit[];
-    removed: IRemoveEdit[];
+export interface Edits {
+    added: AddEdit[];
+    moved: MoveEdit[];
+    removed: RemoveEdit[];
 }
 
 // The states the React component can be in.
@@ -115,7 +115,7 @@ enum ComponentPhaseEnum {
 // Pieces of information we calculate in componentWillUpdate and consume in componentDidUpdate.
 // More specifically, we calculate animation information in componentWillUpdate and start the
 // animation in componentDidUpdate.
-interface IWillAnimatePhaseInfo {
+interface WillAnimatePhaseInfo {
     added: React.ReactElement<any>[];
     removed: React.ReactElement<any>[];
     other: React.ReactElement<any>[];
@@ -132,7 +132,7 @@ export interface MonitorListEditsProps extends React.HTMLAttributes<any> {
     // Called when list edits are detected. Gives you an opportunity to animate them.
     // Call `done` when the animations are finished. Until `done` is called, the component
     // will refuse to rerender.
-    componentWillAnimate: (edits: IEdits, done: () => void) => void;
+    componentWillAnimate: (edits: Edits, done: () => void) => void;
 }
 
 export class MonitorListEdits extends React.Component<MonitorListEditsProps, Types.Stateless> {
@@ -152,7 +152,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
     private _childrenToRender!: JSX.Element[];
 
     private _phase: ComponentPhaseEnum = ComponentPhaseEnum.rest;
-    private _willAnimatePhaseInfo: IWillAnimatePhaseInfo|undefined;
+    private _willAnimatePhaseInfo: WillAnimatePhaseInfo|undefined;
 
     componentWillMount() {
         this._childrenKeys = extractChildrenKeys(this.props.children);
@@ -268,13 +268,13 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
             let prevPositions = phaseInfo.prevPositions;
             let nextPositions = computePositions(this._itemRefs);
 
-            let added: IAddEdit[] = phaseInfo.added.map(child => {
+            let added: AddEdit[] = phaseInfo.added.map(child => {
                 return {
                     element: this._itemRefs[(child as any).key].reactElement
                 };
             });
 
-            let removed: IRemoveEdit[] = phaseInfo.removed.map(child => {
+            let removed: RemoveEdit[] = phaseInfo.removed.map(child => {
                 let key = child.key as any;
                 let prevPos = prevPositions[key];
                 let nextPos = nextPositions[key];
@@ -286,7 +286,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
                 };
             });
 
-            let moved: IMoveEdit[] = [];
+            let moved: MoveEdit[] = [];
             phaseInfo.other.map(child => {
                 let key = child.key as any;
                 let prevPos = prevPositions[key];

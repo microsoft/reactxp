@@ -50,9 +50,9 @@ export interface StoredFocusableComponent {
 
 export type FocusableComponentStateCallback = (restrictedOrLimited: boolean) => void;
 
-export abstract class FocusManager {
-    private static _rootFocusManager: FocusManager;
+export type FocusManagerRestrictionStateCallback = (restricted: RestrictFocusType) => void;
 
+export abstract class FocusManager {
     private static _restrictionStack: FocusManager[] = [];
     protected static _currentRestrictionOwner: FocusManager|undefined;
     private static _restoreRestrictionTimer: number|undefined;
@@ -67,17 +67,10 @@ export abstract class FocusManager {
     private _currentRestrictType: RestrictFocusType = RestrictFocusType.Unrestricted;
     private _prevFocusedComponent: StoredFocusableComponent|undefined;
     protected _myFocusableComponentIds: { [id: string]: boolean } = {};
+    private _restrictionStateCallback: FocusManagerRestrictionStateCallback|undefined;
 
     constructor(parent: FocusManager|undefined) {
-        if (parent) {
-            this._parent = parent;
-        } else if (FocusManager._rootFocusManager) {
-            if (AppConfig.isDevelopmentMode()) {
-                console.error('FocusManager: root is already set');
-            }
-        } else {
-            FocusManager._rootFocusManager = this;
-        }
+        this._parent = parent;
     }
 
     protected abstract /* static */ addFocusListenerOnComponent(component: FocusableComponentInternal, onFocus: () => void): void;
@@ -201,6 +194,10 @@ export abstract class FocusManager {
                 this._updateComponentFocusRestriction(storedComponent);
             }
         });
+
+        if (this._restrictionStateCallback) {
+            this._restrictionStateCallback(restrictType);
+        }
     }
 
     removeFocusRestriction() {
@@ -218,6 +215,10 @@ export abstract class FocusManager {
 
             this._removeFocusRestriction();
             FocusManager._currentRestrictionOwner = undefined;
+
+            if (this._restrictionStateCallback) {
+                this._restrictionStateCallback(RestrictFocusType.Unrestricted);
+            }
 
             // Defer the previous restriction restoration to wait for the current view
             // to be unmounted, or for the next restricted view to be mounted (like
@@ -308,7 +309,7 @@ export abstract class FocusManager {
         this.removeFocusLimitation();
     }
 
-    subscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback) {
+    static subscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback) {
         const storedComponent = FocusManager._getStoredComponent(component);
 
         if (storedComponent) {
@@ -320,7 +321,7 @@ export abstract class FocusManager {
         }
     }
 
-    unsubscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback) {
+    static unsubscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback) {
         const storedComponent = FocusManager._getStoredComponent(component);
 
         if (storedComponent && storedComponent.callbacks) {
@@ -330,7 +331,11 @@ export abstract class FocusManager {
         }
     }
 
-    isComponentFocusRestrictedOrLimited(component: FocusableComponentInternal): boolean {
+    setRestrictionStateCallback(callback: FocusManagerRestrictionStateCallback|undefined) {
+        this._restrictionStateCallback = callback;
+    }
+
+    static isComponentFocusRestrictedOrLimited(component: FocusableComponentInternal): boolean {
         const storedComponent = FocusManager._getStoredComponent(component);
         return !!storedComponent &&
             (storedComponent.restricted || storedComponent.limitedCount > 0 || storedComponent.limitedCountAccessible > 0);

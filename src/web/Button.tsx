@@ -41,12 +41,6 @@ const _styles = {
 const _longPressTime = 1000;
 const _defaultAccessibilityTrait = Types.AccessibilityTrait.Button;
 
-let _isNavigatingWithKeyboard = false;
-
-UserInterface.keyboardNavigationEvent.subscribe(isNavigatingWithKeyboard => {
-    _isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-});
-
 export interface ButtonContext {
     hasRxButtonAscendant?: boolean;
     focusArbitrator?: FocusArbitratorProvider;
@@ -249,7 +243,7 @@ export class Button extends ButtonBase {
     // When we get focus on an element, show the hover effect on the element.
     // This ensures that users using keyboard also get the similar experience as mouse users for accessibility.
     private _onFocus = (e: Types.FocusEvent) => {
-        this._isFocusedWithKeyboard = _isNavigatingWithKeyboard;
+        this._isFocusedWithKeyboard = UserInterface.isNavigatingWithKeyboard();
         this._onHoverStart(e);
 
         if (this.props.onFocus) {

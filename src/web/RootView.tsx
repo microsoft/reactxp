@@ -100,7 +100,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _clickHandlerInstalled = false;
     private _keyboardHandlerInstalled = false;
     private _focusManager: FocusManager;
-    private _isNavigatingWithKeyboard: boolean = false;
     private _isNavigatingWithKeyboardUpateTimer: number|undefined;
 
     private _shouldEnableKeyboardNavigationModeOnFocus = false;
@@ -442,7 +441,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 return;
             }
 
-            if (!this._isNavigatingWithKeyboard && curShouldEnable) {
+            if (!UserInterface.isNavigatingWithKeyboard() && curShouldEnable) {
                 this._updateKeyboardNavigationState(true);
             }
         }, 0);
@@ -479,9 +478,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             this._isNavigatingWithKeyboardUpateTimer = undefined;
         }
 
-        if (this._isNavigatingWithKeyboard !== isNavigatingWithKeyboard) {
-            this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-
+        if (UserInterface.isNavigatingWithKeyboard() !== isNavigatingWithKeyboard) {
             UserInterface.keyboardNavigationEvent.fire(isNavigatingWithKeyboard);
 
             const focusClass = isNavigatingWithKeyboard ? this.props.keyBoardFocusOutline : this.props.mouseFocusOutline;
@@ -531,7 +528,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 this._hidePopupTimer = window.setTimeout(() => {
                     this._hidePopupTimer = undefined;
                     this._dismissPopup();
-                }, this.props.autoDismissDelay) as any as number;
+                }, this.props.autoDismissDelay);
             } else {
                 this._dismissPopup();
             }
@@ -554,7 +551,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _startRepositionPopupTimer() {
         this._respositionPopupTimer = setInterval(() => {
             this._recalcPosition();
-        }, 500) as any as number;
+        }, 500);
     }
 
     private _stopRepositionPopupTimer() {
