@@ -190,7 +190,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    private _onBlur = () => {
+    private _onBlur = (e: Types.FocusEvent) => {
         if (this._mountedComponent) {
             this._isFocused = false;
 
@@ -200,7 +200,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             }
 
             if (this.props.onBlur) {
-                this.props.onBlur();
+                this.props.onBlur(e);
             }
         }
     }

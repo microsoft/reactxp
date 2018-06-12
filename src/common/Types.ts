@@ -535,6 +535,11 @@ export interface ImageProps extends ImagePropsShared {
     style?: StyleRuleSetRecursive<ImageStyleRuleSet>;
 }
 
+export interface ImageMetadata {
+    width: number;
+    height: number;
+}
+
 export interface AnimatedImageProps extends ImagePropsShared {
     style?: StyleRuleSetRecursive<AnimatedImageStyleRuleSet | ImageStyleRuleSet>;
 }
@@ -903,7 +908,7 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
 
     onKeyPress?: (e: KeyboardEvent) => void;
     onFocus?: (e: FocusEvent) => void;
-    onBlur?: () => void;
+    onBlur?: (e: FocusEvent) => void;
     onPaste?: (e: ClipboardEvent) => void;
     onChangeText?: (newValue: string) => void;
     onSelectionChange?: (start: number, end: number) => void;

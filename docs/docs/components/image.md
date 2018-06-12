@@ -68,4 +68,11 @@ getNativeWidth(): number;
 // image only has to be fetched from the local cache rather than over the
 // network.
 prefetch(url: string): Promise<boolean>;
+
+// Similarly to [prefetch], this method loads a remote image and stores it in
+// a cache. If prefetching was successful it will also get image dimensions. It will be
+// useful if you need [getNativeHeight] or [getNativeWidth] after image
+// was loaded because you will get this info together with prefetching and before
+// you actually need to show the image.
+getMetadata(url: string): Promise<ImageMetadata>
 ```
