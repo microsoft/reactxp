@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.3.0-rc.1 of reactxp
+_Released 13 Jun 2018_
+Fixed accessibility issues with screen reader in Windows UWP implementation.
+Removed shouldRasterizeIOS prop on RX.Image. It was never supported in RN, so it was just a no-op.
+Fixed bug in RX.Network.getType() which returned the wrong response if the device was connected to ethernet on Android.
+
 #### Version 1.3.0-rc.0 of reactxp
 _Released 10 Jun 2018_
 Fixed a few bugs in keyboard focus handling for Windows UWP.
