@@ -109,7 +109,7 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
     render() {
         const modalLayerView = FrontLayerViewManager.getModalLayerView(this._rootViewId);
         const popupLayerView = FrontLayerViewManager.getPopupLayerView(this._rootViewId);
-        const announcerView = this.renderAnnouncerView();
+        const announcerView = this._renderAnnouncerView();
 
         // When showing a modal/popup we want to hide the mainView shown behind from an accessibility
         // standpoint to ensure that it won't get the focus and the screen reader's attention.
@@ -133,7 +133,7 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
         return this.renderTopView(content);
     }
 
-    renderAnnouncerView(): JSX.Element {
+    protected _renderAnnouncerView(): JSX.Element {
         return (
             <RN.View
                 style={ _styles.liveRegionContainer }

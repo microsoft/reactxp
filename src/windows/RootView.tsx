@@ -57,7 +57,7 @@ class RootViewUsingStore extends RootViewBase {
         }
     }
 
-    renderAnnouncerView(): JSX.Element {
+    protected _renderAnnouncerView(): JSX.Element {
         return (
             <AccessibilityAnnouncer />
         );
@@ -79,7 +79,7 @@ class RootViewUsingProps extends RootViewUsingPropsBase {
         }
     }
 
-    renderAnnouncerView(): JSX.Element {
+    protected _renderAnnouncerView(): JSX.Element {
         return (
             <AccessibilityAnnouncer />
         );
