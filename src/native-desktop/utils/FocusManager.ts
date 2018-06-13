@@ -12,6 +12,7 @@ import { FocusManager as FocusManagerBase,
     applyFocusableComponentMixin as applyFocusableComponentMixinBase,
     StoredFocusableComponent as StoredFocusableComponentBase } from '../../common/utils/FocusManager';
 
+import { ImportantForAccessibilityValue } from '../../native-common/AccessibilityUtil';
 import AppConfig from '../../common/AppConfig';
 import Platform from '../../native-common/Platform';
 import UserInterface from '../../native-common/UserInterface';
@@ -36,6 +37,7 @@ export interface StoredFocusableComponent extends StoredFocusableComponentBase {
 
 export interface FocusManagerFocusableComponent {
     getTabIndex(): number | undefined;
+    getImportantForAccessibility(): ImportantForAccessibilityValue | undefined;
     onFocus(): void;
     focus(): void;
     updateNativeTabIndexAndIFA(): void;
@@ -217,6 +219,18 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
         } else if (this.tabIndexOverride !== undefined) {
             // Override available, use this one
             return this.tabIndexOverride;
+        } else {
+            // Override not available, defer to original handler to return the prop
+            return origCallback.call(this);
+        }
+    });
+
+    // Hook 'getImportantForAccessibility'
+    inheritMethod('getImportantForAccessibility', function (this: FocusableComponentInternal, origCallback: any) {
+        // Check local override first, then focus manager one
+        if (this.importantForAccessibilityOverride !== undefined) {
+            // Local override available, use this one
+            return this.importantForAccessibilityOverride;
         } else {
             // Override not available, defer to original handler to return the prop
             return origCallback.call(this);

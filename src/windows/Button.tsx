@@ -11,7 +11,9 @@ import PropTypes = require('prop-types');
 import React = require('react');
 import RN = require('react-native');
 import RNW = require('react-native-windows');
+import Types = require('../common/Types');
 
+import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import { Button as ButtonBase, ButtonContext as ButtonContextBase } from '../native-common/Button';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import UserInterface from '../native-common/UserInterface';
@@ -51,6 +53,8 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         // The intermediate "focusable, but not in the tab order" case is not supported.
         let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
 
+        let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
+
         // We don't use 'string' ref type inside ReactXP
         let originalRef = (internalProps as any).ref;
         if (typeof originalRef === 'string') {
@@ -66,6 +70,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
             onMouseLeave: this._onMouseLeave,
             isTabStop: windowsTabFocusable,
             tabIndex: tabIndex,
+            importantForAccessibility: importantForAccessibility,
             disableSystemFocusVisuals: false,
             handledKeyDownKeys: DOWN_KEYCODES,
             handledKeyUpKeys: UP_KEYCODES,
@@ -210,14 +215,22 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         return this.props.tabIndex || 0;
     }
 
+    getImportantForAccessibility(): ImportantForAccessibilityValue | undefined {
+        // Focus Manager may override this
+        return AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
+            Types.ImportantForAccessibility.Yes);
+    }
+
     updateNativeTabIndexAndIFA(): void {
         if (this._buttonElement) {
             let tabIndex: number | undefined = this.getTabIndex();
             let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
+            let importantForAccessibility: string | undefined = this.getImportantForAccessibility();
 
             this._buttonElement.setNativeProps({
                 tabIndex: tabIndex,
-                isTabStop: windowsTabFocusable
+                isTabStop: windowsTabFocusable,
+                importantForAccessibility: importantForAccessibility
             });
         }
     }

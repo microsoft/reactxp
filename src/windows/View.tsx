@@ -269,6 +269,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         if (this.props.tabIndex !== undefined) {
             let tabIndex: number = this.getTabIndex() || 0;
             let windowsTabFocusable: boolean =  tabIndex >= 0;
+            let importantForAccessibility: string | undefined = this.getImportantForAccessibility();
 
             // We don't use 'string' ref type inside ReactXP
             let originalRef = this._internalProps.ref;
@@ -283,6 +284,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                 componentRef: componentRef,
                 isTabStop: windowsTabFocusable,
                 tabIndex: tabIndex,
+                importantForAccessibility: importantForAccessibility,
                 disableSystemFocusVisuals: false,
                 handledKeyDownKeys: DOWN_KEYCODES,
                 handledKeyUpKeys: UP_KEYCODES,
@@ -480,14 +482,21 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         return this.props.tabIndex;
     }
 
+    getImportantForAccessibility(): string | undefined {
+        // Focus Manager may override this
+        return this._internalProps.importantForAccessibility;
+    }
+
     updateNativeTabIndexAndIFA(): void {
         if (this._focusableElement) {
             let tabIndex: number = this.getTabIndex() || 0;
             let windowsTabFocusable: boolean = tabIndex >= 0;
+            let importantForAccessibility: string | undefined = this.getImportantForAccessibility();
 
             this._focusableElement.setNativeProps({
                 tabIndex: tabIndex,
-                isTabStop: windowsTabFocusable
+                isTabStop: windowsTabFocusable,
+                importantForAccessibility: importantForAccessibility
             });
         }
     }
