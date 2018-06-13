@@ -40,10 +40,6 @@ export interface StoredFocusableComponent {
     restricted: boolean;
     limitedCount: number;
     limitedCountAccessible: number;
-    origTabIndex?: number;
-    origAriaHidden?: string;
-    curTabIndex?: number;
-    curAriaHidden?: boolean;
     removed?: boolean;
     callbacks?: FocusableComponentStateCallback[];
 }
