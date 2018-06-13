@@ -9,7 +9,6 @@
 
 import React = require('react');
 import RN = require('react-native');
-import { ReactNativeBaseComponent } from 'react-native';
 
 import Easing from '../common/Easing';
 import Types = require('../common/Types');
@@ -20,17 +19,17 @@ import RXTextInput from './TextInput';
 import RX = require('../common/Interfaces');
 
 export interface AnimatedClasses {
-    Image: typeof ReactNativeBaseComponent;
-    Text: typeof ReactNativeBaseComponent;
-    TextInput: typeof ReactNativeBaseComponent;
-    View: typeof ReactNativeBaseComponent;
+    Image: typeof RN.ReactNativeBaseComponent;
+    Text: typeof RN.ReactNativeBaseComponent;
+    TextInput: typeof RN.ReactNativeBaseComponent;
+    View: typeof RN.ReactNativeBaseComponent;
 }
 
 export const CommonAnimatedClasses: AnimatedClasses = {
-    Image: RN.Animated.createAnimatedComponent(RXImage) as typeof ReactNativeBaseComponent,
-    Text: RN.Animated.createAnimatedComponent(RXText) as typeof ReactNativeBaseComponent,
-    TextInput: RN.Animated.createAnimatedComponent(RXTextInput) as typeof ReactNativeBaseComponent,
-    View: RN.Animated.createAnimatedComponent(RXView)  as typeof ReactNativeBaseComponent
+    Image: RN.Animated.createAnimatedComponent(RXImage) as typeof RN.ReactNativeBaseComponent,
+    Text: RN.Animated.createAnimatedComponent(RXText) as typeof RN.ReactNativeBaseComponent,
+    TextInput: RN.Animated.createAnimatedComponent(RXTextInput) as typeof RN.ReactNativeBaseComponent,
+    View: RN.Animated.createAnimatedComponent(RXView)  as typeof RN.ReactNativeBaseComponent
 };
 
 let animatedClasses: AnimatedClasses = CommonAnimatedClasses;

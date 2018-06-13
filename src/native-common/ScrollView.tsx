@@ -17,13 +17,13 @@ import ViewBase from './ViewBase';
 export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless> implements RX.ScrollView {
     private _scrollTop = 0;
     private _scrollLeft = 0;
-    protected _nativeView: RN.ScrollView|undefined;
+    protected _nativeView: any;
 
-    protected _render(props: RN.ScrollViewProps): JSX.Element {
+    protected _render(props: Types.ScrollViewProps): JSX.Element {
+        let nativeProps = props as RN.ScrollViewProps;
+
         return (
-            <RN.ScrollView
-                { ...props }
-            >
+            <RN.ScrollView { ...nativeProps }>
                 { props.children }
             </RN.ScrollView>
         );
@@ -60,7 +60,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
         // We also set removeClippedSubviews to false, overriding the default value. Most of the scroll views
         // we use are virtualized anyway.
 
-        const internalProps: RN.ScrollViewProps = {
+        const internalProps: any = {
             ref: this._setNativeView,
             style: this.props.style,
             onScroll: scrollCallback,

@@ -23,7 +23,7 @@ const _styles = {
 };
 
 export class WebView extends React.Component<Types.WebViewProps, Types.Stateless> implements RX.WebView {
-    private _mountedComponent: RN.WebView|null = null;
+    private _mountedComponent: any;
 
     render() {
         let styles = [_styles.webViewDefault, this.props.style];
@@ -38,7 +38,7 @@ export class WebView extends React.Component<Types.WebViewProps, Types.Stateless
         return (
             <RN.WebView
                 ref={ this._onMount }
-                style={ styles }
+                style={ styles as RN.StyleProp<RN.ViewStyle> }
                 onNavigationStateChange={ this.props.onNavigationStateChange }
                 onShouldStartLoadWithRequest={ this.props.onShouldStartLoadWithRequest }
                 source={ source }
@@ -55,11 +55,11 @@ export class WebView extends React.Component<Types.WebViewProps, Types.Stateless
         );
     }
 
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
-        this._mountedComponent = component as RN.WebView;
+    protected _onMount = (component: any) => {
+        this._mountedComponent = component;
     }
 
-    protected _onMessage = (e: RN.SyntheticEvent<any>) => {
+    protected _onMessage = (e: RN.NativeSyntheticEvent<any>) => {
         if (this.props.onMessage) {
             // Clone the original event because RN reuses events.
             let event: RX.Types.WebViewMessageEvent = _.clone(e) as any;

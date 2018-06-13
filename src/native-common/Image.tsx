@@ -79,12 +79,12 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
 
     render() {
         // Check if require'd image resource
-        let imageSource: RN.ImageSource | number;
+        let imageSource: RN.ImageSourcePropType;
         if ( _.isNumber(this.props.source)) {
             // Cast to any since the inbound types mismatch a bit for RN
             imageSource = this.props.source as any as number;
         } else {
-            const imageSourceReq: RN.ImageSource = { uri: this.props.source as string };
+            const imageSourceReq: RN.ImageSourcePropType = { uri: this.props.source as string };
             if (this.props.headers) {
                 imageSourceReq.headers = this.props.headers;
             }
@@ -101,20 +101,22 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
         }
 
         const additionalProps = this._getAdditionalProps();
+        const extendedProps: RN.ExtendedImageProps = {
+            source: imageSource,
+            tooltip: this.props.title
+        };
 
         return (
             <RN.Image
-                ref={ this._onMount }
-                style={ this.getStyles() }
-                source={ imageSource }
-                resizeMode={ resizeMode }
+                ref={ this._onMount as any }
+                style={ this.getStyles() as RN.StyleProp<RN.ImageStyle> }
+                resizeMode={ resizeMode as any }
                 resizeMethod={ this.props.resizeMethod }
                 accessibilityLabel={ this.props.accessibilityLabel }
-                onLoad={ this.props.onLoad ? this._onLoad : undefined }
+                onLoad={ this.props.onLoad ? this._onLoad as any : undefined }
                 onError={ this._onError }
-                shouldRasterizeIOS={ this.props.shouldRasterizeIOS }
-                tooltip={ this.props.title }
                 { ...additionalProps }
+                { ...extendedProps }
             >
                 { this.props.children }
             </RN.Image>

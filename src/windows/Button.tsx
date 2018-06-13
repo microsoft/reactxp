@@ -7,14 +7,15 @@
 * RN Windows-specific implementation of the cross-platform Button abstraction.
 */
 
+import PropTypes = require('prop-types');
 import React = require('react');
+import RN = require('react-native');
+import RNW = require('react-native-windows');
+
 import { Button as ButtonBase, ButtonContext as ButtonContextBase } from '../native-common/Button';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import UserInterface from '../native-common/UserInterface';
-import RN = require('react-native');
-import RNW = require('react-native-windows');
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
-import PropTypes = require('prop-types');
 
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_SPACE = 32;
@@ -38,15 +39,9 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         ...ButtonBase.childContextTypes
     };
 
-    private _focusableElement : RNW.FocusableWindows<RN.ViewProps> | null = null;
-
     private _isFocusedWithKeyboard = false;
 
-    private _onFocusableRef = (btn: RNW.FocusableWindows<RN.ViewProps> | null): void => {
-        this._focusableElement = btn;
-    }
-
-    protected _render(internalProps: RN.ViewProps): JSX.Element {
+    protected _render(internalProps: RN.ViewProps, onMount: (btn: any) => void): JSX.Element {
         // RNW.FocusableProps tabIndex: default is 0.
         // -1 has no special semantic similar to DOM.
         let tabIndex: number | undefined = this.getTabIndex();
@@ -57,16 +52,16 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
 
         // We don't use 'string' ref type inside ReactXP
-        let originalRef = internalProps.ref;
+        let originalRef = (internalProps as any).ref;
         if (typeof originalRef === 'string') {
             throw new Error('Button: ReactXP must not use string refs internally');
         }
         let componentRef: Function = originalRef as Function;
 
-        let focusableViewProps: RNW.FocusableWindowsProps<RN.ViewProps> = {
+        let focusableViewProps: RNW.FocusableWindowsProps<RN.ExtendedViewProps> = {
             ...internalProps,
+            ref: onMount,
             componentRef: componentRef,
-            ref: this._onFocusableRef,
             onMouseEnter: this._onMouseEnter,
             onMouseLeave: this._onMouseLeave,
             isTabStop: windowsTabFocusable,
@@ -82,31 +77,29 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         };
 
         return (
-            <FocusableAnimatedView
-                { ...focusableViewProps }
-            >
+            <FocusableAnimatedView { ...focusableViewProps }>
                 { this.props.children }
             </FocusableAnimatedView>
         );
     }
 
     focus() {
-        if (this._focusableElement && this._focusableElement.focus) {
-            this._focusableElement.focus();
+        if (this._buttonElement && this._buttonElement.focus) {
+            this._buttonElement.focus();
         }
 
     }
 
     blur() {
-        if (this._focusableElement && this._focusableElement.blur) {
-            this._focusableElement.blur();
+        if (this._buttonElement && this._buttonElement.blur) {
+            this._buttonElement.blur();
         }
     }
 
     setNativeProps(nativeProps: RN.ViewProps) {
         // Redirect to focusable component if present.
-        if (this._focusableElement) {
-            this._focusableElement.setNativeProps(nativeProps);
+        if (this._buttonElement) {
+            this._buttonElement.setNativeProps(nativeProps);
         } else {
             super.setNativeProps(nativeProps);
         }
@@ -218,11 +211,11 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
     }
 
     updateNativeTabIndex(): void {
-        if (this._focusableElement) {
+        if (this._buttonElement) {
             let tabIndex: number | undefined = this.getTabIndex();
             let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
 
-            this._focusableElement.setNativeProps({
+            this._buttonElement.setNativeProps({
                 tabIndex: tabIndex,
                 isTabStop: windowsTabFocusable
             });

@@ -32,7 +32,7 @@ interface RootViewPropsWithMainViewType extends BaseRootViewProps {
 }
 
 interface RootViewState {
-    mainView?: RN.ReactElement<any>;
+    mainView?: any;
     announcementText?: string;
 }
 
@@ -120,8 +120,9 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
         let content = (
             <RN.Animated.View style={ _styles.rootViewStyle }>
                 <RN.View 
-                    style={ _styles.rootViewStyle }
-                    importantForAccessibility={ importantForAccessibility }>
+                    style={ _styles.rootViewStyle as RN.StyleProp<RN.ViewStyle> }
+                    importantForAccessibility={ importantForAccessibility }
+                >
                     { this.state.mainView }
                 </RN.View>
                 { modalLayerView }
@@ -136,7 +137,7 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
     protected _renderAnnouncerView(): JSX.Element {
         return (
             <RN.View
-                style={ _styles.liveRegionContainer }
+                style={ _styles.liveRegionContainer as RN.StyleProp<RN.ViewStyle> }
                 accessibilityLabel={ this.state.announcementText }
                 accessibilityLiveRegion={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
             />

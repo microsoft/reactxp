@@ -10,12 +10,15 @@
 
 import _ = require('./lodashMini');
 import React = require('react');
+import RN = require('react-native');
 
 import { AccessibilityUtil as CommonAccessibilityUtil, AccessibilityPlatformUtil } from '../common/AccessibilityUtil';
 
 import Types = require('../common/Types');
 
-const liveRegionMap: { [key: string]: string } = {
+type AccessibilityLiveRegionValue = 'none' | 'polite' | 'assertive';
+
+const liveRegionMap: { [key: string]: AccessibilityLiveRegionValue } = {
     [Types.AccessibilityLiveRegion.None]: 'none',
     [Types.AccessibilityLiveRegion.Assertive]: 'assertive',
     [Types.AccessibilityLiveRegion.Polite]: 'polite'
@@ -45,8 +48,10 @@ const traitsMap: { [key: string]: string } = {
     [Types.AccessibilityTrait.ListItem]: 'listItem'
 };
 
+type AccessibilityComponentTypeValue = 'none' | 'button' | 'radiobutton_checked' | 'radiobutton_unchecked';
+
 // Android supported map.
-const componentTypeMap: { [key: string]: string } = {
+const componentTypeMap: { [key: string]: AccessibilityComponentTypeValue } = {
     [Types.AccessibilityTrait.None]: 'none',
     [Types.AccessibilityTrait.Tab]: 'none', // NOTE: Tab component type isn't supported on Android. Setting it to none, allows us to give
                                             // it a custom label. This needs to be done for any custom role, which needs to be supported
@@ -69,7 +74,7 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
     // We use the override traits if they are present, else use the default trait.
     // If ensureDefaultTrait is true, ensure the return result contains the defaultTrait.
     accessibilityTraitToString(overrideTraits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined,
-        defaultTrait?: Types.AccessibilityTrait, ensureDefaultTrait?: boolean): string[] {
+        defaultTrait?: Types.AccessibilityTrait, ensureDefaultTrait?: boolean): RN.AccessibilityTraits[] {
         // Check if there are valid override traits. Use them or else fallback to default traits.
         if (!overrideTraits && !defaultTrait) {
             return [];
@@ -85,13 +90,13 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
         } else {
             traits = _.isArray(overrideTraits) ? overrideTraits : [overrideTraits || defaultTrait];
         }
-        return _.compact(_.map(traits, t  => t ? traitsMap[t] : undefined));
+        return _.compact(_.map(traits, t  => t ? traitsMap[t] : undefined)) as RN.AccessibilityTraits[];
     }
 
     // Converts an AccessibilityTrait to an accessibilityComponentType string, but the returned value is only needed for Android. Other
     // platforms ignore it.
     accessibilityComponentTypeToString(overrideTraits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined,
-        defaultTrait?: Types.AccessibilityTrait): string|undefined {
+        defaultTrait?: Types.AccessibilityTrait): AccessibilityComponentTypeValue|undefined {
         // Check if there are valid override traits. Use them or else fallback to default traits.
         // Max enum value in this array is the componentType for android.
         if (!overrideTraits && !defaultTrait) {
@@ -104,7 +109,7 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
     }
 
     // Converts an AccessibilityLiveRegion to a string, but the return value is only needed for Android. Other platforms ignore it.
-    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion|undefined): string|undefined {
+    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion|undefined): AccessibilityLiveRegionValue|undefined {
         if (liveRegion && liveRegionMap[liveRegion]) {
             return liveRegionMap[liveRegion];
         }

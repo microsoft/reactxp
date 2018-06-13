@@ -26,14 +26,14 @@ const _styles = RN.StyleSheet.create({
     }
   });
 
-type Handler = (e: RN.SyntheticEvent<any>) => void;
+type Handler = (e: RN.NativeSyntheticEvent<any>) => void;
 
 function _renderTopView(
     content: JSX.Element, onKeyDown: Handler, onKeyDownCapture: Handler, onKeyUp: Handler, onTouchStartCapture: Handler): JSX.Element {
     return (
         <RNW.RootInputViewWindows
             onTouchStartCapture={ onTouchStartCapture }
-            onAccelKeyDown={ (e: RN.SyntheticEvent<any>) => {onKeyDownCapture(e); onKeyDown(e); } }
+            onAccelKeyDown={ (e: RN.NativeSyntheticEvent<any>) => {onKeyDownCapture(e); onKeyDown(e); } }
             onAccelKeyUp={ onKeyUp }
             style={ _styles.appWrapperStyle }
         >

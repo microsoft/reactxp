@@ -478,7 +478,7 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     delayLongPress?: number;
 
     autoFocus?: boolean; // The component is a candidate for being autofocused.
-    onAccessibilityTapIOS?: Function; // iOS-only prop, call when a button is double tapped in accessibility mode
+    onAccessibilityTapIOS?: (e: SyntheticEvent) => void; // iOS-only prop, call when a button is double tapped in accessibility mode
     onContextMenu?: (e: MouseEvent) => void;
     onPress?: (e: SyntheticEvent) => void;
     onPressIn?: (e: SyntheticEvent) => void;
@@ -527,8 +527,6 @@ export interface ImagePropsShared extends CommonProps {
 
     onLoad?: (size: Dimensions) => void;
     onError?: (err?: Error) => void;
-
-    shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
 }
 
 export interface ImageProps extends ImagePropsShared {
@@ -1242,7 +1240,7 @@ export interface WheelEvent extends SyntheticEvent {
     deltaZ: number;
 }
 
-export interface WebViewShouldStartLoadEvent extends SyntheticEvent {
+export interface WebViewShouldStartLoadEvent {
     url: string;
 }
 

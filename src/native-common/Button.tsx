@@ -82,16 +82,17 @@ export class Button extends ButtonBase {
     touchableGetInitialState!: () => RN.Touchable.State;
     touchableHandleStartShouldSetResponder!: () => boolean;
     touchableHandleResponderTerminationRequest!: () => boolean;
-    touchableHandleResponderGrant!: (e: React.SyntheticEvent<any>) => void;
-    touchableHandleResponderMove!: (e: React.SyntheticEvent<any>) => void;
-    touchableHandleResponderRelease!: (e: React.SyntheticEvent<any>) => void;
-    touchableHandleResponderTerminate!: (e: React.SyntheticEvent<any>) => void;
+    touchableHandleResponderGrant!: (e: RN.GestureResponderEvent) => void;
+    touchableHandleResponderMove!: (e: RN.GestureResponderEvent) => void;
+    touchableHandleResponderRelease!: (e: RN.GestureResponderEvent) => void;
+    touchableHandleResponderTerminate!: (e: RN.GestureResponderEvent) => void;
 
-    private _isMounted = false;
+    protected _isMounted = false;
     protected _isMouseOver = false;
     protected _isHoverStarted = false;
+    protected _buttonElement: any = null;
+
     private _hideTimeout: number|undefined;
-    private _buttonElement: RN.Animated.View|null = null;
     private _defaultOpacityValue: number|undefined;
     private _opacityAnimatedValue: RN.Animated.Value|undefined;
     private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet|undefined;
@@ -114,11 +115,9 @@ export class Button extends ButtonBase {
         }
     }
 
-    protected _render(internalProps: RN.ViewProps): JSX.Element {
+    protected _render(internalProps: RN.ViewProps, onMount: (btn: any) => void): JSX.Element {
         return (
-            <RN.Animated.View
-                { ...internalProps }
-             >
+            <RN.Animated.View { ...internalProps } ref={ onMount }>
                 { this.props.children }
             </RN.Animated.View>
         );
@@ -142,10 +141,13 @@ export class Button extends ButtonBase {
             }, false);
         }
 
-        let internalProps: RN.ViewProps = {
-            ref: this._onButtonRef,
+        let extendedProps: RN.ExtendedViewProps = {
+            onAccessibilityTapIOS: this.props.onAccessibilityTapIOS,
+            onMouseEnter: this._onMouseEnter,
+            onMouseLeave: this._onMouseLeave,
+            tooltip: this.props.title,
             style: Styles.combine([_styles.defaultButton, this.props.style, opacityStyle,
-                disabledStyle]),
+                disabledStyle]) as RN.StyleProp<RN.ViewStyle>,
             accessibilityLabel: this.props.accessibilityLabel || this.props.title,
             accessibilityTraits: accessibilityTrait,
             accessibilityComponentType: accessibilityComponentType,
@@ -156,14 +158,10 @@ export class Button extends ButtonBase {
             onResponderMove: this.touchableHandleResponderMove,
             onResponderRelease: this.touchableHandleResponderRelease,
             onResponderTerminate: this.touchableHandleResponderTerminate,
-            shouldRasterizeIOS: this.props.shouldRasterizeIOS,
-            onAccessibilityTapIOS: this.props.onAccessibilityTapIOS,
-            onMouseEnter: this._onMouseEnter,
-            onMouseLeave: this._onMouseLeave,
-            tooltip: this.props.title
+            shouldRasterizeIOS: this.props.shouldRasterizeIOS
         };
 
-        return this._render(internalProps);
+        return this._render(extendedProps, this._onMount);
     }
 
     componentDidMount() {
@@ -295,7 +293,7 @@ export class Button extends ButtonBase {
         }
     }
 
-    private _onButtonRef = (btn: RN.Animated.View|null): void => {
+    private _onMount = (btn: any): void => {
         this._buttonElement = btn;
     }
 
@@ -314,7 +312,7 @@ export class Button extends ButtonBase {
     private _getDefaultOpacityValue(props: Types.ButtonProps): number {
         let flattenedStyles: { [key: string]: any }|undefined;
         if (props && props.style) {
-            flattenedStyles = RN.StyleSheet.flatten(props.style);
+            flattenedStyles = RN.StyleSheet.flatten(props.style as RN.StyleProp<RN.ViewProps>);
         }
 
         return flattenedStyles && (flattenedStyles as Types.ButtonStyle).opacity || 1;

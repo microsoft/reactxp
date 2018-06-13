@@ -164,7 +164,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         // On Windows a view with importantForAccessibility='Yes' or
         // non-empty accessibilityLabel and importantForAccessibility='Auto' (or unspecified) will hide its children.
         // However, a view that is also a group or a dialog should keep children visible to UI Automation.
-        // The following condition checks and sets RNW importantForAccessibility property
+        // The following condition checks and sets RN importantForAccessibility property
         // to 'yes-dont-hide-descendants' to keep view children visible.
         const hasGroup = this.hasTrait(Types.AccessibilityTrait.Group, props.accessibilityTraits);
         const hasDialog = this.hasTrait(Types.AccessibilityTrait.Dialog, props.accessibilityTraits);
@@ -412,7 +412,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         // by FocusManager
         this.setNativeProps({
             tabNavigation: restricted !== RestrictFocusType.Unrestricted ? 'cycle' : 'local'
-        });
+        } as RN.ViewProps);
     }
 
     public setNativeProps(nativeProps: RN.ViewProps) {
