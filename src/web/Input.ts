@@ -11,11 +11,6 @@ import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export class Input extends RX.Input {
-    constructor() {
-        super();
-
-    }
-
     dispatchKeyDown(e: Types.KeyboardEvent) {
         this.keyDownEvent.fire(e);
     }

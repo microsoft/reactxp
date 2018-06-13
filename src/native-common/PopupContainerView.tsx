@@ -351,7 +351,8 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
     }
 
     private _recalcInnerPosition(anchorRect: ClientRect, newState: PopupContainerViewState) {
-        // For inner popups we only accept the first position of the priorities since there should always be room for the bubble.
+        // For inner popups we only accept the first position of the priorities since there
+        // should always be room for the bubble.
         const pos = this.props.popupOptions.positionPriorities!!![0];
 
         switch (pos) {

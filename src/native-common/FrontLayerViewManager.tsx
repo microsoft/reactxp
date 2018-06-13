@@ -181,8 +181,8 @@ export class FrontLayerViewManager {
 
     public getPopupLayerView(rootViewId?: string | null): JSX.Element | null {
         if (rootViewId === null) {
-            // The Popup layer is only supported on root views that have set an id, or
-            // the default root view (which has an undefined id)
+            // The Popup layer is supported only on root views that have set an id and
+            // the default root view (which has an undefined id).
             return null;
         }
 
@@ -196,7 +196,7 @@ export class FrontLayerViewManager {
         if (overlayContext) {
             popupContainerViews.push(this._renderPopup(overlayContext, false));
         }
-        this._cachedPopups.map(context => popupContainerViews.push(this._renderPopup(context, true)));
+        this._cachedPopups.forEach(context => popupContainerViews.push(this._renderPopup(context, true)));
 
         if (popupContainerViews.length > 0) {
             return (
@@ -205,8 +205,7 @@ export class FrontLayerViewManager {
                         onPressOut={ this._onBackgroundPressed }
                         importantForAccessibility={ 'no' }
                     >
-                        <RN.View
-                            style={ _styles.fullScreenView as RN.StyleProp<RN.ViewStyle>}>
+                        <RN.View style={ _styles.fullScreenView as RN.StyleProp<RN.ViewStyle>}>
                             { popupContainerViews }
                         </RN.View>
                     </RN.TouchableWithoutFeedback>

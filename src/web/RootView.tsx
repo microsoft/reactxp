@@ -277,7 +277,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             optionalPopups.push(this._renderPopup(this.props.activePopup, false));
         }
         if (this.props.cachedPopup) {
-            this.props.cachedPopup.map(popup => optionalPopups.push(this._renderPopup(popup, true)));
+            this.props.cachedPopup.forEach(popup => optionalPopups.push(this._renderPopup(popup, true)));
         }
 
         let optionalModal: JSX.Element|null = null;
@@ -322,7 +322,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             el = el.parentElement || undefined;
         }
 
-        if (!clickInPopup && e.button !== _rightClickButtonCode ) {
+        if (!clickInPopup && e.button !== _rightClickButtonCode) {
             _.defer(() => {
                 if (this.props.activePopup) {
                     const anchorReference = this.props.activePopup.popupOptions.getAnchor();
