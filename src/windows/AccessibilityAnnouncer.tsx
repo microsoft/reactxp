@@ -67,8 +67,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
 
     private _onViewRef = (view: RN.View|null): void => {
         this._viewElement = view;
-        if (view !== null)
-        {
+        if (view !== null) {
             this._tryDequeueAndAnnounce();
         }
     }
@@ -81,8 +80,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
 
     private _dequeueAndPostAnnouncement = () => {
         if (this._announcementQueue.length > 0) {
-            if (this._viewElement)
-            {
+            if (this._viewElement) {
                 const announcement = this._announcementQueue.shift();
                 // This hack was copied from android/Accessibility.ts in order to not increase variety of hacks in codebase.
                 //

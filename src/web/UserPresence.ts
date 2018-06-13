@@ -18,12 +18,13 @@ if (typeof(document) !== 'undefined') {
 
 export class UserPresence extends RX.UserPresence {
     private _isPresent: boolean;
+    private _isAppFocused: boolean;
 
     constructor() {
         super();
         // Handle test environment where document is not defined.
         if (typeof(document) !== 'undefined') {
-            this._isPresent = ifvisible.now();
+            this._isPresent = this._isAppFocused = ifvisible.now();
 
             ifvisible.on('wakeup', this._handleWakeup.bind(this));
             ifvisible.on('idle', this._handleIdle.bind(this));
@@ -31,8 +32,10 @@ export class UserPresence extends RX.UserPresence {
             ifvisible.on('blur', this._handleBlur.bind(this));
 
             window.addEventListener('blur', this._handleWindowBlur.bind(this));
+            window.addEventListener('focus', this._handleFocus.bind(this));
         } else {
             this._isPresent = false;
+            this._isAppFocused = false;
         }
     }
 
@@ -54,7 +57,9 @@ export class UserPresence extends RX.UserPresence {
     }
 
     private _handleWakeup(): void {
-        this._setUserPresent(true);
+        if (this._isAppFocused) {
+            this._setUserPresent(true);
+        }
     }
 
     private _handleIdle(): void {
@@ -62,14 +67,17 @@ export class UserPresence extends RX.UserPresence {
     }
 
     private _handleFocus(): void {
+        this._isAppFocused = true;        
         this._setUserPresent(true);
     }
 
     private _handleBlur(): void {
+        this._isAppFocused = false;        
         this._setUserPresent(false);
     }
 
     private _handleWindowBlur(): void {
+        this._isAppFocused = false;        
         ifvisible.idle();
     }
 }
