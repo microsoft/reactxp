@@ -217,10 +217,7 @@ export class FrontLayerViewManager {
     }
 
     private _onBackgroundPressed = (e: RN.GestureResponderEvent) => {
-        let synthEvent: RN.ExtendedNativeSyntheticEvent = e as RN.ExtendedNativeSyntheticEvent;
-        if (synthEvent.persist) {
-            synthEvent.persist();
-        }
+        e.persist();
 
         const activePopupContext = this._getActiveOverlay();
         if (!(activePopupContext instanceof PopupStackContext)) {
