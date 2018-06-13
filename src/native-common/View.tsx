@@ -19,6 +19,7 @@ import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 
 import Animated from './Animated';
 import EventHelpers from './utils/EventHelpers';
+import Input from './Input';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import UserInterface from './UserInterface';
@@ -478,6 +479,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
                 this.props.onPress(EventHelpers.toMouseEvent(e));
             }
         }
+        Input.dispatchPointerUpEvent(EventHelpers.toMouseEvent(e));
     }
 
     touchableHandleLongPress(e: Types.SyntheticEvent): void {

@@ -10,6 +10,8 @@
 import React = require('react');
 import RN = require('react-native');
 
+import EventHelpers from './utils/EventHelpers';
+import Input from './Input';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 import ViewBase from './ViewBase';
@@ -64,6 +66,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
             ref: this._setNativeView,
             style: this.props.style,
             onScroll: scrollCallback,
+            onResponderRelease: this._onResponderRelease,
             automaticallyAdjustContentInsets: false,
             showsHorizontalScrollIndicator: this.props.showsHorizontalScrollIndicator,
             showsVerticalScrollIndicator: this.props.showsVerticalScrollIndicator,
@@ -97,6 +100,10 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
         if (this.props.onScroll) {
             this.props.onScroll(this._scrollTop, this._scrollLeft);
         }
+    }
+
+    private _onResponderRelease = (e: Types.SyntheticEvent) => {
+        Input.dispatchPointerUpEvent(EventHelpers.toMouseEvent(e));
     }
 
     setScrollTop(scrollTop: number, animate?: boolean): void {

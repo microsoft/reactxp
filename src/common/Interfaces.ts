@@ -203,6 +203,7 @@ export abstract class Input {
     backButtonEvent = new SubscribableEvent<() => boolean>(true);
     keyDownEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>(true);
     keyUpEvent = new SubscribableEvent<(e: Types.KeyboardEvent) => boolean>(true);
+    pointerUpEvent = new SubscribableEvent<(e: Types.MouseEvent) => boolean>(true);
 }
 
 export interface ScrollViewConstructor {

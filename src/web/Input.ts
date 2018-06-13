@@ -25,6 +25,12 @@ export class Input extends RX.Input {
             e.stopPropagation();
         }
     }
+
+    dispatchPointerUpEvent(e: Types.MouseEvent) {
+        if (this.pointerUpEvent.fire(e)) {
+            e.stopPropagation();
+        }
+    }
 }
 
 export default new Input();

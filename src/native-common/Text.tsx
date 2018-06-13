@@ -15,6 +15,7 @@ import RN = require('react-native');
 import AccessibilityUtil from './AccessibilityUtil';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
+import Input from './Input';
 import Styles from './Styles';
 import Types = require('../common/Types');
 
@@ -100,6 +101,7 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
                 this.props.onPress(EventHelpers.toMouseEvent(e));
             }
         }
+        Input.dispatchPointerUpEvent(EventHelpers.toMouseEvent(e));
     }
 
     getChildContext() {

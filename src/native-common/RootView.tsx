@@ -16,7 +16,9 @@ import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
 import App from './App';
 import AppConfig from '../common/AppConfig';
+import EventHelpers from './utils/EventHelpers';
 import { default as FrontLayerViewManager } from './FrontLayerViewManager';
+import Input from './Input';
 import MainViewStore from './MainViewStore';
 import Styles from './Styles';
 import Types = require('../common/Types');
@@ -118,16 +120,18 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
             undefined;  // default
 
         let content = (
-            <RN.Animated.View style={ _styles.rootViewStyle }>
-                <RN.View 
-                    style={ _styles.rootViewStyle }
-                    importantForAccessibility={ importantForAccessibility }>
-                    { this.state.mainView }
-                </RN.View>
-                { modalLayerView }
-                { popupLayerView }
-                { announcerView }
-            </RN.Animated.View>
+            <RN.TouchableWithoutFeedback onPressOut={ this._onBaseRootViewPressOut }>
+                <RN.Animated.View style={ _styles.rootViewStyle }>
+                    <RN.View 
+                        style={ _styles.rootViewStyle }
+                        importantForAccessibility={ importantForAccessibility }>
+                        { this.state.mainView }
+                    </RN.View>
+                    { modalLayerView }
+                    { popupLayerView }
+                    { announcerView }
+                </RN.Animated.View>
+            </RN.TouchableWithoutFeedback>
         );
 
         return this.renderTopView(content);
@@ -145,6 +149,11 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
 
     renderTopView(content: JSX.Element): JSX.Element {
         return  content;
+    }
+
+    private _onBaseRootViewPressOut = (e: Types.SyntheticEvent) => {
+        const mouseEvent = EventHelpers.toMouseEvent(e);
+        Input.dispatchPointerUpEvent(mouseEvent);
     }
 }
 

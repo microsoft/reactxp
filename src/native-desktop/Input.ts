@@ -14,6 +14,7 @@ import { Input as InputCommon } from '../native-common/Input';
 export class Input extends InputCommon {
     constructor() {
         super();
+        InputCommon.nativeCommonPointerUpEvent.subscribe(e => this.dispatchPointerUpEvent(e));
     }
 
     dispatchKeyDown(e: Types.KeyboardEvent) {
@@ -22,6 +23,12 @@ export class Input extends InputCommon {
 
     dispatchKeyUp(e: Types.KeyboardEvent) {
         if (this.keyUpEvent.fire(e)) {
+            e.stopPropagation();
+        }
+    }
+
+    dispatchPointerUpEvent(e: Types.MouseEvent) {
+        if (this.pointerUpEvent.fire(e)) {
             e.stopPropagation();
         }
     }

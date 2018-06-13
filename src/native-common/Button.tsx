@@ -17,6 +17,7 @@ import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import Animated from './Animated';
 import AppConfig from '../common/AppConfig';
 import EventHelpers from './utils/EventHelpers';
+import Input from './Input';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { Button as ButtonBase } from '../common/Interfaces';
@@ -250,6 +251,7 @@ export class Button extends ButtonBase {
                 }
             }
         }
+        Input.dispatchPointerUpEvent(EventHelpers.toMouseEvent(e));
     }
 
     touchableHandleLongPress = (e: Types.SyntheticEvent) => {
