@@ -21,15 +21,15 @@
         "types" : ["lodash", "react", "react-dom"]
     },
 
-    "filesGlob": [
-        "src/**/*{ts,tsx}"
+    "include": [
+        "src/**/*"
     ],
 
     "exclude": [
         "dist",
+        "extensions",
         "node_modules",
         "samples",
-        "website",
-        "extensions"
+        "website"
     ]
 }

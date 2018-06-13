@@ -44,16 +44,14 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         // Retrieve focus restriction state and subscribe for further changes.
         // This is the earliest point this can be done since Focus Manager uses a pre-"componentDidMount" hook
         // to connect to component instances
-        this.setState({
-            isRestrictedOrLimited: FocusManager.isComponentFocusRestrictedOrLimited(this)
-        });
+        this._restrictedOrLimitedCallback(FocusManager.isComponentFocusRestrictedOrLimited(this));
         FocusManager.subscribe(this, this._restrictedOrLimitedCallback);
     }
 
     componentWillUnmount() {
         // This is for symmetry, but the callbacks have already been deleted by FocusManager since its
         // hook executes first
-        FocusManager.subscribe(this, this._restrictedOrLimitedCallback);
+        FocusManager.unsubscribe(this, this._restrictedOrLimitedCallback);
     }
 
     private _restrictedOrLimitedCallback = (restrictedOrLimited: boolean): void => {
@@ -176,12 +174,8 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     }
 
     private _isAvailableToFocus(): boolean {
-        if (this._focusableElement && this._focusableElement.focus) {
-            return true;
-        } else if (this._nativeHyperlinkElement && this._nativeHyperlinkElement.focus) {
-            return true;
-        }
-        return false;
+        return !!((this._focusableElement && this._focusableElement.focus) ||
+         (this._nativeHyperlinkElement && this._nativeHyperlinkElement.focus));
     }
 
     private _onKeyDown = (e: React.SyntheticEvent<any>): void => {

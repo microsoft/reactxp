@@ -16,6 +16,19 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.3.0-rc.0 of reactxp
+_Released 10 Jun 2018_
+Fixed a few bugs in keyboard focus handling for Windows UWP.
+Web implementation of RX.Image now uses credentials for image fetches if origin header is specified.
+Added support for text shadows in RX.Text (shadowColor, shadowOffset, shadowRadius style attributes).
+Fixed keyboard navigation logic for multi-root-view case.
+Wired up tooltips in web implementation of RX.Button, RX.Image, RX.Link, and RX.View (title prop).
+Extended RX.UserInterface.measureWindow to support multi-root-view case. It now takes an optional rootViewId parameter.
+Added drag and drop handler support for Mac OS.
+Added new static API RX.Image.getMetadata that returns dimensions of an image.
+Avoided the use of the deprecated RN.NetInfo "change" event in favor of "connectionChange" so RN doesn't emit warning.
+Added back parameter to onBlur event handler that was incorrectly removed in version 1.2.x.
+
 #### Version 1.2.1 of reactxp
 _Released 24 May 2018_
 Wired up onPaste handler for Windows implementation.

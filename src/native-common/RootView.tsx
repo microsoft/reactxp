@@ -111,35 +111,40 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
     render() {
         const modalLayerView = FrontLayerViewManager.getModalLayerView(this._rootViewId);
         const popupLayerView = FrontLayerViewManager.getPopupLayerView(this._rootViewId);
+        const announcerView = this._renderAnnouncerView();
 
         // When showing a modal/popup we want to hide the mainView shown behind from an accessibility
         // standpoint to ensure that it won't get the focus and the screen reader's attention.
         const importantForAccessibility   =  (modalLayerView  ||  popupLayerView)  ? 
             AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.NoHideDescendants)   :
             undefined;  // default
-        const accessibilityLiveRegion = AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite);
 
         let content = (
             <RN.TouchableWithoutFeedback onPressOut={ this._onBaseRootViewPressOut }>
                 <RN.Animated.View style={ _styles.rootViewStyle }>
                     <RN.View 
-                        style={ _styles.rootViewStyle }
-                        importantForAccessibility={ importantForAccessibility }
-                    >
+                        style={ _styles.rootViewStyle }
+                        importantForAccessibility={ importantForAccessibility }>
                         { this.state.mainView }
                     </RN.View>
                     { modalLayerView }
                     { popupLayerView }
-                    <RN.View
-                        style={ _styles.liveRegionContainer }
-                        accessibilityLabel={ this.state.announcementText }
-                        accessibilityLiveRegion={ accessibilityLiveRegion }
-                    />
+                    { announcerView }
                 </RN.Animated.View>
             </RN.TouchableWithoutFeedback>
         );
 
         return this.renderTopView(content);
+    }
+
+    protected _renderAnnouncerView(): JSX.Element {
+        return (
+            <RN.View
+                style={ _styles.liveRegionContainer }
+                accessibilityLabel={ this.state.announcementText }
+                accessibilityLiveRegion={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
+            />
+        );
     }
 
     renderTopView(content: JSX.Element): JSX.Element {

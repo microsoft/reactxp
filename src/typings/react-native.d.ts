@@ -378,7 +378,7 @@ declare module 'react-native' {
         editable?: boolean;
         keyboardType?: string; // enum("default", 'numeric', 'email-address', "ascii-capable", 'numbers-and-punctuation', 'url', 'number-pad', 'phone-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search')
         multiline?: boolean;
-        onBlur?: (() => void);
+        onBlur?: ((e: React.FocusEvent<TextInput>) => void);
         onKeyPress?: (e: SyntheticEvent<TextInput>) => void;
         onPaste?: (e: React.ClipboardEvent<TextInput>) => void;
         onChange?: Function;
@@ -510,6 +510,7 @@ declare module 'react-native' {
 
     class Image extends ReactNativeBaseComponent<ImageProperties, {}> {
         static prefetch(url: string): Promise<boolean>;
+        static getSize(uri: string, success: (width: number, height: number) => void, failure: (error: any) => void): any;
     }
     class ActivityIndicator extends ReactNativeBaseComponent<ActivityIndicatorProps, {}> { }
     class Text extends ReactNativeBaseComponent<TextProps, {}> { }

@@ -235,14 +235,16 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
                     onSubmitEditing={ this._onSubmitEditingTest6 }
                     multiline={ true }
                 />
-                <RX.ScrollView style={ _styles.eventHistoryScrollView }>
-                    <RX.Text style={ _styles.eventHistoryText }>
-                        { this.state.test6EventHistory.length ?
-                            this.state.test6EventHistory.join('\n') :
-                            'Event history will appear here'
-                        }
-                    </RX.Text>
-                </RX.ScrollView>
+                <RX.View style={ _styles.eventHistoryScrollView }>
+                    <RX.ScrollView>
+                        <RX.Text style={ _styles.eventHistoryText }>
+                            { this.state.test6EventHistory.length ?
+                                this.state.test6EventHistory.join('\n') :
+                                'Event history will appear here'
+                            }
+                        </RX.Text>
+                    </RX.ScrollView>
+                </RX.View>
 
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation7' }>
                     <RX.Text style={ _styles.explainText }>
@@ -288,12 +290,16 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
             ', top=' + newScrollTop + ')');
     }
 
-    private _onBlurTest6 = () => {
-        this._appendHistoryTest6('onBlur');
+    private _onBlurTest6 = (e: RX.Types.FocusEvent) => {
+        this._appendHistoryTest6(`onBlur: ${this._focusEventToString(e)}`);
     }
 
-    private _onFocusTest6 = () => {
-        this._appendHistoryTest6('onFocus');
+    private _onFocusTest6 = (e: RX.Types.FocusEvent) => {
+        this._appendHistoryTest6(`onFocus: ${this._focusEventToString(e)}`);
+    }
+
+    private _focusEventToString = ({ bubbles, cancelable, defaultPrevented, timeStamp, nativeEvent }: RX.Types.FocusEvent) => {
+        return JSON.stringify({ bubbles, cancelable, defaultPrevented, timeStamp, nativeEvent });
     }
 
     private _onSelectionChangeTest6 = (start: number, end: number) => {

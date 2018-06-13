@@ -10,8 +10,8 @@
         "outDir": "dist/"
     },
 
-    "filesGlob": [
-        "src/**/*{ts,tsx}"
+    "include": [
+        "src/**/*"
     ],
 
     "exclude": [

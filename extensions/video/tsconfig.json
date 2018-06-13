@@ -15,8 +15,8 @@
         "types" : ["lodash", "react", "react-dom"]
     },
 
-    "filesGlob": [
-        "src/**/*{ts,tsx}"
+    "include": [
+        "src/**/*"
     ],
 
     "exclude": [
