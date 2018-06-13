@@ -6,7 +6,12 @@
 */
 
 import RN = require('react-native');
-import { Accessibility as NativeAccessibility, default as parentInstance } from '../native-common/Accessibility';
+// Be aware that we import class and extend it here, but the default export of native-common/Accessibility
+// is an instance of the class we import here. So any state in the default export from native-common will be in
+// a different instance than default export of this windows/Accessibility. For example, susbscribing to
+// newAnnouncementReadyEvent on this default export instance and calling announceForAccessibility on 
+// native-common default export will not raise this instance event.
+import { Accessibility as NativeAccessibility } from '../native-common/Accessibility';
 
 export class Accessibility extends NativeAccessibility {
     private _isHighContrast = RN.AccessibilityInfo.initialHighContrast || false;
@@ -29,19 +34,6 @@ export class Accessibility extends NativeAccessibility {
     isHighContrastEnabled(): boolean {
         return this._isHighContrast;
     }
-
-    announceForAccessibility(announcement: string): void {
-        // We cannot just call super.announceForAccessibility here, because RootView subscribes on this
-        // parent class singleton instance. Calling Accessibility.announceForAccessibility from the consumer app
-        // will then create a different event and the announcements won't work. Instead, we just call the
-        // instance method directly.
-        //
-        // This dirty hack was copied from android/Accessibility.ts but it's temporary.
-        // TODO: Decide on which pattern to use for "extending"/"inheriting" classes while not
-        // having problem with duplicate state like here. And then replace this dirty hack (and all the other 
-        // bugs in existing code - this class and others) with proper pattern.
-        parentInstance.announceForAccessibility(announcement);
-    }    
 }
 
 export default new Accessibility();

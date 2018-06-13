@@ -13,6 +13,7 @@ import RNW = require('react-native-windows');
 
 import { RootView as RootViewBase, RootViewUsingProps as RootViewUsingPropsBase,
     BaseRootViewProps, RootViewPropsWithMainViewType, RootViewState, BaseRootView } from '../native-desktop/RootView';
+import { AccessibilityAnnouncer } from './AccessibilityAnnouncer';
 
 //
 // We use a custom RNW provided component to capture key input before being dispatched to native controls.
@@ -55,6 +56,12 @@ class RootViewUsingStore extends RootViewBase {
             return super.renderTopView(content);
         }
     }
+
+    protected _renderAnnouncerView(): JSX.Element {
+        return (
+            <AccessibilityAnnouncer />
+        );
+    }
 }
 
 class RootViewUsingProps extends RootViewUsingPropsBase {
@@ -70,6 +77,12 @@ class RootViewUsingProps extends RootViewUsingPropsBase {
         } else {
             return super.renderTopView(content);
         }
+    }
+
+    protected _renderAnnouncerView(): JSX.Element {
+        return (
+            <AccessibilityAnnouncer />
+        );
     }
 }
 
