@@ -740,7 +740,19 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         });
 
         if (!_.isEqual(newState, this.state)) {
-            this.setState(newState);
+            // Is this the first time we're positioning this popup?
+            // If so, we'll call the "onDisplay" callback once we
+            // render it in this position.
+            let firstTimePositioning = this.state.isMeasuringPopup;
+
+            this.setState(newState, () => {
+                // Do we need to call the onDisplay callback?
+                if (firstTimePositioning) {
+                    if (this.props.activePopup && this.props.activePopup.popupOptions && this.props.activePopup.popupOptions.onDisplay) {
+                        this.props.activePopup.popupOptions.onDisplay();
+                    }
+                }
+            });
         }
     }
 
@@ -777,7 +789,19 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         newState.anchorPosition = pos;
 
         if (!_.isEqual(newState, this.state)) {
-            this.setState(newState);
+            // Is this the first time we're positioning this popup?
+            // If so, we'll call the "onDisplay" callback once we
+            // render it in this position.
+            let firstTimePositioning = this.state.isMeasuringPopup;
+
+            this.setState(newState, () => {
+                // Do we need to call the onDisplay callback?
+                if (firstTimePositioning) {
+                    if (this.props.activePopup && this.props.activePopup.popupOptions && this.props.activePopup.popupOptions.onDisplay) {
+                        this.props.activePopup.popupOptions.onDisplay();
+                    }
+                }
+            });
         }
     }
 }

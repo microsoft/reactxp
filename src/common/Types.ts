@@ -1007,6 +1007,12 @@ export interface PopupOptions {
     // Called when the popup is dismissed.
     onDismiss?: () => void;
 
+    // Called when popup is displayed. Note that this may not be the same as when it's mounted because
+    // the internal implementation may need to mount the popup contents offscreen to measure them. It
+    // will also not be the same as when it's mounted for cacheable popups. This callback can be used,
+    // for example, to trigger animations.
+    onDisplay?: () => void;
+
     // Prioritized order of positions. Popup is positioned
     // relative to the anchor such that it remains on screen.
     // Default is ['bottom', 'right', 'top', 'left'].
@@ -1031,6 +1037,11 @@ export interface PopupOptions {
     // outside of it. It will still close if the anchor is unmounted or if
     // dismiss is explicitly called.
     preventDismissOnPress?: boolean;
+
+    // Prevents clicks and taps outside of the popup from being swallowed when the popup is
+    // dismissed. This allows users to interact with other elements on the screen. By default,
+    // clicks and taps outside of the popup are swallowed.
+    allowBackgroundPress?: boolean;
 
     // The popup may be left in the DOM after it's dismissed. This is a performance optimization to
     // make the popup appear faster when it's shown again, intended for popups that tend to be shown

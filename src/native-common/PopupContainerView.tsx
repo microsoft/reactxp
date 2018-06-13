@@ -345,7 +345,19 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
             });
 
             if (!_.isEqual(newState, this.state)) {
-                this.setState(newState);
+                // Is this the first time we're positioning this popup?
+                // If so, we'll call the "onDisplay" callback once we
+                // render it in this position.
+                let firstTimePositioning = this.state.isMeasuringPopup;
+
+                this.setState(newState, () => {
+                    // Do we need to call the onDisplay callback?
+                    if (firstTimePositioning) {
+                        if (this.props.popupOptions && this.props.popupOptions.onDisplay) {
+                            this.props.popupOptions.onDisplay();
+                        }
+                    }
+                });
             }
         }
     }
@@ -384,7 +396,19 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
         newState.anchorPosition = pos;
 
         if (!_.isEqual(newState, this.state)) {
-            this.setState(newState);
+            // Is this the first time we're positioning this popup?
+            // If so, we'll call the "onDisplay" callback once we
+            // render it in this position.
+            let firstTimePositioning = this.state.isMeasuringPopup;
+
+            this.setState(newState, () => {
+                // Do we need to call the onDisplay callback?
+                if (firstTimePositioning) {
+                    if (this.props.popupOptions && this.props.popupOptions.onDisplay) {
+                        this.props.popupOptions.onDisplay();
+                    }
+                }
+            });
         }
     }
 
