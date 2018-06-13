@@ -57,6 +57,10 @@ export class App extends RX.App {
     protected getRootViewUsingPropsFactory(): RN.ComponentProvider {
         return () => RootViewUsingProps;
     }
+
+    isAppFocused() {
+        return this.getActivationState() === Types.AppActivationState.Active;
+    }
 }
 
 export default new App();

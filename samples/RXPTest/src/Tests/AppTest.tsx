@@ -40,21 +40,28 @@ interface AppState {
     activationState?: RX.Types.AppActivationState;
     activationHistory?: string;
 
+    focusState?: boolean;
+    focusHistory?: string;
+
     memoryWarningCount?: number;
 }
 
 class AppView extends RX.Component<RX.CommonProps, AppState> {
     private _appActivationEvent: RX.Types.SubscriptionToken;
+    private _appFocusChangedEvent: RX.Types.SubscriptionToken;
     private _memoryWarningEvent: RX.Types.SubscriptionToken;
 
     constructor(props: RX.CommonProps) {
         super(props);
 
         let curState = RX.App.getActivationState();
+        let focusState = RX.App.isAppFocused();
 
         this.state = {
             activationState: curState,
             activationHistory: this._activationStateToString(curState),
+            focusState,
+            focusHistory: this._focusStateToString(focusState),
             memoryWarningCount: 0
         };
     }
@@ -64,6 +71,13 @@ class AppView extends RX.Component<RX.CommonProps, AppState> {
             this.setState({
                 activationState: state,
                 activationHistory: this.state.activationHistory + '\n' + this._activationStateToString(state)
+            });
+        });
+
+        this._appFocusChangedEvent = RX.App.appFocusChangedEvent.subscribe(state => {
+            this.setState({
+                focusState: state,
+                focusHistory: this.state.focusHistory + '\n' + this._focusStateToString(state)
             });
         });
 
@@ -104,6 +118,28 @@ class AppView extends RX.Component<RX.CommonProps, AppState> {
 
                 <RX.View style={ _styles.textContainer } key={ 'explanation3' }>
                     <RX.Text style={ _styles.explainText }>
+                        { 'Current app focus state:' }
+                    </RX.Text>
+                </RX.View>
+                <RX.View style={ _styles.labelContainer }>
+                    <RX.Text style={ _styles.labelText }>
+                        { this._focusStateToString(this.state.focusState) }
+                    </RX.Text>
+                </RX.View>
+
+                 <RX.View style={ _styles.textContainer } key={ 'explanation2' }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'Move app focus in and out of the app. The history is recorded here.' }
+                    </RX.Text>
+                </RX.View>
+                <RX.View style={ _styles.labelContainer }>
+                    <RX.Text style={ _styles.historyText }>
+                        { this.state.focusHistory }
+                    </RX.Text>
+                </RX.View>
+
+                <RX.View style={ _styles.textContainer } key={ 'explanation3' }>
+                    <RX.Text style={ _styles.explainText }>
                         { 'Launch other apps to create memory pressure.' }
                     </RX.Text>
                 </RX.View>
@@ -117,23 +153,12 @@ class AppView extends RX.Component<RX.CommonProps, AppState> {
     }
 
     private _activationStateToString(state: RX.Types.AppActivationState): string {
-        switch (state) {
-            case RX.Types.AppActivationState.Active:
-                return 'Active';
-
-            case RX.Types.AppActivationState.Background:
-                return 'Background';
-
-            case RX.Types.AppActivationState.Inactive:
-                return 'Inactive';
-
-            case RX.Types.AppActivationState.Extension:
-                return 'Extension';
-
-            default:
-                return 'Unknown';
-        }
+        return RX.Types.AppActivationState[state];
     }
+
+     private _focusStateToString(state: boolean): string {
+         return state ? 'Focused' : 'Blurred';
+     }
 }
 
 class AppTest implements Test {

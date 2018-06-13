@@ -18,6 +18,7 @@ if (typeof(document) !== 'undefined') {
 
 export class App extends RX.App {
     private _activationState: Types.AppActivationState;
+    private _isAppFocued = true;
 
     constructor() {
         super();
@@ -39,8 +40,22 @@ export class App extends RX.App {
                     this.activationStateChangedEvent.fire(this._activationState);
                 }
             });
+
+            window.addEventListener('focus', () => {
+                this._setAppFocusState(true);
+            });
+
+            window.addEventListener('blur', () => {
+                this._setAppFocusState(false);
+            });
         } else {
             this._activationState = Types.AppActivationState.Active;
+        }
+    }
+     private _setAppFocusState(currentFocusState: boolean) {
+        if (currentFocusState !== this._isAppFocued) {
+            this._isAppFocued = currentFocusState;
+            this.appFocusChangedEvent.fire(currentFocusState);            
         }
     }
 
@@ -50,6 +65,10 @@ export class App extends RX.App {
 
     getActivationState(): Types.AppActivationState {
         return this._activationState;
+    }
+
+    isAppFocused() {
+        return this._isAppFocued;
     }
 }
 

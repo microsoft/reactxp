@@ -55,6 +55,9 @@ export abstract class App {
     abstract getActivationState(): Types.AppActivationState;
     activationStateChangedEvent = new SubscribableEvent<(state: Types.AppActivationState) => void>();
 
+    abstract isAppFocused(): boolean;
+    appFocusChangedEvent = new SubscribableEvent<(isFocused: boolean) => void>();
+
     // Memory Warnings
     memoryWarningEvent = new SubscribableEvent<() => void>();
 }
