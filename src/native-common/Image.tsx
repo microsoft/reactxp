@@ -79,12 +79,12 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
 
     render() {
         // Check if require'd image resource
-        let imageSource: RN.ImageURISource | number;
+        let imageSource: RN.ImageSourcePropType;
         if ( _.isNumber(this.props.source)) {
             // Cast to any since the inbound types mismatch a bit for RN
             imageSource = this.props.source as any as number;
         } else {
-            const imageSourceReq: RN.ImageURISource = { uri: this.props.source as string };
+            const imageSourceReq: RN.ImageSourcePropType = { uri: this.props.source as string };
             if (this.props.headers) {
                 imageSourceReq.headers = this.props.headers;
             }
@@ -103,7 +103,6 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
         const additionalProps = this._getAdditionalProps();
         const extendedProps: RN.ExtendedImageProps = {
             source: imageSource,
-            shouldRasterizeIOS: this.props.shouldRasterizeIOS,
             tooltip: this.props.title
         };
 

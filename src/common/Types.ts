@@ -527,8 +527,6 @@ export interface ImagePropsShared extends CommonProps {
 
     onLoad?: (size: Dimensions) => void;
     onError?: (err?: Error) => void;
-
-    shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
 }
 
 export interface ImageProps extends ImagePropsShared {

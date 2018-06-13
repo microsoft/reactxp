@@ -42,7 +42,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     private _selectionStart: number = 0;
     private _selectionEnd: number = 0;
-    private _mountedComponent: any;
+    private _mountedComponent: RN.Text | null = null;
 
     constructor(props: Types.TextInputProps, context: TextInputContext) {
         super(props, context);

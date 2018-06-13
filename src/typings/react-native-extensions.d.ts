@@ -34,7 +34,6 @@ declare module 'react-native' {
     }
 
     interface ExtendedImageProps extends RN.ImageProps {
-        shouldRasterizeIOS?: boolean;
         tooltip?: string;
     }
 
