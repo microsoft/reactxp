@@ -80,7 +80,7 @@ export abstract class FocusManager {
     // Whenever the focusable element is mounted, we let the application
     // know so that FocusManager could account for this element during the
     // focus restriction.
-    addFocusableComponent(component: FocusableComponentInternal, accessibleOnly?: boolean) {
+    addFocusableComponent(component: FocusableComponentInternal, accessibleOnly: boolean = false) {
         if (component.focusableComponentId) {
             return;
         }
@@ -92,7 +92,7 @@ export abstract class FocusManager {
             id: componentId,
             numericId: numericComponentId,
             component: component,
-            accessibleOnly: !!accessibleOnly,
+            accessibleOnly: accessibleOnly,
             restricted: false,
             limitedCount: 0,
             limitedCountAccessible: 0,
