@@ -874,6 +874,7 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     blurOnSubmit?: boolean;
     defaultValue?: string;
     editable?: boolean;
+    hideDeleteButton?: boolean;
     keyboardType?: 'default' | 'numeric' | 'email-address' | 'number-pad';
     maxLength?: number;
     multiline?: boolean;
