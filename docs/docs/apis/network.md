@@ -36,3 +36,14 @@ getType(): SyncTasks.Promise<DeviceNetworkType>;
 // Triggered when the connectivity changes
 connectivityChangedEvent: SubscribableEvent<(isConnected: boolean) => void>;
 ```
+
+## Example
+``` javascript
+import SubscribableEvent from 'subscribableevent';
+
+var connectivityChangedEvent:SubscribableEvent<(isConnected: boolean) => void> = RX.Network.connectivityChangedEvent;
+connectivityChangedEvent.subscribe(function(isConnected:boolean){
+    // Your custom code, which reacts on the connectivity-change.
+})
+
+```
