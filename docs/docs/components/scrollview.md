@@ -51,8 +51,13 @@ onScrollEndDrag: () => void = undefined;
 overScrollMode?: 'always' | 'always-if-content-scrolls' | 'never';
 
 // Snap to page boundaries?
-pagingEnabled: boolean = false; // iOS only
+pagingEnabled: boolean = false; // Android & iOS only
 snapToInterval: number = undefined; // iOS only
+
+// Controls the scroll decelartion rate once user has lifted their finger.
+// normal (default) = 0.998
+// fast = 0.99
+decelerationRate: 'normal' | 'fast' | number = undefined; // iOS only
 
 // Is scrolling enabled?
 scrollEnabled: boolean = true;
