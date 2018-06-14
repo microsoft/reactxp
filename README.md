@@ -9,6 +9,8 @@ The [samples](/samples) directory contains a minimal “Hello World” app that 
 
 Nader Dabit has created a helpful [video tutorial](https://medium.com/@dabit3/reactxp-first-look-d3dd1d08febd) that walks you through the steps to build the sample app.
 
+Also included in the samples directory is the [RXPTest app](/samples/RXPTest) which attempts to exercise all of the functionality of ReactXP. It is a good source to consult for sample usage of APIs, components, and props.
+
 You can read more about ReactXP and its APIs from the [ReactXP official Documentation](https://microsoft.github.io/reactxp/docs/getting-started.html).
 
 ### Prerequisites
