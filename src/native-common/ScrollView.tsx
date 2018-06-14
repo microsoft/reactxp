@@ -77,6 +77,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
             bounces: this.props.bounces,
             pagingEnabled: this.props.pagingEnabled,
             snapToInterval: this.props.snapToInterval,
+            decelerationRate: typeof this.props.snapToInterval === 'number' ? 'fast' : undefined,
             scrollsToTop: this.props.scrollsToTop,
             removeClippedSubviews: false,
             overScrollMode: this.props.overScrollMode,
