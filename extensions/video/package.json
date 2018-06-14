@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.80",
+    "@types/react-native": "^0.55.19",
     "lodash": "^4.17.4",
     "react-native-video": "^2.0.0",
     "reactxp": "^1.2.0"
