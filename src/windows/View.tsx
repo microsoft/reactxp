@@ -498,9 +498,9 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     getImportantForAccessibility(): string | undefined {
         // Focus Manager may override this
 
-        // Use a default of YES if the computed value is undefined (we don't change the base class to use n explicit default for now
+        // Use a default of Auto if the computed value is undefined
         return this._internalProps.importantForAccessibility ||
-            AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.Yes);
+            AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.Auto);
     }
 
     updateNativeTabIndexAndIFA(): void {

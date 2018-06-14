@@ -78,10 +78,11 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
 }
 
 // Text is focusable just by screen readers
-applyFocusableComponentMixin(Text, function (this: Text, nextProps?: Types.TextProps, nextCtx?: TextContext) {
+applyFocusableComponentMixin(Text, function (this: Text, nextProps?: Types.TextProps, nextState?: any, nextCtx?: TextContext) {
     // This control should be tracked by a FocusManager if there's no other control tracked by the same focus manager in
     // the parent path
-    return !nextCtx || !nextCtx.isRxParentAFocusableInSameFMRealm;
+    return nextCtx && ('isRxParentAFocusableInSameFMRealm' in nextCtx)
+        ? !nextCtx.isRxParentAFocusableInSameFMRealm : !this.context.isRxParentAFocusableInSameFMRealm;
 }, true);
 
 export default Text;
