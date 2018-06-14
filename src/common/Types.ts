@@ -1102,7 +1102,6 @@ export type LocationFailureCallback = (error: LocationErrorType) => void;
 // ----------------------------------------------------------------------
 export module Animated {
 
-    export type ValueListenerCallback = (value: number | string) => void;
     export type EndResult = { finished: boolean };
     export type EndCallback = (result: EndResult) => void;
     export type CompositeAnimation = {

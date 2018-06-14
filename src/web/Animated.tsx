@@ -70,7 +70,7 @@ export abstract class Animation {
 
 // Interface for a component that wants to know when the value
 // of an Animated.Value changes or is about to be animated.
-export interface ValueListener {
+interface ValueListener {
     setValue(valueObject: Value, newValue: number | string): void;
     startTransition(valueObject: Value, from: number|string, toValue: number|string, duration: number,
         easing: string, delay: number, onEnd: Types.Animated.EndCallback): void;
@@ -149,24 +149,24 @@ export class Value extends Types.AnimatedValue {
     }
 
     // Add listener for when the value gets updated.
-    addListener(listenerToAdd: ValueListener): void {
+    _addListener(listenerToAdd: ValueListener): void {
         if (this._listeners.indexOf(listenerToAdd) < 0) {
             this._listeners.push(listenerToAdd);
         }
     }
 
     // Remove a specific listner.
-    removeListener(listenerToRemove: ValueListener): void {
+    _removeListener(listenerToRemove: ValueListener): void {
         this._listeners = _.filter(this._listeners, listener => listener !== listenerToRemove);
     }
 
     // Remove all listeners.
-    removeAllListeners(): void {
+    _removeAllListeners(): void {
         this._listeners = [];
     }
 
     // Start a specific animation.
-    startTransition(toValue: number|string, duration: number, easing: string, delay: number,
+    _startTransition(toValue: number|string, duration: number, easing: string, delay: number,
             onEnd: Types.Animated.EndCallback): void {
 
         // If there are no listeners, the app probably has a bug where it's
@@ -174,7 +174,7 @@ export class Value extends Types.AnimatedValue {
         // Complete the animation immediately by updating to the end value
         // and caling the onEnd callback.
         if (this._listeners.length === 0) {
-            this.updateFinalValue(toValue);
+            this._updateFinalValue(toValue);
             if (onEnd) {
                 onEnd({ finished: false });
             }
@@ -188,18 +188,18 @@ export class Value extends Types.AnimatedValue {
     }
 
     // Stop animation.
-    stopTransition() {
+    _stopTransition() {
         _.each(this._listeners, listener => {
             let updatedValue = listener.stopTransition(this);
             if (updatedValue !== undefined) {
-                this.updateFinalValue(updatedValue);
+                this._updateFinalValue(updatedValue);
             }
         });
     }
 
     // After an animation is stopped or completed, updates
     // the final value.
-    updateFinalValue(value: number|string) {
+    _updateFinalValue(value: number|string) {
         this._value = value;
     }
 }
@@ -222,12 +222,12 @@ export let timing: Types.Animated.TimingFunction = function(
                 let easing: Types.Animated.EasingFunction = config.easing || Easing.Default();
                 let duration = config.duration !== undefined ? config.duration : 500;
                 let delay = config.delay || 0;
-                value.startTransition(config.toValue, duration, easing.cssName, delay, result => {
+                value._startTransition(config.toValue, duration, easing.cssName, delay, result => {
                     // Restart the loop?
                     if (config.loop && !stopLooping) {
                         animate();
                     } else {
-                        value.updateFinalValue(config.toValue);
+                        value._updateFinalValue(config.toValue);
                     }
 
                     if (onEnd) {
@@ -242,7 +242,7 @@ export let timing: Types.Animated.TimingFunction = function(
 
         stop: function(): void {
             stopLooping = true;
-            value.stopTransition();
+            value._stopTransition();
         }
     };
 };
@@ -681,7 +681,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                             console.error('Animated style attribute removed while the animation was active');
                         }
                     }
-                    value.valueObject.removeListener(this);
+                    value.valueObject._removeListener(this);
                     delete this._animatedAttributes[attrib];
                 }
             });
@@ -691,7 +691,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                 if (!this._animatedAttributes[attrib]) {
                     this._animatedAttributes[attrib] = { valueObject: value };
                     if (this._mountedComponent) {
-                        value.addListener(this);
+                        value._addListener(this);
                     }
                 }
             });
@@ -705,7 +705,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                             console.warn('Should not remove an animated transform attribute while the animation is active');
                         }
                     }
-                    value.valueObject.removeListener(this);
+                    value.valueObject._removeListener(this);
                     delete this._animatedTransforms[transform];
                 }
             });
@@ -715,7 +715,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                 if (!this._animatedTransforms[transform]) {
                     this._animatedTransforms[transform] = { valueObject: value };
                     if (this._mountedComponent) {
-                        value.addListener(this);
+                        value._addListener(this);
                     }
                 }
             });
@@ -729,22 +729,22 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
 
         componentDidMount() {
             _.each(this._animatedAttributes, value => {
-                value.valueObject.addListener(this);
+                value.valueObject._addListener(this);
             });
 
             _.each(this._animatedTransforms, value => {
-                value.valueObject.addListener(this);
+                value.valueObject._addListener(this);
             });
         }
 
         componentWillUnmount() {
             _.each(this._animatedAttributes, value => {
-                value.valueObject.removeListener(this);
+                value.valueObject._removeListener(this);
             });
             this._animatedAttributes = {};
 
             _.each(this._animatedTransforms, value => {
-                value.valueObject.removeListener(this);
+                value.valueObject._removeListener(this);
             });
             this._animatedTransforms = {};
         }
