@@ -387,7 +387,11 @@ export abstract class FocusManager {
 // isConditionallyFocusable is an optional callback which will be
 // called for componentDidMount() or for componentWillUpdate() to
 // determine if the component is actually focusable.
-export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function, accessibleOnly?: boolean) {
+//
+// accessibleOnly is true for components that support just being focused
+// by screen readers.
+// By default components support both screen reader and keyboard focusing.
+export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function, accessibleOnly: boolean = false) {
     let contextTypes = Component.contextTypes || {};
     contextTypes.focusManager = PropTypes.object;
     Component.contextTypes = contextTypes;

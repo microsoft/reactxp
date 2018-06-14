@@ -29,7 +29,7 @@ let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
 
 export interface ButtonContext extends ButtonContextBase {
     isRxParentAContextMenuResponder?: boolean;
-    isRxParentAFocusableInSameFMRealm?: boolean;
+    isRxParentAFocusableInSameFocusManager?: boolean;
 }
 
 export class Button extends ButtonBase implements React.ChildContextProvider<ButtonContext>, FocusManagerFocusableComponent {
@@ -39,7 +39,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAContextMenuResponder: PropTypes.bool,
-        isRxParentAFocusableInSameFMRealm: PropTypes.bool,
+        isRxParentAFocusableInSameFocusManager: PropTypes.bool,
         ...ButtonBase.childContextTypes
     };
 
@@ -126,7 +126,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
         // This button will hide other "accessible focusable" controls as part of being restricted/limited by a focus manager
         // (more detailed description is in windows/View.tsx)
-        childContext.isRxParentAFocusableInSameFMRealm = true;
+        childContext.isRxParentAFocusableInSameFocusManager = true;
 
         return childContext;
     }
@@ -228,11 +228,11 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
             Types.ImportantForAccessibility.Yes);
     }
 
-    updateNativeTabIndexAndIFA(): void {
+    updateNativeAccessibilityProps(): void {
         if (this._buttonElement) {
             let tabIndex: number | undefined = this.getTabIndex();
             let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
-            let importantForAccessibility: string | undefined = this.getImportantForAccessibility();
+            let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
             this._buttonElement.setNativeProps({
                 tabIndex: tabIndex,

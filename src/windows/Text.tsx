@@ -7,19 +7,19 @@
 * RN Windows-specific implementation of the cross-platform Text abstraction.
 */
 
-import AccessibilityUtil from '../native-common/AccessibilityUtil';
+import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import PropTypes = require('prop-types');
 import { Text as TextBase, TextContext as TextContextBase } from '../native-common/Text';
 import Types = require('../common/Types');
 
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 export interface TextContext extends TextContextBase {
-    isRxParentAFocusableInSameFMRealm?: boolean;
+    isRxParentAFocusableInSameFocusManager?: boolean;
 }
 
 export class Text extends TextBase implements React.ChildContextProvider<TextContext>, FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
-        isRxParentAFocusableInSameFMRealm: PropTypes.bool,
+        isRxParentAFocusableInSameFocusManager: PropTypes.bool,
         ...TextBase.contextTypes
     };
 
@@ -27,7 +27,7 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
     context!: TextContext;
 
     static childContextTypes: React.ValidationMap<any> = {
-        isRxParentAFocusableInSameFMRealm: PropTypes.bool,
+        isRxParentAFocusableInSameFocusManager: PropTypes.bool,
         ...TextBase.childContextTypes
     };
 
@@ -40,7 +40,7 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
 
         // This control will hide other "accessible focusable" controls as part of being restricted/limited by a focus manager
         // (more detailed description is in windows/View.tsx)
-        childContext.isRxParentAFocusableInSameFMRealm = true;
+        childContext.isRxParentAFocusableInSameFocusManager = true;
 
         return childContext;
     }
@@ -57,7 +57,7 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
         return -1;
     }
 
-    getImportantForAccessibility(): string | undefined {
+    getImportantForAccessibility(): ImportantForAccessibilityValue | undefined {
         // Focus Manager may override this
 
         // We force a default of Auto if no property is provided
@@ -65,7 +65,7 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
             Types.ImportantForAccessibility.Auto);
     }
 
-    updateNativeTabIndexAndIFA(): void {
+    updateNativeAccessibilityProps(): void {
         if (this._mountedComponent) {
             let importantForAccessibility = this.getImportantForAccessibility();
             this._mountedComponent.setNativeProps({
@@ -79,8 +79,8 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
 applyFocusableComponentMixin(Text, function (this: Text, nextProps?: Types.TextProps, nextState?: any, nextCtx?: TextContext) {
     // This control should be tracked by a FocusManager if there's no other control tracked by the same FocusManager in
     // the parent path
-    return nextCtx && ('isRxParentAFocusableInSameFMRealm' in nextCtx)
-        ? !nextCtx.isRxParentAFocusableInSameFMRealm : !this.context.isRxParentAFocusableInSameFMRealm;
+    return nextCtx && ('isRxParentAFocusableInSameFocusManager' in nextCtx)
+        ? !nextCtx.isRxParentAFocusableInSameFocusManager : !this.context.isRxParentAFocusableInSameFocusManager;
 }, true);
 
 export default Text;

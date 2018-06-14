@@ -222,7 +222,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         return AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.Auto);
     }
 
-    updateNativeTabIndexAndIFA(): void {
+    updateNativeAccessibilityProps(): void {
         if (this._focusableElement) {
             let tabIndex: number | undefined = this.getTabIndex();
             let windowsTabFocusable: boolean = tabIndex !== undefined && tabIndex >= 0;

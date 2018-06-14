@@ -35,7 +35,7 @@ export interface ViewContext extends ViewContextCommon {
     focusManager?: FocusManager;
     popupContainer?: PopupContainerView;
     isRxParentAContextMenuResponder?: boolean;
-    isRxParentAFocusableInSameFMRealm?: boolean;
+    isRxParentAFocusableInSameFocusManager?: boolean;
 }
 
 let FocusableView = RNW.createFocusableComponent(RN.View);
@@ -56,7 +56,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         focusManager: PropTypes.object,
         popupContainer: PropTypes.object,
         isRxParentAContextMenuResponder: PropTypes.bool,
-        isRxParentAFocusableInSameFMRealm: PropTypes.bool,
+        isRxParentAFocusableInSameFocusManager: PropTypes.bool,
         ...ViewCommon.childContextTypes
     };
 
@@ -362,7 +362,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             // trigger performance issues.
             // One way to narrow down to a manageable set is to ignore "accessible focusable" controls that are children of keyboard
             // focusable controls, as long as they are tracked by same FocusManager .
-            childContext.isRxParentAFocusableInSameFMRealm = false;
+            childContext.isRxParentAFocusableInSameFocusManager = false;
         }
         if (this._popupContainer) {
             childContext.popupContainer = this._popupContainer;
@@ -378,7 +378,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             childContext.isRxParentAContextMenuResponder = !!this.props.onContextMenu;
 
             // This button will hide other "accessible focusable" controls as part of being restricted/limited by a focus manager
-            childContext.isRxParentAFocusableInSameFMRealm = true;
+            childContext.isRxParentAFocusableInSameFocusManager = true;
         }
 
         return childContext;
@@ -503,7 +503,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.Auto);
     }
 
-    updateNativeTabIndexAndIFA(): void {
+    updateNativeAccessibilityProps(): void {
         if (this._focusableElement) {
             let tabIndex: number = this.getTabIndex() || 0;
             let windowsTabFocusable: boolean = tabIndex >= 0;

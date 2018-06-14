@@ -40,7 +40,7 @@ export interface FocusManagerFocusableComponent {
     getImportantForAccessibility(): ImportantForAccessibilityValue | undefined;
     onFocus(): void;
     focus(): void;
-    updateNativeTabIndexAndIFA(): void;
+    updateNativeAccessibilityProps(): void;
 }
 
 export interface FocusableComponentInternal extends FocusManagerFocusableComponent, FocusableComponentInternalBase {
@@ -183,22 +183,22 @@ export class FocusManager extends FocusManagerBase {
         }
 
         // Refresh the native view
-        updateNativeTabIndexAndIFA(component);
+        updateNativeAccessibilityProps(component);
     }
 }
 
-function updateNativeTabIndexAndIFA(component: FocusableComponentInternal) {
+function updateNativeAccessibilityProps(component: FocusableComponentInternal) {
     // Call special method on component avoiding state changes/re-renderings
-    if (component.updateNativeTabIndexAndIFA) {
-        component.updateNativeTabIndexAndIFA();
+    if (component.updateNativeAccessibilityProps) {
+        component.updateNativeAccessibilityProps();
     } else {
         if (AppConfig.isDevelopmentMode()) {
-            console.error('FocusableComponentMixin: updateNativeTabIndexAndIFA doesn\'t exist!');
+            console.error('FocusableComponentMixin: updateNativeAccessibilityProps doesn\'t exist!');
         }
     }
 }
 
-export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function, accessibleOnly?: boolean) {
+export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function, accessibleOnly: boolean = false) {
     // Call base
     // This adds the basic "monitor focusable components" functionality.
     applyFocusableComponentMixinBase(Component, isConditionallyFocusable, accessibleOnly);
@@ -266,7 +266,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
                     this.tabIndexLocalOverride = 0;
 
                     // Refresh the native view
-                    updateNativeTabIndexAndIFA(this);
+                    updateNativeAccessibilityProps(this);
 
                     this.tabIndexLocalOverrideTimer = setTimeout(() => {
                         if (this.tabIndexLocalOverrideTimer !== undefined) {
@@ -275,7 +275,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
                             delete this.tabIndexLocalOverride;
 
                             // Refresh the native view
-                            updateNativeTabIndexAndIFA(this);
+                            updateNativeAccessibilityProps(this);
                         }
                     }, 500);
                 }

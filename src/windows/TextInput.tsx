@@ -66,7 +66,7 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
             Types.ImportantForAccessibility.Auto);
     }
 
-    updateNativeTabIndexAndIFA(): void {
+    updateNativeAccessibilityProps(): void {
         if (this._mountedComponent) {
             let tabIndex = this.getTabIndex();
             let importantForAccessibility = this.getImportantForAccessibility();
