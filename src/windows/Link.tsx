@@ -12,7 +12,7 @@ import RN = require('react-native');
 import RNW = require('react-native-windows');
 import Types = require('../common/Types');
 
-import { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
+import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import { applyFocusableComponentMixin, FocusManager, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 
 import EventHelpers from '../native-common/utils/EventHelpers';
@@ -218,8 +218,8 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     getImportantForAccessibility(): ImportantForAccessibilityValue | undefined {
         // Focus Manager may override this
 
-        // Go by default, LinkProps has no corresponding accessibility property
-        return undefined;
+        // Go by default of YES, LinkProps has no corresponding accessibility property
+        return AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.Yes);
     }
 
     updateNativeTabIndexAndIFA(): void {

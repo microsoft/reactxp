@@ -217,6 +217,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
     getImportantForAccessibility(): ImportantForAccessibilityValue | undefined {
         // Focus Manager may override this
+        // We force a default of YES if no property is provided
         return AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
             Types.ImportantForAccessibility.Yes);
     }

@@ -9,6 +9,7 @@
 
 import React = require('react');
 import RN = require('react-native');
+import Types = require('../common/Types');
 
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
@@ -60,7 +61,9 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
 
         // Note: currently native-common flavor doesn't pass any accessibility properties to RN.TextInput.
         // This should ideally be fixed.
-        return AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility);
+        // We force a default of YES if no property is provided
+        return AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
+            Types.ImportantForAccessibility.Yes);
     }
 
     updateNativeTabIndexAndIFA(): void {

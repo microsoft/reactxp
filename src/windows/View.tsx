@@ -14,6 +14,7 @@ import RNW = require('react-native-windows');
 import Types = require('../common/Types');
 import PropTypes = require('prop-types');
 
+import AccessibilityUtil from '../native-common/AccessibilityUtil';
 import AppConfig from '../common/AppConfig';
 import { View as ViewCommon, ViewContext as ViewContextCommon } from '../native-common/View';
 import EventHelpers from '../native-common/utils/EventHelpers';
@@ -484,7 +485,10 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
     getImportantForAccessibility(): string | undefined {
         // Focus Manager may override this
-        return this._internalProps.importantForAccessibility;
+
+        // Use a default of YES if the computed value is undefined (we don't change the base class to use n explicit default for now
+        return this._internalProps.importantForAccessibility ||
+            AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.Yes);
     }
 
     updateNativeTabIndexAndIFA(): void {
