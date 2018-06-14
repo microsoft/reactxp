@@ -7,7 +7,7 @@ permalink: docs/extensions/imagesvg.html
 next: extensions/navigator
 ---
 
-This component displays a vector image (SVG format), which can come from a local source or from the network. Props control the fill color, stroke color and stroke width.
+This component displays a vector image (SVG format). Props control the fill color, stroke color and stroke width.
 
 The path(s) are specified using the standard SVG string format. Paths must be specified in a nested SvgPath component instance. Multiple SvgPath children can be specified, each with different stroke and fill parameters.
 
@@ -68,13 +68,11 @@ No methods
 
 ## Sample Usage
 ``` javascript
-import { default as RXImageSvg, SvgPath as RXSvgPath, Types as SvgTypes } from 'reactxp-imagesvg';
+import { default as RXImageSvg, SvgPath as RXSvgPath, Types as SvgTypes }
+    from 'reactxp-imagesvg';
 
 return (
-    <RXImageSvg
-        height={ 20 }
-        width={ 20 }
-    >
+    <RXImageSvg height={ 20 } width={ 20 }>
         <RXSvgPath
             fillColor={ 'orange' }
             d={ 'M 0 0 h 20 v 20 z' }
