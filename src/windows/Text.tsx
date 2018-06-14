@@ -60,8 +60,6 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
     getImportantForAccessibility(): string | undefined {
         // Focus Manager may override this
 
-        // Note: currently native-common flavor doesn't pass any accessibility properties to RN.TextInput.
-        // This should ideally be fixed.
         // We force a default of Auto if no property is provided
         return AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
             Types.ImportantForAccessibility.Auto);
@@ -79,7 +77,7 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
 
 // Text is focusable just by screen readers
 applyFocusableComponentMixin(Text, function (this: Text, nextProps?: Types.TextProps, nextState?: any, nextCtx?: TextContext) {
-    // This control should be tracked by a FocusManager if there's no other control tracked by the same focus manager in
+    // This control should be tracked by a FocusManager if there's no other control tracked by the same FocusManager in
     // the parent path
     return nextCtx && ('isRxParentAFocusableInSameFMRealm' in nextCtx)
         ? !nextCtx.isRxParentAFocusableInSameFMRealm : !this.context.isRxParentAFocusableInSameFMRealm;
