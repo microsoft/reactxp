@@ -61,9 +61,9 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
 
         // Note: currently native-common flavor doesn't pass any accessibility properties to RN.TextInput.
         // This should ideally be fixed.
-        // We force a default of YES if no property is provided
+        // We force a default of Auto if no property is provided
         return AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
-            Types.ImportantForAccessibility.Yes);
+            Types.ImportantForAccessibility.Auto);
     }
 
     updateNativeTabIndexAndIFA(): void {

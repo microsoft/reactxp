@@ -218,8 +218,8 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     getImportantForAccessibility(): ImportantForAccessibilityValue | undefined {
         // Focus Manager may override this
 
-        // Go by default of YES, LinkProps has no corresponding accessibility property
-        return AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.Yes);
+        // Go by default of Auto, LinkProps has no corresponding accessibility property
+        return AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.Auto);
     }
 
     updateNativeTabIndexAndIFA(): void {

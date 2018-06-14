@@ -128,7 +128,8 @@ export class FocusManager extends FocusManagerBase {
     }
 
     private static _isComponentAvailable(storedComponent: StoredFocusableComponent): boolean {
-        return !storedComponent.removed &&
+        return !storedComponent.accessibleOnly &&
+            !storedComponent.removed &&
             !storedComponent.restricted &&
             storedComponent.limitedCount === 0 &&
             storedComponent.limitedCountAccessible === 0;

@@ -29,6 +29,7 @@ let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
 
 export interface ButtonContext extends ButtonContextBase {
     isRxParentAContextMenuResponder?: boolean;
+    isRxParentAFocusableInSameFMRealm?: boolean;
 }
 
 export class Button extends ButtonBase implements React.ChildContextProvider<ButtonContext>, FocusManagerFocusableComponent {
@@ -38,6 +39,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAContextMenuResponder: PropTypes.bool,
+        isRxParentAFocusableInSameFMRealm: PropTypes.bool,
         ...ButtonBase.childContextTypes
     };
 
@@ -121,6 +123,10 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         // This instance can be a responder (even when button is disabled). It may or may not have to invoke an onContextMenu handler, but
         // it will consume all corresponding touch events, so overwriting any parent-set value is the correct thing to do.
         childContext.isRxParentAContextMenuResponder = !!this.props.onContextMenu;
+
+        // This button will hide other "accessible focusable" controls as part of being restricted/limited by a focus manager
+        // (more detailed description is in windows/View.tsx)
+        childContext.isRxParentAFocusableInSameFMRealm = true;
 
         return childContext;
     }
@@ -217,7 +223,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
     getImportantForAccessibility(): ImportantForAccessibilityValue | undefined {
         // Focus Manager may override this
-        // We force a default of YES if no property is provided
+        // We force a default of YES if no property is provided, consistent with the base class
         return AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
             Types.ImportantForAccessibility.Yes);
     }

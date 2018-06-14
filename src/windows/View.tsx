@@ -35,6 +35,7 @@ export interface ViewContext extends ViewContextCommon {
     focusManager?: FocusManager;
     popupContainer?: PopupContainerView;
     isRxParentAContextMenuResponder?: boolean;
+    isRxParentAFocusableInSameFMRealm?: boolean;
 }
 
 let FocusableView = RNW.createFocusableComponent(RN.View);
@@ -55,6 +56,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         focusManager: PropTypes.object,
         popupContainer: PropTypes.object,
         isRxParentAContextMenuResponder: PropTypes.bool,
+        isRxParentAFocusableInSameFMRealm: PropTypes.bool,
         ...ViewCommon.childContextTypes
     };
 
@@ -354,6 +356,13 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         // Provide the descendants with the focus manager (if any).
         if (this._focusManager) {
             childContext.focusManager = this._focusManager;
+
+            // This FocusManager instance can restrict/limit the controls it tracks.
+            // The count of keyboard focusable controls is relatively low, yet the "accessible focusable" (by screen reader) one can
+            // trigger performance issues.
+            // One way to narrow down to a manageable set is to ignore "accessible focusable" controls that are children of keyboard
+            // focusable controls, as long as they are tracked by same FocusManager .
+            childContext.isRxParentAFocusableInSameFMRealm = false;
         }
         if (this._popupContainer) {
             childContext.popupContainer = this._popupContainer;
@@ -367,6 +376,9 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             // This instance can be a responder. It may or may not have to invoke an onContextMenu handler, but
             // it will consume all corresponding touch events, so overwriting any parent-set value is the correct thing to do.
             childContext.isRxParentAContextMenuResponder = !!this.props.onContextMenu;
+
+            // This button will hide other "accessible focusable" controls as part of being restricted/limited by a focus manager
+            childContext.isRxParentAFocusableInSameFMRealm = true;
         }
 
         return childContext;
