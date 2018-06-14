@@ -90,6 +90,15 @@ let compositeAnimation = RX.Animated.parallel([
 compositeAnimation.start();
 ```
 
+## Directly Setting Animated Value
+The value of an Animated Value can be set directly by calling the method ```setValue```. If this method is called while the value is being animated, the behavior is undefined. Setting the value of an Animated Value directly is faster than using a non-animated style attribute and re-rendering the component with a new attribute value.
+
+``` javascript
+let animatedOpacityValue = RX.Animated.createValue(1.0);
+
+animatedOpacityValue.setValue(0.0);
+```
+
 ## Web Limitations
 ReactXP animation APIs on the web are implemented using DOM style transitions, as opposed to using JavaScript code to drive the animation. This results in much better performance and (in most cases) glitch-free animations, but it imposes some limitations on the use of the animation APIs.
 * All active animated values associated with a particular element must share the same timing parameters (duration, easing function, delay, loop) and must be started at the same time.
