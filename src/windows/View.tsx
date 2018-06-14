@@ -14,7 +14,7 @@ import RNW = require('react-native-windows');
 import Types = require('../common/Types');
 import PropTypes = require('prop-types');
 
-import AccessibilityUtil from '../native-common/AccessibilityUtil';
+import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import AppConfig from '../common/AppConfig';
 import { View as ViewCommon, ViewContext as ViewContextCommon } from '../native-common/View';
 import EventHelpers from '../native-common/utils/EventHelpers';
@@ -495,7 +495,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         return this.props.tabIndex;
     }
 
-    getImportantForAccessibility(): string | undefined {
+    getImportantForAccessibility(): ImportantForAccessibilityValue | undefined {
         // Focus Manager may override this
 
         // Use a default of Auto if the computed value is undefined
@@ -507,7 +507,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         if (this._focusableElement) {
             let tabIndex: number = this.getTabIndex() || 0;
             let windowsTabFocusable: boolean = tabIndex >= 0;
-            let importantForAccessibility: string | undefined = this.getImportantForAccessibility();
+            let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
             this._focusableElement.setNativeProps({
                 tabIndex: tabIndex,
