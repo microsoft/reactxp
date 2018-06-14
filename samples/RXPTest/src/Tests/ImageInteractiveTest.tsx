@@ -56,7 +56,6 @@ class ImageView extends RX.Component<RX.CommonProps, RX.Stateless> {
                     style={ _styles.image }
                     source={ 'https://microsoft.github.io/reactxp/img/tests/globe.png' }
                     resizeMode={ 'contain' }
-                    shouldRasterizeIOS={ true }
                 />
 
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation3' }>
