@@ -1,4 +1,4 @@
-﻿/**
+/**
 * Text.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -31,7 +31,7 @@ export interface TextContext {
 }
 
 export class Text extends React.Component<Types.TextProps, Types.Stateless> implements React.ChildContextProvider<TextContext> {
-    static contextTypes = {
+    static contextTypes: React.ValidationMap<any> = {
         focusArbitrator: PropTypes.object,
         isRxParentAContextMenuResponder: PropTypes.bool
     };

@@ -12,6 +12,7 @@ import RN = require('react-native');
 import RNW = require('react-native-windows');
 import Types = require('../common/Types');
 
+import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import { applyFocusableComponentMixin, FocusManager, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 
 import EventHelpers from '../native-common/utils/EventHelpers';
@@ -89,6 +90,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     private _createFocusableTextProps(internalProps: RN.TextProps) {
         let tabIndex: number | undefined = this.getTabIndex();
         let windowsTabFocusable: boolean =  tabIndex !== undefined && tabIndex >= 0;
+        let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
         // We don't use 'string' ref type inside ReactXP
         let originalRef = (internalProps as any).ref;
@@ -103,6 +105,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
             ref: this._onFocusableRef,
             isTabStop: windowsTabFocusable,
             tabIndex: tabIndex,
+            importantForAccessibility: importantForAccessibility,
             disableSystemFocusVisuals: false,
             handledKeyDownKeys: DOWN_KEYCODES,
             handledKeyUpKeys: UP_KEYCODES,
@@ -212,14 +215,23 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         return this.props.tabIndex || 0;
     }
 
-    updateNativeTabIndex(): void {
+    getImportantForAccessibility(): ImportantForAccessibilityValue | undefined {
+        // Focus Manager may override this
+
+        // Go by default of Auto, LinkProps has no corresponding accessibility property
+        return AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.Auto);
+    }
+
+    updateNativeAccessibilityProps(): void {
         if (this._focusableElement) {
             let tabIndex: number | undefined = this.getTabIndex();
             let windowsTabFocusable: boolean = tabIndex !== undefined && tabIndex >= 0;
+            let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
             this._focusableElement.setNativeProps({
                 tabIndex: tabIndex,
-                isTabStop: windowsTabFocusable
+                isTabStop: windowsTabFocusable,
+                importantForAccessibility: importantForAccessibility
             });
         }
     }

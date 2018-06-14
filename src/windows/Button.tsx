@@ -11,7 +11,9 @@ import PropTypes = require('prop-types');
 import React = require('react');
 import RN = require('react-native');
 import RNW = require('react-native-windows');
+import Types = require('../common/Types');
 
+import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import { Button as ButtonBase, ButtonContext as ButtonContextBase } from '../native-common/Button';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import UserInterface from '../native-common/UserInterface';
@@ -27,6 +29,7 @@ let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
 
 export interface ButtonContext extends ButtonContextBase {
     isRxParentAContextMenuResponder?: boolean;
+    isRxParentAFocusableInSameFocusManager?: boolean;
 }
 
 export class Button extends ButtonBase implements React.ChildContextProvider<ButtonContext>, FocusManagerFocusableComponent {
@@ -36,6 +39,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAContextMenuResponder: PropTypes.bool,
+        isRxParentAFocusableInSameFocusManager: PropTypes.bool,
         ...ButtonBase.childContextTypes
     };
 
@@ -50,6 +54,8 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         // - false: not focusable at all, doesn't receive keyboard input
         // The intermediate "focusable, but not in the tab order" case is not supported.
         let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
+
+        let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
         // We don't use 'string' ref type inside ReactXP
         let originalRef = (internalProps as any).ref;
@@ -66,6 +72,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
             onMouseLeave: this._onMouseLeave,
             isTabStop: windowsTabFocusable,
             tabIndex: tabIndex,
+            importantForAccessibility: importantForAccessibility,
             disableSystemFocusVisuals: false,
             handledKeyDownKeys: DOWN_KEYCODES,
             handledKeyUpKeys: UP_KEYCODES,
@@ -116,6 +123,10 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         // This instance can be a responder (even when button is disabled). It may or may not have to invoke an onContextMenu handler, but
         // it will consume all corresponding touch events, so overwriting any parent-set value is the correct thing to do.
         childContext.isRxParentAContextMenuResponder = !!this.props.onContextMenu;
+
+        // This button will hide other "accessible focusable" controls as part of being restricted/limited by a focus manager
+        // (more detailed description is in windows/View.tsx)
+        childContext.isRxParentAFocusableInSameFocusManager = true;
 
         return childContext;
     }
@@ -210,14 +221,23 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         return this.props.tabIndex || 0;
     }
 
-    updateNativeTabIndex(): void {
+    getImportantForAccessibility(): ImportantForAccessibilityValue | undefined {
+        // Focus Manager may override this
+        // We force a default of YES if no property is provided, consistent with the base class
+        return AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
+            Types.ImportantForAccessibility.Yes);
+    }
+
+    updateNativeAccessibilityProps(): void {
         if (this._buttonElement) {
             let tabIndex: number | undefined = this.getTabIndex();
             let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
+            let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
             this._buttonElement.setNativeProps({
                 tabIndex: tabIndex,
-                isTabStop: windowsTabFocusable
+                isTabStop: windowsTabFocusable,
+                importantForAccessibility: importantForAccessibility
             });
         }
     }

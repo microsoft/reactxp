@@ -14,6 +14,7 @@ import RNW = require('react-native-windows');
 import Types = require('../common/Types');
 import PropTypes = require('prop-types');
 
+import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import AppConfig from '../common/AppConfig';
 import { View as ViewCommon, ViewContext as ViewContextCommon } from '../native-common/View';
 import EventHelpers from '../native-common/utils/EventHelpers';
@@ -34,6 +35,7 @@ export interface ViewContext extends ViewContextCommon {
     focusManager?: FocusManager;
     popupContainer?: PopupContainerView;
     isRxParentAContextMenuResponder?: boolean;
+    isRxParentAFocusableInSameFocusManager?: boolean;
 }
 
 let FocusableView = RNW.createFocusableComponent(RN.View);
@@ -54,6 +56,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         focusManager: PropTypes.object,
         popupContainer: PropTypes.object,
         isRxParentAContextMenuResponder: PropTypes.bool,
+        isRxParentAFocusableInSameFocusManager: PropTypes.bool,
         ...ViewCommon.childContextTypes
     };
 
@@ -269,6 +272,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         if (this.props.tabIndex !== undefined) {
             let tabIndex: number = this.getTabIndex() || 0;
             let windowsTabFocusable: boolean =  tabIndex >= 0;
+            let importantForAccessibility: string | undefined = this.getImportantForAccessibility();
 
             // We don't use 'string' ref type inside ReactXP
             let originalRef = this._internalProps.ref;
@@ -283,6 +287,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                 componentRef: componentRef,
                 isTabStop: windowsTabFocusable,
                 tabIndex: tabIndex,
+                importantForAccessibility: importantForAccessibility,
                 disableSystemFocusVisuals: false,
                 handledKeyDownKeys: DOWN_KEYCODES,
                 handledKeyUpKeys: UP_KEYCODES,
@@ -351,6 +356,13 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         // Provide the descendants with the focus manager (if any).
         if (this._focusManager) {
             childContext.focusManager = this._focusManager;
+
+            // This FocusManager instance can restrict/limit the controls it tracks.
+            // The count of keyboard focusable controls is relatively low, yet the "accessible focusable" (by screen reader) one can
+            // trigger performance issues.
+            // One way to narrow down to a manageable set is to ignore "accessible focusable" controls that are children of keyboard
+            // focusable controls, as long as they are tracked by same FocusManager .
+            childContext.isRxParentAFocusableInSameFocusManager = false;
         }
         if (this._popupContainer) {
             childContext.popupContainer = this._popupContainer;
@@ -364,6 +376,9 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             // This instance can be a responder. It may or may not have to invoke an onContextMenu handler, but
             // it will consume all corresponding touch events, so overwriting any parent-set value is the correct thing to do.
             childContext.isRxParentAContextMenuResponder = !!this.props.onContextMenu;
+
+            // This button will hide other "accessible focusable" controls as part of being restricted/limited by a focus manager
+            childContext.isRxParentAFocusableInSameFocusManager = true;
         }
 
         return childContext;
@@ -480,14 +495,24 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         return this.props.tabIndex;
     }
 
-    updateNativeTabIndex(): void {
+    getImportantForAccessibility(): ImportantForAccessibilityValue | undefined {
+        // Focus Manager may override this
+
+        // Use a default of Auto if the computed value is undefined
+        return this._internalProps.importantForAccessibility ||
+            AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.Auto);
+    }
+
+    updateNativeAccessibilityProps(): void {
         if (this._focusableElement) {
             let tabIndex: number = this.getTabIndex() || 0;
             let windowsTabFocusable: boolean = tabIndex >= 0;
+            let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
             this._focusableElement.setNativeProps({
                 tabIndex: tabIndex,
-                isTabStop: windowsTabFocusable
+                isTabStop: windowsTabFocusable,
+                importantForAccessibility: importantForAccessibility
             });
         }
     }

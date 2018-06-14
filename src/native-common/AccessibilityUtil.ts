@@ -12,7 +12,10 @@ import _ = require('./lodashMini');
 import React = require('react');
 import RN = require('react-native');
 
-import { AccessibilityUtil as CommonAccessibilityUtil, AccessibilityPlatformUtil } from '../common/AccessibilityUtil';
+import { AccessibilityUtil as CommonAccessibilityUtil,
+    AccessibilityPlatformUtil } from '../common/AccessibilityUtil';
+
+export { ImportantForAccessibilityValue } from '../common/AccessibilityUtil';
 
 import Types = require('../common/Types');
 
