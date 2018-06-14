@@ -842,6 +842,11 @@ export interface ScrollViewProps extends CommonProps, CommonAccessibilityProps {
     // iOS-only property to control scroll indicator insets
     scrollIndicatorInsets?: ScrollIndicatorInsets;
 
+    // iOS-only property to control the scroll decelartion rate once user has lifted their finger.
+    // normal (default) = 0.998
+    // fast = 0.99
+    decelerationRate?: 'normal' | 'fast' | number;
+
     // Windows-only property to control tab navigation inside the view
     tabNavigation?: 'local' | 'cycle' | 'once';
 }
