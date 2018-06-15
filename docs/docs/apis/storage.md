@@ -7,7 +7,7 @@ permalink: docs/apis/storage.html
 next: apis/userinterface
 ---
 
-This interface provides a simple key-based local storage mechanism.
+This interface provides a simple key-based local storage mechanism. If you need more powerful options to persist data and work with them, consider using ReactXPs [Database Extension](docs/extensions/database.html)
 
 ## Methods
 ``` javascript
