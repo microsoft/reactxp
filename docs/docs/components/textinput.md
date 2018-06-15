@@ -88,7 +88,8 @@ onFocus: () => void = undefined;
 // Called on a key event
 onKeyPress: (e: KeyboardEvent) => void = undefined;
 
-// Called when text is pasted into the control
+// Called when text is pasted into the control (not currently
+// supported on iOS or Android)
 onPaste: (e: ClipboardEvent) => void = undefined;
 
 // Called when the selection scrolls due to overflow
