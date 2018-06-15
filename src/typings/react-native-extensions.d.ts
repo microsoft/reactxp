@@ -83,8 +83,4 @@ declare module 'react-native' {
     interface ExtendedAccessibilityInfoStatic extends RN.AccessibilityInfoStatic {
         static initialHighContrast: boolean|undefined;
     }
-
-    interface ExtendedNativeSyntheticEvent extends NativeSyntheticEvent {
-        persist?: () => void;
-    }
 }
