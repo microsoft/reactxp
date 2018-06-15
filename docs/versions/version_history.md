@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.3.0-rc.2 of reactxp - _14 Jun 2018_
+* [Breaking Change] Renamed several methods in RX.Animated.ValueListener that were meant to be private.
+* Improved screen reader support in Windows UWP implementation.
+* On iOS implementation, automatically set decelerationRate to "fast" if snapToInterval is set.
+* Added hideDeleteButton prop to RX.TextInput for Windows UWP.
+
 #### Version 1.3.0-rc.1 of reactxp - _13 Jun 2018_
 * Fixed accessibility issues with screen reader in Windows UWP implementation.
 * Removed shouldRasterizeIOS prop on RX.Image. It was never supported in RN, so it was just a no-op.
