@@ -376,7 +376,9 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             // This instance can be a responder. It may or may not have to invoke an onContextMenu handler, but
             // it will consume all corresponding touch events, so overwriting any parent-set value is the correct thing to do.
             childContext.isRxParentAContextMenuResponder = !!this.props.onContextMenu;
+        }
 
+        if (isKeyboardFocusable(this.props.tabIndex)) {
             // This button will hide other "accessible focusable" controls as part of being restricted/limited by a focus manager
             childContext.isRxParentAFocusableInSameFocusManager = true;
         }
@@ -518,10 +520,15 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 }
 
+// This keeps the conditional function in the mixin and View behavior in sync
+function isKeyboardFocusable(tabIndex: number | undefined) : boolean {
+    return tabIndex !== undefined && tabIndex >= 0;
+}
+
 // A value for tabIndex marks a View as being potentially keyboard focusable
 applyFocusableComponentMixin(View, function (this: View, nextProps?: Types.ViewProps) {
     let tabIndex = nextProps && ('tabIndex' in nextProps) ? nextProps.tabIndex : this.props.tabIndex;
-    return tabIndex !== undefined && tabIndex >= 0;
+    return isKeyboardFocusable(tabIndex);
 });
 
 export default View;
