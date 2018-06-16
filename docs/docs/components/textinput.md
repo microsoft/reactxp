@@ -53,9 +53,6 @@ disableFullscreenUI: boolean = false; // Android-specific
 // Can text be edited by the user?
 editable: boolean = true;
 
-// UWP-only (Windows-only) prop for hiding the 'X' delete button
-hideDeleteButton: boolean = false;
-
 // iOS-only prop for controlling the keyboard appearance
 keyboardAppearance: 'default' | 'light' | 'dark';
 
