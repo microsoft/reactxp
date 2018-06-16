@@ -874,7 +874,6 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     blurOnSubmit?: boolean;
     defaultValue?: string;
     editable?: boolean;
-    hideDeleteButton?: boolean;
     keyboardType?: 'default' | 'numeric' | 'email-address' | 'number-pad';
     maxLength?: number;
     multiline?: boolean;
@@ -904,6 +903,9 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
 
     // iOS and Android only property for controlling the text input selection color
     selectionColor?: string;
+
+    // iOS and Windows only property for controlling when the clear button should appear on the right side of the text view.
+    clearButtonMode?: 'never' | 'while-editing' | 'unless-editing' | 'always';
 
     onKeyPress?: (e: KeyboardEvent) => void;
     onFocus?: (e: FocusEvent) => void;

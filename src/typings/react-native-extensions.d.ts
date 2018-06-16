@@ -31,7 +31,6 @@ declare module 'react-native' {
         onPaste?: (e: RN.NativeSyntheticEvent) => void;
         maxContentSizeMultiplier?: number;
         tabIndex?: number;
-        hideDeleteButton?: boolean;
     }
 
     interface ExtendedImageProps extends RN.ImageProps {
