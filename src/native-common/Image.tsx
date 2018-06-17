@@ -78,19 +78,6 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
     }
 
     render() {
-        // Check if require'd image resource
-        let imageSource: RN.ImageSourcePropType;
-        if ( _.isNumber(this.props.source)) {
-            // Cast to any since the inbound types mismatch a bit for RN
-            imageSource = this.props.source as any as number;
-        } else {
-            const imageSourceReq: RN.ImageSourcePropType = { uri: this.props.source as string };
-            if (this.props.headers) {
-                imageSourceReq.headers = this.props.headers;
-            }
-            imageSource = imageSourceReq;
-        }
-
         // Use the width/height provided in the style if it's not provided in the image itself.
         let resizeMode = 'contain';
         if (this.props.resizeMode !== undefined &&
@@ -102,7 +89,7 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
 
         const additionalProps = this._getAdditionalProps();
         const extendedProps: RN.ExtendedImageProps = {
-            source: imageSource,
+            source: this._buildSource(),
             tooltip: this.props.title
         };
 
@@ -167,6 +154,20 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
             const event = e.nativeEvent as any;
             this.props.onError(new Error(event.error));
         }
+    }
+
+    private _buildSource(): RN.ImageSourcePropType {
+        // Check if require'd image resource
+        if (_.isNumber(this.props.source)) {
+            return this.props.source;
+        }
+
+        const source: RN.ImageSourcePropType = { uri: this.props.source };
+        if (this.props.headers) {
+            source.headers = this.props.headers;
+        }
+
+        return source;
     }
 
     // Note: This works only if you have an onLoaded handler and wait for the image to load.
