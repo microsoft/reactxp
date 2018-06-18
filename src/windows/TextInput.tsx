@@ -25,11 +25,11 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
 
         return (
             <RN.TextInput
+                { ...props }
+                { ...extendedProps }
                 ref={ onMount }
                 importantForAccessibility={ this.getImportantForAccessibility() }
                 onFocus={ (e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>) => this._onFocusEx(e, props.onFocus) }
-                { ...props }
-                { ...extendedProps }
             />
         );
     }
