@@ -20,14 +20,14 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
 
     protected _render(props: RN.TextInputProps, onMount: (textInput: any) => void): JSX.Element {
         const extendedProps: RN.ExtendedTextInputProps = {
-            tabIndex: this.getTabIndex(),
-            importantForAccessibility: this.getImportantForAccessibility(),
-            onFocus: (e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>) => this._onFocusEx(e, props.onFocus)
+            tabIndex: this.getTabIndex()
         };
 
         return (
             <RN.TextInput
                 ref={ onMount }
+                importantForAccessibility={ this.getImportantForAccessibility() }
+                onFocus={ (e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>) => this._onFocusEx(e, props.onFocus) }
                 { ...props }
                 { ...extendedProps }
             />
