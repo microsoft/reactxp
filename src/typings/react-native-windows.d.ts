@@ -9,9 +9,6 @@
 */
 
 declare module 'react-native-windows' {
-    //
-    // React
-    // ----------------------------------------------------------------------
 
     import React = require('react');
     import RN = require('react-native');
@@ -20,6 +17,7 @@ declare module 'react-native-windows' {
     // Focusable view related declarations
     // ----------------------------------------------------------------------
     type FocusableWindowsProps<P={}> = P & {
+        ref?: (current: any) => void;
         isTabStop?: boolean;
         tabIndex?: number;
         tabNavigation?: 'local' | 'cycle' | 'once';

@@ -14,8 +14,14 @@ import Types = require('../common/Types');
 
 export class Location extends RX.Location {
     setConfiguration(config: RX.LocationConfiguration) {
-        if (this.isAvailable() && navigator.geolocation.setRNConfiguration) {
-            navigator.geolocation.setRNConfiguration(config);
+        if (this.isAvailable()) {
+            // Work around the fact "geolocation" type definition in ES6 lib
+            // doesn't declare the RN-specific setRNConfiguration setter.
+            let configSetter: (config: RX.LocationConfiguration) => void =
+                (navigator.geolocation as any).setRNConfiguration;
+            if (configSetter) {
+                configSetter(config);
+            }
         }
     }
 

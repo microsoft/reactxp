@@ -58,7 +58,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
         // Setup Pan Responder
         this._panResponder = RN.PanResponder.create({
-            onStartShouldSetPanResponder: (e, gestureState) => {
+            onStartShouldSetPanResponder: (e: RN.GestureResponderEvent, gestureState: RN.PanResponderGestureState) => {
                 const event = (e as any).nativeEvent as Types.TouchEvent;
                 UserInterface.evaluateTouchLatency(e as any);
 
@@ -70,7 +70,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
                 return false;
             },
 
-            onMoveShouldSetPanResponder: (e, gestureState) => {
+            onMoveShouldSetPanResponder: (e: RN.GestureResponderEvent, gestureState: RN.PanResponderGestureState) => {
                 const event = (e as any).nativeEvent as Types.TouchEvent;
                 UserInterface.evaluateTouchLatency(e as any);
 
@@ -93,15 +93,15 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
                 return false;
             },
 
-            onPanResponderRelease: (e, gestureState) => {
+            onPanResponderRelease: (e: RN.GestureResponderEvent, gestureState: RN.PanResponderGestureState) => {
                 this._onPanResponderEnd(e, gestureState);
             },
 
-            onPanResponderTerminate: (e, gestureState) => {
+            onPanResponderTerminate: (e: RN.GestureResponderEvent, gestureState: RN.PanResponderGestureState) => {
                 this._onPanResponderEnd(e, gestureState);
             },
 
-            onPanResponderMove: (e, gestureState) => {
+            onPanResponderMove: (e: RN.GestureResponderEvent, gestureState: RN.PanResponderGestureState) => {
                 const event = (e as any).nativeEvent as Types.TouchEvent;
                 UserInterface.evaluateTouchLatency(e as any);
 
@@ -127,8 +127,9 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
             // Something else wants to become responder. Should this view release the responder?
             // Returning true allows release
-            onPanResponderTerminationRequest: (e, gestureState) => this.props.releaseOnRequest
-        });
+            onPanResponderTerminationRequest: (e: RN.GestureResponderEvent, gestureState:
+                RN.PanResponderGestureState) => this.props.releaseOnRequest
+        } as RN.PanResponderCallbacks);
     }
 
     componentWillUnmount() {
@@ -561,7 +562,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
         return (
             <RN.View
-                style={ [ViewBase.getDefaultViewStyle(), this.props.style] }
+                style={ [ViewBase.getDefaultViewStyle(), this.props.style] as RN.StyleProp<RN.ViewStyle> }
                 importantForAccessibility={ importantForAccessibility }
                 accessibilityTraits={ accessibilityTrait }
                 accessibilityComponentType={ accessibilityComponentType }

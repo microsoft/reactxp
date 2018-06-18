@@ -10,6 +10,7 @@
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noUnusedLocals": true,
+        "skipLibCheck": true,
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
         "forceConsistentCasingInFileNames": true,
@@ -18,7 +19,7 @@
             "es5",
             "dom"
         ],
-        "types" : ["lodash", "react", "react-dom"]
+        "types" : ["lodash", "react", "react-dom", "react-native"]
     },
 
     "include": [

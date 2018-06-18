@@ -49,7 +49,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         return props.style;
     }
 
-    protected _onLayout = (event: RN.ViewOnLayoutEvent) => {
+    protected _onLayout = (event: RN.LayoutChangeEvent) => {
         if (this.props.onLayout) {
             const layoutEventValues = {
                 x: event.nativeEvent.layout.x,

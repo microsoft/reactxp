@@ -33,17 +33,20 @@ export class Text extends CommonText {
     // to null to indicate the default behavior.
     render() {
         const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility);
+        const extendedProps: RN.ExtendedTextProps = {
+            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier
+        };
         return (
             <RN.Text
-                style={ this._getStyles() }
+                style={ this._getStyles() as RN.StyleProp<RN.TextStyle> }
                 ref={ this._onMount }
                 importantForAccessibility={ importantForAccessibility }
                 numberOfLines={ this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
-                maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
                 ellipsizeMode={ this.props.ellipsizeMode }
                 onPress={ this.props.onPress }
                 textBreakStrategy={ this.props.textBreakStrategy }
+                { ...extendedProps }
             >
                 { this.props.children }
             </RN.Text>

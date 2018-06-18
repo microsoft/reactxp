@@ -478,7 +478,7 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     delayLongPress?: number;
 
     autoFocus?: boolean; // The component is a candidate for being autofocused.
-    onAccessibilityTapIOS?: Function; // iOS-only prop, call when a button is double tapped in accessibility mode
+    onAccessibilityTapIOS?: (e: SyntheticEvent) => void; // iOS-only prop, call when a button is double tapped in accessibility mode
     onContextMenu?: (e: MouseEvent) => void;
     onPress?: (e: SyntheticEvent) => void;
     onPressIn?: (e: SyntheticEvent) => void;
@@ -527,8 +527,6 @@ export interface ImagePropsShared extends CommonProps {
 
     onLoad?: (size: Dimensions) => void;
     onError?: (err?: Error) => void;
-
-    shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
 }
 
 export interface ImageProps extends ImagePropsShared {
@@ -906,6 +904,9 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     // iOS and Android only property for controlling the text input selection color
     selectionColor?: string;
 
+    // iOS and Windows only property for controlling when the clear button should appear on the right side of the text view.
+    clearButtonMode?: 'never' | 'while-editing' | 'unless-editing' | 'always';
+
     onKeyPress?: (e: KeyboardEvent) => void;
     onFocus?: (e: FocusEvent) => void;
     onBlur?: (e: FocusEvent) => void;
@@ -1104,7 +1105,6 @@ export type LocationFailureCallback = (error: LocationErrorType) => void;
 // ----------------------------------------------------------------------
 export module Animated {
 
-    export type ValueListenerCallback = (value: number | string) => void;
     export type EndResult = { finished: boolean };
     export type EndCallback = (result: EndResult) => void;
     export type CompositeAnimation = {
@@ -1242,7 +1242,7 @@ export interface WheelEvent extends SyntheticEvent {
     deltaZ: number;
 }
 
-export interface WebViewShouldStartLoadEvent extends SyntheticEvent {
+export interface WebViewShouldStartLoadEvent {
     url: string;
 }
 

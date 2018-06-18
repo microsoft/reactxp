@@ -1,4 +1,4 @@
-﻿/**
+/**
 * Text.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -31,7 +31,7 @@ export interface TextContext {
 }
 
 export class Text extends React.Component<Types.TextProps, Types.Stateless> implements React.ChildContextProvider<TextContext> {
-    static contextTypes = {
+    static contextTypes: React.ValidationMap<any> = {
         focusArbitrator: PropTypes.object,
         isRxParentAContextMenuResponder: PropTypes.bool
     };
@@ -57,23 +57,27 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
         // The presence of any of the onPress or onContextMenu makes the RN.Text a potential touch responder
         const onPress = (this.props.onPress || this.props.onContextMenu) ? this._onPress : undefined;
 
-        // The presence of an onContextMenu on this instance or on the first responder parent up the tree 
+        // The presence of an onContextMenu on this instance or on the first responder parent up the tree
         // should disable any system provided context menu
         const disableContextMenu = !!this.props.onContextMenu || !!this.context.isRxParentAContextMenuResponder;
 
+        const extendedProps: RN.ExtendedTextProps = {
+            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
+            disableContextMenu: disableContextMenu
+        };
+
         return (
             <RN.Text
-                style={ this._getStyles() }
-                ref={ this._onMount }
+                style={ this._getStyles() as RN.StyleProp<RN.TextStyle> }
+                ref={ this._onMount as any }
                 importantForAccessibility={ importantForAccessibility }
                 numberOfLines={ this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
-                maxContentSizeMultiplier={ this.props.maxContentSizeMultiplier }
                 onPress={ onPress }
                 selectable={ this.props.selectable }
                 textBreakStrategy={ 'simple' }
                 ellipsizeMode={ this.props.ellipsizeMode }
-                disableContextMenu={ disableContextMenu }
+                { ...extendedProps }
             >
                 { this.props.children }
             </RN.Text>
@@ -86,11 +90,11 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
         }
     }
 
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+    protected _onMount = (component: any) => {
         this._mountedComponent = component;
     }
 
-    private _onPress = (e: RN.SyntheticEvent<any>) => {
+    private _onPress = (e: RN.GestureResponderEvent) => {
         if (EventHelpers.isRightMouseButton(e)) {
             if (this.props.onContextMenu) {
                 this.props.onContextMenu(EventHelpers.toMouseEvent(e));

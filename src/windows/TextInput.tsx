@@ -9,24 +9,33 @@
 
 import React = require('react');
 import RN = require('react-native');
+import Types = require('../common/Types');
 
+import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 
 import { TextInput as TextInputBase } from '../native-common/TextInput';
 
 export class TextInput extends TextInputBase implements FocusManagerFocusableComponent {
 
-    protected _render(props: RN.TextInputProps): JSX.Element {
+    protected _render(props: RN.TextInputProps, onMount: (textInput: any) => void): JSX.Element {
+        const extendedProps: RN.ExtendedTextInputProps = {
+            tabIndex: this.getTabIndex(),
+            importantForAccessibility: this.getImportantForAccessibility(),
+            onFocus: (e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>) => this._onFocusEx(e, props.onFocus)
+        };
+
         return (
             <RN.TextInput
+                ref={ onMount }
                 { ...props }
-                tabIndex={ this.getTabIndex() }
-                onFocus={ (e: React.FocusEvent<any>) => this._onFocusEx(e, props.onFocus) }
+                { ...extendedProps }
             />
         );
     }
 
-    private _onFocusEx (e: React.FocusEvent<any>, origHandler: ((e: React.FocusEvent<any>) => void) | undefined) {
+    private _onFocusEx(e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>, origHandler:
+            ((e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>) => void) | undefined) {
         if (e.currentTarget === e.target) {
             this.onFocus();
         }
@@ -47,13 +56,25 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
         return this.props.tabIndex || 0;
     }
 
-    updateNativeTabIndex(): void {
+    getImportantForAccessibility(): ImportantForAccessibilityValue | undefined {
+        // Focus Manager may override this
+
+        // Note: currently native-common flavor doesn't pass any accessibility properties to RN.TextInput.
+        // This should ideally be fixed.
+        // We force a default of Auto if no property is provided
+        return AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
+            Types.ImportantForAccessibility.Auto);
+    }
+
+    updateNativeAccessibilityProps(): void {
         if (this._mountedComponent) {
             let tabIndex = this.getTabIndex();
+            let importantForAccessibility = this.getImportantForAccessibility();
             this._mountedComponent.setNativeProps({
                 tabIndex: tabIndex,
                 value: this.state.inputValue, // mandatory for some reason
-                isTabStop: this.props.editable && tabIndex >= 0
+                isTabStop: this.props.editable && tabIndex >= 0,
+                importantForAccessibility: importantForAccessibility
             });
         }
     }

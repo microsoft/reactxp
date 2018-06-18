@@ -33,9 +33,6 @@ resizeMethod: 'auto' | 'resize' | 'scale' = 'auto'; // Android only
 // does not match the size of the container
 resizeMode: 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat' = 'stretch';
 
-// Rasterize contents using offscreen bitmap (perf optimization)
-shouldRasterizeIOS: boolean = false; // iOS only
-
 // URL to image
 source: string = undefined;
 

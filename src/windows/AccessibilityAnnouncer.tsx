@@ -27,7 +27,7 @@ const _styles = {
 };
 
 export class AccessibilityAnnouncer extends React.Component<{}, {}> {
-    private _viewElement: RN.Animated.View | null = null;
+    private _viewElement: any = null;
     private _announcementQueue: string[] = [];
     private _announcementQueueTimer: number | undefined;
     private _newAnnouncementEventChangedSubscription: SubscriptionToken | undefined;
@@ -59,7 +59,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
         return (
             <RN.View
                 ref={ this._onViewRef }
-                style={ _styles.liveRegionContainer }
+                style={ _styles.liveRegionContainer as RN.StyleProp<RN.ViewStyle> }
                 accessibilityLiveRegion={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
             />
         );

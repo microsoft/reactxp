@@ -41,8 +41,7 @@ export class LinkBase<S> extends React.Component<Types.LinkProps, S> {
     }
 
     render() {
-        let internalProps: RN.TextProps = {
-            ref: this._onMount,
+        let internalProps: RN.ExtendedTextProps = {
             style: this.props.style,
             numberOfLines: this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines,
             onPress: this._onPress,
@@ -51,9 +50,9 @@ export class LinkBase<S> extends React.Component<Types.LinkProps, S> {
             maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
             children: this.props.children,
             tooltip: this.props.title
-        };
+        } as RN.ExtendedTextProps;
 
-        return this._render(internalProps);
+        return this._render(internalProps, this._onMount);
     }
 
     componentDidMount() {
@@ -62,15 +61,13 @@ export class LinkBase<S> extends React.Component<Types.LinkProps, S> {
         }
     }
 
-    protected _render(internalProps: RN.TextProps) {
+    protected _render(internalProps: RN.TextProps, onMount: (text: any) => void) {
         return (
-            <RN.Text
-                { ...internalProps }
-            />
+            <RN.Text { ...internalProps } ref={ onMount }/>
         );
     }
 
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+    protected _onMount = (component: any) => {
         this._mountedComponent = component;
     }
 

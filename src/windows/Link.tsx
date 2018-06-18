@@ -12,6 +12,7 @@ import RN = require('react-native');
 import RNW = require('react-native-windows');
 import Types = require('../common/Types');
 
+import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import { applyFocusableComponentMixin, FocusManager, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 
 import EventHelpers from '../native-common/utils/EventHelpers';
@@ -60,25 +61,23 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         });
     }
 
-    protected _render(internalProps: RN.TextProps) {
+    protected _render(internalProps: RN.TextProps, onMount: (text: any) => void) {
         if (this.context && !this.context.isRxParentAText) {
             // Standalone link. We use a keyboard focusable RN.Text
-            return this._renderLinkAsFocusableText(internalProps);
+            return this._renderLinkAsFocusableText(internalProps, onMount);
         } else if (RNW.HyperlinkWindows && !this.state.isRestrictedOrLimited) {
-            // Inline Link. We use a native Hyperlink inline if RNW supports it and element is not "focus restricted/limited"
+            // Inline Link. We use a native Hyperlink inline if RN supports it and element is not "focus restricted/limited"
             return this._renderLinkAsNativeHyperlink(internalProps);
         } else {
             // Inline Link. We defer to base class (that uses a plain RN.Text) for the rest of the cases.
-            return super._render(internalProps);
+            return super._render(internalProps, onMount);
         }
     }
 
-    private _renderLinkAsFocusableText(internalProps: RN.TextProps) {
+    private _renderLinkAsFocusableText(internalProps: RN.TextProps, onMount: (text: any) => void) {
         let focusableTextProps = this._createFocusableTextProps(internalProps);
         return (
-            <FocusableText
-                { ...focusableTextProps }
-            />
+            <FocusableText { ...focusableTextProps } ref={ onMount }/>
         );
     }
 
@@ -91,9 +90,10 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     private _createFocusableTextProps(internalProps: RN.TextProps) {
         let tabIndex: number | undefined = this.getTabIndex();
         let windowsTabFocusable: boolean =  tabIndex !== undefined && tabIndex >= 0;
+        let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
         // We don't use 'string' ref type inside ReactXP
-        let originalRef = internalProps.ref;
+        let originalRef = (internalProps as any).ref;
         if (typeof originalRef === 'string') {
             throw new Error('Link: ReactXP must not use string refs internally');
         }
@@ -105,6 +105,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
             ref: this._onFocusableRef,
             isTabStop: windowsTabFocusable,
             tabIndex: tabIndex,
+            importantForAccessibility: importantForAccessibility,
             disableSystemFocusVisuals: false,
             handledKeyDownKeys: DOWN_KEYCODES,
             handledKeyUpKeys: UP_KEYCODES,
@@ -126,7 +127,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     private _renderLinkAsNativeHyperlink(internalProps: RN.TextProps) {
 
         // We don't use 'string' ref type inside ReactXP
-        let originalRef = internalProps.ref;
+        let originalRef = (internalProps as any).ref;
         if (typeof originalRef === 'string') {
             throw new Error('Link: ReactXP must not use string refs internally');
         }
@@ -134,8 +135,8 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         return (
             <RNW.HyperlinkWindows
                 { ...internalProps }
-                ref={this._onNativeHyperlinkRef}
-                onFocus={this._onFocus}
+                ref={ this._onNativeHyperlinkRef }
+                onFocus={ this._onFocus }
             />
         );
     }
@@ -214,14 +215,23 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         return this.props.tabIndex || 0;
     }
 
-    updateNativeTabIndex(): void {
+    getImportantForAccessibility(): ImportantForAccessibilityValue | undefined {
+        // Focus Manager may override this
+
+        // Go by default of Auto, LinkProps has no corresponding accessibility property
+        return AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.Auto);
+    }
+
+    updateNativeAccessibilityProps(): void {
         if (this._focusableElement) {
             let tabIndex: number | undefined = this.getTabIndex();
             let windowsTabFocusable: boolean = tabIndex !== undefined && tabIndex >= 0;
+            let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
             this._focusableElement.setNativeProps({
                 tabIndex: tabIndex,
-                isTabStop: windowsTabFocusable
+                isTabStop: windowsTabFocusable,
+                importantForAccessibility: importantForAccessibility
             });
         }
     }

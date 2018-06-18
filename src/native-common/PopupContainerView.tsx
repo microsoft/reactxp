@@ -56,7 +56,7 @@ export interface PopupContainerViewState {
 }
 
 export class PopupContainerView extends PopupContainerViewBase<PopupContainerViewProps, PopupContainerViewState> {
-    private _mountedComponent: RN.View|null = null;
+    private _mountedComponent: any;
     private _viewHandle: number|null = null;
     private _respositionPopupTimer: number|undefined;
 
@@ -137,8 +137,8 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
 
         return (
             <RN.View
-                style={ style }
-                ref={ this._onMount }
+                style={ style as RN.StyleProp<RN.ViewStyle> }
+                ref={ this._onMount as any }
             >
                 { popupView }
             </RN.View>
@@ -351,7 +351,8 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
     }
 
     private _recalcInnerPosition(anchorRect: ClientRect, newState: PopupContainerViewState) {
-        // For inner popups we only accept the first position of the priorities since there should always be room for the bubble.
+        // For inner popups we only accept the first position of the priorities since there
+        // should always be room for the bubble.
         const pos = this.props.popupOptions.positionPriorities!!![0];
 
         switch (pos) {

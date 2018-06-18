@@ -262,6 +262,20 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
                     </RX.Text>
                 </RX.View>
 
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation8' }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'This text input box uses the "clearButtonMode" prop to hide the `X` that appears while typing. ' +
+                          '(This is only relevant to iOS and UWP apps). ' }
+                    </RX.Text>
+                </RX.View>
+                <RX.View style={ _styles.resultContainer }>
+                    <RX.TextInput
+                        style={ _styles.textInput1 }
+                        placeholder={ 'This box will not have the usual `X` delete button as you type.' }
+                        clearButtonMode={ 'never' }
+                    />
+                </RX.View>
+
                 <RX.View style={ _styles.placeholder }/>
 
             </RX.View>

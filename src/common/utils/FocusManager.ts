@@ -37,13 +37,10 @@ export interface StoredFocusableComponent {
     numericId: number;
     component: FocusableComponentInternal;
     onFocus: () => void;
+    accessibleOnly: boolean;
     restricted: boolean;
     limitedCount: number;
     limitedCountAccessible: number;
-    origTabIndex?: number;
-    origAriaHidden?: string;
-    curTabIndex?: number;
-    curAriaHidden?: boolean;
     removed?: boolean;
     callbacks?: FocusableComponentStateCallback[];
 }
@@ -83,7 +80,7 @@ export abstract class FocusManager {
     // Whenever the focusable element is mounted, we let the application
     // know so that FocusManager could account for this element during the
     // focus restriction.
-    addFocusableComponent(component: FocusableComponentInternal) {
+    addFocusableComponent(component: FocusableComponentInternal, accessibleOnly: boolean = false) {
         if (component.focusableComponentId) {
             return;
         }
@@ -95,6 +92,7 @@ export abstract class FocusManager {
             id: componentId,
             numericId: numericComponentId,
             component: component,
+            accessibleOnly: accessibleOnly,
             restricted: false,
             limitedCount: 0,
             limitedCountAccessible: 0,
@@ -245,6 +243,7 @@ export abstract class FocusManager {
                 }
 
                 if (prevFocusedComponent &&
+                    !prevFocusedComponent.accessibleOnly &&
                     !prevFocusedComponent.removed &&
                     !prevFocusedComponent.restricted &&
                     prevFocusedComponent.limitedCount === 0 &&
@@ -388,14 +387,18 @@ export abstract class FocusManager {
 // isConditionallyFocusable is an optional callback which will be
 // called for componentDidMount() or for componentWillUpdate() to
 // determine if the component is actually focusable.
-export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function) {
+//
+// accessibleOnly is true for components that support just being focused
+// by screen readers.
+// By default components support both screen reader and keyboard focusing.
+export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function, accessibleOnly: boolean = false) {
     let contextTypes = Component.contextTypes || {};
     contextTypes.focusManager = PropTypes.object;
     Component.contextTypes = contextTypes;
 
     inheritMethod('componentDidMount', function (this: FocusableComponentInternal, focusManager: FocusManager) {
         if (!isConditionallyFocusable || isConditionallyFocusable.call(this)) {
-            focusManager.addFocusableComponent(this);
+            focusManager.addFocusableComponent(this, accessibleOnly);
         }
     });
 
@@ -408,7 +411,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
             let isFocusable = isConditionallyFocusable.apply(this, origArgs);
 
             if (isFocusable && !this.focusableComponentId) {
-                focusManager.addFocusableComponent(this);
+                focusManager.addFocusableComponent(this, accessibleOnly);
             } else if (!isFocusable && this.focusableComponentId) {
                 focusManager.removeFocusableComponent(this);
             }

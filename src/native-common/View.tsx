@@ -211,19 +211,19 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         let nextChildrenKeys = extractChildrenKeys(nextProps.children);
         this._childrenKeys = nextChildrenKeys;
         if (_childrenEdited(prevChildrenKeys, nextChildrenKeys)) {
-            let updateConfig: RN.IUpdateLayoutAnimationConfig = {
+            let updateConfig: RN.LayoutAnimationAnim = {
                 delay: 0,
                 duration: 300,
                 type: LayoutAnimation.Types.easeOut
             };
-            let createConfig: RN.ICreateLayoutAnimationConfig = {
+            let createConfig: RN.LayoutAnimationAnim = {
                 delay: 75,
                 duration: 150,
                 type: LayoutAnimation.Types.linear,
                 property: LayoutAnimation.Properties.opacity
             };
-            var configDictionary: RN.ILayoutAnimationConfig = {
-                duration: 300,
+            var configDictionary: RN.LayoutAnimationConfig = {
+                duration: 300
             };
 
             if (nextProps.animateChildMove) {
@@ -394,7 +394,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     private _getDefaultOpacityValue(props: Types.ViewProps): number {
         let flattenedStyles: { [key: string]: any }|undefined;
         if (props && props.style) {
-            flattenedStyles = RN.StyleSheet.flatten(props.style);
+            flattenedStyles = RN.StyleSheet.flatten(props.style as RN.StyleProp<RN.ViewStyle>);
         }
 
         return flattenedStyles && flattenedStyles.opacity || 1;
@@ -452,7 +452,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     }
 
     render() {
-        let ViewToRender = RN.View;
+        let ViewToRender: typeof RN.Animated.View | typeof RN.SafeAreaView = RN.View;
 
         if (this._isButton(this.props)) {
             ViewToRender = RN.Animated.View;

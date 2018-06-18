@@ -78,19 +78,6 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
     }
 
     render() {
-        // Check if require'd image resource
-        let imageSource: RN.ImageSource | number;
-        if ( _.isNumber(this.props.source)) {
-            // Cast to any since the inbound types mismatch a bit for RN
-            imageSource = this.props.source as any as number;
-        } else {
-            const imageSourceReq: RN.ImageSource = { uri: this.props.source as string };
-            if (this.props.headers) {
-                imageSourceReq.headers = this.props.headers;
-            }
-            imageSource = imageSourceReq;
-        }
-
         // Use the width/height provided in the style if it's not provided in the image itself.
         let resizeMode = 'contain';
         if (this.props.resizeMode !== undefined &&
@@ -101,20 +88,22 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
         }
 
         const additionalProps = this._getAdditionalProps();
+        const extendedProps: RN.ExtendedImageProps = {
+            source: this._buildSource(),
+            tooltip: this.props.title
+        };
 
         return (
             <RN.Image
-                ref={ this._onMount }
-                style={ this.getStyles() }
-                source={ imageSource }
-                resizeMode={ resizeMode }
+                ref={ this._onMount as any }
+                style={ this.getStyles() as RN.StyleProp<RN.ImageStyle> }
+                resizeMode={ resizeMode as any }
                 resizeMethod={ this.props.resizeMethod }
                 accessibilityLabel={ this.props.accessibilityLabel }
-                onLoad={ this.props.onLoad ? this._onLoad : undefined }
+                onLoad={ this.props.onLoad ? this._onLoad as any : undefined }
                 onError={ this._onError }
-                shouldRasterizeIOS={ this.props.shouldRasterizeIOS }
-                tooltip={ this.props.title }
                 { ...additionalProps }
+                { ...extendedProps }
             >
                 { this.props.children }
             </RN.Image>
@@ -165,6 +154,20 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
             const event = e.nativeEvent as any;
             this.props.onError(new Error(event.error));
         }
+    }
+
+    private _buildSource(): RN.ImageSourcePropType {
+        // Check if require'd image resource
+        if (_.isNumber(this.props.source)) {
+            return this.props.source;
+        }
+
+        const source: RN.ImageSourcePropType = { uri: this.props.source };
+        if (this.props.headers) {
+            source.headers = this.props.headers;
+        }
+
+        return source;
     }
 
     // Note: This works only if you have an onLoaded handler and wait for the image to load.

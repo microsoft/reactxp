@@ -7,14 +7,17 @@
 * RN Windows-specific implementation of the cross-platform Button abstraction.
 */
 
+import PropTypes = require('prop-types');
 import React = require('react');
+import RN = require('react-native');
+import RNW = require('react-native-windows');
+import Types = require('../common/Types');
+
+import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import { Button as ButtonBase, ButtonContext as ButtonContextBase } from '../native-common/Button';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import UserInterface from '../native-common/UserInterface';
-import RN = require('react-native');
-import RNW = require('react-native-windows');
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
-import PropTypes = require('prop-types');
 
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_SPACE = 32;
@@ -26,6 +29,7 @@ let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
 
 export interface ButtonContext extends ButtonContextBase {
     isRxParentAContextMenuResponder?: boolean;
+    isRxParentAFocusableInSameFocusManager?: boolean;
 }
 
 export class Button extends ButtonBase implements React.ChildContextProvider<ButtonContext>, FocusManagerFocusableComponent {
@@ -35,18 +39,13 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAContextMenuResponder: PropTypes.bool,
+        isRxParentAFocusableInSameFocusManager: PropTypes.bool,
         ...ButtonBase.childContextTypes
     };
 
-    private _focusableElement : RNW.FocusableWindows<RN.ViewProps> | null = null;
-
     private _isFocusedWithKeyboard = false;
 
-    private _onFocusableRef = (btn: RNW.FocusableWindows<RN.ViewProps> | null): void => {
-        this._focusableElement = btn;
-    }
-
-    protected _render(internalProps: RN.ViewProps): JSX.Element {
+    protected _render(internalProps: RN.ViewProps, onMount: (btn: any) => void): JSX.Element {
         // RNW.FocusableProps tabIndex: default is 0.
         // -1 has no special semantic similar to DOM.
         let tabIndex: number | undefined = this.getTabIndex();
@@ -56,21 +55,24 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         // The intermediate "focusable, but not in the tab order" case is not supported.
         let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
 
+        let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
+
         // We don't use 'string' ref type inside ReactXP
-        let originalRef = internalProps.ref;
+        let originalRef = (internalProps as any).ref;
         if (typeof originalRef === 'string') {
             throw new Error('Button: ReactXP must not use string refs internally');
         }
         let componentRef: Function = originalRef as Function;
 
-        let focusableViewProps: RNW.FocusableWindowsProps<RN.ViewProps> = {
+        let focusableViewProps: RNW.FocusableWindowsProps<RN.ExtendedViewProps> = {
             ...internalProps,
+            ref: onMount,
             componentRef: componentRef,
-            ref: this._onFocusableRef,
             onMouseEnter: this._onMouseEnter,
             onMouseLeave: this._onMouseLeave,
             isTabStop: windowsTabFocusable,
             tabIndex: tabIndex,
+            importantForAccessibility: importantForAccessibility,
             disableSystemFocusVisuals: false,
             handledKeyDownKeys: DOWN_KEYCODES,
             handledKeyUpKeys: UP_KEYCODES,
@@ -82,31 +84,29 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         };
 
         return (
-            <FocusableAnimatedView
-                { ...focusableViewProps }
-            >
+            <FocusableAnimatedView { ...focusableViewProps }>
                 { this.props.children }
             </FocusableAnimatedView>
         );
     }
 
     focus() {
-        if (this._focusableElement && this._focusableElement.focus) {
-            this._focusableElement.focus();
+        if (this._buttonElement && this._buttonElement.focus) {
+            this._buttonElement.focus();
         }
 
     }
 
     blur() {
-        if (this._focusableElement && this._focusableElement.blur) {
-            this._focusableElement.blur();
+        if (this._buttonElement && this._buttonElement.blur) {
+            this._buttonElement.blur();
         }
     }
 
     setNativeProps(nativeProps: RN.ViewProps) {
         // Redirect to focusable component if present.
-        if (this._focusableElement) {
-            this._focusableElement.setNativeProps(nativeProps);
+        if (this._buttonElement) {
+            this._buttonElement.setNativeProps(nativeProps);
         } else {
             super.setNativeProps(nativeProps);
         }
@@ -123,6 +123,10 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         // This instance can be a responder (even when button is disabled). It may or may not have to invoke an onContextMenu handler, but
         // it will consume all corresponding touch events, so overwriting any parent-set value is the correct thing to do.
         childContext.isRxParentAContextMenuResponder = !!this.props.onContextMenu;
+
+        // This button will hide other "accessible focusable" controls as part of being restricted/limited by a focus manager
+        // (more detailed description is in windows/View.tsx)
+        childContext.isRxParentAFocusableInSameFocusManager = true;
 
         return childContext;
     }
@@ -217,14 +221,23 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         return this.props.tabIndex || 0;
     }
 
-    updateNativeTabIndex(): void {
-        if (this._focusableElement) {
+    getImportantForAccessibility(): ImportantForAccessibilityValue | undefined {
+        // Focus Manager may override this
+        // We force a default of YES if no property is provided, consistent with the base class
+        return AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
+            Types.ImportantForAccessibility.Yes);
+    }
+
+    updateNativeAccessibilityProps(): void {
+        if (this._buttonElement) {
             let tabIndex: number | undefined = this.getTabIndex();
             let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
+            let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
-            this._focusableElement.setNativeProps({
+            this._buttonElement.setNativeProps({
                 tabIndex: tabIndex,
-                isTabStop: windowsTabFocusable
+                isTabStop: windowsTabFocusable,
+                importantForAccessibility: importantForAccessibility
             });
         }
     }

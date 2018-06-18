@@ -11,7 +11,7 @@ import ReactDOM = require('react-dom');
 
 import { FocusManager as FocusManagerBase,
     FocusableComponentInternal,
-    StoredFocusableComponent } from '../../common/utils/FocusManager';
+    StoredFocusableComponent as StoredFocusableComponentBase } from '../../common/utils/FocusManager';
 import { FocusArbitratorProvider, FocusCandidateType, FocusCandidateInternal } from '../../common/utils/AutoFocusHelper';
 
 import UserInterface from '../UserInterface';
@@ -27,6 +27,13 @@ import {
 } from  '../../common/utils/FocusManager';
 
 export { FocusableComponentStateCallback };
+
+export interface StoredFocusableComponent extends StoredFocusableComponentBase {
+    origTabIndex?: number;
+    origAriaHidden?: string;
+    curTabIndex?: number;
+    curAriaHidden?: boolean;
+}
 
 export class FocusManager extends FocusManagerBase {
     private static _setTabIndexTimer: number|undefined;
@@ -121,7 +128,8 @@ export class FocusManager extends FocusManagerBase {
     }
 
     private static _isComponentAvailable(storedComponent: StoredFocusableComponent): boolean {
-        return !storedComponent.removed &&
+        return !storedComponent.accessibleOnly &&
+            !storedComponent.removed &&
             !storedComponent.restricted &&
             storedComponent.limitedCount === 0 &&
             storedComponent.limitedCountAccessible === 0;

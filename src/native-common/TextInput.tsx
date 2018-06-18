@@ -72,11 +72,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    protected _render(props: RN.TextInputProps): JSX.Element {
+    protected _render(props: RN.TextInputProps, onMount: (textInput: any) => void): JSX.Element {
         return (
-            <RN.TextInput
-                { ...props }
-            />
+            <RN.TextInput { ...props } ref={ onMount }/>
         );
     }
 
@@ -84,10 +82,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         const editable = this.props.editable !== false;
         const blurOnSubmit = this.props.blurOnSubmit || !this.props.multiline;
 
-        const internalProps: RN.TextInputProps = {
-            ref: this._onMount,
+        const internalProps: RN.ExtendedTextInputProps = {
             multiline: this.props.multiline,
-            style: Styles.combine([_styles.defaultTextInput, this.props.style]),
+            style: Styles.combine([_styles.defaultTextInput, this.props.style]) as RN.StyleProp<RN.TextStyle>,
             value: this.state.inputValue,
 
             autoCorrect: this.props.autoCorrect,
@@ -101,10 +98,10 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             defaultValue: this.props.value,
             placeholderTextColor: this.props.placeholderTextColor,
             onSubmitEditing: this.props.onSubmitEditing,
-            onKeyPress: this._onKeyPress as any,
-            onPaste: this._onPaste as any,
+            onKeyPress: this._onKeyPress,
+            onPaste: this._onPaste,
             onChangeText: this._onChangeText,
-            onSelectionChange: this._onSelectionChange as any,
+            onSelectionChange: this._onSelectionChange,
             onFocus: this._onFocus,
             onBlur: this._onBlur,
             onScroll: this._onScroll,
@@ -119,12 +116,13 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             accessibilityLabel: this.props.accessibilityLabel,
             allowFontScaling: this.props.allowFontScaling,
             maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
-            underlineColorAndroid: 'transparent'
+            underlineColorAndroid: 'transparent',
+            clearButtonMode: this.props.clearButtonMode
         };
 
         this._selectionToSet = undefined;
 
-        return this._render(internalProps);
+        return this._render(internalProps, this._onMount);
     }
 
     protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
@@ -155,7 +153,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    private _onSelectionChange = (selEvent: React.SyntheticEvent<any>) => {
+    private _onSelectionChange = (selEvent: RN.NativeSyntheticEvent<any>) => {
         let selection: { start: number, end: number } =
             (selEvent.nativeEvent as any).selection;
 
@@ -180,7 +178,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    private _onKeyPress = (e: React.SyntheticEvent<any>) => {
+    private _onKeyPress = (e: RN.NativeSyntheticEvent<any>) => {
         if (this.props.onKeyPress) {
             this.props.onKeyPress(EventHelpers.toKeyboardEvent(e));
         }

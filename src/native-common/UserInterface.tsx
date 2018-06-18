@@ -80,7 +80,7 @@ export class UserInterface extends RX.UserInterface {
 
         if (rootViewId && RN.Platform.OS === 'windows') {
             try {
-                dimensions = RN.Dimensions.get(rootViewId);
+                dimensions = RN.Dimensions.get(rootViewId as any);
             } catch (e) {
                 // Can happen if RNW doesn't support multi view dimensions tracking yet
                 console.warn('Couldn\'t get dimensions for rootViewId ' + rootViewId +
@@ -139,7 +139,10 @@ export class UserInterface extends RX.UserInterface {
     }
 
     dismissKeyboard() {
-        RN.TextInput.State.blurTextInput(RN.TextInput.State.currentlyFocusedField());
+        // Work around the fact that the react-native type definition file
+        // doesn't properly specify RN.TextInput.State as static.
+        let staticState = (RN.TextInput as any).State as RN.TextInputState;
+        staticState.blurTextInput(staticState.currentlyFocusedField());
     }
 
     isHighPixelDensityScreen() {

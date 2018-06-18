@@ -13,11 +13,14 @@ This extension provides a cross-platform mechanism for wrapping a simple REST AP
 
 For more details, refer to the [SimpleRestClients](https://github.com/Microsoft/SimpleRestClients) github site.
 
-To install: ```npm install simplerestclients```
+To install: ```npm install simplerestclients``` or  ```yarn add simplerestclients```
 
 ### Sample Usage
 
 ``` javascript
+import { GenericRestClient, ApiCallOptions }  from 'simplerestclients';
+import SyncTasks = require('synctasks');
+
 interface User {
     id: string;
     firstName: string;
