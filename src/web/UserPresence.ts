@@ -21,7 +21,7 @@ export class UserPresence extends RX.UserPresence {
     constructor() {
         super();
         // Handle test environment where document is not defined.
-        if (typeof (document) !== 'undefined') {
+        if (typeof(document) !== 'undefined') {
             this._isPresent = AppVisibilityUtils.hasFocusAndActive();
             AppVisibilityUtils.onFocusedEvent.subscribe(this._handleFocus.bind(this));
             AppVisibilityUtils.onBlurredEvent.subscribe(this._handleBlur.bind(this));
@@ -34,8 +34,8 @@ export class UserPresence extends RX.UserPresence {
 
     isUserPresent(): boolean {
         // Handle test environment where document is not defined.
-        if (typeof (document) !== 'undefined') {
-            return AppVisibilityUtils.hasFocusAndActive();
+        if (typeof(document) !== 'undefined') {
+            return this._isPresent;
         } else {
             return true;
         }
