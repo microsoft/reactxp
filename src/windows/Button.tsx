@@ -47,9 +47,9 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
     private _isFocusedWithKeyboard = false;
 
-    //Offset to show context menu using keyboard.
-    protected _contextMenuOffset() {
-        return {x: 0, y: 0};
+    // Offset to show context menu using keyboard.
+    protected _getContextMenuOffset() {
+        return { x: 0, y: 0 };
     }
 
     protected _render(internalProps: RN.ViewProps, onMount: (btn: any) => void): JSX.Element {
@@ -170,7 +170,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
                             // can show the context menu in the right position 
                             if (this._isMounted) { 
                                 let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, 
-                                    this._contextMenuOffset());                              
+                                    this._getContextMenuOffset());                              
                                 if (this.props.onContextMenu) {
                                     this.props.onContextMenu(mouseEvent);  
                                 }  

@@ -36,9 +36,9 @@ export interface LinkState {
 
 export class Link extends LinkBase<LinkState> implements FocusManagerFocusableComponent {
     
-    //Offset to show context menu using keyboard.
-    protected _contextMenuOffset() {
-        return {x: 0, y: 0};
+    // Offset to show context menu using keyboard.
+    protected _getContextMenuOffset() {
+        return { x: 0, y: 0 };
     }
 
     constructor(props: Types.LinkProps) {
@@ -206,7 +206,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
                         // need to simulate the mouse event so that we 
                         // can show the context menu in the right position 
                         if (this._isMounted) {                       
-                            let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, this._contextMenuOffset());
+                            let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, this._getContextMenuOffset());
                             if (this.props.onContextMenu) {
                                 this.props.onContextMenu(mouseEvent);    
                             }   

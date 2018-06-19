@@ -59,8 +59,8 @@ export class EventHelpers {
                         keyCode = 18;
                         break;
 
-                    //keyCode in windows is 93 for context menu button. Since that is already used 
-                    //for PgDn, picking a keyCode that is not currently assigned in this list. 
+                    // keyCode in windows is 93 for context menu button. Since that is already used 
+                    // for PgDn, picking a keyCode that is not currently assigned in this list. 
                     case 'Application':
                         keyCode = 500;
                         break;

@@ -63,9 +63,9 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         ...ViewCommon.childContextTypes
     };
 
-    //Offset to show context menu using keyboard.
-    protected _contextMenuOffset() {
-        return {x: 0, y: 0};
+    // Offset to show context menu using keyboard.
+    protected _getContextMenuOffset() {
+        return { x: 0, y: 0 };
     }
 
     private _onKeyDown: ((e: React.SyntheticEvent<any>) => void) | undefined;
@@ -174,7 +174,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                 // need to simulate the mouse event so that we 
                 // can show the context menu in the right position       
                 if (this._isMounted) {                         
-                    let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, this._contextMenuOffset());
+                    let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, this._getContextMenuOffset());
                     if (this.props.onContextMenu) {
                         this.props.onContextMenu(mouseEvent);    
                     }    
@@ -205,8 +205,8 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         if (props.onKeyPress) {
 
             // Define the handler for "onKeyDown" on first use, it's the safest way when functions
-            // called from super constructors are involved. Ensuring nothing happens here if there 
-            // is a tabIndex else KeyDown is handled twice, in _onFocusableKeyDown as well. 
+            // called from super constructors are involved. Ensuring nothing happens here if a 
+            // tabIndex is specified else KeyDown is handled twice, in _onFocusableKeyDown as well. 
             if (this.props.tabIndex === undefined) {
                 if (!this._onKeyDown) {
                     this._onKeyDown =  (e: Types.SyntheticEvent) => {
