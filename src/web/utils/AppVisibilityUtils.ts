@@ -38,7 +38,7 @@ export class AppVisibilityUtils {
         return document.hasFocus();
     }
 
-    private _trackIdleStatus () {
+    private _trackIdleStatus() {
         document.addEventListener('mousemove', this._wakeUpAndSetTimerForIdle);
         document.addEventListener('keyup', this._wakeUpAndSetTimerForIdle);
         document.addEventListener('touchstart', this._wakeUpAndSetTimerForIdle);
