@@ -100,7 +100,7 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
                 resizeMode={ resizeMode as any }
                 resizeMethod={ this.props.resizeMethod }
                 accessibilityLabel={ this.props.accessibilityLabel }
-                onLoad={ this.props.onLoad ? this._onLoad as any : undefined }
+                onLoad={ this.props.onLoad ? this._onLoad : undefined }
                 onError={ this._onError }
                 { ...additionalProps }
                 { ...extendedProps }
@@ -131,17 +131,16 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
         return [_styles.defaultImage, this.props.style];
     }
 
-    private _onLoad = (e: React.SyntheticEvent<Image>) => {
+    private _onLoad = (e: RN.NativeSyntheticEvent<RN.ImageLoadEventData>) => {
         if (!this._mountedComponent) {
             return;
         }
 
-        const nativeEvent = e.nativeEvent as any;
-        this._nativeImageWidth = nativeEvent.source.width;
-        this._nativeImageHeight = nativeEvent.source.height;
-
+        this._nativeImageWidth = e.nativeEvent.source.width;
+        this._nativeImageHeight = e.nativeEvent.source.height;
+        
         if (this.props.onLoad) {
-            this.props.onLoad({ width: this._nativeImageWidth!!!, height: this._nativeImageHeight!!! });
+            this.props.onLoad({ width: this._nativeImageWidth!, height: this._nativeImageHeight! });
         }
     }
 

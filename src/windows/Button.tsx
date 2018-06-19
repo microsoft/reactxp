@@ -21,8 +21,10 @@ import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '..
 
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_SPACE = 32;
+const KEY_CODE_F10 = 121;
+const KEY_CODE_APP = 500;
 
-const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER];
+const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER, KEY_CODE_F10, KEY_CODE_APP];
 const UP_KEYCODES = [KEY_CODE_SPACE];
 
 let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
@@ -44,6 +46,11 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
     };
 
     private _isFocusedWithKeyboard = false;
+
+    // Offset to show context menu using keyboard.
+    protected _getContextMenuOffset() {
+        return { x: 0, y: 0 };
+    }
 
     protected _render(internalProps: RN.ViewProps, onMount: (btn: any) => void): JSX.Element {
         // RNW.FocusableProps tabIndex: default is 0.
@@ -151,6 +158,25 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
                 // ENTER triggers press on key down
                 if (key === KEY_CODE_ENTER) {
                     this.props.onPress(keyEvent);
+                }  
+            }
+            
+            if (this.props.onContextMenu) {
+                let key = keyEvent.keyCode;
+                if ((key === KEY_CODE_APP) || (key === KEY_CODE_F10 && keyEvent.shiftKey)) {
+                    if (this._isMounted) { 
+                        UserInterface.measureLayoutRelativeToWindow(this).then( layoutInfo => { 
+                            // need to simulate the mouse event so that we 
+                            // can show the context menu in the right position 
+                            if (this._isMounted) { 
+                                let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, 
+                                    this._getContextMenuOffset());                              
+                                if (this.props.onContextMenu) {
+                                    this.props.onContextMenu(mouseEvent);  
+                                }  
+                            }                     
+                        });
+                    } 
                 }
             }
         }

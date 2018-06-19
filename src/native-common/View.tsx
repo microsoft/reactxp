@@ -152,7 +152,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     private _mixin_componentDidMount?: () => void;
     private _mixin_componentWillUnmount?: () => void;
 
-    private _isMounted = false;
+    protected _isMounted = false;
     private _hideTimeout: number|undefined;
     private _defaultOpacityValue: number|undefined;
     private _opacityAnimatedValue: RN.Animated.Value|undefined;
