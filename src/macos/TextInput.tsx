@@ -71,12 +71,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         const editable = this.props.editable !== false;
         const blurOnSubmit = this.props.blurOnSubmit || !this.props.multiline;
 
-        // The react-native interface file doesn't currently define
-        // onFocus or onBlur. Work around this limitation here.
         let extendedProps: RN.ExtendedTextInputProps = {
-            onFocus: this._onFocus,
-            onBlur: this._onBlur,
             onScroll: this._onScroll,
+            onPaste: this._onPaste,
             maxContentSizeMultiplier: this.props.maxContentSizeMultiplier
         };
 
@@ -101,6 +98,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 onKeyPress={ this._onKeyPress as any }
                 onChangeText={ this._onChangeText }
                 onSelectionChange={ this._onSelectionChange as any }
+                onFocus={this._onFocus}
+                onBlur={this._onBlur}
                 selection={{ start: this._selectionStart, end: this._selectionEnd }}
                 secureTextEntry={ this.props.secureTextEntry }
 
@@ -119,6 +118,12 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     protected _onMount = (component: any) => {
         this._mountedComponent = component;
+    }
+
+    private _onPaste = (e: React.ClipboardEvent<any>) => {
+        if (this.props.onPaste) {
+            this.props.onPaste(e);
+        }
     }
 
     private _onFocus = (e: Types.FocusEvent) => {

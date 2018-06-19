@@ -53,9 +53,6 @@ disableFullscreenUI: boolean = false; // Android-specific
 // Can text be edited by the user?
 editable: boolean = true;
 
-// UWP-only (Windows-only) prop for hiding the 'X' delete button
-hideDeleteButton: boolean = false;
-
 // iOS-only prop for controlling the keyboard appearance
 keyboardAppearance: 'default' | 'light' | 'dark';
 
@@ -88,7 +85,8 @@ onFocus: () => void = undefined;
 // Called on a key event
 onKeyPress: (e: KeyboardEvent) => void = undefined;
 
-// Called when text is pasted into the control
+// Called when text is pasted into the control (not currently
+// supported on iOS or Android)
 onPaste: (e: ClipboardEvent) => void = undefined;
 
 // Called when the selection scrolls due to overflow
@@ -115,6 +113,11 @@ secureTextEntry: boolean = false;
 
 // Should spell checking be applied to contents?
 spellCheck: boolean = [value of autoCorrect];
+
+// iOS and Windows only property for controlling when the clear button should appear on the right side of the text view.
+// Default behavior is dependent on platform: equivalent to 'never' on iOS, and 'always' on Windows.
+// Button is hidden when text view is empty, regardless of the property value.
+clearButtonMode: 'never' | 'while-editing' | 'unless-editing' | 'always';
 
 // See below for supported styles
 style: TextInputStyleRuleSet | TextInputStyleRuleSet[] = [];

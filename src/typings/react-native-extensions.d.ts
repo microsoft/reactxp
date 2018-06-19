@@ -25,13 +25,10 @@ declare module 'react-native' {
     }
 
     interface ExtendedTextInputProps extends RN.TextInputProps {
-        onFocus?: (e: RN.NativeSyntheticEvent) => void;
-        onBlur?: (e: RN.NativeSyntheticEvent) => void;
         onScroll?: (e: RN.NativeSyntheticEvent) => void;
         onPaste?: (e: RN.NativeSyntheticEvent) => void;
         maxContentSizeMultiplier?: number;
         tabIndex?: number;
-        hideDeleteButton?: boolean;
     }
 
     interface ExtendedImageProps extends RN.ImageProps {

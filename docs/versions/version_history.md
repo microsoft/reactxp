@@ -16,6 +16,9 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.3.0-rc.3 of reactxp - _16 Jun 2018_
+* [Breaking Change] Removed hideDeleteButton prop in RX.TextInput in favor of clearButtonMode prop, which applies to iOS and Windows UWP.
+
 #### Version 1.3.0-rc.2 of reactxp - _14 Jun 2018_
 * [Breaking Change] Renamed several methods in RX.Animated.ValueListener that were meant to be private.
 * Improved screen reader support in Windows UWP implementation.
