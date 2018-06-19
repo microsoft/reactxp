@@ -10,11 +10,7 @@
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 
-// Hack to allow inline-require without importing node.d.ts
-declare var require: (path: string) => any;
-if (typeof(document) !== 'undefined') {
-    var ifvisible = require('ifvisible');
-}
+import AppVisibilityUtils from './utils/AppVisibilityUtils';
 
 export class App extends RX.App {
     private _activationState: Types.AppActivationState;
@@ -24,20 +20,19 @@ export class App extends RX.App {
 
         // Handle test environment where document is not defined.
         if (typeof(document) !== 'undefined') {
-            this._activationState = ifvisible.now() ? Types.AppActivationState.Active : Types.AppActivationState.Background;
+            this._activationState = AppVisibilityUtils.hasFocusAndActive() ? 
+                Types.AppActivationState.Active : Types.AppActivationState.Background;
 
-            ifvisible.on('focus', () => {
-                if (this._activationState !== Types.AppActivationState.Active) {
-                    this._activationState = Types.AppActivationState.Active;
-                    this.activationStateChangedEvent.fire(this._activationState);
-                }
+            AppVisibilityUtils.onFocusedEvent.subscribe(() => {
+                this._setActivationState(Types.AppActivationState.Active);
             });
 
-            ifvisible.on('blur', () => {
-                if (this._activationState !== Types.AppActivationState.Background) {
-                    this._activationState = Types.AppActivationState.Background;
-                    this.activationStateChangedEvent.fire(this._activationState);
-                }
+            AppVisibilityUtils.onAppBackgroundedEvent.subscribe(() => {
+                this._setActivationState(Types.AppActivationState.Background);
+            });
+
+            AppVisibilityUtils.onBlurredEvent.subscribe(() => {
+               this._setActivationState(Types.AppActivationState.Inactive);
             });
         } else {
             this._activationState = Types.AppActivationState.Active;
@@ -50,6 +45,13 @@ export class App extends RX.App {
 
     getActivationState(): Types.AppActivationState {
         return this._activationState;
+    }
+
+    private _setActivationState = (currentState: Types.AppActivationState) => {
+        if (this._activationState !== currentState) {
+            this._activationState = currentState;
+            this.activationStateChangedEvent.fire(this._activationState);
+        }
     }
 }
 

@@ -12,6 +12,7 @@ This interface provides information about whether the user is currently present.
 # Methods
 ``` javascript
 // Indicates whether the user is currently present
+// On web platforms, it indicates whether the user has focused on the app and interacted with the app in the last 60 seconds
 isUserPresent(): boolean;
 ```
 

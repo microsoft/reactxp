@@ -13,13 +13,16 @@ This interface provides core methods associated with the application. It also ex
 ``` javascript
 // Indicates whether the app is active or inactive
 enum AppActivationState {
-    // App is active and in foreground
+    // App is running and in foreground
     Active = 1,
 
-    // App is active and in background
+    // App is running and in background
     Background = 2,
 
-    // App is inactive (not actively running)
+    // App is inactive
+    // On RN mobile platforms, it is an intermediate state between when app transitions between foreground and background.
+    // On web platforms, app is inactive when the app window is not focused.
+    // On native desktop platforms, this is currently not being used.
     Inactive = 3,
 
     // iOS specific activation state for extensions implemented

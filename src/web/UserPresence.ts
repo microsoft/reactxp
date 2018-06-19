@@ -6,43 +6,36 @@
 *
 * Web-specific implementation of the ReactXP interfaces related to
 * user presence.
+* 
+* User is considered present when user is focused on the App and has interacted with the App in the last 60 seconds.
+* User is considered not present, if app is not focused (backgrounded or blurred) or the app is focused 
+* but the user has not intereacted with the app in the last 60 seconds.
 */
 
 import RX = require('../common/Interfaces');
-
-// Hack to allow inline-require without importing node.d.ts
-declare var require: (path: string) => any;
-if (typeof(document) !== 'undefined') {
-    var ifvisible = require('ifvisible');
-}
+import AppVisibilityUtils from './utils/AppVisibilityUtils';
 
 export class UserPresence extends RX.UserPresence {
     private _isPresent: boolean;
-    private _isAppFocused: boolean;
 
     constructor() {
         super();
         // Handle test environment where document is not defined.
-        if (typeof(document) !== 'undefined') {
-            this._isPresent = this._isAppFocused = ifvisible.now();
-
-            ifvisible.on('wakeup', this._handleWakeup.bind(this));
-            ifvisible.on('idle', this._handleIdle.bind(this));
-            ifvisible.on('focus', this._handleFocus.bind(this));
-            ifvisible.on('blur', this._handleBlur.bind(this));
-
-            window.addEventListener('blur', this._handleWindowBlur.bind(this));
-            window.addEventListener('focus', this._handleFocus.bind(this));
+        if (typeof (document) !== 'undefined') {
+            this._isPresent = AppVisibilityUtils.hasFocusAndActive();
+            AppVisibilityUtils.onFocusedEvent.subscribe(this._handleFocus.bind(this));
+            AppVisibilityUtils.onBlurredEvent.subscribe(this._handleBlur.bind(this));
+            AppVisibilityUtils.onWakeUpEvent.subscribe(this._handleWakeup.bind(this));
+            AppVisibilityUtils.onIdleEvent.subscribe(this._handleIdle.bind(this));
         } else {
             this._isPresent = false;
-            this._isAppFocused = false;
         }
     }
 
     isUserPresent(): boolean {
         // Handle test environment where document is not defined.
-        if (typeof(document) !== 'undefined') {
-            return ifvisible.now();
+        if (typeof (document) !== 'undefined') {
+            return AppVisibilityUtils.hasFocusAndActive();
         } else {
             return true;
         }
@@ -57,9 +50,7 @@ export class UserPresence extends RX.UserPresence {
     }
 
     private _handleWakeup(): void {
-        if (this._isAppFocused) {
-            this._setUserPresent(true);
-        }
+        this._setUserPresent(true);
     }
 
     private _handleIdle(): void {
@@ -67,18 +58,11 @@ export class UserPresence extends RX.UserPresence {
     }
 
     private _handleFocus(): void {
-        this._isAppFocused = true;        
         this._setUserPresent(true);
     }
 
     private _handleBlur(): void {
-        this._isAppFocused = false;        
         this._setUserPresent(false);
-    }
-
-    private _handleWindowBlur(): void {
-        this._isAppFocused = false;        
-        ifvisible.idle();
     }
 }
 
