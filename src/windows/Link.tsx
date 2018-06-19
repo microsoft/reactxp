@@ -18,11 +18,14 @@ import { applyFocusableComponentMixin, FocusManager, FocusManagerFocusableCompon
 import EventHelpers from '../native-common/utils/EventHelpers';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import { LinkBase } from '../native-common/Link';
+import UserInterface from '../native-common/UserInterface';
 
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_SPACE = 32;
+const KEY_CODE_F10 = 121;
+const KEY_CODE_APP = 500;
 
-const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER];
+const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER, KEY_CODE_APP, KEY_CODE_F10];
 const UP_KEYCODES = [KEY_CODE_SPACE];
 
 let FocusableText = RNW.createFocusableComponent(RN.Text);
@@ -32,6 +35,12 @@ export interface LinkState {
 }
 
 export class Link extends LinkBase<LinkState> implements FocusManagerFocusableComponent {
+    
+    // Offset to show context menu using keyboard.
+    protected _getContextMenuOffset() {
+        return { x: 0, y: 0 };
+    }
+
     constructor(props: Types.LinkProps) {
         super(props);
 
@@ -50,6 +59,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         // This is for symmetry, but the callbacks have already been deleted by FocusManager since its
         // hook executes first
         FocusManager.unsubscribe(this, this._restrictedOrLimitedCallback);
@@ -186,6 +196,25 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         if (key === KEY_CODE_ENTER) {
             // Defer to base class
             this._onPress(keyEvent);
+        }
+        
+        if (this.props.onContextMenu) {
+            let key = keyEvent.keyCode;
+            if ((key === KEY_CODE_APP) || (key === KEY_CODE_F10 && keyEvent.shiftKey)) {
+                if (this._isMounted) { 
+                    UserInterface.measureLayoutRelativeToWindow(this).then( layoutInfo => {  
+                        // need to simulate the mouse event so that we 
+                        // can show the context menu in the right position 
+                        if (this._isMounted) {                       
+                            let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, this._getContextMenuOffset());
+                            if (this.props.onContextMenu) {
+                                this.props.onContextMenu(mouseEvent);    
+                            }   
+                        }                 
+                    });
+                } 
+                
+            }
         }
     }
 
