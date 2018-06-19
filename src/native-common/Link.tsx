@@ -32,6 +32,7 @@ export class LinkBase<S> extends React.Component<Types.LinkProps, S> {
     context!: LinkContext;
 
     protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+    protected _isMounted = false;
 
     // To be able to use Link inside TouchableHighlight/TouchableOpacity
     public setNativeProps(nativeProps: RN.TextProps) {
@@ -56,9 +57,15 @@ export class LinkBase<S> extends React.Component<Types.LinkProps, S> {
     }
 
     componentDidMount() {
+        this._isMounted = true;
+
         if (this.props.autoFocus) {
             this.requestFocus();
         }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     protected _render(internalProps: RN.TextProps, onMount: (text: any) => void) {

@@ -59,6 +59,12 @@ export class EventHelpers {
                         keyCode = 18;
                         break;
 
+                    //keyCode in windows is 93 for context menu button. Since that is already used 
+                    //for PgDn, picking a keyCode that is not currently assigned in this list. 
+                    case 'Application':
+                        keyCode = 500;
+                        break;
+
                     case 'Escape':
                         keyCode = 27;
                         break;
@@ -254,6 +260,23 @@ export class EventHelpers {
 
     isRightMouseButton(e: Types.SyntheticEvent): boolean {
         return !!e.nativeEvent.isRightButton;
+    }
+    
+    // Keyboard events do not inherently hold a position that can be used to show flyouts on keyboard input.  
+    // We simulate a mouse event so that we can show things like context Menus in the correct position. 
+    // Ensure offset is passed in {x = number, y= number} format. Using Top Left as anchor position. 
+    keyboardToMouseEvent(e: Types.KeyboardEvent, layoutInfo: Types.LayoutInfo, 
+        contextMenuOffset: {x: number, y: number}): Types.MouseEvent {
+        let mouseEvent = this.toMouseEvent(e);
+       
+        if ((layoutInfo.x !== undefined) && (contextMenuOffset.x !== undefined)) {
+            mouseEvent.clientX = mouseEvent.pageX = layoutInfo.x + contextMenuOffset.x;
+        }
+
+        if ((layoutInfo.y !== undefined) && (contextMenuOffset.y !== undefined)) {
+            mouseEvent.clientY = mouseEvent.pageY = layoutInfo.y + contextMenuOffset.y;
+        }          
+        return mouseEvent;
     }
 }
 

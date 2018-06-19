@@ -23,11 +23,14 @@ import { applyFocusableComponentMixin, FocusManagerFocusableComponent, FocusMana
     from '../native-desktop/utils/FocusManager';
 import PopupContainerView from '../native-common/PopupContainerView';
 import { PopupComponent } from '../common/PopupContainerViewBase';
+import UserInterface from '../native-common/UserInterface';
 
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_SPACE = 32;
+const KEY_CODE_F10 = 121;
+const KEY_CODE_APP = 500;
 
-const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER];
+const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER, KEY_CODE_F10, KEY_CODE_APP];
 const UP_KEYCODES = [KEY_CODE_SPACE];
 
 export interface ViewContext extends ViewContextCommon {
@@ -59,6 +62,11 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         isRxParentAFocusableInSameFocusManager: PropTypes.bool,
         ...ViewCommon.childContextTypes
     };
+
+    //Offset to show context menu using keyboard.
+    protected _contextMenuOffset() {
+        return {x: 0, y: 0};
+    }
 
     private _onKeyDown: ((e: React.SyntheticEvent<any>) => void) | undefined;
     private _onMouseEnter: ((e: React.SyntheticEvent<any>) => void) | undefined;
@@ -160,6 +168,21 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         return traits === trait || (_.isArray(traits) && traits.indexOf(trait) !== -1);
     }
 
+    private _showContextMenu(keyEvent: Types.KeyboardEvent) {
+        if (this._isMounted) { 
+            UserInterface.measureLayoutRelativeToWindow(this).then( layoutInfo => {
+                // need to simulate the mouse event so that we 
+                // can show the context menu in the right position       
+                if (this._isMounted) {                         
+                    let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, this._contextMenuOffset());
+                    if (this.props.onContextMenu) {
+                        this.props.onContextMenu(mouseEvent);    
+                    }    
+                }               
+            });
+        }    
+    }
+
     protected _buildInternalProps(props: Types.ViewProps) {
         // Base class does the bulk of _internalprops creation
         super._buildInternalProps(props);
@@ -182,17 +205,30 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         if (props.onKeyPress) {
 
             // Define the handler for "onKeyDown" on first use, it's the safest way when functions
-            // called from super constructors are involved.
-            if (!this._onKeyDown) {
-                this._onKeyDown =  (e: Types.SyntheticEvent) => {
-                    if (this.props.onKeyPress) {
-                        // A conversion to a KeyboardEvent looking event is needed
-                        this.props.onKeyPress(EventHelpers.toKeyboardEvent(e));
-                    }
-                };
+            // called from super constructors are involved. Ensuring nothing happens here if there 
+            // is a tabIndex else KeyDown is handled twice, in _onFocusableKeyDown as well. 
+            if (this.props.tabIndex === undefined) {
+                if (!this._onKeyDown) {
+                    this._onKeyDown =  (e: Types.SyntheticEvent) => {
+                        let keyEvent = EventHelpers.toKeyboardEvent(e);                   
+                        if (this.props.onKeyPress) {
+                            // A conversion to a KeyboardEvent looking event is needed
+                            this.props.onKeyPress(keyEvent);
+                        }
+                        
+                        // This needs to be handled when there is no 
+                        // tabIndex so we do not lose the bubbled events
+                        if (this.props.onContextMenu) {
+                            let key = keyEvent.keyCode;
+                            if ((key === KEY_CODE_APP) || (key === KEY_CODE_F10 && keyEvent.shiftKey)) {
+                                this._showContextMenu(keyEvent);                           
+                            }
+                        }
+                    };
+                }
+                // "onKeyDown" is fired by native buttons and bubbles up to views
+                this._internalProps.onKeyDown = this._onKeyDown;
             }
-            // "onKeyDown" is fired by native buttons and bubbles up to views
-            this._internalProps.onKeyDown = this._onKeyDown;
         }
 
         // Drag and drop related properties
@@ -457,6 +493,13 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             // ENTER triggers press on key down
             if (key === KEY_CODE_ENTER) {
                 this.props.onPress(keyEvent);
+            }
+        }
+
+        if (this.props.onContextMenu) {
+            let key = keyEvent.keyCode;
+            if ((key === KEY_CODE_APP) || (key === KEY_CODE_F10 && keyEvent.shiftKey)) {
+                this._showContextMenu(keyEvent); 
             }
         }
     }
