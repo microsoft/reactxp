@@ -149,6 +149,7 @@ export interface ImageConstructor {
     new (props: Types.ImageProps): Image;
 
     prefetch(url: string): SyncTasks.Promise<boolean>;
+    getMetadata(url: string): SyncTasks.Promise<Types.ImageMetadata>;
 }
 
 export abstract class Image extends React.Component<Types.ImageProps, any> {

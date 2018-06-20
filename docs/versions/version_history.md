@@ -16,6 +16,11 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.3.0-rc.4 of reactxp - _19 Jun 2018_
+* Enabled context menu on keyboard input in Windows UWP implementation.
+* On web implementation, augmented AppActivityState. Inactive state now indicates that main window is not in focus.
+* On web implementation, eliminated dependency on ifvisible library, shrinking the footprint of reactxp.
+
 #### Version 1.3.0-rc.3 of reactxp - _16 Jun 2018_
 * [Breaking Change] Removed hideDeleteButton prop in RX.TextInput in favor of clearButtonMode prop, which applies to iOS and Windows UWP.
 
