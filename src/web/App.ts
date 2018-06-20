@@ -23,16 +23,12 @@ export class App extends RX.App {
             this._activationState = AppVisibilityUtils.hasFocusAndActive() ? 
                 Types.AppActivationState.Active : Types.AppActivationState.Background;
 
-            AppVisibilityUtils.onFocusedEvent.subscribe(() => {
+            AppVisibilityUtils.onAppForegroundedEvent.subscribe(() => {
                 this._setActivationState(Types.AppActivationState.Active);
             });
 
             AppVisibilityUtils.onAppBackgroundedEvent.subscribe(() => {
                 this._setActivationState(Types.AppActivationState.Background);
-            });
-
-            AppVisibilityUtils.onBlurredEvent.subscribe(() => {
-               this._setActivationState(Types.AppActivationState.Inactive);
             });
         } else {
             this._activationState = Types.AppActivationState.Active;
