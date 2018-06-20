@@ -15,12 +15,12 @@ export class AppVisibilityUtils {
     private _isIdle = false;
     private _timer: number|undefined;
     
-    onFocusedEvent = new SubscribableEvent<() => void>();
-    onBlurredEvent = new SubscribableEvent<() => void>();
-    onAppForegroundedEvent = new SubscribableEvent<() => void>();
-    onAppBackgroundedEvent = new SubscribableEvent<() => void>();
-    onIdleEvent = new SubscribableEvent<() => void>();
-    onWakeUpEvent = new SubscribableEvent<() => void>();
+    readonly onFocusedEvent = new SubscribableEvent<() => void>();
+    readonly onBlurredEvent = new SubscribableEvent<() => void>();
+    readonly onAppForegroundedEvent = new SubscribableEvent<() => void>();
+    readonly onAppBackgroundedEvent = new SubscribableEvent<() => void>();
+    readonly onIdleEvent = new SubscribableEvent<() => void>();
+    readonly onWakeUpEvent = new SubscribableEvent<() => void>();
 
     constructor() {
         window.addEventListener('focus', this._onFocus);
