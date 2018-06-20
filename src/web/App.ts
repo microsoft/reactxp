@@ -20,7 +20,7 @@ export class App extends RX.App {
 
         // Handle test environment where document is not defined.
         if (typeof(document) !== 'undefined') {
-            this._activationState = AppVisibilityUtils.hasFocusAndActive() ? 
+            this._activationState = AppVisibilityUtils.isAppInForeground() ? 
                 Types.AppActivationState.Active : Types.AppActivationState.Background;
 
             AppVisibilityUtils.onAppForegroundedEvent.subscribe(() => {

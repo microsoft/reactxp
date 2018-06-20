@@ -23,19 +23,41 @@ export class AppVisibilityUtils {
     onWakeUpEvent = new SubscribableEvent<() => void>();
 
     constructor() {
-        window.addEventListener('focus', this._onFocus);
-        window.addEventListener('blur', this._onBlur);
-        document.addEventListener('visibilitychange', this._onAppVisibilityChanged);
+        // Handle test environment where document is not defined.
+        if (typeof (document) !== 'undefined') {
+            window.addEventListener('focus', this._onFocus);
+            window.addEventListener('blur', this._onBlur);
+            document.addEventListener('visibilitychange', this._onAppVisibilityChanged);
 
-        this._trackIdleStatus();
+            this._trackIdleStatus();
+        }
     }
 
     hasFocusAndActive() {
-        return document.hasFocus() && !this._isIdle;
+        // Handle test environment where document is not defined.
+        if (typeof (document) !== 'undefined') {
+            return document.hasFocus() && !this._isIdle;
+        }
+
+        return true;
     }
 
     hasFocus() {
-        return document.hasFocus();
+        // Handle test environment where document is not defined.
+        if (typeof (document) !== 'undefined') {
+            return document.hasFocus();
+        }
+
+        return true;
+    }
+
+    isAppInForeground() {
+        // Handle test environment where document is not defined.
+        if (typeof (document) !== 'undefined') {
+            return !document.hidden;
+        }
+
+        return true;
     }
 
     private _trackIdleStatus() {
