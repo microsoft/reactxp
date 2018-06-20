@@ -40,6 +40,8 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
     private _image1Ref: RX.Image;
     private _test1Complete = false;
     private _test2Complete = false;
+    private _test3Complete = false;
+    private _test4Complete = false;
     private _testResult: TestResult;
     private _testCompletion: (result: TestResult) => void;
 
@@ -79,6 +81,15 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
                     />
                 </RX.View>
             );
+
+            // Kicking-off Image API calls
+            RX.Image.prefetch('https://microsoft.github.io/reactxp/img/tests/bogus.jpg')
+                .then(this._prefetchedTest3)
+                .catch(this._prefetchedFailedTest3);
+
+            RX.Image.getMetadata('https://microsoft.github.io/reactxp/img/tests/bulb.jpg')
+                .then(this._getMetadataTest4)
+                .catch(this._getMetadataFailedTest4);
         }
 
         return (
@@ -136,9 +147,51 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
         this._checkAllTestsComplete();
     }
 
+    private _prefetchedTest3 = (success: boolean) => {
+        this._test3Complete = true;
+        if (success && this._testResult) {
+            this._testResult.errors.push('Was unexpected able to prefetch bogus test image');
+        }
+        this._checkAllTestsComplete();
+    }
+
+    private _prefetchedFailedTest3 = (error: any) => {
+        this._test3Complete = true;
+        if (this._testResult && !error) {
+            this._testResult.errors.push('Prefetching bogus test image failed but error is empty.');
+        }
+        this._checkAllTestsComplete();
+    }
+
+    private _getMetadataTest4 = (metaData: RX.Types.ImageMetadata) => {
+        this._test4Complete = true;
+        if (this._testResult) {
+            if (!metaData) {
+                this._testResult.errors.push('Received undefined image data from getMetadata');
+            }
+
+            if (metaData.height !== image1ExpectedHeight) {
+                this._testResult.errors.push('Received unexpected height from getMetadata');
+            }
+
+            if (metaData.width !== image1ExpectedWidth) {
+                this._testResult.errors.push('Received unexpected width from getMetadata');
+            }
+        }
+        this._checkAllTestsComplete();
+    }
+
+    private _getMetadataFailedTest4 = (error: any) => {
+        this._test4Complete = true;
+        if (this._testResult) {
+            this._testResult.errors.push('getMetadata for bulb test image failed with error: ', error);
+        }
+        this._checkAllTestsComplete();
+    }
+
     private _checkAllTestsComplete() {
         // If all of the tests are complete, report the result.
-        if (this._test1Complete && this._test2Complete) {
+        if (this._test1Complete && this._test2Complete && this._test3Complete && this._test4Complete) {
 
             // Make sure we report the result only once.
             if (this._testResult) {
@@ -155,6 +208,8 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
     execute(complete: (result: TestResult) => void): void {
         this._test1Complete = false;
         this._test2Complete = false;
+        this._test3Complete = false;
+        this._test4Complete = false;
         this._testResult = new TestResult();
         this._testCompletion = complete;
 
