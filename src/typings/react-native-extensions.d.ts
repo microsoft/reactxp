@@ -25,7 +25,6 @@ declare module 'react-native' {
     }
 
     interface ExtendedTextInputProps extends RN.TextInputProps {
-        onScroll?: (e: RN.NativeSyntheticEvent) => void;
         onPaste?: (e: RN.NativeSyntheticEvent) => void;
         maxContentSizeMultiplier?: number;
         tabIndex?: number;
