@@ -72,7 +72,6 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         const blurOnSubmit = this.props.blurOnSubmit || !this.props.multiline;
 
         let extendedProps: RN.ExtendedTextInputProps = {
-            onScroll: this._onScroll,
             onPaste: this._onPaste,
             maxContentSizeMultiplier: this.props.maxContentSizeMultiplier
         };
@@ -98,8 +97,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 onKeyPress={ this._onKeyPress as any }
                 onChangeText={ this._onChangeText }
                 onSelectionChange={ this._onSelectionChange as any }
-                onFocus={this._onFocus}
-                onBlur={this._onBlur}
+                onFocus={ this._onFocus }
+                onBlur={ this._onBlur }
+                onScroll={ this._onScroll }
                 selection={{ start: this._selectionStart, end: this._selectionEnd }}
                 secureTextEntry={ this.props.secureTextEntry }
 
@@ -175,9 +175,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    private _onScroll = (e: React.UIEvent<TextInput>) => {
+    private _onScroll = (e: RN.NativeSyntheticEvent<RN.TextInputScrollEventData>) => {
         if (this.props.onScroll) {
-            const { contentOffset } = (e.nativeEvent as any);
+            const { contentOffset } = e.nativeEvent;
             this.props.onScroll(contentOffset.x, contentOffset.y);
         }
     }

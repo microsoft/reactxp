@@ -190,9 +190,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    private _onScroll = (e: React.UIEvent<TextInput>) => {
+    private _onScroll = (e: RN.NativeSyntheticEvent<RN.TextInputScrollEventData>) => {
         if (this.props.onScroll) {
-            const { contentOffset } = (e.nativeEvent as any);
+            const { contentOffset } = e.nativeEvent;
             this.props.onScroll(contentOffset.x, contentOffset.y);
         }
     }
