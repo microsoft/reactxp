@@ -153,9 +153,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    private _onSelectionChange = (selEvent: RN.NativeSyntheticEvent<any>) => {
-        let selection: { start: number, end: number } =
-            (selEvent.nativeEvent as any).selection;
+    private _onSelectionChange = (e: RN.NativeSyntheticEvent<RN.TextInputSelectionChangeEventData>) => {
+        const selection = e.nativeEvent.selection;
 
         /**
          * On Android, clamp the selection start and end indices to be within the bounds of the TextInput's value.
@@ -168,6 +167,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         const selectionStart = (RN.Platform.OS === 'android')
             ? Math.min(selection.start, this.state.inputValue.length)
             : selection.start;
+
         const selectionEnd = (RN.Platform.OS === 'android')
             ? Math.min(selection.end, this.state.inputValue.length)
             : selection.end;

@@ -96,7 +96,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 onSubmitEditing={this.props.onSubmitEditing }
                 onKeyPress={ this._onKeyPress as any }
                 onChangeText={ this._onChangeText }
-                onSelectionChange={ this._onSelectionChange as any }
+                onSelectionChange={ this._onSelectionChange }
                 onFocus={ this._onFocus }
                 onBlur={ this._onBlur }
                 onScroll={ this._onScroll }
@@ -150,9 +150,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    private _onSelectionChange = (selEvent: React.SyntheticEvent<TextInput>) => {
-        let selection: { start: number, end: number } =
-            (selEvent.nativeEvent as any).selection;
+    private _onSelectionChange = (e: RN.NativeSyntheticEvent<RN.TextInputSelectionChangeEventData>) => {
+        const selection = e.nativeEvent.selection;
 
         /**
          * On iOS/macOS this callback is called BEFORE the _onChangeText, which means the inputValue hasn't had time to get updated yet
