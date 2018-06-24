@@ -16,6 +16,10 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.3.0-rc.5 of reactxp - _24 Jun 2018_
+* Added missing definition for getMetadata method in RX.Image.
+* Implemented RX.International methods for web platform.
+
 #### Version 1.3.0-rc.4 of reactxp - _19 Jun 2018_
 * Enabled context menu on keyboard input in Windows UWP implementation.
 * On web implementation, augmented AppActivityState. Inactive state now indicates that main window is not in focus.
