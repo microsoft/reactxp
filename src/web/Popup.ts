@@ -7,7 +7,7 @@
 * Web-specific implementation of the cross-platform Popup abstraction.
 */
 
-import { default as FrontLayerViewManager } from './FrontLayerViewManager';
+import FrontLayerViewManager from './FrontLayerViewManager';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 

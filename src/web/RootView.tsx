@@ -36,6 +36,7 @@ export interface RootViewProps {
     onDismissPopup?: () => void;
     keyBoardFocusOutline?: string;
     mouseFocusOutline?: string;
+    writingDirection?: 'auto' | 'rtl' | 'ltr';
 }
 
 export interface RootViewState {
@@ -293,6 +294,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             <div
                 className={ this.state.focusClass }
                 style={ rootViewStyle }
+                dir={ this.props.writingDirection }
             >
                 { this.props.mainView }
                 { optionalModal }

@@ -9,7 +9,7 @@
 
 import _ = require('./utils/lodashMini');
 
-import { default as FrontLayerViewManager } from './FrontLayerViewManager';
+import FrontLayerViewManager from './FrontLayerViewManager';
 import AppConfig from '../common/AppConfig';
 import RX = require('../common/Interfaces');
 import SyncTasks = require('synctasks');
