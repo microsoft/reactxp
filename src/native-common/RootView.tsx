@@ -16,7 +16,7 @@ import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
 import App from './App';
 import AppConfig from '../common/AppConfig';
-import { default as FrontLayerViewManager } from './FrontLayerViewManager';
+import FrontLayerViewManager from './FrontLayerViewManager';
 import MainViewStore from './MainViewStore';
 import Styles from './Styles';
 import Types = require('../common/Types');
