@@ -12,7 +12,7 @@ import React = require('react');
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 import { AlertModalContent } from './AlertModalContent';
-import { default as Modal } from './Modal';
+import Modal from './Modal';
 
 // Web/HTML implementation for alert dialog boxes
 export class Alert extends RX.Alert {

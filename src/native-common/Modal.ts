@@ -9,7 +9,7 @@
 
 import React = require('react');
 
-import { default as FrontLayerViewManager } from './FrontLayerViewManager';
+import FrontLayerViewManager from './FrontLayerViewManager';
 import RX = require('../common/Interfaces');
 
 import Types= require('../common/Types');

@@ -8,18 +8,19 @@
 */
 
 import RXInterfaces = require('../common/Interfaces');
+import FrontLayerViewManager from './FrontLayerViewManager';
 
 export class International implements RXInterfaces.International {
     allowRTL(allow: boolean): void {
-        // Need to implement
+        FrontLayerViewManager.allowRTL(allow);
     }
 
     forceRTL(force: boolean): void {
-        // Need to implement
+        FrontLayerViewManager.forceRTL(force);
     }
 
     isRTL(): boolean {
-        return false;
+        return FrontLayerViewManager.isRTL();
     }
 }
 

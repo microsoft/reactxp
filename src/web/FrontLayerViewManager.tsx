@@ -28,6 +28,10 @@ export class FrontLayerViewManager {
     private _popupShowDelayTimer: number|undefined;
     private _cachedPopups: PopupDescriptor[] = [];
 
+    private _isRtlDefault = document.documentElement.dir === 'rtl';
+    private _isRtlAllowed = true;
+    private _isRtlForced = false;
+
     setMainView(element: React.ReactElement<any>): void {
         this._mainView = element;
         this._renderRootView();
@@ -184,6 +188,7 @@ export class FrontLayerViewManager {
                 autoDismiss={ this._activePopupAutoDismiss }
                 autoDismissDelay={ this._activePopupAutoDismissDelay }
                 onDismissPopup={ () => this.dismissPopup(this._activePopupId!!!) }
+                writingDirection={ this._isRtlForced ? 'rtl' : (this._isRtlAllowed ? 'auto' : 'ltr') }
             />
         );
 
@@ -198,6 +203,24 @@ export class FrontLayerViewManager {
         } else {
             return !!this._activePopupId;
         }
+    }
+
+    allowRTL(allow: boolean) {
+        if (this._isRtlAllowed !== allow) {
+            this._isRtlAllowed = allow;
+            this._renderRootView();
+        }
+    }
+
+    forceRTL(force: boolean) {
+        if (this._isRtlForced !== force) {
+            this._isRtlForced = force;
+            this._renderRootView();
+        }
+    }
+
+    isRTL(): boolean {
+        return this._isRtlForced || (this._isRtlDefault && this._isRtlAllowed);
     }
 }
 
