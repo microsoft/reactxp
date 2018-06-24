@@ -84,14 +84,19 @@ export class Text extends TextBase {
 
         const isAriaHidden = AccessibilityUtil.isHidden(this.props.importantForAccessibility);
 
+        const textStyle = this._getStyles() as Types.TextStyle; 
+        const directionValue = textStyle && textStyle['writingDirection'];
+        const directionProperty = directionValue ? {'dir': directionValue} : {};
+
         if (this.props.selectable || typeof this.props.children !== 'string') {
             return (
                 <div
-                    style={ this._getStyles() as any }
+                    style={ textStyle as any }
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
                     id={ this.props.id }
                     onContextMenu={ this.props.onContextMenu }
+                    {...directionProperty}
                 >
                     { this.props.children }
                 </div>
@@ -102,12 +107,13 @@ export class Text extends TextBase {
             // will be displayed as pseudo element.
             return (
                 <div
-                    style={ this._getStyles() as any }
+                    style={ textStyle as any }
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
                     onContextMenu={ this.props.onContextMenu }
                     data-text-as-pseudo-element={ this.props.children }
                     id={ this.props.id }
+                    {...directionProperty}
                 />
             );
         }
