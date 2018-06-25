@@ -17,10 +17,6 @@ const _styles = {
     textContainer: RX.Styles.createViewStyle({
         margin: 12
     }),
-    labelContainer: RX.Styles.createViewStyle({
-        alignSelf: 'center',
-        margin: 8
-    }),
     explainText: RX.Styles.createTextStyle({
         fontSize: CommonStyles.generalFontSize,
         color: CommonStyles.explainTextColor

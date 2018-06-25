@@ -1,5 +1,12 @@
 {
+    "rulesDirectory": [
+        "./node_modules/reactxp/dist/tslint"
+    ],
     "rules": {
+        "grouped-import": true,
+        "no-unreferenced-styles": true,
+        "incorrect-this-props": true,
+
         "align": [true, "statements"],
         "class-name": true,
         "curly": true,

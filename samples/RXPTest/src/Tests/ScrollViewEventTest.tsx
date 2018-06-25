@@ -10,7 +10,6 @@ import RX = require('reactxp');
 
 import * as CommonStyles from '../CommonStyles';
 import { Test, TestResult, TestType } from '../Test';
-import { MultiTouchGestureState } from 'reactxp/dist/common/Types';
 
 const _styles = {
     container: RX.Styles.createViewStyle({
@@ -34,14 +33,6 @@ const _styles = {
     }),
     scrollView1: RX.Styles.createScrollViewStyle({
         alignSelf: 'stretch'
-    }),
-    numberContainer: RX.Styles.createViewStyle({
-        height: 50,
-        width: 50,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        alignItems: 'center',
-        justifyContent: 'center'
     }),
     numberText: RX.Styles.createTextStyle({
         fontSize: 24

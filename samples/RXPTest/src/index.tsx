@@ -1,4 +1,9 @@
+/*
+* Main entry point for web app.
+*/
+
 import RX = require('reactxp');
+
 import App = require('./App');
 
 RX.App.initialize(true, true);

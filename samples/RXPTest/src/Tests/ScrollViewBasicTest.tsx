@@ -10,7 +10,6 @@ import RX = require('reactxp');
 
 import * as CommonStyles from '../CommonStyles';
 import { Test, TestResult, TestType } from '../Test';
-import { MultiTouchGestureState } from 'reactxp/dist/common/Types';
 
 const _styles = {
     container: RX.Styles.createViewStyle({
@@ -129,7 +128,7 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
                 <RX.Button
                     style={ _styles.button }
                     onPress={ () => {
-                        this.setState({ horizontalIndicator: !this.state.horizontalIndicator })
+                        this.setState({ horizontalIndicator: !this.state.horizontalIndicator });
                     } }
                 >
                     <RX.Text style={ _styles.buttonText }>
@@ -139,7 +138,7 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
                 <RX.Button
                     style={ _styles.button }
                     onPress={ () => {
-                        this.setState({ verticalIndicator: !this.state.verticalIndicator })
+                        this.setState({ verticalIndicator: !this.state.verticalIndicator });
                     } }
                 >
                     <RX.Text style={ _styles.buttonText }>

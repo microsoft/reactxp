@@ -14,9 +14,6 @@ const _styles = {
         alignSelf: 'stretch',
         alignItems: 'flex-start'
     }),
-    aiContainer: RX.Styles.createViewStyle({
-        margin: 20
-    }),
     textContainer: RX.Styles.createViewStyle({
         margin: 12
     }),
