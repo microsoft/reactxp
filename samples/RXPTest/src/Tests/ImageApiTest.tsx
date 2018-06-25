@@ -72,6 +72,7 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
                         onLoad={ this._onLoadTest1 }
                         onError={ this._onErrorTest1 }
                         ref={ (comp: RX.Image) => { this._image1Ref = comp; } }
+                        testId={ 'image1' }
                     />
                     <RX.Image
                         style={ _styles.image }

@@ -139,6 +139,7 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
                     accessibilityLabel={ 'accessibility label' }
                     accessibilityLiveRegion={ RX.Types.AccessibilityLiveRegion.Polite }
                     importantForAccessibility={ RX.Types.ImportantForAccessibility.Yes }
+                    testId={ 'view1' }
                 >
                     <RX.Text style={ _styles.labelText }>
                         { 'Long press me' }

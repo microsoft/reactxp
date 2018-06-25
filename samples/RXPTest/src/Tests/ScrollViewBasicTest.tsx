@@ -156,6 +156,7 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
                         overScrollMode={ 'never' }
                         showsHorizontalScrollIndicator={ this.state.horizontalIndicator }
                         showsVerticalScrollIndicator={ this.state.verticalIndicator }
+                        testId={ 'scrollView1' }
                     >
                         <RX.View style={ _styles.numberGrid }>
                             { numberBoxes }

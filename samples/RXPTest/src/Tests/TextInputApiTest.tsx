@@ -75,6 +75,7 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
                     style={ _styles.textInput1 }
                     value={ this.state.testInput }
                     onChangeText={ val => this.setState({ testInput: val }) }
+                    testId={ 'textInput1' }
                 />
             </RX.View>
         );

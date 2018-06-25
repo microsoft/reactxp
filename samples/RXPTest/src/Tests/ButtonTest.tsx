@@ -107,6 +107,7 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                     onPress={ () => {
                         // no-op
                     } }
+                    testId={ 'button1' }
                 >
                     <RX.Text style={ [_styles.button1Text, this.state.button1Hover && _styles.button1TextHover] }>
                         { 'Button With Hover' }

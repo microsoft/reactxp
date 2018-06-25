@@ -84,6 +84,7 @@ class LinkView extends RX.Component<RX.CommonProps, LinkViewState> {
                         onHoverEnd={ () => { this.setState({ test1Hovering: false }); } }
                         onContextMenu={ () => { this.setState({ test1Result: 'Context menu detected' }); } }
                         allowFontScaling={ false }
+                        testId={ 'link1' }
                     >
                         { 'Press or hold' }
                     </RX.Link>

@@ -104,6 +104,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
                         onLoadStart={ this._onLoadStartTest1 }
                         onLoad={ this._onLoadTest1 }
                         onError={ this._onErrorTest1 }
+                        testId={ 'webView1' }
                     />
                 </RX.View>
                 <RX.View style={ _styles.buttonBank }>

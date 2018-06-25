@@ -49,6 +49,7 @@ class ActivityIndicatorView extends RX.Component<RX.CommonProps, ActivityIndicat
                     <RX.ActivityIndicator
                         size={ 'large' }
                         color={ '#333' }
+                        testId={ 'activityIndicator1' }
                     />
                 </RX.View>
             );

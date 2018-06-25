@@ -114,6 +114,7 @@ class TextView extends RX.Component<RX.CommonProps, TextViewState> {
                         importantForAccessibility={ RX.Types.ImportantForAccessibility.Yes }
                         id={ 'test1' }
                         allowFontScaling={ false }
+                        testId={ 'text1' }
                     >
                         <RX.Text>
                             { 'Substring 1 ' }

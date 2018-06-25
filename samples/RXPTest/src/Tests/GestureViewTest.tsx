@@ -131,6 +131,7 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
                     onDoubleTap={ state => this._onDoubleTapTest1(state) }
                     mouseOverCursor={ RX.Types.GestureMouseCursor.Pointer }
                     onScrollWheel={ state => this._onScrollWheelTest1(state) }
+                    testId={ 'gestureView1' }
                 >
                     <RX.Animated.View
                         style={ [_styles.smallBox, test1ColorStyle, this._test1AnimatedStyle] }

@@ -87,6 +87,7 @@ class PickerView extends RX.Component<RX.CommonProps, PickerViewState> {
                         items={ picker1Items }
                         mode={ 'dialog' }
                         onValueChange={ this._onValueChanged1 }
+                        testId={ 'picker1' }
                     />
                     <RX.Text style={ _styles.resultText }>
                         { 'You selected "' +
