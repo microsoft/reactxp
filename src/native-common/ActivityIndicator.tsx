@@ -64,6 +64,7 @@ export class ActivityIndicator extends React.Component<Types.ActivityIndicatorPr
                 animating={ true }
                 color={ this.state.isVisible ? this.props.color : 'transparent' }
                 size={ size }
+                testID={ this.props.testId }
             />
         );
     }

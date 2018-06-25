@@ -21,6 +21,7 @@ export class Picker extends RX.Picker {
                 style={ this._getStyles() as any }
                 value={ this.props.selectedValue }
                 onChange={ this._onValueChange }
+                data-test-id={ this.props.testId }
             >
                 { _.map(this.props.items, (i, idx) => <option value={ i.value } key={ idx }>{ i.label }</option> ) }
             </select>

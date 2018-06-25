@@ -159,7 +159,8 @@ export class Button extends ButtonBase {
             onResponderMove: this.touchableHandleResponderMove,
             onResponderRelease: this.touchableHandleResponderRelease,
             onResponderTerminate: this.touchableHandleResponderTerminate,
-            shouldRasterizeIOS: this.props.shouldRasterizeIOS
+            shouldRasterizeIOS: this.props.shouldRasterizeIOS,
+            testID: this.props.testId
         };
 
         return this._render(extendedProps, this._onMount);

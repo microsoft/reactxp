@@ -373,6 +373,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
             reactElement = (
                 <AnimateListEdits
                     { ...props }
+                    data-test-id={ this.props.testId }
                     animateChildEnter={ this.props.animateChildEnter }
                     animateChildMove={ this.props.animateChildMove }
                     animateChildLeave={ this.props.animateChildLeave }
@@ -382,7 +383,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
             );
         } else {
             reactElement = (
-                <div { ...props } >
+                <div { ...props } data-test-id={ this.props.testId }>
                     { this._renderResizeDetectorIfNeeded(combinedStyles) }
                     { this.props.children }
                 </div>

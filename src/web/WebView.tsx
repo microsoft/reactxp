@@ -187,6 +187,7 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
                     onLoad={ this._onLoad }
                     sandbox={ this._sandboxToStringValue(sandbox) }
                     width='100%'
+                    data-test-id={ this.props.testId }
                 />
             </View>
         );

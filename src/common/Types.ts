@@ -351,6 +351,7 @@ export interface CommonProps {
     ref?: string | ((obj: ComponentBase | null) => void);
     key?: string | number;
     children?: ReactNode | ReactNode[];
+    testId?: string;
 }
 
 export interface Stateless {}

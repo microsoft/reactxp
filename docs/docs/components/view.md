@@ -30,8 +30,9 @@ accessibilityLiveRegion: AccessibilityLiveRegion =
 // in View's FocusArbitrator callback.
 accessibilityId: string = undefined;
 
-// Expose the element and/or its children as accessible to Screen readers
-importantForAccessibility?: ImportantForAccessibility = Auto;
+// Opacity value the button should animate to, on touch on views that
+// have onPress handlers
+activeOpacity: number = undefined; // iOS and Android only
 
 // Animation of children
 //   - Every child must have a `key`.
@@ -49,12 +50,20 @@ ariaRoleDescription?: string = undefined; // Web only
 // Block touches for this component and all of its children
 blockPointerEvents: boolean = false; // iOS and Android only
 
+// Disable default opacity animation on touch on views that have
+// onPress handlers
+disableTouchOpacityAnimation: boolean = false;  // iOS and Android only
+
 // Specifies a unique id for an HTML element
+// NOTE: This property may be going away in future versions.
 id: string = undefined; // Web only
 
 // Ignore clicks and other mouse events, allowing children or
 // components behind to receive them
 ignorePointerEvents: boolean = false; // web only
+
+// Expose the element and/or its children as accessible to Screen readers
+importantForAccessibility?: ImportantForAccessibility = Auto;
 
 // When the keyboard navigation is happening, restrict the focusable
 // elements within this view. Useful for popups and modals, you
@@ -155,6 +164,9 @@ shouldRasterizeIOS: boolean = false; // iOS only
 // Keyboard tab order
 tabIndex: number = undefined;
 
+// ID that can be used to identify the instantiated element for testing purposes.
+testId: string = undefined;
+
 // Text for a tooltip
 title: string = undefined;
 
@@ -163,15 +175,6 @@ style: ViewStyleRuleSet | ViewStyleRuleSet[] = [];
 
 // Should use hardware or software rendering?
 viewLayerTypeAndroid: 'none' | 'software' | 'hardware'; // Android only property
-
-// Visual touchfeedback properties
-// Disable default opacity animation on touch on views that have
-// onPress handlers
-disableTouchOpacityAnimation: boolean = false;  // iOS and Android only
-
-// Opacity value the button should animate to, on touch on views that
-// have onPress handlers
-activeOpacity: number = undefined; // iOS and Android only
 
 // Background color that will be visible on touch on views that have onPress
 // handlers

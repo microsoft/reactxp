@@ -79,6 +79,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
                 aria-label={ this.props.accessibilityLabel }
                 aria-hidden={ isAriaHidden }
                 onContextMenu={ this.props.onContextMenu ? this._sendContextMenuEvent : undefined }
+                data-test-id={ this.props.testId }
             >
                 { this.props.children }
             </div>

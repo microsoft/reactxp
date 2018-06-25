@@ -22,19 +22,21 @@ interface PickerPropsItem {
 // List of items to be displayed in the picker
 items: PickerPropsItem[] = [];
 
-// Initially-selected item
-selectedValue: string;
+// 'dialog': Show a modal dialog
+// 'dropdown': Shows a dropdown anchored to the picker view
+mode: 'dialog' | 'dropdown' = 'dialog'; // Android only
 
 // Invoked when the selected value changes
 onValueChange: (itemValue: string, itemPosition: number) => void;
 
+// Initially-selected item
+selectedValue: string;
+
 // See below for supported styles
 style: PickerStyleRuleSet | PickerStyleRuleSet[] = [];
 
-// Android only.
-// 'dialog': Show a modal dialog
-// 'dropdown': Shows a dropdown anchored to the picker view
-mode: 'dialog' | 'dropdown' = 'dialog';
+// ID that can be used to identify the instantiated element for testing purposes.
+testId: string = undefined;
 ```
 
 ## Styles

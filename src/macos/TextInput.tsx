@@ -111,6 +111,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 accessibilityLabel={ this.props.accessibilityLabel }
                 allowFontScaling={ this.props.allowFontScaling }
                 underlineColorAndroid='transparent'
+                testID={ this.props.testId }
                 { ...extendedProps }
             />
         );

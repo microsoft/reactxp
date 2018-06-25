@@ -25,11 +25,15 @@ accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
 // in View's FocusArbitrator callback.
 accessibilityId: string = undefined;
 
+// Opacity value the button should animate to on button touch
+activeOpacity: number = undefined; // iOS and Android only
+
 // Id of an expandable element revealed by the button. Describes a relation
 // between button and element to screen reader.
 ariaControls: string = undefined; // Web only
 
 // Specifies a unique id for an HTML element
+// NOTE: This property may be going away in future versions.
 id: string = undefined; // Web only
 
 // Expose the element and/or its children as accessible to Screen readers
@@ -44,6 +48,9 @@ disabled: boolean = false;
 // By default, opacity of a disabled element is 0.5. This value can be
 // overriden with this property
 disabledOpacity: number = undefined;
+
+// Disable default opacity animation on touch of buttons
+disableTouchOpacityAnimation: boolean = false;  // iOS and Android only
 
 // Should be focused when the component is mounted, see also View's arbitrateFocus
 // property.
@@ -91,15 +98,11 @@ style: ButtonStyleRuleSet | ButtonStyleRuleSet[] = [];
 // Keyboard tab order
 tabIndex: number = undefined;
 
+// ID that can be used to identify the instantiated element for testing purposes.
+testId: string = undefined;
+
 // Text for a tooltip
 title: string = undefined;
-
-// Visual touchfeedback properties
-// Disable default opacity animation on touch of buttons
-disableTouchOpacityAnimation: boolean = false;  // iOS and Android only
-
-// Opacity value the button should animate to on button touch
-activeOpacity: number = undefined; // iOS and Android only
 
 // Background color that will be visible on button touch
 underlayColor: string = undefined; // iOS and Android only

@@ -75,6 +75,7 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
                 onMouseUp={ this._onMouseUp }
                 tabIndex={ this.props.tabIndex }
                 onContextMenu={ this.props.onContextMenu ? this._onContextMenu : undefined }
+                data-test-id={ this.props.testId }
             >
                 { this.props.children }
             </a>

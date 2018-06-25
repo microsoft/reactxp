@@ -169,18 +169,18 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 
     private _showContextMenu(keyEvent: Types.KeyboardEvent) {
-        if (this._isMounted) { 
+        if (this._isMounted) {
             UserInterface.measureLayoutRelativeToWindow(this).then( layoutInfo => {
-                // need to simulate the mouse event so that we 
-                // can show the context menu in the right position       
-                if (this._isMounted) {                         
+                // need to simulate the mouse event so that we
+                // can show the context menu in the right position
+                if (this._isMounted) {
                     let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, this._getContextMenuOffset());
                     if (this.props.onContextMenu) {
-                        this.props.onContextMenu(mouseEvent);    
-                    }    
-                }               
+                        this.props.onContextMenu(mouseEvent);
+                    }
+                }
             });
-        }    
+        }
     }
 
     protected _buildInternalProps(props: Types.ViewProps) {
@@ -205,23 +205,23 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         if (props.onKeyPress) {
 
             // Define the handler for "onKeyDown" on first use, it's the safest way when functions
-            // called from super constructors are involved. Ensuring nothing happens here if a 
-            // tabIndex is specified else KeyDown is handled twice, in _onFocusableKeyDown as well. 
+            // called from super constructors are involved. Ensuring nothing happens here if a
+            // tabIndex is specified else KeyDown is handled twice, in _onFocusableKeyDown as well.
             if (this.props.tabIndex === undefined) {
                 if (!this._onKeyDown) {
                     this._onKeyDown =  (e: Types.SyntheticEvent) => {
-                        let keyEvent = EventHelpers.toKeyboardEvent(e);                   
+                        let keyEvent = EventHelpers.toKeyboardEvent(e);
                         if (this.props.onKeyPress) {
                             // A conversion to a KeyboardEvent looking event is needed
                             this.props.onKeyPress(keyEvent);
                         }
-                        
-                        // This needs to be handled when there is no 
+
+                        // This needs to be handled when there is no
                         // tabIndex so we do not lose the bubbled events
                         if (this.props.onContextMenu) {
                             let key = keyEvent.keyCode;
                             if ((key === KEY_CODE_APP) || (key === KEY_CODE_F10 && keyEvent.shiftKey)) {
-                                this._showContextMenu(keyEvent);                           
+                                this._showContextMenu(keyEvent);
                             }
                         }
                     };
@@ -331,7 +331,8 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                 onKeyUp: this._onFocusableKeyUp,
                 onFocus: this._onFocus,
                 onBlur: this._onBlur,
-                onAccessibilityTap: this._internalProps.onPress
+                onAccessibilityTap: this._internalProps.onPress,
+                testID: this.props.testId
             };
 
             let PotentiallyAnimatedFocusableView = this._isButton(this.props) ? FocusableAnimatedView : FocusableView;
@@ -499,7 +500,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         if (this.props.onContextMenu) {
             let key = keyEvent.keyCode;
             if ((key === KEY_CODE_APP) || (key === KEY_CODE_F10 && keyEvent.shiftKey)) {
-                this._showContextMenu(keyEvent); 
+                this._showContextMenu(keyEvent);
             }
         }
     }

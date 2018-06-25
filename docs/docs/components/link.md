@@ -17,12 +17,12 @@ This component displays a hyperlink. On the web, it translates to an &lt;a&gt; t
 // in View's FocusArbitrator callback.
 accessibilityId: string = undefined;
 
+// Should fonts be scaled according to system setting?
+allowFontScaling: boolean = true; // Android and iOS only
+
 // Should be focused when the component is mounted, see also View's arbitrateFocus
 // property.
 autoFocus: boolean = false;
-
-// Should fonts be scaled according to system setting?
-allowFontScaling: boolean = true; // Android and iOS only
 
 // Should the scale multiplier be capped when allowFontScaling is set to true?
 // Possible values include the following:
@@ -54,14 +54,17 @@ onContextMenu: (e: MouseEvent) => void = undefined;
 // Can the link be included in a text selection?
 selectable: boolean = false;
 
+// See below for supported styles
+style: LinkStyleRuleSet | LinkStyleRuleSet[] = [];
+
+// ID that can be used to identify the instantiated element for testing purposes.
+testId: string = undefined;
+
 // Text for a tooltip
 title: string = undefined;
 
 // URL to follow for hyperlink
 url: string;
-
-// See below for supported styles
-style: LinkStyleRuleSet | LinkStyleRuleSet[] = [];
 ```
 
 ## Styles

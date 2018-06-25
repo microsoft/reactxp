@@ -359,6 +359,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
                 style={ this._getStyles() }
                 onMouseUp={ this._onMouseUp }
                 title={ this.props.title }
+                data-test-id={ this.props.testId }
             >
                 { optionalImg }
                 { this.props.children }

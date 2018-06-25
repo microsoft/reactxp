@@ -114,6 +114,7 @@ export class Button extends ButtonBase {
                 aria-haspopup={ ariaHasPopup }
                 aria-controls={ this.props.ariaControls }
                 id={ this.props.id }
+                data-test-id={ this.props.testId }
             >
                 { this.props.children }
             </button>

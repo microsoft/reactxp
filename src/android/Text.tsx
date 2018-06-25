@@ -46,6 +46,7 @@ export class Text extends CommonText {
                 ellipsizeMode={ this.props.ellipsizeMode }
                 onPress={ this.props.onPress }
                 textBreakStrategy={ this.props.textBreakStrategy }
+                testID={ this.props.testId }
                 { ...extendedProps }
             >
                 { this.props.children }

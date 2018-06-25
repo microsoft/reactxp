@@ -51,6 +51,7 @@ export class WebView extends React.Component<Types.WebViewProps, Types.Stateless
                 onError={ this.props.onError }
                 onLoadStart={ this.props.onLoadStart }
                 onMessage={ this.props.onMessage ? this._onMessage : undefined }
+                testID={ this.props.testId }
             />
         );
     }
