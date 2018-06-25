@@ -1,6 +1,8 @@
 ﻿/**
 * incorrectThisPropsRule.ts
-* Copyright: Microsoft 2018
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Custom tslint rule used to find cases where the code references
 * this.props rather than props in the _buildState method and other

@@ -10,6 +10,8 @@
 
 import _ = require('./../utils/lodashMini');
 
+import Timers from '../../common/utils/Timers';
+
 export interface TransitionSpec {
     property: string;
     duration: number;
@@ -86,7 +88,7 @@ export function executeTransition(element: HTMLElement, transitions: TransitionS
     };
 
     // Watchdog timeout for cases where transitionEnd event doesn't fire.
-    timeoutId = setTimeout(function () {
+    timeoutId = Timers.setTimeout(function () {
         // If the item was removed from the DOM (which can happen if a
         // rerender occurred), don't bother finishing. We don't want to do
         // this in the transition event finish path because it's expensive

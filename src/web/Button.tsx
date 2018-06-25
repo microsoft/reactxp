@@ -17,6 +17,7 @@ import AppConfig from '../common/AppConfig';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { applyFocusableComponentMixin } from './utils/FocusManager';
+import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
 import { Button as ButtonBase } from '../common/Interfaces';
 
@@ -209,7 +210,7 @@ export class Button extends ButtonBase {
             if (this._longPressTimer) {
                 clearTimeout(this._longPressTimer);
             }
-            this._longPressTimer = setTimeout(() => {
+            this._longPressTimer = Timers.setTimeout(() => {
                 this._longPressTimer = undefined;
                 if (this.props.onLongPress) {
                     // lastMouseDownEvent can never be undefined at this point

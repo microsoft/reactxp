@@ -19,8 +19,9 @@ import Input from './Input';
 import ModalContainer from './ModalContainer';
 import Types = require('../common/Types');
 import FocusManager from './utils/FocusManager';
-import UserInterface from './UserInterface';
 import PopupContainerView from './PopupContainerView';
+import Timers from '../common/utils/Timers';
+import UserInterface from './UserInterface';
 
 export class PopupDescriptor {
     constructor(public popupId: string, public popupOptions: Types.PopupOptions) {}
@@ -425,7 +426,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             clearTimeout(this._updateKeyboardNavigationModeOnFocusTimer);
         }
 
-        this._updateKeyboardNavigationModeOnFocusTimer = setTimeout(() => {
+        this._updateKeyboardNavigationModeOnFocusTimer = Timers.setTimeout(() => {
             this._updateKeyboardNavigationModeOnFocusTimer = undefined;
 
             const prev = this._prevFocusedElement;
@@ -461,7 +462,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     private _requestApplicationIsNotActive() {
         this._cancelApplicationIsNotActive();
 
-        this._applicationIsNotActiveTimer = setTimeout(() => {
+        this._applicationIsNotActiveTimer = Timers.setTimeout(() => {
             this._applicationIsNotActiveTimer = undefined;
             this._applicationIsNotActive = true;
         }, 100);
@@ -551,7 +552,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     private _startRepositionPopupTimer() {
-        this._respositionPopupTimer = setInterval(() => {
+        this._respositionPopupTimer = Timers.setInterval(() => {
             this._recalcPosition();
         }, 500);
     }

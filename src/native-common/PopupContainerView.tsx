@@ -15,6 +15,7 @@ import React = require('react');
 import RN = require('react-native');
 
 import International from './International';
+import Timers from '../common/utils/Timers';
 import Types = require('../common/Types');
 import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext } from '../common/PopupContainerViewBase';
 import UserInterface from './UserInterface';
@@ -395,7 +396,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
     }
 
     private _startRepositionPopupTimer() {
-        this._respositionPopupTimer = setInterval(() => {
+        this._respositionPopupTimer = Timers.setInterval(() => {
             this._recalcPosition();
         }, 1000);
     }

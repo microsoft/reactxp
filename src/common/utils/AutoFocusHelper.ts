@@ -9,6 +9,8 @@
 */
 
 import React = require('react');
+
+import Timers from './Timers';
 import Types = require('../Types');
 import Interfaces = require('../Interfaces');
 
@@ -162,7 +164,7 @@ export class FocusArbitratorProvider {
 
         focusArbitratorProvider._requestFocus(component, focus, isAvailable, type || FocusCandidateType.Focus);
 
-        _autoFocusTimer = setTimeout(() => {
+        _autoFocusTimer = Timers.setTimeout(() => {
             _autoFocusTimer = undefined;
 
             const candidate = rootFocusArbitratorProvider._arbitrate();

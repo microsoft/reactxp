@@ -29,6 +29,7 @@
   "devDependencies": {
     "typescript": "2.9.1",
     "tslint": "5.10.0",
+    "tsutils": "2.27.1",
     "tslint-microsoft-contrib": "5.0.3"
   },
   "homepage": "https://microsoft.github.io/reactxp/",

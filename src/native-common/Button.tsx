@@ -21,6 +21,7 @@ import Styles from './Styles';
 import Types = require('../common/Types');
 import { Button as ButtonBase } from '../common/Interfaces';
 import { isEqual } from '../common/lodashMini';
+import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
 
 const _styles = {
@@ -222,7 +223,7 @@ export class Button extends ButtonBase {
                 if (this._hideTimeout) {
                     clearTimeout(this._hideTimeout);
                 }
-                this._hideTimeout = setTimeout(this._hideUnderlay, _hideUnderlayTimeout);
+                this._hideTimeout = Timers.setTimeout(this._hideUnderlay, _hideUnderlayTimeout);
             }
 
             if (!this.props.disableTouchOpacityAnimation && (this.props.activeOpacity || !this.props.underlayColor)) {

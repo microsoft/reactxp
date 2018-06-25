@@ -1,6 +1,8 @@
 ﻿/**
-* GroupedImportRule.ts
-* Copyright: Microsoft 2018
+* groupedImportRule.ts
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Custom tslint rule used to ensure we don't group ambient (non-relative)
 * module imports with relative module imports.

@@ -14,6 +14,7 @@ import React = require('react');
 import AccessibilityUtil from './AccessibilityUtil';
 import MouseResponder, { MouseResponderSubscription } from './utils/MouseResponder';
 import Styles from './Styles';
+import Timers from '../common/utils/Timers';
 import Types = require('../common/Types');
 
 const _styles = {
@@ -327,7 +328,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
     private _startDoubleTapTimer(e: React.MouseEvent<any>) {
         this._lastTapEvent = _.clone(e);
 
-        this._doubleTapTimer = setTimeout(() => {
+        this._doubleTapTimer = Timers.setTimeout(() => {
             this._reportDelayedTap();
             this._doubleTapTimer = undefined;
         }, _doubleTapDurationThreshold);

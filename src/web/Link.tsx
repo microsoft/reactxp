@@ -11,11 +11,12 @@ import PropTypes = require('prop-types');
 import React = require('react');
 import ReactDOM = require('react-dom');
 
+import EventHelpers from '../native-common/utils/EventHelpers';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import { applyFocusableComponentMixin } from './utils/FocusManager';
 import Styles from './Styles';
 import Types = require('../common/Types');
-import EventHelpers from '../native-common/utils/EventHelpers';
-import { applyFocusableComponentMixin } from './utils/FocusManager';
+import Timers from '../common/utils/Timers';
 
 const _styles = {
     defaultStyle: {
@@ -151,7 +152,7 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
         if (this.props.onLongPress) {
             e.persist();
 
-            this._longPressTimer = setTimeout(() => {
+            this._longPressTimer = Timers.setTimeout(() => {
                 this._longPressTimer = undefined;
 
                 const mouseEvent = e as React.MouseEvent<any>;

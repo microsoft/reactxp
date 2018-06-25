@@ -10,9 +10,11 @@
 import React = require('react');
 import RN = require('react-native');
 import { SubscriptionToken } from 'subscribableevent';
+
 import Accessibility from './Accessibility';
 import AccessibilityUtil from '../native-common/AccessibilityUtil';
 import Styles from '../native-common/Styles';
+import Timers from '../common/utils/Timers';
 import Types = require('../common/Types');
 
 const _styles = {
@@ -99,7 +101,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
                 // and go query the accessible name of the region to put into its own queue, so that we can
                 // set name of the region to next announcement and fire the UIA live region event again.
                 // The magic number is copied from web/AccessibilityAnnouncer clear timer.
-                this._announcementQueueTimer = setTimeout(this._dequeueAndPostAnnouncement, 2000);
+                this._announcementQueueTimer = Timers.setTimeout(this._dequeueAndPostAnnouncement, 2000);
             }
         } else {
             if (this._viewElement) {

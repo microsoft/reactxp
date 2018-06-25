@@ -9,6 +9,8 @@
 
 import React = require('react');
 
+import Timers from '../common/utils/Timers';
+
 var UNIT = 'px';
 var SCROLLER_MIN_SIZE = 15;
 var SCROLLER_NEGATIVE_MARGIN = 30;
@@ -519,7 +521,7 @@ export class Scrollbar {
         this._container.addEventListener('mouseenter', this._updateCallback);
 
         // Defer remaining init work to avoid triggering sync layout
-        this._asyncInitTimer = setTimeout(() => {
+        this._asyncInitTimer = Timers.setTimeout(() => {
             this._asyncInitTimer = undefined;
             this._tryLtrOverride();
             this.update();

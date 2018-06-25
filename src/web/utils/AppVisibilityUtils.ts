@@ -6,15 +6,18 @@
 *
 * Web-specific helpers for firing focus/activity related events
 */
+
 import _ = require('./lodashMini');
 import SubscribableEvent from 'subscribableevent';
+
+import Timers from '../../common/utils/Timers';
 
 const idleTimeInMs = 60 * 1000;
 
 export class AppVisibilityUtils {
     private _isIdle = false;
     private _timer: number|undefined;
-    
+
     readonly onFocusedEvent = new SubscribableEvent<() => void>();
     readonly onBlurredEvent = new SubscribableEvent<() => void>();
     readonly onAppForegroundedEvent = new SubscribableEvent<() => void>();
@@ -60,7 +63,7 @@ export class AppVisibilityUtils {
             this._onWakeUp();
         }
 
-        this._timer = setTimeout(() => {
+        this._timer = Timers.setTimeout(() => {
             if (this.hasFocus()) {
                 this._onIdle();
             }
@@ -68,12 +71,12 @@ export class AppVisibilityUtils {
     }
 
     private _onFocus = () => {
-        this._wakeUpAndSetTimerForIdle();        
+        this._wakeUpAndSetTimerForIdle();
         this.onFocusedEvent.fire();
     }
 
     private _onBlur = () => {
-        this._onIdle();        
+        this._onIdle();
         this.onBlurredEvent.fire();
     }
 
@@ -86,11 +89,11 @@ export class AppVisibilityUtils {
     }
 
     private _onWakeUp = () => {
-        this._isIdle = false;        
+        this._isIdle = false;
         this.onWakeUpEvent.fire();
     }
     private _onIdle = () => {
-        this._isIdle = true;        
+        this._isIdle = true;
         this.onIdleEvent.fire();
     }
 }

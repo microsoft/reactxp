@@ -11,7 +11,7 @@ import React = require('react');
 import ReactDOM = require('react-dom');
 
 import { PopupDescriptor, RootView } from './RootView';
-
+import Timers from '../common/utils/Timers';
 import Types = require('../common/Types');
 
 const MAX_CACHED_POPUPS = 4;
@@ -110,7 +110,7 @@ export class FrontLayerViewManager {
             this._popupShowDelayTimer = undefined;
         }
         if (this._activePopupShowDelay > 0) {
-            this._popupShowDelayTimer = setTimeout(() => {
+            this._popupShowDelayTimer = Timers.setTimeout(() => {
                 this._activePopupShowDelay = 0;
                 this._popupShowDelayTimer = undefined;
                 this._renderRootView();

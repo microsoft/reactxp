@@ -14,10 +14,11 @@ import PropTypes = require('prop-types');
 import { RootView as RootViewBase, RootViewUsingProps as RootViewUsingPropsBase,
     BaseRootViewProps, RootViewPropsWithMainViewType, RootViewState, BaseRootView } from '../native-common/RootView';
 import Input from './Input';
-import UserInterface from '../native-common/UserInterface';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import FocusManager from './utils/FocusManager';
 import FrontLayerViewManager from '../native-common/FrontLayerViewManager';
+import Timers from '../common/utils/Timers';
+import UserInterface from '../native-common/UserInterface';
 
 const KEY_CODE_TAB = 9;
 const KEY_CODE_ESC = 27;
@@ -73,7 +74,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
                     clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
                 }
 
-                this._isNavigatingWithKeyboardUpateTimer = setTimeout(() => {
+                this._isNavigatingWithKeyboardUpateTimer = Timers.setTimeout(() => {
                     this._isNavigatingWithKeyboardUpateTimer = undefined;
 
                     if (activeComponent === FocusManager.getCurrentFocusedComponent()) {

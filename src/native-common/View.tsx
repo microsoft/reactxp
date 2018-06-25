@@ -16,10 +16,10 @@ import PropTypes = require('prop-types');
 
 import AccessibilityUtil from './AccessibilityUtil';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-
 import Animated from './Animated';
 import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
+import Timers from '../common/utils/Timers';
 import Types = require('../common/Types');
 import UserInterface from './UserInterface';
 import ViewBase from './ViewBase';
@@ -511,7 +511,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
                 if (this._hideTimeout) {
                     clearTimeout(this._hideTimeout);
                 }
-                this._hideTimeout = setTimeout(this._hideUnderlay, _hideUnderlayTimeout);
+                this._hideTimeout = Timers.setTimeout(this._hideUnderlay, _hideUnderlayTimeout);
             }
 
             if (!this.props.disableTouchOpacityAnimation && (this.props.activeOpacity || !this.props.underlayColor)) {

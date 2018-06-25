@@ -16,7 +16,7 @@ import RN = require('react-native');
 
 import AccessibilityUtil from './AccessibilityUtil';
 import EventHelpers from './utils/EventHelpers';
-
+import Timers from '../common/utils/Timers';
 import Types = require('../common/Types');
 import UserInterface from './UserInterface';
 import ViewBase from './ViewBase';
@@ -236,7 +236,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
     private _startDoubleTapTimer(e: Types.TouchEvent) {
         this._lastTapEvent = e;
 
-        this._doubleTapTimer = setTimeout(() => {
+        this._doubleTapTimer = Timers.setTimeout(() => {
             this._reportDelayedTap();
             this._doubleTapTimer = undefined;
         }, _doubleTapDurationThreshold);

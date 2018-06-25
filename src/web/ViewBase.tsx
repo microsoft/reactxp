@@ -13,6 +13,7 @@ import FrontLayerViewManager from './FrontLayerViewManager';
 import AppConfig from '../common/AppConfig';
 import RX = require('../common/Interfaces');
 import SyncTasks = require('synctasks');
+import Timers from '../common/utils/Timers';
 import Types = require('../common/Types');
 
 // We create a periodic timer to detect layout changes that are performed behind
@@ -50,7 +51,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
                     ViewBase._checkViews();
                 }
 
-                ViewBase._viewCheckingTimer = setInterval(ViewBase._checkViews,
+                ViewBase._viewCheckingTimer = Timers.setInterval(ViewBase._checkViews,
                     newState === Types.AppActivationState.Active ?
                         _layoutTimerActiveDuration : _layoutTimerInactiveDuration);
             }
@@ -81,7 +82,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         this._layoutReportList.push(func);
 
         if (!ViewBase._layoutReportingTimer) {
-            ViewBase._layoutReportingTimer = setTimeout(() => {
+            ViewBase._layoutReportingTimer = Timers.setTimeout(() => {
                 ViewBase._layoutReportingTimer = undefined;
                 ViewBase._reportDeferredLayoutChanges();
             }, 0);
@@ -159,7 +160,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         // Enable the timer to check for layout changes. Use a different duration
         // when the app is active versus inactive.
         if (!ViewBase._viewCheckingTimer) {
-            ViewBase._viewCheckingTimer = setInterval(ViewBase._checkViews,
+            ViewBase._viewCheckingTimer = Timers.setInterval(ViewBase._checkViews,
                 ViewBase._appActivationState === Types.AppActivationState.Active ?
                     _layoutTimerActiveDuration : _layoutTimerInactiveDuration);
         }

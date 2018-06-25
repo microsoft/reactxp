@@ -15,6 +15,7 @@ import { FocusManager as FocusManagerBase,
 import { ImportantForAccessibilityValue } from '../../native-common/AccessibilityUtil';
 import AppConfig from '../../common/AppConfig';
 import Platform from '../../native-common/Platform';
+import Timers from '../../common/utils/Timers';
 import UserInterface from '../../native-common/UserInterface';
 
 const isNativeWindows: boolean = Platform.getType() === 'windows';
@@ -121,7 +122,7 @@ export class FocusManager extends FocusManagerBase {
             // necessity to press Tab.
             // Defer the focusing to let the view finish its initialization and to allow for manual focus setting (if any)
             // to be processed (the asynchronous nature of focus->onFocus path requires a delay)
-            FocusManager._resetFocusTimer = setTimeout(() => {
+            FocusManager._resetFocusTimer = Timers.setTimeout(() => {
                 FocusManager._resetFocusTimer = undefined;
 
                 // Check if the currently focused component is without limit/restriction.
@@ -268,7 +269,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
                     // Refresh the native view
                     updateNativeAccessibilityProps(this);
 
-                    this.tabIndexLocalOverrideTimer = setTimeout(() => {
+                    this.tabIndexLocalOverrideTimer = Timers.setTimeout(() => {
                         if (this.tabIndexLocalOverrideTimer !== undefined) {
                             this.tabIndexLocalOverrideTimer = undefined;
                             // Remove override

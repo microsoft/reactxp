@@ -13,7 +13,7 @@ import { FocusManager as FocusManagerBase,
     FocusableComponentInternal,
     StoredFocusableComponent as StoredFocusableComponentBase } from '../../common/utils/FocusManager';
 import { FocusArbitratorProvider, FocusCandidateType, FocusCandidateInternal } from '../../common/utils/AutoFocusHelper';
-
+import Timers from '../../common/utils/Timers';
 import UserInterface from '../UserInterface';
 
 const ATTR_NAME_TAB_INDEX = 'tabindex';
@@ -77,7 +77,7 @@ export class FocusManager extends FocusManagerBase {
                 return;
             }
 
-            _checkFocusTimer = setTimeout(() => {
+            _checkFocusTimer = Timers.setTimeout(() => {
                 _checkFocusTimer = undefined;
 
                 if (UserInterface.isNavigatingWithKeyboard() &&
@@ -218,7 +218,7 @@ export class FocusManager extends FocusManagerBase {
             // focusable, focusing it, removing the focus and making it unfocusable
             // back again.
             // Defer the work to avoid triggering sync layout.
-            FocusManager._resetFocusTimer = setTimeout(() => {
+            FocusManager._resetFocusTimer = Timers.setTimeout(() => {
                 FocusManager._resetFocusTimer = undefined;
 
                 const currentFocused = FocusManager._currentFocusedComponent;
@@ -306,7 +306,7 @@ export class FocusManager extends FocusManagerBase {
                 }
 
                 FocusManager._setTabIndexElement = element;
-                FocusManager._setTabIndexTimer = setTimeout(() => {
+                FocusManager._setTabIndexTimer = Timers.setTimeout(() => {
                     element.tabIndex = value;
                 }, 0);
             } else {

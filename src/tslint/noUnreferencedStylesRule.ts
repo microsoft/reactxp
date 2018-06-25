@@ -1,6 +1,8 @@
 ﻿/**
-* NoUnreferencedStylesRule.ts
-* Copyright: Microsoft 2016
+* noUnreferencedStylesRule.ts
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
 *
 * Custom tslint rule used to enforce that there are no unfreferenced
 * entries in a static array named "_styles".
