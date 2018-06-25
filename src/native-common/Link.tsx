@@ -50,7 +50,8 @@ export class LinkBase<S> extends React.Component<Types.LinkProps, S> {
             allowFontScaling: this.props.allowFontScaling,
             maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
             children: this.props.children,
-            tooltip: this.props.title
+            tooltip: this.props.title,
+            testID: this.props.testId
         } as RN.ExtendedTextProps;
 
         return this._render(internalProps, this._onMount);

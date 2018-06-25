@@ -13,6 +13,16 @@ Information about pending gestures is returned through event handlers. A caller 
 
 ## Props
 ``` javascript
+// Alternate text for screen readers.
+accessibilityLabel: string = undefined;
+
+// Traits used to hint screen readers, etc.
+accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
+
+// Expose the element and/or its children as accessible to Screen readers
+importantForAccessibility?: ImportantForAccessibility =
+    ImportantForAccessibility.Yes;
+
 // Gestures and attributes that apply only to touch inputs
 onPinchZoom: (gestureState: MultiTouchGestureState) => void = undefined;
 onRotate: (gestureState: MultiTouchGestureState) => void = undefined;
@@ -40,15 +50,8 @@ panPixelThreshold: number = undefined;
 // release the responder? Setting true allows release.
 releaseOnRequest: boolean = false;
 
-// Alternate text for screen readers.
-accessibilityLabel: string = undefined;
-
-// Traits used to hint screen readers, etc.
-accessibilityTraits: AccessibilityTrait | AccessibilityTrait[] = undefined;
-
-// Expose the element and/or its children as accessible to Screen readers
-importantForAccessibility?: ImportantForAccessibility =
-    ImportantForAccessibility.Yes;
+// ID that can be used to identify the instantiated element for testing purposes.
+testId: string = undefined;
 ```
 
 ## Styles

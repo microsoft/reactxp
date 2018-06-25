@@ -19,6 +19,9 @@ deferTime: number = 0;
 
 // Size of indicator (exact sizes are platform-specific)
 size: 'large' | 'medium' | 'small' | 'tiny';
+
+// ID that can be used to identify the instantiated element for testing purposes.
+testId: string = undefined;
 ```
 
 ## Styles

@@ -117,7 +117,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             allowFontScaling: this.props.allowFontScaling,
             maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
             underlineColorAndroid: 'transparent',
-            clearButtonMode: this.props.clearButtonMode
+            clearButtonMode: this.props.clearButtonMode,
+            testID: this.props.testId
         };
 
         this._selectionToSet = undefined;

@@ -323,6 +323,12 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         this._internalProps = _.clone(props) as any;
         this._internalProps.ref = this._setNativeView;
 
+        if (props.testId) {
+            // Convert from testId to testID.
+            this._internalProps.testID = this._internalProps.testID;
+            delete this._internalProps.testID;
+        }
+
         // Translate accessibilityProps from RX to RN, there are type diferrences for example:
         // accessibilityLiveRegion prop is number (RX.Types.AccessibilityLiveRegion) in RX, but
         // string is expected by RN.View.

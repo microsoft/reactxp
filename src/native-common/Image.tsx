@@ -102,6 +102,7 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
                 accessibilityLabel={ this.props.accessibilityLabel }
                 onLoad={ this.props.onLoad ? this._onLoad : undefined }
                 onError={ this._onError }
+                testID={ this.props.testId }
                 { ...additionalProps }
                 { ...extendedProps }
             >
@@ -138,7 +139,7 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
 
         this._nativeImageWidth = e.nativeEvent.source.width;
         this._nativeImageHeight = e.nativeEvent.source.height;
-        
+
         if (this.props.onLoad) {
             this.props.onLoad({ width: this._nativeImageWidth!, height: this._nativeImageHeight! });
         }

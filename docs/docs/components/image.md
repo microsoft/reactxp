@@ -39,6 +39,9 @@ source: string = undefined;
 // See below for supported styles
 style: ImageStyleRuleSet | ImageStyleRuleSet[] = [];
 
+// ID that can be used to identify the instantiated element for testing purposes.
+testId: string = undefined;
+
 // Tooltip for image
 title: string = undefined;
 ```

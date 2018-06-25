@@ -52,7 +52,7 @@ overScrollMode?: 'always' | 'always-if-content-scrolls' | 'never';
 
 // Snap to page boundaries?
 pagingEnabled: boolean = false; // Android & iOS only
-snapToInterval: number = undefined; // iOS only - If set, decelerationRate is set to 'fast'
+snapToInterval: number = undefined; // iOS only
 
 // Is scrolling enabled?
 scrollEnabled: boolean = true;
@@ -77,6 +77,9 @@ style: ViewStyleRuleSet | ViewStyleRuleSet[] = [];
 
 // Windows-only property to control tab navigation inside the view
 tabNavigation?: 'local' | 'cycle' | 'once';
+
+// ID that can be used to identify the instantiated element for testing purposes.
+testId: string = undefined;
 ```
 
 ## Styles

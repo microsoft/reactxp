@@ -92,6 +92,7 @@ export class Text extends TextBase {
                     onClick={ this.props.onPress }
                     id={ this.props.id }
                     onContextMenu={ this.props.onContextMenu }
+                    data-test-id={ this.props.testId }
                 >
                     { this.props.children }
                 </div>
@@ -108,6 +109,7 @@ export class Text extends TextBase {
                     onContextMenu={ this.props.onContextMenu }
                     data-text-as-pseudo-element={ this.props.children }
                     id={ this.props.id }
+                    data-test-id={ this.props.testId }
                 />
             );
         }

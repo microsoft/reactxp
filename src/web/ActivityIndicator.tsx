@@ -694,7 +694,7 @@ export class ActivityIndicator extends React.Component<Types.ActivityIndicatorPr
         }
 
         return (
-            <div className={ spinnerClasses.join(' ') }>
+            <div className={ spinnerClasses.join(' ') } data-test-id={ this.props.testId }>
                 <div className='layer-7'>
                     <div className='layer-7-translate'>
                         <div className='layer-7-rotate animation'>

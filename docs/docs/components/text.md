@@ -31,7 +31,8 @@ allowFontScaling: boolean = true; // Android and iOS only
 //   glyph. e.g., "abcd..."
 ellipsizeMode: 'head' | 'middle' | 'tail'; // Android & iOS only
 
-// Specifies a unique id for an HTML element
+// Specifies a unique id for an HTML element.
+// NOTE: This property may be going away in future versions.
 id: string = undefined; // Web only
 
 // Expose the element and/or its children as accessible to Screen readers
@@ -64,15 +65,18 @@ maxContentSizeMultiplier: number = null; // Android and iOS only
 // For non-zero values, truncates with ellipsis if necessary
 numberOfLines: number = 0;
 
-// Is the text selectable (affects mouse pointer and copy command)
-selectable: boolean = false;
-
 // Mouse & Touch Events
 onPress?: (e: SyntheticEvent) => void = undefined;
 onContextMenu?: (e: SyntheticEvent) => void = undefined;
 
+// Is the text selectable (affects mouse pointer and copy command)
+selectable: boolean = false;
+
 // See below for supported styles
 style: TextStyleRuleSet | TextStyleRuleSet[] = [];
+
+// ID that can be used to identify the instantiated element for testing purposes.
+testId: string = undefined;
 ```
 
 ## Styles

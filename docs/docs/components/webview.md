@@ -92,6 +92,9 @@ startInLoadingState: boolean = true; // Native only
 // See below for supported styles
 style: WebViewStyleRuleSet | WebViewStyleRuleSet[] = [];
 
+// ID that can be used to identify the instantiated element for testing purposes.
+testId: string = undefined;
+
 // URL to HTML content
 url: string = undefined;
 ```

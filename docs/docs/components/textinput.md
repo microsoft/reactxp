@@ -44,6 +44,12 @@ autoFocus: boolean = false;
 // Should focus be lost after submitting?
 blurOnSubmit: boolean = false;
 
+// iOS and Windows only property for controlling when the clear button
+// should appear on the right side of the text view. Default behavior
+// dependends on platform: equivalent to 'never' on iOS, and 'always'
+// on Windows.
+clearButtonMode: 'never' | 'while-editing' | 'unless-editing' | 'always';
+
 // Initial value that will change when the user starts typing
 defaultValue: string = undefined;
 
@@ -114,14 +120,11 @@ secureTextEntry: boolean = false;
 // Should spell checking be applied to contents?
 spellCheck: boolean = [value of autoCorrect];
 
-// iOS and Windows only property for controlling when the clear button should appear on the right side of the text view.
-// Default behavior is dependent on platform: equivalent to 'never' on iOS, and 'always' on Windows.
-// Button is hidden when text view is empty, regardless of the property value.
-clearButtonMode: 'never' | 'while-editing' | 'unless-editing' | 'always';
-
 // See below for supported styles
 style: TextInputStyleRuleSet | TextInputStyleRuleSet[] = [];
 
+// ID that can be used to identify the instantiated element for testing purposes.
+testId: string = undefined;
 
 // If defined, the control value is forced to match this value;
 // if undefined, control value can be modified by the user

@@ -120,6 +120,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onPaste={ this._onPaste }
                     onScroll={ this._onScroll }
                     aria-label={ this.props.accessibilityLabel }
+                    data-test-id={ this.props.testId }
                 />
             );
         } else {
@@ -149,6 +150,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     aria-label={ this.props.accessibilityLabel }
                     type={ keyboardTypeValue }
                     pattern={ pattern }
+                    data-test-id={ this.props.testId }
                 />
             );
 

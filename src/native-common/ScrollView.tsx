@@ -84,7 +84,8 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
             scrollIndicatorInsets: this.props.scrollIndicatorInsets,
             onScrollBeginDrag: this.props.onScrollBeginDrag,
             onScrollEndDrag: this.props.onScrollEndDrag,
-            children: this.props.children
+            children: this.props.children,
+            testID: this.props.testId
         };
 
         return this._render(internalProps);

@@ -266,6 +266,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
                 onTouchStart={ this._onTouchStart }
                 onTouchEnd={ this._onTouchEnd }
                 style={ this._getContainerStyle() as any }
+                data-test-id={ this.props.testId }
             >
                 { this.props.children }
             </div>
@@ -289,6 +290,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
                 role={ 'none' }
                 className = 'rxCustomScroll'
                 style={ containerStyles }
+                data-test-id={ this.props.testId }
             >
                 <div
                     ref={ this._onMount }
