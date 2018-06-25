@@ -16,6 +16,10 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.3.0-rc.6 of reactxp - _25 Jun 2018_
+* Added support for testId prop to all reactxp components. On native, it uses testID. On web, it adds a data-test-id attribute to the node.
+* Added three new tslint custom rules that are useful for reactxp projects.
+
 #### Version 1.3.0-rc.5 of reactxp - _24 Jun 2018_
 * Added missing definition for getMetadata method in RX.Image.
 * Implemented RX.International methods for web platform.
