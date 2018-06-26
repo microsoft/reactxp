@@ -94,7 +94,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 defaultValue={ this.props.value }
                 placeholderTextColor={ this.props.placeholderTextColor }
                 onSubmitEditing={this.props.onSubmitEditing }
-                onKeyPress={ this._onKeyPress as any }
+                onKeyPress={ this._onKeyPress }
                 onChangeText={ this._onChangeText }
                 onSelectionChange={ this._onSelectionChange }
                 onFocus={ this._onFocus }
@@ -168,8 +168,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         this.forceUpdate();
     }
 
-    private _onKeyPress = (e: React.SyntheticEvent<any>) => {
-
+    private _onKeyPress = (e: RN.NativeSyntheticEvent<RN.TextInputKeyPressEventData>) => {
         if (this.props.onKeyPress) {
             this.props.onKeyPress(EventHelpers.toKeyboardEvent(e));
         }
