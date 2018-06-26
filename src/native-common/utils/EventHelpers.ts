@@ -65,6 +65,10 @@ export class EventHelpers {
                         keyCode = 500;
                         break;
 
+                    case 'F10':
+                        keyCode = 121;
+                        break;
+
                     case 'Escape':
                         keyCode = 27;
                         break;
