@@ -64,9 +64,53 @@ export class EventHelpers {
                     case 'Application':
                         keyCode = 500;
                         break;
+                        
+                    case 'F1':
+                        keyCode = 112;
+                        break;
+
+                    case 'F2':
+                        keyCode = 113;
+                        break;
+
+                    case 'F3':
+                        keyCode = 114;
+                        break;
+
+                    case 'F4':
+                        keyCode = 115;
+                        break;
+
+                    case 'F5':
+                        keyCode = 116;
+                        break;
+
+                    case 'F6':
+                        keyCode = 117;
+                        break;
+
+                    case 'F7':
+                        keyCode = 118;
+                        break;
+
+                    case 'F8':
+                        keyCode = 119;
+                        break;
+
+                    case 'F9':
+                        keyCode = 120;
+                        break;
 
                     case 'F10':
                         keyCode = 121;
+                        break;
+
+                    case 'F11':
+                        keyCode = 122;
+                        break;
+
+                    case 'F12':
+                        keyCode = 123;
                         break;
 
                     case 'Escape':
