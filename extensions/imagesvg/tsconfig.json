@@ -7,13 +7,12 @@
         "target": "es5",
         "experimentalDecorators": true,
         "noImplicitAny": true,
-        "outDir": "dist/"
+        "outDir": "dist/",
+        "skipLibCheck": true
     },
-
     "include": [
         "src/**/*"
     ],
-
     "exclude": [
         "dist",
         "node_modules"

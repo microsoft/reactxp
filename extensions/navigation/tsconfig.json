@@ -8,6 +8,7 @@
         "experimentalDecorators": true,
         "noImplicitAny": true,
         "outDir": "dist/",
+        "skipLibCheck": true,
         "lib": [
             "es5",
             "dom"
