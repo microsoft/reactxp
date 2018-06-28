@@ -16,6 +16,11 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.3.0 of reactxp - _28 Jun 2018_
+* Added support for function keys in native desktop implmenetations.
+* Fixed recent regression that caused a crash when using the web implementation in a non-browser environment like node.
+* Reverted change in behavior on web implementation of ActivityState.Inactive. This state is no longer used on the web, as before 1.3.0-rc.4.
+
 #### Version 1.3.0-rc.6 of reactxp - _25 Jun 2018_
 * Added support for testId prop to all reactxp components. On native, it uses testID. On web, it adds a data-test-id attribute to the node.
 * Added three new tslint custom rules that are useful for reactxp projects.
