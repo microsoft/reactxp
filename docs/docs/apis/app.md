@@ -21,8 +21,7 @@ enum AppActivationState {
 
     // App is inactive
     // On RN mobile platforms, it is an intermediate state between when app transitions between foreground and background.
-    // On web platforms, app is inactive when the app window is not focused.
-    // On native desktop platforms, this is currently not being used.
+    // On desktop platforms, this is currently not being used.
     Inactive = 3,
 
     // iOS specific activation state for extensions implemented
