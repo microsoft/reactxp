@@ -16,6 +16,9 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.3.0 of reactxp-imagesvg, reactxp-navigation, reactxp-video, reactxp-virtuallistview - _28 Jun 2018_
+* No new features; updated dependencies.
+
 #### Version 1.3.0 of reactxp - _28 Jun 2018_
 * Added support for function keys in native desktop implmenetations.
 * Fixed recent regression that caused a crash when using the web implementation in a non-browser environment like node.

@@ -8,7 +8,7 @@
 * The main difference of Experimental Navigator is that it uses Animated for navigation animation
 * so we can enable useNativeDriver options for those animations.
 *
-* Currently, Android support on NativeAnimations is more stable and performant than iOS. 
+* Currently, Android support on NativeAnimations is more stable and performant than iOS.
 * That's why we need to have the ability to pick different implementations for different platforms.
 */
 
@@ -19,7 +19,7 @@ import React = require('react');
 import RX = require('reactxp');
 import RN = require('react-native');
 
-import { 
+import {
     CommandType,
     CustomNavigatorSceneConfig,
     Navigator,
@@ -27,7 +27,7 @@ import {
     NavigationCommand,
     NavigatorDelegate,
     NavigatorRoute,
-    NavigatorState 
+    NavigatorState
 } from '../common/Types';
 
 type NavigationSceneRendererProps = Navigation.NavigationSceneRendererProps;
@@ -106,7 +106,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
             return undefined;
         }
 
-        let nativeConfig: Navigation.NavigationCustomTransitionConfig = { 
+        let nativeConfig: Navigation.NavigationCustomTransitionConfig = {
             transitionStyle: config.transitionStyle,
             presentBelowPrevious: config.presentBelowPrevious
         };
@@ -119,8 +119,9 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
             if (config.transitionSpec.easing) {
                 transitionSpec.easing = config.transitionSpec.easing.function;
             }
-            
+
             nativeConfig.transitionSpec = transitionSpec;
+
         }
 
         return nativeConfig;
@@ -133,7 +134,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
         let enableGesture: boolean = false;
         let responseDistance: number = 0;
         let hideShadow = route && route.customSceneConfig && route.customSceneConfig.hideShadow;
-        let cardStyle: RX.Types.ViewStyleRuleSet | undefined = route && route.customSceneConfig 
+        let cardStyle: RX.Types.ViewStyleRuleSet | undefined = route && route.customSceneConfig
             ? route.customSceneConfig.cardStyle
             : undefined;
         let gestureDistanceSet = false;
@@ -204,10 +205,10 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
             const fromRouteId = prevTransitionProps && prevTransitionProps.scene ? prevTransitionProps.scene.route.key : undefined;
             const toRouteId = transitionProps.scene ? transitionProps.scene.route.key : undefined;
             this._owner.props.transitionStarted(
-                transitionProps.position, 
+                transitionProps.position,
                 toRouteId,
                 fromRouteId,
-                toIndex, 
+                toIndex,
                 fromIndex);
         }
     }

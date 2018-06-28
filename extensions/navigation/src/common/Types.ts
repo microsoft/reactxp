@@ -59,7 +59,7 @@ export type NavigationTransitionStyleConfig = {
 // NOTE: Experimental navigator only
 export type CustomNavigatorSceneConfig = {
   // Optional transition styles
-  transitionStyle?: (sceneIndex: number, sceneDimensions: RX.Types.Dimensions) => NavigationTransitionStyleConfig;
+  transitionStyle: (sceneIndex: number, sceneDimensions: RX.Types.Dimensions) => NavigationTransitionStyleConfig;
   // Optional overrides for duration, easing, and timing
   transitionSpec?: NavigationTransitionSpec;
   // Optional cardStyle override
