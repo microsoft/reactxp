@@ -28,7 +28,10 @@ export class FrontLayerViewManager {
     private _popupShowDelayTimer: number|undefined;
     private _cachedPopups: PopupDescriptor[] = [];
 
-    private _isRtlDefault = document.documentElement.dir === 'rtl';
+    // We need to be careful accessing document because it may not be defined
+    // in some environments like Electron.
+    private _isRtlDefault = typeof document !== 'undefined' &&
+        typeof document.documentElement !== 'undefined' && document.documentElement.dir === 'rtl';
     private _isRtlAllowed = true;
     private _isRtlForced = false;
 
