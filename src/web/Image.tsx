@@ -1,4 +1,4 @@
-﻿/**
+/**
 * Image.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -15,6 +15,7 @@ import PropTypes = require('prop-types');
 import restyleForInlineText = require('./utils/restyleForInlineText');
 import Styles from './Styles';
 import Types = require('../common/Types');
+import { CSSProperties } from 'react';
 
 const _styles = {
     image: {
@@ -32,6 +33,8 @@ const _styles = {
         backgroundColor: 'transparent'
     })
 };
+
+const DEFAULT_RESIZE_MODE: Types.ImageResizeMode = 'contain';
 
 export interface ImageState {
     showImgTag: boolean;
@@ -375,41 +378,50 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         this._mountedComponent = component;
     }
 
-    private _getStyles() {
-        let combinedStyles = Styles.combine([_styles.defaultContainer, this.props.style]) as any;
+    private _getStyles(): CSSProperties {
+        const { resizeMode } = this.props;
+        const styles = (Styles.combine([_styles.defaultContainer, this.props.style]) || {}) as CSSProperties;
 
-        combinedStyles['display'] = 'flex';
+        const backgroundRepeat = resizeMode === 'repeat' ? 'repeat' : 'no-repeat';
+        const backgroundSize = this._buildBackgroundSize(resizeMode);
 
         // It is necessary to wrap the url in quotes as in url("a.jpg?q=(a and b)").
         // If the url is unquoted and contains paranthesis, e.g. a.jpg?q=(a and b), it will become url(a.jpg?q=(a and b))
         // which will not render on the screen.
-        combinedStyles['backgroundImage'] = 'url("' + this.state.displayUrl + '")';
+        const backgroundImage = `url("${ this.state.displayUrl }")`;
 
         // Types doesn't support border styles other than "solid" for images.
-        if (combinedStyles.borderWidth) {
-            combinedStyles['borderStyle'] = 'solid';
-        }
+        const borderStyle = styles.borderWidth ? 'solid' : 'none';
 
-        let resizeMode = 'contain';
-        switch (this.props.resizeMode) {
-            case 'cover':
-                resizeMode = 'cover';
-                break;
+        return {
+            ...styles,
+            backgroundPosition: 'center center',
+            backgroundRepeat,
+            backgroundImage,
+            backgroundSize,
+            borderStyle,
+            display: 'flex',
+        };
+    }
+
+    private _buildBackgroundSize(resizeMode: Types.ImageResizeMode = DEFAULT_RESIZE_MODE): string {
+        switch (resizeMode) {
+            case 'repeat':
+                return 'auto';
 
             case 'stretch':
-                resizeMode = '100% 100%';
-                break;
+                return '100% 100%';
 
-            case 'repeat':
-                resizeMode = 'auto';
-                break;
+            // contain | cover | auto are valid BackgroundSize values
+            case 'contain':
+            case 'cover':
+            case 'auto':
+                return resizeMode as string;
+
+            // Prevent unknown resizeMode values
+            default:
+                return DEFAULT_RESIZE_MODE as string;
         }
-
-        combinedStyles['backgroundPosition'] = 'center center';
-        combinedStyles['backgroundSize'] = resizeMode;
-        combinedStyles['backgroundRepeat'] = this.props.resizeMode === 'repeat' ? 'repeat' : 'no-repeat';
-
-        return combinedStyles;
     }
 
     private _onLoad = () => {

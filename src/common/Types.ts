@@ -517,11 +517,13 @@ export interface PickerProps extends CommonProps {
 }
 
 // Image
+export type ImageResizeMode = 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat';
+
 export interface ImagePropsShared extends CommonProps {
     source: string;
     headers?: { [headerName: string]: string };
     accessibilityLabel?: string;
-    resizeMode?: 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat';
+    resizeMode?: ImageResizeMode;
 
     resizeMethod?: 'auto' | 'resize' | 'scale'; // Android only
     title?: string;
