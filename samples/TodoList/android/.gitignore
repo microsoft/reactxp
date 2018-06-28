@@ -1,0 +1,7 @@
+build/*
+app/build/*
+app/dist/*
+local.properties
+.gradle/*
+.idea/*
+app/.idea/*
