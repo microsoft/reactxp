@@ -68,7 +68,7 @@ const _styles = {
         paddingVertical: 4
     }),
     buttonText: RX.Styles.createTextStyle({
-        font: Fonts.displayBold,
+        font: Fonts.displayRegular,
         fontSize: FontSizes.size32,
         lineHeight: 32,
         color: Colors.buttonTextColor

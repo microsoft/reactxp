@@ -11,6 +11,7 @@
     "target": "es5",
     "experimentalDecorators": true,
     "sourceMap": true,
+    "skipLibCheck": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "outDir": "./dist/"
