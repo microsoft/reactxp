@@ -6,7 +6,7 @@
 */
 
 import * as assert from 'assert';
-import ReSubOptions from 'resub/dist/Options';
+import { Options as ReSubOptions } from 'resub';
 import * as SyncTasks from 'synctasks';
 
 import ExceptionReporter from './ExceptionReporter';
