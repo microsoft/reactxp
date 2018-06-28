@@ -7,7 +7,7 @@ The commands in the instructions below assume you are in the root of this repo.
 ### Building for Web
 
 - Run `npm run start-web`. This compiles the TypeScript code and recompiles it whenever any files are changed.
-- Follow instructions in [docs/setup](/docs/setup) to start the local web server.
+- Follow instructions in docs/setup to start the local web server.
 
 ### Building for iOS
 
@@ -32,7 +32,7 @@ The commands in the instructions below assume you are in the root of this repo.
 This sample demonstrates a number of concepts that you can leverage within your app. Some of these concepts demonstrate advanced ways to orchestrate the build of a more complex cross-platform app. Others demonstrate coding techniques within the app.
 
 ## Gulp-based Build
-Most of the other ReactXP samples use a simple build technique where the build script is entirely written within the package.json "scripts" section. This sample demonstrates a more sophisticated build that leverages [gulp](https://www.npmjs.com/package/gulp), a popular automation toolkit.
+Most of the other ReactXP samples use a simple build technique where the build script is implemented entirely within the package.json "scripts" section. This sample demonstrates a more sophisticated build that leverages [gulp](https://www.npmjs.com/package/gulp), a popular automation toolkit.
 
 The script logic is mostly located in the file gulpfile.js. This script also makes use of buildconfig.js, which defines all of the build parameters (such as paths and config options).
 
@@ -70,10 +70,10 @@ This sample shows a way to "link" the appropriate code based on the platform typ
 
 To write a module that contains platform-specific code, create a new directory under "modules", and give it the name of your module. Within that directory, provide platform-specific implementations named ```index.<platform>.ts[x]```. The aliasing mechanism also supports common fallbacks. For example, if you can use the same implementation for all native platforms (ios, android, windows, macos), create a file called ```index.native.ts[x]```. Likewise, a "universal" fallback can be provided with the name ```index.ts[x]```.
 
-To consume a platform-specific module elsewhere within your code, import it with an absolute path that starts with 'module/'. For example, if you created a module called 'linear-gradation', you would import it as follows:
+To consume a platform-specific module elsewhere within your code, import it with an absolute path that starts with 'module/'. For example, if you created a module called 'linear-gradient', you would import it as follows:
 
 ```
-import LinearGradation from 'modules/linear-gradation';
+import LinearGradient from 'modules/linear-gradient';
 ```
 
 This aliasing technique is implemented primarily in the buildconfig.js file. Refer to the ```getModuleAliases``` function, which computes the aliases array. These aliases are then applied at build time by either the ```apply-aliases``` gulp step in the case of native builds or through a webpack plugin (see the "aliases" section of webpack.config.ts) for web builds.
@@ -83,7 +83,7 @@ To incorporate this techinque into your project, copy the relevant sections of b
 ## Local Web Server
 The other ReactXP samples allow you to run the resulting web app by simply opening the "index.html``` file in your browser. This sample shows a more advanced technique that uses a simple local web server running in node. This web server is not intended for development only, not for production hosting.
 
-To configure and run the local web server, refer to the instructions in [docs/setup](/docs/setup).
+To configure and run the local web server, refer to the instructions in docs/setup.
 
 To add this mechanism to your project, copy the nodeserver.js file to the root of your project.
 
