@@ -1,27 +1,38 @@
 {
-  "exclude": [
-    "node_modules"
-  ],
-  "compilerOptions": {
-    "declaration": false,
-    "noResolve": false,
-    "jsx": "react",
-    "reactNamespace": "RX",
-    "module": "commonjs",
-    "target": "es5",
-    "experimentalDecorators": true,
-    "sourceMap": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist/",
-    "typeRoots": [
-        "node_modules/@types"
+    "compilerOptions": {
+        "noEmitHelpers": true,
+        "importHelpers": true,
+        "declaration": false,
+        "noResolve": false,
+        "jsx": "react",
+        "reactNamespace": "RX",
+        "module": "commonjs",
+        "target": "es5",
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "outDir": "./web/js/",
+        "baseUrl": ".",
+        "paths": {
+            "modules/*": [
+                "./src/ts/modules/*/index.web",
+                "./src/ts/modules/*/index"
+            ]
+        },
+        "typeRoots": [
+            "./node_modules/@types"
+        ]
+    },
+    "exclude": [
+        "node_modules",
+        "temp",
+        ".vscode"
+    ],
+    "include": [
+        "./src/ts/**/*"
     ]
-  },
-  "include": [
-    "./src/**/*"
-  ]
 }

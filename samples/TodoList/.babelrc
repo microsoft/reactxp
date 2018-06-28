@@ -1,0 +1,9 @@
+{
+    "presets": [
+        "react-native"
+    ],
+    "plugins": [
+        "lodash",
+        "./buildtools/inline-require.js"
+    ]
+}
