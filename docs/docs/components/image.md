@@ -31,7 +31,7 @@ resizeMethod: 'auto' | 'resize' | 'scale' = 'auto'; // Android only
 
 // Determines how to resize the image if its natural size
 // does not match the size of the container
-resizeMode: 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat' = 'stretch';
+resizeMode: 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat' = 'contain';
 
 // URL to image
 source: string = undefined;
