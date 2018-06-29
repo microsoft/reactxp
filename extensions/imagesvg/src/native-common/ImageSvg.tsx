@@ -11,7 +11,6 @@ import assert = require('assert');
 import React = require('react');
 import RNSvg = require('react-native-svg');
 
-import SvgInterfaces = require('../common/Interfaces');
 import SvgTypes = require('../common/Types');
 
 export class ImageSvg extends React.Component<SvgTypes.ImageSvgProps, {}> {

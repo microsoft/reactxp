@@ -1,4 +1,4 @@
-﻿/**
+/**
 * ImageSvg.tsx
 * Copyright (c) Microsoft Corporation. All rights reserved.
 * Licensed under the MIT license.
@@ -9,7 +9,6 @@
 
 import React = require('react');
 
-import SvgInterfaces = require('../common/Interfaces');
 import SvgTypes = require('../common/Types');
 
 // TODO: #694092 Not implemented
