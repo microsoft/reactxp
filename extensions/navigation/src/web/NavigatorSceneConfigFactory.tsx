@@ -169,7 +169,6 @@ export class NavigatorSceneConfig {
     private _styleInterpolator (styles: TransitionStyle): InterpolatorWrapper {
         return (previousStyleSet: Types.ViewStyleRuleSet, dimensions: Types.Dimensions, progress: number): boolean => {
             // Calls the interpolator method for each type and calculates
-            const interpolatedValues: { [name: string]: number|string } = {};
             const newStyleSet = SceneConfigStyles.bundleCompoundStyles(
                 _.mapValues(styles, (interpolator: Interpolator | number) => {
                     return _.isNumber(interpolator) ? interpolator : interpolator(progress, dimensions);
