@@ -24,13 +24,13 @@ export class ScrollView extends ScrollViewBase {
         //   order for the UI to acknowledge your interaction.
         const keyboardShouldPersistTaps = 'always';
 
-        let nativeProps = {
+        const nativeProps = {
             ...props,
             onKeyDown: onKeyDownCallback,
             keyboardShouldPersistTaps: keyboardShouldPersistTaps,
             tabNavigation: this.props.tabNavigation,
-            disableKeyboardBasedScrolling: true
-    } as RN.ScrollViewProps;
+            disableKeyboardBasedScrolling: true,
+        } as RN.ScrollViewProps;
 
         return (
             <RN.ScrollView { ...nativeProps }>

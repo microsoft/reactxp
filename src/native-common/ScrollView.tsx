@@ -91,10 +91,11 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
         return this._render(internalProps);
     }
 
-    private _onScroll = (event: React.SyntheticEvent<ScrollView>) => {
-        const nativeEvent = event.nativeEvent as any;
-        this._scrollTop = nativeEvent.contentOffset.y;
-        this._scrollLeft = nativeEvent.contentOffset.x;
+    private _onScroll = (event: RN.NativeSyntheticEvent<RN.NativeScrollEvent>) => {
+        const contentOffset = event.nativeEvent.contentOffset;
+
+        this._scrollTop = contentOffset.y;
+        this._scrollLeft = contentOffset.x;
 
         if (this.props.onScroll) {
             this.props.onScroll(this._scrollTop, this._scrollLeft);
