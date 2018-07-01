@@ -23,4 +23,6 @@ If you are new to React, you should first familiarize yourself with the core con
 
 The `samples` directory contains a minimal "Hello World" app that demonstrates some basic ReactXP functionality. You can use this as a starting point. Just follow the build instructions in the README file.
 
-Nader Dabit has created a helpful [video tutorial](https://medium.com/@dabit3/reactxp-first-look-d3dd1d08febd) that walks you through the steps to build the sample app.
+The TodoList sample provides a more complex example.
+
+The RXPTest sample attempts to exercise all aspects of ReactXP, so it's a good reference for sample usage.
