@@ -6,9 +6,6 @@
 *
 * Common native implementation for Navigator on mobile.
 */
-
-import RN = require('react-native');
-import React = require('react');
 import RX = require('reactxp');
 
 import {

@@ -54,7 +54,6 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
 
     private _state: Navigation.NavigationState;
     private _transitionSpec: TransitionSpec;
-    private _navigationInProgress: boolean;
 
     constructor(navigator: Navigator<NavigatorState>) {
         super(navigator);

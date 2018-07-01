@@ -13,7 +13,7 @@
             "es5",
             "dom"
         ],
-        "types" : ["lodash", "node", "react", "react-dom"]
+        "types" : ["lodash", "node", "react", "react-dom", "react-native"]
     },
 
     "include": [
