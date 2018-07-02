@@ -9,10 +9,8 @@
 
 import assert = require('assert');
 import React = require('react');
-import ReactDOM = require('react-dom');
 import { Styles as RXStyles } from 'reactxp';
 
-import SvgInterfaces = require('../common/Interfaces');
 import SvgTypes = require('../common/Types');
 
 export class ImageSvg extends React.Component<SvgTypes.ImageSvgProps, {}> {

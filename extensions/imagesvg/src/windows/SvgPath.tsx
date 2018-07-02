@@ -9,7 +9,6 @@
 
 import React = require('react');
 
-import SvgInterfaces = require('../common/Interfaces');
 import SvgTypes = require('../common/Types');
 
 // TODO: #694092 Not implemented
