@@ -31,6 +31,8 @@ resizeMethod: 'auto' | 'resize' | 'scale' = 'auto'; // Android only
 
 // Determines how to resize the image if its natural size
 // does not match the size of the container
+// Note: In Web version, 'auto' doesn't scale down image
+//   if width/height smaller than the original image size
 resizeMode: 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat' = 'contain';
 
 // URL to image
