@@ -1,4 +1,4 @@
-﻿/*
+/*
 * Video.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -12,7 +12,6 @@ import React = require('react');
 import RX = require('reactxp');
 import ReactDOM = require('react-dom');
 
-import Interfaces = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 class Video extends RX.Component<Types.VideoProps, {}> {

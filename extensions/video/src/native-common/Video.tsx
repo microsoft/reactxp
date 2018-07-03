@@ -1,4 +1,4 @@
-﻿/*
+/*
 * Video.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -11,7 +11,6 @@ import React = require('react');
 import { default as RNVideo, VideoInfo, VideoBufferInfo } from 'react-native-video';
 import RX = require('reactxp');
 
-import Interfaces = require('../common/Interfaces');
 import Types = require('../common/Types');
 
 export interface VideoState {
