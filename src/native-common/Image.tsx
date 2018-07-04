@@ -15,6 +15,7 @@ import _ = require('./lodashMini');
 
 import Styles from './Styles';
 import Types = require('../common/Types');
+import { DEFAULT_RESIZE_MODE } from '../common/Image';
 
 const _styles = {
     defaultImage: Styles.createImageStyle({
@@ -78,16 +79,8 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
     }
 
     render() {
-        // Use the width/height provided in the style if it's not provided in the image itself.
-        let resizeMode = 'contain';
-        if (this.props.resizeMode !== undefined &&
-            (this.props.resizeMode === 'contain' ||
-             this.props.resizeMode === 'cover' ||
-             this.props.resizeMode === 'stretch')) {
-            resizeMode = this.props.resizeMode;
-        }
-
         const additionalProps = this._getAdditionalProps();
+        const resizeMode = this._buildResizeMode();
         const extendedProps: RN.ExtendedImageProps = {
             source: this._buildSource(),
             tooltip: this.props.title
@@ -97,7 +90,7 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
             <RN.Image
                 ref={ this._onMount as any }
                 style={ this.getStyles() as RN.StyleProp<RN.ImageStyle> }
-                resizeMode={ resizeMode as any }
+                resizeMode={ resizeMode }
                 resizeMethod={ this.props.resizeMethod }
                 accessibilityLabel={ this.props.accessibilityLabel }
                 onLoad={ this.props.onLoad ? this._onLoad : undefined }
@@ -130,6 +123,22 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
 
     protected getStyles() {
         return [_styles.defaultImage, this.props.style];
+    }
+
+    private _buildResizeMode(): RN.ImageResizeMode {
+        const { resizeMode = DEFAULT_RESIZE_MODE } = this.props;
+
+        if (resizeMode === 'auto') {
+            return 'center' as RN.ImageResizeMode;
+        }
+
+        // Prevents unknown resizeMode values
+        const isValidResizeModeValue = ['contain', 'cover', 'stretch', 'repeat'].indexOf(resizeMode) >= 0;
+        if (isValidResizeModeValue) {
+            return resizeMode as RN.ImageResizeMode;
+        }
+
+        return DEFAULT_RESIZE_MODE as RN.ImageResizeMode;
     }
 
     private _onLoad = (e: RN.NativeSyntheticEvent<RN.ImageLoadEventData>) => {

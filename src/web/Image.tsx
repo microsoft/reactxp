@@ -15,6 +15,7 @@ import PropTypes = require('prop-types');
 import restyleForInlineText = require('./utils/restyleForInlineText');
 import Styles from './Styles';
 import Types = require('../common/Types');
+import { DEFAULT_RESIZE_MODE } from '../common/Image';
 import { CSSProperties } from 'react';
 
 const _styles = {
@@ -33,8 +34,6 @@ const _styles = {
         backgroundColor: 'transparent'
     })
 };
-
-const DEFAULT_RESIZE_MODE: Types.ImageResizeMode = 'contain';
 
 export interface ImageState {
     showImgTag: boolean;
@@ -418,7 +417,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
             case 'auto':
                 return resizeMode as string;
 
-            // Prevent unknown resizeMode values
+            // Prevents unknown resizeMode values
             default:
                 return DEFAULT_RESIZE_MODE as string;
         }
