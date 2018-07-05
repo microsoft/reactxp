@@ -126,6 +126,9 @@ style: TextInputStyleRuleSet | TextInputStyleRuleSet[] = [];
 // ID that can be used to identify the instantiated element for testing purposes.
 testId: string = undefined;
 
+// Text for a tooltip
+title: string = undefined;
+
 // If defined, the control value is forced to match this value;
 // if undefined, control value can be modified by the user
 value: string = undefined;

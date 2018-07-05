@@ -102,6 +102,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     ref={ this._onMount }
                     style={ combinedStyles as any }
                     value={ this.state.inputValue }
+                    title={ this.props.title }
 
                     autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
@@ -119,7 +120,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onMouseUp={ this._checkSelectionChanged }
                     onPaste={ this._onPaste }
                     onScroll={ this._onScroll }
-                    aria-label={ this.props.accessibilityLabel }
+                    aria-label={ this.props.accessibilityLabel || this.props.title }
                     data-test-id={ this.props.testId }
                 />
             );
@@ -131,6 +132,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     ref={ this._onMount }
                     style={ combinedStyles as any }
                     value={ this.state.inputValue }
+                    title={ this.props.title }
 
                     autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
@@ -147,7 +149,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onMouseDown={ this._checkSelectionChanged }
                     onMouseUp={ this._checkSelectionChanged }
                     onPaste={ this._onPaste }
-                    aria-label={ this.props.accessibilityLabel }
+                    aria-label={ this.props.accessibilityLabel || this.props.title }
                     type={ keyboardTypeValue }
                     pattern={ pattern }
                     data-test-id={ this.props.testId }

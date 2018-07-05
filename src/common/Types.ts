@@ -884,6 +884,7 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     placeholderTextColor?: string;
     secureTextEntry?: boolean;
     value?: string;
+    title?: string;
 
      // Should fonts be scaled according to system setting? Defaults
     // to true. iOS and Android only.
