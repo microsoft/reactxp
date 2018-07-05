@@ -252,8 +252,14 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
             });
         }
 
+        // Do a shallow clone and remove the props that don't
+        // apply to div elements.
+        let props = _.clone(this.props) as MonitorListEditsProps;
+        delete props.componentWillAnimate;
+        delete props.testId;
+
         return (
-            <div { ...this.props } data-test-id={ this.props.testId }>
+            <div { ...props } data-test-id={ this.props.testId }>
                 { this._childrenToRender }
             </div>
         );
