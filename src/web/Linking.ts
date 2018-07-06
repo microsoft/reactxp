@@ -32,7 +32,7 @@ export class Linking extends CommonLinking {
         // Note: can only set to null, otherwise is readonly.
         // Note: In order for mailto links to work properly window.opener cannot be null.
         if (url.indexOf('mailto:') !== 0) {
-            (otherWindow as any).opener = null;
+            otherWindow.opener = null;
         }
         otherWindow.location.href = url;
 
