@@ -20,7 +20,7 @@ export class Rule extends Rules.AbstractRule {
 
     apply(sourceFile: ts.SourceFile): RuleFailure[] {
         const options = this.getOptions();
-        const banModuleWalker = new BlacklistedModuleWalker(sourceFile, options);
+        const banModuleWalker = new GroupedImportModuleWalker(sourceFile, options);
         return this.applyWithWalker(banModuleWalker);
     }
 }
@@ -31,7 +31,7 @@ enum ImportType {
     Ambient
 }
 
-class BlacklistedModuleWalker extends RuleWalker {
+class GroupedImportModuleWalker extends RuleWalker {
     private _inImportGroup = false;
     private _lastImportType = ImportType.None;
 
@@ -78,7 +78,8 @@ class BlacklistedModuleWalker extends RuleWalker {
         }
 
         if (modulePath) {
-            if (modulePath[0] === '.') {
+            // Assume that "@" is a shortcut for a relative path.
+            if (modulePath[0] === '.' || modulePath[0] === '@') {
                 return ImportType.Relative;
             } else {
                 return ImportType.Ambient;
