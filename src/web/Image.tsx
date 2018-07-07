@@ -138,7 +138,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
     static prefetch(url: string): SyncTasks.Promise<boolean> {
         const defer = SyncTasks.Defer<boolean>();
 
-        const img = new (window as any).Image();
+        const img = new window.Image();
 
         img.onload = ((event: Event) => {
             defer.resolve(true);
@@ -159,7 +159,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
     static getMetadata(url: string): SyncTasks.Promise<Types.ImageMetadata> {
         const defer = SyncTasks.Defer<Types.ImageMetadata>();
 
-        const img = new (window as any).Image();
+        const img = new window.Image();
 
         img.onload = ((event: Event) => {
             defer.resolve({

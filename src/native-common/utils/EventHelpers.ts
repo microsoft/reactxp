@@ -21,7 +21,7 @@ export class EventHelpers {
             // keycodes for arrow keys when comparing with React (JS).
             // We align the keycodes for native desktop platforms to the other native ones, as a workaround.
             // Ideally all key codes should be consistent OR a set of constants should be exposed by ReactXP.
-            let keyName: string = (e.nativeEvent as any).key;
+            let keyName: string = e.nativeEvent.key;
             let keyCode: number = 0;
 
             if (keyName.length === 1) {
@@ -59,12 +59,12 @@ export class EventHelpers {
                         keyCode = 18;
                         break;
 
-                    // keyCode in windows is 93 for context menu button. Since that is already used 
-                    // for PgDn, picking a keyCode that is not currently assigned in this list. 
+                    // keyCode in windows is 93 for context menu button. Since that is already used
+                    // for PgDn, picking a keyCode that is not currently assigned in this list.
                     case 'Application':
                         keyCode = 500;
                         break;
-                        
+
                     case 'F1':
                         keyCode = 112;
                         break;
@@ -289,7 +289,7 @@ export class EventHelpers {
 
     toDragEvent(e: Types.SyntheticEvent): Types.DragEvent {
         const dndEvent: any = this.toMouseEvent(e);
-        dndEvent.dataTransfer = (e.nativeEvent as any).dataTransfer;
+        dndEvent.dataTransfer = e.nativeEvent.dataTransfer;
         return dndEvent;
     }
 
@@ -309,21 +309,22 @@ export class EventHelpers {
     isRightMouseButton(e: Types.SyntheticEvent): boolean {
         return !!e.nativeEvent.isRightButton;
     }
-    
-    // Keyboard events do not inherently hold a position that can be used to show flyouts on keyboard input.  
-    // We simulate a mouse event so that we can show things like context Menus in the correct position. 
-    // Ensure offset is passed in {x = number, y= number} format. Using Top Left as anchor position. 
-    keyboardToMouseEvent(e: Types.KeyboardEvent, layoutInfo: Types.LayoutInfo, 
+
+    // Keyboard events do not inherently hold a position that can be used to show flyouts on keyboard input.
+    // We simulate a mouse event so that we can show things like context Menus in the correct position.
+    // Ensure offset is passed in {x = number, y= number} format. Using Top Left as anchor position.
+    keyboardToMouseEvent(e: Types.KeyboardEvent, layoutInfo: Types.LayoutInfo,
         contextMenuOffset: {x: number, y: number}): Types.MouseEvent {
         let mouseEvent = this.toMouseEvent(e);
-       
+
         if ((layoutInfo.x !== undefined) && (contextMenuOffset.x !== undefined)) {
             mouseEvent.clientX = mouseEvent.pageX = layoutInfo.x + contextMenuOffset.x;
         }
 
         if ((layoutInfo.y !== undefined) && (contextMenuOffset.y !== undefined)) {
             mouseEvent.clientY = mouseEvent.pageY = layoutInfo.y + contextMenuOffset.y;
-        }          
+        }
+
         return mouseEvent;
     }
 }

@@ -154,14 +154,13 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
         }
     }
 
-    private _onError = (e: React.SyntheticEvent<Image>) => {
+    private _onError = (e: RN.NativeSyntheticEvent<RN.ImageErrorEventData>) => {
         if (!this._mountedComponent) {
             return;
         }
 
         if (this.props.onError) {
-            const event = e.nativeEvent as any;
-            this.props.onError(new Error(event.error));
+            this.props.onError(new Error(e.nativeEvent.error));
         }
     }
 
