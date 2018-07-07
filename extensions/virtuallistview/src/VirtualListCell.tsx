@@ -42,21 +42,23 @@ export interface VirtualListCellProps extends RX.CommonProps {
 }
 
 interface StaticRendererProps extends RX.CommonProps {
-    animatedStyle: RX.Types.AnimatedViewStyleRuleSet;
     shouldUpdate: boolean;
-    showOverflow: boolean;
-    item: VirtualListCellInfo;
     isFocused: boolean;
+    style: RX.Types.StyleRuleSetRecursive<RX.Types.AnimatedViewStyleRuleSet | RX.Types.ViewStyleRuleSet>;
+    item: VirtualListCellInfo;
     renderItem: (item: VirtualListCellInfo, focused: boolean) => JSX.Element | JSX.Element[];
 }
 
 const _styles = {
-    itemBase: RX.Styles.createViewStyle({
+    cellView: RX.Styles.createViewStyle({
         position: 'absolute'
     }),
     overflowVisible: RX.Styles.createViewStyle({
         overflow: 'visible'
-    })
+    }),
+    overflowHidden: RX.Styles.createViewStyle({
+        overflow: 'hidden'
+    }),
 };
 
 const _isNativeMacOS = RX.Platform.getType() === 'macos';
@@ -81,7 +83,7 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
             // Because of the React limitation that Render should returm single element and not array,
             // we have to wrap results of this.props.render() into the View.
             return (
-                <RX.Animated.View style={ [_styles.overflowVisible, this.props.animatedStyle] } >
+                <RX.Animated.View style={ this.props.style } >
                     { this.props.renderItem(this.props.item, this.props.isFocused) }
                 </RX.Animated.View>
             );
@@ -311,21 +313,22 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
     }
 
     render() {
+        const overflow = this.props.showOverflow ? _styles.overflowVisible : _styles.overflowHidden;
+
         return (
             <RX.Animated.View
-                style={ [_styles.itemBase, _styles.overflowVisible, this._animatedStylePosition] }
-                onLayout={ this.props.onLayout ? this._onLayout : null }
+                style={ [_styles.cellView, overflow, this._animatedStylePosition] }
                 ref={ _virtualCellRef }
                 tabIndex={ this.props.tabIndex }
-                onFocus={ this._onFocus }
-                onBlur={ this._onBlur }
+                onLayout={ this.props.onLayout ? this._onLayout : undefined }
+                onFocus={ this._onFocus ? this._onFocus : undefined }
+                onBlur={ this._onBlur ? this._onBlur : undefined }
             >
                 <VirtualListCell.StaticRenderer
-                    animatedStyle={ this._animatedStyleWidth }
                     shouldUpdate={ this.props.shouldUpdate }
-                    showOverflow={ this.props.showOverflow }
+                    isFocused={ this.props.isFocused }
+                    style={ [overflow, this._animatedStyleWidth] }
                     item={ this.props.item }
-                    isFocused= { this.props.isFocused }
                     renderItem={ this.props.renderItem }
                 />
             </RX.Animated.View>

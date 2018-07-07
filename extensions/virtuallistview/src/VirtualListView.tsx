@@ -1069,7 +1069,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         // Sort the list of cells by virtual key so the order doesn't change. Otherwise
         // the underlying render engine (the browser or React Native) treat it as a DOM
         // change, and perf suffers.
-        cellList = cellList.sort((a, b) => { return a.cellInfo.virtualKey < b.cellInfo.virtualKey ? 1 : -1; });
+        cellList = cellList.sort((a, b) => a.cellInfo.virtualKey < b.cellInfo.virtualKey ? 1 : -1);
 
         _.each(cellList, cell => {
             let tabIndexValue: number;
