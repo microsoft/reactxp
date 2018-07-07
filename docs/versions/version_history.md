@@ -16,7 +16,7 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
-#### Version 1.3.1 of reactxp - _7 Jul 2018_
+#### Version 1.3.2 of reactxp - _7 Jul 2018_
 * Updated custom tslint rule groupedImportRule to treat imports starting with '@' as relative rather than ambient.
 * Made 'auto' a valid resizeMode for images in web implementation.
 * Added support for 'title' prop on RX.TextInput.
