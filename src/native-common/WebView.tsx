@@ -1,19 +1,17 @@
 ﻿/**
-* WebView.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* A control that allows the display of an independent web page.
-*/
+ * WebView.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * A control that allows the display of an independent web page.
+ */
 
-import _ = require('./lodashMini');
-import React = require('react');
-import RN = require('react-native');
+import * as React from 'react';
+import * as RN from 'react-native';
+import * as RX from '../common/Interfaces';
 
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
-import Types = require('../common/Types');
 
 const _styles = {
     webViewDefault: Styles.createWebViewStyle({
@@ -22,8 +20,8 @@ const _styles = {
     })
 };
 
-export class WebView extends React.Component<Types.WebViewProps, Types.Stateless> implements RX.WebView {
-    private _mountedComponent: any;
+export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Stateless> implements RX.WebView {
+    private _mountedComponent: RN.WebView | null = null;
 
     render() {
         const styles = [_styles.webViewDefault, this.props.style] as RN.StyleProp<RN.ViewStyle>;
@@ -50,29 +48,22 @@ export class WebView extends React.Component<Types.WebViewProps, Types.Stateless
         );
     }
 
-    protected _onMount = (component: any) => {
+    protected _onMount = (component: RN.WebView) => {
         this._mountedComponent = component;
     }
 
     protected _onMessage = (e: RN.NativeSyntheticEvent<RN.WebViewMessageEventData>) => {
         if (this.props.onMessage) {
-            // Clone the original event because RN reuses events.
-            let event: RX.Types.WebViewMessageEvent = _.clone(e) as any;
-
-            // Add the data element.
-            event.data = e.nativeEvent.data;
-            event.origin = '*';
-
-            event.stopPropagation = () => {
-                if (e.stopPropagation) {
-                    e.stopPropagation();
-                }
-            };
-
-            event.preventDefault = () => {
-                if (e.preventDefault) {
-                    e.preventDefault();
-                }
+            const event: RX.Types.WebViewMessageEvent = {
+                defaultPrevented: e.defaultPrevented,
+                nativeEvent: e.nativeEvent,
+                cancelable: e.cancelable,
+                timeStamp: e.timeStamp,
+                bubbles: e.bubbles,
+                origin: '*',
+                data: e.nativeEvent.data,
+                stopPropagation: () => e.stopPropagation(),
+                preventDefault: () => e.preventDefault(),
             };
 
             this.props.onMessage(event);
