@@ -64,6 +64,8 @@ export interface VirtualListViewItemInfo extends VirtualListCellInfo {
 }
 
 export interface VirtualListViewProps<ItemInfo extends VirtualListViewItemInfo> extends RX.CommonStyledProps<RX.Types.ViewStyleRuleSet> {
+    testId?: string;
+    
     // Ordered list of descriptors for items to display in the list.
     itemList: ItemInfo[];
 
