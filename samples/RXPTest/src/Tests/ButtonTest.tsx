@@ -42,6 +42,9 @@ const _styles = {
         borderRadius: 8,
         borderColor: 'black'
     }),
+    buttonCursor: RX.Styles.createButtonStyle({
+        cursor: 'default'
+    }),
     button2Text: RX.Styles.createTextStyle({
         fontSize: CommonStyles.generalFontSize,
         color: 'black'
@@ -155,11 +158,12 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
 
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation4' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'This button have a tooltip when hovering over it (mouse-based platforms only).' }
+                        { 'This button have a tooltip when hovering over it (mouse-based platforms only).' +
+                        ' It should also display an arrow cursor rather than the default pointer cursor.' }
                     </RX.Text>
                 </RX.View>
                 <RX.Button
-                    style={ _styles.button2 }
+                    style={ [_styles.button2, _styles.buttonCursor] }
                     title={ 'Do you see this tooltip?' }
                     onPress={ () => {
                         // no-op
