@@ -139,43 +139,46 @@ interface VirtualListViewItemInfo {
 
 ## Props
 ``` javascript
-    // Ordered list of descriptors for items to display in the list.
-    itemList: VirtualListViewItemInfo[];
+// Should the list animate additions, removals and moves within the list?
+animateChanges?: boolean;
 
-    // Callback for rendering item when it becomes visible within view port.
-    renderItem: (item: VirtualListViewItemInfo, hasFocus?: boolean) =>
-        JSX.Element | JSX.Element[];
+// Ordered list of descriptors for items to display in the list.
+itemList: VirtualListViewItemInfo[];
 
-    // Optional padding around the scrolling content within the list.
-    padding?: number;
+// Logging callback to debug issues related to the VirtualListView.
+logInfo?: (textToLog: string) => void;
 
-    // If true, allows each item to overflow its visible cell boundaries;
-    // by default, item contents are clipped to cell boundaries.
-    showOverflow?: boolean;
+// Optional padding around the scrolling content within the list.
+padding?: number;
 
-    // Should the list animate additions, removals and moves within the list?
-    animateChanges?: boolean;
+// Callback for rendering item when it becomes visible within view port.
+renderItem: (item: VirtualListViewItemInfo, hasFocus?: boolean) =>
+    JSX.Element | JSX.Element[];
 
-    // By default, VirtualListView re-renders every item during the render.
-    // Setting this flag to true allows the list view to re-render only
-    // items from itemList whose descriptor has changed, thus avoiding
-    // unnecessary rendering. It uses _.isEqual to perform this check. In
-    // this mode, renderItem should not depend on any external state, only
-    // on VirtualListViewItemInfo, to render item.
-    skipRenderIfItemUnchanged?: boolean;
+// If true, allows each item to overflow its visible cell boundaries;
+// by default, item contents are clipped to cell boundaries.
+showOverflow?: boolean;
 
-    // Pass-through properties for scroll view.
-    keyboardDismissMode?: 'none' | 'interactive' | 'on-drag';
-    keyboardShouldPersistTaps?: boolean;
-    disableScrolling?: boolean;
-    scrollsToTop?: boolean; // iOS only, scroll to top on status bar tap
-    disableBouncing?: boolean; // iOS only, bounce override
-    scrollIndicatorInsets?: { top: number, left: number,
-        bottom: number, right: number }; // iOS only
-    onScroll?: (scrollTop: number, scrollLeft: number) => void;
+// By default, VirtualListView re-renders every item during the render.
+// Setting this flag to true allows the list view to re-render only
+// items from itemList whose descriptor has changed, thus avoiding
+// unnecessary rendering. It uses _.isEqual to perform this check. In
+// this mode, renderItem should not depend on any external state, only
+// on VirtualListViewItemInfo, to render item.
+skipRenderIfItemUnchanged?: boolean;
 
-    // Logging callback to debug issues related to the VirtualListView.
-    logInfo?: (textToLog: string) => void;
+// ID that can be used to identify the instantiated element for testing purposes.
+testId: string = undefined;
+
+// Pass-through properties for scroll view.
+keyboardDismissMode?: 'none' | 'interactive' | 'on-drag';
+keyboardShouldPersistTaps?: boolean;
+disableScrolling?: boolean;
+scrollsToTop?: boolean; // iOS only, scroll to top on status bar tap
+disableBouncing?: boolean; // iOS only, bounce override
+scrollIndicatorInsets?: { top: number, left: number,
+    bottom: number, right: number }; // iOS only
+onScroll?: (scrollTop: number, scrollLeft: number) => void;
 ```
 
 ## Methods
