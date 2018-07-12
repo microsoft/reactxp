@@ -139,6 +139,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     disabled={ !editable }
                     maxLength={ this.props.maxLength }
                     placeholder={ this.props.placeholder }
+                    size={ 1 }
 
                     onChange= { this._onInputChanged }
                     onKeyDown={ this._onKeyDown }
