@@ -76,7 +76,6 @@ export default class DeepLinkConverter {
                 return NavActions.createTodoListContext(isStackNav, selectedTodoId, showNewPanel);
 
             default:
-                assert.fail('Unimplemented');
                 return undefined;
         }
     }

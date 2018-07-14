@@ -4,6 +4,7 @@ npm-debug.log
 yarn-error.log
 
 /.cache-loader/
+package-lock.json
 
 temp/
 
