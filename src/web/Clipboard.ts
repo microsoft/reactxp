@@ -6,6 +6,7 @@
 *
 * Web-specific implementation of the cross-platform Clipboard abstraction.
 */
+import _ = require('lodash');
 
 import RX = require('../common/Interfaces');
 import SyncTasks = require('synctasks');
@@ -15,7 +16,7 @@ export class Clipboard extends RX.Clipboard {
         let node = Clipboard._createInvisibleNode();
         // Replace carriage return /r with /r/n, so that pasting outside browser environment
         // (eg in a native app) preserves this new line
-        text = text.replace(/\r/g, '\r\n');
+        text = _.escape(text).replace(/\r/g, '<br/>');
         node.innerHTML = text;
         document.body.appendChild(node);
         Clipboard._copyNode(node);
@@ -27,8 +28,8 @@ export class Clipboard extends RX.Clipboard {
        return SyncTasks.Rejected<string>('Not supported on web');
     }
 
-    private static _createInvisibleNode(): HTMLTextAreaElement {
-        const node = document.createElement('textarea');
+    private static _createInvisibleNode(): HTMLSpanElement {
+        const node = document.createElement('span');
         node.style.position = 'absolute';
         node.style.left = '-10000px';
 
@@ -54,11 +55,11 @@ export class Clipboard extends RX.Clipboard {
         return node;
     }
 
-    private static _copyNode(node: HTMLTextAreaElement) {
+    private static _copyNode(node: HTMLSpanElement) {
         const selection = getSelection();
         selection.removeAllRanges();
 
-        node.select();
+        node.focus();
 
         document.execCommand('copy');
         selection.removeAllRanges();
