@@ -307,7 +307,7 @@ export class EventHelpers {
     }
 
     isRightMouseButton(e: Types.SyntheticEvent): boolean {
-        return !!e.nativeEvent.isRightButton;
+        return (this.toMouseButton(e as Types.TouchEvent) === 2);
     }
 
     // Keyboard events do not inherently hold a position that can be used to show flyouts on keyboard input.
