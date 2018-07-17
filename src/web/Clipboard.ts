@@ -59,7 +59,7 @@ export class Clipboard extends RX.Clipboard {
         const selection = getSelection();
         selection.removeAllRanges();
 
-        var range = document.createRange();
+        const range = document.createRange();
         range.selectNodeContents(node);
         selection.addRange(range);
         
