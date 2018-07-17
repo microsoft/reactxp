@@ -6,7 +6,7 @@
 *
 * Web-specific implementation of the cross-platform Clipboard abstraction.
 */
-import _ = require('lodash');
+import escape = require('lodash/escape');
 
 import RX = require('../common/Interfaces');
 import SyncTasks = require('synctasks');
@@ -14,9 +14,9 @@ import SyncTasks = require('synctasks');
 export class Clipboard extends RX.Clipboard {
     public setText(text: string) {
         let node = Clipboard._createInvisibleNode();
-        // Replace carriage return /r with /r/n, so that pasting outside browser environment
+        // Replace carriage returns or newlines with br, so that pasting outside browser environment
         // (eg in a native app) preserves this new line
-        text = _.escape(text).replace(/\r/g, '<br/>');
+        text = escape(text).replace(/\r\n?|\n/g, '<br />');
         node.innerHTML = text;
         document.body.appendChild(node);
         Clipboard._copyNode(node);
