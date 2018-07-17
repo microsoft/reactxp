@@ -74,7 +74,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     protected _render(props: RN.TextInputProps, onMount: (textInput: any) => void): JSX.Element {
         return (
-            <RN.TextInput { ...props } ref={ onMount }/>
+            <RN.TextInput { ...props } ref={ onMount } />
         );
     }
 

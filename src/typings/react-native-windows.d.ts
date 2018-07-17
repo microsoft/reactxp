@@ -13,10 +13,14 @@ declare module 'react-native-windows' {
     import React = require('react');
     import RN = require('react-native');
 
+    interface AccessibilityEvents {
+        onAccessibilityTap?: (e: RN.NativeSyntheticEvent<any>) => void;
+    }
+
     //
     // Focusable view related declarations
     // ----------------------------------------------------------------------
-    type FocusableWindowsProps<P={}> = P & {
+    type FocusableWindowsProps<P = {}> = P & {
         ref?: (current: any) => void;
         isTabStop?: boolean;
         tabIndex?: number;
@@ -29,7 +33,6 @@ declare module 'react-native-windows' {
         onKeyDown?: Function;
         onKeyUp?: Function;
         componentRef?: Function;
-        onAccessibilityTap?: Function;
     };
 
     interface FocusableWindows<P> extends RN.ReactNativeBaseComponent<FocusableWindowsProps<P>, {}>{

@@ -38,10 +38,12 @@ interface ImageViewState {
 class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
     private _isMounted = false;
     private _image1Ref: RX.Image;
+    private _textRef: RX.Text;
     private _test1Complete = false;
     private _test2Complete = false;
     private _test3Complete = false;
     private _test4Complete = false;
+    private _test5Complete = false;
     private _testResult: TestResult;
     private _testCompletion: (result: TestResult) => void;
 
@@ -80,6 +82,14 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
                         onLoad={ this._onLoadTest2 }
                         onError={ this._onErrorTest2 }
                     />
+
+                    <RX.Image
+                        style={ _styles.image }
+                        source={ 'https://microsoft.github.io/reactxp/img/tests/bulb.jpg' }
+                        ref={ this._onMountImageChildTest }
+                    >
+                        <RX.Text ref={(comp: RX.Text) => { this._textRef = comp; }}>Child Text</RX.Text>
+                    </RX.Image>
                 </RX.View>
             );
 
@@ -100,7 +110,9 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
                         { 'Tests various aspects of the Image component that can be automatically validated.' }
                     </RX.Text>
                 </RX.View>
+
                 { optionalImages }
+
             </RX.View>
         );
     }
@@ -206,11 +218,24 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
         }
     }
 
+    private _onMountImageChildTest = (image: RX.Image) => {
+        this._test5Complete = true;
+
+        if (this._isMounted && image && !this._textRef) {
+            if (this._testResult) {
+                this._testResult.errors.push('"children" elements were not rendered');
+            }
+        }
+
+        this._checkAllTestsComplete();
+    }
+
     execute(complete: (result: TestResult) => void): void {
         this._test1Complete = false;
         this._test2Complete = false;
         this._test3Complete = false;
         this._test4Complete = false;
+        this._test5Complete = false;
         this._testResult = new TestResult();
         this._testCompletion = complete;
 

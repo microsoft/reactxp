@@ -109,7 +109,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         }
         let componentRef: Function = originalRef as Function;
 
-        let focusableTextProps: RNW.FocusableWindowsProps<RN.TextProps> = {
+        let focusableTextProps: RNW.FocusableWindowsProps<RN.TextProps | RNW.AccessibilityEvents> = {
             ...internalProps,
             componentRef: componentRef,
             ref: this._onFocusableRef,

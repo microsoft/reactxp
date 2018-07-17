@@ -12,7 +12,7 @@
     "@types/lodash": "4.14.110",
     "@types/react": "16.0.36",
     "@types/react-dom": "16.0.6",
-    "@types/react-native": "0.55.28",
+    "@types/react-native": "0.56.4",
     "assert": "1.4.1",
     "lodash": "4.17.10",
     "prop-types": "15.6.2",

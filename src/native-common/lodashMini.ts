@@ -15,7 +15,6 @@ import findIndex = require('lodash/findIndex');
 import findLast = require('lodash/findLast');
 import isArray = require('lodash/isArray');
 import isEqual = require('lodash/isEqual');
-import isNumber = require('lodash/isNumber');
 import isUndefined = require('lodash/isUndefined');
 import last = require('lodash/last');
 import map = require('lodash/map');
@@ -32,7 +31,6 @@ export {
     findLast,
     isArray,
     isEqual,
-    isNumber,
     isUndefined,
     last,
     map,
