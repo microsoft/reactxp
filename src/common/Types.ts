@@ -344,22 +344,27 @@ export type PickerStyleRuleSet = StyleRuleSet<PickerStyle>;
 
 export type ComponentBase = React.Component<any, any>;
 
-//
-// Components
-// ----------------------------------------------------------------------
-export interface CommonProps {
+/**
+ * Components
+ */
+
+interface ChildrenProp {
+    children?: ReactNode | ReactNode[];
+}
+
+interface ComponentBaseProps {
     ref?: string | ((obj: ComponentBase | null) => void);
     key?: string | number;
-    children?: ReactNode | ReactNode[];
     testId?: string;
 }
+
+export interface CommonProps extends ComponentBaseProps, ChildrenProp {}
 
 export interface Stateless {}
 
 //
 // Accessibility
 //
-
 export interface CommonAccessibilityProps {
     // iOS, Android, and Desktop
     importantForAccessibility?: ImportantForAccessibility;
@@ -516,12 +521,19 @@ export interface PickerProps extends CommonProps {
     mode?: 'dialog' | 'dropdown';
 }
 
+/**
+ * WebView, Image headers
+ */
+export interface Headers {
+    [header: string]: string;
+}
+
 // Image
 export type ImageResizeMode = 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat';
 
-export interface ImagePropsShared extends CommonProps {
+export interface ImagePropsShared extends ComponentBaseProps {
     source: string;
-    headers?: { [headerName: string]: string };
+    headers?: Headers;
     accessibilityLabel?: string;
     resizeMode?: ImageResizeMode;
 
@@ -973,7 +985,7 @@ export interface WebViewSource {
 export interface WebViewProps extends CommonStyledProps<WebViewStyleRuleSet> {
     url?: string;
     source?: WebViewSource;
-    headers?: { [key: string]: string };
+    headers?: Headers;
     onLoad?: (e: SyntheticEvent) => void;
     onNavigationStateChange?: (navigationState: WebViewNavigationState) => void;
     scalesPageToFit?: boolean;
