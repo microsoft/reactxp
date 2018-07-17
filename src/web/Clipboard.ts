@@ -57,10 +57,12 @@ export class Clipboard extends RX.Clipboard {
 
     private static _copyNode(node: HTMLSpanElement) {
         const selection = getSelection();
+        selection.removeAllRanges();
+
         var range = document.createRange();
         range.selectNodeContents(node);
-        selection.removeAllRanges();
         selection.addRange(range);
+        
         document.execCommand('copy');
         selection.removeAllRanges();
     }
