@@ -16,8 +16,7 @@ export class Clipboard extends RX.Clipboard {
         let node = Clipboard._createInvisibleNode();
         // Replace carriage returns or newlines with br, so that pasting outside browser environment
         // (eg in a native app) preserves this new line
-        text = escape(text).replace(/\r\n?|\n/g, '<br />');
-        node.innerHTML = text;
+        node.innerHTML = escape(text).replace(/\r\n?|\n/g, '<br />');
         document.body.appendChild(node);
         Clipboard._copyNode(node);
         document.body.removeChild(node);
