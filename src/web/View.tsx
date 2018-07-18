@@ -254,6 +254,9 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     }
 
     protected _getContainer(): HTMLElement|null {
+        if (!this._isMounted) {
+            return null;
+        }
         return ReactDOM.findDOMNode(this) as HTMLElement;
     }
 
