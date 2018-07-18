@@ -6,6 +6,7 @@
 *
 * Web-specific implementation of the cross-platform Clipboard abstraction.
 */
+import escape = require('lodash/escape');
 
 import RX = require('../common/Interfaces');
 import SyncTasks = require('synctasks');
@@ -13,10 +14,9 @@ import SyncTasks = require('synctasks');
 export class Clipboard extends RX.Clipboard {
     public setText(text: string) {
         let node = Clipboard._createInvisibleNode();
-        // Replace carriage return /r with /r/n, so that pasting outside browser environment
+        // Replace carriage returns or newlines with br, so that pasting outside browser environment
         // (eg in a native app) preserves this new line
-        text = text.replace(/\r/g, '\r\n');
-        node.innerHTML = text;
+        node.innerHTML = escape(text).replace(/\r\n?|\n/g, '<br />');
         document.body.appendChild(node);
         Clipboard._copyNode(node);
         document.body.removeChild(node);
@@ -27,8 +27,8 @@ export class Clipboard extends RX.Clipboard {
        return SyncTasks.Rejected<string>('Not supported on web');
     }
 
-    private static _createInvisibleNode(): HTMLTextAreaElement {
-        const node = document.createElement('textarea');
+    private static _createInvisibleNode(): HTMLSpanElement {
+        const node = document.createElement('span');
         node.style.position = 'absolute';
         node.style.left = '-10000px';
 
@@ -54,12 +54,14 @@ export class Clipboard extends RX.Clipboard {
         return node;
     }
 
-    private static _copyNode(node: HTMLTextAreaElement) {
+    private static _copyNode(node: HTMLSpanElement) {
         const selection = getSelection();
         selection.removeAllRanges();
 
-        node.select();
-
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        selection.addRange(range);
+        
         document.execCommand('copy');
         selection.removeAllRanges();
     }
