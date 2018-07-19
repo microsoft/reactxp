@@ -269,15 +269,13 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
     private _actuallyStartXhrImageFetch(props: Types.ImageProps) {
         // Fetch Implementation
 
-        var withCredentials = false;
         // If an 'origin' header is passed, we assume this is intended to be a crossorigin request.
         // In order to send the cookies with the request, the withCredentials: true / credentials: 'include' flag needs to be set.
-        if (props.headers && Object.keys(props.headers).some(header => header.toLowerCase() === 'origin')) {
-            withCredentials = true;
-        }
+        const withCredentials = props.headers
+            && Object.keys(props.headers).some(header => header.toLowerCase() === 'origin');
 
         if (window.fetch) {
-            var headers = new Headers();
+            const headers = new Headers();
 
             if (props.headers) {
                 Object.keys(props.headers).forEach(key => {
@@ -285,11 +283,11 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
                 });
             }
 
-            var xhr = new Request(props.source, {
+            const xhr = new Request(props.source, {
+                credentials: withCredentials ? 'include' : 'same-origin',
                 method: 'GET',
-                headers: headers,
                 mode: 'cors',
-                credentials: withCredentials ? 'include' : 'same-origin'
+                headers,
             });
 
             fetch(xhr)
@@ -359,12 +357,11 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         let reactElement = (
             <div
                 style={ this._getStyles() }
-                onMouseUp={ this._onMouseUp }
                 title={ this.props.title }
+                onMouseUp={ this._onMouseUp }
                 data-test-id={ this.props.testId }
             >
                 { optionalImg }
-                { this.props.children }
             </div>
         );
 

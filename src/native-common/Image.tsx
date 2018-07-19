@@ -98,9 +98,7 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
                 testID={ this.props.testId }
                 { ...additionalProps }
                 { ...extendedProps }
-            >
-                { this.props.children }
-            </RN.Image>
+            />
         );
     }
 
