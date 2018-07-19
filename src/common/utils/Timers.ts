@@ -11,20 +11,22 @@
 * we can get compiler errors.
 */
 
+let timerProvider = window || global;
+
 export default class Timers {
     static clearInterval(handle: number): void {
-        global.clearInterval(handle as any);
+        timerProvider.clearInterval(handle as any);
     }
 
     static clearTimeout(handle: number): void {
-        global.clearTimeout(handle as any);
+        timerProvider.clearTimeout(handle as any);
     }
 
     static setInterval(handler: () => void, timeout: number): number {
-        return global.setInterval(handler, timeout) as any;
+        return timerProvider.setInterval(handler, timeout) as any;
     }
 
     static setTimeout(handler: () => void, timeout: number): number {
-        return global.setTimeout(handler, timeout) as any;
+        return timerProvider.setTimeout(handler, timeout) as any;
     }
 }
