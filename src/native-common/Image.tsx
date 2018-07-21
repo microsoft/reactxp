@@ -12,7 +12,6 @@ import React = require('react');
 import RN = require('react-native');
 import SyncTasks = require('synctasks');
 
-import ImageBackground from './ImageBackground';
 import Styles from './Styles';
 import Types = require('../common/Types');
 import { DEFAULT_RESIZE_MODE } from '../common/Image';
@@ -89,26 +88,34 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
             testID: this.props.testId,
             onError: this._onError,
             onLoad: this.props.onLoad ? this._onLoad : undefined,
+            ref: this._onMount,
             ...this._getAdditionalProps(),
             ...extendedProps,
         };
 
+        /**
+         * The <RN.Image> component cannot contain "children" elements.
+         * This functionality was removed in the version 0.50.0 - @see https://github.com/facebook/react-native/releases/tag/v0.50.0,
+         * The following changes add similar functionality as <RN.ImageBackground>, to continue support previous and new versions of RN
+         */
         if (this.props.children) {
             return (
-                <ImageBackground
-                    imageRef={this._onMount}
-                    style={styles as RN.StyleProp<RN.ViewStyle>}
-                    { ...props }
+                <RN.View
+                    style={ styles as RN.StyleProp<RN.ViewStyle> }
                 >
+                    <RN.Image
+                        style={ RN.StyleSheet.absoluteFill }
+                        { ...props }
+                    />
+
                     { this.props.children }
-                </ImageBackground>
+                </RN.View>
             );
         }
 
         return (
             <RN.Image
                 style={ styles as RN.StyleProp<RN.ImageStyle> }
-                ref={ this._onMount }
                 { ...props }
             />
         );

@@ -287,7 +287,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
                 credentials: withCredentials ? 'include' : 'same-origin',
                 method: 'GET',
                 mode: 'cors',
-                headers,
+                headers
             });
 
             fetch(xhr)
@@ -339,6 +339,21 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
             throw new Error(`Types/web/Image only accepts string sources! You passed: ${ source } of type ${ typeof source }`);
         }
 
+        let optionalImg: JSX.Element | null = null;
+
+        if (this.state.showImgTag) {
+            optionalImg = (
+                <img
+                    style={ _styles.image as any }
+                    src={ this.state.displayUrl }
+                    alt={ this.props.accessibilityLabel }
+                    onError={ this._imgOnError }
+                    onLoad={ this._onLoad }
+                    ref={ this._onMount }
+                />
+            );
+        }
+
         const reactElement = (
             <div
                 style={ this._getStyles() }
@@ -346,18 +361,8 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
                 data-test-id={ this.props.testId }
                 onMouseUp={ this._onMouseUp }
             >
+                { optionalImg }
                 { this.props.children }
-
-                {this.state.showImgTag && (
-                    <img
-                        style={ _styles.image as any }
-                        src={ this.state.displayUrl }
-                        alt={ this.props.accessibilityLabel }
-                        ref={ this._onMount }
-                        onError={ this._imgOnError }
-                        onLoad={ this._onLoad }
-                    />
-                )}
             </div>
         );
 
