@@ -269,15 +269,13 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
     private _actuallyStartXhrImageFetch(props: Types.ImageProps) {
         // Fetch Implementation
 
-        var withCredentials = false;
         // If an 'origin' header is passed, we assume this is intended to be a crossorigin request.
         // In order to send the cookies with the request, the withCredentials: true / credentials: 'include' flag needs to be set.
-        if (props.headers && Object.keys(props.headers).some(header => header.toLowerCase() === 'origin')) {
-            withCredentials = true;
-        }
+        const withCredentials = props.headers
+            && Object.keys(props.headers).some(header => header.toLowerCase() === 'origin');
 
         if (window.fetch) {
-            var headers = new Headers();
+            const headers = new Headers();
 
             if (props.headers) {
                 Object.keys(props.headers).forEach(key => {
@@ -285,11 +283,11 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
                 });
             }
 
-            var xhr = new Request(props.source, {
+            const xhr = new Request(props.source, {
+                credentials: withCredentials ? 'include' : 'same-origin',
                 method: 'GET',
-                headers: headers,
                 mode: 'cors',
-                credentials: withCredentials ? 'include' : 'same-origin'
+                headers
             });
 
             fetch(xhr)
@@ -334,14 +332,14 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
     }
 
     render() {
+        const { source } = this.props;
+
         // Prepare image source (necessary as iOS implementation also allows objects)
-        if (typeof this.props.source !== 'string' && typeof this.props.source !== 'undefined') {
-            let errorText = 'Types/web/Image only accepts string sources! You passed: '
-                + this.props.source + ' of type ' + (typeof this.props.source);
-            throw new Error(errorText);
+        if (typeof source !== 'string' && typeof source !== 'undefined') {
+            throw new Error(`Types/web/Image only accepts string sources! You passed: ${ source } of type ${ typeof source }`);
         }
 
-        let optionalImg: JSX.Element|null = null;
+        let optionalImg: JSX.Element | null = null;
 
         if (this.state.showImgTag) {
             optionalImg = (
@@ -349,19 +347,19 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
                     style={ _styles.image as any }
                     src={ this.state.displayUrl }
                     alt={ this.props.accessibilityLabel }
-                    onLoad={ this._onLoad }
                     onError={ this._imgOnError }
+                    onLoad={ this._onLoad }
                     ref={ this._onMount }
                 />
             );
         }
 
-        let reactElement = (
+        const reactElement = (
             <div
                 style={ this._getStyles() }
-                onMouseUp={ this._onMouseUp }
                 title={ this.props.title }
                 data-test-id={ this.props.testId }
+                onMouseUp={ this._onMouseUp }
             >
                 { optionalImg }
                 { this.props.children }
@@ -424,18 +422,15 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
     }
 
     private _onLoad = () => {
-        if (!this._isMounted) {
+        if (!this._isMounted || !this._mountedComponent) {
             return;
         }
+
+        const imageDOM = this._mountedComponent;
 
         // Measure the natural width & height of the image.
         this._nativeImageWidth = undefined;
         this._nativeImageHeight = undefined;
-        let imageDOM = this._mountedComponent;
-        if (!imageDOM) {
-            // No idea why this might happen, but check anyway...
-            return;
-        }
 
         this._nativeImageWidth = imageDOM.naturalWidth;
         this._nativeImageHeight = imageDOM.naturalHeight;
@@ -475,7 +470,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         if (e.button === 0) {
             // Types.Image doesn't officially support an onClick prop, but when it's
             // contained within a button, it may have this prop.
-            let onClick: (e: Types.MouseEvent) => void = (this.props as any).onClick;
+            const onClick: (e: Types.MouseEvent) => void = (this.props as any).onClick;
             if (onClick) {
                 onClick(e);
             }

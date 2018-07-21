@@ -71,7 +71,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         }
         let componentRef: Function = originalRef as Function;
 
-        let focusableViewProps: RNW.FocusableWindowsProps<RN.ExtendedViewProps> = {
+        let focusableViewProps: RNW.FocusableWindowsProps<RN.ExtendedViewProps | RNW.AccessibilityEvents> = {
             ...internalProps,
             ref: onMount,
             componentRef: componentRef,
@@ -138,7 +138,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         return childContext;
     }
 
-    private _onAccessibilityTap = (e: React.SyntheticEvent<any>): void => {
+    private _onAccessibilityTap = (e: RN.NativeSyntheticEvent<any>): void => {
         if (!this.props.disabled) {
             if (this.props.onPress) {
                 this.props.onPress(e);

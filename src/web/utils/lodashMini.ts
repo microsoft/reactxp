@@ -22,7 +22,6 @@ import get = require('lodash/get');
 import isArray = require('lodash/isArray');
 import isEmpty = require('lodash/isEmpty');
 import isEqual = require('lodash/isEqual');
-import isNumber = require('lodash/isNumber');
 import isObject = require('lodash/isObject');
 import isUndefined = require('lodash/isUndefined');
 import kebabCase = require('lodash/kebabCase');
@@ -53,7 +52,6 @@ export {
     isArray,
     isEmpty,
     isEqual,
-    isNumber,
     isObject,
     isUndefined,
     kebabCase,
