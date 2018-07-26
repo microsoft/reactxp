@@ -306,7 +306,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     protected _onMount = (component: PopupContainerView|null) => {
-        this._mountedComponent = component ? ReactDOM.findDOMNode(component) as HTMLElement : undefined;
+        const domNode = component && ReactDOM.findDOMNode(component) as HTMLElement|null;
+        this._mountedComponent = domNode ? domNode : undefined;
     }
 
     private _tryClosePopup = (e: MouseEvent) => {
@@ -370,8 +371,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     private _determineIfClickOnElement(elementReference: React.Component<any, any>, eventSource: Element|null|undefined): boolean {
-        const element = ReactDOM.findDOMNode(elementReference) as HTMLElement;
-        const isClickOnElement = element && !!eventSource && element.contains(eventSource);
+        const element = ReactDOM.findDOMNode(elementReference) as HTMLElement|null;
+        const isClickOnElement = !!element && !!eventSource && element.contains(eventSource);
         return isClickOnElement;
     }
 
@@ -591,7 +592,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             return;
         }
 
-        let anchor = ReactDOM.findDOMNode(anchorComponent) as HTMLElement;
+        let anchor = ReactDOM.findDOMNode(anchorComponent) as HTMLElement|null;
 
         // If the anchor has disappeared, dismiss the popup.
         if (!anchor) {

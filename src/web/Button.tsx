@@ -143,7 +143,7 @@ export class Button extends ButtonBase {
 
     focus() {
         if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLButtonElement;
+            const el = ReactDOM.findDOMNode(this) as HTMLButtonElement|null;
             if (el) {
                 el.focus();
             }
@@ -152,7 +152,7 @@ export class Button extends ButtonBase {
 
     blur() {
         if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLButtonElement;
+            const el = ReactDOM.findDOMNode(this) as HTMLButtonElement|null;
             if (el) {
                 el.blur();
             }

@@ -104,7 +104,7 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
 
     focus() {
         if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLAnchorElement;
+            const el = ReactDOM.findDOMNode(this) as HTMLAnchorElement|null;
             if (el) {
                 el.focus();
             }
@@ -113,7 +113,7 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
 
     blur() {
         if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLAnchorElement;
+            const el = ReactDOM.findDOMNode(this) as HTMLAnchorElement|null;
             if (el) {
                 el.blur();
             }

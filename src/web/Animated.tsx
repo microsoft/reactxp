@@ -395,14 +395,20 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
 
             let attrib = this._findAnimatedAttributeByValue(this._animatedAttributes, valueObject);
             if (attrib) {
-                let cssValue = this._generateCssAttributeValue(attrib, valueObject, valueObject._getValue());
-                (this._getDomNode().style as any)[attrib] = cssValue;
+                const domNode = this._getDomNode();
+                if (domNode) {
+                    const cssValue = this._generateCssAttributeValue(attrib, valueObject, valueObject._getValue());
+                    (domNode.style as any)[attrib] = cssValue;
+                }
                 return;
             }
 
             let transform = this._findAnimatedAttributeByValue(this._animatedTransforms, valueObject);
             if (transform) {
-                this._getDomNode().style.transform = this._generateCssTransformList(true);
+                const domNode = this._getDomNode();
+                if (domNode) {
+                    domNode.style.transform = this._generateCssTransformList(true);
+                }
             }
         }
 
@@ -485,9 +491,12 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
                     // mapping the interpolated value in reverse. Instead, we'll
                     // simply update it to the "toValue".
                     if (!valueObject._isInterpolated()) {
-                        let computedStyle = window.getComputedStyle(this._getDomNode(), undefined);
-                        if (computedStyle && (computedStyle as any)[attrib]) {
-                            partialValue = (computedStyle as any)[attrib];
+                        const domNode = this._getDomNode();
+                        if (domNode) {
+                            let computedStyle = window.getComputedStyle(domNode, undefined);
+                            if (computedStyle && (computedStyle as any)[attrib]) {
+                                partialValue = (computedStyle as any)[attrib];
+                            }
                         }
                     }
 
@@ -524,8 +533,8 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             return partialValue;
         }
 
-        private _getDomNode(): HTMLElement {
-            return ReactDOM.findDOMNode(this._mountedComponent) as HTMLElement;
+        private _getDomNode(): HTMLElement|null {
+            return ReactDOM.findDOMNode(this._mountedComponent) as HTMLElement|null;
         }
 
         // Looks for the specified value object in the specified map. Returns
@@ -571,30 +580,33 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             }
 
             if (activeTransitions.length > 0) {
-                executeTransition(this._getDomNode(), activeTransitions, () => {
-                    // Clear all of the active transitions and invoke the onEnd callbacks.
-                    let completeTransitions: ExtendedTransition[] = [];
+                const domNode = this._getDomNode();
+                if (domNode) {
+                    executeTransition(domNode, activeTransitions, () => {
+                        // Clear all of the active transitions and invoke the onEnd callbacks.
+                        let completeTransitions: ExtendedTransition[] = [];
 
-                    _.each(this._animatedAttributes, attrib => {
-                        if (attrib.activeTransition) {
-                            completeTransitions.push(attrib.activeTransition);
-                            delete attrib.activeTransition;
-                        }
-                    });
+                        _.each(this._animatedAttributes, attrib => {
+                            if (attrib.activeTransition) {
+                                completeTransitions.push(attrib.activeTransition);
+                                delete attrib.activeTransition;
+                            }
+                        });
 
-                    _.each(this._animatedTransforms, transform => {
-                        if (transform.activeTransition) {
-                            completeTransitions.push(transform.activeTransition);
-                            delete transform.activeTransition;
-                        }
-                    });
+                        _.each(this._animatedTransforms, transform => {
+                            if (transform.activeTransition) {
+                                completeTransitions.push(transform.activeTransition);
+                                delete transform.activeTransition;
+                            }
+                        });
 
-                    _.each(completeTransitions, transition => {
-                        if (transition.onEnd) {
-                            transition.onEnd({ finished: true });
-                        }
+                        _.each(completeTransitions, transition => {
+                            if (transition.onEnd) {
+                                transition.onEnd({ finished: true });
+                            }
+                        });
                     });
-                });
+                }
             }
         }
 
