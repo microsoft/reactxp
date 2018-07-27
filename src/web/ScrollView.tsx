@@ -226,7 +226,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
                 this._customScrollbar = undefined;
             }
 
-            let element = ReactDOM.findDOMNode(this) as HTMLElement;
+            let element = ReactDOM.findDOMNode(this) as HTMLElement|null;
             if (element) {
                 this._customScrollbar = new CustomScrollbar(element);
                 const horizontalHidden = (props.horizontal && props.showsHorizontalScrollIndicator === false);

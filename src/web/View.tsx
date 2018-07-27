@@ -157,7 +157,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
 
         let initResizer = (key: 'grow' | 'shrink', ref: any) => {
             const cur: HTMLElement|undefined = this._resizeDetectorNodes[key];
-            const element = ReactDOM.findDOMNode(ref) as HTMLElement;
+            const element = ReactDOM.findDOMNode(ref) as HTMLElement|null;
 
             if (cur) {
                 delete this._resizeDetectorNodes[key];
@@ -257,7 +257,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         if (!this._isMounted) {
             return null;
         }
-        return ReactDOM.findDOMNode(this) as HTMLElement;
+        return ReactDOM.findDOMNode(this) as HTMLElement|null;
     }
 
     private _isHidden(): boolean {
@@ -463,7 +463,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
 
     blur() {
         if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLDivElement;
+            const el = ReactDOM.findDOMNode(this) as HTMLDivElement|null;
             if (el) {
                 el.blur();
             }
@@ -480,7 +480,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
 
     focus() {
         if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLDivElement;
+            const el = ReactDOM.findDOMNode(this) as HTMLDivElement|null;
             if (el) {
                 el.focus();
             }

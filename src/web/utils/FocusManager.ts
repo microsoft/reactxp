@@ -92,21 +92,21 @@ export class FocusManager extends FocusManagerBase {
     }
 
     protected /* static */ addFocusListenerOnComponent(component: FocusableComponentInternal, onFocus: () => void): void {
-        const el = ReactDOM.findDOMNode(component) as HTMLElement;
+        const el = ReactDOM.findDOMNode(component) as HTMLElement|null;
         if (el) {
             el.addEventListener('focus', onFocus);
         }
     }
 
     protected /* static */ removeFocusListenerFromComponent(component: FocusableComponentInternal, onFocus: () => void): void {
-        const el = ReactDOM.findDOMNode(component) as HTMLElement;
+        const el = ReactDOM.findDOMNode(component) as HTMLElement|null;
         if (el) {
             el.removeEventListener('focus', onFocus);
         }
     }
 
     protected /* static */ focusComponent(component: FocusableComponentInternal): boolean {
-        const el = ReactDOM.findDOMNode(component) as HTMLElement;
+        const el = ReactDOM.findDOMNode(component) as HTMLElement|null;
         if (el && el.focus) {
             FocusManager.setLastFocusedProgrammatically(el);
             el.focus();
@@ -243,7 +243,7 @@ export class FocusManager extends FocusManagerBase {
         const restrictionRemoved = newTabIndex === undefined;
 
         if ((storedComponent.curTabIndex !== newTabIndex) || (storedComponent.curAriaHidden !== newAriaHidden)) {
-            const el = ReactDOM.findDOMNode(storedComponent.component) as HTMLElement;
+            const el = ReactDOM.findDOMNode(storedComponent.component) as HTMLElement|null;
 
             if (el) {
                 if (storedComponent.curTabIndex !== newTabIndex) {
@@ -365,7 +365,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
 
     if (origFocus) {
         Component.prototype.focus = function () {
-            const el = ReactDOM.findDOMNode(this) as HTMLElement;
+            const el = ReactDOM.findDOMNode(this) as HTMLElement|null;
             if (el) {
                 FocusManager.setLastFocusedProgrammatically(el);
             }

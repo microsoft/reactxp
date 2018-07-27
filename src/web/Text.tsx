@@ -153,7 +153,7 @@ export class Text extends TextBase {
 
     blur() {
         if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLDivElement;
+            const el = ReactDOM.findDOMNode(this) as HTMLDivElement|null;
             if (el) {
                 el.blur();
             }
@@ -170,7 +170,7 @@ export class Text extends TextBase {
 
     focus() {
         if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLDivElement;
+            const el = ReactDOM.findDOMNode(this) as HTMLDivElement|null;
             if (el) {
                 el.focus();
             }
