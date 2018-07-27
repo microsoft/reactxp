@@ -343,11 +343,13 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
     }
 
     private _updateDimensionsCache() {
-        const transitioner = ReactDOM.findDOMNode(this.refs['transitioner']) as HTMLElement;
-        this._dimensions = {
-            width: transitioner.offsetWidth,
-            height: transitioner.offsetHeight
-        };
+        const transitioner = ReactDOM.findDOMNode(this.refs['transitioner']) as HTMLElement|null;
+        if (transitioner) {
+            this._dimensions = {
+                width: transitioner.offsetWidth,
+                height: transitioner.offsetHeight
+            };
+        }
     }
 
     // Helper method to extract Navigator's Scene config from the route
@@ -631,11 +633,13 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
     // setNativeProps.
     private _setNativeStyles(component: React.ReactInstance, currentStyles: any) {
         // Grab the actual element from the DOM.
-        let element = ReactDOM.findDOMNode(component) as HTMLElement;
-        const flatStyles: RX.Types.ViewStyleRuleSet = _.isArray(currentStyles) ? _.flatten(currentStyles) : currentStyles;
+        let element = ReactDOM.findDOMNode(component) as HTMLElement|null;
+        if (element) {
+            const flatStyles: RX.Types.ViewStyleRuleSet = _.isArray(currentStyles) ? _.flatten(currentStyles) : currentStyles;
 
-        // Modify styles
-        _.assign(element.style, flatStyles);
+            // Modify styles
+            _.assign(element.style, flatStyles);
+        }
     }
 }
 
