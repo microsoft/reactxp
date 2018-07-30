@@ -12,7 +12,7 @@ redirect_from:
 ## Building Your First ReactXP App
 
 To create your first ReactXP app, do the following:
-1. Clone the ReactXP repo ```git clone https://github.com/microsoft/reactxp``` locally.
+1. Clone the ReactXP repo locally: ```git clone https://github.com/microsoft/reactxp```.
 2. Open the ```samples``` directory and pick one of the samples and copy its directory to a new location. [Hello-World](https://github.com/Microsoft/reactxp/tree/master/samples/hello-world) provides a bare-bones starting app. [Hello-World-js](https://github.com/Microsoft/reactxp/tree/master/samples/hello-world-js) is a variant of Hello-World written in Javascript rather than TypeScript. [TodoList](https://github.com/Microsoft/reactxp/tree/master/samples/TodoList) is a more complex example and is a more appropriate starting point for production applications.
 3. Follow the build instructions for the sample you've chosen.
 4. If desired, rename the directory and project files to reflect the name of your app.
