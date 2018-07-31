@@ -97,6 +97,9 @@ testId: string = undefined;
 
 // URL to HTML content
 url: string = undefined;
+
+// Specifies the mixed content mode
+mixedContentMode: 'never' | 'always' | 'compatibility'; // Android only, no-op on other platforms
 ```
 
 ## Styles

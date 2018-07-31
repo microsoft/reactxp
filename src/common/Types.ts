@@ -995,6 +995,9 @@ export interface WebViewProps extends CommonStyledProps<WebViewStyleRuleSet> {
     onError?: (e: SyntheticEvent) => void;
     onMessage?: (e: WebViewMessageEvent) => void;
 
+    // Android only, no-op on other platforms
+    mixedContentMode?: 'never' | 'always' | 'compatibility';
+
     // Web only; overrides javaScriptEnabled if used
     sandbox?: WebViewSandboxMode;
 }

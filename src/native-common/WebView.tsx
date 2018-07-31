@@ -44,6 +44,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
                 onError={ this.props.onError }
                 onMessage={ this.props.onMessage ? this._onMessage : undefined }
                 testID={ this.props.testId }
+                mixedContentMode={this.props.mixedContentMode}
             />
         );
     }
