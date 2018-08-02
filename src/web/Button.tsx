@@ -185,7 +185,7 @@ export class Button extends ButtonBase {
         }
 
         // Default to 'pointer' cursor for enabled buttons unless otherwise specified.
-        if (!buttonStyles.cursor) {
+        if (!buttonStyles || !buttonStyles.cursor) {
             buttonStyleMutations.cursor = this.props.disabled ? 'default' : 'pointer';
         }
 
