@@ -10,6 +10,7 @@
 import * as React from 'react';
 import * as RN from 'react-native';
 import * as RX from '../common/Interfaces';
+import Types = require('../common/Types');
 
 import Styles from './Styles';
 
@@ -19,6 +20,8 @@ const _styles = {
         alignSelf: 'stretch'
     })
 };
+
+type MixedContentMode = 'never' | 'always' | 'compatibility' | undefined;
 
 export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Stateless> implements RX.WebView {
     private _mountedComponent: RN.WebView | null = null;
@@ -44,9 +47,22 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
                 onError={ this.props.onError }
                 onMessage={ this.props.onMessage ? this._onMessage : undefined }
                 testID={ this.props.testId }
-                mixedContentMode={this.props.mixedContentMode}
+                mixedContentMode={this._sandboxToMixedContantMode(this.props.sandbox)}
             />
         );
+    }
+
+    private _sandboxToMixedContantMode = (sandbox?: Types.WebViewSandboxMode): MixedContentMode => {
+        if (!!sandbox) {
+            if (sandbox & Types.WebViewSandboxMode.AllowMixedContentAlways) {
+                return 'always';
+            }
+
+            if (sandbox & Types.WebViewSandboxMode.AllowMixedContentCompatibilityMode) {
+                return 'compatibility';
+            }
+        }
+        return 'never';
     }
 
     protected _onMount = (component: RN.WebView) => {

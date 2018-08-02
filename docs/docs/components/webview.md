@@ -25,7 +25,11 @@ enum WebViewSandboxMode {
     AllowPresentation = 1 << 6,
     AllowSameOrigin = 1 << 7,
     AllowScripts = 1 << 8,
-    AllowTopNavigation = 1 << 9
+    AllowTopNavigation = 1 << 9,
+
+    // Control https mixed content behavior, never by default
+    AllowMixedContentAlways = 1 << 10,
+    AllowMixedContentCompatibilityMode = 1 << 11,
 }
 
 interface WebViewNavigationState {
@@ -78,7 +82,7 @@ onMessage: (e: WebViewMessageEvent) => void = undefined;
 onNavigationStateChange: (navigationState: WebViewNavigationState) => void;
 
 // Flags that restrict behaviors within the control
-sandbox: WebViewSandboxMode = None; // Web only
+sandbox: WebViewSandboxMode = None;
 
 // Zooms the page contents to fit the available space
 scalesPageToFit: boolean = false;
@@ -97,9 +101,6 @@ testId: string = undefined;
 
 // URL to HTML content
 url: string = undefined;
-
-// Specifies the mixed content mode
-mixedContentMode: 'never' | 'always' | 'compatibility'; // Android only, no-op on other platforms
 ```
 
 ## Styles
