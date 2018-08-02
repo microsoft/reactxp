@@ -641,7 +641,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     animateChildLeave?: boolean;
     animateChildMove?: boolean;
 
-    onAccessibilityTapIOS?: Function;
+    onAccessibilityTapIOS?: (e: SyntheticEvent) => void;
     onLayout?: (e: ViewOnLayoutEvent) => void;
     onMouseEnter?: (e: MouseEvent) => void;
     onMouseLeave?: (e: MouseEvent) => void;
