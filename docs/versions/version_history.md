@@ -16,6 +16,19 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.3.2 of reactxp - _2 Aug 2018_
+* Fixed bug #745: WebView.onMessage receives additional props which are not defined in Types.WebViewMessageEvent.
+* Fixed bug #746 relating to cursor overrides for buttons on the web implementation.
+* Fixed bug #749: Set size attribute of input HTML element to 1.
+* Fixed bug #753: isRightMouseButton implementation that works also on Mac.
+* Fixed bug #752: Accessibility fix for Clipboard.
+* Fixed bug #756: Prevent a crash during onLayout handling on web.
+* Fixed bug #761: Update usages of findDOMNode to indicate that it returns null.
+* Fixed bug #767: buttonStyles may be undefined; fixed inconsistency in onAccessibilityTapIOS definition for Button and View.
+* Fixed regression in Timers.ts. Some environments don't define "global" and use "window" instead for the built-in timer functions.
+* Use semver for reactxp dependencies.
+* Feature #764: Add support for Android WebView compatibility modes.
+
 #### Version 1.3.1 of reactxp-virtuallistview - _2 Aug 2018_
 * Added support for testId prop.
 
