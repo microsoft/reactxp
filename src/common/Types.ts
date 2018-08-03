@@ -969,7 +969,9 @@ export enum WebViewSandboxMode {
     AllowPresentation = 1 << 6,
     AllowSameOrigin = 1 << 7,
     AllowScripts = 1 << 8,
-    AllowTopNavigation = 1 << 9
+    AllowTopNavigation = 1 << 9,
+    AllowMixedContentAlways = 1 << 10,
+    AllowMixedContentCompatibilityMode = 1 << 11
 }
 
 export interface WebViewSource {
