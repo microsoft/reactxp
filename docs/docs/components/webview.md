@@ -29,7 +29,7 @@ enum WebViewSandboxMode {
 
     // Control https mixed content behavior, never by default
     AllowMixedContentAlways = 1 << 10,
-    AllowMixedContentCompatibilityMode = 1 << 11,
+    AllowMixedContentCompatibilityMode = 1 << 11
 }
 
 interface WebViewNavigationState {

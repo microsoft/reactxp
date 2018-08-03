@@ -47,12 +47,12 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
                 onError={ this.props.onError }
                 onMessage={ this.props.onMessage ? this._onMessage : undefined }
                 testID={ this.props.testId }
-                mixedContentMode={this._sandboxToMixedContantMode(this.props.sandbox)}
+                mixedContentMode={ this._sandboxToMixedContentMode(this.props.sandbox) }
             />
         );
     }
 
-    private _sandboxToMixedContantMode = (sandbox?: Types.WebViewSandboxMode): MixedContentMode => {
+    private _sandboxToMixedContentMode(sandbox?: Types.WebViewSandboxMode): MixedContentMode {
         if (!!sandbox) {
             if (sandbox & Types.WebViewSandboxMode.AllowMixedContentAlways) {
                 return 'always';
