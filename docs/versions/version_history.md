@@ -16,6 +16,9 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.3.1 of reactxp-imagesvg - _7 Aug 2018_
+* Fixed bug in native implementation that caused runtime warning every time SvgPath was used.
+
 #### Version 1.3.2 of reactxp - _2 Aug 2018_
 * Fixed bug #745: WebView.onMessage receives additional props which are not defined in Types.WebViewMessageEvent.
 * Fixed bug #746 relating to cursor overrides for buttons on the web implementation.
