@@ -17,7 +17,6 @@ export class SvgPath extends React.Component<SvgTypes.SvgPathProps, {}> {
     render() {
         return (
             <RNSvg.Path
-                key = { this.props.key }
                 d={ this.props.d }
                 fill={ this.props.fillColor || '#fff' }
                 strokeWidth={ this.props.strokeWidth }
