@@ -139,7 +139,7 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
             <RN.View
                 style={ _styles.liveRegionContainer as RN.StyleProp<RN.ViewStyle> }
                 accessibilityLabel={ this.state.announcementText }
-                accessibilityLiveRegion={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
+                accessibilityLiveRegion={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Assertive) }
             />
         );
     }

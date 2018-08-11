@@ -109,7 +109,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
         return (
             <div
                 style={ _styles.liveRegionContainer as any }
-                aria-live={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
+                aria-live={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Assertive) }
                 aria-atomic={ 'true' }
                 aria-relevant={ 'additions text' }
             >
