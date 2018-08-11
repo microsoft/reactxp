@@ -62,7 +62,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
             <RN.View
                 ref={ this._onViewRef }
                 style={ _styles.liveRegionContainer as RN.StyleProp<RN.ViewStyle> }
-                accessibilityLiveRegion={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
+                accessibilityLiveRegion={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Assertive) }
             />
         );
     }
