@@ -39,14 +39,12 @@ export class Styles extends RX.Styles {
                         combinedStyles.marginTop !== undefined || combinedStyles.marginBottom !== undefined) &&
                         combinedStyles.margin !== undefined) {
                     console.error('Conflicting rules for margin specified.');
-                    delete combinedStyles.margin;
                 }
 
                 if ((combinedStyles.paddingLeft !== undefined || combinedStyles.paddingRight !== undefined ||
                         combinedStyles.paddingTop !== undefined || combinedStyles.paddingBottom !== undefined) &&
                         combinedStyles.padding !== undefined) {
                     console.error('Conflicting rules for padding specified.');
-                    delete combinedStyles.padding;
                 }
             }
 
@@ -397,7 +395,6 @@ export class Styles extends RX.Styles {
                     def.marginLeft !== undefined || def.marginRight !== undefined ||
                     def.marginTop !== undefined || def.marginBottom !== undefined) && def.margin !== undefined) {
                 console.error('Conflicting rules for margin specified.');
-                delete def.margin;
             }
         }
 
@@ -418,7 +415,6 @@ export class Styles extends RX.Styles {
                     def.paddingLeft !== undefined || def.paddingRight !== undefined ||
                     def.paddingTop !== undefined || def.paddingBottom !== undefined) && def.padding !== undefined) {
                 console.error('Conflicting rules for padding specified.');
-                delete def.padding;
             }
         }
 

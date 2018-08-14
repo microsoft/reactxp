@@ -196,7 +196,7 @@ export class Styles extends RX.Styles {
         }
 
         if (def.flex !== undefined) {
-            var flexValue = def.flex;
+            let flexValue = def.flex;
             delete adaptedRuleSet.flex;
             if (flexValue > 0) {
                 // p 1 auto
