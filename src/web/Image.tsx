@@ -232,7 +232,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         // We normally don't show an img tag because we use background images. However, if the caller has supplied an
         // onLoad or onError callback, we'll use the img tag until we receive an onLoad or onError.
         const newState: ImageState = {
-            showImgTag: (!performXhrRequest || !!cachedXhrBlobUrl) && (!!props.onLoad || !!props.onError),
+            showImgTag: !!props.onLoad || !!props.onError,
             xhrRequest: !!props.headers,
             displayUrl: displayUrl
         };
