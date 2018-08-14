@@ -229,10 +229,12 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         // Only make the xhr request if headers are specified and there was no cache hit.
         const performXhrRequest = !!props.headers && !cachedXhrBlobUrl;
 
-        // We normally don't show an img tag because we use background images. However, if the caller has supplied an
-        // onLoad or onError callback, we'll use the img tag until we receive an onLoad or onError.
+        // We normally don't show an img tag because we use background images.  However, if the caller has supplied an
+        // onLoad or onError callback, we'll use the img tag until we receive an onLoad or onError.  But if we need to
+        // perform an XHR first to convert to a blob url, then wait on showing the img tag until we get the blob url
+        // since the basic IMG tag will fail to load it without headers.
         const newState: ImageState = {
-            showImgTag: !!props.onLoad || !!props.onError,
+            showImgTag: (!performXhrRequest || !!cachedXhrBlobUrl) && (!!props.onLoad || !!props.onError),
             xhrRequest: !!props.headers,
             displayUrl: displayUrl
         };
@@ -250,14 +252,15 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
             return;
         }
 
-        this.setState({
-            displayUrl: URL.createObjectURL(blob)
-        });
-
         // Save the newly fetched xhr blob url in the cache.
         XhrBlobUrlCache.insert(this.props.source, this.state.displayUrl);
 
-        this._onLoad();
+        this.setState({
+            displayUrl: URL.createObjectURL(blob),
+
+            // If we have an onload handler, we need to now load the img tag to get dimensions for the load.
+            showImgTag: !!this.props.onLoad
+        });
     }
 
     private _startXhrImageFetch(props: Types.ImageProps) {
