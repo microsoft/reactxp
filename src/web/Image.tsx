@@ -252,11 +252,13 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
             return;
         }
 
+        const newUrl = URL.createObjectURL(blob);
+
         // Save the newly fetched xhr blob url in the cache.
-        XhrBlobUrlCache.insert(this.props.source, this.state.displayUrl);
+        XhrBlobUrlCache.insert(this.props.source, newUrl);
 
         this.setState({
-            displayUrl: URL.createObjectURL(blob),
+            displayUrl: newUrl,
 
             // If we have an onload handler, we need to now load the img tag to get dimensions for the load.
             showImgTag: !!this.props.onLoad
