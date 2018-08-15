@@ -7,9 +7,10 @@
 * Web-specific implementation of the cross-platform Link abstraction.
 */
 
-import PropTypes = require('prop-types');
-import React = require('react');
-import ReactDOM = require('react-dom');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as PropTypes from 'prop-types';
+import { CSSProperties } from 'react';
 
 import EventHelpers from '../native-common/utils/EventHelpers';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
@@ -20,23 +21,25 @@ import Timers from '../common/utils/Timers';
 
 const _styles = {
     defaultStyle: {
+        overflowWrap: 'break-word',
+        msHyphens: 'auto',
+        overflow: 'hidden',
+        flexShrink: 0,
+        flexGrow: 0,
         position: 'relative',
         display: 'inline',
-        flexGrow: 0,
-        flexShrink: 0,
-        overflow: 'hidden',
-        overflowWrap: 'break-word',
-        msHyphens: 'auto'
+        cursor: 'pointer'
     },
     ellipsis: {
-        position: 'relative',
-        display: 'inline',
-        flexGrow: 0,
-        flexShrink: 0,
-        overflow: 'hidden',
-
+        textOverflow: 'ellipsis',
         whiteSpace: 'pre',
-        textOverflow: 'ellipsis'
+        msHyphens: 'none',
+    },
+    selectable: {
+        WebkitUserSelect: 'text',
+        MozUserSelect: 'text',
+        msUserSelect: 'text',
+        userSelect: 'text'
     }
 };
 
@@ -63,7 +66,7 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
         //   See: https://mathiasbynens.github.io/rel-noopener/
         return (
             <a
-                style={ this._getStyles() as any }
+                style={ this._getStyles() }
                 title={ this.props.title }
                 href={ this.props.url }
                 target={ '_blank' }
@@ -120,24 +123,13 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
         }
     }
 
-    _getStyles(): Types.LinkStyleRuleSet {
+    _getStyles(): CSSProperties {
         // There's no way in HTML to properly handle numberOfLines > 1,
-        // but we can correctly handle the common case where numberOfLines is 1.
-        let combinedStyles = Styles.combine(
-            [this.props.numberOfLines === 1 ? _styles.ellipsis : _styles.defaultStyle,
-            this.props.style]) as any;
+        //  but we can correctly handle the common case where numberOfLines is 1.
+        const ellipsisStyles = this.props.numberOfLines === 1 ? _styles.ellipsis : {};
+        const selectableStyles = this.props.selectable ? _styles.selectable : {};
 
-        // Handle cursor styles
-        if (this.props.selectable) {
-            combinedStyles['userSelect'] = 'text';
-            combinedStyles['WebkitUserSelect'] = 'text';
-            combinedStyles['MozUserSelect'] = 'text';
-            combinedStyles['msUserSelect'] = 'text';
-        }
-
-        combinedStyles['cursor'] = 'pointer';
-
-        return combinedStyles;
+        return Styles.combine([ _styles.defaultStyle, ellipsisStyles, this.props.style, selectableStyles ]) as CSSProperties;
     }
 
     private _onClick = (e: React.MouseEvent<any>) => {
