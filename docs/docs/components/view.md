@@ -50,6 +50,10 @@ ariaRoleDescription?: string = undefined; // Web only
 // Block touches for this component and all of its children
 blockPointerEvents: boolean = false; // iOS and Android only
 
+// Set to false to prevent the optimization that may cause this 
+// view to be removed from the hierarchy if it doesn't draw anything.
+collapsable: boolean = true; // Android only
+
 // Disable default opacity animation on touch on views that have
 // onPress handlers
 disableTouchOpacityAnimation: boolean = false;  // iOS and Android only
