@@ -14,7 +14,7 @@ var finalhandler = require('finalhandler');
 
 // Find our static content in the web dir.
 var serve = serveStatic('./web');
-var port = 80;
+var port = 8080;
 
 var config = {
     version: '0.0.1.0'
@@ -44,8 +44,8 @@ function handler(request, response) {
     // Require that we're serving files from the proper domain. This is
     // necessary for OAuth flow and the cert.
     var knownHosts = [
-        'todolist-dev.sample.com',
-        'todolist.sample.com'
+        'localhost:8080',
+        'localhost'
     ];
 
     if (!_.includes(knownHosts, request.headers.host)) {
@@ -107,7 +107,7 @@ console.log(
     ' Keep this server running while developing and refresh your browser for\n' +
     ' fresh assets.\n\n' +
     ' Assuming your hosts and certs have been configured properly, visit\n' +
-    ' http://todolist-dev.sample.com.\n' +
+    ' http://localhost:8080\n' +
     '───────────────────────────────────────────────────────────────────────────\n'
 );
 
