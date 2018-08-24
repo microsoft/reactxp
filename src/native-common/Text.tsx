@@ -75,6 +75,7 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
                 allowFontScaling={ this.props.allowFontScaling }
                 onPress={ onPress }
                 selectable={ this.props.selectable }
+                onSelectionChange={ this._onSelectionChange }
                 textBreakStrategy={ 'simple' }
                 ellipsizeMode={ this.props.ellipsizeMode }
                 testID={ this.props.testId }
@@ -104,6 +105,13 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
             if (this.props.onPress) {
                 this.props.onPress(EventHelpers.toMouseEvent(e));
             }
+        }
+    }
+
+    private _onSelectionChange = (e: React.SyntheticEvent<any>) => {
+        if (this.props.onSelectionChange) {
+            let selectedText: string = (e.nativeEvent as any).selectedText;
+            this.props.onSelectionChange(selectedText);
         }
     }
 
