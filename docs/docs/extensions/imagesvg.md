@@ -9,7 +9,8 @@ next: extensions/navigator
 
 This component displays a vector image (SVG format). Props control the fill color, stroke color and stroke width.
 
-The path(s) are specified using the standard SVG string format. Paths must be specified in a nested SvgPath component instance. Multiple SvgPath children can be specified, each with different stroke and fill parameters.
+The path(s) are specified using the standard SVG string format. Paths must be specified in a nested SvgPath component instance. Multiple SvgPath children can be specified, each with different stroke and fill parameters.  SvgRect children
+are also supported at this time, with the limited props available in react-native-svg.
 
 To install: ```npm install reactxp-imagesvg``` or  ```yarn add reactxp-imagesvg```
 
@@ -40,11 +41,10 @@ viewBox: string = undefined;
 webShadow: boolean = false; // web-specific
 ```
 
-## SvgPath Props
-``` javascript
-// Path definition string
-d: string = undefined;
+## SvgCommon Props
+These props apply to all of the sub-SVG-element types below:
 
+``` javascript
 // Color and opacity of fill; default values are provided by SVG
 fillColor: color;
 fillOpacity: number;
@@ -53,6 +53,21 @@ fillOpacity: number;
 strokeColor: color;
 strokeWidth: number;
 strokeOpacity: number;
+```
+
+## SvgPath Props
+``` javascript
+// Path definition string
+d: string = undefined;
+```
+
+## SvgRect Props
+``` javascript
+// Position and dimension information for the rect
+x: number;
+y: number;
+width: number;
+height: number;
 ```
 
 ## Styles
@@ -76,6 +91,13 @@ return (
         <RXSvgPath
             fillColor={ 'orange' }
             d={ 'M 0 0 h 20 v 20 z' }
+        />
+        <RXSvgRect
+            fillColor={ 'blue' }
+            x={ 10 }
+            y={ 20 }
+            width={ 30 }
+            height={ 40 }
         />
     </RXImageSvg>
 );

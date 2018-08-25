@@ -8,6 +8,7 @@
 
 import ImageSvg from './ImageSvg';
 import SvgPath from './SvgPath';
+import SvgRect from './SvgRect';
 import Types = require('../common/Types');
 
-export { ImageSvg as default, SvgPath, Types };
+export { ImageSvg as default, SvgPath, SvgRect, Types };
