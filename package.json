@@ -9,15 +9,15 @@
     "tslint": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
   },
   "dependencies": {
-    "@types/lodash": "4.14.110",
-    "@types/react": "16.0.36",
-    "@types/react-dom": "16.0.6",
-    "@types/react-native": "0.56.4",
+    "@types/react": "16.3.18",
+    "@types/lodash": "4.14.116",
+    "@types/react-dom": "16.0.7",
+    "@types/react-native": "0.56.12",
     "assert": "^1.4.1",
     "lodash": "^4.17.10",
     "prop-types": "^15.6.2",
     "rebound": "^0.1.0",
-    "subscribableevent": "^1.0.0",
+    "subscribableevent": "^1.0.1",
     "synctasks": "^0.3.3"
   },
   "peerDependencies": {
@@ -27,10 +27,10 @@
     "react-native-windows": "^0.54.0"
   },
   "devDependencies": {
-    "typescript": "2.9.2",
-    "tslint": "5.10.0",
-    "tsutils": "2.27.1",
-    "tslint-microsoft-contrib": "5.0.3"
+    "tslint": "5.11.0",
+    "tslint-microsoft-contrib": "5.2.1",
+    "tsutils": "3.0.0",
+    "typescript": "3.0.1"
   },
   "homepage": "https://microsoft.github.io/reactxp/",
   "repository": {

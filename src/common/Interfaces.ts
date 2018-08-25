@@ -17,7 +17,7 @@ import Types = require('./Types');
 
 export import Types = Types;
 
-export abstract class ActivityIndicator extends React.Component<Types.ActivityIndicatorProps, any> {}
+export abstract class ActivityIndicator extends React.Component<Types.ActivityIndicatorProps> {}
 
 export abstract class Alert {
     abstract show(title: string, message?: string, buttons?: Types.AlertButtonSpec[],
@@ -70,10 +70,10 @@ export abstract class UserInterface {
     abstract getPixelRatio(): number;
 
     // Measurements
-    abstract measureLayoutRelativeToWindow(component: React.Component<any, any>):
+    abstract measureLayoutRelativeToWindow(component: React.Component<any>):
         SyncTasks.Promise<Types.LayoutInfo>;
-    abstract measureLayoutRelativeToAncestor(component: React.Component<any, any>,
-        ancestor: React.Component<any, any>): SyncTasks.Promise<Types.LayoutInfo>;
+    abstract measureLayoutRelativeToAncestor(component: React.Component<any>,
+        ancestor: React.Component<any>): SyncTasks.Promise<Types.LayoutInfo>;
     abstract measureWindow(rootViewId?: string): Types.Dimensions;
 
     // Content Size Multiplier
@@ -135,7 +135,7 @@ export interface FocusableComponent {
     blur(): void;
 }
 
-export abstract class Button extends React.Component<Types.ButtonProps, any> implements FocusableComponent {
+export abstract class Button extends React.Component<Types.ButtonProps> implements FocusableComponent {
     abstract focus(): void;
     abstract requestFocus(): void;
     abstract blur(): void;
@@ -152,7 +152,7 @@ export interface ImageConstructor {
     getMetadata(url: string): SyncTasks.Promise<Types.ImageMetadata>;
 }
 
-export abstract class Image extends React.Component<Types.ImageProps, any> {
+export abstract class Image extends React.Component<Types.ImageProps> {
     abstract getNativeWidth(): number|undefined;
     abstract getNativeHeight(): number|undefined;
 }
@@ -162,7 +162,7 @@ export abstract class Clipboard {
     abstract getText(): SyncTasks.Promise<string>;
 }
 
-export abstract class Link extends React.Component<Types.LinkProps, any> implements FocusableComponent {
+export abstract class Link extends React.Component<Types.LinkProps> implements FocusableComponent {
     abstract focus(): void;
     abstract requestFocus(): void;
     abstract blur(): void;
@@ -210,19 +210,12 @@ export interface ScrollViewConstructor {
     new(props: Types.ScrollViewProps): ScrollView;
 }
 
-export interface ScrollView extends React.Component<Types.ScrollViewProps, any> {
+export interface ScrollView extends React.Component<Types.ScrollViewProps> {
     setScrollTop(scrollTop: number, animate?: boolean): void;
     setScrollLeft(scrollLeft: number, animate?: boolean): void;
     addToScrollTop(deltaTop: number, animate?: boolean): void;
     addToScrollLeft(deltaLeft: number, animate?: boolean): void;
 }
-
-// export abstract class ScrollView extends React.Component<Types.ScrollViewProps, any> implements IScrollView {
-//     abstract setScrollTop(scrollTop: number, animate: boolean): void;
-//     abstract setScrollLeft(scrollLeft: number, animate: boolean): void;
-//     abstract addToScrollTop(deltaTop: number, animate: boolean): void;
-//     abstract addToScrollLeft(deltaLeft: number, animate: boolean): void;
-// }
 
 export abstract class StatusBar {
     abstract isOverlay(): boolean;
@@ -256,13 +249,13 @@ export abstract class Styles {
     abstract getCssPropertyAliasesCssStyle(): { [key: string]: string };
 }
 
-export abstract class Text extends React.Component<Types.TextProps, any> implements FocusableComponent {
+export abstract class Text extends React.Component<Types.TextProps> implements FocusableComponent {
     abstract focus(): void;
     abstract requestFocus(): void;
     abstract blur(): void;
 }
 
-export abstract class TextInput extends React.Component<Types.TextInputProps, any> implements FocusableComponent {
+export abstract class TextInput extends React.Component<Types.TextInputProps> implements FocusableComponent {
     abstract setAccessibilityFocus(): void;
     abstract isFocused(): boolean;
     abstract selectAll(): void;
@@ -282,9 +275,9 @@ export abstract class UserPresence {
     userPresenceChangedEvent = new SubscribableEvent<(isPresent: boolean) => void>();
 }
 
-export abstract class ViewBase<P, S> extends React.Component<P, S> {}
+export abstract class ViewBase<P, S = {}> extends React.Component<P, S> {}
 
-export abstract class View extends ViewBase<Types.ViewProps, any> implements FocusableComponent {
+export abstract class View extends ViewBase<Types.ViewProps> implements FocusableComponent {
     abstract setFocusRestricted(restricted: boolean): void;
     abstract setFocusLimited(limited: boolean): void;
     abstract focus(): void;
@@ -292,13 +285,13 @@ export abstract class View extends ViewBase<Types.ViewProps, any> implements Foc
     abstract blur(): void;
 }
 
-export abstract class GestureView extends ViewBase<Types.GestureViewProps, any> {}
+export abstract class GestureView extends ViewBase<Types.GestureViewProps> {}
 
 export interface WebViewConstructor {
     new(props: Types.WebViewProps): WebView;
 }
 
-export interface WebView extends ViewBase<Types.WebViewProps, any> {
+export interface WebView extends ViewBase<Types.WebViewProps> {
     postMessage(message: string, targetOrigin?: string): void;
     reload(): void;
     goBack(): void;
