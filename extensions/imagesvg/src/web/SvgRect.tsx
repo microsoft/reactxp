@@ -24,8 +24,6 @@ export class SvgRect extends React.Component<SvgTypes.SvgRectProps, {}> {
                 height={ this.props.height }
                 x={ this.props.x }
                 y={ this.props.y }
-                rx={ this.props.rx }
-                ry={ this.props.ry }
             />
         );
     }

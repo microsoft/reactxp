@@ -25,10 +25,7 @@ export class SvgRect extends React.Component<SvgTypes.SvgRectProps, {}> {
                 height={ this.props.height }
                 x={ this.props.x }
                 y={ this.props.y }
-                // Not supported by react-native-svg at this time...
-                // rx={ this.props.rx }
-                // ry={ this.props.ry }
-                />
+            />
         );
     }
 }

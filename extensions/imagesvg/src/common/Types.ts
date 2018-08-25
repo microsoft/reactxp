@@ -39,6 +39,4 @@ export interface SvgRectProps extends SvgCommonProps {
     height: number;
     x: number;
     y: number;
-    rx: number;
-    ry: number;
 }
