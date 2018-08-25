@@ -16,6 +16,9 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.3.2 of reactxp-imagesvg - _25 Aug 2018_
+* Added support for SvgRect children within SvgImage.
+
 #### Version 1.3.1 of reactxp-imagesvg - _7 Aug 2018_
 * Fixed bug in native implementation that caused runtime warning every time SvgPath was used.
 
