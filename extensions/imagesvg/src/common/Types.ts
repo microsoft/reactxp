@@ -34,3 +34,11 @@ export interface ImageSvgProps extends SvgCommonProps, RXTypes.CommonStyledProps
 export interface SvgPathProps extends SvgCommonProps {
     d?: string;
 }
+export interface SvgRectProps extends SvgCommonProps {
+    width: number;
+    height: number;
+    x: number;
+    y: number;
+    rx: number;
+    ry: number;
+}
