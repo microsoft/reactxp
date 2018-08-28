@@ -59,6 +59,11 @@ interface AlertOptions {
 
     // Optional theme (web only)
     theme?: AlertModalTheme;
+
+    // (Android, iOS, and Windows only)
+    // Optional: the id of the root view this alert is associated with.
+    // Defaults to the view set by UserInterface.setMainView().
+    rootViewId?: string;
 }
 
 ```

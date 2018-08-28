@@ -1053,7 +1053,7 @@ export interface PopupOptions {
     // repeatedly. Note that this is only a hint, popups cannot be force-cached.
     cacheable?: boolean;
 
-    // Android & iOS only.
+    // Android, iOS, and Windows only.
     // The id of the root view this popup is associated with.
     // Defaults to the view set by UserInterface.setMainView();
     rootViewId?: string;
@@ -1061,7 +1061,7 @@ export interface PopupOptions {
 
 // Modal
 export interface ModalOptions {
-    // Android & iOS only.
+    // Android, iOS, and Windows only.
     // The id of the root view this modal is associated with.
     // Defaults to the view set by UserInterface.setMainView();
     rootViewId?: string;
@@ -1098,6 +1098,7 @@ export interface AlertModalTheme {
 export interface AlertOptions {
     icon?: string;
     theme?: AlertModalTheme;
+    rootViewId?: string;
 }
 
 //
