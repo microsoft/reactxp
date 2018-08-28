@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "npm run tslint && tsc",
+    "watch": "npm run tslint && tsc --watch",
     "tslint": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
   },
   "dependencies": {

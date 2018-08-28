@@ -33,6 +33,7 @@ enum GestureType {
 const _pinchZoomPixelThreshold = 3;
 const _panPixelThreshold = 10;
 const _tapDurationThreshold = 500;
+const _longPressDurationThreshold = 750;
 const _tapPixelThreshold = 4;
 const _doubleTapDurationThreshold = 250;
 const _doubleTapPixelThreshold = 20;
@@ -42,6 +43,9 @@ const _defaultImportantForAccessibility = Types.ImportantForAccessibility.Yes;
 export abstract class GestureView extends React.Component<Types.GestureViewProps, Types.Stateless> {
     private _panResponder: RN.PanResponderInstance;
     private _doubleTapTimer: number | undefined;
+
+    private _pendingLongPressEvent: Types.TouchEvent | undefined;
+    private _longPressTimer: number | undefined;
 
     // State for tracking move gestures (pinch/zoom or pan)
     private _pendingGestureType: GestureType = GestureType.None;
@@ -64,7 +68,11 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
                 this._lastGestureStartEvent = event;
                 // If we're trying to detect a tap, set this as the responder immediately.
-                if (this.props.onTap || this.props.onDoubleTap || this.props.onContextMenu) {
+                if (this.props.onTap || this.props.onDoubleTap || this.props.onLongPress || this.props.onContextMenu) {
+                    if (this.props.onLongPress) {
+                        this._startLongPressTimer(event);
+                    }
+
                     return true;
                 }
                 return false;
@@ -146,6 +154,9 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
     private _onPanResponderEnd(e: RN.GestureResponderEvent, gestureState: RN.PanResponderGestureState) {
         const event = (e as any).nativeEvent as Types.TouchEvent;
 
+        // Can't possibly be a long press if the touch ended.
+        this._cancelLongPressTimer();
+
         // Close out any of the pending move gestures.
         if (this._pendingGestureType === GestureType.MultiTouch) {
             this._sendMultiTouchEvents(event, gestureState, false, true);
@@ -181,6 +192,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
     private _setPendingGestureState(gestureState: Types.MultiTouchGestureState | Types.PanGestureState | Types.TapGestureState) {
         this._reportDelayedTap();
         this._cancelDoubleTapTimer();
+        this._cancelLongPressTimer();
         this._pendingGestureState = gestureState;
     }
 
@@ -250,12 +262,45 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         }
     }
 
+    private _startLongPressTimer(event: Types.TouchEvent) {
+        this._pendingLongPressEvent = event;
+
+        this._longPressTimer = Timers.setTimeout(() => {
+            this._reportLongPress();
+            this._longPressTimer = undefined;
+        }, _longPressDurationThreshold);
+    }
+
+    private _cancelLongPressTimer() {
+        if (this._longPressTimer) {
+            clearTimeout(this._longPressTimer);
+            this._longPressTimer = undefined;
+        }
+        this._pendingLongPressEvent = undefined;
+    }
+
     // If there was a previous tap recorded but we haven't yet reported it because we were
     // waiting for a potential second tap, report it now.
     private _reportDelayedTap() {
         if (this._lastTapEvent && this.props.onTap) {
             this._sendTapEvent(this._lastTapEvent);
             this._lastTapEvent = undefined;
+        }
+    }
+
+    private _reportLongPress() {
+        if (this.props.onLongPress) {
+            const tapEvent: Types.TapGestureState = {
+                isTouch: !EventHelpers.isActuallyMouseEvent(this._pendingLongPressEvent!!!),
+                pageX: this._pendingLongPressEvent!!!.pageX!!!,
+                pageY: this._pendingLongPressEvent!!!.pageY!!!,
+                clientX: this._pendingLongPressEvent!!!.locationX!!!,
+                clientY: this._pendingLongPressEvent!!!.locationY!!!,
+                timeStamp: this._pendingLongPressEvent!!!.timeStamp
+            };
+
+            this.props.onLongPress(tapEvent);
+            this._pendingLongPressEvent = undefined;
         }
     }
 
@@ -409,7 +454,8 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
                 angle: angle,
 
                 isComplete: isComplete,
-                timeStamp: e.timeStamp
+                timeStamp: e.timeStamp,
+                isTouch: !EventHelpers.isActuallyMouseEvent(e),
             };
         }
 
@@ -475,7 +521,8 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
             velocityY: velocityY,
 
             isComplete: isComplete,
-            timeStamp: e.timeStamp
+            timeStamp: e.timeStamp,
+            isTouch: !EventHelpers.isActuallyMouseEvent(this._lastGestureStartEvent),
         };
 
         switch (gestureType) {
@@ -512,7 +559,8 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
                     pageY: e.pageY!!!,
                     clientX: e.locationX!!!,
                     clientY: e.locationY!!!,
-                    timeStamp: e.timeStamp
+                    timeStamp: e.timeStamp,
+                    isTouch: !EventHelpers.isActuallyMouseEvent(e),
                 };
 
                 this.props.onContextMenu(tapEvent);
@@ -523,7 +571,8 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
                 pageY: e.pageY!!!,
                 clientX: e.locationX!!!,
                 clientY: e.locationY!!!,
-                timeStamp: e.timeStamp
+                timeStamp: e.timeStamp,
+                isTouch: !EventHelpers.isActuallyMouseEvent(e),
             };
 
             this.props.onTap(tapEvent);
@@ -547,7 +596,8 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
                 pageY: e.pageY!!!,
                 clientX: e.locationX!!!,
                 clientY: e.locationY!!!,
-                timeStamp: e.timeStamp
+                timeStamp: e.timeStamp,
+                isTouch: !EventHelpers.isActuallyMouseEvent(e),
             };
 
             this.props.onDoubleTap(tapEvent);

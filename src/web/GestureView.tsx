@@ -198,7 +198,8 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
                     pageY: e.pageY,
                     clientX: e.clientX - clientRect.left,
                     clientY: e.clientY - clientRect.top,
-                    timeStamp: e.timeStamp
+                    timeStamp: e.timeStamp,
+                    isTouch: false,
                 };
 
                 this.props.onContextMenu(tapEvent);
@@ -296,7 +297,8 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
                     pageX: e.pageX,
                     pageY: e.pageY,
                     scrollAmount: e.deltaY,
-                    timeStamp: e.timeStamp
+                    timeStamp: e.timeStamp,
+                    isTouch: false,
                 };
 
                 this.props.onScrollWheel(scrollWheelEvent);
@@ -369,7 +371,8 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
                     pageY: e.pageY,
                     clientX: e.clientX - clientRect.left,
                     clientY: e.clientY - clientRect.top,
-                    timeStamp: e.timeStamp
+                    timeStamp: e.timeStamp,
+                    isTouch: false,
                 };
 
                 this.props.onTap(tapEvent);
@@ -387,7 +390,8 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
                     pageY: e.pageY,
                     clientX: e.clientX - clientRect.left,
                     clientY: e.clientY - clientRect.top,
-                    timeStamp: e.timeStamp
+                    timeStamp: e.timeStamp,
+                    isTouch: false,
                 };
 
                 this.props.onDoubleTap(tapEvent);

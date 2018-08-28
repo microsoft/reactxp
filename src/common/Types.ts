@@ -689,6 +689,7 @@ export interface AnimatedViewProps extends ViewPropsShared {
 
 // GestureView
 export interface GestureState {
+    isTouch: boolean;
     timeStamp: number;
 }
 
@@ -773,6 +774,7 @@ export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet>, C
     onPanHorizontal?: (gestureState: PanGestureState) => void;
     onTap?: (gestureState: TapGestureState) => void;
     onDoubleTap?: (gestureState: TapGestureState) => void;
+    onLongPress?: (gestureState: TapGestureState) => void;
     onContextMenu?: (gestureState: TapGestureState) => void;
 
     // We can set vertical or horizontal as preferred
