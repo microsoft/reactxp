@@ -20,6 +20,7 @@ import FrontLayerViewManager from './FrontLayerViewManager';
 import MainViewStore from './MainViewStore';
 import Styles from './Styles';
 import Types = require('../common/Types');
+import UserInterface from '../native-common/UserInterface';
 
 // Fields should be prefixed with 'reactxp' to help avoid naming collisions.
 // All fields should be removed from this.props before passing downwards.
@@ -89,7 +90,17 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
         });
     }
 
+    componentDidMount(): void {
+        if (this._rootViewId) {
+            UserInterface.notifyRootViewInstanceCreated(this._rootViewId, RN.findNodeHandle(this)!!!);
+        }
+    }
+
     componentWillUnmount(): void {
+        if (this._rootViewId) {
+            UserInterface.notifyRootViewInstanceDestroyed(this._rootViewId);
+        }
+
         if (this._frontLayerViewChangedSubscription) {
             this._frontLayerViewChangedSubscription.unsubscribe();
             this._frontLayerViewChangedSubscription = undefined;

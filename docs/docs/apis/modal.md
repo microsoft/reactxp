@@ -20,7 +20,7 @@ A modal covers the entire screen but is transparent. Its children define the vis
 ## Types
 ``` javascript
 interface ModalOptions {
-    // Android & iOS only.
+    // Android, iOS, and Windows only.
     // The id of the root view this modal is associated with.
     // Defaults to the view set by UserInterface.setMainView();
     rootViewId?: string;

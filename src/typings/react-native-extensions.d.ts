@@ -79,4 +79,8 @@ declare module 'react-native' {
     interface ExtendedAccessibilityInfoStatic extends RN.AccessibilityInfoStatic {
         static initialHighContrast: boolean|undefined;
     }
+
+    interface ExtendedAlertOptions extends RN.AlertOptions {
+        rootViewHint?: number;
+    }
 }
