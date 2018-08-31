@@ -300,8 +300,9 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
             };
 
             this.props.onLongPress(tapEvent);
-            this._pendingLongPressEvent = undefined;
         }
+        
+        this._pendingLongPressEvent = undefined;
     }
 
     private _shouldRespondToPinchZoom(e: Types.TouchEvent, gestureState: RN.PanResponderGestureState) {
@@ -455,7 +456,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
                 isComplete: isComplete,
                 timeStamp: e.timeStamp,
-                isTouch: !EventHelpers.isActuallyMouseEvent(e),
+                isTouch: !EventHelpers.isActuallyMouseEvent(e)
             };
         }
 
@@ -522,7 +523,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
             isComplete: isComplete,
             timeStamp: e.timeStamp,
-            isTouch: !EventHelpers.isActuallyMouseEvent(this._lastGestureStartEvent),
+            isTouch: !EventHelpers.isActuallyMouseEvent(this._lastGestureStartEvent)
         };
 
         switch (gestureType) {
@@ -560,7 +561,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
                     clientX: e.locationX!!!,
                     clientY: e.locationY!!!,
                     timeStamp: e.timeStamp,
-                    isTouch: !EventHelpers.isActuallyMouseEvent(e),
+                    isTouch: !EventHelpers.isActuallyMouseEvent(e)
                 };
 
                 this.props.onContextMenu(tapEvent);
@@ -572,7 +573,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
                 clientX: e.locationX!!!,
                 clientY: e.locationY!!!,
                 timeStamp: e.timeStamp,
-                isTouch: !EventHelpers.isActuallyMouseEvent(e),
+                isTouch: !EventHelpers.isActuallyMouseEvent(e)
             };
 
             this.props.onTap(tapEvent);

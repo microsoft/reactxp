@@ -7,7 +7,7 @@ permalink: docs/components/gestureview.html
 next: components/image
 ---
 
-This component provides support for common touch gestures -- tapping, double-tapping, panning, and pinching. It also handles common mouse-based gestures including double clicking and scroll wheel input.
+This component provides support for common touch gestures -- tapping, double-tapping, long-pressing, panning, and pinching. It also handles common mouse-based gestures including double clicking and scroll wheel input.
 
 Information about pending gestures is returned through event handlers. A caller can specify which gestures they are interested in by specifying those event handlers. For example, if you are interested in double taps and horizontal pans, provide an onDoubleTap and onPanHorizontal handler.
 
@@ -38,6 +38,7 @@ onPanHorizontal: (gestureState: PanGestureState) => void = undefined;
 onTap: (gestureState: TapGestureState) => void = undefined;
 onDoubleTap: (gestureState: TapGestureState) => void = undefined;
 onContextMenu: (gestureState: TapGestureState) => void = undefined;
+onLongPress: (gestureState: TapGestureState) => void = undefined;
 
 // We can set vertical or horizontal as preferred
 preferredPan: PreferredPanGesture = undefined; // Horizontal or vertical
