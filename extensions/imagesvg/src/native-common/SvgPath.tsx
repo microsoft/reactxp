@@ -16,12 +16,20 @@ export class SvgPath extends React.Component<SvgTypes.SvgPathProps, {}> {
     render() {
         return (
             <RNSvg.Path
+                d={ this.props.d }
+
                 fill={ this.props.fillColor || '#fff' }
+                fillOpacity={ this.props.fillOpacity }
+                fillRule={ this.props.fillRule }
+
+                stroke={ this.props.strokeColor }
                 strokeWidth={ this.props.strokeWidth }
                 strokeOpacity={ this.props.strokeOpacity }
-                fillOpacity={ this.props.fillOpacity }
-                stroke={ this.props.strokeColor}
-                d={ this.props.d }
+                // strokeDasharray={ this.props.strokeDasharray }
+                strokeDashoffset={ this.props.strokeDashoffset }
+                strokeLinecap={ this.props.strokeLinecap }
+                strokeLinejoin={ this.props.strokeLinejoin } 
+                strokeMiterlimit={ this.props.strokeMiterlimit }
             />
         );
     }

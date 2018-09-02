@@ -41,18 +41,23 @@ viewBox: string = undefined;
 webShadow: boolean = false; // web-specific
 ```
 
-## SvgCommon Props
+## CommonPathProps Props
 These props apply to all of the sub-SVG-element types below:
 
 ``` javascript
 // Color and opacity of fill; default values are provided by SVG
-fillColor: color;
-fillOpacity: number;
+fillColor: string;      // Same as "fill" in react-native-svg and web
+fillOpacity: string|number;
+fillRule: 'evenodd' | 'nonzero';
 
 // Color, width and opacity of stroke; default values are provided by SVG
-strokeColor: color;
-strokeWidth: number;
-strokeOpacity: number;
+strokeColor: string;   // Same as "stroke" in react-native-svg and web
+strokeWidth: string|number;
+strokeOpacity: string|number;
+strokeDashoffset: string|number;
+strokeLinecap: 'butt' | 'square' | 'round';
+strokeLinejoin: 'miter' | 'bevel' | 'round';
+strokeMiterlimit: string|number;
 ```
 
 ## SvgPath Props
@@ -68,6 +73,8 @@ x: number;
 y: number;
 width: number;
 height: number;
+rx: number;
+ry: number;
 ```
 
 ## Styles

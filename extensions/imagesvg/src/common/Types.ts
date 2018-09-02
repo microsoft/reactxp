@@ -12,16 +12,40 @@ export interface ImageSvgStyle extends RXTypes.ViewStyle {
 }
 export declare type ImageSvgStyleRuleSet = RXTypes.StyleRuleSet<ImageSvgStyle>;
 
-export interface SvgCommonProps {
-    key?: string | number;
+type NumberProp = string | number;
+
+export type FillRule = 'evenodd' | 'nonzero';
+export type Units = 'userSpaceOnUse' | 'objectBoundingBox';
+
+export type Linecap = 'butt' | 'square' | 'round';
+export type Linejoin = 'miter' | 'bevel' | 'round';
+
+export interface FillProps {
+    fillColor?: string; // Different from react-native-svg and web impl -- they just use "fill"
+    fillOpacity?: NumberProp;
+    fillRule?: FillRule;
+}
+  
+export interface StrokeProps {
+    strokeColor?: string;   // Different from react-native-svg and web impl -- they just use "stroke"
+    strokeWidth?: NumberProp;
+    strokeOpacity?: NumberProp;
+    // These typings are incompatible between web and react-native-svg.  Requires further understanding...
+    // strokeDasharray?: ReadonlyArray<number> | string,
+    strokeDashoffset?: NumberProp;
+    strokeLinecap?: Linecap;
+    strokeLinejoin?: Linejoin;
+    strokeMiterlimit?: NumberProp;
+}
+
+export interface ImageSvgProps extends RXTypes.CommonStyledProps<ImageSvgStyleRuleSet> {
+    // Wacky subset of available props that only does anything on web..?
     strokeColor?: string;
     strokeWidth?: number;
     strokeOpacity?: number;
     fillColor?: string;
     fillOpacity?: number;
-}
 
-export interface ImageSvgProps extends SvgCommonProps, RXTypes.CommonStyledProps<ImageSvgStyleRuleSet> {
     children?: RXTypes.ReactNode;
     height: number;
     width: number;
@@ -31,12 +55,18 @@ export interface ImageSvgProps extends SvgCommonProps, RXTypes.CommonStyledProps
     preserveAspectRatio?: string;
     webShadow?: string;
 }
-export interface SvgPathProps extends SvgCommonProps {
+
+interface CommonPathProps extends FillProps, StrokeProps {}
+
+export interface SvgPathProps extends CommonPathProps {
     d?: string;
 }
-export interface SvgRectProps extends SvgCommonProps {
-    width: number;
-    height: number;
-    x: number;
-    y: number;
+
+export interface SvgRectProps extends CommonPathProps {
+    x?: NumberProp;
+    y?: NumberProp;
+    width?: NumberProp;
+    height?: NumberProp;
+    rx?: NumberProp;
+    ry?: NumberProp;
 }
