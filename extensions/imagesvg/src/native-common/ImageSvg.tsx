@@ -23,7 +23,7 @@ export class ImageSvg extends React.Component<SvgTypes.ImageSvgProps, {}> {
                 <RNSvg.Svg
                     width={ this.props.width.toString() }
                     height={ this.props.height.toString() }
-                    style={ this.props.style }
+                    style={ this.props.style as any }
                     opacity={ this.props.strokeOpacity }
                     preserveAspectRatio={ this.props.preserveAspectRatio }
                     viewBox={ this.props.viewBox }
