@@ -73,7 +73,7 @@ To write a module that contains platform-specific code, create a new directory u
 To consume a platform-specific module elsewhere within your code, import it with an absolute path that starts with 'module/'. For example, if you created a module called 'linear-gradient', you would import it as follows:
 
 ```
-import LinearGradient from 'modules/linear-gradient';
+import LinearGradient from 'module/linear-gradient';
 ```
 
 This aliasing technique is implemented primarily in the buildconfig.js file. Refer to the ```getModuleAliases``` function, which computes the aliases array. These aliases are then applied at build time by either the ```apply-aliases``` gulp step in the case of native builds or through a webpack plugin (see the "aliases" section of webpack.config.ts) for web builds.
