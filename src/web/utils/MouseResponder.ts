@@ -137,7 +137,8 @@ export default class MouseResponder {
             velocityX: 0,
             velocityY: 0,
             timeStamp: Date.now(),
-            isComplete: false
+            isComplete: false,
+            isTouch: false,
         };
 
         // We must sort them properly to be consistent with native PanResponder picks it's first responders

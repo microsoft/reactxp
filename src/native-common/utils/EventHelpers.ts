@@ -306,6 +306,23 @@ export class EventHelpers {
         return 0;
     }
 
+    isActuallyMouseEvent(e: Types.TouchEvent|undefined): boolean {
+        if (!e) {
+            return false;
+        }
+
+        const nativeEvent = e as any;
+        if (nativeEvent.button !== undefined) {
+            return true;
+        } else if (nativeEvent.isRightButton || nativeEvent.IsRightButton) {
+            return true;
+        } else if (nativeEvent.isMiddleButton || nativeEvent.IsMiddleButton) {
+            return true;
+        }
+
+        return false;
+    }
+
     isRightMouseButton(e: Types.SyntheticEvent): boolean {
         return (this.toMouseButton(e as Types.TouchEvent) === 2);
     }

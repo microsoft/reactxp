@@ -42,6 +42,7 @@ const _shades = ['#000', '#333', '#666', '#999', '#CCC', '#FFF'];
 interface GestureViewState {
     test1ColorIndex?: number;
     test2ColorIndex?: number;
+    test3ColorIndex?: number;
     test4ColorIndex?: number;
 }
 
@@ -96,7 +97,8 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
         this.state = {
             test1ColorIndex: 0,
             test2ColorIndex: 1,
-            test4ColorIndex: 2
+            test3ColorIndex: 2,
+            test4ColorIndex: 3
         };
     }
 
@@ -108,6 +110,10 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
 
         let test2ColorStyle = RX.Styles.createViewStyle({
             backgroundColor: _colors[this.state.test2ColorIndex]
+        }, false);
+
+        let test3ColorStyle = RX.Styles.createViewStyle({
+            backgroundColor: _colors[this.state.test3ColorIndex]
         }, false);
 
         let test4ColorStyle = RX.Styles.createViewStyle({
@@ -158,17 +164,19 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
 
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation3' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'Panning and dragging will move the square (20-pixel threshold).' }
+                        { 'Panning and dragging will move the square (20-pixel threshold). ' +
+                          'Long-pressing will change the color.' }
                     </RX.Text>
                 </RX.View>
                 <RX.GestureView
                     style={ _styles.gestureView }
                     onPan={ state => this._onPanTest3(state) }
+                    onLongPress={ this._onLongPressTest3 }
                     panPixelThreshold={ 20 }
                     mouseOverCursor={ RX.Types.GestureMouseCursor.Grab }
                 >
                     <RX.Animated.View
-                        style={ [_styles.smallBox, this._test3AnimatedStyle] }
+                        style={ [_styles.smallBox, test3ColorStyle, this._test3AnimatedStyle] }
                     />
                 </RX.GestureView>
 
@@ -255,6 +263,13 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
             this._test3HorizontalOffset.setValue(state.pageX - state.initialPageX);
             this._test3VerticalOffset.setValue(state.pageY - state.initialPageY);
         }
+    }
+
+    private _onLongPressTest3 = (state: RX.Types.PanGestureState) => {
+        // Change the color.
+        this.setState({
+            test3ColorIndex: (this.state.test3ColorIndex + 1) % _colors.length
+        });
     }
 
     private _onTapTest4(gestureState: RX.Types.TapGestureState) {
