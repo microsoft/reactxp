@@ -43,7 +43,7 @@ enum LinkingErrorCode {
 
 ## Methods
 ``` javascript
-// Returns the URL that was used to launch tha application
+// Returns the URL that was used to launch the application
 getInitialUrl(): SyncTasks.Promise<string>;
 
 // Requests the URL to be opened by the default app for that protocol
