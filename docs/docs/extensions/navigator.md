@@ -127,12 +127,12 @@ class App extends RX.Component<null, null> {
         );
     }
 
-    private _onNavigatorRef = (naviator: RX.Navigator) => {
+    private _onNavigatorRef = (navigator: RX.Navigator) => {
         // Stash away a reference to the mounted navigator
         this._navigator = navigator;
     }
 
-    private _renderScene = (route: NavigatorRoute) => {
+    private _renderScene = (navigatorRoute: NavigatorRoute) => {
         switch (navigatorRoute.routeId) {
             case NavigationRouteId.MainPanel:
                 return (
