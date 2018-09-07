@@ -257,7 +257,7 @@ export class EventHelpers {
             mouseEvent.clientY = mouseEvent.pageY = nativeEvent.pageY;
         }
 
-        mouseEvent.button = this.toMouseButton(e.nativeEvent as Types.TouchEvent);
+        mouseEvent.button = this.toMouseButton(e.nativeEvent);
 
         if (nativeEvent.shiftKey) {
             mouseEvent.shiftKey = nativeEvent.shiftKey;
@@ -293,8 +293,7 @@ export class EventHelpers {
         return dndEvent;
     }
 
-    toMouseButton(e: Types.TouchEvent): number {
-        const nativeEvent = e as any;
+    toMouseButton(nativeEvent: any): number {
         if (nativeEvent.button !== undefined) {
             return nativeEvent.button;
         } else if (nativeEvent.isRightButton || nativeEvent.IsRightButton) {
@@ -324,7 +323,7 @@ export class EventHelpers {
     }
 
     isRightMouseButton(e: Types.SyntheticEvent): boolean {
-        return (this.toMouseButton(e as Types.TouchEvent) === 2);
+        return (this.toMouseButton(e.nativeEvent) === 2);
     }
 
     // Keyboard events do not inherently hold a position that can be used to show flyouts on keyboard input.
