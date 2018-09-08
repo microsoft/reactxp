@@ -112,10 +112,6 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
                 aria-live={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Assertive) }
                 aria-atomic={ 'true' }
                 aria-relevant={ 'additions text' }
-                aria-hidden={ 'true' }
-                role={ 'presentation' }
-                tabIndex={ -1 }
-                aria-label={ this.state.announcementText }
             >
                 { announcement }
             </div>
