@@ -84,8 +84,9 @@ onNavigationStateChange: (navigationState: WebViewNavigationState) => void;
 // Flags that restrict behaviors within the control
 sandbox: WebViewSandboxMode = None;
 
-// Zooms the page contents to fit the available space
-scalesPageToFit: boolean = false;
+// Zooms the page contents to fit the available space; deprecated on
+// iOS in RN 0.57
+scalesPageToFit: boolean = false; // Native only
 
 // HTML to display in webview (if url is not specified)
 source: WebViewSource = undefined;

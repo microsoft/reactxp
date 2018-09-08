@@ -1,4 +1,4 @@
-﻿/**
+/**
  * WebView.tsx
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -30,6 +30,11 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
         const styles = [_styles.webViewDefault, this.props.style] as RN.StyleProp<RN.ViewStyle>;
         const source = this._buildSource();
 
+        // Force use of webkit on iOS (applies to RN 0.57 and newer only).
+        let extendedProps: RN.ExtendedWebViewProps = {
+            useWebKit: true
+        };
+
         return (
             <RN.WebView
                 ref={ this._onMount }
@@ -48,6 +53,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
                 onMessage={ this.props.onMessage ? this._onMessage : undefined }
                 testID={ this.props.testId }
                 mixedContentMode={ this._sandboxToMixedContentMode(this.props.sandbox) }
+                { ...extendedProps }
             />
         );
     }

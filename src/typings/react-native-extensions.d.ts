@@ -34,6 +34,10 @@ declare module 'react-native' {
         tooltip?: string;
     }
 
+    interface ExtendedWebViewProps extends RN.WebViewProps {
+        useWebKit?: boolean;
+    }
+
     abstract class ReactNativeBaseComponent<P, S> extends React.Component<P, S> {
         setNativeProps(nativeProps: P): void;
         focus(): void;
