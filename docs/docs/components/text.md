@@ -62,7 +62,10 @@ autoFocus: boolean = false;
 // Note: Older versions of React Native don’t support this interface.
 maxContentSizeMultiplier: number = null; // Android and iOS only
 
-// For non-zero values, truncates with ellipsis if necessary
+// For non-zero values, truncates with ellipsis if necessary. Web platform
+// doesn't support values greater than 1. Web platform may also not truncate
+// properly if text contains line breaks, so it may be necessary to replace
+// line breaks before rendering.
 numberOfLines: number = 0;
 
 // Mouse & Touch Events
