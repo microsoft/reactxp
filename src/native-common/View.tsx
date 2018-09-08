@@ -325,8 +325,8 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
 
         if (props.testId) {
             // Convert from testId to testID.
-            this._internalProps.testID = this._internalProps.testID;
-            delete this._internalProps.testID;
+            this._internalProps.testID = this._internalProps.testId;
+            delete this._internalProps.testId;
         }
 
         // Translate accessibilityProps from RX to RN, there are type diferrences for example:
