@@ -16,6 +16,18 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.4.0-rc.1 of reactxp - _9 Sep 2018_
+* Worked around change in recent versions of RN that removed support for Images with children.
+* Changed announceForAccessibility implementation to use Assertive live region type instead of Polite.
+* In web implementation of RX.Image, always show the img tag if XHR request option is used.
+* Fixed bug #744: On web implementation, styling behavior differed between developmenta nd production.
+* Added support for the new React.RefObject variant of ref prop.
+* Added support for multi-window apps to RX.Alert.
+* Added support for onLongPress to RX.GestureView.
+* Fixed bug #793: In web implementation, cursor type was overridden in some cases.
+* Added useWebKit prop for native RN.WebView in prep for NR 0.57 on iOS.
+* Fixed bug that caused testID not to be set properly for RX.View instances.
+
 #### Version 1.3.2 of reactxp-imagesvg - _25 Aug 2018_
 * Added support for SvgRect children within SvgImage.
 
