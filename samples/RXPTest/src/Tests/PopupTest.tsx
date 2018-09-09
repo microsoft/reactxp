@@ -78,6 +78,24 @@ const _styles = {
         width: _indicatorWidth,
         borderRadius: _indicatorWidth / 2,
         backgroundColor: 'black'
+    }),
+    textInput: RX.Styles.createTextInputStyle({
+        alignSelf: 'center',
+        height: 24,
+        width: 140,
+        borderWidth: 1,
+        borderColor: '#999',
+        fontSize: 12
+    }),
+    comboBoxPopup: RX.Styles.createViewStyle({
+        borderWidth: 1,
+        borderColor: '#999',
+        padding: 4,
+        width: 140
+    }),
+    comboBoxText: RX.Styles.createTextStyle({
+        fontSize: 14,
+        color: '#666'
     })
 };
 
@@ -85,6 +103,7 @@ const popup1Id = 'popup1';
 const popup2Id = 'popup2';
 const popup3Id = 'popup3';
 const popup4Id = 'popup4';
+const popup5Id = 'popup5';
 
 interface PopupBoxProps extends RX.CommonProps {
     text: string;
@@ -93,6 +112,11 @@ interface PopupBoxProps extends RX.CommonProps {
     popupHeight: number;
     popupWidth: number;
     onPress?: () => void;
+}
+
+interface PopupViewState {
+    textInputValue?: string;
+    selectedComboValue?: string;
 }
 
 class PopupBox extends RX.Component<PopupBoxProps, RX.Stateless> {
@@ -145,11 +169,18 @@ class PopupBox extends RX.Component<PopupBoxProps, RX.Stateless> {
     }
 }
 
-class PopupView extends RX.Component<RX.CommonProps, RX.Stateless> {
+class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
     private _anchor1: RX.Button;
     private _anchor2: RX.Button;
     private _anchor3: RX.Button;
     private _anchor4: RX.Button;
+    private _anchor5: RX.TextInput;
+
+    constructor(props: RX.CommonProps) {
+        super(props);
+
+        this.state = {};
+    }
 
     componentWillUnmount() {
         RX.Popup.dismissAll();
@@ -207,6 +238,13 @@ class PopupView extends RX.Component<RX.CommonProps, RX.Stateless> {
                         { `4: isDisplayed = ${RX.Popup.isDisplayed(popup4Id)}` }
                     </RX.Text>
                 </RX.Button>
+                <RX.TextInput
+                    style={ _styles.textInput }
+                    ref={ (comp: RX.TextInput) => { this._anchor5 = comp; } }
+                    onFocus={ this._onFocusTextInput }
+                    value={ this.state.textInputValue || '' }
+                    onChangeText={ this._onChangeTextInput }
+                />
             </RX.View>
         );
     }
@@ -310,6 +348,74 @@ class PopupView extends RX.Component<RX.CommonProps, RX.Stateless> {
                 );
             }
         }, popup4Id);
+    }
+
+    private _onChangeTextInput = (newText: string) => {
+        this.setState({ textInputValue: newText });
+        this._showTextComboBox(newText);
+    }
+
+    private _onFocusTextInput = () => {
+        this._showTextComboBox(this.state.textInputValue || '');
+    }
+
+    private _getFilteredComboItems(textInputValue: string) {
+        let itemsText = ['apple', 'banana', 'cat', 'cottage', 'dog', 'dogfish'];
+        let lowerText = textInputValue.toLowerCase();
+
+        return _.filter(itemsText, (item: string) => {
+            return item.substr(0, lowerText.length) === lowerText;
+        });
+    }
+
+    private _renderComboItems(itemsText: string[]) {
+        return _.map(itemsText, item => {
+            return (
+                <RX.Button
+                    key={ item }
+                    onPress={ e => this._onPressComboBoxItem(e, item) }
+                >
+                    <RX.Text style={ _styles.comboBoxText}>
+                        { item }
+                    </RX.Text>
+                </RX.Button>
+            );
+        });
+    }
+
+    private _showTextComboBox(typedText: string) {
+        let filteredItems: string[] = [];
+        if (typedText) {
+            filteredItems = this._getFilteredComboItems(typedText);
+        }
+
+        if (filteredItems.length > 0) {
+            RX.Popup.show({
+                getAnchor: () => {
+                    return this._anchor5;
+                },
+                positionPriorities: ['bottom', 'right'],
+                renderPopup: (anchorPosition: RX.Types.PopupPosition, anchorOffset: number,
+                    popupWidth: number, popupHeight: number) => {
+
+                    return (
+                        <RX.View style={ _styles.comboBoxPopup }>
+                            { this._renderComboItems(filteredItems) }
+                        </RX.View>
+                    );
+                }
+            }, popup5Id);
+        } else {
+            RX.Popup.dismiss(popup5Id);
+            this.setState({ selectedComboValue: '' });
+        }
+    }
+
+    private _onPressComboBoxItem(e: RX.Types.SyntheticEvent, itemText: string) {
+        this.setState({ textInputValue: itemText });
+
+        RX.Popup.dismiss(popup5Id);
+        this.setState({ selectedComboValue: '' });
     }
 }
 
