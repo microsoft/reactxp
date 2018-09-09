@@ -348,9 +348,15 @@ export type ComponentBase = React.Component<any, any>;
  * Components
  */
 
+// Redefine RefObject here rather than using React.RefObject because
+// older versions of React don't support it.
+interface RefObject<T> {
+    readonly current: T | null;
+}
+
 export interface CommonProps {
     children?: ReactNode | ReactNode[];
-    ref?: string | ((obj: ComponentBase | null) => void) | React.RefObject<ComponentBase>;
+    ref?: string | ((obj: ComponentBase | null) => void) | RefObject<ComponentBase>;
     key?: string | number;
     testId?: string;
 }
