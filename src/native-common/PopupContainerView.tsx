@@ -14,6 +14,7 @@ import assert = require('assert');
 import React = require('react');
 import RN = require('react-native');
 
+import AccessibilityUtil from './AccessibilityUtil';
 import International from './International';
 import Timers from '../common/utils/Timers';
 import Types = require('../common/Types');
@@ -136,10 +137,15 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
             height: this.props.hidden ? 0 : undefined
         };
 
+        const importantForAccessibility = this.props.hidden 
+            ? AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.NoHideDescendants)
+            : undefined;
+
         return (
             <RN.View
                 style={ style as RN.StyleProp<RN.ViewStyle> }
                 ref={ this._onMount as any }
+                importantForAccessibility={ importantForAccessibility }
             >
                 { popupView }
             </RN.View>
