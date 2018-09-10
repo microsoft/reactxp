@@ -179,6 +179,17 @@ export class FrontLayerViewManager {
         );
     }
 
+    private _getOverlayContext(rootViewId?: string | null): PopupStackContext | undefined {
+        return _.findLast(
+            this._overlayStack,
+            context => context instanceof PopupStackContext && context.popupOptions.rootViewId === rootViewId
+        ) as PopupStackContext | undefined;
+    }
+
+    public isPopupActiveFor(rootViewId?: string | null): boolean {
+        return this._getOverlayContext(rootViewId) !== undefined;
+    }
+    
     public getPopupLayerView(rootViewId?: string | null): JSX.Element | null {
         if (rootViewId === null) {
             // The Popup layer is supported only on root views that have set an id and
@@ -188,11 +199,7 @@ export class FrontLayerViewManager {
 
         let popupContainerViews: JSX.Element[] = [];
 
-        const overlayContext =
-            _.findLast(
-                this._overlayStack,
-                context => context instanceof PopupStackContext && context.popupOptions.rootViewId === rootViewId
-            ) as PopupStackContext;
+        const overlayContext = this._getOverlayContext(rootViewId);
         if (overlayContext) {
             popupContainerViews.push(this._renderPopup(overlayContext, false));
         }
