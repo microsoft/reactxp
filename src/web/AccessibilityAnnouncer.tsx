@@ -19,6 +19,9 @@ export interface AccessibilityAnnouncerState {
     // Screen Reader text to be announced.
     announcementText: string;
 
+    // Hides the div from aria tree when it's not used so that it can't be accessed from screen reader
+    ariaHidden: boolean;
+
     // Render announcementText in a nested div to work around browser quirks for windows.
     // Nested divs break mac.
     announcementTextInNestedDiv: boolean;
@@ -62,7 +65,8 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
                     // annnouncementText should never be in nested div for mac.
                     // Voice over ignores reading nested divs in aria-live container.
                     this.setState({
-                        announcementText: announcement
+                        announcementText: announcement,
+                        ariaHidden: false
                     });
                 } else {
 
@@ -71,7 +75,8 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
                     // not announce aria-live reliably without this, for example.
                     this.setState({
                         announcementText: announcement,
-                        announcementTextInNestedDiv: !this.state.announcementTextInNestedDiv
+                        announcementTextInNestedDiv: !this.state.announcementTextInNestedDiv,
+                        ariaHidden: false
                     });
                 }
             });
@@ -82,6 +87,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
     private _getInitialState(): AccessibilityAnnouncerState {
         return {
             announcementText: '',
+            ariaHidden: true,
             announcementTextInNestedDiv: false
         };
     }
@@ -112,7 +118,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
                 aria-live={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Assertive) }
                 aria-atomic={ 'true' }
                 aria-relevant={ 'additions text' }
-                aria-hidden={ 'true' }
+                aria-hidden={ this.state.ariaHidden }
                 role={ 'presentation' }
                 tabIndex={ -1 }
                 aria-label={ this.state.announcementText }
@@ -134,7 +140,8 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
 
         this._clearAnnouncementTimer = window.setTimeout(() => {
             this.setState({
-                announcementText: ''
+                announcementText: '',
+                ariaHidden: true
             });
         }, 2000);
     }
