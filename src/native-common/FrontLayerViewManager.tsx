@@ -179,11 +179,11 @@ export class FrontLayerViewManager {
         );
     }
 
-    private _getOverlayContext(rootViewId?: string | null): PopupStackContext {
+    private _getOverlayContext(rootViewId?: string | null): PopupStackContext | undefined {
         return _.findLast(
             this._overlayStack,
             context => context instanceof PopupStackContext && context.popupOptions.rootViewId === rootViewId
-        ) as PopupStackContext;
+        ) as PopupStackContext | undefined;
     }
 
     public isPopupActiveFor(rootViewId?: string | null): boolean {
