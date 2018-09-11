@@ -1,16 +1,17 @@
 /**
-* Text.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN Windows-specific implementation of the cross-platform Text abstraction.
-*/
+ * Text.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN Windows-specific implementation of the cross-platform Text abstraction.
+ */
+
+import * as PropTypes from 'prop-types';
 
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
-import PropTypes = require('prop-types');
 import { Text as TextBase, TextContext as TextContextBase } from '../native-common/Text';
-import Types = require('../common/Types');
+import { Types } from '../common/Interfaces';
 
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 export interface TextContext extends TextContextBase {

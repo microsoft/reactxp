@@ -1,13 +1,13 @@
 /**
-* StatusBar.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Windows-specific implementation of StatusBar APIs.
-*/
+ * StatusBar.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Windows-specific implementation of StatusBar APIs.
+ */
 
-import RX = require('../common/Interfaces');
+import * as RX from '../common/Interfaces';
 
 export class StatusBar extends RX.StatusBar {
     isOverlay(): boolean {

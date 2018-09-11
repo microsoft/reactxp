@@ -1,18 +1,18 @@
 /**
-* ScrollView.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN Windows-specific implementation of the cross-platform ScrollView abstraction.
-*/
+ * ScrollView.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN Windows-specific implementation of the cross-platform ScrollView abstraction.
+ */
 
-import React = require('react');
-import RN = require('react-native');
+import * as React from 'react';
+import * as RN from 'react-native';
 
 import { ScrollView as ScrollViewBase } from '../native-common/ScrollView';
+import { Types } from '../common/Interfaces';
 import EventHelpers from '../native-common/utils/EventHelpers';
-import Types = require('../common/Types');
 
 export class ScrollView extends ScrollViewBase {
 

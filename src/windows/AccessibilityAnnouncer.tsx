@@ -1,21 +1,21 @@
 /**
-* AccessibilityAnnouncer.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Implements the behavior for announcing text via screen readers.
-*/
+ * AccessibilityAnnouncer.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Implements the behavior for announcing text via screen readers.
+ */
 
-import React = require('react');
-import RN = require('react-native');
+import * as React from 'react';
+import * as RN from 'react-native';
 import { SubscriptionToken } from 'subscribableevent';
 
+import { Types } from '../common/Interfaces';
 import Accessibility from './Accessibility';
 import AccessibilityUtil from '../native-common/AccessibilityUtil';
 import Styles from '../native-common/Styles';
 import Timers from '../common/utils/Timers';
-import Types = require('../common/Types');
 
 const _styles = {
     liveRegionContainer: Styles.createViewStyle({

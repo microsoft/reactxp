@@ -1,19 +1,25 @@
 /**
-* RootView.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* The top-most view that's used for proper layering or modals and popups.
-*/
+ * RootView.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * The top-most view that's used for proper layering or modals and popups.
+ */
 
-import React = require('react');
-import RN = require('react-native');
-import RNW = require('react-native-windows');
+import * as React from 'react';
+import * as RN from 'react-native';
+import * as RNW from 'react-native-windows';
 
-import { RootView as RootViewBase, RootViewUsingProps as RootViewUsingPropsBase,
-    BaseRootViewProps, RootViewPropsWithMainViewType, RootViewState, BaseRootView } from '../native-desktop/RootView';
 import { AccessibilityAnnouncer } from './AccessibilityAnnouncer';
+import {
+    RootView as RootViewBase,
+    RootViewUsingProps as RootViewUsingPropsBase,
+    BaseRootViewProps,
+    RootViewPropsWithMainViewType,
+    RootViewState,
+    BaseRootView,
+} from '../native-desktop/RootView';
 
 //
 // We use a custom RNW provided component to capture key input before being dispatched to native controls.
@@ -24,7 +30,7 @@ const _styles = RN.StyleSheet.create({
     appWrapperStyle : {
         flex: 1
     }
-  });
+});
 
 type Handler = (e: RN.NativeSyntheticEvent<any>) => void;
 
@@ -45,7 +51,7 @@ function _renderTopView(
 class RootViewUsingStore extends RootViewBase {
     renderTopView(content: JSX.Element): JSX.Element {
         if (_isRootInputViewSupported) {
-            return _renderTopView (
+            return _renderTopView(
                 content,
                 this._onKeyDown,
                 this._onKeyDownCapture,

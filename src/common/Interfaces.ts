@@ -8,14 +8,14 @@
 * implemented for each platform.
 */
 
-import React = require('react');
+import * as React from 'react';
+import * as SyncTasks from 'synctasks';
 import SubscribableEvent from 'subscribableevent';
-import SyncTasks = require('synctasks');
 
+import * as Types from './Types';
 import AppConfig from './AppConfig';
-import Types = require('./Types');
 
-export import Types = Types;
+export { Types };
 
 export abstract class ActivityIndicator extends React.Component<Types.ActivityIndicatorProps> {}
 
