@@ -1,20 +1,19 @@
 /**
-* TextInput.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN Windows-specific implementation of the cross-platform TextInput abstraction.
-*/
+ * TextInput.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN Windows-specific implementation of the cross-platform TextInput abstraction.
+ */
 
-import React = require('react');
-import RN = require('react-native');
-import Types = require('../common/Types');
+import * as React from 'react';
+import * as RN from 'react-native';
 
-import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
-
 import { TextInput as TextInputBase } from '../native-common/TextInput';
+import { Types } from '../common/Interfaces';
+import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 
 export class TextInput extends TextInputBase implements FocusManagerFocusableComponent {
 

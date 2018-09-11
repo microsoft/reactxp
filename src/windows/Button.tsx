@@ -1,23 +1,23 @@
 /**
-* Button.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN Windows-specific implementation of the cross-platform Button abstraction.
-*/
+ * Button.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN Windows-specific implementation of the cross-platform Button abstraction.
+ */
 
-import PropTypes = require('prop-types');
-import React = require('react');
-import RN = require('react-native');
-import RNW = require('react-native-windows');
-import Types = require('../common/Types');
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import * as RN from 'react-native';
+import * as RNW from 'react-native-windows';
 
-import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
+import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 import { Button as ButtonBase, ButtonContext as ButtonContextBase } from '../native-common/Button';
+import { Types } from '../common/Interfaces';
+import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import UserInterface from '../native-common/UserInterface';
-import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_SPACE = 32;
@@ -158,25 +158,25 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
                 // ENTER triggers press on key down
                 if (key === KEY_CODE_ENTER) {
                     this.props.onPress(keyEvent);
-                }  
+                }
             }
-            
+
             if (this.props.onContextMenu) {
                 let key = keyEvent.keyCode;
                 if ((key === KEY_CODE_APP) || (key === KEY_CODE_F10 && keyEvent.shiftKey)) {
-                    if (this._isMounted) { 
-                        UserInterface.measureLayoutRelativeToWindow(this).then( layoutInfo => { 
-                            // need to simulate the mouse event so that we 
-                            // can show the context menu in the right position 
-                            if (this._isMounted) { 
-                                let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, 
-                                    this._getContextMenuOffset());                              
+                    if (this._isMounted) {
+                        UserInterface.measureLayoutRelativeToWindow(this).then( layoutInfo => {
+                            // need to simulate the mouse event so that we
+                            // can show the context menu in the right position
+                            if (this._isMounted) {
+                                let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo,
+                                    this._getContextMenuOffset());
                                 if (this.props.onContextMenu) {
-                                    this.props.onContextMenu(mouseEvent);  
-                                }  
-                            }                     
+                                    this.props.onContextMenu(mouseEvent);
+                                }
+                            }
                         });
-                    } 
+                    }
                 }
             }
         }

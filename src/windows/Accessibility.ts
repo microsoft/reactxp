@@ -1,11 +1,11 @@
 /**
-* Accessibility.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*/
+ * Accessibility.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
 
-import RN = require('react-native');
+import * as RN from 'react-native';
 // Be aware that we import class and extend it here, but the default export of native-common/Accessibility
 // is an instance of the class we import here. So any state in the default export from native-common will be in
 // a different instance than default export of this windows/Accessibility. For example, susbscribing to
