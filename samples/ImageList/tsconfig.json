@@ -10,6 +10,7 @@
     "module": "commonjs",
     "target": "es5",
     "experimentalDecorators": true,
+    "skipLibCheck": true,
     "sourceMap": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -17,6 +18,7 @@
     "noUnusedLocals": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist/",
+    "strict": true,
     "typeRoots": [
         "node_modules/@types"
     ],

@@ -43,7 +43,10 @@ class ImageListPanel extends RX.Component<{}, ImageListPanelState> {
 
     render() {
         return (
-            <RX.View useSafeInsets={ true } style={ [_styles.listContainer, RX.StatusBar.isOverlay() && _styles.statusSpacer] }>
+            <RX.View
+                useSafeInsets={ true }
+                style={ [_styles.listContainer, RX.StatusBar.isOverlay() ? _styles.statusSpacer : undefined] }
+            >
                 <RX.TextInput
                     style={ _styles.textInput }
                     value={ this.state.inputValue }

@@ -13,8 +13,8 @@ interface ImageListItemInfo extends VirtualListViewItemInfo {
 }
 
 interface ImageListState {
-    isPerformingSearch?: boolean;
-    imageItems?: ImageListItemInfo[];
+    isPerformingSearch: boolean;
+    imageItems: ImageListItemInfo[];
 }
 
 const _itemHeight = 100;
