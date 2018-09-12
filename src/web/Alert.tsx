@@ -1,16 +1,15 @@
 /**
-* Alert.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web Alert dialog boxes.
-*/
+ * Alert.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web Alert dialog boxes.
+ */
 
-import React = require('react');
+import * as React from 'react';
 
-import RX = require('../common/Interfaces');
-import Types = require('../common/Types');
+import * as RX from '../common/Interfaces';
 import { AlertModalContent } from './AlertModalContent';
 import Modal from './Modal';
 
@@ -18,8 +17,8 @@ import Modal from './Modal';
 export class Alert extends RX.Alert {
     private _modalId = 'RX.Alert_WebModal';
 
-    public show(title: string, message?: string, buttons?: Types.AlertButtonSpec[],
-            options?: Types.AlertOptions): void {
+    public show(title: string, message?: string, buttons?: RX.Types.AlertButtonSpec[],
+            options?: RX.Types.AlertOptions): void {
         Modal.show(
             (
                 <AlertModalContent

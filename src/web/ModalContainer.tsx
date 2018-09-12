@@ -1,15 +1,15 @@
 ﻿/**
-* ModalContainer.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of a view that's used to render modals.
-*/
+ * ModalContainer.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of a view that's used to render modals.
+ */
 
-import React = require('react');
+import * as React from 'react';
 
-import Types = require('../common/Types');
+import { Types } from '../common/Interfaces';
 
 const _styles = {
     modalContainerStyle: {

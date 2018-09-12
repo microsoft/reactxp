@@ -1,15 +1,14 @@
 /**
-* executeTransition.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Provides a convenient API for applying a CSS transition to a DOM element and
-* notifying when the transition is complete.
-*/
+ * executeTransition.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Provides a convenient API for applying a CSS transition to a DOM element and
+ * notifying when the transition is complete.
+ */
 
-import _ = require('./../utils/lodashMini');
-
+import * as _ from './../utils/lodashMini';
 import Timers from '../../common/utils/Timers';
 
 export interface TransitionSpec {

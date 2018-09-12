@@ -1,25 +1,23 @@
 ﻿/**
-* Styles.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of style functions.
-*/
+ * Styles.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of style functions.
+ */
 
-import _ = require('./utils/lodashMini');
-
+import * as _ from './utils/lodashMini';
+import * as RX from '../common/Interfaces';
 import AppConfig from '../common/AppConfig';
-import RX = require('../common/Interfaces');
-import Types = require('../common/Types');
 import StyleLeakDetector from '../common/StyleLeakDetector';
 
 type CssAliasMap = { [prop: string]: string };
 
 export class Styles extends RX.Styles {
     // Combines a set of styles
-    combine<S>(ruleSet1: Types.StyleRuleSetRecursive<S>|undefined, ruleSet2?: Types.StyleRuleSetRecursive<S>)
-            : Types.StyleRuleSetOrArray<S>|undefined {
+    combine<S>(ruleSet1: RX.Types.StyleRuleSetRecursive<S>|undefined, ruleSet2?: RX.Types.StyleRuleSetRecursive<S>)
+            : RX.Types.StyleRuleSetOrArray<S>|undefined {
         if (!ruleSet1 && !ruleSet2) {
             return undefined;
         }
@@ -62,74 +60,74 @@ export class Styles extends RX.Styles {
                 }
             }
 
-            return combinedStyles as Types.StyleRuleSet<S>;
+            return combinedStyles as RX.Types.StyleRuleSet<S>;
         }
 
-        return ruleSet as Types.StyleRuleSet<S>;
+        return ruleSet as RX.Types.StyleRuleSet<S>;
     }
 
     // Creates opaque styles that can be used for View
-    createViewStyle(ruleSet: Types.ViewStyle, cacheStyle: boolean = true): Types.ViewStyleRuleSet {
+    createViewStyle(ruleSet: RX.Types.ViewStyle, cacheStyle: boolean = true): RX.Types.ViewStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for View
-    createAnimatedViewStyle(ruleSet: Types.AnimatedViewStyle): Types.AnimatedViewStyleRuleSet {
+    createAnimatedViewStyle(ruleSet: RX.Types.AnimatedViewStyle): RX.Types.AnimatedViewStyleRuleSet {
         return this._adaptStyles(ruleSet, false);
     }
 
     // Creates opaque styles that can be used for ScrollView
-    createScrollViewStyle(ruleSet: Types.ScrollViewStyle, cacheStyle: boolean = true): Types.ScrollViewStyleRuleSet {
+    createScrollViewStyle(ruleSet: RX.Types.ScrollViewStyle, cacheStyle: boolean = true): RX.Types.ScrollViewStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for Button
-    createButtonStyle(ruleSet: Types.ButtonStyle, cacheStyle: boolean = true): Types.ButtonStyleRuleSet {
+    createButtonStyle(ruleSet: RX.Types.ButtonStyle, cacheStyle: boolean = true): RX.Types.ButtonStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for WebView
-    createWebViewStyle(ruleSet: Types.WebViewStyle, cacheStyle: boolean = true): Types.WebViewStyleRuleSet {
+    createWebViewStyle(ruleSet: RX.Types.WebViewStyle, cacheStyle: boolean = true): RX.Types.WebViewStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for Text
-    createTextStyle(ruleSet: Types.TextStyle, cacheStyle: boolean = true): Types.TextStyleRuleSet {
+    createTextStyle(ruleSet: RX.Types.TextStyle, cacheStyle: boolean = true): RX.Types.TextStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle, true);
     }
 
     // Creates opaque styles that can be used for Text
-    createAnimatedTextStyle(ruleSet: Types.AnimatedTextStyle): Types.AnimatedTextStyleRuleSet {
+    createAnimatedTextStyle(ruleSet: RX.Types.AnimatedTextStyle): RX.Types.AnimatedTextStyleRuleSet {
         return this._adaptStyles(ruleSet, false);
     }
 
     // Creates opaque styles that can be used for TextInput
-    createTextInputStyle(ruleSet: Types.TextInputStyle, cacheStyle: boolean = true): Types.TextInputStyleRuleSet {
+    createTextInputStyle(ruleSet: RX.Types.TextInputStyle, cacheStyle: boolean = true): RX.Types.TextInputStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle, true);
     }
 
     // Creates opaque styles that can be used for TextInput
-    createAnimatedTextInputStyle(ruleSet: Types.AnimatedTextInputStyle): Types.AnimatedTextInputStyleRuleSet {
+    createAnimatedTextInputStyle(ruleSet: RX.Types.AnimatedTextInputStyle): RX.Types.AnimatedTextInputStyleRuleSet {
         return this._adaptStyles(ruleSet, false);
     }
 
     // Creates opaque styles that can be used for Link
-    createLinkStyle(ruleSet: Types.LinkStyle, cacheStyle: boolean = true): Types.LinkStyleRuleSet {
+    createLinkStyle(ruleSet: RX.Types.LinkStyle, cacheStyle: boolean = true): RX.Types.LinkStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for Image
-    createImageStyle(ruleSet: Types.ImageStyle, cacheStyle: boolean = true): Types.ImageStyleRuleSet {
+    createImageStyle(ruleSet: RX.Types.ImageStyle, cacheStyle: boolean = true): RX.Types.ImageStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for Image
-    createAnimatedImageStyle(ruleSet: Types.AnimatedImageStyle): Types.AnimatedImageStyleRuleSet {
+    createAnimatedImageStyle(ruleSet: RX.Types.AnimatedImageStyle): RX.Types.AnimatedImageStyleRuleSet {
         return this._adaptStyles(ruleSet, false);
     }
 
     // Creates opaque styles that can be used for Picker
-    createPickerStyle(ruleSet: Types.PickerStyle, cacheStyle: boolean = true): Types.PickerStyleRuleSet {
+    createPickerStyle(ruleSet: RX.Types.PickerStyle, cacheStyle: boolean = true): RX.Types.PickerStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
@@ -352,7 +350,7 @@ export class Styles extends RX.Styles {
         }
 
         // CSS (and React JS) support lineHeight defined as either a multiple of the font
-        // size or a pixel count. The Types interface always uses a pixel count. We need to
+        // size or a pixel count. The RX.Types interface always uses a pixel count. We need to
         // convert to the string notation to make CSS happy.
         if (def.lineHeight !== undefined) {
             def['lineHeight'] = def.lineHeight + 'px';

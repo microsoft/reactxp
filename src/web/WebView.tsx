@@ -1,18 +1,17 @@
 /**
-* WebView.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* A control that allows the display of an independent web page.
-*/
+ * WebView.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * A control that allows the display of an independent web page.
+ */
 
-import React = require('react');
+import * as React from 'react';
 
-import RX = require('../common/Interfaces');
-import Styles from './Styles';
-import Types = require('../common/Types');
+import * as RX from '../common/Interfaces';
 import { View } from './View';
+import Styles from './Styles';
 
 let _styles = {
     webViewDefault: Styles.createWebViewStyle({
@@ -37,7 +36,7 @@ interface WebViewMessageEventInternal extends RX.Types.WebViewMessageEvent {
     __propagationStopped: boolean;
 }
 
-export class WebView extends React.Component<Types.WebViewProps, WebViewState> implements RX.WebView {
+export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState> implements RX.WebView {
     private static _webFrameNumber = 1;
     private static _onMessageReceived: RX.Types.SubscribableEvent<(e: WebViewMessageEventInternal) => void>;
     private static _messageListenerInstalled = false;
@@ -45,7 +44,7 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
     private _mountedComponent: HTMLIFrameElement|null = null;
     private _onMessageReceivedToken: RX.Types.SubscriptionToken|undefined;
 
-    constructor(props: Types.WebViewProps) {
+    constructor(props: RX.Types.WebViewProps) {
         super(props);
 
         this.state = {
@@ -66,7 +65,7 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
         }
     }
 
-    componentDidUpdate(prevProps: Types.WebViewProps, prevState: WebViewState) {
+    componentDidUpdate(prevProps: RX.Types.WebViewProps, prevState: WebViewState) {
         this._postRender();
 
         let oldCustomContents = this._getCustomHtml(prevProps);
@@ -86,7 +85,7 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
         }
     }
 
-    private _getCustomHtml(props: Types.WebViewProps): string|undefined {
+    private _getCustomHtml(props: RX.Types.WebViewProps): string|undefined {
         if (props.url || !props.source) {
             return undefined;
         }
@@ -173,7 +172,7 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
         let styles = Styles.combine([_styles.webViewDefault, this.props.style]);
         let sandbox = this.props.sandbox !== undefined
             ? this.props.sandbox
-            : (this.props.javaScriptEnabled ? Types.WebViewSandboxMode.AllowScripts : Types.WebViewSandboxMode.None);
+            : (this.props.javaScriptEnabled ? RX.Types.WebViewSandboxMode.AllowScripts : RX.Types.WebViewSandboxMode.None);
 
         // width 100% is needed for Edge - it doesn't grow iframe. Resize needs to be done with wrapper
         return (
@@ -197,43 +196,43 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
         this._mountedComponent = component;
     }
 
-    private _onLoad = (e: Types.SyntheticEvent) => {
+    private _onLoad = (e: RX.Types.SyntheticEvent) => {
         if (this.props.onLoad) {
             this.props.onLoad(e);
         }
     }
 
-    private _sandboxToStringValue = (sandbox: Types.WebViewSandboxMode) => {
+    private _sandboxToStringValue = (sandbox: RX.Types.WebViewSandboxMode) => {
         let values: string[] = [];
 
-        if (sandbox & Types.WebViewSandboxMode.AllowForms) {
+        if (sandbox & RX.Types.WebViewSandboxMode.AllowForms) {
             values.push('allow-forms');
         }
-        if (sandbox & Types.WebViewSandboxMode.AllowModals) {
+        if (sandbox & RX.Types.WebViewSandboxMode.AllowModals) {
             values.push('allow-modals');
         }
-        if (sandbox & Types.WebViewSandboxMode.AllowOrientationLock) {
+        if (sandbox & RX.Types.WebViewSandboxMode.AllowOrientationLock) {
             values.push('allow-orientation-lock');
         }
-        if (sandbox & Types.WebViewSandboxMode.AllowPointerLock) {
+        if (sandbox & RX.Types.WebViewSandboxMode.AllowPointerLock) {
             values.push('allow-pointer-lock');
         }
-        if (sandbox & Types.WebViewSandboxMode.AllowPopups) {
+        if (sandbox & RX.Types.WebViewSandboxMode.AllowPopups) {
             values.push('allow-popups');
         }
-        if (sandbox & Types.WebViewSandboxMode.AllowPopupsToEscapeSandbox) {
+        if (sandbox & RX.Types.WebViewSandboxMode.AllowPopupsToEscapeSandbox) {
             values.push('allow-popups-to-escape-sandbox');
         }
-        if (sandbox & Types.WebViewSandboxMode.AllowPresentation) {
+        if (sandbox & RX.Types.WebViewSandboxMode.AllowPresentation) {
             values.push('allow-presentation');
         }
-        if (sandbox & Types.WebViewSandboxMode.AllowSameOrigin) {
+        if (sandbox & RX.Types.WebViewSandboxMode.AllowSameOrigin) {
             values.push('allow-same-origin');
         }
-        if (sandbox & Types.WebViewSandboxMode.AllowScripts) {
+        if (sandbox & RX.Types.WebViewSandboxMode.AllowScripts) {
             values.push('allow-scripts');
         }
-        if (sandbox & Types.WebViewSandboxMode.AllowTopNavigation) {
+        if (sandbox & RX.Types.WebViewSandboxMode.AllowTopNavigation) {
             values.push('allow-top-navigation');
         }
 

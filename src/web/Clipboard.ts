@@ -1,15 +1,15 @@
 /**
-* Clipboard.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of the cross-platform Clipboard abstraction.
-*/
-import escape = require('lodash/escape');
+ * Clipboard.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of the cross-platform Clipboard abstraction.
+ */
+import * as SyncTasks from 'synctasks';
+import escape from 'lodash/escape';
 
-import RX = require('../common/Interfaces');
-import SyncTasks = require('synctasks');
+import * as RX from '../common/Interfaces';
 
 export class Clipboard extends RX.Clipboard {
     public setText(text: string) {
@@ -61,7 +61,7 @@ export class Clipboard extends RX.Clipboard {
         const range = document.createRange();
         range.selectNodeContents(node);
         selection.addRange(range);
-        
+
         document.execCommand('copy');
         selection.removeAllRanges();
     }

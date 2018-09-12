@@ -1,15 +1,14 @@
 /**
-* MouseResponder.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Handles tracking of mouse movements.
-*/
+ * MouseResponder.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Handles tracking of mouse movements.
+ */
 
-import _ = require('./../utils/lodashMini');
-
-import Types = require('../../common/Types');
+import * as _ from './../utils/lodashMini';
+import { Types } from '../../common/Interfaces';
 
 const _compareDOMOrder = (a: Responder, b: Responder) => {
     if (a.target.compareDocumentPosition(b.target) & Node.DOCUMENT_POSITION_PRECEDING) {

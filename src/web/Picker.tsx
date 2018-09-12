@@ -1,18 +1,17 @@
 ﻿/**
-* Picker.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of the cross-platform Select abstraction.
-*/
+ * Picker.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of the cross-platform Select abstraction.
+ */
 
-import _ = require('./utils/lodashMini');
-import React = require('react');
+import * as React from 'react';
 
-import RX = require('../common/Interfaces');
+import * as _ from './utils/lodashMini';
+import * as RX from '../common/Interfaces';
 import Styles from './Styles';
-import Types = require('../common/Types');
 
 export class Picker extends RX.Picker {
     render() {
@@ -28,7 +27,7 @@ export class Picker extends RX.Picker {
         );
     }
 
-    private _getStyles(): Types.PickerStyleRuleSet {
+    private _getStyles(): RX.Types.PickerStyleRuleSet {
         return Styles.combine(this.props.style) as any;
     }
 

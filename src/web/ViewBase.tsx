@@ -1,20 +1,19 @@
 /**
-* ViewBase.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* A base class for the Web-specific implementation of the cross-platform View abstraction.
-*/
+ * ViewBase.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * A base class for the Web-specific implementation of the cross-platform View abstraction.
+ */
 
-import _ = require('./utils/lodashMini');
+import * as SyncTasks from 'synctasks';
 
+import * as _ from './utils/lodashMini';
+import * as RX from '../common/Interfaces';
 import FrontLayerViewManager from './FrontLayerViewManager';
 import AppConfig from '../common/AppConfig';
-import RX = require('../common/Interfaces');
-import SyncTasks = require('synctasks');
 import Timers from '../common/utils/Timers';
-import Types = require('../common/Types');
 
 // We create a periodic timer to detect layout changes that are performed behind
 // our back by the browser's layout engine. We do this more aggressively when
@@ -22,11 +21,11 @@ import Types = require('../common/Types');
 const _layoutTimerActiveDuration = 1000;
 const _layoutTimerInactiveDuration = 10000;
 
-export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase<P, S> {
+export abstract class ViewBase<P extends RX.Types.ViewProps, S> extends RX.ViewBase<P, S> {
     private static _viewCheckingTimer: number|undefined;
     private static _isResizeHandlerInstalled = false;
-    private static _viewCheckingList: ViewBase<Types.ViewProps, Types.Stateless>[] = [];
-    private static _appActivationState = Types.AppActivationState.Active;
+    private static _viewCheckingList: ViewBase<RX.Types.ViewProps, RX.Types.Stateless>[] = [];
+    private static _appActivationState = RX.Types.AppActivationState.Active;
 
     abstract render(): JSX.Element;
     protected abstract _getContainer(): HTMLElement|null;
@@ -35,7 +34,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
 
     // Sets the activation state so we can stop our periodic timer
     // when the app is in the background.
-    static setActivationState(newState: Types.AppActivationState) {
+    static setActivationState(newState: RX.Types.AppActivationState) {
         if (ViewBase._appActivationState !== newState) {
             ViewBase._appActivationState = newState;
 
@@ -47,18 +46,18 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
 
             if (ViewBase._viewCheckingList.length > 0) {
                 // If we're becoming active, check and report layout changes immediately.
-                if (newState === Types.AppActivationState.Active) {
+                if (newState === RX.Types.AppActivationState.Active) {
                     ViewBase._checkViews();
                 }
 
                 ViewBase._viewCheckingTimer = Timers.setInterval(ViewBase._checkViews,
-                    newState === Types.AppActivationState.Active ?
+                    newState === RX.Types.AppActivationState.Active ?
                         _layoutTimerActiveDuration : _layoutTimerInactiveDuration);
             }
         }
     }
 
-    componentWillReceiveProps(nextProps: Types.ViewProps) {
+    componentWillReceiveProps(nextProps: RX.Types.ViewProps) {
         if (!!this.props.onLayout !== !!nextProps.onLayout) {
             if (this.props.onLayout) {
                 this._checkViewCheckerUnbuild();
@@ -161,7 +160,7 @@ export abstract class ViewBase<P extends Types.ViewProps, S> extends RX.ViewBase
         // when the app is active versus inactive.
         if (!ViewBase._viewCheckingTimer) {
             ViewBase._viewCheckingTimer = Timers.setInterval(ViewBase._checkViews,
-                ViewBase._appActivationState === Types.AppActivationState.Active ?
+                ViewBase._appActivationState === RX.Types.AppActivationState.Active ?
                     _layoutTimerActiveDuration : _layoutTimerInactiveDuration);
         }
 

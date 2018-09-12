@@ -1,30 +1,32 @@
 /**
-* FocusManager.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Manages focusable elements for better keyboard navigation (web version)
-*/
+ * FocusManager.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Manages focusable elements for better keyboard navigation (web version)
+ */
 
-import ReactDOM = require('react-dom');
+import * as ReactDOM from 'react-dom';
 
-import { FocusManager as FocusManagerBase,
+import {
+    applyFocusableComponentMixin as applyFocusableComponentMixinCommon,
+    FocusableComponentStateCallback,
     FocusableComponentInternal,
-    StoredFocusableComponent as StoredFocusableComponentBase } from '../../common/utils/FocusManager';
-import { FocusArbitratorProvider, FocusCandidateType, FocusCandidateInternal } from '../../common/utils/AutoFocusHelper';
+    FocusManager as FocusManagerBase,
+    StoredFocusableComponent as StoredFocusableComponentBase,
+} from '../../common/utils/FocusManager';
+import {
+    FocusArbitratorProvider,
+    FocusCandidateInternal,
+    FocusCandidateType,
+} from '../../common/utils/AutoFocusHelper';
 import Timers from '../../common/utils/Timers';
 import UserInterface from '../UserInterface';
 
 const ATTR_NAME_TAB_INDEX = 'tabindex';
 const ATTR_NAME_ARIA_HIDDEN = 'aria-hidden';
-
 let _isShiftPressed: boolean;
-
-import {
-    applyFocusableComponentMixin as applyFocusableComponentMixinCommon,
-    FocusableComponentStateCallback
-} from  '../../common/utils/FocusManager';
 
 export { FocusableComponentStateCallback };
 

@@ -1,22 +1,22 @@
 /**
-* AppVisibilityUtils.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific helpers for firing focus/activity related events
-*/
+ * AppVisibilityUtils.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific helpers for firing focus/activity related events
+ */
 
-import _ = require('./lodashMini');
 import SubscribableEvent from 'subscribableevent';
 
+import { isUndefined } from './lodashMini';
 import Timers from '../../common/utils/Timers';
 
 const idleTimeInMs = 60 * 1000;
 
 export class AppVisibilityUtils {
     private _isIdle = false;
-    private _timer: number|undefined;
+    private _timer: number | undefined;
 
     readonly onFocusedEvent = new SubscribableEvent<() => void>();
     readonly onBlurredEvent = new SubscribableEvent<() => void>();
@@ -73,7 +73,7 @@ export class AppVisibilityUtils {
     }
 
     private _wakeUpAndSetTimerForIdle = () => {
-        if (!_.isUndefined(this._timer)) {
+        if (!isUndefined(this._timer)) {
             clearTimeout(this._timer);
         }
 

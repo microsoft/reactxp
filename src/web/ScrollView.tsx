@@ -1,21 +1,20 @@
 ﻿/**
-* ScrollView.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of the cross-platform ScrollView abstraction.
-*/
+ * ScrollView.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of the cross-platform ScrollView abstraction.
+ */
 
-import _ = require('./utils/lodashMini');
-import React = require('react');
-import ReactDOM = require('react-dom');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
+import * as _ from './utils/lodashMini';
+import * as RX from '../common/Interfaces';
 import CustomScrollbar from './CustomScrollbar';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
 import ScrollViewConfig from './ScrollViewConfig';
-import Types = require('../common/Types');
 import ViewBase from './ViewBase';
 
 let _styles = {
@@ -77,10 +76,10 @@ let _customStyles = {
 // Default to once per frame.
 const _defaultScrollThrottleValue = 1000 / 60;
 
-export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless> implements RX.ScrollView {
+export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stateless> implements RX.ScrollView {
     private _mountedComponent: HTMLElement|null = null;
 
-    constructor(props: Types.ScrollViewProps) {
+    constructor(props: RX.Types.ScrollViewProps) {
         super(props);
 
         // Set final styles upon initialization of the first ScrollView. This was previously done in the head
@@ -154,7 +153,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
         this.createCustomScrollbarsIfNeeded(this.props);
     }
 
-    componentWillReceiveProps(newProps: Types.ScrollViewProps) {
+    componentWillReceiveProps(newProps: RX.Types.ScrollViewProps) {
         super.componentWillReceiveProps(newProps);
         this._onPropsChange(newProps);
     }
@@ -204,7 +203,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
         }
     }, (this.props.scrollEventThrottle || _defaultScrollThrottleValue), { leading: true, trailing: true });
 
-    private _onPropsChange(props: Types.ScrollViewProps) {
+    private _onPropsChange(props: RX.Types.ScrollViewProps) {
         this._customScrollbarEnabled = ScrollViewConfig.useCustomScrollbars();
 
         // If we're turning on custom scrollbars or toggling vertical and/or horizontal, we need to re-create
@@ -212,7 +211,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
         this.createCustomScrollbarsIfNeeded(props);
     }
 
-    private createCustomScrollbarsIfNeeded(props: Types.ScrollViewProps) {
+    private createCustomScrollbarsIfNeeded(props: RX.Types.ScrollViewProps) {
         if (this._mounted && this._customScrollbarEnabled) {
             if (this._customScrollbar) {
                 if (this.props.horizontal === props.horizontal &&
@@ -240,7 +239,7 @@ export class ScrollView extends ViewBase<Types.ScrollViewProps, Types.Stateless>
         }
     }
 
-    private _getContainerStyle(): Types.ScrollViewStyleRuleSet {
+    private _getContainerStyle(): RX.Types.ScrollViewStyleRuleSet {
         let styles: any = [{ display: 'block' }];
         let sourceStyles = this._customScrollbarEnabled ? _customStyles : _styles;
 

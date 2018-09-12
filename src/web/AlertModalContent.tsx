@@ -1,29 +1,27 @@
 /**
-* AlertModalContent.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web Alert dialog boxes modal content.
-*/
+ * AlertModalContent.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web Alert dialog boxes modal content.
+ */
 
-import React = require('react');
+import * as React from 'react';
 
-import RX = require('../common/Interfaces');
-import Types = require('../common/Types');
-import { ViewProps } from '../common/Types';
+import * as RX from '../common/Interfaces';
 import Button from './Button';
 import Modal from './Modal';
 import Styles from './Styles';
 import Text from './Text';
 import View from './View';
 
-export interface AppModalContentProps extends ViewProps {
-    buttons?: Types.AlertButtonSpec[];
+export interface AppModalContentProps extends RX.Types.ViewProps {
+    buttons?: RX.Types.AlertButtonSpec[];
     title: string;
     message?: string;
     modalId: string;
-    theme?: Types.AlertModalTheme;
+    theme?: RX.Types.AlertModalTheme;
 }
 
 export interface AppModalContentState {
@@ -165,7 +163,7 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
         );
     }
 
-    private _onPressButton(btnSpec: Types.AlertButtonSpec) {
+    private _onPressButton(btnSpec: RX.Types.AlertButtonSpec) {
         Modal.dismiss(this.props.modalId);
 
         if (btnSpec.onPress) {
@@ -173,11 +171,11 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
         }
     }
 
-    private _onPressBody = (e: Types.SyntheticEvent) => {
+    private _onPressBody = (e: RX.Types.SyntheticEvent) => {
         e.stopPropagation();
     }
 
-    private _onPressBackground = (e: Types.SyntheticEvent) => {
+    private _onPressBackground = (e: RX.Types.SyntheticEvent) => {
         Modal.dismiss(this.props.modalId);
     }
 }

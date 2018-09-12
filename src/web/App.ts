@@ -1,37 +1,35 @@
 /**
-* App.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Implements App interface for ReactXP.
-*/
+ * App.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Implements App interface for ReactXP.
+ */
 
-import RX = require('../common/Interfaces');
-import Types = require('../common/Types');
-
+import * as RX from '../common/Interfaces';
 import AppVisibilityUtils from './utils/AppVisibilityUtils';
 
 export class App extends RX.App {
-    private _activationState: Types.AppActivationState;
+    private _activationState: RX.Types.AppActivationState;
 
     constructor() {
         super();
 
         // Handle test environment where document is not defined.
         if (typeof(document) !== 'undefined') {
-            this._activationState = AppVisibilityUtils.isAppInForeground() ? 
-                Types.AppActivationState.Active : Types.AppActivationState.Background;
+            this._activationState = AppVisibilityUtils.isAppInForeground() ?
+            RX.Types.AppActivationState.Active : RX.Types.AppActivationState.Background;
 
             AppVisibilityUtils.onAppForegroundedEvent.subscribe(() => {
-                this._setActivationState(Types.AppActivationState.Active);
+                this._setActivationState(RX.Types.AppActivationState.Active);
             });
 
             AppVisibilityUtils.onAppBackgroundedEvent.subscribe(() => {
-                this._setActivationState(Types.AppActivationState.Background);
+                this._setActivationState(RX.Types.AppActivationState.Background);
             });
         } else {
-            this._activationState = Types.AppActivationState.Active;
+            this._activationState = RX.Types.AppActivationState.Active;
         }
     }
 
@@ -39,11 +37,11 @@ export class App extends RX.App {
         super.initialize(debug, development);
     }
 
-    getActivationState(): Types.AppActivationState {
+    getActivationState(): RX.Types.AppActivationState {
         return this._activationState;
     }
 
-    private _setActivationState = (currentState: Types.AppActivationState) => {
+    private _setActivationState = (currentState: RX.Types.AppActivationState) => {
         if (this._activationState !== currentState) {
             this._activationState = currentState;
             this.activationStateChangedEvent.fire(this._activationState);

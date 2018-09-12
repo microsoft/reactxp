@@ -1,20 +1,20 @@
 /**
-* MonitorListEdits.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Looks for insertions, removals, and moves each time the component receives new
-* children. Communicates these list edits to the consumer giving it the opportunity
-* to animate the edits.
-*/
+ * MonitorListEdits.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Looks for insertions, removals, and moves each time the component receives new
+ * children. Communicates these list edits to the consumer giving it the opportunity
+ * to animate the edits.
+ */
 
-import _ = require('./../utils/lodashMini');
-import assert = require('assert');
-import React = require('react');
-import ReactDOM = require('react-dom');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import assert from 'assert';
 
-import Types = require('../../common/Types');
+import * as _ from './../utils/lodashMini';
+import { Types } from '../../common/Interfaces';
 
 function getPosition(el: HTMLElement): { left: number; top: number; } {
     return {

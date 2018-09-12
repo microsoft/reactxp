@@ -1,18 +1,18 @@
 /**
-* FrontLayerViewManager.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Manages the layering of the main view, modals and popups.
-*/
+ * FrontLayerViewManager.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Manages the layering of the main view, modals and popups.
+ */
 
-import React = require('react');
-import ReactDOM = require('react-dom');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import { PopupDescriptor, RootView } from './RootView';
+import { Types } from '../common/Interfaces';
 import Timers from '../common/utils/Timers';
-import Types = require('../common/Types');
 
 const MAX_CACHED_POPUPS = 4;
 

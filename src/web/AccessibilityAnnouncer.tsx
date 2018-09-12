@@ -1,19 +1,19 @@
- /**
-* AccessibilityAnnouncer.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Implements the behavior for announcing text to screen readers, using aria-live regions.
-*/
+/**
+ * AccessibilityAnnouncer.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Implements the behavior for announcing text to screen readers, using aria-live regions.
+ */
 
-import React = require('react');
+import * as React from 'react';
 import { SubscriptionToken } from 'subscribableevent';
 
+import { Types } from '../common/Interfaces';
 import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
 import Styles from './Styles';
-import Types = require('../common/Types');
 
 export interface AccessibilityAnnouncerState {
     // Screen Reader text to be announced.

@@ -1,21 +1,20 @@
 ﻿/**
-* Text.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of the cross-platform Text abstraction.
-*/
+ * Text.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of the cross-platform Text abstraction.
+ */
 
-import React = require('react');
-import ReactDOM = require('react-dom');
-import PropTypes = require('prop-types');
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-import AccessibilityUtil from './AccessibilityUtil';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import { Text as TextBase, Types } from '../common/Interfaces';
+import AccessibilityUtil from './AccessibilityUtil';
 import Styles from './Styles';
-import Types = require('../common/Types');
-import { Text as TextBase } from '../common/Interfaces';
 
 // Adding a CSS rule to display non-selectable texts. Those texts
 // will be displayed as pseudo elements to prevent them from being copied
@@ -139,7 +138,7 @@ export class Text extends TextBase {
             combinedStyles['MozUserSelect'] = 'text';
             combinedStyles['msUserSelect'] = 'text';
         }
-        
+
         // Handle cursor styles
         if (!combinedStyles.cursor) {
             if (this.props.selectable) {

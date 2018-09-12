@@ -1,20 +1,20 @@
 /**
-* CustomScrollbar.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Custom scrollbar implementation for web.
-*/
+ * CustomScrollbar.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Custom scrollbar implementation for web.
+ */
 
-import React = require('react');
+import * as React from 'react';
 
 import Timers from '../common/utils/Timers';
 
-var UNIT = 'px';
-var SCROLLER_MIN_SIZE = 15;
-var SCROLLER_NEGATIVE_MARGIN = 30;
-var NEUTRAL_OVERRIDE_CLASS = 'neutraloverride';
+const UNIT = 'px';
+const SCROLLER_MIN_SIZE = 15;
+const SCROLLER_NEGATIVE_MARGIN = 30;
+const NEUTRAL_OVERRIDE_CLASS = 'neutraloverride';
 
 interface ScrollbarInfo {
     size?: number;

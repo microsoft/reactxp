@@ -1,21 +1,21 @@
 /**
-* GestureView.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of the cross-platform GestureView component.
-* It provides support for the scroll wheel, clicks and double clicks.
-*/
+ * GestureView.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of the cross-platform GestureView component.
+ * It provides support for the scroll wheel, clicks and double clicks.
+ */
 
-import _ = require('./utils/lodashMini');
-import React = require('react');
+import * as React from 'react';
 
+import { clone, isUndefined } from './utils/lodashMini';
+import { Types } from '../common/Interfaces';
 import AccessibilityUtil from './AccessibilityUtil';
 import MouseResponder, { MouseResponderSubscription } from './utils/MouseResponder';
 import Styles from './Styles';
 import Timers from '../common/utils/Timers';
-import Types = require('../common/Types');
 
 const _styles = {
     defaultView: {
@@ -248,7 +248,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
     }
 
     private _getPanPixelThreshold = () => {
-        return (!_.isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
+        return (!isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
             this.props.panPixelThreshold : _panPixelThreshold;
     }
 
@@ -366,7 +366,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
 
     // Starts a timer that reports a previous tap if it's not canceled by a subsequent gesture.
     private _startDoubleTapTimer(e: React.MouseEvent<any>) {
-        this._lastTapEvent = _.clone(e);
+        this._lastTapEvent = clone(e);
 
         this._doubleTapTimer = Timers.setTimeout(() => {
             this._reportDelayedTap();

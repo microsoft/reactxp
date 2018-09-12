@@ -1,28 +1,28 @@
 /**
-* View.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of the cross-platform View abstraction.
-*/
+ * View.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of the cross-platform View abstraction.
+ */
 
-import React = require('react');
-import ReactDOM = require('react-dom');
-import PropTypes = require('prop-types');
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import { FocusManager, applyFocusableComponentMixin } from './utils/FocusManager';
+import { PopupComponent } from '../common/PopupContainerViewBase';
+import { RestrictFocusType } from '../common/utils/FocusManager';
+import { Types } from '../common/Interfaces';
 import AccessibilityUtil from './AccessibilityUtil';
 import AnimateListEdits from './listAnimations/AnimateListEdits';
 import AppConfig from '../common/AppConfig';
-import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import restyleForInlineText = require('./utils/restyleForInlineText');
-import Styles from './Styles';
-import Types = require('../common/Types');
-import ViewBase from './ViewBase';
 import PopupContainerView from './PopupContainerView';
-import { PopupComponent } from '../common/PopupContainerViewBase';
-import { RestrictFocusType } from '../common/utils/FocusManager';
-import { FocusManager, applyFocusableComponentMixin } from './utils/FocusManager';
+import restyleForInlineText from './utils/restyleForInlineText';
+import Styles from './Styles';
+import ViewBase from './ViewBase';
 
 const _styles = {
     defaultStyle: {

@@ -1,22 +1,22 @@
 ﻿/**
-* Link.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of the cross-platform Link abstraction.
-*/
+ * Link.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of the cross-platform Link abstraction.
+ */
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as PropTypes from 'prop-types';
 import { CSSProperties } from 'react';
 
-import EventHelpers from '../native-common/utils/EventHelpers';
-import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import { applyFocusableComponentMixin } from './utils/FocusManager';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import { Types } from '../common/Interfaces';
+import EventHelpers from '../native-common/utils/EventHelpers';
 import Styles from './Styles';
-import Types = require('../common/Types');
 import Timers from '../common/utils/Timers';
 
 const _styles = {

@@ -1,20 +1,20 @@
 /**
-* AnimateListEdits.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Each time the component receives new children, animates insertions, removals,
-* and moves that occurred since the previous render.
-*/
+ * AnimateListEdits.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Each time the component receives new children, animates insertions, removals,
+ * and moves that occurred since the previous render.
+ */
 
-import _ = require('lodash');
-import React = require('react');
-import ReactDOM = require('react-dom');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
+import { clone } from './../utils/lodashMini';
 import { MonitorListEdits, Edits } from './MonitorListEdits';
+import { Types } from '../../common/Interfaces';
 import executeTransition from '../animated/executeTransition';
-import Types = require('../../common/Types');
 
 export interface AnimateListEditsProps {
     animateChildEnter?: boolean;
@@ -92,7 +92,7 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, Typ
     render() {
         // Do a shallow clone and remove the props that don't
         // apply to the MontiroListEdits component.
-        let props = _.clone(this.props) as AnimateListEditsProps;
+        let props = clone(this.props) as AnimateListEditsProps;
         delete props.animateChildEnter;
         delete props.animateChildLeave;
         delete props.animateChildMove;
