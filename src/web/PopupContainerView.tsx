@@ -1,17 +1,17 @@
 /**
-* PopupContainerView.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Common parent of all components rendered into a popup, web version.
-*/
+ * PopupContainerView.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Common parent of all components rendered into a popup, web version.
+ */
 
-import _ = require('./utils/lodashMini');
-import React = require('react');
+import * as React from 'react';
 
+import { clone } from './utils/lodashMini';
 import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext } from '../common/PopupContainerViewBase';
-import Types = require('../common/Types');
+import { Types } from '../common/Interfaces';
 
 export interface PopupContainerViewProps extends PopupContainerViewBaseProps {
     style: React.CSSProperties;
@@ -25,7 +25,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
     }
 
     render() {
-        let style = _.clone(this.props.style);
+        let style = clone(this.props.style);
         if (this.props.hidden) {
             style.visibility = 'hidden';
         }

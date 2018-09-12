@@ -1,15 +1,15 @@
 ﻿/**
-* ActivityIndicator.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Control to display an animated activity indicator.
-*/
+ * ActivityIndicator.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Control to display an animated activity indicator.
+ */
 
-import React = require('react');
+import * as React from 'react';
 
-import Types = require('../common/Types');
+import { Types } from '../common/Interfaces';
 
 const _activityIndicatorCss = `
 .rx-activity {

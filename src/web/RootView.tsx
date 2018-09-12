@@ -1,23 +1,23 @@
- /**
-* RootView.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* The top-most view (rendered into window.body) that's used for proper
-* layering or modals, etc. in the web implementation of the ReactXP
-* cross-platform library.
-*/
+/**
+ * RootView.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * The top-most view (rendered into window.body) that's used for proper
+ * layering or modals, etc. in the web implementation of the ReactXP
+ * cross-platform library.
+ */
 
-import _ = require('./utils/lodashMini');
-import React = require('react');
-import ReactDOM = require('react-dom');
-import PropTypes = require('prop-types');
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
+import * as _ from './utils/lodashMini';
+import { Types } from '../common/Interfaces';
 import AccessibilityAnnouncer from './AccessibilityAnnouncer';
 import Input from './Input';
 import ModalContainer from './ModalContainer';
-import Types = require('../common/Types');
 import FocusManager from './utils/FocusManager';
 import PopupContainerView from './PopupContainerView';
 import Timers from '../common/utils/Timers';

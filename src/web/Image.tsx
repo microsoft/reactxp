@@ -1,22 +1,22 @@
 /**
-* Image.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of the cross-platform Image abstraction.
-*/
+ * Image.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of the cross-platform Image abstraction.
+ */
 
-import _ = require('./utils/lodashMini');
-import React = require('react');
-import SyncTasks = require('synctasks');
-import PropTypes = require('prop-types');
-
-import restyleForInlineText = require('./utils/restyleForInlineText');
-import Styles from './Styles';
-import Types = require('../common/Types');
-import { DEFAULT_RESIZE_MODE } from '../common/Image';
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import * as SyncTasks from 'synctasks';
 import { CSSProperties } from 'react';
+
+import * as _ from './utils/lodashMini';
+import { DEFAULT_RESIZE_MODE } from '../common/Image';
+import { Types } from '../common/Interfaces';
+import restyleForInlineText from './utils/restyleForInlineText';
+import Styles from './Styles';
 
 const _styles = {
     image: {

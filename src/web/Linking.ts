@@ -1,17 +1,16 @@
 /**
-* Linking.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation for deep linking
-*/
+ * Linking.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation for deep linking
+ */
 
-import SyncTasks = require('synctasks');
-
-import Types = require('../common/Types');
+import * as SyncTasks from 'synctasks';
 
 import { Linking as CommonLinking } from '../common/Linking';
+import { Types } from '../common/Interfaces';
 
 export class Linking extends CommonLinking {
     protected _openUrl(url: string): SyncTasks.Promise<void> {

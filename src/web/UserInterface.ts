@@ -1,21 +1,20 @@
 /**
-* UserInterface.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of the ReactXP interfaces related to
-* UI (layout measurements, etc.).
-*/
+ * UserInterface.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of the ReactXP interfaces related to
+ * UI (layout measurements, etc.).
+ */
 
-import React = require('react');
-import ReactDOM = require('react-dom');
-import ScrollViewConfig from './ScrollViewConfig';
-import SyncTasks = require('synctasks');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as SyncTasks from 'synctasks';
 
+import * as RX from '../common/Interfaces';
 import FrontLayerViewManager from './FrontLayerViewManager';
-import RX = require('../common/Interfaces');
-import Types = require('../common/Types');
+import ScrollViewConfig from './ScrollViewConfig';
 
 export class UserInterface extends RX.UserInterface {
     private _isNavigatingWithKeyboard: boolean = false;
@@ -26,9 +25,9 @@ export class UserInterface extends RX.UserInterface {
     }
 
     measureLayoutRelativeToWindow(component: React.Component<any, any>) :
-            SyncTasks.Promise<Types.LayoutInfo> {
+            SyncTasks.Promise<RX.Types.LayoutInfo> {
 
-        let deferred = SyncTasks.Defer<Types.LayoutInfo>();
+        let deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
 
         const componentDomNode = ReactDOM.findDOMNode(component) as HTMLElement|null;
 
@@ -49,9 +48,9 @@ export class UserInterface extends RX.UserInterface {
     }
 
     measureLayoutRelativeToAncestor(component: React.Component<any, any>,
-        ancestor: React.Component<any, any>) : SyncTasks.Promise<Types.LayoutInfo> {
+        ancestor: React.Component<any, any>) : SyncTasks.Promise<RX.Types.LayoutInfo> {
 
-        let deferred = SyncTasks.Defer<Types.LayoutInfo>();
+        let deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
 
         const componentDomNode = ReactDOM.findDOMNode(component) as HTMLElement|null;
         const ancestorDomNode = ReactDOM.findDOMNode(ancestor) as HTMLElement|null;
@@ -73,7 +72,7 @@ export class UserInterface extends RX.UserInterface {
         return deferred.promise();
     }
 
-    measureWindow(rootViewId?: string): Types.LayoutInfo {
+    measureWindow(rootViewId?: string): RX.Types.LayoutInfo {
         // Mo multi window support, default to main window
         return {
             x: 0,
@@ -134,7 +133,7 @@ export class UserInterface extends RX.UserInterface {
         // Nothing to do
     }
 
-    evaluateTouchLatency(e: Types.MouseEvent) {
+    evaluateTouchLatency(e: RX.Types.MouseEvent) {
         // Nothing to do
     }
 

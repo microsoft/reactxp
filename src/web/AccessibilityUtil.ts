@@ -1,17 +1,16 @@
 /**
-* AccessibilityUtil.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of accessiblity functions for cross-platform
-* ReactXP framework.
-*/
+ * AccessibilityUtil.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of accessiblity functions for cross-platform
+ * ReactXP framework.
+ */
 
-import _ = require('./utils/lodashMini');
-
+import * as _ from './utils/lodashMini';
 import { AccessibilityUtil as CommonAccessibiltiyUtil } from '../common/AccessibilityUtil';
-import Types = require('../common/Types');
+import { Types } from '../common/Interfaces';
 
 // Map of accessibility trait to an aria role attribute.
 // What's a role attribute? https://www.w3.org/wiki/PF/XTech/HTML5/RoleAttribute

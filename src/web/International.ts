@@ -1,16 +1,16 @@
 /**
-* International.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation for i18n.
-*/
+ * International.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation for i18n.
+ */
 
-import RXInterfaces = require('../common/Interfaces');
+import * as RX from '../common/Interfaces';
 import FrontLayerViewManager from './FrontLayerViewManager';
 
-export class International implements RXInterfaces.International {
+export class International implements RX.International {
     allowRTL(allow: boolean): void {
         FrontLayerViewManager.allowRTL(allow);
     }

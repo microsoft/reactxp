@@ -1,26 +1,25 @@
 /**
-* Animated.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Implements animated components for web version of ReactXP.
-*/
+ * Animated.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Implements animated components for web version of ReactXP.
+ */
 
-import _ = require('./utils/lodashMini');
-import React = require('react');
-import ReactDOM = require('react-dom');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
+import * as _ from './utils/lodashMini';
+import * as RX from '../common/Interfaces';
+import { executeTransition, TransitionSpec } from './animated/executeTransition';
 import AppConfig from '../common/AppConfig';
 import Easing from '../common/Easing';
-import { executeTransition, TransitionSpec } from './animated/executeTransition';
 import RXImage from './Image';
 import RXView from './View';
 import RXText from './Text';
 import RXTextInput from './TextInput';
-import RX = require('../common/Interfaces');
 import Styles from './Styles';
-import Types = require('../common/Types');
 
 // Animated Css Property Units - check /common/Types for the list of available
 // css animated properties
@@ -62,7 +61,7 @@ export abstract class Animation {
     _id: number|undefined;
 
     // Starts the animation
-    abstract start(onEnd?: Types.Animated.EndCallback): void;
+    abstract start(onEnd?: RX.Types.Animated.EndCallback): void;
 
     // Stops the animation
     abstract stop(): void;
@@ -73,12 +72,12 @@ export abstract class Animation {
 interface ValueListener {
     setValue(valueObject: Value, newValue: number | string): void;
     startTransition(valueObject: Value, from: number|string, toValue: number|string, duration: number,
-        easing: string, delay: number, onEnd: Types.Animated.EndCallback): void;
+        easing: string, delay: number, onEnd: RX.Types.Animated.EndCallback): void;
     stopTransition(valueObject: Value): number|string|undefined;
 }
 
 // The animated value object
-export class Value extends Types.AnimatedValue {
+export class Value extends RX.Types.AnimatedValue {
     private _value: number|string;
     private _listeners: ValueListener[];
     private _interpolationConfig: { [key: number]: string|number } | undefined;
@@ -106,7 +105,7 @@ export class Value extends Types.AnimatedValue {
         return this._interpolationConfig[key];
     }
 
-    interpolate(config: Types.Animated.InterpolationConfigType) {
+    interpolate(config: RX.Types.Animated.InterpolationConfigType) {
         if (!config || !config.inputRange || !config.outputRange ||
                 config.inputRange.length < 2 || config.outputRange.length < 2 ||
                 config.inputRange.length !== config.outputRange.length) {
@@ -167,7 +166,7 @@ export class Value extends Types.AnimatedValue {
 
     // Start a specific animation.
     _startTransition(toValue: number|string, duration: number, easing: string, delay: number,
-            onEnd: Types.Animated.EndCallback): void {
+            onEnd: RX.Types.Animated.EndCallback): void {
 
         // If there are no listeners, the app probably has a bug where it's
         // starting an animation before the associated element is mounted.
@@ -204,8 +203,8 @@ export class Value extends Types.AnimatedValue {
     }
 }
 
-export let timing: Types.Animated.TimingFunction = function(
-    value: Value, config: Types.Animated.TimingAnimationConfig): Types.Animated.CompositeAnimation {
+export let timing: RX.Types.Animated.TimingFunction = function(
+    value: Value, config: RX.Types.Animated.TimingAnimationConfig): RX.Types.Animated.CompositeAnimation {
 
     if (!value  || !config) {
         throw 'Timing animation requires value and config';
@@ -213,13 +212,13 @@ export let timing: Types.Animated.TimingFunction = function(
 
     let stopLooping = false;
     return {
-        start: function(onEnd?: Types.Animated.EndCallback): void {
+        start: function(onEnd?: RX.Types.Animated.EndCallback): void {
             let animate = () => {
                 if (config.loop) {
                     value.setValue(config.loop.restartFrom);
                 }
 
-                let easing: Types.Animated.EasingFunction = config.easing || Easing.Default();
+                let easing: RX.Types.Animated.EasingFunction = config.easing || Easing.Default();
                 let duration = config.duration !== undefined ? config.duration : 500;
                 let delay = config.delay || 0;
                 value._startTransition(config.toValue, duration, easing.cssName, delay, result => {
@@ -247,8 +246,8 @@ export let timing: Types.Animated.TimingFunction = function(
     };
 };
 
-export let sequence: Types.Animated.SequenceFunction = function (
-    animations: Array<Types.Animated.CompositeAnimation>): Types.Animated.CompositeAnimation {
+export let sequence: RX.Types.Animated.SequenceFunction = function (
+    animations: Array<RX.Types.Animated.CompositeAnimation>): RX.Types.Animated.CompositeAnimation {
 
     if (!animations) {
         throw 'Sequence animation requires a list of animations';
@@ -257,7 +256,7 @@ export let sequence: Types.Animated.SequenceFunction = function (
     let hasBeenStopped = false;
     let doneCount = 0;
     let result = {
-        start: function (onEnd?: Types.Animated.EndCallback) {
+        start: function (onEnd?: RX.Types.Animated.EndCallback) {
             if (!animations || animations.length === 0) {
                 throw 'No animations were passed to the animated sequence API';
             }
@@ -294,8 +293,8 @@ export let sequence: Types.Animated.SequenceFunction = function (
     return result;
 };
 
-export var parallel: Types.Animated.ParallelFunction = function (
-    animations: Array<Types.Animated.CompositeAnimation>): Types.Animated.CompositeAnimation {
+export var parallel: RX.Types.Animated.ParallelFunction = function (
+    animations: Array<RX.Types.Animated.CompositeAnimation>): RX.Types.Animated.CompositeAnimation {
 
     if (!animations) {
         throw 'Parallel animation requires a list of animations';
@@ -306,7 +305,7 @@ export var parallel: Types.Animated.ParallelFunction = function (
     let doneCount = 0;
 
     var result = {
-        start: function (onEnd?: Types.Animated.EndCallback) {
+        start: function (onEnd?: RX.Types.Animated.EndCallback) {
             if (!animations || animations.length === 0) {
                 throw 'No animations were passed to the animated parallel API';
             }
@@ -354,7 +353,7 @@ interface AnimatedAttribute {
 type AnimatedValueMap = { [transform: string]: AnimatedAttribute };
 
 // Function for creating wrapper AnimatedComponent around passed in component
-function createAnimatedComponent<PropsType extends Types.CommonProps>(Component: any): any {
+function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Component: any): any {
     class AnimatedComponentGenerated extends React.Component<PropsType, void>
             implements RX.AnimatedComponent<PropsType, void>, ValueListener {
 
@@ -382,7 +381,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             }
         }
 
-        componentWillReceiveProps(props: Types.CommonStyledProps<Types.StyleRuleSet<Object>>) {
+        componentWillReceiveProps(props: RX.Types.CommonStyledProps<RX.Types.StyleRuleSet<Object>>) {
             this._updateStyles(props);
         }
 
@@ -413,7 +412,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
         }
 
         startTransition(valueObject: Value, fromValue: number|string, toValue: number|string, duration: number,
-                easing: string, delay: number, onEnd: Types.Animated.EndCallback): void {
+                easing: string, delay: number, onEnd: RX.Types.Animated.EndCallback): void {
 
             // We should never get here if the component isn't mounted,
             // but we'll add this additional protection.
@@ -651,7 +650,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
             return transformList.join(' ');
         }
 
-        private _updateStyles(props: Types.CommonStyledProps<Types.StyleRuleSet<Object>>) {
+        private _updateStyles(props: RX.Types.CommonStyledProps<RX.Types.StyleRuleSet<Object>>) {
             this._propsWithoutStyle = _.omit(props, 'style');
 
             let rawStyles = Styles.combine(props.style || {}) as any;
@@ -814,7 +813,7 @@ function createAnimatedComponent<PropsType extends Types.CommonProps>(Component:
     return AnimatedComponentGenerated;
 }
 
-export var Image = createAnimatedComponent<Types.ImageProps>(RXImage) as typeof RX.AnimatedImage;
+export var Image = createAnimatedComponent<RX.Types.ImageProps>(RXImage) as typeof RX.AnimatedImage;
 export var Text = createAnimatedComponent(RXText) as typeof RX.AnimatedText;
 export var TextInput = createAnimatedComponent(RXTextInput) as typeof RX.AnimatedTextInput;
 export var View = createAnimatedComponent(RXView) as typeof RX.AnimatedView;

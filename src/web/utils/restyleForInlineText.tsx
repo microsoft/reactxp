@@ -1,21 +1,22 @@
 /**
-* restyleForInlineText.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* When a ReactXP component appears as a child of an RX.Text, it needs to be styled
-* specially so that it appears inline with the text rather than introducing line
-* breaks.
-*
-* This utility restyles the component that is passed to it as inline so it flows
-* with the text. When a ReactXP component is a child of a text, pass the return value
-* of its render method to this utility. See RX.View for an example.
-*/
+ * restyleForInlineText.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * When a ReactXP component appears as a child of an RX.Text, it needs to be styled
+ * specially so that it appears inline with the text rather than introducing line
+ * breaks.
+ *
+ * This utility restyles the component that is passed to it as inline so it flows
+ * with the text. When a ReactXP component is a child of a text, pass the return value
+ * of its render method to this utility. See RX.View for an example.
+ */
 
-import _ = require('./../utils/lodashMini');
-import assert = require('assert');
-import React = require('react');
+import * as React from 'react';
+import assert from 'assert';
+
+import { assign } from './../utils/lodashMini';
 
 function restyleForInlineText(reactElement: React.ReactElement<any>) {
     let style = reactElement.props['style'];
@@ -47,7 +48,7 @@ function restyleForInlineText(reactElement: React.ReactElement<any>) {
     */
 
     return React.cloneElement(reactElement, {
-        style: _.assign({}, style, {
+        style: assign({}, style, {
             display: 'inline-block',
 
             // Reset the line height so the value from outside
@@ -57,4 +58,4 @@ function restyleForInlineText(reactElement: React.ReactElement<any>) {
     });
 }
 
-export = restyleForInlineText;
+export default restyleForInlineText;

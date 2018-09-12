@@ -1,15 +1,15 @@
 /**
-* Storage.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of the cross-platform database storage abstraction.
-*/
+ * Storage.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of the cross-platform database storage abstraction.
+ */
 
-import SyncTasks = require('synctasks');
+import * as SyncTasks from 'synctasks';
 
-import RX = require('../common/Interfaces');
+import * as RX from '../common/Interfaces';
 
 export class Storage extends RX.Storage {
     getItem(key: string): SyncTasks.Promise<string|undefined> {

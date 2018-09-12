@@ -1,25 +1,25 @@
 /**
-* Button.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of the cross-platform Button abstraction.
-*/
+ * Button.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of the cross-platform Button abstraction.
+ */
 
-import React = require('react');
-import ReactDOM = require('react-dom');
-import PropTypes = require('prop-types');
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-import AccessibilityUtil from './AccessibilityUtil';
+import { applyFocusableComponentMixin } from './utils/FocusManager';
+import { Button as ButtonBase } from '../common/Interfaces';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import { Types } from '../common/Interfaces';
+import AccessibilityUtil from './AccessibilityUtil';
 import AppConfig from '../common/AppConfig';
 import Styles from './Styles';
-import Types = require('../common/Types');
-import { applyFocusableComponentMixin } from './utils/FocusManager';
 import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
-import { Button as ButtonBase } from '../common/Interfaces';
 
 const _styles = {
     defaultButton: {
