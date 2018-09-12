@@ -71,7 +71,7 @@ export type CustomNavigatorSceneConfig = {
 };
 
 export interface NavigatorProps extends RX.CommonProps {
-  renderScene: (route: NavigatorRoute) => JSX.Element | undefined;
+  renderScene: (route: NavigatorRoute) => JSX.Element | null;
   navigateBackCompleted?: () => void;
   // NOTE: Arguments are only passed to transitionStarted by the experimental navigator
   transitionStarted?: (progress?: RX.Types.AnimatedValue,
@@ -145,7 +145,7 @@ export abstract class NavigatorDelegate {
 
     abstract getRoutes(): NavigatorRoute[];
     abstract immediatelyResetRouteStack(nextRouteStack: NavigatorRoute[]): void;
-    abstract render(): JSX.Element;
+    abstract render(): JSX.Element | null;
     abstract processCommand(commandQueue: NavigationCommand[]): void;
     abstract handleBackPress(): void;
 }
