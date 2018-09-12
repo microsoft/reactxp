@@ -91,9 +91,9 @@ const _testValue1 = 'A long test value for the text input box';
 
 class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
     private _isMounted = false;
-    private _testResult: TestResult;
-    private _testCompletion: (result: TestResult) => void;
-    private _nextTestStage: number;
+    private _testResult: TestResult | undefined;
+    private _testCompletion: ((result: TestResult) => void) | undefined;
+    private _nextTestStage = 0;
 
     // Test 1 animation variables
     private _test1Angle = 0;
@@ -259,8 +259,8 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
         }];
 
         // Are we done?
-        if (this._nextTestStage >= testStages.length) {
-            this._testCompletion(this._testResult);
+        if (this._nextTestStage! >= testStages.length) {
+            this._testCompletion!(this._testResult!);
             this._testCompletion = undefined;
             this._testResult = undefined;
 
@@ -379,7 +379,7 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
         let wasCompletionCalled = false;
         animation.start(completeInfo => {
             if (isFinished !== undefined) {
-                this._testResult.errors.push('Completion callback "finished" called multiple times');
+                this._testResult!.errors.push('Completion callback "finished" called multiple times');
             }
             isFinished = completeInfo.finished;
             wasCompletionCalled = true;
@@ -393,9 +393,9 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
 
                 // Make sure the completion was executed and the "finished" parameter was false.
                 if (!wasCompletionCalled) {
-                    this._testResult.errors.push('Completion callback was not called when animation was stopped');
+                    this._testResult!.errors.push('Completion callback was not called when animation was stopped');
                 } else if (isFinished === undefined || isFinished !== false) {
-                    this._testResult.errors.push('Completion callback "finished" parameter was not false as expected');
+                    this._testResult!.errors.push('Completion callback "finished" parameter was not false as expected');
                 }
 
                 RX.Animated.timing(this._test4OffsetH, {
@@ -404,7 +404,7 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
                     easing: RX.Animated.Easing.Linear()
                 }).start(completeInfo => {
                     if (!completeInfo.finished) {
-                        this._testResult.errors.push('Completion callback "finished" parameter was not true as expected');
+                        this._testResult!.errors.push('Completion callback "finished" parameter was not true as expected');
                     }
 
                     if (this._isMounted) {

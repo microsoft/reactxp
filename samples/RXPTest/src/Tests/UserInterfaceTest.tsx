@@ -42,8 +42,8 @@ interface UserInterfaceState {
 
 class UserInterfaceView extends RX.Component<RX.CommonProps, UserInterfaceState> {
     private _isMounted = false;
-    private _parentView: RX.View;
-    private _childView: RX.View;
+    private _parentView: RX.View | undefined;
+    private _childView: RX.View | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);
@@ -72,11 +72,11 @@ class UserInterfaceView extends RX.Component<RX.CommonProps, UserInterfaceState>
 
                 <RX.View
                     style={ _styles.parentContainer }
-                    ref={ (comp: RX.View) => { this._parentView = comp; } }
+                    ref={ (comp: any) => { this._parentView = comp; } }
                 >
                     <RX.View
                         style={ _styles.childView }
-                        ref={ (comp: RX.View) => { this._childView = comp; } }
+                        ref={ (comp: any) => { this._childView = comp; } }
                     >
                     </RX.View>
                 </RX.View>
@@ -142,12 +142,12 @@ class UserInterfaceView extends RX.Component<RX.CommonProps, UserInterfaceState>
         let childRelative: RX.Types.LayoutInfo;
 
         // Now execute the async APIs.
-        let measureTask = RX.UserInterface.measureLayoutRelativeToWindow(this._parentView).then(layoutInfo => {
+        let measureTask = RX.UserInterface.measureLayoutRelativeToWindow(this._parentView!).then(layoutInfo => {
             parentAbsolute = layoutInfo;
-            return RX.UserInterface.measureLayoutRelativeToWindow(this._childView);
+            return RX.UserInterface.measureLayoutRelativeToWindow(this._childView!);
         }).then(layoutInfo => {
             childAbsolute = layoutInfo;
-            return RX.UserInterface.measureLayoutRelativeToAncestor(this._childView, this._parentView);
+            return RX.UserInterface.measureLayoutRelativeToAncestor(this._childView!, this._parentView!);
         }).then(layoutInfo => {
             childRelative = layoutInfo;
 

@@ -147,7 +147,7 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
         }
 
         // Include results if it's not a render-only test.
-        let optionalResultSection: JSX.Element;
+        let optionalResultSection: JSX.Element | undefined;
         if (testType === TestType.AutoExecutable) {
             optionalResultSection = (
                 <RX.View style={ _styles.resultContainer }>
@@ -205,7 +205,7 @@ export class TestContainer extends RX.Component<TestContainerProps, TestContaine
 
         return (
             <RX.View useSafeInsets={ true } style={ _styles.container }>
-                <RX.View style={ [_styles.header, RX.StatusBar.isOverlay() && _styles.headerSpacer] }>
+                <RX.View style={ [_styles.header, RX.StatusBar.isOverlay() ? _styles.headerSpacer : undefined] }>
                     <RX.Button
                         style={ _styles.button }
                         onPress={ this._onBack }

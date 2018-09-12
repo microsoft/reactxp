@@ -71,7 +71,7 @@ interface WebViewViewState {
 }
 
 class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
-    private _webViewTest1: RX.WebView;
+    private _webViewTest1: RX.WebView | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);
@@ -99,7 +99,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
                     <RX.WebView
                         style={ _styles.webView }
                         url={ 'https://microsoft.github.io/reactxp/docs/components/webview.html' }
-                        ref={ (comp: RX.WebView) => { this._webViewTest1 = comp; } }
+                        ref={ (comp: any) => { this._webViewTest1 = comp; } }
                         onNavigationStateChange={ this._onNavChangeTest1 }
                         onLoadStart={ this._onLoadStartTest1 }
                         onLoad={ this._onLoadTest1 }
@@ -137,7 +137,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
                 </RX.View>
                 <RX.ScrollView style={ _styles.eventHistoryScrollView }>
                     <RX.Text style={ _styles.eventHistoryText }>
-                        { this.state.test1EventHistory.length ?
+                        { this.state.test1EventHistory && this.state.test1EventHistory.length ?
                             this.state.test1EventHistory.join('\n') :
                             'Event history will appear here'
                         }
@@ -169,15 +169,21 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
     }
 
     private _onBackTest1 = () => {
-        this._webViewTest1.goBack();
+        if (this._webViewTest1) {
+            this._webViewTest1.goBack();
+        }
     }
 
     private _onForwardTest1 = () => {
-        this._webViewTest1.goForward();
+        if (this._webViewTest1) {
+            this._webViewTest1.goForward();
+        }
     }
 
     private _onReloadTest1 = () => {
-        this._webViewTest1.reload();
+        if (this._webViewTest1) {
+            this._webViewTest1.reload();
+        }
     }
 
     private _appendHistoryTest1(newLine: string) {

@@ -121,10 +121,10 @@ interface PopupViewState {
 
 class PopupBox extends RX.Component<PopupBoxProps, RX.Stateless> {
     render() {
-        let top: number;
-        let bottom: number;
-        let left: number;
-        let right: number;
+        let top = 0;
+        let bottom = 0;
+        let left = 0;
+        let right = 0;
 
         switch (this.props.anchorPosition) {
             case 'left':
@@ -170,11 +170,11 @@ class PopupBox extends RX.Component<PopupBoxProps, RX.Stateless> {
 }
 
 class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
-    private _anchor1: RX.Button;
-    private _anchor2: RX.Button;
-    private _anchor3: RX.Button;
-    private _anchor4: RX.Button;
-    private _anchor5: RX.TextInput;
+    private _anchor1: RX.Button | undefined;
+    private _anchor2: RX.Button | undefined;
+    private _anchor3: RX.Button | undefined;
+    private _anchor4: RX.Button | undefined;
+    private _anchor5: RX.TextInput | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);
@@ -204,7 +204,7 @@ class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
                 </RX.View>
                 <RX.Button
                     style={ [_styles.popupAnchor, _styles.popupAnchor1] }
-                    ref={ (comp: RX.Button) => { this._anchor1 = comp; } }
+                    ref={ (comp: any) => { this._anchor1 = comp; } }
                     onPress={ this._showPopup1 }
                 >
                     <RX.Text style={ _styles.anchorText }>
@@ -213,7 +213,7 @@ class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
                 </RX.Button>
                 <RX.Button
                     style={ [_styles.popupAnchor, _styles.popupAnchor2] }
-                    ref={ (comp: RX.Button) => { this._anchor2 = comp; } }
+                    ref={ (comp: any) => { this._anchor2 = comp; } }
                     onPress={ this._showPopup2 }
                 >
                     <RX.Text style={ _styles.anchorText }>
@@ -222,7 +222,7 @@ class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
                 </RX.Button>
                 <RX.Button
                     style={ [_styles.popupAnchor, _styles.popupAnchor3] }
-                    ref={ (comp: RX.Button) => { this._anchor3 = comp; } }
+                    ref={ (comp: any) => { this._anchor3 = comp; } }
                     onPress={ this._showPopup3 }
                 >
                     <RX.Text style={ _styles.anchorText }>
@@ -231,7 +231,7 @@ class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
                 </RX.Button>
                 <RX.Button
                     style={ [_styles.popupAnchor, _styles.popupAnchor4] }
-                    ref={ (comp: RX.Button) => { this._anchor4 = comp; } }
+                    ref={ (comp: any) => { this._anchor4 = comp; } }
                     onPress={ this._showPopup4 }
                 >
                     <RX.Text style={ _styles.anchorText }>
@@ -240,7 +240,7 @@ class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
                 </RX.Button>
                 <RX.TextInput
                     style={ _styles.textInput }
-                    ref={ (comp: RX.TextInput) => { this._anchor5 = comp; } }
+                    ref={ (comp: any) => { this._anchor5 = comp; } }
                     onFocus={ this._onFocusTextInput }
                     value={ this.state.textInputValue || '' }
                     onChangeText={ this._onChangeTextInput }
@@ -252,7 +252,7 @@ class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
     private _showPopup1 = () => {
         RX.Popup.show({
             getAnchor: () => {
-                return this._anchor1;
+                return this._anchor1!;
             },
             dismissIfShown: true,
             positionPriorities: ['right', 'top', 'bottom'],
@@ -275,7 +275,7 @@ class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
     private _showPopup2 = () => {
         RX.Popup.show({
             getAnchor: () => {
-                return this._anchor2;
+                return this._anchor2!;
             },
             preventDismissOnPress: true,
             positionPriorities: ['left', 'top', 'bottom'],
@@ -299,10 +299,10 @@ class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
     private _showPopup3 = () => {
         RX.Popup.show({
             getAnchor: () => {
-                return this._anchor3;
+                return this._anchor3!;
             },
             getElementTriggeringPopup: () => {
-                return this._anchor3;
+                return this._anchor3!;
             },
             positionPriorities: ['right', 'bottom', 'left', 'top'],
             renderPopup: (anchorPosition: RX.Types.PopupPosition, anchorOffset: number,
@@ -328,10 +328,10 @@ class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
             dismissIfShown: true,
             cacheable: true,
             getAnchor: () => {
-                return this._anchor4;
+                return this._anchor4!;
             },
             getElementTriggeringPopup: () => {
-                return this._anchor3;
+                return this._anchor3!;
             },
             positionPriorities: ['left', 'top', 'bottom'],
             renderPopup: (anchorPosition: RX.Types.PopupPosition, anchorOffset: number,
@@ -392,7 +392,7 @@ class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
         if (filteredItems.length > 0) {
             RX.Popup.show({
                 getAnchor: () => {
-                    return this._anchor5;
+                    return this._anchor5!;
                 },
                 positionPriorities: ['bottom', 'right'],
                 renderPopup: (anchorPosition: RX.Types.PopupPosition, anchorOffset: number,

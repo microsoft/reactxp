@@ -46,14 +46,14 @@ const _styles = {
 };
 
 interface ClipboardViewState {
-    copyIteration?: number;
-    pastedText?: string;
+    copyIteration: number;
+    pastedText: string;
 }
 
 const _copyString = 'Copied text ';
 
 class ClipboardView extends RX.Component<RX.CommonProps, ClipboardViewState> {
-    private _presencesChangedEvent: RX.Types.SubscriptionToken;
+    private _presencesChangedEvent: RX.Types.SubscriptionToken | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);

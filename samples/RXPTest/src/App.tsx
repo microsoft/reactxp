@@ -19,7 +19,7 @@ class App extends RX.Component<RX.CommonProps, AppState> {
         super(props);
 
         this.state = {
-            selectedTest: undefined,
+            selectedTest: '',
             runAll: false
         };
     }
@@ -58,7 +58,7 @@ class App extends RX.Component<RX.CommonProps, AppState> {
         }
 
         // Clear the selected test.
-        this.setState({ runAll: false, selectedTest: undefined });
+        this.setState({ runAll: false, selectedTest: '' });
     }
 
     private _onSelectTest = (path: string) => {
@@ -68,7 +68,7 @@ class App extends RX.Component<RX.CommonProps, AppState> {
     private _onRunAll = () => {
         let firstTest = _.first(_.keys(TestRegistry.getAllTests()));
 
-        this.setState({ runAll: true, selectedTest: firstTest });
+        this.setState({ runAll: true, selectedTest: firstTest || '' });
     }
 }
 

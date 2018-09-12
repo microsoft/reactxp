@@ -40,9 +40,9 @@ interface InputState {
 }
 
 class InputView extends RX.Component<RX.CommonProps, InputState> {
-    private _backButtonEvent: RX.Types.SubscriptionToken;
-    private _keyDownEvent: RX.Types.SubscriptionToken;
-    private _keyUpEvent: RX.Types.SubscriptionToken;
+    private _backButtonEvent: RX.Types.SubscriptionToken | undefined;
+    private _keyDownEvent: RX.Types.SubscriptionToken | undefined;
+    private _keyUpEvent: RX.Types.SubscriptionToken | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);
@@ -61,14 +61,14 @@ class InputView extends RX.Component<RX.CommonProps, InputState> {
     componentDidMount() {
         this._backButtonEvent = RX.Input.backButtonEvent.subscribe(() => {
             this.setState({
-                backButtonCount: this.state.backButtonCount + 1
+                backButtonCount: this.state.backButtonCount! + 1
             });
             return true;
         });
 
         this._keyDownEvent = RX.Input.keyDownEvent.subscribe(e => {
             this.setState({
-                keyDownCount: this.state.keyDownCount + 1,
+                keyDownCount: this.state.keyDownCount! + 1,
                 lastKeyDownKey: 'Key = "' + e.key + '", Code = ' + e.keyCode,
                 lastKeyDownModifiers: 'Ctrl = ' + e.ctrlKey + ', Alt = ' + e.altKey +
                     ', Shift = ' + e.shiftKey
@@ -79,7 +79,7 @@ class InputView extends RX.Component<RX.CommonProps, InputState> {
 
         this._keyUpEvent = RX.Input.keyUpEvent.subscribe(e => {
             this.setState({
-                keyUpCount: this.state.keyUpCount + 1,
+                keyUpCount: this.state.keyUpCount! + 1,
                 lastKeyUpKey: 'Key = "' + e.key + '", Code = ' + e.keyCode,
                 lastKeyUpModifiers: 'Ctrl = ' + e.ctrlKey + ', Alt = ' + e.altKey +
                     ', Shift = ' + e.shiftKey
@@ -91,9 +91,17 @@ class InputView extends RX.Component<RX.CommonProps, InputState> {
     }
 
     componentWillUnmount() {
-        this._backButtonEvent.unsubscribe();
-        this._keyDownEvent.unsubscribe();
-        this._keyUpEvent.unsubscribe();
+        if (this._backButtonEvent) {
+            this._backButtonEvent.unsubscribe();
+        }
+
+        if (this._keyDownEvent) {
+            this._keyDownEvent.unsubscribe();
+        }
+
+        if (this._keyUpEvent) {
+            this._keyUpEvent.unsubscribe();
+        }
     }
 
     render() {

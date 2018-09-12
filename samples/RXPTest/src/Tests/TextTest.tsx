@@ -79,7 +79,7 @@ const _styles = {
 };
 
 interface TextViewState {
-    test5ColorIndex?: number;
+    test5ColorIndex: number;
 }
 
 const _dynamicColors = ['black', 'red', 'green', 'blue'];

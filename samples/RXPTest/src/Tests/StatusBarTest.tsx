@@ -49,11 +49,11 @@ const _styles = {
 };
 
 interface StatusBarViewState {
-    isStatusBarHidden?: boolean;
-    barStyle?: 'default' | 'light-content' | 'dark-content';
-    isNetworkVisible?: boolean;
-    backgroundColorIndex?: number;
-    isTranslucent?: boolean;
+    isStatusBarHidden: boolean;
+    barStyle: 'default' | 'light-content' | 'dark-content';
+    isNetworkVisible: boolean;
+    backgroundColorIndex: number;
+    isTranslucent: boolean;
 }
 
 class StatusBarView extends RX.Component<RX.CommonProps, StatusBarViewState> {

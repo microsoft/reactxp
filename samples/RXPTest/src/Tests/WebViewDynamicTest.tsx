@@ -69,7 +69,7 @@ interface WebViewViewState {
 }
 
 class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
-    private _webViewTest1: RX.WebView;
+    private _webViewTest1: RX.WebView | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);
@@ -93,8 +93,8 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
                     <RX.WebView
                         sandbox={ RX.Types.WebViewSandboxMode.AllowScripts }
                         style={ _styles.webView }
-                        source={ { html: this.state.htmlContent } }
-                        ref={ (comp: RX.WebView) => { this._webViewTest1 = comp; } }
+                        source={ { html: this.state.htmlContent || '' } }
+                        ref={ (comp: any) => { this._webViewTest1 = comp; } }
                         onNavigationStateChange={ this._onNavChangeTest1 }
                         onLoadStart={ this._onLoadStartTest1 }
                         onLoad={ this._onLoadTest1 }
@@ -130,7 +130,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
                 </RX.View>
                 <RX.ScrollView style={ _styles.eventHistoryScrollView }>
                     <RX.Text style={ _styles.eventHistoryText }>
-                        { this.state.test1EventHistory.length ?
+                        { this.state.test1EventHistory && this.state.test1EventHistory.length ?
                             this.state.test1EventHistory.join('\n') :
                             'Event history will appear here'
                         }
@@ -191,7 +191,9 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
     }
 
     private _onPostMessage = () => {
-        this._webViewTest1.postMessage('ReactXP Is Cool!');
+        if (this._webViewTest1) {
+            this._webViewTest1.postMessage('ReactXP Is Cool!');
+        }
     }
 
     private _appendHistoryTest1(newLine: string) {

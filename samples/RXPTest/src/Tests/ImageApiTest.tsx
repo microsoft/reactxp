@@ -37,15 +37,15 @@ interface ImageViewState {
 
 class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
     private _isMounted = false;
-    private _image1Ref: RX.Image;
-    private _textRef: RX.Text;
+    private _image1Ref: RX.Image | undefined;
+    private _textRef: RX.Text | undefined;
     private _test1Complete = false;
     private _test2Complete = false;
     private _test3Complete = false;
     private _test4Complete = false;
     private _test5Complete = false;
-    private _testResult: TestResult;
-    private _testCompletion: (result: TestResult) => void;
+    private _testResult: TestResult | undefined;
+    private _testCompletion: ((result: TestResult) => void) | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);
@@ -64,7 +64,7 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
     }
 
     render() {
-        let optionalImages: JSX.Element;
+        let optionalImages: JSX.Element | undefined;
         if (this.state.isTestRunning) {
             optionalImages = (
                 <RX.View>
@@ -73,7 +73,7 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
                         source={ 'https://microsoft.github.io/reactxp/img/tests/bulb.jpg' }
                         onLoad={ this._onLoadTest1 }
                         onError={ this._onErrorTest1 }
-                        ref={ (comp: RX.Image) => { this._image1Ref = comp; } }
+                        ref={ (comp: any) => { this._image1Ref = comp; } }
                         testId={ 'image1' }
                     />
                     <RX.Image
@@ -88,7 +88,7 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
                         source={ 'https://microsoft.github.io/reactxp/img/tests/bulb.jpg' }
                         ref={ this._onMountImageChildTest }
                     >
-                        <RX.Text ref={(comp: RX.Text) => { this._textRef = comp; }}>Child Text</RX.Text>
+                        <RX.Text ref={(comp: any) => { this._textRef = comp; }}>Child Text</RX.Text>
                     </RX.Image>
                 </RX.View>
             );
@@ -128,10 +128,10 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
             }
 
             // Now call the component back to see if we get the same dimensions.
-            if (this._image1Ref.getNativeWidth() !== image1ExpectedWidth) {
+            if (this._image1Ref!.getNativeWidth() !== image1ExpectedWidth) {
                 this._testResult.errors.push('Received unexpected width from getNativeWidth');
             }
-            if (this._image1Ref.getNativeHeight() !== image1ExpectedHeight) {
+            if (this._image1Ref!.getNativeHeight() !== image1ExpectedHeight) {
                 this._testResult.errors.push('Received unexpected height from getNativeHeight');
             }
         }
@@ -208,7 +208,7 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
 
             // Make sure we report the result only once.
             if (this._testResult) {
-                this._testCompletion(this._testResult);
+                this._testCompletion!(this._testResult);
                 this._testResult = undefined;
             }
 
@@ -218,7 +218,7 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
         }
     }
 
-    private _onMountImageChildTest = (image: RX.Image) => {
+    private _onMountImageChildTest = (image: any) => {
         this._test5Complete = true;
 
         if (this._isMounted && image && !this._textRef) {

@@ -40,10 +40,10 @@ const _colors = ['red', 'green', 'blue'];
 const _shades = ['#000', '#333', '#666', '#999', '#CCC', '#FFF'];
 
 interface GestureViewState {
-    test1ColorIndex?: number;
-    test2ColorIndex?: number;
-    test3ColorIndex?: number;
-    test4ColorIndex?: number;
+    test1ColorIndex: number;
+    test2ColorIndex: number;
+    test3ColorIndex: number;
+    test4ColorIndex: number;
 }
 
 class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
@@ -265,7 +265,7 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
         }
     }
 
-    private _onLongPressTest3 = (state: RX.Types.PanGestureState) => {
+    private _onLongPressTest3 = (state: RX.Types.TapGestureState) => {
         // Change the color.
         this.setState({
             test3ColorIndex: (this.state.test3ColorIndex + 1) % _colors.length

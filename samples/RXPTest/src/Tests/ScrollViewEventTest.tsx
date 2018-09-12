@@ -54,17 +54,17 @@ const _styles = {
 const _colors = ['red', 'green', 'blue'];
 
 interface ScrollViewState {
-    test1ScrollTop?: number;
-    test1ContentWidth?: number;
-    test1ContentHeight?: number;
-    test1ItemCount?: number;
-    test1DragStartTime?: number;
-    test1DragEndTime?: number;
+    test1ScrollTop: number;
+    test1ContentWidth: number;
+    test1ContentHeight: number;
+    test1ItemCount: number;
+    test1DragStartTime: number;
+    test1DragEndTime: number;
 }
 
 class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
     private _isMounted = false;
-    private _test1Timer: number;
+    private _test1Timer: number | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);

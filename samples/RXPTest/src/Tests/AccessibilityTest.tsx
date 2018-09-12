@@ -51,8 +51,8 @@ interface AccessibilityState {
 }
 
 class AccessibilityView extends RX.Component<RX.CommonProps, AccessibilityState> {
-    private _highContrastEvent: RX.Types.SubscriptionToken;
-    private _screenReaderEvent: RX.Types.SubscriptionToken;
+    private _highContrastEvent: RX.Types.SubscriptionToken | undefined;
+    private _screenReaderEvent: RX.Types.SubscriptionToken | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);
@@ -74,8 +74,13 @@ class AccessibilityView extends RX.Component<RX.CommonProps, AccessibilityState>
     }
 
     componentWillUnmount() {
-        this._highContrastEvent.unsubscribe();
-        this._screenReaderEvent.unsubscribe();
+        if (this._highContrastEvent) {
+            this._highContrastEvent.unsubscribe();
+        }
+
+        if (this._screenReaderEvent) {
+            this._screenReaderEvent.unsubscribe();
+        }
     }
 
     render() {

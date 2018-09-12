@@ -41,10 +41,10 @@ const _testValue1 = 'A long test value for the text input box';
 
 class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
     private _isMounted = false;
-    private _textInput1Ref: RX.TextInput;
-    private _testResult: TestResult;
-    private _testCompletion: (result: TestResult) => void;
-    private _nextTestStage: number;
+    private _textInput1Ref: RX.TextInput | undefined;
+    private _testResult: TestResult | undefined;
+    private _testCompletion: ((result: TestResult) => void) | undefined;
+    private _nextTestStage: number | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);
@@ -71,7 +71,7 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
                     </RX.Text>
                 </RX.View>
                 <RX.TextInput
-                    ref={ (comp: RX.TextInput) => { this._textInput1Ref = comp; } }
+                    ref={ (comp: any) => { this._textInput1Ref = comp; } }
                     style={ _styles.textInput1 }
                     value={ this.state.testInput }
                     onChangeText={ val => this.setState({ testInput: val }) }
@@ -85,61 +85,61 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
         const testStages: (() => void)[] = [() => {
             // Stage 0
             // Test focus API.
-            this._textInput1Ref.focus();
+            this._textInput1Ref!.focus();
         }, () => {
             // Stage 1
             // Verify focus results.
-            if (!this._textInput1Ref.isFocused()) {
-                this._testResult.errors.push('Expected text input to be focused');
+            if (!this._textInput1Ref!.isFocused()) {
+                this._testResult!.errors.push('Expected text input to be focused');
             }
 
             // Test blur API.
-            this._textInput1Ref.blur();
+            this._textInput1Ref!.blur();
         }, () => {
             // Verify blur results.
-            if (this._textInput1Ref.isFocused()) {
-                this._testResult.errors.push('Expected text input to be blurred');
+            if (this._textInput1Ref!.isFocused()) {
+                this._testResult!.errors.push('Expected text input to be blurred');
             }
 
             // Test setValue API.
-            this._textInput1Ref.focus();
-            this._textInput1Ref.setValue(_testValue1);
+            this._textInput1Ref!.focus();
+            this._textInput1Ref!.setValue(_testValue1);
         }, () => {
             // Verify the results of setValue.
             if (this.state.testInput !== _testValue1) {
-                this._testResult.errors.push('Call to setValue did not work as expected');
+                this._testResult!.errors.push('Call to setValue did not work as expected');
             }
 
             // Test selectRange API.
-            this._textInput1Ref.selectRange(2, 7);
+            this._textInput1Ref!.selectRange(2, 7);
         }, () => {
             // Verify the results of selectRange API.
-            let selectionRange = this._textInput1Ref.getSelectionRange();
+            let selectionRange = this._textInput1Ref!.getSelectionRange();
             if (selectionRange.start !== 2 || selectionRange.end !== 7) {
-                this._testResult.errors.push('Call to selectRange did not work as expected');
+                this._testResult!.errors.push('Call to selectRange did not work as expected');
             }
 
             // Test selectAll API.
-            this._textInput1Ref.selectAll();
+            this._textInput1Ref!.selectAll();
         }, () => {
             // Verify the results of selectAll API.
-            let selectionRange = this._textInput1Ref.getSelectionRange();
+            let selectionRange = this._textInput1Ref!.getSelectionRange();
             if (selectionRange.start !== 0 || selectionRange.end !== _testValue1.length) {
-                this._testResult.errors.push('Call to selectAll did not work as expected');
+                this._testResult!.errors.push('Call to selectAll did not work as expected');
             }
 
             // Test selectAll API.
-            this._textInput1Ref.selectAll();
+            this._textInput1Ref!.selectAll();
         }];
 
         // Are we done?
-        if (this._nextTestStage >= testStages.length) {
-            this._testCompletion(this._testResult);
+        if (this._nextTestStage! >= testStages.length) {
+            this._testCompletion!(this._testResult!);
         } else {
             // Run the next stage after a brief delay.
             _.delay(() => {
-                testStages[this._nextTestStage]();
-                this._nextTestStage++;
+                testStages[this._nextTestStage!]();
+                this._nextTestStage!++;
                 this._executeNextStage();
             }, 200);
         }

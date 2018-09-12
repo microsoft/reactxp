@@ -37,15 +37,15 @@ const _styles = {
 };
 
 interface AppState {
-    activationState?: RX.Types.AppActivationState;
-    activationHistory?: string;
+    activationState: RX.Types.AppActivationState;
+    activationHistory: string;
 
-    memoryWarningCount?: number;
+    memoryWarningCount: number;
 }
 
 class AppView extends RX.Component<RX.CommonProps, AppState> {
-    private _appActivationEvent: RX.Types.SubscriptionToken;
-    private _memoryWarningEvent: RX.Types.SubscriptionToken;
+    private _appActivationEvent: RX.Types.SubscriptionToken | undefined;
+    private _memoryWarningEvent: RX.Types.SubscriptionToken | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);
@@ -73,8 +73,13 @@ class AppView extends RX.Component<RX.CommonProps, AppState> {
     }
 
     componentWillUnmount() {
-        this._appActivationEvent.unsubscribe();
-        this._memoryWarningEvent.unsubscribe();
+        if (this._appActivationEvent) {
+            this._appActivationEvent.unsubscribe();
+        }
+
+        if (this._memoryWarningEvent) {
+            this._memoryWarningEvent.unsubscribe();
+        }
     }
 
     render() {

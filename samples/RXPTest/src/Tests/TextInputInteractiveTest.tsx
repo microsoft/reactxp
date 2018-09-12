@@ -88,11 +88,11 @@ const _styles = {
 };
 
 interface TextInputViewState {
-    test1Input?: string;
-    test2Input?: string;
-    test6Input?: string;
-    test6EventHistory?: string[];
-    test7Input?: string;
+    test1Input: string;
+    test2Input: string;
+    test6Input: string;
+    test6EventHistory: string[];
+    test7Input: string;
 }
 
 class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {

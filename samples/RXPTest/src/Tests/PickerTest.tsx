@@ -44,8 +44,8 @@ const _styles = {
 };
 
 interface PickerViewState {
-    test1Value?: string;
-    test2Value?: string;
+    test1Value: string;
+    test2Value: string;
 }
 
 class PickerView extends RX.Component<RX.CommonProps, PickerViewState> {
@@ -82,8 +82,8 @@ class PickerView extends RX.Component<RX.CommonProps, PickerViewState> {
 
                 <RX.View style={ _styles.pickerContainer }>
                     <RX.Picker
-                        style={ [_styles.picker, RX.Platform.getType() === 'web' && _styles.pickerWeb] }
-                        selectedValue={ this.state.test1Value }
+                        style={ [_styles.picker, RX.Platform.getType() === 'web' ? _styles.pickerWeb : undefined] }
+                        selectedValue={ this.state.test1Value || '' }
                         items={ picker1Items }
                         mode={ 'dialog' }
                         onValueChange={ this._onValueChanged1 }
@@ -91,8 +91,8 @@ class PickerView extends RX.Component<RX.CommonProps, PickerViewState> {
                     />
                     <RX.Text style={ _styles.resultText }>
                         { 'You selected "' +
-                            _.find(picker1Items, item => item.value ===
-                            this.state.test1Value).label + '"'}
+                            _.find(picker1Items, item => item.value === this.state.test1Value)!.label + '"'
+                        }
                     </RX.Text>
                 </RX.View>
 

@@ -39,7 +39,7 @@ interface NetworkState {
 
 class NetworkView extends RX.Component<RX.CommonProps, NetworkState> {
     private _isMounted = false;
-    private _connectivityChangedEvent: RX.Types.SubscriptionToken;
+    private _connectivityChangedEvent: RX.Types.SubscriptionToken | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);

@@ -76,7 +76,7 @@ class LinkView extends RX.Component<RX.CommonProps, LinkViewState> {
                 </RX.View>
                 <RX.View style={ _styles.linkContainer }>
                     <RX.Link
-                        style={ [_styles.link, this.state.test1Hovering && _styles.linkHover] }
+                        style={ [_styles.link, this.state.test1Hovering ? _styles.linkHover : undefined] }
                         url={ '' }
                         onPress={ () => { this.setState({ test1Result: 'Press detected' }); } }
                         onLongPress={ () => { this.setState({ test1Result: 'Long press detected' }); } }

@@ -37,7 +37,7 @@ interface UserPresenceViewState {
 }
 
 class UserPresenceView extends RX.Component<RX.CommonProps, UserPresenceViewState> {
-    private _presencesChangedEvent: RX.Types.SubscriptionToken;
+    private _presencesChangedEvent: RX.Types.SubscriptionToken | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);
@@ -56,7 +56,9 @@ class UserPresenceView extends RX.Component<RX.CommonProps, UserPresenceViewStat
     }
 
     componentWillUnmount() {
-        this._presencesChangedEvent.unsubscribe();
+        if (this._presencesChangedEvent) {
+            this._presencesChangedEvent.unsubscribe();
+        }
     }
 
     render() {

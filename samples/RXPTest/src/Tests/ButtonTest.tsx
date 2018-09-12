@@ -70,14 +70,14 @@ const _styles = {
 };
 
 interface ButtonViewState {
-    button1Hover?: boolean;
+    button1Hover: boolean;
 
-    button4PressInCount?: number;
-    button4PressOutCount?: number;
-    button4PressCount?: number;
+    button4PressInCount: number;
+    button4PressOutCount: number;
+    button4PressCount: number;
 
-    button5PressCount?: number;
-    button5LongPressCount?: number;
+    button5PressCount: number;
+    button5LongPressCount: number;
 }
 
 class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
@@ -104,7 +104,7 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                     </RX.Text>
                 </RX.View>
                 <RX.Button
-                    style={ [_styles.button1, this.state.button1Hover && _styles.button1Hover] }
+                    style={ [_styles.button1, this.state.button1Hover ? _styles.button1Hover : undefined] }
                     onHoverStart={ () => { this.setState({ button1Hover: true }); } }
                     onHoverEnd={ () => { this.setState({ button1Hover: false }); } }
                     onPress={ () => {
@@ -112,7 +112,7 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                     } }
                     testId={ 'button1' }
                 >
-                    <RX.Text style={ [_styles.button1Text, this.state.button1Hover && _styles.button1TextHover] }>
+                    <RX.Text style={ [_styles.button1Text, this.state.button1Hover ? _styles.button1TextHover : undefined] }>
                         { 'Button With Hover' }
                     </RX.Text>
                 </RX.Button>

@@ -53,8 +53,8 @@ interface LocationState {
 
 class LocationView extends RX.Component<RX.CommonProps, LocationState> {
     private _isMounted = false;
-    private _locationWatchId: RX.Types.LocationWatchId;
-    private _timerId: number;
+    private _locationWatchId: RX.Types.LocationWatchId | undefined;
+    private _timerId = 0;
 
     constructor(props: RX.CommonProps) {
         super(props);
