@@ -8,7 +8,7 @@ import { default as RXVideo } from 'reactxp-video';
 import ProgressIndicator from './ProgressIndicator';
 import ToggleSwitch from './ToggleSwitch';
 
-interface SecondPanelProps {
+interface SecondPanelProps extends RX.CommonProps {
     onNavigateBack: () => void;
 }
 
@@ -57,8 +57,8 @@ const styles = {
 };
 
 class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
-    private _progressTimerToken: number;
-    private _mountedVideo: RXVideo;
+    private _progressTimerToken: number | undefined;
+    private _mountedVideo: RXVideo | undefined;
 
     constructor(props: SecondPanelProps) {
         super(props);
@@ -101,7 +101,7 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
                         </RX.Text>
                         <ProgressIndicator
                             style={ styles.progressMargin as any }
-                            progress={ this.state.progressValue }
+                            progress={ this.state.progressValue! }
                             fillColor={ '#ddd' }
                             size={ 32 }
                         />
@@ -122,7 +122,7 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
         );
     }
 
-    private _onMountVideo = (component: RXVideo|null) => {
+    private _onMountVideo = (component: any) => {
         this._mountedVideo = component;
     }
 
@@ -139,7 +139,7 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
 
     private _startProgressIndicator() {
         this._progressTimerToken = window.setInterval(() => {
-            const newProgressValue = (this.state.progressValue + 0.02) % 1;
+            const newProgressValue = (this.state.progressValue! + 0.02) % 1;
             this.setState({ progressValue: newProgressValue });
         }, 1000 / 15);
     }

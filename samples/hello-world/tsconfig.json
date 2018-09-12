@@ -14,7 +14,8 @@
     "skipLibCheck": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
-    "outDir": "./dist/"
+    "outDir": "./dist/",
+    "strict": true
   },
   "include": [
     "./src/**/*"

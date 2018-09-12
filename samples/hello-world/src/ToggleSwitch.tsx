@@ -47,7 +47,7 @@ const _styles = {
     })
 };
 
-class ToggleSwitch extends RX.Component<ToggleSwitchProps, null> {
+class ToggleSwitch extends RX.Component<ToggleSwitchProps, RX.Stateless> {
     private _knobLeftAnimationValue: RX.Animated.Value;
     private _knobLeftAnimationStyle: RX.Types.AnimatedViewStyleRuleSet;
 

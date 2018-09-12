@@ -1,6 +1,7 @@
 /*
 * This file demonstrates a basic ReactXP app.
 */
+
 // This example uses ExperimentalNavigation on iOS and Android
 import Navigator, { Types, NavigatorDelegateSelector as DelegateSelector } from 'reactxp-navigation';
 import RX = require('reactxp');
@@ -20,14 +21,16 @@ const styles = {
     }, false)
 };
 
-class App extends RX.Component<{}, null> {
-    private _navigator: Navigator;
+class App extends RX.Component<RX.CommonProps, RX.Stateless> {
+    private _navigator: Navigator | undefined;
 
     componentDidMount() {
-        this._navigator.immediatelyResetRouteStack([{
-            routeId: NavigationRouteId.MainPanel,
-            sceneConfigType: Types.NavigatorSceneConfigType.Fade
-        }]);
+        if (this._navigator) {
+            this._navigator.immediatelyResetRouteStack([{
+                routeId: NavigationRouteId.MainPanel,
+                sceneConfigType: Types.NavigatorSceneConfigType.Fade
+            }]);
+        }
     }
 
     render() {
@@ -41,31 +44,43 @@ class App extends RX.Component<{}, null> {
         );
     }
 
-    private _onNavigatorRef = (navigator: Navigator) => {
+    private _onNavigatorRef = (navigator: any) => {
         this._navigator = navigator;
     }
 
     private _renderScene = (navigatorRoute: Types.NavigatorRoute) => {
         switch (navigatorRoute.routeId) {
             case NavigationRouteId.MainPanel:
-                return <MainPanel onPressNavigate={ this._onPressNavigate } />;
+                return (
+                    <MainPanel
+                        onPressNavigate={ this._onPressNavigate }
+                    />
+                );
 
             case NavigationRouteId.SecondPanel:
-                return <SecondPanel onNavigateBack={ this._onPressBack } />;
+                return (
+                    <SecondPanel
+                        onNavigateBack={ this._onPressBack }
+                    />
+                );
         }
 
         return null;
     }
 
     private _onPressNavigate = () => {
-        this._navigator.push({
-            routeId: NavigationRouteId.SecondPanel,
-            sceneConfigType: Types.NavigatorSceneConfigType.FloatFromRight
-        });
+        if (this._navigator) {
+            this._navigator.push({
+                routeId: NavigationRouteId.SecondPanel,
+                sceneConfigType: Types.NavigatorSceneConfigType.FloatFromRight
+            });
+        }
     }
 
     private _onPressBack = () => {
-        this._navigator.pop();
+        if (this._navigator) {
+            this._navigator.pop();
+        }
     }
 }
 

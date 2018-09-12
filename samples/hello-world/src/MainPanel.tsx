@@ -50,7 +50,7 @@ const styles = {
     })
 };
 
-class MainPanel extends RX.Component<MainPanelProps, null> {
+class MainPanel extends RX.Component<MainPanelProps, RX.Stateless> {
     private _translationValue: RX.Animated.Value;
     private _animatedStyle: RX.Types.AnimatedTextStyleRuleSet;
 
@@ -95,7 +95,7 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
                         <RX.Link style={ styles.docLink } url={ 'https://microsoft.github.io/reactxp/docs' }>
                             View ReactXP documentation
                         </RX.Link>
-                        
+
                         <RX.Button style={ styles.roundButton } onPress={ this._onPressNavigate }>
                             <RX.Text style={ styles.buttonText }>
                                 See More Examples
@@ -106,7 +106,7 @@ class MainPanel extends RX.Component<MainPanelProps, null> {
             </RX.View>
         );
     }
-    
+
     private _onPressNavigate = () => {
         this.props.onPressNavigate();
     }
