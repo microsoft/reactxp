@@ -1,18 +1,18 @@
 /**
-* Text.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Android-specific implementation of Text component.
-*/
+ * Text.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Android-specific implementation of Text component.
+ */
 
-import React = require('react');
-import RN = require('react-native');
+import * as React from 'react';
+import * as RN from 'react-native';
 
-import AccessibilityUtil from '../native-common/AccessibilityUtil';
 import { Text as CommonText } from '../native-common/Text';
-import Types = require('../common/Types');
+import { Types } from '../common/Interfaces';
+import AccessibilityUtil from '../native-common/AccessibilityUtil';
 import Styles from '../native-common/Styles';
 
 var _styles = {

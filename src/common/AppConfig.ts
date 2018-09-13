@@ -1,11 +1,11 @@
 /**
-* AppConfig.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* A simple class to store application config.
-*/
+ * AppConfig.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * A simple class to store application config.
+ */
 
 export class AppConfig {
     private _isDebug = false;
@@ -25,5 +25,4 @@ export class AppConfig {
     }
 }
 
-var instance = new AppConfig();
-export default instance;
+export default new AppConfig();

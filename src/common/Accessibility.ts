@@ -1,15 +1,15 @@
 /**
-* Accessibility.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Common wrapper for accessibility helper exposed from ReactXP.
-*/
+ * Accessibility.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Common wrapper for accessibility helper exposed from ReactXP.
+ */
 
 import SubscribableEvent from 'subscribableevent';
 
-import RX = require('../common/Interfaces');
+import * as RX from '../common/Interfaces';
 
 export abstract class Accessibility extends RX.Accessibility {
     abstract isScreenReaderEnabled(): boolean;

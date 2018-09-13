@@ -1,12 +1,12 @@
 /**
-* Image.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Android-specific implementation of Image component.
-*/
-import RN = require('react-native');
+ * Image.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Android-specific implementation of Image component.
+ */
+import * as RN from 'react-native';
 
 import { Image as CommonImage } from '../native-common/Image';
 

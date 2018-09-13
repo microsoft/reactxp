@@ -1,14 +1,14 @@
 /**
-* GestureView.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* iOS-specific implementation of GestureView component.
-*/
+ * GestureView.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * iOS-specific implementation of GestureView component.
+ */
 
 import { GestureView as BaseGestureView } from '../native-common/GestureView';
-import Types = require('../common/Types');
+import { Types } from '../common/Interfaces';
 
 const _preferredPanRatio = 3;
 

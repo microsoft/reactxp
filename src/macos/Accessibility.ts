@@ -1,14 +1,14 @@
 /**
-* Accessibility.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* MacOS variant of Accessibility that performs announcements by calling
-* React Native announcement API.
-*/
+ * Accessibility.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * MacOS variant of Accessibility that performs announcements by calling
+ * React Native announcement API.
+ */
 
-import RN = require('react-native');
+import * as RN from 'react-native';
 
 import { Accessibility as NativeAccessibility } from '../native-common/Accessibility';
 

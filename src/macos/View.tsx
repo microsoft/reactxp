@@ -1,15 +1,15 @@
 /**
-* View.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Mac-specific implementation of View.
-*/
-import React = require('react');
-import Types = require('../common/Types');
+ * View.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Mac-specific implementation of View.
+ */
+import * as React from 'react';
 
 import { View as ViewCommon } from '../native-common/View';
+import { Types } from '../common/Interfaces';
 import EventHelpers from '../native-common/utils/EventHelpers';
 
 export class View extends ViewCommon {

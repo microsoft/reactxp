@@ -1,18 +1,17 @@
 /**
-* AutoFocusHelper.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Provides the functions which allow to handle the selection of a proper component
-* to focus from the multiple candidates with autoFocus=true.
-*/
+ * AutoFocusHelper.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Provides the functions which allow to handle the selection of a proper component
+ * to focus from the multiple candidates with autoFocus=true.
+ */
 
-import React = require('react');
+import * as React from 'react';
 
+import * as RX from '../Interfaces';
 import Timers from './Timers';
-import Types = require('../Types');
-import Interfaces = require('../Interfaces');
 
 let _sortAndFilter: SortAndFilterFunc|undefined;
 let _autoFocusTimer: number|undefined;
@@ -42,11 +41,11 @@ export class FocusArbitratorProvider {
     private _id: number;
     private _parentArbitratorProvider: FocusArbitratorProvider | undefined;
 
-    private _arbitratorCallback: Types.FocusArbitrator | undefined;
+    private _arbitratorCallback: RX.Types.FocusArbitrator | undefined;
     private _candidates: FocusCandidateInternal[] = [];
     private _pendingChildren: { [key: string]: FocusArbitratorProvider } = {};
 
-    constructor(view?: Interfaces.View, arbitrator?: Types.FocusArbitrator) {
+    constructor(view?: RX.View, arbitrator?: RX.Types.FocusArbitrator) {
         this._id = ++_lastFocusArbitratorProviderId;
         this._parentArbitratorProvider = view
             ? ((view.context && view.context.focusArbitrator) || rootFocusArbitratorProvider)
@@ -94,7 +93,7 @@ export class FocusArbitratorProvider {
     }
 
     private static _arbitrate(candidates: FocusCandidateInternal[],
-            arbitrator?: Types.FocusArbitrator): FocusCandidateInternal | undefined {
+            arbitrator?: RX.Types.FocusArbitrator): FocusCandidateInternal | undefined {
         // Filtering out everything which is already unmounted.
         candidates = candidates.filter(item => item.isAvailable());
 
@@ -110,7 +109,7 @@ export class FocusArbitratorProvider {
 
         if (arbitrator) {
             // There is an application specified focus arbitrator.
-            const toArbitrate: Types.FocusCandidate[] = [];
+            const toArbitrate: RX.Types.FocusCandidate[] = [];
 
             candidates.forEach(candidate => {
                 const component = candidate.component as any;
@@ -145,7 +144,7 @@ export class FocusArbitratorProvider {
         return candidates[candidates.length - 1];
     }
 
-    setCallback(arbitrator?: Types.FocusArbitrator) {
+    setCallback(arbitrator?: RX.Types.FocusArbitrator) {
         this._arbitratorCallback = arbitrator;
     }
 
