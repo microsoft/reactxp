@@ -115,6 +115,8 @@ arbitrateFocus: FocusArbitrator = undefined;
 importantForLayout: boolean = false; // web only
 
 // Mouse-specific Events
+draggable: boolean;
+onDragStart: (e: DragEvent) => void = undefined;
 onDragEnter: (e: DragEvent) => void = undefined;
 onDragOver: (e: DragEvent) => void = undefined;
 onDragLeave: (e: DragEvent) => void = undefined;

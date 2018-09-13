@@ -19,7 +19,7 @@ export class View extends ViewCommon {
         super._buildInternalProps(props);
 
         // Drag and drop related properties
-        for (const name of ['onDragEnter', 'onDragOver', 'onDrop', 'onDragLeave']) {
+        for (const name of ['onDragStart', 'onDragEnter', 'onDragOver', 'onDrop', 'onDragLeave']) {
             const handler = this._internalProps[name];
 
             if (handler) {
