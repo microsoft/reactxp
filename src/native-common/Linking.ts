@@ -1,17 +1,17 @@
 /**
-* Linking.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation for deep linking.
-*/
+ * Linking.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN-specific implementation for deep linking.
+ */
 
-import RN = require('react-native');
-import SyncTasks = require('synctasks');
+import * as RN from 'react-native';
+import * as SyncTasks from 'synctasks';
 
 import { Linking as CommonLinking } from '../common/Linking';
-import Types = require('../common/Types');
+import { Types } from '../common/Interfaces';
 
 export class Linking extends CommonLinking {
     constructor() {

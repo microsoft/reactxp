@@ -1,16 +1,16 @@
 /**
-* ModalContainer.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation of the cross-platform Modal abstraction.
-*/
+ * ModalContainer.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN-specific implementation of the cross-platform Modal abstraction.
+ */
 
-import React = require('react');
-import RN = require('react-native');
+import * as React from 'react';
+import * as RN from 'react-native';
 
-import Types= require('../common/Types');
+import { Types } from '../common/Interfaces';
 
 const _styles = {
     defaultContainer: {

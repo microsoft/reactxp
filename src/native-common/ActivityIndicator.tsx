@@ -1,17 +1,16 @@
 ﻿/**
-* ActivityIndicator.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Control to display an animated activity indicator.
-*/
+ * ActivityIndicator.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Control to display an animated activity indicator.
+ */
 
-import React = require('react');
-/* tslint:disable:no-unused-variable */
-import RN = require('react-native');
-/* tslint:enable:no-unused-variable */
-import Types = require('../common/Types');
+import * as React from 'react';
+import * as RN from 'react-native';
+
+import { Types } from '../common/Interfaces';
 
 export interface ActivityIndicatorState {
     isVisible?: boolean;

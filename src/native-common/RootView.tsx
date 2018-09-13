@@ -1,17 +1,18 @@
 /**
-* RootView.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* The top-most view that's used for proper layering or modals and popups.
-*/
+ * RootView.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * The top-most view that's used for proper layering or modals and popups.
+ */
 
-import React = require('react');
-import RN = require('react-native');
+import * as React from 'react';
+import * as RN from 'react-native';
 import { SubscriptionToken } from 'subscribableevent';
-import _ = require('./lodashMini');
 
+import { isEqual } from './utils/lodashMini';
+import { Types } from '../common/Interfaces';
 import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
 import App from './App';
@@ -19,7 +20,6 @@ import AppConfig from '../common/AppConfig';
 import FrontLayerViewManager from './FrontLayerViewManager';
 import MainViewStore from './MainViewStore';
 import Styles from './Styles';
-import Types = require('../common/Types');
 import UserInterface from '../native-common/UserInterface';
 
 // Fields should be prefixed with 'reactxp' to help avoid naming collisions.
@@ -193,7 +193,7 @@ class RootViewUsingStore extends BaseRootView<BaseRootViewProps> {
     private _getStateFromStore(): RootViewState {
         let mainView = MainViewStore.getMainView();
 
-        if (mainView && !_.isEqual(mainView.props, this._mainViewProps)) {
+        if (mainView && !isEqual(mainView.props, this._mainViewProps)) {
             mainView = React.cloneElement(mainView, this._mainViewProps);
         }
 

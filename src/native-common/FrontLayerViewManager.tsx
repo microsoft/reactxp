@@ -1,21 +1,21 @@
 /**
-* FrontLayerViewManager.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Manages stackable modals and popup views that are posted and dismissed
-* by the Types showModal/dismissModal/showPopup/dismissPopup methods.
-*/
+ * FrontLayerViewManager.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Manages stackable modals and popup views that are posted and dismissed
+ * by the Types showModal/dismissModal/showPopup/dismissPopup methods.
+ */
 
-import _ = require('./lodashMini');
-import React = require('react');
-import RN = require('react-native');
+import * as React from 'react';
+import * as RN from 'react-native';
 import SubscribableEvent from 'subscribableevent';
 
+import * as _ from './utils/lodashMini';
 import { ModalContainer } from '../native-common/ModalContainer';
+import { Types } from '../common/Interfaces';
 import PopupContainerView from './PopupContainerView';
-import Types = require('../common/Types');
 
 class ModalStackContext {
     constructor(public modalId: string, public modal: React.ReactElement<Types.ViewProps>, public modalOptions?: Types.ModalOptions) {}
@@ -189,7 +189,7 @@ export class FrontLayerViewManager {
     public isPopupActiveFor(rootViewId?: string | null): boolean {
         return this._getOverlayContext(rootViewId) !== undefined;
     }
-    
+
     public getPopupLayerView(rootViewId?: string | null): JSX.Element | null {
         if (rootViewId === null) {
             // The Popup layer is supported only on root views that have set an id and

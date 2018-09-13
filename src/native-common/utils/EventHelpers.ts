@@ -1,12 +1,12 @@
 /**
-* EventHelpers.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*/
+ * EventHelpers.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
 
-import _ = require('../lodashMini');
-import Types = require('../../common/Types');
+import { clone } from './lodashMini';
+import { Types } from '../../common/Interfaces';
 
 //
 // These helpers promote a SyntheticEvent to their higher level counterparts
@@ -198,7 +198,7 @@ export class EventHelpers {
             // We need to add keyCode and other properties to the original event, but React Native
             // reuses events, so we're not allowed to modify the original.
             // Instead, we'll clone it.
-            keyEvent = _.clone(keyEvent);
+            keyEvent = clone(keyEvent);
             keyEvent.keyCode = keyCode;
 
             const nativeEvent = e.nativeEvent;
@@ -243,7 +243,7 @@ export class EventHelpers {
         // We need to add various properties to the original event, but React Native
         // reuses events, so we're not allowed to modify the original.
         // Instead, we'll clone it.
-        let mouseEvent = _.clone(e as Types.MouseEvent);
+        let mouseEvent = clone(e as Types.MouseEvent);
 
         const nativeEvent = e.nativeEvent;
 

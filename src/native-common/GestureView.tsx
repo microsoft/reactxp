@@ -1,23 +1,23 @@
 /**
-* GestureView.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation of the cross-platform GestureView component.
-* It provides much of the standard work necessary to support combinations of
-* pinch-and-zoom, panning, single tap and double tap gestures.
-*/
+ * GestureView.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN-specific implementation of the cross-platform GestureView component.
+ * It provides much of the standard work necessary to support combinations of
+ * pinch-and-zoom, panning, single tap and double tap gestures.
+ */
 
-import assert = require('assert');
-import _ = require('./lodashMini');
-import React = require('react');
-import RN = require('react-native');
+import * as assert from 'assert';
+import * as React from 'react';
+import * as RN from 'react-native';
 
+import { isUndefined } from './utils/lodashMini';
+import { Types } from '../common/Interfaces';
 import AccessibilityUtil from './AccessibilityUtil';
 import EventHelpers from './utils/EventHelpers';
 import Timers from '../common/utils/Timers';
-import Types = require('../common/Types');
 import UserInterface from './UserInterface';
 import ViewBase from './ViewBase';
 
@@ -344,7 +344,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         }
 
         // Has the user started to pan?
-        const panThreshold = (!_.isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
+        const panThreshold = (!isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
             this.props.panPixelThreshold : _panPixelThreshold;
         return (this._calcDistance(gestureState.dx, gestureState.dy) >= panThreshold);
     }
@@ -355,7 +355,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         }
 
         // Has the user started to pan?
-        const panThreshold = (!_.isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
+        const panThreshold = (!isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
             this.props.panPixelThreshold : _panPixelThreshold;
         const isPan = Math.abs(gestureState.dy) >= panThreshold;
 
@@ -371,7 +371,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         }
 
         // Has the user started to pan?
-        const panThreshold = (!_.isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
+        const panThreshold = (!isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
             this.props.panPixelThreshold : _panPixelThreshold;
         const isPan = Math.abs(gestureState.dx) >= panThreshold;
 

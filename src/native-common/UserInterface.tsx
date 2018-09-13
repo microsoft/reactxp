@@ -1,22 +1,21 @@
 /**
-* UserInterface.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN implementation of the ReactXP interfaces related to
-* UI (layout measurements, etc.).
-*/
+ * UserInterface.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN implementation of the ReactXP interfaces related to
+ * UI (layout measurements, etc.).
+ */
 
-import assert = require('assert');
-import React = require('react');
-import RN = require('react-native');
-import SyncTasks = require('synctasks');
+import * as assert from 'assert';
+import * as React from 'react';
+import * as RN from 'react-native';
+import * as SyncTasks from 'synctasks';
 
+import * as RX from '../common/Interfaces';
 import AppConfig from '../common/AppConfig';
 import MainViewStore from './MainViewStore';
-import RX = require('../common/Interfaces');
-import Types = require('../common/Types');
 
 export class UserInterface extends RX.UserInterface {
     private _touchLatencyThresholhdMs: number|undefined;
@@ -34,9 +33,9 @@ export class UserInterface extends RX.UserInterface {
     }
 
     measureLayoutRelativeToWindow(component: React.Component<any, any>):
-        SyncTasks.Promise<Types.LayoutInfo> {
+        SyncTasks.Promise<RX.Types.LayoutInfo> {
 
-        let deferred = SyncTasks.Defer<Types.LayoutInfo>();
+        let deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
         let nodeHandle = RN.findNodeHandle(component);
 
         assert.ok(!!nodeHandle);
@@ -55,9 +54,9 @@ export class UserInterface extends RX.UserInterface {
     }
 
     measureLayoutRelativeToAncestor(component: React.Component<any, any>,
-        ancestor: React.Component<any, any>): SyncTasks.Promise<Types.LayoutInfo> {
+        ancestor: React.Component<any, any>): SyncTasks.Promise<RX.Types.LayoutInfo> {
 
-        let deferred = SyncTasks.Defer<Types.LayoutInfo>();
+        let deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
         let nodeHandle = RN.findNodeHandle(component);
         let ancestorNodeHander = RN.findNodeHandle(ancestor);
 
@@ -78,7 +77,7 @@ export class UserInterface extends RX.UserInterface {
         return deferred.promise();
     }
 
-    measureWindow(rootViewId?: string): Types.LayoutInfo {
+    measureWindow(rootViewId?: string): RX.Types.LayoutInfo {
         let dimensions = RN.Dimensions.get('window');
 
         if (rootViewId && RN.Platform.OS === 'windows') {
@@ -194,7 +193,7 @@ export class UserInterface extends RX.UserInterface {
         this._touchLatencyThresholhdMs = latencyThresholdMs;
     }
 
-    evaluateTouchLatency(e: Types.SyntheticEvent) {
+    evaluateTouchLatency(e: RX.Types.SyntheticEvent) {
         if (this._touchLatencyThresholhdMs) {
             const latency = Date.now() - e.timeStamp.valueOf();
             if (latency > this._touchLatencyThresholhdMs) {

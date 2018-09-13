@@ -12,7 +12,7 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import * as RNW from 'react-native-windows';
 
-import * as _ from '../native-common/lodashMini';
+import * as _ from '../native-common/utils/lodashMini';
 import {
     applyFocusableComponentMixin,
     FocusManagerFocusableComponent,

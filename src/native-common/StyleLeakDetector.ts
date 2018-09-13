@@ -1,13 +1,13 @@
 /**
-* StyleLeakDetector.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Native implementation of debugging logic that detects style leaks.
-*/
+ * StyleLeakDetector.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Native implementation of debugging logic that detects style leaks.
+ */
 
-import RN = require('react-native');
+import * as RN from 'react-native';
 
 import { StyleLeakDetector as CommonStyleLeakDetector } from '../common/StyleLeakDetector';
 

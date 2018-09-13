@@ -1,22 +1,21 @@
 /**
-* Animated.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation of the cross-platform Animation abstraction.
-*/
+ * Animated.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN-specific implementation of the cross-platform Animation abstraction.
+ */
 
-import React = require('react');
-import RN = require('react-native');
+import * as React from 'react';
+import * as RN from 'react-native';
 
+import * as RX from '../common/Interfaces';
 import Easing from '../common/Easing';
-import Types = require('../common/Types');
 import RXImage from './Image';
 import RXView from './View';
 import RXText from './Text';
 import RXTextInput from './TextInput';
-import RX = require('../common/Interfaces');
 
 export interface AnimatedClasses {
     Image: typeof RN.ReactNativeBaseComponent;
@@ -69,7 +68,7 @@ class AnimatedWrapper<P, T> extends RX.AnimatedComponent<P, T> {
     }
 }
 
-class AnimatedImage extends AnimatedWrapper<Types.AnimatedImageProps, Types.Stateless> {
+class AnimatedImage extends AnimatedWrapper<RX.Types.AnimatedImageProps, RX.Types.Stateless> {
     render() {
         const additionalProps = { ref: this._onMount, style: this.props.style };
         return (
@@ -83,7 +82,7 @@ class AnimatedImage extends AnimatedWrapper<Types.AnimatedImageProps, Types.Stat
     }
 }
 
-class AnimatedText extends AnimatedWrapper<Types.AnimatedTextProps, Types.Stateless>  {
+class AnimatedText extends AnimatedWrapper<RX.Types.AnimatedTextProps, RX.Types.Stateless>  {
     render() {
         const additionalProps = { ref: this._onMount, style: this.props.style };
         return (
@@ -97,7 +96,7 @@ class AnimatedText extends AnimatedWrapper<Types.AnimatedTextProps, Types.Statel
     }
 }
 
-class AnimatedTextInput extends AnimatedWrapper<Types.AnimatedTextInputProps, Types.Stateless>   {
+class AnimatedTextInput extends AnimatedWrapper<RX.Types.AnimatedTextInputProps, RX.Types.Stateless>   {
     render() {
         const additionalProps = {ref: this._onMount, style: this.props.style };
         return (
@@ -111,7 +110,7 @@ class AnimatedTextInput extends AnimatedWrapper<Types.AnimatedTextInputProps, Ty
     }
 }
 
-class AnimatedView extends AnimatedWrapper<Types.AnimatedViewProps, Types.Stateless> {
+class AnimatedView extends AnimatedWrapper<RX.Types.AnimatedViewProps, RX.Types.Stateless> {
     setFocusRestricted(restricted: boolean) {
         // Nothing to do.
     }
@@ -150,13 +149,13 @@ class FocusRestrictedAnimatedView extends AnimatedView {
 }
 
 let timing = function(
-    value: Types.AnimatedValue,
-    config: Types.Animated.TimingAnimationConfig)
-    : Types.Animated.CompositeAnimation {
+    value: RX.Types.AnimatedValue,
+    config: RX.Types.Animated.TimingAnimationConfig)
+    : RX.Types.Animated.CompositeAnimation {
 
     let isLooping = config.loop !== undefined && config.loop != null;
     return {
-        start: function(onEnd?: Types.Animated.EndCallback): void {
+        start: function(onEnd?: RX.Types.Animated.EndCallback): void {
             function animate() : void {
                 const timingConfig: RN.Animated.TimingAnimationConfig = {
                     toValue: config.toValue,
@@ -208,7 +207,7 @@ export function makeAnimated(nativeAnimatedClasses: AnimatedClasses, useFocusRes
 }
 
 export let AnimatedCommon = {
-    Easing: Easing as Types.Animated.Easing,
+    Easing: Easing as RX.Types.Animated.Easing,
 
     timing: timing,
     delay: RN.Animated.delay,
@@ -217,7 +216,7 @@ export let AnimatedCommon = {
 
     Value: RN.Animated.Value,
     createValue: (initialValue: number) => new RN.Animated.Value(initialValue),
-    interpolate: (animatedValue: Types.AnimatedValue, inputRange: number[], outputRange: string[]) => {
+    interpolate: (animatedValue: RX.Types.AnimatedValue, inputRange: number[], outputRange: string[]) => {
         return animatedValue.interpolate({
             inputRange: inputRange,
             outputRange: outputRange

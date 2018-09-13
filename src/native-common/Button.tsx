@@ -1,26 +1,26 @@
 /**
-* Button.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation of the cross-platform Button abstraction.
-*/
+ * Button.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN-specific implementation of the cross-platform Button abstraction.
+ */
 
-import assert = require('assert');
-import React = require('react');
-import RN = require('react-native');
-import PropTypes = require('prop-types');
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import * as RN from 'react-native';
+import assert from 'assert';
 
-import AccessibilityUtil from './AccessibilityUtil';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import { Button as ButtonBase } from '../common/Interfaces';
+import { isEqual } from './utils/lodashMini';
+import { Types } from '../common/Interfaces';
+import AccessibilityUtil from './AccessibilityUtil';
 import Animated from './Animated';
 import AppConfig from '../common/AppConfig';
 import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
-import Types = require('../common/Types');
-import { Button as ButtonBase } from '../common/Interfaces';
-import { isEqual } from '../common/lodashMini';
 import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
 

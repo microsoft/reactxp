@@ -1,17 +1,16 @@
 /**
-* Network.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Native implementation of network information APIs.
-*/
+ * Network.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Native implementation of network information APIs.
+ */
 
-import RN = require('react-native');
-import SyncTasks = require('synctasks');
+import * as RN from 'react-native';
+import * as SyncTasks from 'synctasks';
 
-import RX = require('../common/Interfaces');
-import Types = require('../common/Types');
+import * as RX from '../common/Interfaces';
 
 export class Network extends RX.Network {
     constructor() {
@@ -39,7 +38,7 @@ export class Network extends RX.Network {
         return deferred.promise();
     }
 
-    getType(): SyncTasks.Promise<Types.DeviceNetworkType> {
+    getType(): SyncTasks.Promise<RX.Types.DeviceNetworkType> {
         // Is the newer call available? Use it instead of the soon-to-be-deprecated
         // NetInfo.fetch call if possible.
         if (RN.NetInfo.getConnectionInfo) {
@@ -58,39 +57,39 @@ export class Network extends RX.Network {
         this.connectivityChangedEvent.fire(isConnected);
     }
 
-    private static _getNetworkTypeFromNetInfo(networkType: string): Types.DeviceNetworkType {
+    private static _getNetworkTypeFromNetInfo(networkType: string): RX.Types.DeviceNetworkType {
         switch (networkType) {
             case 'UNKNOWN':
-                return Types.DeviceNetworkType.Unknown;
+                return RX.Types.DeviceNetworkType.Unknown;
             case 'NONE':
-                return Types.DeviceNetworkType.None;
+                return RX.Types.DeviceNetworkType.None;
             case 'WIFI':
-                return Types.DeviceNetworkType.Wifi;
+                return RX.Types.DeviceNetworkType.Wifi;
             case 'MOBILE_2G':
-                return Types.DeviceNetworkType.Mobile2G;
+                return RX.Types.DeviceNetworkType.Mobile2G;
             case 'MOBILE_3G':
-                return Types.DeviceNetworkType.Mobile3G;
+                return RX.Types.DeviceNetworkType.Mobile3G;
             case 'MOBILE_4G':
-                return Types.DeviceNetworkType.Mobile4G;
+                return RX.Types.DeviceNetworkType.Mobile4G;
         }
 
-        return Types.DeviceNetworkType.Unknown;
+        return RX.Types.DeviceNetworkType.Unknown;
     }
 
-    private static _getNetworkTypeFromConnectionInfo(info: RN.ConnectionInfo): Types.DeviceNetworkType {
+    private static _getNetworkTypeFromConnectionInfo(info: RN.ConnectionInfo): RX.Types.DeviceNetworkType {
         if (info.effectiveType === '2g') {
-            return Types.DeviceNetworkType.Mobile2G;
+            return RX.Types.DeviceNetworkType.Mobile2G;
         } else if (info.effectiveType === '3g') {
-            return Types.DeviceNetworkType.Mobile3G;
+            return RX.Types.DeviceNetworkType.Mobile3G;
         } else if (info.effectiveType === '4g') {
-            return Types.DeviceNetworkType.Mobile4G;
+            return RX.Types.DeviceNetworkType.Mobile4G;
         } else if (info.type === 'wifi' || info.type === 'ETHERNET') {
-            return Types.DeviceNetworkType.Wifi;
+            return RX.Types.DeviceNetworkType.Wifi;
         } else if (info.type === 'none') {
-            return Types.DeviceNetworkType.None;
+            return RX.Types.DeviceNetworkType.None;
         }
 
-        return Types.DeviceNetworkType.Unknown;
+        return RX.Types.DeviceNetworkType.Unknown;
     }
 }
 

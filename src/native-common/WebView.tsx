@@ -9,9 +9,8 @@
 
 import * as React from 'react';
 import * as RN from 'react-native';
-import * as RX from '../common/Interfaces';
-import Types = require('../common/Types');
 
+import * as RX from '../common/Interfaces';
 import Styles from './Styles';
 
 const _styles = {
@@ -58,13 +57,13 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
         );
     }
 
-    private _sandboxToMixedContentMode(sandbox?: Types.WebViewSandboxMode): MixedContentMode {
+    private _sandboxToMixedContentMode(sandbox?: RX.Types.WebViewSandboxMode): MixedContentMode {
         if (!!sandbox) {
-            if (sandbox & Types.WebViewSandboxMode.AllowMixedContentAlways) {
+            if (sandbox & RX.Types.WebViewSandboxMode.AllowMixedContentAlways) {
                 return 'always';
             }
 
-            if (sandbox & Types.WebViewSandboxMode.AllowMixedContentCompatibilityMode) {
+            if (sandbox & RX.Types.WebViewSandboxMode.AllowMixedContentCompatibilityMode) {
                 return 'compatibility';
             }
         }

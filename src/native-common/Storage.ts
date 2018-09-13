@@ -1,16 +1,16 @@
 /**
-* Storage.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Native implementation of the cross-platform database storage abstraction.
-*/
+ * Storage.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Native implementation of the cross-platform database storage abstraction.
+ */
 
-import RN = require('react-native');
-import SyncTasks = require('synctasks');
+import * as RN from 'react-native';
+import * as SyncTasks from 'synctasks';
 
-import RX = require('../common/Interfaces');
+import * as RX from '../common/Interfaces';
 
 export class Storage extends RX.Storage {
     getItem(key: string): SyncTasks.Promise<string|undefined> {

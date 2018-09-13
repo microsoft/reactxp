@@ -1,20 +1,20 @@
 /**
-* Image.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation of the cross-platform Image abstraction.
-*/
+ * Image.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN-specific implementation of the cross-platform Image abstraction.
+ */
 
-import PropTypes = require('prop-types');
-import React = require('react');
-import RN = require('react-native');
-import SyncTasks = require('synctasks');
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import * as RN from 'react-native';
+import * as SyncTasks from 'synctasks';
 
-import Styles from './Styles';
-import Types = require('../common/Types');
+import { Types } from '../common/Interfaces';
 import { DEFAULT_RESIZE_MODE } from '../common/Image';
+import Styles from './Styles';
 
 const _styles = {
     defaultImage: Styles.createImageStyle({
