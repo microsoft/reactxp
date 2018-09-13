@@ -1,17 +1,16 @@
 /**
-* Linking.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Common implementation for deep linking.
-*/
+ * Linking.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Common implementation for deep linking.
+ */
 
-import _ = require('./lodashMini');
+import * as SyncTasks from 'synctasks';
 
-import RX = require('../common/Interfaces');
-import Types = require('../common/Types');
-import SyncTasks = require('synctasks');
+import * as RX from './Interfaces';
+import { filter } from './lodashMini';
 
 // Collection of Regex that help validate an email.
 // The name can be any of these characters.
@@ -27,7 +26,7 @@ export abstract class Linking extends RX.Linking {
     protected abstract _openUrl(url: string): SyncTasks.Promise<void>;
 
     // Launches SMS app
-    launchSms(phoneInfo: Types.SmsInfo): SyncTasks.Promise<void> {
+    launchSms(phoneInfo: RX.Types.SmsInfo): SyncTasks.Promise<void> {
         // Format phone info
         const phoneUrl = this._createSmsUrl(phoneInfo);
         return this._openUrl(phoneUrl);
@@ -39,7 +38,7 @@ export abstract class Linking extends RX.Linking {
     }
 
     // Escaped Email uri - mailto:[emailAddress]?subject=<emailSubject>&body=<emailBody>
-    protected _createEmailUrl(emailInfo: Types.EmailInfo) {
+    protected _createEmailUrl(emailInfo: RX.Types.EmailInfo) {
         let emailUrl: string = 'mailto:';
         let validEmails: string[];
 
@@ -71,7 +70,7 @@ export abstract class Linking extends RX.Linking {
     }
 
     // Escaped SMS uri - sms:<phoneNumber>?body=<messageString>
-    protected _createSmsUrl(smsInfo: Types.SmsInfo) {
+    protected _createSmsUrl(smsInfo: RX.Types.SmsInfo) {
         let smsUrl = 'sms:';
         if (smsInfo.phoneNumber) {
             smsUrl += encodeURI(smsInfo.phoneNumber);
@@ -106,9 +105,6 @@ export abstract class Linking extends RX.Linking {
     }
 
     private _filterValidEmails(emails: string[]): string[] {
-        let validEmails = _.filter(emails, e => {
-            return this._isEmailValid(e);
-        });
-        return validEmails;
+        return filter(emails, e => this._isEmailValid(e));
     }
 }

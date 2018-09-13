@@ -1,14 +1,14 @@
 /**
-* Easing.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Easing functions for animations.
-*/
+ * Easing.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Easing functions for animations.
+ */
 
-import Bezier = require('./Bezier');
-import Types = require('./Types');
+import * as Bezier from './Bezier';
+import { Types } from './Interfaces';
 
 export class Easing implements Types.Animated.Easing {
     CubicBezier(x1: number, y1: number, x2: number, y2: number): Types.Animated.EasingFunction {

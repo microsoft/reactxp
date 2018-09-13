@@ -1,11 +1,11 @@
 /**
-* Accessibility.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Common wrapper for accessibility helper exposed from ReactXP.
-*/
+ * Accessibility.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Common wrapper for accessibility helper exposed from ReactXP.
+ */
 
 import { Accessibility as NativeAccessibility, default as parentInstance } from '../native-common/Accessibility';
 

@@ -1,21 +1,21 @@
 /**
-* TextInput.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation of the cross-platform TextInput abstraction.
-*/
+ * TextInput.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN-specific implementation of the cross-platform TextInput abstraction.
+ */
 
-import React = require('react');
-import RN = require('react-native');
-import PropTypes = require('prop-types');
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import * as RN from 'react-native';
 
-import AccessibilityUtil from './AccessibilityUtil';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import { Types } from '../common/Interfaces';
+import AccessibilityUtil from './AccessibilityUtil';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import Styles from '../native-common/Styles';
-import Types = require('../common/Types');
 
 const _styles = {
     defaultTextInput: Styles.createTextInputStyle({

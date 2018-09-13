@@ -1,22 +1,21 @@
 /**
-* StyleLeakDetector.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Detects style memory-leaks in react-native.
-* To fix warning you could:
-*  - use not cached styles by providing cacheStyle == false to Style.create... method
-*  - for colors you could use StylesRegestry component
-*  - for rx component you could temporary disable validation by calling pause method and restore by calling resume,
-*    but please make sure that it doesn't leaks first please
-*/
+ * StyleLeakDetector.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Detects style memory-leaks in react-native.
+ * To fix warning you could:
+ *  - use not cached styles by providing cacheStyle == false to Style.create... method
+ *  - for colors you could use StylesRegestry component
+ *  - for rx component you could temporary disable validation by calling pause method and restore by calling resume,
+ *    but please make sure that it doesn't leaks first please
+ */
 
-import _ = require('./lodashMini');
+import { Dictionary, sortBy } from './lodashMini';
 
+import { Types } from './Interfaces';
 import AppConfig from './AppConfig';
-
-import Types = require('../common/Types');
 
 export class StyleLeakDetector {
     private _fingerprintRegistry: {[key: string]: string} = {};
@@ -39,8 +38,8 @@ export class StyleLeakDetector {
         }
     }
 
-    private _sortObject(object: _.Dictionary<any>) {
-        let result: _.Dictionary<any> = {};
+    private _sortObject(object: Dictionary<any>) {
+        let result: Dictionary<any> = {};
         let keys: string [] = [];
         for (let key in object) {
             if (object.hasOwnProperty(key)) {
@@ -48,7 +47,7 @@ export class StyleLeakDetector {
             }
         }
 
-        keys = _.sortBy(keys);
+        keys = sortBy(keys);
         const keysLength = keys.length;
         for (let i: number = 0; i < keysLength; i++) {
             let key: any = keys[i];
@@ -90,5 +89,4 @@ export class StyleLeakDetector {
     }
 }
 
-var instance = new StyleLeakDetector();
-export default instance;
+export default new StyleLeakDetector();

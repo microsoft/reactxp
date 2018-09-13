@@ -1,15 +1,15 @@
 /**
-* AccessibilityUtil.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Common accessibility interface for platform-specific accessibility utilities.
-*/
+ * AccessibilityUtil.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Common accessibility interface for platform-specific accessibility utilities.
+ */
 
-import React = require('react');
+import * as React from 'react';
 
-import Types = require('../common/Types');
+import { Types } from '../common/Interfaces';
 
 export type ImportantForAccessibilityValue = 'auto' | 'yes' | 'no' | 'no-hide-descendants';
 export const ImportantForAccessibilityMap = {

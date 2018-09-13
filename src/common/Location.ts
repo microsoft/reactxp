@@ -1,16 +1,14 @@
 ﻿/**
-* Location.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Methods to fetch the user's location.
-*/
+ * Location.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Methods to fetch the user's location.
+ */
 
-import RX = require('../common/Interfaces');
-
-import SyncTasks = require('synctasks');
-import Types = require('../common/Types');
+import * as SyncTasks from 'synctasks';
+import * as RX from './Interfaces';
 
 export class Location extends RX.Location {
     setConfiguration(config: RX.LocationConfiguration) {
@@ -38,7 +36,7 @@ export class Location extends RX.Location {
 
         if (!this.isAvailable()) {
             let error: PositionError = {
-                code: Types.LocationErrorType.PositionUnavailable,
+                code: RX.Types.LocationErrorType.PositionUnavailable,
                 message: 'Position unavailable because device does not support it.',
                 PERMISSION_DENIED: 0,
                 POSITION_UNAVAILABLE: 1,
@@ -65,25 +63,25 @@ export class Location extends RX.Location {
     // Get the current location of the user on a repeating basis. This method returns
     // a promise that resolves to a watcher id or rejects with an error code. If resolved,
     // future locations and errors will be piped through the provided callbacks.
-    watchPosition(successCallback: Types.LocationSuccessCallback, errorCallback?: Types.LocationFailureCallback,
-        options?: PositionOptions): SyncTasks.Promise<Types.LocationWatchId> {
+    watchPosition(successCallback: RX.Types.LocationSuccessCallback, errorCallback?: RX.Types.LocationFailureCallback,
+        options?: PositionOptions): SyncTasks.Promise<RX.Types.LocationWatchId> {
         if (!this.isAvailable()) {
-            return SyncTasks.Rejected<Types.LocationWatchId>(Types.LocationErrorType.PositionUnavailable);
+            return SyncTasks.Rejected<RX.Types.LocationWatchId>(RX.Types.LocationErrorType.PositionUnavailable);
         }
 
         const watchId = navigator.geolocation.watchPosition((position: Position) => {
             successCallback(position);
         }, (error: PositionError) => {
             if (errorCallback) {
-                errorCallback(error.code as Types.LocationErrorType);
+                errorCallback(error.code as RX.Types.LocationErrorType);
             }
-        }, options) as Types.LocationWatchId;
+        }, options) as RX.Types.LocationWatchId;
 
-        return SyncTasks.Resolved<Types.LocationWatchId>(watchId);
+        return SyncTasks.Resolved<RX.Types.LocationWatchId>(watchId);
     }
 
     // Clears a location watcher from watchPosition.
-    clearWatch(watchID: Types.LocationWatchId): void {
+    clearWatch(watchID: RX.Types.LocationWatchId): void {
         navigator.geolocation.clearWatch(watchID as number);
     }
 }

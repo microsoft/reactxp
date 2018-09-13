@@ -1,17 +1,18 @@
 /**
-* PopupContainerViewBase.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Common parent of all components rendered into a popup. Calls onShow and onHide
-* callbacks when the popup is hidden (i.e. "closed" but still rendered as hidden)
-* and re-shown. Abstract class to be overriden per platform.
-*/
+ * PopupContainerViewBase.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Common parent of all components rendered into a popup. Calls onShow and onHide
+ * callbacks when the popup is hidden (i.e. "closed" but still rendered as hidden)
+ * and re-shown. Abstract class to be overriden per platform.
+ */
 
-import React = require('react');
-import PropTypes = require('prop-types');
-import Types = require('./Types');
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+
+import { Types } from './Interfaces';
 import FocusManagerBase from './utils/FocusManager';
 
 export interface PopupContainerViewBaseProps extends Types.CommonProps {

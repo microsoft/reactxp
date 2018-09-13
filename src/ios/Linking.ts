@@ -1,14 +1,14 @@
 /**
-* Linking.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* iOS-specific implementation for deep linking.
-*/
+ * Linking.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * iOS-specific implementation for deep linking.
+ */
 
-import Types = require('../common/Types');
 import { Linking as CommonLinking } from '../native-common/Linking';
+import { Types } from '../common/Interfaces';
 
 export class Linking extends CommonLinking {
     // Escaped SMS uri - sms:<phoneNumber>&body=<messageString>

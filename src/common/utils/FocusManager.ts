@@ -1,18 +1,18 @@
 /**
-* FocusManager.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Manages focusable elements for better keyboard navigation.
-*/
+ * FocusManager.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Manages focusable elements for better keyboard navigation.
+ */
 
-import React = require('react');
-import PropTypes = require('prop-types');
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 
+import { Types } from '../../common/Interfaces';
 import AppConfig from '../../common/AppConfig';
 import Timers from './Timers';
-import Types = require('../../common/Types');
 
 let _lastComponentId: number = 0;
 
