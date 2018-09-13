@@ -1,17 +1,19 @@
 /**
-* FocusManager.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Manages focusable elements for better keyboard navigation (RN desktop version)
-*/
+ * FocusManager.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Manages focusable elements for better keyboard navigation (RN desktop version)
+ */
 
-import { FocusManager as FocusManagerBase,
-    FocusableComponentInternal as FocusableComponentInternalBase,
+import {
     applyFocusableComponentMixin as applyFocusableComponentMixinBase,
-    StoredFocusableComponent as StoredFocusableComponentBase } from '../../common/utils/FocusManager';
-
+    FocusableComponentInternal as FocusableComponentInternalBase,
+    FocusManager as FocusManagerBase,
+    StoredFocusableComponent as StoredFocusableComponentBase,
+    FocusableComponentStateCallback,
+} from '../../common/utils/FocusManager';
 import { ImportantForAccessibilityValue } from '../../native-common/AccessibilityUtil';
 import AppConfig from '../../common/AppConfig';
 import Platform from '../../native-common/Platform';
@@ -20,7 +22,6 @@ import UserInterface from '../../native-common/UserInterface';
 
 const isNativeWindows: boolean = Platform.getType() === 'windows';
 
-import { FocusableComponentStateCallback } from  '../../common/utils/FocusManager';
 export { FocusableComponentStateCallback };
 
 export enum OverrideType {

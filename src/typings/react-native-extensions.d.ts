@@ -1,14 +1,14 @@
 /**
-* react-native-extensions.d.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Type definition file that extends the public React Native type definition file.
-*/
+ * react-native-extensions.d.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Type definition file that extends the public React Native type definition file.
+ */
 
-import React = require('react');
-import RN = require('react-native');
+import * as React from 'react';
+import * as RN from 'react-native';
 
 declare module 'react-native' {
     interface ExtendedViewProps extends RN.ViewProps {

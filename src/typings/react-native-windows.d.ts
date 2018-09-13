@@ -1,17 +1,16 @@
 /**
-* react-native-windows.d.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Type definition file for React Native Windows only components and modules
-* Definitions for extensions pertaining to existing React Native components are merged into the reaxt-native.d.ts file.
-*/
+ * react-native-windows.d.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Type definition file for React Native Windows only components and modules
+ * Definitions for extensions pertaining to existing React Native components are merged into the reaxt-native.d.ts file.
+ */
 
 declare module 'react-native-windows' {
-
-    import React = require('react');
-    import RN = require('react-native');
+    import * as React from 'react';
+    import * as RN from 'react-native';
 
     interface AccessibilityEvents {
         onAccessibilityTap?: (e: RN.NativeSyntheticEvent<any>) => void;

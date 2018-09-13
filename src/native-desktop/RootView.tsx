@@ -1,18 +1,24 @@
 /**
-* RootView.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* The top-most view that's used for proper layering or modals and popups.
-*/
+ * RootView.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * The top-most view that's used for proper layering or modals and popups.
+ */
 
-import React = require('react');
-import RN = require('react-native');
-import PropTypes = require('prop-types');
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import * as RN from 'react-native';
 
-import { RootView as RootViewBase, RootViewUsingProps as RootViewUsingPropsBase,
-    BaseRootViewProps, RootViewPropsWithMainViewType, RootViewState, BaseRootView } from '../native-common/RootView';
+import {
+    BaseRootViewProps,
+    BaseRootView,
+    RootView as RootViewBase,
+    RootViewUsingProps as RootViewUsingPropsBase,
+    RootViewPropsWithMainViewType,
+    RootViewState,
+} from '../native-common/RootView';
 import Input from './Input';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import FocusManager from './utils/FocusManager';
@@ -27,7 +33,7 @@ const _styles = RN.StyleSheet.create({
     appWrapperStyle : {
         flex: 1
     }
-  });
+});
 
 //
 // Mixin with keyboard management behaviors. It enhances the two RootView flavors by adding:
