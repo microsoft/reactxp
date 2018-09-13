@@ -1,13 +1,13 @@
 /**
-* Accessibility.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Native wrapper for accessibility helper.
-*/
+ * Accessibility.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Native wrapper for accessibility helper.
+ */
 
-import RN = require('react-native');
+import * as RN from 'react-native';
 
 import { Accessibility as CommonAccessibility } from '../common/Accessibility';
 

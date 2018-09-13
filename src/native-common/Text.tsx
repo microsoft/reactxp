@@ -1,22 +1,22 @@
 /**
-* Text.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation of the cross-platform Text abstraction.
-*/
+ * Text.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN-specific implementation of the cross-platform Text abstraction.
+ */
 
-import _ = require('./lodashMini');
-import PropTypes = require('prop-types');
-import React = require('react');
-import RN = require('react-native');
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import * as RN from 'react-native';
 
-import AccessibilityUtil from './AccessibilityUtil';
+import { compact } from './utils/lodashMini';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import { Types } from '../common/Interfaces';
+import AccessibilityUtil from './AccessibilityUtil';
 import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
-import Types = require('../common/Types');
 
 const _styles = {
     defaultText: Styles.createTextStyle({
@@ -115,7 +115,7 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
     }
 
     protected _getStyles(): Types.StyleRuleSetRecursiveArray<Types.TextStyleRuleSet> {
-        return _.compact([_styles.defaultText, this.props.style]);
+        return compact([_styles.defaultText, this.props.style]);
     }
 
     requestFocus() {

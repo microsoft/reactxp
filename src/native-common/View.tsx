@@ -7,20 +7,19 @@
 * RN-specific implementation of the cross-platform View abstraction.
 */
 
-import _ = require('./lodashMini');
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import * as RN from 'react-native';
+import assert from 'assert';
 
-import assert = require('assert');
-import React = require('react');
-import RN = require('react-native');
-import PropTypes = require('prop-types');
-
-import AccessibilityUtil from './AccessibilityUtil';
+import { clone, extend } from './utils/lodashMini';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import { Types } from '../common/Interfaces';
+import AccessibilityUtil from './AccessibilityUtil';
 import Animated from './Animated';
 import EventHelpers from './utils/EventHelpers';
 import Styles from './Styles';
 import Timers from '../common/utils/Timers';
-import Types = require('../common/Types');
 import UserInterface from './UserInterface';
 import ViewBase from './ViewBase';
 
@@ -320,7 +319,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
      * as on android that would lead to extra layers of Views.
      */
     protected _buildInternalProps(props: Types.ViewProps) {
-        this._internalProps = _.clone(props) as any;
+        this._internalProps = clone(props) as any;
         this._internalProps.ref = this._setNativeView;
 
         if (props.testId) {
@@ -339,7 +338,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
             accessibilityComponentType: AccessibilityUtil.accessibilityComponentTypeToString(props.accessibilityTraits),
             accessibilityLiveRegion: AccessibilityUtil.accessibilityLiveRegionToString(props.accessibilityLiveRegion),
         };
-        this._internalProps = _.extend(this._internalProps, accessibilityProps);
+        this._internalProps = extend(this._internalProps, accessibilityProps);
 
         if (props.onLayout) {
             this._internalProps.onLayout = this._onLayout;
@@ -364,7 +363,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
                 onResponderRelease: this.touchableHandleResponderRelease,
                 onResponderTerminate: this.touchableHandleResponderTerminate
             };
-            this._internalProps = _.extend(this._internalProps, responderProps);
+            this._internalProps = extend(this._internalProps, responderProps);
 
             if (!this.props.disableTouchOpacityAnimation) {
                 const opacityValueFromProps = this._getDefaultOpacityValue(props);

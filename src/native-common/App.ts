@@ -1,28 +1,26 @@
 /**
-* App.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Native implementation of App API namespace.
-*/
+ * App.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Native implementation of App API namespace.
+ */
 
-import RN = require('react-native');
+import * as RN from 'react-native';
 
+import * as RX from '../common/Interfaces';
 import { RootView, RootViewUsingProps } from './RootView';
-import RX = require('../common/Interfaces');
-import Types = require('../common/Types');
 import UserInterface from './UserInterface';
 
-const _rnStateToRxState: {[key: string]: Types.AppActivationState} = {
-    'unknown': Types.AppActivationState.Active,
-    'active': Types.AppActivationState.Active,
-    'background': Types.AppActivationState.Background,
-    'inactive': Types.AppActivationState.Inactive,
-    'extension': Types.AppActivationState.Extension,
+const _rnStateToRxState: {[key: string]: RX.Types.AppActivationState} = {
+    'unknown': RX.Types.AppActivationState.Active,
+    'active': RX.Types.AppActivationState.Active,
+    'background': RX.Types.AppActivationState.Background,
+    'inactive': RX.Types.AppActivationState.Inactive,
+    'extension': RX.Types.AppActivationState.Extension,
     // uninitialized means in Background on android since last change I did
-    'uninitialized': Types.AppActivationState.Background
-
+    'uninitialized': RX.Types.AppActivationState.Background
 };
 
 export class App extends RX.App {
@@ -31,7 +29,7 @@ export class App extends RX.App {
 
         RN.AppState.addEventListener('change', (newState: string) => {
             // Fall back to active if a new state spits out that we don't know about
-            this.activationStateChangedEvent.fire(_rnStateToRxState[newState] || Types.AppActivationState.Active);
+            this.activationStateChangedEvent.fire(_rnStateToRxState[newState] || RX.Types.AppActivationState.Active);
         });
 
         RN.AppState.addEventListener('memoryWarning', () => {
@@ -46,8 +44,8 @@ export class App extends RX.App {
         UserInterface.registerRootViewUsingPropsFactory(this.getRootViewUsingPropsFactory());
     }
 
-    getActivationState(): Types.AppActivationState {
-        return _rnStateToRxState[RN.AppState.currentState] || Types.AppActivationState.Active;
+    getActivationState(): RX.Types.AppActivationState {
+        return _rnStateToRxState[RN.AppState.currentState] || RX.Types.AppActivationState.Active;
     }
 
     protected getRootViewFactory(): RN.ComponentProvider {

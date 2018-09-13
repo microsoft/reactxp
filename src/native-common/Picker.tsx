@@ -1,17 +1,17 @@
 /**
-* Picker.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation of the cross-platform Picker abstraction.
-*/
+ * Picker.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN-specific implementation of the cross-platform Picker abstraction.
+ */
 
-import _ = require('./lodashMini');
-import React = require('react');
-import RN = require('react-native');
+import * as React from 'react';
+import * as RN from 'react-native';
 
-import RX = require('../common/Interfaces');
+import * as RX from '../common/Interfaces';
+import { map } from './utils/lodashMini';
 
 export class Picker extends RX.Picker {
     render() {
@@ -23,7 +23,7 @@ export class Picker extends RX.Picker {
                 mode={ this.props.mode }
                 testID={ this.props.testId }
             >
-                { _.map(this.props.items, (i, idx) => <RN.Picker.Item { ...i } key={ idx } /> ) }
+                { map(this.props.items, (i, idx) => <RN.Picker.Item { ...i } key={ idx } /> ) }
             </RN.Picker>
         );
     }

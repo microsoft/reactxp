@@ -1,24 +1,24 @@
 ﻿/**
-* PopupContainerView.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* The view containing the Popup to show. This view does its own position
-* calculation on rendering as directed by position instructions received
-* through properties.
-*/
+ * PopupContainerView.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * The view containing the Popup to show. This view does its own position
+ * calculation on rendering as directed by position instructions received
+ * through properties.
+ */
 
-import _ = require('./lodashMini');
-import assert = require('assert');
-import React = require('react');
-import RN = require('react-native');
+import * as assert from 'assert';
+import * as React from 'react';
+import * as RN from 'react-native';
 
+import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext } from '../common/PopupContainerViewBase';
+import { extend, isEqual } from './utils/lodashMini';
+import { Types } from '../common/Interfaces';
 import AccessibilityUtil from './AccessibilityUtil';
 import International from './International';
 import Timers from '../common/utils/Timers';
-import Types = require('../common/Types');
-import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext } from '../common/PopupContainerViewBase';
 import UserInterface from './UserInterface';
 
 // Width of the "alley" around popups so they don't get too close to the boundary of the screen boundary.
@@ -194,7 +194,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
         // If the popup hasn't been rendered yet, skip.
         if (popupRect.width > 0 && popupRect.height > 0) {
             // Make a copy of the old state.
-            let newState: PopupContainerViewState = _.extend({}, this.state);
+            let newState: PopupContainerViewState = extend({}, this.state);
 
             if (this.state.isMeasuringPopup) {
                 newState.isMeasuringPopup = false;
@@ -351,7 +351,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
                 }
             });
 
-            if (!_.isEqual(newState, this.state)) {
+            if (!isEqual(newState, this.state)) {
                 this.setState(newState);
             }
         }
@@ -390,7 +390,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
 
         newState.anchorPosition = pos;
 
-        if (!_.isEqual(newState, this.state)) {
+        if (!isEqual(newState, this.state)) {
             this.setState(newState);
         }
     }
