@@ -235,12 +235,37 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
 
         // Drag and drop related properties
-        for (const name of ['onDragStart', 'onDragEnter', 'onDragOver', 'onDrop', 'onDragLeave']) {
+        for (const name of ['onDragEnter', 'onDragOver', 'onDrop', 'onDragLeave']) {
             const handler = this._internalProps[name];
 
             if (handler) {
                 this._internalProps.allowDrop = true;
 
+                this._internalProps[name] = (e: React.SyntheticEvent<View>) => {
+                    handler({
+                        dataTransfer: (e.nativeEvent as any).dataTransfer,
+
+                        stopPropagation() {
+                            if (e.stopPropagation) {
+                                e.stopPropagation();
+                            }
+                        },
+
+                        preventDefault() {
+                            if (e.preventDefault) {
+                                e.preventDefault();
+                            }
+                        },
+                    });
+                };
+            }
+        }
+
+        // Drag and drop related properties
+        for (const name of ['onDragStart']) {
+            const handler = this._internalProps[name];
+
+            if (handler) {
                 this._internalProps[name] = (e: React.SyntheticEvent<View>) => {
                     handler({
                         dataTransfer: (e.nativeEvent as any).dataTransfer,
