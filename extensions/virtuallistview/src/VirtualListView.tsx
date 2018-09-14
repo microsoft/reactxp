@@ -1,43 +1,50 @@
 /**
-* VirtualListView.tsx
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* A cross-platform virtualized list view supporting variable-height items and
-* methods to navigate to specific items by index.
-*
-* Misc notes to help understand the flow:
-* 1. There are only a few ways to enter calculation flows:
-*    * _updateStateFromProps: We got new props
-*    * _onLayoutContainer: Our outer container rendered and/or changed size
-*    * _onLayoutItem: An item rendered and/or changed changed size
-*    * _onScroll: The user scrolled the container
-*    Everything else is a helper function for these four entry points.
-* 2. We largely ignore the React lifecycle here. We completely eschew state in favor of forceUpdate when
-*    we know that we need to  call render(). We cheat and use the animation code to move items and make
-*    them opaque/invisible at the right time outside of the render cycle.
-* 3. Items are rendered in containers called "cells". Cells are allocated on demand and given their own keys.
-*    When an item is no longer within the view port (e.g. in response to the the user scrolling), the corresponding
-*    cell is recycled to avoid unmounting and mounting. These recycled cells are rendered in a position that is
-*    not visible to the user. When a new cell is needed, we consult the recycled cell list to find one that matches
-*    the specified "template" of the new item. Callers should set the template field in a way that all similar items
-*    share the same template. This will minimize the amount of work that React needs to be done to reuse the recycled
-*    cell.
-* 3. The intended render flow is as follows:
-*    * Start filling hidden items from top down
-*    * Wait for items to be measured (or if heights are known, then bypass this step)
-*    * Set the translation of all items such that they appear in view at the same time without new items popping
-*      into existence afterward.
-* 4. We address the issue of unexpected item heights tracking _heightAboveRenderAdjustment. When this is
-*    non-zero, it means that our initial guess for one or more items was wrong, so the _containerHeight is
-*    currently incorrect. Correcting this is an expensive and potentially disruptive action because it
-*    involves setting the container height, repositioning all visible cells and setting the scroll
-*    position all in the same frame if possible.
-*/
+ * VirtualListView.tsx
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * A cross-platform virtualized list view supporting variable-height items and
+ * methods to navigate to specific items by index.
+ *
+ * Misc notes to help understand the flow:
+ * 1. There are only a few ways to enter calculation flows:
+ *    * _updateStateFromProps: We got new props
+ *    * _onLayoutContainer: Our outer container rendered and/or changed size
+ *    * _onLayoutItem: An item rendered and/or changed changed size
+ *    * _onScroll: The user scrolled the container
+ *    Everything else is a helper function for these four entry points.
+ * 2. We largely ignore the React lifecycle here. We completely eschew state in favor of forceUpdate when
+ *    we know that we need to  call render(). We cheat and use the animation code to move items and make
+ *    them opaque/invisible at the right time outside of the render cycle.
+ * 3. Items are rendered in containers called "cells". Cells are allocated on demand and given their own keys.
+ *    When an item is no longer within the view port (e.g. in response to the the user scrolling), the corresponding
+ *    cell is recycled to avoid unmounting and mounting. These recycled cells are rendered in a position that is
+ *    not visible to the user. When a new cell is needed, we consult the recycled cell list to find one that matches
+ *    the specified "template" of the new item. Callers should set the template field in a way that all similar items
+ *     share the same template. This will minimize the amount of work that React needs to be done to reuse the recycled
+ *    cell.
+ * 3. The intended render flow is as follows:
+ *    * Start filling hidden items from top down
+ *    * Wait for items to be measured (or if heights are known, then bypass this step)
+ *    * Set the translation of all items such that they appear in view at the same time without new items popping
+ *      into existence afterward.
+ * 4. We address the issue of unexpected item heights tracking _heightAboveRenderAdjustment. When this is
+ *    non-zero, it means that our initial guess for one or more items was wrong, so the _containerHeight is
+ *    currently incorrect. Correcting this is an expensive and potentially disruptive action because it
+ *    involves setting the container height, repositioning all visible cells and setting the scroll
+ *    position all in the same frame if possible.
+ */
 
-import _ = require('lodash');
-import assert = require('assert');
-import RX = require('reactxp');
+import * as assert from 'assert';
+import * as RX from 'reactxp';
+import isUndefined from 'lodash/isUndefined';
+import isArray from 'lodash/isArray';
+import isEqual from 'lodash/isEqual';
+import findIndex from 'lodash/findIndex';
+import size from 'lodash/size';
+import each from 'lodash/each';
+import map from 'lodash/map';
+import defer from 'lodash/defer';
 
 import { VirtualListCell, VirtualListCellInfo } from './VirtualListCell';
 
@@ -65,7 +72,7 @@ export interface VirtualListViewItemInfo extends VirtualListCellInfo {
 
 export interface VirtualListViewProps<ItemInfo extends VirtualListViewItemInfo> extends RX.CommonStyledProps<RX.Types.ViewStyleRuleSet> {
     testId?: string;
-    
+
     // Ordered list of descriptors for items to display in the list.
     itemList: ItemInfo[];
 
@@ -249,7 +256,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
     }
 
     componentWillReceiveProps(nextProps: VirtualListViewProps<ItemInfo>): void {
-        if (!_.isEqual(this.props, nextProps)) {
+        if (!isEqual(this.props, nextProps)) {
             this._updateStateFromProps(nextProps, false);
         }
     }
@@ -303,7 +310,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             this._minCullAmount = 3072;
         }
 
-        if (initialBuild || !_.isEqual(this.props.itemList, props.itemList)) {
+        if (initialBuild || !isEqual(this.props.itemList, props.itemList)) {
             this._handleItemListChange(props);
             this._calcNewRenderedItemState(props);
         }
@@ -314,7 +321,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
     private _handleItemListChange(props: VirtualListViewProps<ItemInfo>) {
         // Build a new item map.
         const newItemMap: { [itemKey: string]: number } = {};
-        _.each(props.itemList, (item, itemIndex) => {
+        each(props.itemList, (item, itemIndex) => {
             // Make sure there are no duplicate keys.
             if (item.key in newItemMap) {
                 assert.ok(false, 'Found a duplicate key: ' + item.key);
@@ -330,7 +337,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
                 if (cell) {
                     const oldItemIndex = this._itemMap[item.key];
                     const oldItem = this.props.itemList[oldItemIndex];
-                    if (this.props.skipRenderIfItemUnchanged && !_.isEqual(oldItem, item)) {
+                    if (this.props.skipRenderIfItemUnchanged && !isEqual(oldItem, item)) {
                         cell.shouldUpdate = true;
                     }
                 }
@@ -339,7 +346,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
 
         // Stop tracking the heights of deleted items.
         const oldItems = (this.props && this.props.itemList) ? this.props.itemList : [];
-        _.each(oldItems, (item, itemIndex) => {
+        each(oldItems, (item, itemIndex) => {
             if (!(item.key in newItemMap)) {
                 // If we're deleting an item that's above the current render block,
                 // update the adjustment so we avoid an unnecessary scroll.
@@ -534,7 +541,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             delete this._pendingMeasurements[itemKey];
 
             // Are we done measuring things?
-            if (_.size(this._pendingMeasurements) === 0) {
+            if (size(this._pendingMeasurements) === 0) {
                 needsRecalc = true;
             }
         }
@@ -561,9 +568,9 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
                 // because we've received new props. We don't want to re-enter the
                 // routines with the old props, so we'll defer and wait for this.props
                 // to be updated.
-                _.defer(() => {
+                defer(() => {
                     if (this._isMounted) {
-                        if (_.size(this._pendingAnimations) === 0 && this._isMounted) {
+                        if (size(this._pendingAnimations) === 0 && this._isMounted) {
                             // Perform deferred actions now that all animations are complete.
                             this._reconcileCorrections(this.props);
                         }
@@ -613,7 +620,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             return;
         }
 
-        if (_.size(this._pendingMeasurements) > 0) {
+        if (size(this._pendingMeasurements) > 0) {
             // Don't bother if we're still measuring things. Wait for the last batch to end.
             return;
         }
@@ -783,7 +790,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         };
 
         // Try to add items to the bottom of the current render block.
-        while (_.size(this._pendingMeasurements) < _maxSimultaneousMeasures) {
+        while (size(this._pendingMeasurements) < _maxSimultaneousMeasures) {
             // Stop if we go beyond the bottom render limit.
             if (this._itemsBelowRenderBlock <= 0 ||
                 this._heightAboveRenderAdjustment + this._heightAboveRenderBlock +
@@ -795,7 +802,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         }
 
         // Try to add an item to the top of the current render block.
-        while (_.size(this._pendingMeasurements) < _maxSimultaneousMeasures) {
+        while (size(this._pendingMeasurements) < _maxSimultaneousMeasures) {
             if (this._itemsAboveRenderBlock <= 0 ||
                 this._heightAboveRenderAdjustment + this._heightAboveRenderBlock <= renderBlockTopLimit) {
                 break;
@@ -805,7 +812,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         }
 
         // See if we've filled the screen and rendered it, and we're not waiting on any measurements.
-        if (!this._isInitialFillComplete && !this._isRenderDirty && _.size(this._pendingMeasurements) === 0) {
+        if (!this._isInitialFillComplete && !this._isRenderDirty && size(this._pendingMeasurements) === 0) {
             // Time for overrender. Recalc render lines.
             renderMargin = overdrawAmount;
             renderBlockTopLimit = this._lastScrollTop - renderMargin;
@@ -827,7 +834,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
     private _reconcileCorrections(props: VirtualListViewProps<ItemInfo>) {
         // If there are pending animations, don't adjust because it will disrupt
         // the animations. When all animations are complete, we will get called back.
-        if (_.size(this._pendingAnimations) > 0) {
+        if (size(this._pendingAnimations) > 0) {
             return;
         }
 
@@ -916,12 +923,12 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             if (itemTemplate && isHeightConstant) {
                 // See if we can find an exact match both in terms of template and previous key.
                 // This has the greatest chance of rendering the same as previously.
-                let bestOptionIndex = _.findIndex(this._recycledCells, cell => cell.itemTemplate === itemTemplate &&
+                let bestOptionIndex = findIndex(this._recycledCells, cell => cell.itemTemplate === itemTemplate &&
                     cell.cachedItemKey === itemKey && cell.height === height);
 
                 // We couldn't find an exact match. Try to find one with the same template.
                 if (bestOptionIndex < 0) {
-                    bestOptionIndex = _.findIndex(this._recycledCells, cell => cell.itemTemplate === itemTemplate);
+                    bestOptionIndex = findIndex(this._recycledCells, cell => cell.itemTemplate === itemTemplate);
                 }
 
                 if (bestOptionIndex >= 0) {
@@ -1059,7 +1066,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             }
         }
 
-        _.each(this._recycledCells, virtualCellInfo => {
+        each(this._recycledCells, virtualCellInfo => {
             assert.ok(virtualCellInfo, 'Recycled Cells array contains a null object');
             cellList.push({
                 cellInfo: virtualCellInfo,
@@ -1073,7 +1080,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         // change, and perf suffers.
         cellList = cellList.sort((a, b) => a.cellInfo.virtualKey < b.cellInfo.virtualKey ? 1 : -1);
 
-        _.each(cellList, cell => {
+        each(cellList, cell => {
             let tabIndexValue: number;
             let isFocused = false;
             if (cell.item) {
@@ -1119,7 +1126,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
 
         if (this.props.logInfo) {
             // [NOTE: For debugging] This shows the order in which virtual cells are laid out.
-            let domOrder = _.map(cellList, c => {
+            let domOrder = map(cellList, c => {
                 const itemKey = c.item ? c.item.key : null;
                 const itemIndex = c.item ? c.itemIndex : null;
                 return 'vKey: ' + c.cellInfo.virtualKey + ' iKey: ' + itemKey + ' iIdx: ' + itemIndex;
@@ -1131,7 +1138,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         const scrollViewStyle = [_styles.scrollContainer];
         let staticContainerStyle: (RX.Types.ViewStyleRuleSet | RX.Types.AnimatedViewStyleRuleSet)[] = [_styles.staticContainer];
         if (this.props.style) {
-            if (_.isArray(this.props.style)) {
+            if (isArray(this.props.style)) {
                 staticContainerStyle = staticContainerStyle.concat(this.props.style as RX.Types.ViewStyleRuleSet[]);
             } else {
                 staticContainerStyle.push(this.props.style as RX.Types.ViewStyleRuleSet);
@@ -1190,7 +1197,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
     }
 
     private _selectSubsequentItem(direction: FocusDirection, retry = true) {
-        let index = _.findIndex(this._navigatableItemsRendered, item => item.key === this.state.lastFocusedItemKey);
+        let index = findIndex(this._navigatableItemsRendered, item => item.key === this.state.lastFocusedItemKey);
 
         if (index !== -1 && index + direction > -1 && index + direction < this._navigatableItemsRendered.length) {
             let newElementForFocus = this.refs[this._navigatableItemsRendered[index + direction].vc_key] as VirtualListCell;
@@ -1257,7 +1264,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
 
         // If we don't defer this, we can end up overflowing the stack
         // because one render immediately causes another render to be started.
-        _.defer(() => {
+        defer(() => {
             if (this._isMounted) {
                 this._calcNewRenderedItemState(this.props);
                 this._renderIfDirty(this.props);
@@ -1291,7 +1298,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
     }
 
     private _isItemHeightKnown(item: VirtualListViewItemInfo) {
-        return !item.measureHeight || !_.isUndefined(this._heightCache[item.key]);
+        return !item.measureHeight || !isUndefined(this._heightCache[item.key]);
     }
 
     private _getHeightOfItem(item: VirtualListViewItemInfo) {
@@ -1301,7 +1308,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         }
 
         // See if we have it cached
-        if (!_.isUndefined(this._heightCache[item.key])) {
+        if (!isUndefined(this._heightCache[item.key])) {
             return this._heightCache[item.key];
         }
 

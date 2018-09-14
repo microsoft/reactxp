@@ -1,33 +1,30 @@
 ﻿/*
-* Navigator.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web specific implementation of Navigator. This is inspired from React.Navigator.
-* This component is set with props, which are callback methods. It is primarily driven
-* by state updates instigated by its public helpers like immediatelyResetRouteStack, push,
-* pop, which update the state and cause transitions.
-*/
+ * Navigator.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web specific implementation of Navigator. This is inspired from React.Navigator.
+ * This component is set with props, which are callback methods. It is primarily driven
+ * by state updates instigated by its public helpers like immediatelyResetRouteStack, push,
+ * pop, which update the state and cause transitions.
+ */
 
-import _ = require('../common/lodashMini');
-import React = require('react');
-import ReactDOM = require('react-dom');
-import RX = require('reactxp');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as RX from 'reactxp';
+import * as rebound from 'rebound';
 import { Styles, View } from 'reactxp';
-import rebound = require('rebound');
 
-import { NavigatorSceneConfigFactory } from './NavigatorSceneConfigFactory';
-import { NavigatorSceneConfig }  from './NavigatorSceneConfigFactory';
-
+import * as _ from '../common/lodashMini';
+import * as Types from '../common/Types';
+import { NavigatorSceneConfigFactory, NavigatorSceneConfig } from './NavigatorSceneConfigFactory';
 import {
-    Navigator as NavigatorBase,
     NavigatorDelegateSelector as DelegateSelector,
+    NavigatorState as BaseNavigatorState,
+    Navigator as NavigatorBase,
     NavigatorProps,
-    NavigatorState as BaseNavigatorState
 } from '../common/Types';
-
-import Types = require('../common/Types');
 
 // [Bug:506870] Move web navigator to RX animated API
 export interface SpringSystem {
@@ -646,4 +643,4 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
 export default NavigatorImpl;
 export const Navigator = NavigatorImpl;
 export const NavigatorDelegateSelector: DelegateSelector = undefined;
-export import Types = Types;
+export { Types };

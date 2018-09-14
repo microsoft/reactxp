@@ -1,17 +1,17 @@
-/*
-* Video.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation of the cross-platform Video abstraction.
-*/
+/**
+ * Video.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN-specific implementation of the cross-platform Video abstraction.
+ */
 
-import React = require('react');
+import * as React from 'react';
+import * as RX from 'reactxp';
 import { default as RNVideo, VideoInfo, VideoBufferInfo } from 'react-native-video';
-import RX = require('reactxp');
 
-import Types = require('../common/Types');
+import * as Types from '../common/Types';
 
 export interface VideoState {
     isPlaying?: boolean;

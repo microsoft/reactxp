@@ -3,7 +3,7 @@
   "version": "1.3.0",
   "description": "Plugin for ReactXP that provides a navigation framework",
   "scripts": {
-    "build": "tsc",
+    "build": "npm run tslint && tsc",
     "tslint": "tslint -p tsconfig.json -r tslint.json --fix || true"
   },
   "repository": {

@@ -1,18 +1,18 @@
 /**
-* SvgPath.tsx
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation of the cross-platform abstraction for
-* SVG Rect elements.
-*/
+ * SvgPath.tsx
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN-specific implementation of the cross-platform abstraction for
+ * SVG Rect elements.
+ */
 
-import React = require('react');
-import RNSvg = require('react-native-svg');
+import * as React from 'react';
+import * as RNSvg from 'react-native-svg';
 
-import SvgTypes = require('../common/Types');
+import { SvgRectProps } from '../common/Types';
 
-export class SvgRect extends React.Component<SvgTypes.SvgRectProps, {}> {
+export class SvgRect extends React.Component<SvgRectProps, {}> {
     render() {
         return (
             <RNSvg.Rect

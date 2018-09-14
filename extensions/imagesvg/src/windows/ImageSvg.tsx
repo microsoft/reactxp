@@ -1,19 +1,19 @@
 /**
-* ImageSvg.tsx
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation of the cross-platform abstraction for
-* SVG (scalable vector graphics) images.
-*/
+ * ImageSvg.tsx
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN-specific implementation of the cross-platform abstraction for
+ * SVG (scalable vector graphics) images.
+ */
 
-import React = require('react');
+import * as React from 'react';
 
-import SvgTypes = require('../common/Types');
+import { ImageSvgProps } from '../common/Types';
 
 // TODO: #694092 Not implemented
 
-export class ImageSvg extends React.Component<SvgTypes.ImageSvgProps, {}> {
+export class ImageSvg extends React.Component<ImageSvgProps, {}> {
     render(): any {
         return null;
     }

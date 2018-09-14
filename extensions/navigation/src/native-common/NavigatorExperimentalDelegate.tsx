@@ -1,24 +1,24 @@
 /**
-* NavigatorExperimentalDelegate.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Delegate which encapsulates experimental react-native Navigator experience.
-* The main difference of Experimental Navigator is that it uses Animated for navigation animation
-* so we can enable useNativeDriver options for those animations.
-*
-* Currently, Android support on NativeAnimations is more stable and performant than iOS.
-* That's why we need to have the ability to pick different implementations for different platforms.
-*/
+ * NavigatorExperimentalDelegate.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Delegate which encapsulates experimental react-native Navigator experience.
+ * The main difference of Experimental Navigator is that it uses Animated for navigation animation
+ * so we can enable useNativeDriver options for those animations.
+ *
+ * Currently, Android support on NativeAnimations is more stable and performant than iOS.
+ * That's why we need to have the ability to pick different implementations for different platforms.
+ */
 
-import _ = require('../common/lodashMini');
-import assert = require('assert');
-import Navigation = require('reactxp-experimental-navigation');
-import React = require('react');
-import RX = require('reactxp');
-import RN = require('react-native');
+import * as assert from 'assert';
+import * as React from 'react';
+import * as RN from 'react-native';
+import * as RX from 'reactxp';
+import * as Navigation from 'reactxp-experimental-navigation';
 
+import * as _ from '../common/lodashMini';
 import {
     CommandType,
     CustomNavigatorSceneConfig,
@@ -308,7 +308,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
 
     private _createParentState(routes: NavigatorRoute[], prevState: NavigationState): NavigationState {
         const prevRoutes = prevState.routes as NavigationRouteState[];
-        let children = _.map(routes, (element, index) => {
+        let children = _.map(routes, (element: NavigatorRoute, index: number) => {
             if (prevRoutes.length > index) {
                 const prevRoute = prevRoutes[index];
                 // Navigator state reducer is a little bit naive,

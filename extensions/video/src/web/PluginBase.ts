@@ -6,7 +6,7 @@
  * Base export for the Web implementation of the plugin.
  */
 
+import * as Types from '../common/Types';
 import Video from './Video';
-import Types = require('../common/Types');
 
 export { Video as default, Types };

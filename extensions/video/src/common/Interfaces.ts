@@ -1,16 +1,16 @@
 /*
-* Interfaces.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Interface definition for cross-platform ReactXP plugin for
-* display videos and controlling video playback.
-*/
+ * Interfaces.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Interface definition for cross-platform ReactXP plugin for
+ * display videos and controlling video playback.
+ */
 
-import RX = require('reactxp');
+import * as RX from 'reactxp';
 
-import Types = require('./Types');
+import * as Types from './Types';
 
 export abstract class Video extends RX.Component<Types.VideoProps, any> {
     abstract seek(position: number): void;

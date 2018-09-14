@@ -1,18 +1,18 @@
-/*
-* Video.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Windows-specific implementation of the cross-platform Video abstraction.
-*/
+/**
+ * Video.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Windows-specific implementation of the cross-platform Video abstraction.
+ */
 
-import extend = require('lodash/extend');
-import React = require('react');
-import RN = require('react-native');
-import RX = require('reactxp');
+import * as React from 'react';
+import * as RN from 'react-native';
+import * as RX from 'reactxp';
+import extend from 'lodash/extend';
 
-import Types = require('../common/Types');
+import * as Types from '../common/Types';
 
 export interface VideoState {
     isPlaying?: boolean;

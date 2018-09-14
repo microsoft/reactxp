@@ -1,14 +1,14 @@
 /**
-* Types.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-* Type definitions for reactxp-naviigation extension.
-*/
+ * Types.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ * Type definitions for reactxp-naviigation extension.
+ */
 
 // Use only for type data
-import React = require('react');
-import RX = require('reactxp');
+import * as React from 'react';
+import * as RX from 'reactxp';
 
 export type ReactNode = React.ReactNode;
 

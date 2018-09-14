@@ -1,21 +1,20 @@
 ﻿/**
-* ImageSvg.tsx
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* RN-specific implementation of the cross-platform abstraction for
-* SVG (scalable vector graphics) images.
-*/
+ * ImageSvg.tsx
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * RN-specific implementation of the cross-platform abstraction for
+ * SVG (scalable vector graphics) images.
+ */
 
-import assert = require('assert');
-import React = require('react');
-import RNSvg = require('react-native-svg');
+import * as assert from 'assert';
+import * as React from 'react';
+import * as RNSvg from 'react-native-svg';
 
-import SvgTypes = require('../common/Types');
+import { ImageSvgProps } from '../common/Types';
 
-export class ImageSvg extends React.Component<SvgTypes.ImageSvgProps, {}> {
+export class ImageSvg extends React.Component<ImageSvgProps, {}> {
     render() {
-
         assert.ok(this.props.width && this.props.height, 'The width and height on imagesvg are mandatory.');
 
         if (this.props.width > 0 && this.props.height > 0) {
@@ -31,9 +30,9 @@ export class ImageSvg extends React.Component<SvgTypes.ImageSvgProps, {}> {
                     { this.props.children }
                 </RNSvg.Svg>
             );
-        } else {
-            return null;
         }
+
+        return null;
     }
 }
 

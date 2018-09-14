@@ -1,18 +1,17 @@
 /*
-* PluginBaseChecker.ts
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Type check all the pluginbase exports against the desired interface.
-*/
+ * PluginBaseChecker.ts
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Type check all the pluginbase exports against the desired interface.
+ */
 
-import Interfaces = require('./Interfaces');
-
-import AndroidPlugin = require('../android/PluginBase');
-import iOSPlugin = require('../ios/PluginBase');
-import macOSPlugin = require('../macos/PluginBase');
-import WebPlugin = require('../web/PluginBase');
-import WindowsPlugin = require('../windows/PluginBase');
+import * as Interfaces from './Interfaces';
+import * as AndroidPlugin from '../android/PluginBase';
+import * as iOSPlugin from '../ios/PluginBase';
+import * as macOSPlugin from '../macos/PluginBase';
+import * as WebPlugin from '../web/PluginBase';
+import * as WindowsPlugin from '../windows/PluginBase';
 
 /* tslint:disable:no-unused-variable */
 const _typeCheckerAndroid: Interfaces.PluginInterface = AndroidPlugin;
