@@ -10,7 +10,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as RX from 'reactxp';
-import extend from 'lodash/extend';
+import extend = require('lodash/extend');
 
 import * as Types from '../common/Types';
 

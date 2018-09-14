@@ -1,7 +1,5 @@
 {
     "compilerOptions": {
-        "esModuleInterop": true,
-        "importHelpers": true,
         "declaration": true,
         "noResolve": false,
         "jsx": "react",

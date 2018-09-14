@@ -10,7 +10,7 @@
 import * as React from 'react';
 import * as RN from 'react-native';
 import * as RX from 'reactxp';
-import extend from 'lodash/extend';
+import extend = require('lodash/extend');
 
 import * as Types from '../common/Types';
 
