@@ -10,7 +10,7 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
-import assert from 'assert';
+import * as assert from 'assert';
 
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import { Button as ButtonBase } from '../common/Interfaces';

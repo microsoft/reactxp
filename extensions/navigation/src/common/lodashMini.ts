@@ -7,17 +7,17 @@
  * Imports a subset of lodash library needed for ReactXP's implementation.
  */
 
-import assign from 'lodash/assign';
-import clone from 'lodash/clone';
-import cloneDeep from 'lodash/cloneDeep';
-import flatten from 'lodash/flatten';
-import get from 'lodash/get';
-import isArray from 'lodash/isArray';
-import isEmpty from 'lodash/isEmpty';
-import isEqual from 'lodash/isEqual';
-import isNumber from 'lodash/isNumber';
-import map from 'lodash/map';
-import mapValues from 'lodash/mapValues';
+import assign = require('lodash/assign');
+import clone = require('lodash/clone');
+import cloneDeep = require('lodash/cloneDeep');
+import flatten = require('lodash/flatten');
+import get = require('lodash/get');
+import isArray = require('lodash/isArray');
+import isEmpty = require('lodash/isEmpty');
+import isEqual = require('lodash/isEqual');
+import isNumber = require('lodash/isNumber');
+import map = require('lodash/map');
+import mapValues = require('lodash/mapValues');
 
 export interface Dictionary<T> {
     [index: string]: T;
