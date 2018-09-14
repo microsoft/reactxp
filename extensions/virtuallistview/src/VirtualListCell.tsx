@@ -1,14 +1,14 @@
 /**
-* VirtualListCell.tsx
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* This helper class is used in conjunction with VirtualListView. It represents the
-* container for a single list item.
-**/
+ * VirtualListCell.tsx
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * This helper class is used in conjunction with VirtualListView. It represents the
+ * container for a single list item.
+ */
 
-import assert = require('assert');
-import RX = require('reactxp');
+import * as assert from 'assert';
+import * as RX from 'reactxp';
 
 export interface VirtualListCellInfo {
     key: string;

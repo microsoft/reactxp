@@ -1,18 +1,17 @@
-/*
-* react-native-video.d.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Type definition for the React Native implementation
-* of video player:
-* https://github.com/brentvatne/react-native-video
-*/
+/**
+ * react-native-video.d.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Type definition for the React Native implementation
+ * of video player:
+ * https://github.com/brentvatne/react-native-video
+ */
 
 declare module 'react-native-video' {
-
-    import React = require('react');
-    import RN = require('react-native');
+    import * as React from 'react';
+    import * as RN from 'react-native';
 
     interface VideoProgress {
         atValue: number;

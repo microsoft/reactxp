@@ -1,16 +1,16 @@
 /**
-* react-native-svg.d.ts
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Type definition file for the React Native SVG module.
-* https://github.com/react-native-community/react-native-svg
-*/
+ * react-native-svg.d.ts
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Type definition file for the React Native SVG module.
+ * https://github.com/react-native-community/react-native-svg
+ */
 
 declare module 'react-native-svg' {
 
-    import React = require('react');
-    import RN = require('react-native');
+    import * as React from 'react';
+    import * as RN from 'react-native';
 
     type ArrayType = [string] | [number];
 

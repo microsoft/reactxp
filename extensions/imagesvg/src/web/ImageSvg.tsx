@@ -1,19 +1,19 @@
 ﻿/*
-* ImageSvg.tsx
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of the cross-platform abstraction for
-* SVG (scalable vector graphics) images.
-*/
+ * ImageSvg.tsx
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of the cross-platform abstraction for
+ * SVG (scalable vector graphics) images.
+ */
 
-import assert = require('assert');
-import React = require('react');
+import * as assert from 'assert';
+import * as React from 'react';
 import { Styles as RXStyles } from 'reactxp';
 
-import SvgTypes = require('../common/Types');
+import { ImageSvgProps } from '../common/Types';
 
-export class ImageSvg extends React.Component<SvgTypes.ImageSvgProps, {}> {
+export class ImageSvg extends React.Component<ImageSvgProps, {}> {
     render() {
         assert.ok(this.props.width && this.props.height, 'The width and height on imagesvg are mandatory.');
 

@@ -1,5 +1,5 @@
 declare module 'react-native-deprecated-custom-components' {
-    import RN = require('react-native');
+    import * as RN from 'react-native';
 
     interface NavigatorProps extends RN.ComponentPropsBase {
         configureScene?: Function;
@@ -36,5 +36,4 @@ declare module 'react-native-deprecated-custom-components' {
         popToRoute(route: any): void;
         popToTop(): void;
     }
-
 }

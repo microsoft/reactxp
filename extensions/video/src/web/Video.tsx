@@ -1,18 +1,18 @@
-/*
-* Video.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Web-specific implementation of the cross-platform Video abstraction.
-*/
+/**
+ * Video.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Web-specific implementation of the cross-platform Video abstraction.
+ */
 
-import extend = require('lodash/extend');
-import React = require('react');
-import RX = require('reactxp');
-import ReactDOM = require('react-dom');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as RX from 'reactxp';
+import extend from 'lodash/extend';
 
-import Types = require('../common/Types');
+import * as Types from '../common/Types';
 
 class Video extends RX.Component<Types.VideoProps, {}> {
     componentDidMount() {
