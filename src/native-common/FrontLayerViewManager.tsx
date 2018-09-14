@@ -54,13 +54,9 @@ export class FrontLayerViewManager {
     public isModalDisplayed(modalId?: string) : boolean {
         if (modalId) {
             return this._findIndexOfModal(modalId) !== -1;
-        } else {
-            if (this._overlayStack.length > 0) {
-                const modals = _.filter(this._overlayStack, iter => (iter instanceof ModalStackContext));
-                return modals.length > 0;
-            }
-            return false;
         }
+
+        return this._overlayStack.some(iter => iter instanceof ModalStackContext);
     }
 
     public dismissModal(modalId: string): void {
@@ -79,8 +75,7 @@ export class FrontLayerViewManager {
         }
     }
 
-    public showPopup(
-        popupOptions: Types.PopupOptions, popupId: string, delay?: number): boolean {
+    public showPopup(popupOptions: Types.PopupOptions, popupId: string, delay?: number): boolean {
         const index = this._findIndexOfPopup(popupId);
         if (index === -1) {
             const nodeHandle = RN.findNodeHandle(popupOptions.getAnchor());
@@ -284,17 +279,12 @@ export class FrontLayerViewManager {
         return this._overlayStack.length === 0 ? null : _.last(this._overlayStack);
     }
 
-    isPopupDisplayed(popupId?: string): boolean {
+    public isPopupDisplayed(popupId?: string): boolean {
         if (popupId) {
             return this._findIndexOfPopup(popupId) !== -1;
-        } else {
-            if (this._overlayStack.length > 0) {
-                const popups = _.filter(this._overlayStack, iter => (iter instanceof PopupStackContext));
-                return popups.length > 0;
-            }
-
-            return false;
         }
+
+        return this._overlayStack.some(iter => iter instanceof PopupStackContext);
     }
 }
 
