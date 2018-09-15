@@ -265,6 +265,15 @@ export class Styles extends RX.Styles {
         }
 
         if (def.flex !== undefined) {
+            // In development mode, see if we're going to overwrite explicit flexGrow
+            // or flexShrink attributes. It's a programming error to specify these in
+            // combination with flex.
+            if (AppConfig.isDevelopmentMode()) {
+                if (def.flexGrow !== undefined || def.flexShrink !== undefined) {
+                    console.error('Conflicting rules for flex specified.');
+                }
+            }
+
             let flexValue = def.flex as number;
             delete def.flex;
 
