@@ -16,6 +16,10 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.4.0-rc.2 of reactxp - _15 Sep 2018_
+* Fixed bug #800: If there are only cached popups and no visible one the main remains inaccessible for screen readers.
+* Fixed bug #815: Show warning in console if disallowed style combinations appear.
+
 #### Version 1.4.0-rc.1 of reactxp - _9 Sep 2018_
 * Worked around change in recent versions of RN that removed support for Images with children.
 * Changed announceForAccessibility implementation to use Assertive live region type instead of Polite.
