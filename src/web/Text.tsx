@@ -182,7 +182,7 @@ export class Text extends TextBase {
     }
 
     getSelectedText(): string {
-        return ''; // Needs implementation (requires support from RN).
+        return ''; // Not implemented yet.
     }
 }
 
