@@ -24,7 +24,7 @@ const _styles = {
         color: CommonStyles.explainTextColor
     }),
     resultContainer: RX.Styles.createViewStyle({
-        alignSelf: 'stretch',
+        alignSelf: 'stretch',        
         marginHorizontal: 36,
         marginVertical: 12
     }),
@@ -75,21 +75,41 @@ const _styles = {
         fontSize: 16,
         lineHeight: 48,
         textDecorationLine: 'underline'
+    }),
+    selectTextContainer: RX.Styles.createViewStyle({
+        margin: 12,
+        flexDirection: 'row',
+        alignItems: 'center'
+    }),
+    testSelectText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.generalFontSize
+    }),
+    selectTextButton: RX.Styles.createButtonStyle({
+        backgroundColor: '#ddd',
+        borderWidth: 1,
+        margin: 20,
+        padding: 12,
+        borderRadius: 8,
+        borderColor: 'black'
     })
 };
 
 interface TextViewState {
     test5ColorIndex: number;
+    selectedText: string;
 }
 
 const _dynamicColors = ['black', 'red', 'green', 'blue'];
 
 class TextView extends RX.Component<RX.CommonProps, TextViewState> {
+    private _selectionText: RX.Text | undefined;
+
     constructor(props: RX.CommonProps) {
         super(props);
 
         this.state = {
-            test5ColorIndex: 0
+            test5ColorIndex: 0,
+            selectedText: ''
         };
     }
 
@@ -283,6 +303,30 @@ class TextView extends RX.Component<RX.CommonProps, TextViewState> {
                         { 'Text with a red shadow.' }
                     </RX.Text>
                 </RX.View>
+
+                <RX.View style={ _styles.selectTextContainer }>
+                    <RX.Text 
+                        style={ _styles.testSelectText } 
+                        selectable={ true }
+                        ref={ (comp: any) => { this._selectionText = comp; } }
+                        >
+                        { 'Select from this text.' }
+                    </RX.Text>
+                    <RX.Button
+                        style = { _styles.selectTextButton }
+                        onPress={ this._onPressCopySelectedText }
+                    >
+                        <RX.Text>
+                            { 'Copy selected.' }
+                        </RX.Text>
+                    </RX.Button>
+                    <RX.Text style={ _styles.testSelectText }>
+                        { 'Copied selected text:' }
+                    </RX.Text>
+                    <RX.Text style={ _styles.testSelectText }>
+                        { this.state.selectedText }
+                    </RX.Text>
+                </RX.View>
             </RX.View>
         );
     }
@@ -290,6 +334,15 @@ class TextView extends RX.Component<RX.CommonProps, TextViewState> {
     private _onPressTest5 = () => {
         let newIndex = (this.state.test5ColorIndex + 1) % _dynamicColors.length;
         this.setState({ test5ColorIndex: newIndex });
+    }
+
+    private _onPressCopySelectedText = () => {
+        if (this._selectionText) {
+            var selectedText: string = '';
+            // TODO Enable when ReactXP dependency is updated.
+            // selectedText = this._selectionText.getSelectedText();
+            this.setState({ selectedText: selectedText });
+        }
     }
 }
 

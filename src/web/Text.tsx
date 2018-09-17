@@ -180,6 +180,10 @@ export class Text extends TextBase {
             }
         }
     }
+
+    getSelectedText(): string {
+        return ''; // Not implemented yet.
+    }
 }
 
 export default Text;

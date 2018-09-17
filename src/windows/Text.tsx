@@ -10,6 +10,8 @@
 import * as PropTypes from 'prop-types';
 
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
+import React = require('react');
+import RN = require('react-native');
 import { Text as TextBase, TextContext as TextContextBase } from '../native-common/Text';
 import { Types } from '../common/Interfaces';
 
@@ -24,6 +26,8 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
         ...TextBase.contextTypes
     };
 
+    private _selectedText: string = '';
+
     // Context is provided by super - just re-typing here
     context!: TextContext;
 
@@ -31,6 +35,45 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
         isRxParentAFocusableInSameFocusManager: PropTypes.bool,
         ...TextBase.childContextTypes
     };
+
+    render() {
+        const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility);
+
+        // The presence of any of the onPress or onContextMenu makes the RN.Text a potential touch responder
+        const onPress = (this.props.onPress || this.props.onContextMenu) ? this._onPress : undefined;
+
+        // The presence of an onContextMenu on this instance or on the first responder parent up the tree
+        // should disable any system provided context menu
+        const disableContextMenu = !!this.props.onContextMenu || !!this.context.isRxParentAContextMenuResponder;
+
+        const extendedProps: RN.ExtendedTextProps = {
+            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
+            disableContextMenu: disableContextMenu,
+            onSelectionChange: this._onSelectionChange
+        };
+
+        return (
+            <RN.Text
+                style={ this._getStyles() as RN.StyleProp<RN.TextStyle> }
+                ref={ this._onMount as any }
+                importantForAccessibility={ importantForAccessibility }
+                numberOfLines={ this.props.numberOfLines }
+                allowFontScaling={ this.props.allowFontScaling }
+                onPress={ onPress }
+                selectable={ this.props.selectable }
+                textBreakStrategy={ 'simple' }
+                ellipsizeMode={ this.props.ellipsizeMode }
+                testID={ this.props.testId }
+                { ...extendedProps }
+            >
+                { this.props.children }
+            </RN.Text>
+        );
+    }
+
+    private _onSelectionChange = (selEvent: React.SyntheticEvent<RN.Text>) => {
+        this._selectedText = (selEvent.nativeEvent as any).selectedText;
+    }
 
     requestFocus() {
         // UWP doesn't support casually focusing RN.Text elements. We override requestFocus in order to drop any focus requests
@@ -73,6 +116,10 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
                 importantForAccessibility: importantForAccessibility
             });
         }
+    }
+
+    getSelectedText(): string {
+        return this._selectedText;
     }
 }
 
