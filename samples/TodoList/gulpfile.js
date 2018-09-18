@@ -402,16 +402,8 @@ gulp.task('watch', function() {
     }
 });
 
-gulp.task('clean', function(callback) {
-    del(config.clean.temp, { force: true }, function() {
-        if (platform === PLATFORMS.WEB) {
-            del(config.clean.web, { force: true }, callback);
-        } else if (platform === PLATFORMS.TESTS) {
-            del(config.clean.tests, { force: true }, callback);
-        } else {
-            del(config.clean.rnApp, { force: true }, callback);
-        }
-    });
+gulp.task('clean', function() {
+    return del(_.flatten([config.clean.temp, config.clean[platform] || config.clean.rnApp]), { force: true });
 });
 
 gulp.task('ts-lint', function() {
