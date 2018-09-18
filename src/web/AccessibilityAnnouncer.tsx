@@ -119,9 +119,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
                 aria-atomic={ 'true' }
                 aria-relevant={ 'additions text' }
                 aria-hidden={ this.state.ariaHidden }
-                role={ 'presentation' }
-                tabIndex={ -1 }
-                aria-label={ this.state.announcementText }
+                role={ _isMac ? '' : 'Status' }
             >
                 { announcement }
             </div>
