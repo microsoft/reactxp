@@ -1,7 +1,4 @@
 {
-  "exclude": [
-    "node_modules"
-  ],
   "compilerOptions": {
     "declaration": false,
     "noResolve": false,
@@ -24,7 +21,12 @@
     ],
     "types" : ["lodash", "react", "react-dom"]
   },
+
   "include": [
     "./src/**/*"
+  ],
+
+  "exclude": [
+    "node_modules"
   ]
 }
