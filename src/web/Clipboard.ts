@@ -7,7 +7,7 @@
  * Web-specific implementation of the cross-platform Clipboard abstraction.
  */
 import * as SyncTasks from 'synctasks';
-import escape from 'lodash/escape';
+import escape = require('lodash/escape');
 
 import * as RX from '../common/Interfaces';
 

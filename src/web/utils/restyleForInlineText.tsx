@@ -14,7 +14,7 @@
  */
 
 import * as React from 'react';
-import assert from 'assert';
+import * as assert from 'assert';
 
 import { assign } from './../utils/lodashMini';
 

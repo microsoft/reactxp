@@ -111,6 +111,9 @@ requestFocus(): void;
 
 // Blurs the component.
 blur(): void;
+
+// When selection is enabled, retrieves the selected text.
+getSelectedText(): string; // Windows only
 ```
 
 ## Sample Usage

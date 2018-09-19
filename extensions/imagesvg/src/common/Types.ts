@@ -1,10 +1,10 @@
 /*
-* Types.ts
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Type definitions to support the plugin.
-*/
+ * Types.ts
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Type definitions to support the plugin.
+ */
 
 import { Types as RXTypes } from 'reactxp';
 

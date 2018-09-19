@@ -95,7 +95,7 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
         this._mountedComponent = component;
     }
 
-    private _onPress = (e: RN.GestureResponderEvent) => {
+    protected _onPress = (e: RN.GestureResponderEvent) => {
         if (EventHelpers.isRightMouseButton(e)) {
             if (this.props.onContextMenu) {
                 this.props.onContextMenu(EventHelpers.toMouseEvent(e));
@@ -134,6 +134,10 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
 
     blur() {
         // No-op
+    }
+
+    getSelectedText(): string {
+        return ''; // Implemented for 'windows' only (requires support from RN).
     }
 }
 

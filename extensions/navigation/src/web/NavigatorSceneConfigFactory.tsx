@@ -1,30 +1,31 @@
 /**
-* NavigatorSceneConfigFactory.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* NavigatorSceneConfigFactory creates an 'object' of type NavigatorSceneConfig,
-* which is consumed by the Navigator. This object contains properties to execute
-* spring animation for transition between scenes. NavigatorSceneConfigFactory and
-* NavigatorSceneConfig are both exported.
-*/
+ * NavigatorSceneConfigFactory.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * NavigatorSceneConfigFactory creates an 'object' of type NavigatorSceneConfig,
+ * which is consumed by the Navigator. This object contains properties to execute
+ * spring animation for transition between scenes. NavigatorSceneConfigFactory and
+ * NavigatorSceneConfig are both exported.
+ */
 
-import _ = require('../common/lodashMini');
+import * as RX from 'reactxp';
 
-import { Types } from 'reactxp';
-import NavigationTypes = require('../common/Types');
+import * as _ from '../common/lodashMini';
+import * as Types from '../common/Types';
 
 // Interpolator type, which accepts a combination of these types and returns a interpolated/calculated result
 // Interpolator wrapper, which is given as a callback method to Navigator to call the animation interpolator
-export type Interpolator = (progress: number, dimension?: Types.Dimensions) => number;
-export type InterpolatorWrapper = (previousStyleSet: Types.ViewStyleRuleSet, dimensions: Types.Dimensions, progress: number) => boolean;
+export type Interpolator = (progress: number, dimension?: RX.Types.Dimensions) => number;
+export type InterpolatorWrapper = (previousStyleSet: RX.Types.ViewStyleRuleSet,
+    dimensions: RX.Types.Dimensions, progress: number) => boolean;
 
 // Interface to define the transition styles for multiple views
 export interface TransitionStyle {
-    translateX?: (progress: number, dimension: Types.Dimensions) => string;
-    translateY?: (progress: number, dimension: Types.Dimensions) => string;
-    translateZ?: (progress: number, dimension: Types.Dimensions) => string;
+    translateX?: (progress: number, dimension: RX.Types.Dimensions) => string;
+    translateY?: (progress: number, dimension: RX.Types.Dimensions) => string;
+    translateZ?: (progress: number, dimension: RX.Types.Dimensions) => string;
     // Note: Weird type: Either a 'function type' or a 'number'
     opacity?: ((progress: number) => number) | number;
     rotateX?: ((progress: number) => number) | number;
@@ -167,7 +168,7 @@ export class NavigatorSceneConfig {
     // It calculates new styles and updates the previousStyles object sent to decide
     // if the animation triggered or not in the component that calls it
     private _styleInterpolator (styles: TransitionStyle): InterpolatorWrapper {
-        return (previousStyleSet: Types.ViewStyleRuleSet, dimensions: Types.Dimensions, progress: number): boolean => {
+        return (previousStyleSet: RX.Types.ViewStyleRuleSet, dimensions: RX.Types.Dimensions, progress: number): boolean => {
             // Calls the interpolator method for each type and calculates
             const newStyleSet = SceneConfigStyles.bundleCompoundStyles(
                 _.mapValues(styles, (interpolator: Interpolator | number) => {
@@ -195,21 +196,21 @@ export class NavigatorSceneConfig {
 export class NavigatorSceneConfigFactory {
 
     // Helper method that creates a new Animation config for a scene
-    public static createConfig (configType: NavigationTypes.NavigatorSceneConfigType): NavigatorSceneConfig {
+    public static createConfig (configType: Types.NavigatorSceneConfigType): NavigatorSceneConfig {
         switch (configType) {
-            case NavigationTypes.NavigatorSceneConfigType.FloatFromRight:
+            case Types.NavigatorSceneConfigType.FloatFromRight:
                  return new NavigatorSceneConfig(SceneConfigStyles.fromTheRight, SceneConfigStyles.fadeToTheLeft);
 
-            case NavigationTypes.NavigatorSceneConfigType.FloatFromLeft:
+            case Types.NavigatorSceneConfigType.FloatFromLeft:
                  return new NavigatorSceneConfig(SceneConfigStyles.fromTheLeft, SceneConfigStyles.fadeToTheRight);
 
-            case NavigationTypes.NavigatorSceneConfigType.FloatFromBottom:
+            case Types.NavigatorSceneConfigType.FloatFromBottom:
                 return new NavigatorSceneConfig(SceneConfigStyles.fromTheFront, SceneConfigStyles.toTheBack);
 
-            case NavigationTypes.NavigatorSceneConfigType.Fade:
+            case Types.NavigatorSceneConfigType.Fade:
                 return new NavigatorSceneConfig(SceneConfigStyles.fadeIn, SceneConfigStyles.fadeOut);
 
-            case NavigationTypes.NavigatorSceneConfigType.FadeWithSlide:
+            case Types.NavigatorSceneConfigType.FadeWithSlide:
                 return new NavigatorSceneConfig(SceneConfigStyles.fadeIn, SceneConfigStyles.fadeOutToTop);
 
             default:

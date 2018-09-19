@@ -1,14 +1,14 @@
 /*
-* Interfaces.ts
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Interface exposed by ImageSvg component.
-*/
+ * Interfaces.ts
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Interface exposed by ImageSvg component.
+ */
 
-import React = require('react');
+import * as React from 'react';
 
-import Types = require('./Types');
+import * as Types from './Types';
 
 export abstract class ImageSvg extends React.Component<Types.ImageSvgProps, any> {
 }
@@ -21,7 +21,7 @@ export abstract class SvgRect extends React.Component<Types.SvgRectProps, any> {
 
 export interface PluginInterface {
     Types: typeof Types;
-    
+
     default: typeof ImageSvg;
     SvgPath: typeof SvgPath;
     SvgRect: typeof SvgRect;

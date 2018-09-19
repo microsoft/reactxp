@@ -7,20 +7,20 @@
  * Import and re-export of part of the lodash module. This helps reduce bundle size.
  */
 
-import clone from 'lodash/clone';
-import compact from 'lodash/compact';
-import extend from 'lodash/extend';
-import filter from 'lodash/filter';
-import findIndex from 'lodash/findIndex';
-import findLast from 'lodash/findLast';
-import isArray from 'lodash/isArray';
-import isEqual from 'lodash/isEqual';
-import isUndefined from 'lodash/isUndefined';
-import last from 'lodash/last';
-import map from 'lodash/map';
-import max from 'lodash/max';
-import omit from 'lodash/omit';
-import union from 'lodash/union';
+import clone = require('lodash/clone');
+import compact = require('lodash/compact');
+import extend = require('lodash/extend');
+import filter = require('lodash/filter');
+import findIndex = require('lodash/findIndex');
+import findLast = require('lodash/findLast');
+import isArray = require('lodash/isArray');
+import isEqual = require('lodash/isEqual');
+import isUndefined = require('lodash/isUndefined');
+import last = require('lodash/last');
+import map = require('lodash/map');
+import max = require('lodash/max');
+import omit = require('lodash/omit');
+import union = require('lodash/union');
 
 export {
     clone,

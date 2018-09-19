@@ -1,25 +1,25 @@
 ﻿/**
-* Navigator.tsx
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Common native implementation for Navigator on mobile.
-*/
-import RX = require('reactxp');
+ * Navigator.tsx
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Common native implementation for Navigator on mobile.
+ */
+import * as RX from 'reactxp';
 
+import * as Types from '../common/Types';
 import {
     Navigator as BaseNavigator,
     NavigatorDelegate,
     NavigatorDelegateSelector as DelegateSelector,
     NavigationCommand,
     NavigatorState,
-    CommandType
+    NavigatorProps,
+    NavigatorRoute,
+    CommandType,
 } from '../common/Types';
-
 import NavigatorExperimentalDelegate from './NavigatorExperimentalDelegate';
-import { NavigatorProps, NavigatorRoute } from '../common/Types';
-import Types = require('../common/Types');
 
 export class DefaultDelegateSelector implements DelegateSelector {
     getNavigatorDelegate(navigator: BaseNavigator<NavigatorState>) {
@@ -149,7 +149,7 @@ export class NavigatorImpl extends BaseNavigator<NavigatorState> {
     }
 }
 
-export import Types = Types;
 export default NavigatorImpl;
 export const Navigator = NavigatorImpl;
 export const NavigatorDelegateSelector = new DefaultDelegateSelector();
+export { Types };
