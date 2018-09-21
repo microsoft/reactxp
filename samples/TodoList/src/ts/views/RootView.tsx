@@ -143,7 +143,7 @@ export default class RootView extends ComponentBase<RootViewProps, RootViewState
         }
     }
 
-    private _onRenderScene = (navigatorRoute: NavTypes.NavigatorRoute): JSX.Element | undefined => {
+    private _onRenderScene = (navigatorRoute: NavTypes.NavigatorRoute): JSX.Element | null => {
         const viewId = navigatorRoute.routeId as NavModels.NavViewId;
         const showBackButton = this._showBackButton(viewId);
 

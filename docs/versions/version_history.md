@@ -16,6 +16,9 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.4.0-rc.1 of reactxp-navigation - _21 Sep 2018_
+* Changed renderScene to accept a return value of null rather than undefined, making it consistent with other render functions.
+
 #### Version 1.4.0-rc.2 of reactxp - _15 Sep 2018_
 * Fixed bug #800: If there are only cached popups and no visible one the main remains inaccessible for screen readers.
 * Fixed bug #815: Show warning in console if disallowed style combinations appear.
