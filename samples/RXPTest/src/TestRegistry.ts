@@ -12,6 +12,7 @@ import ActivityIndicatorTest from './Tests/ActivityIndicatorTest';
 import AnimationTest from './Tests/AnimationTest';
 import ButtonTest from './Tests/ButtonTest';
 import ClipboardTest from './Tests/ClipboardTest';
+import DragAndDropTest from './Tests/DragAndDropTest';
 import GestureViewTest from './Tests/GestureViewTest';
 import ImageApiTest from './Tests/ImageApiTest';
 import ImageInteractiveTest from './Tests/ImageInteractiveTest';
@@ -50,6 +51,7 @@ class TestRegistry {
         this.registerTest(AnimationTest);
         this.registerTest(AppTest);
         this.registerTest(ClipboardTest);
+        this.registerTest(DragAndDropTest);
         this.registerTest(InputTest);
         this.registerTest(InternationalTest);
         this.registerTest(LinkingTest);
