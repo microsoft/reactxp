@@ -12,7 +12,7 @@ const _styles = {
     container: RX.Styles.createViewStyle({
         flex: 1,
         alignSelf: 'stretch',
-        alignItems: 'flex-start'
+        alignItems: 'stretch'
     }),
     textContainer: RX.Styles.createViewStyle({
         margin: 12
@@ -33,14 +33,35 @@ const _styles = {
     explainText: RX.Styles.createTextStyle({
         fontSize: CommonStyles.generalFontSize,
         color: CommonStyles.explainTextColor
+    }),
+    dragAndDropContainer: RX.Styles.createViewStyle({
+        flexDirection: 'row',
+        flex: 1,
+        height: 70
+    }),
+    dragAndDropView: RX.Styles.createViewStyle({
+        flex: 1,
+        borderColor: CommonStyles.buttonBorderColor,
+        borderStyle: 'solid',
+        borderWidth: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 5
+    }),
+    dragAndDropObject: RX.Styles.createViewStyle({
+        height: 40,
+        width: 40,
+        backgroundColor: CommonStyles.successTextColor,
+        marginTop: 5
     })
 };
 
 interface DragAndDropViewState {
-    logFileDragAndDrop: string[];
     isFileDragAndDropHover: boolean;
     logViewDragAndDrop: string[];
     filesDropped: FileInfo[];
+    isViewDragAndDropHover: boolean;
+    viewDragStartDateAndTime: string;
 }
 
 interface FileInfo {
@@ -53,85 +74,147 @@ class DragAndDropView extends RX.Component<RX.CommonProps, DragAndDropViewState>
         super(props);
 
         this.state = {
-            logFileDragAndDrop: [],
             isFileDragAndDropHover: false,
             logViewDragAndDrop: [],
-            filesDropped: []
+            filesDropped: [],
+            isViewDragAndDropHover: false,
+            viewDragStartDateAndTime: ''
         };
     }
 
     render() {
-        let filesInfo: JSX.Element[] = [];
-        if (this.state.filesDropped) {
-            _.each(this.state.filesDropped, fileInfo => {
-                filesInfo.push(this._formatFileInfo(fileInfo));
-            });            
-        }
-
         return (
             <RX.View style={ _styles.container}>
                 <RX.View style={ _styles.textContainer } key={ 'explanation1' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'Drag a file (more files) over to the container below' }
+                        { 'Drag one or more files over to the container below' }
                     </RX.Text>
                 </RX.View>
-                <RX.View style={ [ _styles.labelContainer, this.state.isFileDragAndDropHover ? _styles.labelContainerHover : undefined ] }
-                    onDragEnter={ this._onDragEnter }
-                    onDragLeave={ this._onDragLeave }
-                    onDragOver={ this._onDragOver }
-                    onDrop={ this._onDrop }>
+                <RX.View 
+                    style={ [ _styles.labelContainer, this.state.isFileDragAndDropHover ? _styles.labelContainerHover : undefined ] }
+                    onDragEnter={ this._onDragEnterForFiles }
+                    onDragLeave={ this._onDragLeaveForFiles }
+                    onDragOver={ this._onDragOverForFiles }
+                    onDrop={ this._onDropForFiles }>
                     <RX.Text style={ _styles.explainText }>
-                        { this.state.isFileDragAndDropHover ? 'Drop target' : 'Drag and drop target'}
+                        { 'Drop target' }
                     </RX.Text>
                 </RX.View>
 
-                <RX.View style={ _styles.textContainer } key={ ' droppedFiles ' }>
-                    <RX.Text style={ _styles.explainText }>
-                        { 'You dropped' }
-                    </RX.Text>
-                    { filesInfo }
-                </RX.View>
+                { this._renderDroppedFiles() }
 
                 <RX.View style={ _styles.textContainer } key={ 'explanation2' }>
                     <RX.Text style={ _styles.explainText }>
                         { 'Drag the view from the left side to the right side' }
                     </RX.Text>
                 </RX.View>
+
+                <RX.View style={ [ _styles.textContainer, _styles.dragAndDropContainer ] }>
+                    <RX.View style={ [ _styles.dragAndDropView, _styles.explainText ] }>
+                        <RX.Text>{ 'Drag this square' }</RX.Text>
+                        <RX.View 
+                            draggable={ true }
+                            onDragStart={ this._onDragStartForViews }
+                            style={ _styles.dragAndDropObject }
+                            >
+                        </RX.View>
+                    </RX.View>
+                    <RX.View style={ _styles.dragAndDropView }>
+                        <RX.Text style={ _styles.explainText }>
+                            { 'Not allowed to drop here' }
+                        </RX.Text>
+                    </RX.View>
+                    <RX.View 
+                        style={ [ _styles.dragAndDropView, this.state.isViewDragAndDropHover ? _styles.labelContainerHover : undefined ] }
+                        onDragEnter={ this._onDragEnterForViews }
+                        onDragLeave={ this._onDragLeaveForViews }
+                        onDragOver={ this._onDragOverForViews }
+                        onDrop={ this._onDropForViews }>
+                        <RX.Text style={ _styles.explainText }>
+                            { 'Drop target' }
+                        </RX.Text>
+                    </RX.View>
+                </RX.View>
+
+                { this._renderViewDragStart() }
+
             </RX.View>
         );
     }
 
-    private _onDragEnter = (e: RX.Types.DragEvent) => {
+    private _renderDroppedFiles(): JSX.Element | undefined {
+        if (this.state.filesDropped.length === 0) {
+            return undefined;
+        }
+
+        let filesInfo: JSX.Element[] = [];
+        _.each(this.state.filesDropped, fileInfo => {
+            filesInfo.push(this._formatFileInfo(fileInfo));
+        });
+
+        return (
+            <RX.View style={ _styles.textContainer } key={ ' droppedFiles ' }>
+                <RX.Text style={ _styles.explainText }>
+                    { 'You dropped' }
+                </RX.Text>
+                { filesInfo }
+            </RX.View>
+        );
+    }
+
+    private _formatFileInfo(file: FileInfo): JSX.Element {
+        return (
+            <RX.Text key={ file.fileName } style={ _styles.explainText }>
+                { file.fileName + ', size: ' + file.fileSize + 'kb' }
+            </RX.Text>
+        );
+    }
+
+    private _renderViewDragStart(): JSX.Element | undefined {
+        if (this.state.viewDragStartDateAndTime === '') {
+            return undefined;
+        }
+
+        return (
+            <RX.View style={ _styles.textContainer } key={ ' droppedView ' }>
+                <RX.Text style={ _styles.explainText } key={ 'drag' }>
+                    { 'You started dragging at ' + this.state.viewDragStartDateAndTime }
+                </RX.Text>
+                <RX.Text style={ _styles.explainText } key={ 'drop' }>
+                    { 'You dropped at ' + new Date().toLocaleTimeString() }
+                </RX.Text>
+            </RX.View>
+        );
+    }
+
+    private _onDragEnterForFiles = (e: RX.Types.DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
         this.setState({
-            logFileDragAndDrop: this.state.logFileDragAndDrop.concat('onDragEnter'),
             isFileDragAndDropHover: true
         });
     }
 
-    private _onDragLeave = (e: RX.Types.DragEvent) => {
+    private _onDragLeaveForFiles = (e: RX.Types.DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
         this.setState({
-            logFileDragAndDrop: this.state.logFileDragAndDrop.concat('onDragLeave'),
             isFileDragAndDropHover: false
         });
     }
 
-    private _onDragOver = (e: RX.Types.DragEvent) => {
+    private _onDragOverForFiles = (e: RX.Types.DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
         this.setState({
-            logFileDragAndDrop: this.state.logFileDragAndDrop.concat('onDragOver'),
             isFileDragAndDropHover: true
         });
     }
 
-    private _onDrop = (e: RX.Types.DragEvent) => {
+    private _onDropForFiles = (e: RX.Types.DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -146,18 +229,51 @@ class DragAndDropView extends RX.Component<RX.CommonProps, DragAndDropViewState>
         });
 
         this.setState({
-            logFileDragAndDrop: this.state.logFileDragAndDrop.concat('onDrop'),
             isFileDragAndDropHover: false,
             filesDropped: filesDropped
         });
     }
 
-    private _formatFileInfo(file: FileInfo): JSX.Element {
-        return (
-        <RX.Text key={ file.fileName } style={ _styles.explainText }>
-            { file.fileName + ', size: ' + file.fileSize + 'kb' }
-        </RX.Text>
-        );
+    private _onDragStartForViews = (e: RX.Types.DragEvent) => {
+        e.dataTransfer.dropEffect = 'move';
+        e.dataTransfer.setData('transferData', new Date().toLocaleTimeString());
+    }
+
+    private _onDragEnterForViews = (e: RX.Types.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.setState({
+            isViewDragAndDropHover: true
+        });
+    }
+
+    private _onDragLeaveForViews = (e: RX.Types.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.setState({
+            isViewDragAndDropHover: false
+        });
+    }
+
+    private _onDragOverForViews = (e: RX.Types.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.setState({
+            isViewDragAndDropHover: true
+        });
+    }
+
+    private _onDropForViews = (e: RX.Types.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.setState({
+            isViewDragAndDropHover: false,
+            viewDragStartDateAndTime: e.dataTransfer.getData('transferData')
+        });
     }
 }
 
