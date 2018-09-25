@@ -262,10 +262,14 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
 
         // Drag and drop related properties
-        for (const name of ['onDragStart']) {
+        for (const name of ['onDragStart', 'onDrag', 'onDragEnd']) {
             const handler = this._internalProps[name];
 
             if (handler) {
+                if (name === 'onDragStart') {
+                    this._internalProps.allowDrag = true;
+                }                
+
                 this._internalProps[name] = (e: React.SyntheticEvent<View>) => {
                     handler({
                         dataTransfer: (e.nativeEvent as any).dataTransfer,

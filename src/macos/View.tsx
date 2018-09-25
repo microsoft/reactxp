@@ -32,8 +32,12 @@ export class View extends ViewCommon {
             }
         }
 
-        for (const name of ['onDragStart']) {
+        for (const name of ['onDragStart', 'onDrag', 'onDragEnd']) {
             const handler = this._internalProps[name];
+
+            if (name === 'onDragStart') {
+                this._internalProps.allowDrag = true;
+            }            
 
             if (handler) {
                 this._internalProps[name] = (e: React.SyntheticEvent<View>) => {

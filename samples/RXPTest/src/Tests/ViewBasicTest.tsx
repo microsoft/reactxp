@@ -223,12 +223,6 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
 // restrictFocusWithin: boolean = false; // web only
 // limitFocusWithin: LimitFocusType = LimitFocusType.Unlimited;
 // importantForLayout: boolean = false; // web only
-// draggable: boolean;
-// onDragStart: (e: DragEvent) => void = undefined;
-// onDragEnter: (e: DragEvent) => void = undefined;
-// onDragOver: (e: DragEvent) => void = undefined;
-// onDragLeave: (e: DragEvent) => void = undefined;
-// onDrop: (e: DragEvent) => void = undefined;
 // onContextMenu: (e: React.SyntheticEvent) => void;
 // onMoveShouldSetResponder: (e: React.SyntheticEvent) => boolean =
 // onMoveShouldSetResponderCapture: (e: React.SyntheticEvent) => boolean =

@@ -105,15 +105,13 @@ class DragAndDropView extends RX.Component<RX.CommonProps, DragAndDropViewState>
 
                 <RX.View style={ _styles.textContainer } key={ 'explanation2' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'Drag the view from the left side to the right side' }
+                        { 'Drag the square from the left side to the right side' }
                     </RX.Text>
                 </RX.View>
 
                 <RX.View style={ [ _styles.textContainer, _styles.dragAndDropContainer ] }>
                     <RX.View style={ [ _styles.dragAndDropView, _styles.explainText ] }>
-                        <RX.Text>{ 'Drag this square' }</RX.Text>
                         <RX.View 
-                            draggable={ true }
                             onDragStart={ this._onDragStartForViews }
                             style={ _styles.dragAndDropObject }
                             >
