@@ -115,6 +115,12 @@ arbitrateFocus: FocusArbitrator = undefined;
 importantForLayout: boolean = false; // web only
 
 // Mouse-specific Events
+// For drag specific events, if onDragStart is present, the view is draggable.
+// onDragStart/onDrag/onDragEnd are source specific events
+// onDragEnter/onDragOver/onDragLeave/onDrop are destination specific events
+onDragStart: (e: DragEvent) => void = undefined;
+onDrag: (e: DragEvent) => void = undefined;
+onDragEnd: (e: DragEvent) => void = undefined;
 onDragEnter: (e: DragEvent) => void = undefined;
 onDragOver: (e: DragEvent) => void = undefined;
 onDragLeave: (e: DragEvent) => void = undefined;
