@@ -8,10 +8,11 @@
  */
 
 import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import { ExtendedTextProps, NativeSyntheticEvent } from 'react-native';
+import { TextWindowsSelectionChangeEventData as SelectionChangeEventData } from 'react-native-windows';
 
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
-import React = require('react');
-import RN = require('react-native');
 import { Text as TextBase, TextContext as TextContextBase } from '../native-common/Text';
 import { Types } from '../common/Interfaces';
 
@@ -36,16 +37,16 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
         ...TextBase.childContextTypes
     };
 
-    protected _getExtendedProperties(): RN.ExtendedTextProps {
-        var superExtendedProps: RN.ExtendedTextProps = super._getExtendedProperties();
+    protected _getExtendedProperties(): ExtendedTextProps {
+        const superExtendedProps: ExtendedTextProps = super._getExtendedProperties();
         return {
             ...superExtendedProps,
             onSelectionChange: this._onSelectionChange
         };
     }
 
-    private _onSelectionChange = (selEvent: React.SyntheticEvent<RN.Text>) => {
-        this._selectedText = (selEvent.nativeEvent as any).selectedText;
+    private _onSelectionChange = (event: NativeSyntheticEvent<SelectionChangeEventData>) => {
+        this._selectedText = event.nativeEvent.selectedText;
     }
 
     requestFocus() {

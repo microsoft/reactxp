@@ -52,12 +52,10 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
     }
 
     render() {
-        const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility);
-
         // The presence of any of the onPress or onContextMenu makes the RN.Text a potential touch responder
         const onPress = (this.props.onPress || this.props.onContextMenu) ? this._onPress : undefined;
-
-        var extendedProps: RN.ExtendedTextProps = this._getExtendedProperties();
+        const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility);
+        const extendedProps: RN.ExtendedTextProps = this._getExtendedProperties();
 
         return (
             <RN.Text
@@ -89,14 +87,13 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
     }
 
     protected _getExtendedProperties(): RN.ExtendedTextProps {
+        const { maxContentSizeMultiplier, onContextMenu } = this.props;
+
         // The presence of an onContextMenu on this instance or on the first responder parent up the tree
         // should disable any system provided context menu
-        const disableContextMenu = !!this.props.onContextMenu || !!this.context.isRxParentAContextMenuResponder;
+        const disableContextMenu = !!onContextMenu || !!this.context.isRxParentAContextMenuResponder;
 
-        return {
-            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
-            disableContextMenu: disableContextMenu,
-        };
+        return { maxContentSizeMultiplier, disableContextMenu };
     }
 
     private _onPress = (e: RN.GestureResponderEvent) => {

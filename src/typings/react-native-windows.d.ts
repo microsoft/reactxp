@@ -12,6 +12,14 @@ declare module 'react-native-windows' {
     import * as React from 'react';
     import * as RN from 'react-native';
 
+    interface TextWindowsSelectionChangeEventData {
+        selectedText: string;
+    }
+
+    interface TextWindowsProps {
+        onSelectionChange?: (e: RN.NativeSyntheticEvent<TextWindowsSelectionChangeEventData>) => void;
+    }
+
     interface AccessibilityEvents {
         onAccessibilityTap?: (e: RN.NativeSyntheticEvent<any>) => void;
     }
