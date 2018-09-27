@@ -15,6 +15,8 @@ Also included in the samples directory is the [RXPTest app](/samples/RXPTest) wh
 
 You can read more about ReactXP and its APIs from the [ReactXP official Documentation](https://microsoft.github.io/reactxp/docs/getting-started.html).
 
+Use the command-line tool called [create-rx-app](https://github.com/a-tarasyuk/create-rx-app) to create a starter project.
+
 ### Prerequisites
 * [Node.Js](https://nodejs.org/)
 * [React Native](https://facebook.github.io/react-native/)
