@@ -23,46 +23,35 @@ export class Linking extends CommonLinking {
     }
 
     protected _openUrl(url: string): SyncTasks.Promise<void> {
-        let defer = SyncTasks.Defer<void>();
-
-        RN.Linking.canOpenURL(url).then(value => {
+        return SyncTasks.fromThenable(RN.Linking.canOpenURL(url))
+        .then(value => {
             if (!value) {
-                defer.reject({
+                return SyncTasks.Rejected({
                     code: Types.LinkingErrorCode.NoAppFound,
                     url: url,
                     description: 'No app found to handle url: ' + url
                 } as Types.LinkingErrorInfo);
             } else {
-                RN.Linking.openURL(url).then(() => {
-                    defer.resolve(void 0);
-                }, err => {
-                    defer.reject(err);
-                });
+                return SyncTasks.fromThenable(RN.Linking.openURL(url));
             }
         }).catch(error => {
-            defer.reject({
+            return SyncTasks.Rejected({
                 code: Types.LinkingErrorCode.UnexpectedFailure,
                 url: url,
                 description: error
             } as Types.LinkingErrorInfo);
         });
-
-        return defer.promise();
     }
 
     getInitialUrl(): SyncTasks.Promise<string|undefined> {
-        let defer = SyncTasks.Defer<string|undefined>();
-
-        RN.Linking.getInitialURL().then(url => {
-            defer.resolve(!!url ? url : undefined);
-        }).catch(error => {
-            defer.reject({
+        return SyncTasks.fromThenable(RN.Linking.getInitialURL())
+        .then(url => !!url ? url : undefined)
+        .catch(error => {
+            return SyncTasks.Rejected({
                 code: Types.LinkingErrorCode.InitialUrlNotFound,
                 description: error
             } as Types.LinkingErrorInfo);
         });
-
-        return defer.promise();
     }
 
     // Launches Email app
