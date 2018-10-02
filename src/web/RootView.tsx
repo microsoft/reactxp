@@ -62,9 +62,6 @@ export interface RootViewState {
     constrainedPopupWidth: number;
     constrainedPopupHeight: number;
 
-    // Are we currently hovering over the popup?
-    isMouseInPopup: boolean;
-
     // Assign css focus class if focus is due to Keyboard or mouse
     focusClass: string|undefined;
 }
@@ -138,7 +135,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             popupHeight: 0,
             constrainedPopupWidth: 0,
             constrainedPopupHeight: 0,
-            isMouseInPopup: false,
             focusClass: this.props.mouseFocusOutline
         };
     }
@@ -161,10 +157,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 this._startRepositionPopupTimer();
             }
 
-            if (!this.state.isMouseInPopup) {
-                this._startHidePopupTimer();
-            }
-
             if (!this._clickHandlerInstalled) {
                 document.addEventListener('mousedown', this._tryClosePopup);
                 document.addEventListener('touchstart', this._tryClosePopup);
@@ -184,10 +176,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     componentDidMount() {
         if (this.props.activePopup) {
             this._recalcPosition();
-        }
-
-        if (!this.state.isMouseInPopup) {
-            this._startHidePopupTimer();
         }
 
         if (this.props.activePopup) {
@@ -510,18 +498,10 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     private _onMouseEnter(e: React.MouseEvent<any>) {
-        this.setState({
-            isMouseInPopup: true
-        });
-
         this._stopHidePopupTimer();
     }
 
     private _onMouseLeave(e: React.MouseEvent<any>) {
-        this.setState({
-            isMouseInPopup: false
-        });
-
         this._startHidePopupTimer();
     }
 
