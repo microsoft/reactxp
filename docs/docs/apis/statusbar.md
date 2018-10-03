@@ -27,6 +27,6 @@ setNetworkActivityIndicatorVisible(value: boolean): void;
 // Specifies the background color of the status bar (applies on Android only)
 setBackgroundColor(color: string, animated: boolean): void;
 
-// Specifies whether the status bar is transluscent or transparent
+// Specifies whether the status bar is translucent or transparent
 setTranslucent(translucent: boolean): void;
 ```

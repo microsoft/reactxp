@@ -28,6 +28,6 @@ announceForAccessibility(announcement: string): void;
 // Indicates whether a screen reader is currently enabled.
 isScreenReaderEnabled(): boolean;
 
-// Inidicates whether the OS-level "high-contrast" setting is enabled.
+// Indicates whether the OS-level "high-contrast" setting is enabled.
 isHighContrastEnabled(): boolean;
 ```
