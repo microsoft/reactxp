@@ -89,6 +89,17 @@ onPressIn: (e: SyntheticEvent) => void;
 // user's finger or mouse cursor is no longer over the view
 onPressOut: (e: SyntheticEvent) => void;
 
+// For drag specific events, if onDragStart is present, the button is draggable.
+// onDragStart/onDrag/onDragEnd are source specific events
+// onDragEnter/onDragOver/onDragLeave/onDrop are destination specific events
+onDragStart: (e: DragEvent) => void = undefined;
+onDrag: (e: DragEvent) => void = undefined;
+onDragEnd: (e: DragEvent) => void = undefined;
+onDragEnter: (e: DragEvent) => void = undefined;
+onDragOver: (e: DragEvent) => void = undefined;
+onDragLeave: (e: DragEvent) => void = undefined;
+onDrop: (e: DragEvent) => void = undefined;
+
 // Rasterize contents using offscreen bitmap (perf optimization)
 shouldRasterizeIOS: boolean = false; // iOS only
 

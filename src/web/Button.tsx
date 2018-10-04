@@ -115,6 +115,14 @@ export class Button extends ButtonBase {
                 aria-controls={ this.props.ariaControls }
                 id={ this.props.id }
                 data-test-id={ this.props.testId }
+                draggable={ this.props.onDragStart ? true : false}
+                onDragStart={ this.props.onDragStart }
+                onDrag={ this.props.onDrag }
+                onDragEnd={ this.props.onDragEnd }
+                onDragEnter={ this.props.onDragEnter }
+                onDragOver={ this.props.onDragOver }
+                onDragLeave={ this.props.onDragLeave }
+                onDrop={ this.props.onDrop }
             >
                 { this.props.children }
             </button>
