@@ -18,8 +18,8 @@ You can read more about ReactXP and its APIs from the [ReactXP official Document
 Use the command-line tool called [create-rx-app](https://github.com/a-tarasyuk/create-rx-app) to create a starter project.
 
 ### Prerequisites
-* [Node.Js](https://nodejs.org/)
-* [React Native](https://facebook.github.io/react-native/)
+* [Node.Js](https://nodejs.org/) ([Setup Instructions](https://nodejs.org/en/download/package-manager/))
+* [React Native](https://facebook.github.io/react-native/) ([Setup Instructions](https://facebook.github.io/react-native/docs/getting-started))
 
 ## Contributing
 
