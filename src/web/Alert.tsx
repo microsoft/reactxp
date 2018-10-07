@@ -27,6 +27,7 @@ export class Alert extends RX.Alert {
                     title={ title }
                     message={ message }
                     theme={ options && options.theme }
+                    preventDismissOnPress={ options && options.preventDismissOnPress}
                 />
             ), this._modalId
         );

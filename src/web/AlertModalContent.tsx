@@ -22,6 +22,7 @@ export interface AppModalContentProps extends RX.Types.ViewProps {
     message?: string;
     modalId: string;
     theme?: RX.Types.AlertModalTheme;
+    preventDismissOnPress?: boolean;
 }
 
 export interface AppModalContentState {
@@ -176,7 +177,9 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
     }
 
     private _onPressBackground = (e: RX.Types.SyntheticEvent) => {
-        Modal.dismiss(this.props.modalId);
+        if (!this.props.preventDismissOnPress) {
+            Modal.dismiss(this.props.modalId);
+        }
     }
 }
 
