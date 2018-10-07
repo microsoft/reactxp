@@ -1110,6 +1110,7 @@ export interface AlertOptions {
     icon?: string;
     theme?: AlertModalTheme;
     rootViewId?: string;
+    preventDismissOnPress?: boolean;
 }
 
 //
