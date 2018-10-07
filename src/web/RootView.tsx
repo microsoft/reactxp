@@ -27,7 +27,7 @@ export class PopupDescriptor {
     constructor(public popupId: string, public popupOptions: Types.PopupOptions) {}
 }
 
-export interface RootViewProps {
+export interface RootViewProps extends Types.CommonProps {
     mainView?: React.ReactNode;
     modal?: React.ReactElement<Types.ViewProps>;
     activePopup?: PopupDescriptor;
@@ -86,6 +86,32 @@ if (typeof document !== 'undefined') {
     style.type = 'text/css';
     style.appendChild(document.createTextNode(defaultBoxSizing));
     document.head.appendChild(style);
+}
+
+export interface MainViewContext {
+    isInRxMainView?: boolean;
+}
+
+// This helper class wraps the main view and passes a boolean value
+// "isInRxMainView" to all children found within it. This is used to
+// prevent gesture handling within the main view when a modal is displayed.
+export class MainViewContainer extends React.Component<Types.CommonProps, Types.Stateless>
+        implements React.ChildContextProvider<MainViewContext> {
+    static childContextTypes: React.ValidationMap<any> = {
+        isInRxMainView: PropTypes.bool
+    };
+
+    getChildContext(): MainViewContext {
+        return {
+            isInRxMainView: true
+        };
+    }
+
+    render() {
+        return (
+            this.props.children
+        );
+    }
 }
 
 export class RootView extends React.Component<RootViewProps, RootViewState> {
@@ -255,7 +281,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     render() {
-        let rootViewStyle = {
+        const rootViewStyle = {
             width: '100%',
             height: '100%',
             display: 'flex',
@@ -285,7 +311,9 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 style={ rootViewStyle }
                 dir={ this.props.writingDirection }
             >
-                { this.props.mainView }
+                <MainViewContainer>
+                    { this.props.mainView }
+                </MainViewContainer>
                 { optionalModal }
                 { optionalPopups }
                 <AccessibilityAnnouncer />
