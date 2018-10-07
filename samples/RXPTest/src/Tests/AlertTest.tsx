@@ -97,40 +97,60 @@ class AlertView extends RX.Component<RX.CommonProps, AlertViewState> {
 
     render() {
         return (
-            <RX.View style={ _styles.container}>
-                <RX.View style={ _styles.textContainer } key={ 'explanation1' }>
-                    <RX.Text style={ _styles.explainText }>
-                        { 'Press the button to display an alert.' }
+            <RX.View style={_styles.container}>
+                <RX.View style={_styles.textContainer} key={'explanation1'}>
+                    <RX.Text style={_styles.explainText}>
+                        {'Press the button to display an alert.'}
                     </RX.Text>
                 </RX.View>
-                <RX.View style={ _styles.buttonPanel }>
+                <RX.View style={_styles.buttonPanel}>
                     <RX.Button
-                        style={ _styles.button }
-                        onPress={ () => this._showAlert(false) }
+                        style={_styles.button}
+                        onPress={() => this._showAlert(false, false)}
                     >
-                        <RX.Text style={ _styles.buttonText }>
-                            { 'Alert (Default)' }
+                        <RX.Text style={_styles.buttonText}>
+                            {'Alert (Default)'}
                         </RX.Text>
                     </RX.Button>
                     <RX.Button
-                        style={ _styles.button }
-                        onPress={ () => this._showAlert(true) }
+                        style={_styles.button}
+                        onPress={() => this._showAlert(false, true)}
                     >
-                        <RX.Text style={ _styles.buttonText }>
-                            { 'Alert (Custom)' }
+                        <RX.Text style={_styles.buttonText}>
+                            {'Alert (Default - preventDismissOnPress)'}
+                        </RX.Text>
+                    </RX.Button>
+                    <RX.Button
+                        style={_styles.button}
+                        onPress={() => this._showAlert(true, false)}
+                    >
+                        <RX.Text style={_styles.buttonText}>
+                            {'Alert (Custom)'}
                         </RX.Text>
                     </RX.Button>
                 </RX.View>
-                <RX.View style={ _styles.textContainer }>
-                    <RX.Text style={ _styles.labelText }>
-                        { this.state.lastOption && 'You chose: ' + this.state.lastOption }
+                <RX.View style={_styles.textContainer}>
+                    <RX.Text style={_styles.labelText}>
+                        {this.state.lastOption && 'You chose: ' + this.state.lastOption}
                     </RX.Text>
                 </RX.View>
             </RX.View>
         );
     }
 
-    private _showAlert(custom: boolean) {
+    private _showAlert(custom: boolean, preventDismissOnPress: boolean) {
+        const theme = {
+            bodyStyle: _styles.alertBody,
+            titleTextStyle: _styles.alertTitleText,
+            messageTextStyle: _styles.alertMessageText,
+            buttonStyle: _styles.alertButton,
+            buttonHoverStyle: _styles.alertButtonHover,
+            buttonTextStyle: _styles.alertButtonText,
+            cancelButtonStyle: _styles.alertCancelButton,
+            cancelButtonHoverStyle: _styles.alertCancelButtonHover,
+            cancelButtonTextStyle: _styles.alertCancelButtonText,
+        };
+
         RX.Alert.show('Default Alert', 'Which option would you like to choose?',
             [
                 { text: 'Option 1', onPress: () => this._setLastOption('Option 1'), style: 'default' },
@@ -139,19 +159,10 @@ class AlertView extends RX.Component<RX.CommonProps, AlertViewState> {
                 { text: 'Destructive', onPress: () => this._setLastOption('Destructive'), style: 'destructive' },
                 { text: 'Cancel', onPress: () => this._setLastOption('Cancel'), style: 'cancel' }
             ],
-            custom ? {
-                theme: {
-                    bodyStyle: _styles.alertBody,
-                    titleTextStyle: _styles.alertTitleText,
-                    messageTextStyle: _styles.alertMessageText,
-                    buttonStyle: _styles.alertButton,
-                    buttonHoverStyle: _styles.alertButtonHover,
-                    buttonTextStyle: _styles.alertButtonText,
-                    cancelButtonStyle: _styles.alertCancelButton,
-                    cancelButtonHoverStyle: _styles.alertCancelButtonHover,
-                    cancelButtonTextStyle: _styles.alertCancelButtonText,
-                }
-            } : undefined
+            {
+                preventDismissOnPress,
+                theme: custom ? theme : undefined
+            }
         );
     }
 
@@ -172,7 +183,7 @@ class AlertTest implements Test {
     render(onMount: (component: any) => void): RX.Types.ReactNode {
         return (
             <AlertView
-                ref={ onMount }
+                ref={onMount}
             />
         );
     }
