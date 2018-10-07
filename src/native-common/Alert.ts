@@ -21,7 +21,7 @@ export class Alert implements RX.Alert {
         let alertOptions: RN.ExtendedAlertOptions = {};
 
         if (!!options && options.preventDismissOnPress) {
-            alertOptions.cancelable = true;
+            alertOptions.cancelable = false;
         }
 
         if (options && options.rootViewId) {
