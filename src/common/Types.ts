@@ -865,6 +865,14 @@ export interface ScrollViewProps extends CommonProps, CommonAccessibilityProps {
 
     // Windows-only property to control tab navigation inside the view
     tabNavigation?: 'local' | 'cycle' | 'once';
+
+    // Animation helpers to allow usage of the RN.Animated.Event system through ReactXP.
+    // Animated.Values hooked up to either (or both) of these properties will be automatically
+    // hooked into the onScroll handler of the scrollview and .setValue() will be called on them
+    // with the updated values.  On supported platforms, it will use RN.Animated.event() to do
+    // a native-side/-backed coupled animation.
+    scrollXAnimatedValue?: RX.Types.AnimatedValue;
+    scrollYAnimatedValue?: RX.Types.AnimatedValue;
 }
 
 // Link
@@ -1130,7 +1138,6 @@ export type LocationFailureCallback = (error: LocationErrorType) => void;
 // Animated
 // ----------------------------------------------------------------------
 export module Animated {
-
     export type EndResult = { finished: boolean };
     export type EndCallback = (result: EndResult) => void;
     export type CompositeAnimation = {

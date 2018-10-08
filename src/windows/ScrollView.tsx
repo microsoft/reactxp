@@ -11,12 +11,11 @@ import * as React from 'react';
 import * as RN from 'react-native';
 
 import { ScrollView as ScrollViewBase } from '../native-common/ScrollView';
-import { Types } from '../common/Interfaces';
 import EventHelpers from '../native-common/utils/EventHelpers';
 
 export class ScrollView extends ScrollViewBase {
 
-    protected _render(props: Types.ScrollViewProps): JSX.Element {
+    protected _render(nativeProps: RN.ScrollViewProps&React.Props<RN.ScrollView>): JSX.Element {
         var onKeyDownCallback = this.props.onKeyPress ? this._onKeyDown : undefined;
 
         // TODO: #737970 Remove special case for UWP when this bug is fixed. The bug
@@ -24,19 +23,16 @@ export class ScrollView extends ScrollViewBase {
         //   order for the UI to acknowledge your interaction.
         const keyboardShouldPersistTaps = 'always';
 
-        const nativeProps = {
-            ...props,
+        // Have to hack the windows-specific onKeyDown into the props here.
+        const updatedNativeProps: any = {
+            ...nativeProps,
             onKeyDown: onKeyDownCallback,
             keyboardShouldPersistTaps: keyboardShouldPersistTaps,
             tabNavigation: this.props.tabNavigation,
             disableKeyboardBasedScrolling: true,
-        } as RN.ScrollViewProps;
+        };
 
-        return (
-            <RN.ScrollView { ...nativeProps }>
-                { props.children }
-            </RN.ScrollView>
-        );
+        return super._render(updatedNativeProps);
     }
 
     private _onKeyDown = (e: React.SyntheticEvent<any>) => {

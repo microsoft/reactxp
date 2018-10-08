@@ -179,6 +179,8 @@ disableBouncing?: boolean; // iOS only, bounce override
 scrollIndicatorInsets?: { top: number, left: number,
     bottom: number, right: number }; // iOS only
 onScroll?: (scrollTop: number, scrollLeft: number) => void;
+scrollXAnimatedValue?: RX.Types.AnimatedValue;
+scrollYAnimatedValue?: RX.Types.AnimatedValue;
 ```
 
 ## Methods
