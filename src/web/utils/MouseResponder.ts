@@ -29,6 +29,7 @@ interface Responder {
 export interface MouseResponderConfig {
     id: number;
     target: HTMLElement;
+    disableWhenModal: boolean;
     shouldBecomeFirstResponder?: (event: MouseEvent, gestureState: Types.PanGestureState) => boolean;
     onMove?: (event: MouseEvent, gestureState: Types.PanGestureState) => void;
     onTerminate?: (event: MouseEvent, gestureState: Types.PanGestureState) => void;
@@ -42,8 +43,13 @@ export default class MouseResponder {
     private static _currentResponder: Responder | null = null;
     private static _pendingGestureState: Types.PanGestureState | null = null;
     private static _initialized = false;
+    private static _isModalDisplayed = false;
 
     private static _responders: Responder[];
+
+    static setModalIsDisplayed(isDisplayed: boolean) {
+        MouseResponder._isModalDisplayed = isDisplayed;
+    }
 
     static create(config: MouseResponderConfig): MouseResponderSubscription {
         MouseResponder._initializeEventHandlers();
@@ -54,6 +60,10 @@ export default class MouseResponder {
             id: config.id,
             target: config.target,
             shouldBecomeFirstResponder(event: MouseEvent, gestureState: Types.PanGestureState) {
+                if (MouseResponder._isModalDisplayed && config.disableWhenModal) {
+                    return false;
+                }
+
                 if (!config.shouldBecomeFirstResponder) {
                     return false;
                 }

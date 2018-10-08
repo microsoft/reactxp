@@ -13,6 +13,7 @@ import * as ReactDOM from 'react-dom';
 import { PopupDescriptor, RootView } from './RootView';
 import { Types } from '../common/Interfaces';
 import Timers from '../common/utils/Timers';
+import MouseResponder from './utils/MouseResponder';
 
 const MAX_CACHED_POPUPS = 4;
 
@@ -73,6 +74,10 @@ export class FrontLayerViewManager {
     private _shouldPopupBeDismissed = (options: Types.PopupOptions): boolean => {
         return !!this._activePopupOptions &&
             this._activePopupOptions!!!.getAnchor() === options.getAnchor();
+    }
+
+    private _updateModalDisplayedState() {
+        MouseResponder.setModalIsDisplayed(this.isModalDisplayed());
     }
 
     showPopup(options: Types.PopupOptions, popupId: string, showDelay?: number): boolean {
@@ -179,6 +184,8 @@ export class FrontLayerViewManager {
             this._modalStack[this._modalStack.length - 1].modal : undefined;
         const activePopup = (!this._activePopupOptions || this._activePopupShowDelay > 0) ? undefined :
             { popupOptions: this._activePopupOptions, popupId: this._activePopupId!!! };
+
+        this._updateModalDisplayedState();
 
         let rootView = (
             <RootView

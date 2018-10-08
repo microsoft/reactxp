@@ -8,6 +8,7 @@
  * It provides support for the scroll wheel, clicks and double clicks.
  */
 
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
 import { clone, isUndefined } from './utils/lodashMini';
@@ -43,6 +44,10 @@ enum GestureType {
     PanHorizontal
 }
 
+export interface GestureViewContext {
+    isInRxMainView?: boolean;
+}
+
 let _idCounter = 1;
 
 export class GestureView extends React.Component<Types.GestureViewProps, Types.Stateless> {
@@ -64,6 +69,10 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
     private _pendingGestureType = GestureType.None;
     private _gestureTypeLocked = false;
     private _skipNextTap = false;
+
+    static contextTypes: React.ValidationMap<any> = {
+        isInRxMainView: PropTypes.bool
+    };
 
     componentWillUnmount() {
         // Dispose of timer before the component goes away.
@@ -98,6 +107,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
         this._responder = MouseResponder.create({
             id: this._id,
             target: container,
+            disableWhenModal: !!this.context.isInRxMainView,
             shouldBecomeFirstResponder: (event: MouseEvent) => {
                 if (!this.props.onPan && !this.props.onPanHorizontal && !this.props.onPanVertical) {
                     return false;

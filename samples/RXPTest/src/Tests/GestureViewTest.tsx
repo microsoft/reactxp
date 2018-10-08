@@ -33,11 +33,38 @@ const _styles = {
         height: 50,
         width: 50,
         backgroundColor: 'blue'
+    }),
+    button: RX.Styles.createButtonStyle({
+        borderColor: 'black',
+        borderWidth: 1,
+        borderRadius: 8,
+        paddingHorizontal: 8,
+        paddingVertical: 4
+    }),
+    modalDialog: RX.Styles.createTextStyle({
+        flex: 1,
+        alignSelf: 'stretch',
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }),
+    modalBox1: RX.Styles.createTextStyle({
+        padding: 20,
+        backgroundColor: '#eee',
+        borderColor: 'black',
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    }),
+    modalText: RX.Styles.createViewStyle({
+        margin: 8
     })
 };
 
 const _colors = ['red', 'green', 'blue'];
 const _shades = ['#000', '#333', '#666', '#999', '#CCC', '#FFF'];
+
+const modal1Id = 'modal1';
 
 interface GestureViewState {
     test1ColorIndex: number;
@@ -196,8 +223,37 @@ class GestureViewView extends RX.Component<RX.CommonProps, GestureViewState> {
                         style={ [_styles.smallBox, test4ColorStyle, this._test4AnimatedStyle] }
                     />
                 </RX.GestureView>
+
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation5' }>
+                    <RX.Button style={ _styles.button } onPress={ this._onShowModal }>
+                        <RX.Text style={ _styles.explainText }>
+                            { 'Show Modal Dialog' }
+                        </RX.Text>
+                    </RX.Button>
+                </RX.View>
             </RX.View>
         );
+    }
+
+    private _onShowModal = (e: RX.Types.SyntheticEvent) => {
+        e.stopPropagation();
+        RX.Modal.show((
+            <RX.View style={ _styles.modalDialog }>
+                <RX.View style={ _styles.modalBox1 } onPress={ this._onDismissDialog }>
+                <RX.Text style={ _styles.modalText }>
+                        { 'Gesture targets should be disabled' }
+                    </RX.Text>
+                    <RX.Text style={ _styles.modalText }>
+                        { 'Click here to dismiss dialog' }
+                    </RX.Text>
+                </RX.View>
+            </RX.View>
+        ),
+        modal1Id);
+    }
+
+    private _onDismissDialog = (e: RX.Types.SyntheticEvent) => {
+        RX.Modal.dismiss(modal1Id);
     }
 
     private _onPinchZoomTest1(state: RX.Types.MultiTouchGestureState) {
