@@ -496,6 +496,13 @@ export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, Comm
     onKeyPress?: (e: KeyboardEvent) => void;
     onFocus?: (e: FocusEvent) => void;
     onBlur?: (e: FocusEvent) => void;
+    onDragStart?: (e: DragEvent) => void;
+    onDrag?: (e: DragEvent) => void;
+    onDragEnd?: (e: DragEvent) => void;
+    onDragEnter?: (e: DragEvent) => void;
+    onDragOver?: (e: DragEvent) => void;
+    onDragLeave?: (e: DragEvent) => void;
+    onDrop?: (e: DragEvent) => void;
 
     shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
 
