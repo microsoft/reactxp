@@ -39,6 +39,10 @@ declare module 'react-native' {
         useWebKit?: boolean;
     }
 
+    interface RtlEventNativePayload {
+        isRTL:  boolean;
+    }
+
     abstract class ReactNativeBaseComponent<P, S> extends React.Component<P, S> {
         setNativeProps(nativeProps: P): void;
         focus(): void;
