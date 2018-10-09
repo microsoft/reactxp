@@ -22,12 +22,12 @@ const _styles = {
         flex: 1,
     }),
     statusSpacer: RX.Styles.createViewStyle({
-        marginTop: 22
-    })
+        marginTop: 22,
+    }),
 };
 
 class RootView extends RX.Component {
-    render() {
+    public render() {
         return (
             <RX.View
                 useSafeInsets={ true }

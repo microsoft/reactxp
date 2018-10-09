@@ -22,14 +22,14 @@ const _styles = {
         fontSize: 16,
         padding: 5,
         margin: 10,
-        height: 30
+        height: 30,
     }),
 };
 
 export class SearchField extends RX.Component<SearchFieldProps, SearchFieldState> {
-    readonly state: SearchFieldState = { value: '' };
+    public readonly state: SearchFieldState = { value: '' };
 
-    render() {
+    public render() {
         return (
             <RX.TextInput
                 accessibilityId={ 'SearchFieldInput' }
@@ -42,7 +42,7 @@ export class SearchField extends RX.Component<SearchFieldProps, SearchFieldState
         );
     }
 
-    private _handleChangeText = (value:  string) => (
+    private _handleChangeText = (value: string) => (
         this.setState({ value }, () => this.props.onChange(value))
     )
 }

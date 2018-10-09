@@ -26,7 +26,7 @@ const _styles = {
         backgroundColor: '#fff',
         flexDirection: 'column',
         alignSelf: 'stretch',
-        margin: 0
+        margin: 0,
     }),
     row: RX.Styles.createViewStyle({
         borderBottomWidth: 1,
@@ -36,21 +36,21 @@ const _styles = {
         flexDirection: 'row',
         alignItems: 'center',
         flex: 1,
-        height: _itemHeight
+        height: _itemHeight,
     }),
     image: RX.Styles.createImageStyle({
         height: 100,
-        width: 133
+        width: 133,
     }),
     main: RX.Styles.createViewStyle({
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'stretch',
-        flex: 1
+        flex: 1,
     }),
     labelText: RX.Styles.createTextStyle({
         textAlign: 'center',
-        fontSize: 30
+        fontSize: 30,
     }),
     linkText: RX.Styles.createLinkStyle({
         padding: 12,
@@ -60,21 +60,12 @@ const _styles = {
     }),
     searchQueryText: RX.Styles.createTextStyle({
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: 30,
     }),
 };
 
 export class ImageList extends ComponentBase<{}, ImageListState> {
-    protected _buildState(): ImageListState {
-        return {
-            isPerformingSearch: ImageStore.isPerformingSearch(),
-            isFirstSearch: ImageStore.isFirstSearch(),
-            searchQuery: ImageStore.getSearchQuery(),
-            images: ImageStore.getImages().map(this._normilizeImage)
-        };
-    }
-
-    render() {
+    public render() {
         const { isPerformingSearch, isFirstSearch, searchQuery, images } = this.state;
 
         // If the search is pending, render a spinner.
@@ -105,6 +96,15 @@ export class ImageList extends ComponentBase<{}, ImageListState> {
         );
     }
 
+    protected _buildState(): ImageListState {
+        return {
+            isPerformingSearch: ImageStore.isPerformingSearch(),
+            isFirstSearch: ImageStore.isFirstSearch(),
+            searchQuery: ImageStore.getSearchQuery(),
+            images: ImageStore.getImages().map(this._normilizeImage),
+        };
+    }
+
     private _renderItem = (item: ImageListItemInfo) => {
         return (
             <RX.View style={ _styles.row }>
@@ -124,7 +124,7 @@ export class ImageList extends ComponentBase<{}, ImageListState> {
     private _normilizeImage = (image: Image) => ({
         template: 'image',
         height: _itemHeight,
-        image: image,
+        image,
         key: image.smallUrl,
     })
 }
