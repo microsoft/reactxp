@@ -89,7 +89,15 @@ export class Value extends RX.Types.AnimatedValue {
     }
 
     // Gets the current animated value (this gets updates after animation concludes)
-    _getValue(): number | string {
+    _getInputValue(): number | string {
+        return this._value;
+    }
+
+    _getOutputValue(): number | string {
+        return this._getInterpolatedValue(this._value);
+    }
+
+    _getInterpolatedValue(inputVal: number|string): number | string {
         return this._value;
     }
 
@@ -152,7 +160,7 @@ export class Value extends RX.Types.AnimatedValue {
         }
 
         _.each(this._listeners, listener => {
-            listener.startTransition(this, this._getValue(), toValue, duration, easing, delay, onEnd);
+            listener.startTransition(this, this._getInputValue(), toValue, duration, easing, delay, onEnd);
         });
     }
 
@@ -176,7 +184,7 @@ export class Value extends RX.Types.AnimatedValue {
 export class InterpolatedValue extends Value {
     private _interpolationConfig: { [key: number]: string|number } | undefined;
     constructor(private _config: RX.Types.Animated.InterpolationConfigType, rootValue: Value) {
-        super(rootValue._getValue() as number);
+        super(rootValue._getOutputValue() as number);
 
         if (!this._config || !this._config.inputRange || !this._config.outputRange ||
                 this._config.inputRange.length < 2 || this._config.outputRange.length < 2 ||
@@ -203,29 +211,26 @@ export class InterpolatedValue extends Value {
         let self = this;
         rootValue._addListener({
             setValue(valueObject: Value, newValue: number | string): void {
-                self.setValue(newValue);
+                self.setValue(valueObject._getOutputValue());
             },
             startTransition(valueObject: Value, from: number|string, toValue: number|string, duration: number,
                     easing: string, delay: number, onEnd: RX.Types.Animated.EndCallback): void {
-                if (!_.isNumber(toValue)) {
-                    throw 'Must use numbers as inputs to InterpolatedValues';
-                }
-                self._startTransition(toValue, duration, easing, delay, () => undefined);
+                self._startTransition(valueObject._getInterpolatedValue(toValue), duration, easing, delay, () => undefined);
             },
             stopTransition(valueObject: Value): number|string|undefined {
                 self._stopTransition();
-                return self._getValue();
+                return undefined;
             }
         });
     }
 
-    _isInterpolated(): boolean {
-        return true;
-    }
-
-    _getInterpolatedValue(inputVal: number): string|number {
+    _getInterpolatedValue(inputVal: number|string): number | string {
         if (!this._interpolationConfig) {
             throw 'There is no interpolation config but one is required';
+        }
+
+        if (!_.isNumber(inputVal)) {
+            throw 'Numeric inputVals required for interpolated values';
         }
 
         if (this._interpolationConfig[inputVal]) {
@@ -239,7 +244,7 @@ export class InterpolatedValue extends Value {
         if (inputVal < this._config.inputRange[0]) {
             return this._config.outputRange[0];
         }
-        for (let i = 1; i < this._config.inputRange.length - 1; i++) {
+        for (let i = 1; i < this._config.inputRange.length; i++) {
             if (inputVal < this._config.inputRange[i]) {
                 const ratio = (inputVal - this._config.inputRange[i - 1]) /
                     (this._config.inputRange[i] - this._config.inputRange[i - 1]);
@@ -248,6 +253,10 @@ export class InterpolatedValue extends Value {
             }
         }
         return this._config.outputRange[this._config.inputRange.length - 1];
+    }
+
+    _isInterpolated(): boolean {
+        return true;
     }
 }
 
@@ -444,7 +453,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
             if (attrib) {
                 const domNode = this._getDomNode();
                 if (domNode) {
-                    const cssValue = this._generateCssAttributeValue(attrib, valueObject, valueObject._getValue());
+                    const cssValue = this._generateCssAttributeValue(attrib, valueObject, valueObject._getInputValue());
                     (domNode.style as any)[attrib] = cssValue;
                 }
                 return;
@@ -692,7 +701,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
                 transformList.push(transform + '(' + value + ')');
             });
             _.each(this._animatedTransforms, (value, transform) => {
-                let newValue = useActiveValues && value.activeTransition ? value.activeTransition.to : value.valueObject._getValue();
+                let newValue = useActiveValues && value.activeTransition ? value.activeTransition.to : value.valueObject._getInputValue();
                 transformList.push(transform + '(' + this._generateCssTransformValue(transform, value.valueObject, newValue) + ')');
             });
             return transformList.join(' ');
@@ -714,8 +723,8 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
 
                 // Is this a dynamic (animated) value?
                 if (rawStyles[attrib] instanceof Value) {
-                    let valueObj = rawStyles[attrib];
-                    this._processedStyle[attrib] = this._generateCssAttributeValue(attrib, valueObj, valueObj._getValue());
+                    let valueObj = rawStyles[attrib] as Value;
+                    this._processedStyle[attrib] = this._generateCssAttributeValue(attrib, valueObj, valueObj._getInputValue());
                     newAnimatedAttributes[attrib] = valueObj;
                 } else {
                     // Copy the static style value.
