@@ -13,13 +13,13 @@ import ImageList from './ImageList';
 const _styles = {
     main: RX.Styles.createViewStyle({
         alignSelf: 'stretch',
-        flex: 1,
+        flex: 1
     }),
     images: RX.Styles.createViewStyle({
         marginTop: 10,
         padding: 10,
         alignSelf: 'stretch',
-        flex: 1,
+        flex: 1
     }),
     statusSpacer: RX.Styles.createViewStyle({
         marginTop: 22

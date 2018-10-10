@@ -1,22 +1,40 @@
 # RXPImageList
-
-This sample demonstrates a ReactXP app that fetches information from a REST service (Giphy) and displays a virtualized list of images.
-
-the app works on React Native (iOS, Android) and web.
+This sample demonstrates a ReactXP app that fetches information from a REST service (Giphy) and displays a virtualized list of images. The app works on React Native (iOS, Android, Windows) and web.
 
 The commands in the instructions below assume you are in the root of this repo.
 
-### Initial Setup
+### To run your app on Web:
+  ```shell
+  npm run start:web
+  ```
 
-- Run `npm install`. This fetches the dependencies.
+### To build Web production version of your app:
+  ```shell
+  npm run build:web
+  ```
 
-### Building for Web
+### To run your app on iOS:
+  ```shell
+  npm run start:ios
+  ```
+##### - or -
+  open ios/RXPImageList.xcodeproj project in Xcode
+  press the Run button
 
-- Run `npm run web-watch`. This compiles the TypeScript code and recompiles it whenever any files are changed.
-- Open `index.html` in your browser to view the result.
+### To run your app on Android:
+Have an Android emulator running (quickest way to get started), or a device connected
 
-### Building for React Native
+  ```shell
+  npm run start:android
+  ```
+#####  - or -
+  open android/ project in Android Studio
+  press the Run button
 
-- Run `npm run rn-watch`. This compiles the TypeScript code and recompiles it whenever any files are changed.
-- In another command prompt run `npm start`. This starts the React Native Packager.
-- Use Xcode or Android Studio to build and deploy the native app code just like you would with any other React Native project.
+### To run your app on Windows:
+  ```shell
+  npm run start:windows
+  ```
+##### - or -
+  open windows/RXPImageList.sln project in Visual Studio
+  press the Run button

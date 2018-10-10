@@ -3,11 +3,12 @@
  */
 
 import * as RX from 'reactxp';
+import { DEBUG, DEV } from './config';
 import RootView from './views/RootView';
 
 class App {
     init() {
-        RX.App.initialize(true, true);
+        RX.App.initialize(DEBUG, DEV);
         RX.UserInterface.setMainView(this._renderRootView());
     }
 

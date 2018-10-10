@@ -56,24 +56,15 @@ const _styles = {
         padding: 12,
         fontSize: 14,
         color: 'blue',
-        flex: -1,
+        flex: -1
     }),
     searchQueryText: RX.Styles.createTextStyle({
         fontWeight: 'bold',
         fontSize: 30
-    }),
+    })
 };
 
 export class ImageList extends ComponentBase<{}, ImageListState> {
-    protected _buildState(): ImageListState {
-        return {
-            isPerformingSearch: ImageStore.isPerformingSearch(),
-            isFirstSearch: ImageStore.isFirstSearch(),
-            searchQuery: ImageStore.getSearchQuery(),
-            images: ImageStore.getImages().map(this._normilizeImage)
-        };
-    }
-
     render() {
         const { isPerformingSearch, isFirstSearch, searchQuery, images } = this.state;
 
@@ -105,6 +96,15 @@ export class ImageList extends ComponentBase<{}, ImageListState> {
         );
     }
 
+    protected _buildState(): ImageListState {
+        return {
+            isPerformingSearch: ImageStore.isPerformingSearch(),
+            isFirstSearch: ImageStore.isFirstSearch(),
+            searchQuery: ImageStore.getSearchQuery(),
+            images: ImageStore.getImages().map(this._normilizeImage)
+        };
+    }
+
     private _renderItem = (item: ImageListItemInfo) => {
         return (
             <RX.View style={ _styles.row }>
@@ -124,8 +124,8 @@ export class ImageList extends ComponentBase<{}, ImageListState> {
     private _normilizeImage = (image: Image) => ({
         template: 'image',
         height: _itemHeight,
-        image: image,
-        key: image.smallUrl,
+        image,
+        key: image.smallUrl
     })
 }
 

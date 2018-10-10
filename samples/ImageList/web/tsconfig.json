@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "sourceMap": true,
+    "noEmit": false
+  }
+}

@@ -23,7 +23,7 @@ const _styles = {
         padding: 5,
         margin: 10,
         height: 30
-    }),
+    })
 };
 
 export class SearchField extends RX.Component<SearchFieldProps, SearchFieldState> {
@@ -42,7 +42,7 @@ export class SearchField extends RX.Component<SearchFieldProps, SearchFieldState
         );
     }
 
-    private _handleChangeText = (value:  string) => (
+    private _handleChangeText = (value: string) => (
         this.setState({ value }, () => this.props.onChange(value))
     )
 }
