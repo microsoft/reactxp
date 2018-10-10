@@ -113,7 +113,9 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
     }
 
     componentWillReceiveProps(nextProps: Types.ImageProps) {
-        if (!_.isEqual(this.props, nextProps)) {
+        const sourceOrHeaderChanged = (nextProps.source !== this.props.source ||
+            !_.isEqual(nextProps.headers || {}, this.props.headers || {}));
+        if (sourceOrHeaderChanged) {
             this._forceCache = false;
         }
     }
