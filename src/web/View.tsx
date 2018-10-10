@@ -354,7 +354,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
             onMouseLeave: this.props.onMouseLeave,
             onMouseOver: this.props.onMouseOver,
             onMouseMove: this.props.onMouseMove,
-            draggable: this.props.onDragStart ? true : false,
+            draggable: this.props.onDragStart ? true : undefined,
             onDragStart: this.props.onDragStart,
             onDrag: this.props.onDrag,
             onDragEnd: this.props.onDragEnd,
