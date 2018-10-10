@@ -16,6 +16,10 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.4.0 of reactxp - _30 Sep 2018_
+* Added the ability to programmatically retrieve the text selection for RX.Text (if selectable attribute is true). Includes test cases in RXPTest sample.
+* Added drag and drop capabilities to RX.View (including onDragStart, onDrag, onDragEnd props). Includes test cases in RXPTest sample.
+
 #### Version 1.4.0-rc.1 of reactxp-navigation - _21 Sep 2018_
 * Changed renderScene to accept a return value of null rather than undefined, making it consistent with other render functions.
 

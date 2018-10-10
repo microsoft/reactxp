@@ -73,7 +73,7 @@ enableTouchLatencyEvents(latencyThresholdMs: number): void;
 
 // Returns true if the application is in the keyboard navigation state,
 // when the user is using Tab key to navigate through the focusable
-// elements (on applicalbe platforms).
+// elements (on applicable platforms).
 isNavigatingWithKeyboard(): boolean;
 ```
 

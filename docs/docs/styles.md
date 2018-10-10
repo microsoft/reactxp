@@ -158,6 +158,10 @@ overflow: 'hidden' | 'visible';
 **Borders**
 ```javascript
 borderWidth: number;
+borderTopWidth: number;
+borderRightWidth: number;
+borderBottomWidth: number;
+borderLeftWidth: number;
 borderColor: color;
 borderStyle: 'solid' | 'dotted' | 'dashed' | 'none';
 borderRadius: number;  // Sets all four border radius attributes; value is animatable
@@ -169,7 +173,7 @@ borderTopLeftRadius: number = 0;
 
 **Shadows**
 ```javascript
-// NOTE: If applied to a Text element, these properties translate to text shadows, 
+// NOTE: If applied to a Text element, these properties translate to text shadows,
 // not a box shadow.
 shadowOffset: { height: number; width: number } = { 0, 0 };
 shadowRadius: number = 0;

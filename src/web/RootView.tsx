@@ -27,7 +27,7 @@ export class PopupDescriptor {
     constructor(public popupId: string, public popupOptions: Types.PopupOptions) {}
 }
 
-export interface RootViewProps {
+export interface RootViewProps extends Types.CommonProps {
     mainView?: React.ReactNode;
     modal?: React.ReactElement<Types.ViewProps>;
     activePopup?: PopupDescriptor;
@@ -62,9 +62,6 @@ export interface RootViewState {
     constrainedPopupWidth: number;
     constrainedPopupHeight: number;
 
-    // Are we currently hovering over the popup?
-    isMouseInPopup: boolean;
-
     // Assign css focus class if focus is due to Keyboard or mouse
     focusClass: string|undefined;
 }
@@ -89,6 +86,32 @@ if (typeof document !== 'undefined') {
     style.type = 'text/css';
     style.appendChild(document.createTextNode(defaultBoxSizing));
     document.head.appendChild(style);
+}
+
+export interface MainViewContext {
+    isInRxMainView?: boolean;
+}
+
+// This helper class wraps the main view and passes a boolean value
+// "isInRxMainView" to all children found within it. This is used to
+// prevent gesture handling within the main view when a modal is displayed.
+export class MainViewContainer extends React.Component<Types.CommonProps, Types.Stateless>
+        implements React.ChildContextProvider<MainViewContext> {
+    static childContextTypes: React.ValidationMap<any> = {
+        isInRxMainView: PropTypes.bool
+    };
+
+    getChildContext(): MainViewContext {
+        return {
+            isInRxMainView: true
+        };
+    }
+
+    render() {
+        return (
+            this.props.children
+        );
+    }
 }
 
 export class RootView extends React.Component<RootViewProps, RootViewState> {
@@ -138,7 +161,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             popupHeight: 0,
             constrainedPopupWidth: 0,
             constrainedPopupHeight: 0,
-            isMouseInPopup: false,
             focusClass: this.props.mouseFocusOutline
         };
     }
@@ -161,10 +183,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 this._startRepositionPopupTimer();
             }
 
-            if (!this.state.isMouseInPopup) {
-                this._startHidePopupTimer();
-            }
-
             if (!this._clickHandlerInstalled) {
                 document.addEventListener('mousedown', this._tryClosePopup);
                 document.addEventListener('touchstart', this._tryClosePopup);
@@ -184,10 +202,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     componentDidMount() {
         if (this.props.activePopup) {
             this._recalcPosition();
-        }
-
-        if (!this.state.isMouseInPopup) {
-            this._startHidePopupTimer();
         }
 
         if (this.props.activePopup) {
@@ -267,7 +281,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     render() {
-        let rootViewStyle = {
+        const rootViewStyle = {
             width: '100%',
             height: '100%',
             display: 'flex',
@@ -297,7 +311,9 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 style={ rootViewStyle }
                 dir={ this.props.writingDirection }
             >
-                { this.props.mainView }
+                <MainViewContainer>
+                    { this.props.mainView }
+                </MainViewContainer>
                 { optionalModal }
                 { optionalPopups }
                 <AccessibilityAnnouncer />
@@ -510,18 +526,10 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     private _onMouseEnter(e: React.MouseEvent<any>) {
-        this.setState({
-            isMouseInPopup: true
-        });
-
         this._stopHidePopupTimer();
     }
 
     private _onMouseLeave(e: React.MouseEvent<any>) {
-        this.setState({
-            isMouseInPopup: false
-        });
-
         this._startHidePopupTimer();
     }
 

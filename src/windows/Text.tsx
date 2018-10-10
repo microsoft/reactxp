@@ -8,10 +8,11 @@
  */
 
 import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import { ExtendedTextProps, NativeSyntheticEvent } from 'react-native';
+import { TextWindowsSelectionChangeEventData as SelectionChangeEventData } from 'react-native-windows';
 
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
-import React = require('react');
-import RN = require('react-native');
 import { Text as TextBase, TextContext as TextContextBase } from '../native-common/Text';
 import { Types } from '../common/Interfaces';
 
@@ -36,43 +37,16 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
         ...TextBase.childContextTypes
     };
 
-    render() {
-        const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility);
-
-        // The presence of any of the onPress or onContextMenu makes the RN.Text a potential touch responder
-        const onPress = (this.props.onPress || this.props.onContextMenu) ? this._onPress : undefined;
-
-        // The presence of an onContextMenu on this instance or on the first responder parent up the tree
-        // should disable any system provided context menu
-        const disableContextMenu = !!this.props.onContextMenu || !!this.context.isRxParentAContextMenuResponder;
-
-        const extendedProps: RN.ExtendedTextProps = {
-            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
-            disableContextMenu: disableContextMenu,
+    protected _getExtendedProperties(): ExtendedTextProps {
+        const superExtendedProps: ExtendedTextProps = super._getExtendedProperties();
+        return {
+            ...superExtendedProps,
             onSelectionChange: this._onSelectionChange
         };
-
-        return (
-            <RN.Text
-                style={ this._getStyles() as RN.StyleProp<RN.TextStyle> }
-                ref={ this._onMount as any }
-                importantForAccessibility={ importantForAccessibility }
-                numberOfLines={ this.props.numberOfLines }
-                allowFontScaling={ this.props.allowFontScaling }
-                onPress={ onPress }
-                selectable={ this.props.selectable }
-                textBreakStrategy={ 'simple' }
-                ellipsizeMode={ this.props.ellipsizeMode }
-                testID={ this.props.testId }
-                { ...extendedProps }
-            >
-                { this.props.children }
-            </RN.Text>
-        );
     }
 
-    private _onSelectionChange = (selEvent: React.SyntheticEvent<RN.Text>) => {
-        this._selectedText = (selEvent.nativeEvent as any).selectedText;
+    private _onSelectionChange = (event: NativeSyntheticEvent<SelectionChangeEventData>) => {
+        this._selectedText = event.nativeEvent.selectedText;
     }
 
     requestFocus() {

@@ -64,6 +64,9 @@ interface AlertOptions {
     // Optional: the id of the root view this alert is associated with.
     // Defaults to the view set by UserInterface.setMainView().
     rootViewId?: string;
+
+    // Optional: Prevent the dialog from being dismissed when pressing away from the dialog
+    preventDismissOnPress?: boolean;
 }
 
 ```

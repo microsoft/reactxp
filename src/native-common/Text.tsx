@@ -52,19 +52,10 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
     }
 
     render() {
-        const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility);
-
         // The presence of any of the onPress or onContextMenu makes the RN.Text a potential touch responder
         const onPress = (this.props.onPress || this.props.onContextMenu) ? this._onPress : undefined;
-
-        // The presence of an onContextMenu on this instance or on the first responder parent up the tree
-        // should disable any system provided context menu
-        const disableContextMenu = !!this.props.onContextMenu || !!this.context.isRxParentAContextMenuResponder;
-
-        const extendedProps: RN.ExtendedTextProps = {
-            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
-            disableContextMenu: disableContextMenu
-        };
+        const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility);
+        const extendedProps: RN.ExtendedTextProps = this._getExtendedProperties();
 
         return (
             <RN.Text
@@ -95,7 +86,17 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
         this._mountedComponent = component;
     }
 
-    protected _onPress = (e: RN.GestureResponderEvent) => {
+    protected _getExtendedProperties(): RN.ExtendedTextProps {
+        const { maxContentSizeMultiplier, onContextMenu } = this.props;
+
+        // The presence of an onContextMenu on this instance or on the first responder parent up the tree
+        // should disable any system provided context menu
+        const disableContextMenu = !!onContextMenu || !!this.context.isRxParentAContextMenuResponder;
+
+        return { maxContentSizeMultiplier, disableContextMenu };
+    }
+
+    private _onPress = (e: RN.GestureResponderEvent) => {
         if (EventHelpers.isRightMouseButton(e)) {
             if (this.props.onContextMenu) {
                 this.props.onContextMenu(EventHelpers.toMouseEvent(e));

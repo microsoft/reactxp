@@ -35,35 +35,23 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
     };
 
     static prefetch(url: string): SyncTasks.Promise<boolean> {
-        const defer = SyncTasks.Defer<boolean>();
-
-        RN.Image.prefetch(url).then((value: boolean) => {
-            defer.resolve(value);
-        }).catch((error: any) => {
-            defer.reject(error);
-        });
-
-        return defer.promise();
+        return SyncTasks.fromThenable(RN.Image.prefetch(url));
     }
 
     static getMetadata(url: string): SyncTasks.Promise<Types.ImageMetadata> {
-        const defer = SyncTasks.Defer<Types.ImageMetadata>();
-
-        Image.prefetch(url).then(success => {
+        return SyncTasks.fromThenable(Image.prefetch(url)).then(success => {
             if (!success) {
-                defer.reject(`Prefetching url ${ url } did not succeed.`);
+                return SyncTasks.Rejected(`Prefetching url ${ url } did not succeed.`);
             } else {
+                const defer = SyncTasks.Defer<Types.ImageMetadata>();
                 RN.Image.getSize(url, (width, height) => {
                     defer.resolve({ width, height });
                 }, error => {
                     defer.reject(error);
                 });
+                return defer.promise();
             }
-        }).catch((error: any) => {
-            defer.reject(error);
         });
-
-        return defer.promise();
     }
 
     protected _mountedComponent: RN.Image | null = null;

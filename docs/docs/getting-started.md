@@ -17,6 +17,8 @@ To create your first ReactXP app, do the following:
 3. Follow the build instructions for the sample you've chosen.
 4. If desired, rename the directory and project files to reflect the name of your app.
 
+If you want to create a new ReactXP app, use the command-line tool [create-rx-app](https://github.com/a-tarasyuk/create-rx-app).
+
 ## Web Technologies
 
 React apps are written using web programming techniques. This documentation assumes that you are already familiar with web programming concepts including the use of JavaScript, the browser DOM, browser event handling, and CSS styling. There are many online tutorials that cover these concepts.

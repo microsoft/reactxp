@@ -11,7 +11,7 @@ ReactXP provides basic [Network APIs](/reactxp/docs/apis/network) for determinin
 
 This extension provides a cross-platform mechanism for wrapping a simple REST API. It supports optional retry logic (including exponential backoff).
 
-For more details, refer to the [SimpleRestClients](https://github.com/Microsoft/SimpleRestClients) github site.
+For more details, refer to the [SimpleRestClients](https://github.com/Microsoft/SimpleRestClients) GitHub site.
 
 To install: ```npm install simplerestclients``` or  ```yarn add simplerestclients```
 

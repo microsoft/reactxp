@@ -223,7 +223,7 @@ requestFocus(): void;
 blur(): void;
 
 // The focus does not go outside the view with restrictFocusWithin by default,
-// setFocusRestricted() allows to turn this restricton off and back on.
+// setFocusRestricted() allows to turn this restriction off and back on.
 setFocusRestricted(restricted: boolean): void; // web only
 
 
