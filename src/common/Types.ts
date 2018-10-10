@@ -295,6 +295,7 @@ export type AnimatedTextStyleRuleSet = StyleRuleSet<AnimatedTextStyle>;
 // ------------------------------------------------------------
 
 export interface TextInputStyle extends TextStyle {
+    caretColor?: string; // for web
 }
 
 export type TextInputStyleRuleSet = StyleRuleSet<TextInputStyle>;
