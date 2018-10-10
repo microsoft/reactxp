@@ -22,14 +22,14 @@ const _styles = {
         fontSize: 16,
         padding: 5,
         margin: 10,
-        height: 30,
-    }),
+        height: 30
+    })
 };
 
 export class SearchField extends RX.Component<SearchFieldProps, SearchFieldState> {
-    public readonly state: SearchFieldState = { value: '' };
+    readonly state: SearchFieldState = { value: '' };
 
-    public render() {
+    render() {
         return (
             <RX.TextInput
                 accessibilityId={ 'SearchFieldInput' }

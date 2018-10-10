@@ -7,7 +7,7 @@ import { DEBUG, DEV } from './config';
 import RootView from './views/RootView';
 
 class App {
-    public init() {
+    init() {
         RX.App.initialize(DEBUG, DEV);
         RX.UserInterface.setMainView(this._renderRootView());
     }

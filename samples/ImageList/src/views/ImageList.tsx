@@ -26,7 +26,7 @@ const _styles = {
         backgroundColor: '#fff',
         flexDirection: 'column',
         alignSelf: 'stretch',
-        margin: 0,
+        margin: 0
     }),
     row: RX.Styles.createViewStyle({
         borderBottomWidth: 1,
@@ -36,36 +36,36 @@ const _styles = {
         flexDirection: 'row',
         alignItems: 'center',
         flex: 1,
-        height: _itemHeight,
+        height: _itemHeight
     }),
     image: RX.Styles.createImageStyle({
         height: 100,
-        width: 133,
+        width: 133
     }),
     main: RX.Styles.createViewStyle({
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'stretch',
-        flex: 1,
+        flex: 1
     }),
     labelText: RX.Styles.createTextStyle({
         textAlign: 'center',
-        fontSize: 30,
+        fontSize: 30
     }),
     linkText: RX.Styles.createLinkStyle({
         padding: 12,
         fontSize: 14,
         color: 'blue',
-        flex: -1,
+        flex: -1
     }),
     searchQueryText: RX.Styles.createTextStyle({
         fontWeight: 'bold',
-        fontSize: 30,
-    }),
+        fontSize: 30
+    })
 };
 
 export class ImageList extends ComponentBase<{}, ImageListState> {
-    public render() {
+    render() {
         const { isPerformingSearch, isFirstSearch, searchQuery, images } = this.state;
 
         // If the search is pending, render a spinner.
@@ -101,7 +101,7 @@ export class ImageList extends ComponentBase<{}, ImageListState> {
             isPerformingSearch: ImageStore.isPerformingSearch(),
             isFirstSearch: ImageStore.isFirstSearch(),
             searchQuery: ImageStore.getSearchQuery(),
-            images: ImageStore.getImages().map(this._normilizeImage),
+            images: ImageStore.getImages().map(this._normilizeImage)
         };
     }
 
@@ -125,7 +125,7 @@ export class ImageList extends ComponentBase<{}, ImageListState> {
         template: 'image',
         height: _itemHeight,
         image,
-        key: image.smallUrl,
+        key: image.smallUrl
     })
 }
 

@@ -23,26 +23,26 @@ export class ImageStore extends StoreBase {
     private _request: SyncTasks.STPromise<void> | null = null;
 
     @autoSubscribe
-    public getImages() {
+    getImages() {
         return this._images;
     }
 
     @autoSubscribe
-    public getSearchQuery() {
+    getSearchQuery() {
         return this._searchQuery;
     }
 
     @autoSubscribe
-    public isPerformingSearch() {
+    isPerformingSearch() {
         return this._isSearchPending;
     }
 
     @autoSubscribe
-    public isFirstSearch() {
+    isFirstSearch() {
         return this._isFirstSearch;
     }
 
-    public updateImages(searchQuery: string) {
+    updateImages(searchQuery: string) {
         const searchQueryTrimmed = searchQuery.trim();
         this._searchQuery = searchQuery;
 
