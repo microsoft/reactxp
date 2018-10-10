@@ -12,6 +12,7 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import * as SyncTasks from 'synctasks';
 
+import * as _ from './utils/lodashMini';
 import { Types } from '../common/Interfaces';
 import { DEFAULT_RESIZE_MODE } from '../common/Image';
 import Platform from './Platform';
@@ -109,6 +110,12 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
                 { ...props }
             />
         );
+    }
+
+    componentWillReceiveProps(nextProps: Types.ImageProps) {
+        if (!_.isEqual(this.props, nextProps)) {
+            this._forceCache = false;
+        }
     }
 
     protected _onMount = (component: RN.Image | null) => {
