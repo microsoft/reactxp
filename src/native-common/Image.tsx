@@ -31,7 +31,12 @@ export interface ImageContext {
     isRxParentAText?: boolean;
 }
 
-export class Image extends React.Component<Types.ImageProps, Types.Stateless> implements React.ChildContextProvider<ImageContext> {
+export interface ImageState {
+    forceCache?: boolean;
+    lastNativeError?: any;
+}
+
+export class Image extends React.Component<Types.ImageProps, ImageState> implements React.ChildContextProvider<ImageContext> {
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired,
     };
@@ -59,7 +64,6 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
     protected _mountedComponent: RN.Image | null = null;
     private _nativeImageWidth: number | undefined;
     private _nativeImageHeight: number | undefined;
-    private _forceCache = false;
 
     protected _getAdditionalProps(): RN.ImageProperties | {} {
         return {};
@@ -116,7 +120,7 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
         const sourceOrHeaderChanged = (nextProps.source !== this.props.source ||
             !_.isEqual(nextProps.headers || {}, this.props.headers || {}));
         if (sourceOrHeaderChanged) {
-            this._forceCache = false;
+            this.setState({ forceCache: false, lastNativeError: undefined });
         }
     }
 
@@ -175,13 +179,17 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
             return;
         }
 
-        if (!this._forceCache && this._shouldForceCacheOnError()) {
+        if (!this.state.forceCache && this._shouldForceCacheOnError()) {
             // Some platforms will not use expired cache data unless explicitly told so.
             // Let's try again with cache: 'force-cache'.
-            this._forceCache = true;
-            this.forceUpdate();
+            this.setState({ forceCache: true, lastNativeError: e.nativeEvent.error });
         } else if (this.props.onError) {
-            this.props.onError(new Error(e.nativeEvent.error));
+            if (this.state.forceCache) {
+                // Fire the callback with the error we got when we failed without forceCache.
+                this.props.onError(new Error(this.state.lastNativeError));
+            } else {
+                this.props.onError(new Error(e.nativeEvent.error));
+            }
         }
     }
 
@@ -195,8 +203,8 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
         if (this.props.headers) {
             source.headers = this.props.headers;
         }
-        if (this._forceCache) {
-            source.cache = 'force-cache';
+        if (this.state.forceCache) {
+            source.cache = 'only-if-cached';
         }
 
         return source;
@@ -208,6 +216,8 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
         }
         if (this.props.headers) {
             for (let key in this.props.headers) {
+                // We don't know how stale the cached data is so we're matching only the simple 'max-stale' attribute
+                // without a value.
                 if (key.toLowerCase() === 'cache-control' && this.props.headers[key].toLowerCase() === 'max-stale') {
                     return true;
                 }
