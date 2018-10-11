@@ -181,7 +181,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
 
         if (!this.state.forceCache && this._shouldForceCacheOnError()) {
             // Some platforms will not use expired cache data unless explicitly told so.
-            // Let's try again with cache: 'force-cache'.
+            // Let's try again with cache: 'only-if-cached'.
             this.setState({ forceCache: true, lastNativeError: e.nativeEvent.error });
         } else if (this.props.onError) {
             if (this.state.forceCache) {
