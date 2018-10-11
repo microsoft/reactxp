@@ -204,16 +204,6 @@ export class InterpolatedValue extends Value {
             throw 'The interpolation config is invalid. Input and output arrays must be same length.';
         }
 
-        // This API doesn't currently support more than two elements in the
-        // interpolation array. Supporting this in the web would require the
-        // use of JS-driven animations or keyframes, both of which are prohibitively
-        // expensive from a performance and responsiveness perspective.
-        if (this._config.inputRange.length !== 2) {
-            if (AppConfig.isDevelopmentMode()) {
-                console.log('Web implementation of interpolate API currently supports only two interpolation values.');
-            }
-        }
-
         const newInterpolationConfig: { [key: number]: string|number } = {};
         _.each(this._config.inputRange, (key, index) => {
             newInterpolationConfig[key] = this._config.outputRange[index];
@@ -234,6 +224,21 @@ export class InterpolatedValue extends Value {
                 return undefined;
             }
         });
+    }
+
+    _startTransition(toValue: number|string, duration: number, easing: string, delay: number,
+            onEnd: RX.Types.Animated.EndCallback): void {
+        // This API doesn't currently support more than two elements in the
+        // interpolation array. Supporting this in the web would require the
+        // use of JS-driven animations or keyframes, both of which are prohibitively
+        // expensive from a performance and responsiveness perspective.
+        if (this._config.inputRange.length !== 2) {
+            if (AppConfig.isDevelopmentMode()) {
+                console.log('Web implementation of interpolate API currently supports only two interpolation values.');
+            }
+        }
+
+        super._startTransition(toValue, duration, easing, delay, onEnd);
     }
 
     _getInterpolatedValue(inputVal: number|string): number | string {
