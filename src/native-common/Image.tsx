@@ -65,6 +65,15 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
     private _nativeImageWidth: number | undefined;
     private _nativeImageHeight: number | undefined;
 
+    constructor(props: Types.ImageProps, context: ImageContext) {
+        super(props, context);
+
+        this.state = {
+            forceCache: false,
+            lastNativeError: undefined
+        };
+    }
+
     protected _getAdditionalProps(): RN.ImageProperties | {} {
         return {};
     }
