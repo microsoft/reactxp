@@ -12,8 +12,10 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import * as SyncTasks from 'synctasks';
 
+import * as _ from './utils/lodashMini';
 import { Types } from '../common/Interfaces';
 import { DEFAULT_RESIZE_MODE } from '../common/Image';
+import Platform from './Platform';
 import Styles from './Styles';
 
 const _styles = {
@@ -29,7 +31,12 @@ export interface ImageContext {
     isRxParentAText?: boolean;
 }
 
-export class Image extends React.Component<Types.ImageProps, Types.Stateless> implements React.ChildContextProvider<ImageContext> {
+export interface ImageState {
+    forceCache?: boolean;
+    lastNativeError?: any;
+}
+
+export class Image extends React.Component<Types.ImageProps, ImageState> implements React.ChildContextProvider<ImageContext> {
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAText: PropTypes.bool.isRequired,
     };
@@ -57,6 +64,7 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
     protected _mountedComponent: RN.Image | null = null;
     private _nativeImageWidth: number | undefined;
     private _nativeImageHeight: number | undefined;
+    readonly state: ImageState = { forceCache: false, lastNativeError: undefined };
 
     protected _getAdditionalProps(): RN.ImageProperties | {} {
         return {};
@@ -107,6 +115,14 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
                 { ...props }
             />
         );
+    }
+
+    componentWillReceiveProps(nextProps: Types.ImageProps) {
+        const sourceOrHeaderChanged = (nextProps.source !== this.props.source ||
+            !_.isEqual(nextProps.headers || {}, this.props.headers || {}));
+        if (sourceOrHeaderChanged) {
+            this.setState({ forceCache: false, lastNativeError: undefined });
+        }
     }
 
     protected _onMount = (component: RN.Image | null) => {
@@ -164,8 +180,17 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
             return;
         }
 
-        if (this.props.onError) {
-            this.props.onError(new Error(e.nativeEvent.error));
+        if (!this.state.forceCache && this._shouldForceCacheOnError()) {
+            // Some platforms will not use expired cache data unless explicitly told so.
+            // Let's try again with cache: 'only-if-cached'.
+            this.setState({ forceCache: true, lastNativeError: e.nativeEvent.error });
+        } else if (this.props.onError) {
+            if (this.state.forceCache) {
+                // Fire the callback with the error we got when we failed without forceCache.
+                this.props.onError(new Error(this.state.lastNativeError));
+            } else {
+                this.props.onError(new Error(e.nativeEvent.error));
+            }
         }
     }
 
@@ -179,8 +204,27 @@ export class Image extends React.Component<Types.ImageProps, Types.Stateless> im
         if (this.props.headers) {
             source.headers = this.props.headers;
         }
+        if (this.state.forceCache) {
+            source.cache = 'only-if-cached';
+        }
 
         return source;
+    }
+
+    private _shouldForceCacheOnError(): boolean {
+        if (Platform.getType() !== 'ios') {
+            return false;
+        }
+        if (this.props.headers) {
+            for (let key in this.props.headers) {
+                // We don't know how stale the cached data is so we're matching only the simple 'max-stale' attribute
+                // without a value.
+                if (key.toLowerCase() === 'cache-control' && this.props.headers[key].toLowerCase() === 'max-stale') {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     // Note: This works only if you have an onLoaded handler and wait for the image to load.

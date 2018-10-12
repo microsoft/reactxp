@@ -11,6 +11,8 @@ This component displays an image, which can come from a local source or from the
 
 If child elements are specified, the image acts as a background, and the children are rendered on top of it.
 
+If headers contains 'Cache-Control: max-stale' with no value specified and the image fails to load, the component tries again passing cache: 'only-if-cached' to the underlying native Image (iOS only). This way the app can render otherwise inaccessible stale cached images.
+
 ## Props
 ``` javascript
 // Alternate text to display if the image cannot be loaded
