@@ -28,6 +28,11 @@
     "react-native-windows": "^0.55.0-rc.0"
   },
   "devDependencies": {
+    "eslint": "^3.19.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-native": "^0.57.3",
+    "react-native-windows": "^0.55.0-rc.0",
     "tslint": "5.11.0",
     "tslint-microsoft-contrib": "5.2.1",
     "tsutils": "3.0.0",
