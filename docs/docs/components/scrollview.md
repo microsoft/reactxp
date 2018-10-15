@@ -56,7 +56,7 @@ scrollXAnimatedValue?: RX.Types.AnimatedValue;
 scrollYAnimatedValue?: RX.Types.AnimatedValue;
 
 // Android only property to control overScroll mode
-overScrollMode?: 'always' | 'always-if-content-scrolls' | 'never';
+overScrollMode?: 'auto' | 'always' | 'never';
 
 // Snap to page boundaries?
 pagingEnabled: boolean = false; // Android & iOS only

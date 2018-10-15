@@ -18,7 +18,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
     private _scrollLeft = 0;
     protected _nativeView: any;
 
-    protected _render(nativeProps: RN.ScrollViewProps&React.Props<RN.ScrollView>): JSX.Element {
+    protected _render(nativeProps: RN.ScrollViewProps & React.Props<RN.ScrollView>): JSX.Element {
         if (this.props.scrollXAnimatedValue || this.props.scrollYAnimatedValue) {
             // Have to jump over to an Animated ScrollView to use an RN.Animated.event...
             return (
@@ -52,20 +52,25 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         if (this.props.scrollXAnimatedValue || this.props.scrollYAnimatedValue) {
             // For more details on this craziness, reference:
             // https://facebook.github.io/react-native/docs/animated#handling-gestures-and-other-events
-            let handlerWrapper: any = { nativeEvent: { contentOffset: { } } };
+            let handlerWrapper: RN.EventMapping = {
+                nativeEvent: {
+                    contentOffset: { }
+                }
+            };
             if (this.props.scrollXAnimatedValue) {
                 handlerWrapper.nativeEvent.contentOffset.x = this.props.scrollXAnimatedValue;
             }
             if (this.props.scrollYAnimatedValue) {
                 handlerWrapper.nativeEvent.contentOffset.y = this.props.scrollYAnimatedValue;
             }
-            let eventConfig: any = {
+            let eventConfig: RN.AnimatedEventConfig<RN.NativeScrollEvent> = {
                 useNativeDriver: true
             };
             if (this.props.onScroll) {
                 eventConfig.listener = this._onScroll;
             }
-            scrollHandler = RN.Animated.event([handlerWrapper], eventConfig);
+            // react-native.d.ts is wrong for the eventconfig typing, so casting to any for now.
+            scrollHandler = RN.Animated.event([handlerWrapper], eventConfig as any);
         } else if (this.props.onScroll) {
             scrollHandler = this._onScroll;
         } else {
@@ -85,8 +90,9 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         // We also set removeClippedSubviews to false, overriding the default value. Most of the scroll views
         // we use are virtualized anyway.
 
-        const internalProps: RN.ScrollViewProps&React.Props<RN.ScrollView> = {
+        const internalProps: RN.ScrollViewProps & React.Props<RN.ScrollView> = {
             ref: this._setNativeView,
+            // Bug in react-native.d.ts.  style should be "style?: StyleProp<ScrollViewStyle>;" but instead is ViewStyle.
             style: this.props.style as any,
             onScroll: scrollHandler,
             automaticallyAdjustContentInsets: false,
@@ -105,7 +111,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
             decelerationRate: typeof this.props.snapToInterval === 'number' ? 'fast' : undefined,
             scrollsToTop: this.props.scrollsToTop,
             removeClippedSubviews: false,
-            overScrollMode: this.props.overScrollMode as any,
+            overScrollMode: this.props.overScrollMode,
             scrollIndicatorInsets: this.props.scrollIndicatorInsets,
             onScrollBeginDrag: this.props.onScrollBeginDrag,
             onScrollEndDrag: this.props.onScrollEndDrag,

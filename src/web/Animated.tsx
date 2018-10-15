@@ -97,7 +97,7 @@ export class Value extends RX.Types.AnimatedValue {
         return this._getInterpolatedValue(this._value);
     }
 
-    _getInterpolatedValue(inputVal: number|string): number | string {
+    _getInterpolatedValue(inputVal: number | string): number | string {
         return inputVal;
     }
 
@@ -685,7 +685,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
 
         // Generates the CSS value for the specified attribute given
         // an animated value object.
-        private _generateCssAttributeValue(attrib: string, newValue: number|string): string {
+        private _generateCssAttributeValue(attrib: string, newValue: number | string): string {
             // If the value is a raw number, append the default units.
             // If it's a string, we assume the caller has specified the units.
             if (typeof newValue === 'number') {
@@ -694,7 +694,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
             return newValue;
         }
 
-        private _generateCssTransformValue(transform: string, newValue: number|string): string {
+        private _generateCssTransformValue(transform: string, newValue: number | string): string {
             // If the value is a raw number, append the default units.
             // If it's a string, we assume the caller has specified the units.
             if (typeof newValue === 'number') {

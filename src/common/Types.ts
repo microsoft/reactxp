@@ -806,8 +806,7 @@ export interface ScrollIndicatorInsets {
 }
 
 // ScrollView
-export interface ScrollViewProps extends CommonProps, CommonAccessibilityProps {
-    style?: StyleRuleSetRecursive<ScrollViewStyleRuleSet>;
+export interface ScrollViewProps extends CommonStyledProps<ScrollViewStyleRuleSet>, CommonAccessibilityProps {
     children?: ReactNode;
 
     vertical?: boolean; // By default true
@@ -858,7 +857,7 @@ export interface ScrollViewProps extends CommonProps, CommonAccessibilityProps {
     scrollsToTop?: boolean;
 
     // Android only property to control overScroll mode
-    overScrollMode?: 'always' | 'always-if-content-scrolls' | 'never';
+    overScrollMode?: 'auto' | 'always' | 'never';
 
     // iOS-only property to control scroll indicator insets
     scrollIndicatorInsets?: ScrollIndicatorInsets;

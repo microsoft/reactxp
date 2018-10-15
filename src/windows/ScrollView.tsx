@@ -15,7 +15,7 @@ import EventHelpers from '../native-common/utils/EventHelpers';
 
 export class ScrollView extends ScrollViewBase {
 
-    protected _render(nativeProps: RN.ScrollViewProps&React.Props<RN.ScrollView>): JSX.Element {
+    protected _render(nativeProps: RN.ScrollViewProps & React.Props<RN.ScrollView>): JSX.Element {
         var onKeyDownCallback = this.props.onKeyPress ? this._onKeyDown : undefined;
 
         // TODO: #737970 Remove special case for UWP when this bug is fixed. The bug
