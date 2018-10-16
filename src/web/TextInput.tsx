@@ -43,6 +43,87 @@ export interface TextInputContext {
     focusArbitrator?: FocusArbitratorProvider;
 }
 
+interface TextInputPlaceholderCacheItem {
+    refCounter: number;
+    styleElement: HTMLStyleElement;
+}
+
+class TextInputPlaceholderSupport {
+    private static _cachedStyles: { [color: string]: TextInputPlaceholderCacheItem } = {};
+
+    static getClassName(color: string): string {
+        const key = this._colorKey(color);
+
+        return `reactxp-placeholder-${key}`;
+    }
+
+    static addRef(color: string) {
+        if (typeof document === undefined) {
+            return;
+        }
+
+        const cache = this._cachedStyles;
+        const key = this._colorKey(color);
+
+        if (cache.hasOwnProperty(key)) {
+            cache[key].refCounter++;
+        } else {
+            const className = this.getClassName(color);
+            const style = document.createElement('style');
+            style.type = 'text/css';
+            style.textContent = this._getStyle(className, color);
+
+            document.head.appendChild(style);
+
+            cache[key] = {
+                refCounter: 1,
+                styleElement: style,
+            };
+        }
+    }
+
+    static removeRef(color: string) {
+        const cache = this._cachedStyles;
+        const key = this._colorKey(color);
+
+        if (cache.hasOwnProperty(key)) {
+            const item = cache[key];
+
+            if (--item.refCounter < 1) {
+                const styleElement = item.styleElement;
+                if (styleElement.parentNode) {
+                    styleElement.parentNode.removeChild(styleElement);
+                }
+                delete cache[key];
+            }
+        }
+    }
+
+    private static _colorKey(color: string): string {
+        return color.toLowerCase()
+            .replace(/(,|\.|#)/g, '_')
+            .replace(/[^a-z0-9_]/g, '');
+    }
+
+    private static _getStyle(className: string, placeholderColor: string): string {
+        const selectors = [
+            '::placeholder', // Modern browsers
+            '::-webkit-input-placeholder',  // Webkit
+            '::-moz-placeholder', // Firefox 19+
+            ':-moz-placeholder', // Firefox 18-
+            ':-ms-input-placeholder' // IE 10+
+        ];
+
+        return selectors
+            .map((pseudoSelector) =>
+                `.${className}${pseudoSelector} {\n` +
+                    `  opacity: 1;\n` +
+                    `  color: ${placeholderColor};\n` +
+                    `}`
+                ).join('\n');
+    }
+}
+
 export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
     static contextTypes: React.ValidationMap<any> = {
         focusArbitrator: PropTypes.object
@@ -71,11 +152,31 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 inputValue: nextProps.value
             });
         }
+
+        if (nextProps.placeholderTextColor !== this.props.placeholderTextColor) {
+            if (nextProps.placeholderTextColor) {
+                TextInputPlaceholderSupport.addRef(nextProps.placeholderTextColor);
+            }
+
+            if (this.props.placeholderTextColor) {
+                TextInputPlaceholderSupport.removeRef(this.props.placeholderTextColor);
+            }
+        }
     }
 
     componentDidMount() {
+        if (this.props.placeholderTextColor) {
+            TextInputPlaceholderSupport.addRef(this.props.placeholderTextColor);
+        }
+
         if (this.props.autoFocus) {
             this.requestFocus();
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.props.placeholderTextColor) {
+            TextInputPlaceholderSupport.removeRef(this.props.placeholderTextColor);
         }
     }
 
@@ -95,6 +196,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         const editable = (this.props.editable !== undefined ? this.props.editable : true);
         const spellCheck = (this.props.spellCheck !== undefined ? this.props.spellCheck : this.props.autoCorrect);
 
+        const className = this.props.placeholderTextColor !== undefined ?
+            TextInputPlaceholderSupport.getClassName(this.props.placeholderTextColor) : undefined;
+
         // Use a textarea for multi-line and a regular input for single-line.
         if (this.props.multiline) {
             return (
@@ -109,6 +213,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     disabled={ !editable }
                     maxLength={ this.props.maxLength }
                     placeholder={ this.props.placeholder }
+
+                    className={className}
 
                     onChange={ this._onInputChanged }
                     onKeyDown={ this._onKeyDown }
@@ -133,6 +239,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     style={ combinedStyles as any }
                     value={ this.state.inputValue }
                     title={ this.props.title }
+
+                    className={className}
 
                     autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
