@@ -210,17 +210,16 @@ export class InterpolatedValue extends Value {
         });
         this._interpolationConfig = newInterpolationConfig;
 
-        let self = this;
         rootValue._addListener({
-            setValue(valueObject: Value, newValue: number | string): void {
-                self.setValue(valueObject._getOutputValue());
+            setValue: (valueObject: Value, newValue: number | string) => {
+                this.setValue(valueObject._getOutputValue());
             },
-            startTransition(valueObject: Value, from: number|string, toValue: number|string, duration: number,
-                    easing: string, delay: number, onEnd: RX.Types.Animated.EndCallback): void {
-                self._startTransition(toValue, duration, easing, delay, onEnd);
+            startTransition: (valueObject: Value, from: number|string, toValue: number|string, duration: number,
+                    easing: string, delay: number, onEnd: RX.Types.Animated.EndCallback) => {
+                this._startTransition(toValue, duration, easing, delay, onEnd);
             },
-            stopTransition(valueObject: Value): number|string|undefined {
-                self._stopTransition();
+            stopTransition: (valueObject: Value) => {
+                this._stopTransition();
                 return undefined;
             }
         });
