@@ -180,7 +180,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
             return;
         }
 
-        if (!this.state.forceCache && this._shouldForceCacheOnError()) {
+        if (!this.state.forceCache && !!this._getMaxStaleHeader()) {
             // Some platforms will not use expired cache data unless explicitly told so.
             // Let's try again with cache: 'only-if-cached'.
             this.setState({ forceCache: true, lastNativeError: e.nativeEvent.error });
@@ -202,7 +202,16 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
 
         const source: RN.ImageSourcePropType = { uri: this.props.source };
         if (this.props.headers) {
-            source.headers = this.props.headers;
+            const cacheControlHeader = this._getMaxStaleHeader();
+            if (cacheControlHeader) {
+                // Filter out Cache-Control: max-stale. It has the opposite effect on iOS: instead of having
+                // the cache return stale data it disables the cache altogether. We emulate the header by
+                // retrying with cache: 'only-if-cached'.
+                source.headers = _.clone(this.props.headers);
+                delete source.headers[cacheControlHeader];
+            } else {
+                source.headers = this.props.headers;
+            }
         }
         if (this.state.forceCache) {
             source.cache = 'only-if-cached';
@@ -211,20 +220,17 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
         return source;
     }
 
-    private _shouldForceCacheOnError(): boolean {
-        if (Platform.getType() !== 'ios') {
-            return false;
-        }
-        if (this.props.headers) {
+    private _getMaxStaleHeader(): string|undefined {
+        if (Platform.getType() === 'ios' && this.props.headers) {
             for (let key in this.props.headers) {
                 // We don't know how stale the cached data is so we're matching only the simple 'max-stale' attribute
                 // without a value.
                 if (key.toLowerCase() === 'cache-control' && this.props.headers[key].toLowerCase() === 'max-stale') {
-                    return true;
+                    return key;
                 }
             }
         }
-        return false;
+        return undefined;
     }
 
     // Note: This works only if you have an onLoaded handler and wait for the image to load.
