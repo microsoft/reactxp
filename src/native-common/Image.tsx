@@ -34,6 +34,7 @@ export interface ImageContext {
 export interface ImageState {
     forceCache?: boolean;
     lastNativeError?: any;
+    headers?: Types.Headers;
 }
 
 export class Image extends React.Component<Types.ImageProps, ImageState> implements React.ChildContextProvider<ImageContext> {
@@ -64,7 +65,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
     protected _mountedComponent: RN.Image | null = null;
     private _nativeImageWidth: number | undefined;
     private _nativeImageHeight: number | undefined;
-    readonly state: ImageState = { forceCache: false, lastNativeError: undefined };
+    readonly state: ImageState = { forceCache: false, lastNativeError: undefined, headers: this._buildHeaders() };
 
     protected _getAdditionalProps(): RN.ImageProperties | {} {
         return {};
@@ -121,7 +122,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
         const sourceOrHeaderChanged = (nextProps.source !== this.props.source ||
             !_.isEqual(nextProps.headers || {}, this.props.headers || {}));
         if (sourceOrHeaderChanged) {
-            this.setState({ forceCache: false, lastNativeError: undefined });
+            this.setState({ forceCache: false, lastNativeError: undefined, headers: this._buildHeaders() });
         }
     }
 
@@ -194,25 +195,28 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
         }
     }
 
-    private _buildSource(): RN.ImageSourcePropType {
-        // Check if require'd image resource
-        if (typeof this.props.source === 'number') {
-            return this.props.source;
-        }
-
-        const source: RN.ImageSourcePropType = { uri: this.props.source };
+    private _buildHeaders(): Types.Headers|undefined {
         if (this.props.headers) {
             const cacheControlHeader = this._getMaxStaleHeader();
             if (cacheControlHeader) {
                 // Filter out Cache-Control: max-stale. It has the opposite effect on iOS: instead of having
                 // the cache return stale data it disables the cache altogether. We emulate the header by
                 // retrying with cache: 'only-if-cached'.
-                source.headers = _.clone(this.props.headers);
-                delete source.headers[cacheControlHeader];
-            } else {
-                source.headers = this.props.headers;
+                const headers = _.clone(this.props.headers);
+                delete headers[cacheControlHeader];
+                return headers;
             }
         }
+        return this.props.headers;
+    }
+
+    private _buildSource(): RN.ImageSourcePropType {
+        // Check if require'd image resource
+        if (typeof this.props.source === 'number') {
+            return this.props.source;
+        }
+
+        const source: RN.ImageSourcePropType = { uri: this.props.source, headers: this.state.headers };
         if (this.state.forceCache) {
             source.cache = 'only-if-cached';
         }
