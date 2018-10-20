@@ -423,13 +423,16 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
         let origCallback = Component.prototype[methodName];
 
         Component.prototype[methodName] = function () {
-            let focusManager: FocusManager = this._focusManager || (this.context && this.context.focusManager);
+            if (!isConditionallyFocusable || isConditionallyFocusable.call(this)) {
 
-            if (focusManager) {
-                action.call(this, focusManager, arguments);
-            } else {
-                if (AppConfig.isDevelopmentMode()) {
-                    console.error('FocusableComponentMixin: context error!');
+                let focusManager: FocusManager = this._focusManager || (this.context && this.context.focusManager);
+
+                if (focusManager) {
+                    action.call(this, focusManager, arguments);
+                } else {
+                    if (AppConfig.isDevelopmentMode()) {
+                        console.error('FocusableComponentMixin: context error!');
+                    }
                 }
             }
 
