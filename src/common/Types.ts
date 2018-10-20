@@ -806,8 +806,7 @@ export interface ScrollIndicatorInsets {
 }
 
 // ScrollView
-export interface ScrollViewProps extends CommonProps, CommonAccessibilityProps {
-    style?: StyleRuleSetRecursive<ScrollViewStyleRuleSet>;
+export interface ScrollViewProps extends CommonStyledProps<ScrollViewStyleRuleSet>, CommonAccessibilityProps {
     children?: ReactNode;
 
     vertical?: boolean; // By default true
@@ -858,13 +857,21 @@ export interface ScrollViewProps extends CommonProps, CommonAccessibilityProps {
     scrollsToTop?: boolean;
 
     // Android only property to control overScroll mode
-    overScrollMode?: 'always' | 'always-if-content-scrolls' | 'never';
+    overScrollMode?: 'auto' | 'always' | 'never';
 
     // iOS-only property to control scroll indicator insets
     scrollIndicatorInsets?: ScrollIndicatorInsets;
 
     // Windows-only property to control tab navigation inside the view
     tabNavigation?: 'local' | 'cycle' | 'once';
+
+    // Animation helpers to allow usage of the RN.Animated.Event system through ReactXP.
+    // Animated.Values hooked up to either (or both) of these properties will be automatically
+    // hooked into the onScroll handler of the scrollview and .setValue() will be called on them
+    // with the updated values.  On supported platforms, it will use RN.Animated.event() to do
+    // a native-side/-backed coupled animation.
+    scrollXAnimatedValue?: RX.Types.AnimatedValue;
+    scrollYAnimatedValue?: RX.Types.AnimatedValue;
 }
 
 // Link
@@ -1130,7 +1137,6 @@ export type LocationFailureCallback = (error: LocationErrorType) => void;
 // Animated
 // ----------------------------------------------------------------------
 export module Animated {
-
     export type EndResult = { finished: boolean };
     export type EndCallback = (result: EndResult) => void;
     export type CompositeAnimation = {

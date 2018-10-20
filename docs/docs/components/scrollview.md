@@ -47,8 +47,16 @@ onScroll: (newScrollTop: number, newScrollLeft: number) => void = undefined;
 onScrollBeginDrag: () => void = undefined;
 onScrollEndDrag: () => void = undefined;
 
+// Animation helpers to allow usage of the RN.Animated.Event system through ReactXP.
+// AnimatedValue objects hooked up to either (or both) of these properties will be automatically
+// hooked into the onScroll handler of the scrollview and .setValue() will be called on them
+// with the updated values.  On supported platforms, it will use RN.Animated.event() to do
+// a native-side/-backed coupled animation.
+scrollXAnimatedValue?: RX.Types.AnimatedValue;
+scrollYAnimatedValue?: RX.Types.AnimatedValue;
+
 // Android only property to control overScroll mode
-overScrollMode?: 'always' | 'always-if-content-scrolls' | 'never';
+overScrollMode?: 'auto' | 'always' | 'never';
 
 // Snap to page boundaries?
 pagingEnabled: boolean = false; // Android & iOS only

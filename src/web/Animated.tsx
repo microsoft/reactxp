@@ -78,9 +78,8 @@ interface ValueListener {
 
 // The animated value object
 export class Value extends RX.Types.AnimatedValue {
-    private _value: number|string;
+    protected _value: number|string;
     private _listeners: ValueListener[];
-    private _interpolationConfig: { [key: number]: string|number } | undefined;
 
     // Initializes the object with the defaults and assigns the id for the animated value.
     constructor(value: number) {
@@ -90,45 +89,24 @@ export class Value extends RX.Types.AnimatedValue {
     }
 
     // Gets the current animated value (this gets updates after animation concludes)
-    _getValue(): number | string {
+    _getInputValue(): number | string {
         return this._value;
     }
 
-    _isInterpolated(): boolean {
-        return !!this._interpolationConfig;
+    _getOutputValue(): number | string {
+        return this._getInterpolatedValue(this._value);
     }
 
-    _getInterpolatedValue(key: number): string|number {
-        if (!this._interpolationConfig) {
-            throw 'There is no interpolation config but one is required';
-        }
-        return this._interpolationConfig[key];
+    _getInterpolatedValue(inputVal: number | string): number | string {
+        return inputVal;
+    }
+
+    _isInterpolated(): boolean {
+        return false;
     }
 
     interpolate(config: RX.Types.Animated.InterpolationConfigType) {
-        if (!config || !config.inputRange || !config.outputRange ||
-                config.inputRange.length < 2 || config.outputRange.length < 2 ||
-                config.inputRange.length !== config.outputRange.length) {
-            throw 'The interpolation config is invalid. Input and output arrays must be same length.';
-        }
-
-        // This API doesn't currently support more than two elements in the
-        // interpolation array. Supporting this in the web would require the
-        // use of JS-driven animations or keyframes, both of which are prohibitively
-        // expensive from a performance and responsiveness perspective.
-        if (config.inputRange.length !== 2) {
-            if (AppConfig.isDevelopmentMode()) {
-                console.log('Web implementation of interpolate API currently supports only two interpolation values.');
-            }
-        }
-
-        const newInterpolationConfig: { [key: number]: string|number } = {};
-        _.each(config.inputRange, (key, index) => {
-            newInterpolationConfig[key] = config.outputRange[index];
-        });
-        this._interpolationConfig = newInterpolationConfig;
-
-        return this;
+        return new InterpolatedValue(config, this);
     }
 
     // Updates a value in this animated reference.
@@ -181,8 +159,20 @@ export class Value extends RX.Types.AnimatedValue {
             return;
         }
 
+        // Only call onEnd once for a series of listeners.
+        let onEndCalled = false;
+        const onEndWrapper = (result: RX.Types.Animated.EndResult) => {
+            if (onEndCalled) {
+                return;
+            }
+
+            onEndCalled = true;
+            onEnd(result);
+        };
+
         _.each(this._listeners, listener => {
-            listener.startTransition(this, this._getValue(), toValue, duration, easing, delay, onEnd);
+            listener.startTransition(this, this._getOutputValue(), this._getInterpolatedValue(toValue),
+                duration, easing, delay, onEndWrapper);
         });
     }
 
@@ -200,6 +190,89 @@ export class Value extends RX.Types.AnimatedValue {
     // the final value.
     _updateFinalValue(value: number|string) {
         this._value = value;
+    }
+}
+
+export class InterpolatedValue extends Value {
+    private _interpolationConfig: { [key: number]: string|number } | undefined;
+    constructor(private _config: RX.Types.Animated.InterpolationConfigType, rootValue: Value) {
+        super(rootValue._getOutputValue() as number);
+
+        if (!this._config || !this._config.inputRange || !this._config.outputRange ||
+                this._config.inputRange.length < 2 || this._config.outputRange.length < 2 ||
+                this._config.inputRange.length !== this._config.outputRange.length) {
+            throw 'The interpolation config is invalid. Input and output arrays must be same length.';
+        }
+
+        const newInterpolationConfig: { [key: number]: string|number } = {};
+        _.each(this._config.inputRange, (key, index) => {
+            newInterpolationConfig[key] = this._config.outputRange[index];
+        });
+        this._interpolationConfig = newInterpolationConfig;
+
+        rootValue._addListener({
+            setValue: (valueObject: Value, newValue: number | string) => {
+                this.setValue(valueObject._getOutputValue());
+            },
+            startTransition: (valueObject: Value, from: number|string, toValue: number|string, duration: number,
+                    easing: string, delay: number, onEnd: RX.Types.Animated.EndCallback) => {
+                this._startTransition(toValue, duration, easing, delay, onEnd);
+            },
+            stopTransition: (valueObject: Value) => {
+                this._stopTransition();
+                return undefined;
+            }
+        });
+    }
+
+    _startTransition(toValue: number|string, duration: number, easing: string, delay: number,
+            onEnd: RX.Types.Animated.EndCallback): void {
+        // This API doesn't currently support more than two elements in the
+        // interpolation array. Supporting this in the web would require the
+        // use of JS-driven animations or keyframes, both of which are prohibitively
+        // expensive from a performance and responsiveness perspective.
+        if (this._config.inputRange.length !== 2) {
+            if (AppConfig.isDevelopmentMode()) {
+                console.log('Web implementation of interpolate API currently supports only two interpolation values.');
+            }
+        }
+
+        super._startTransition(toValue, duration, easing, delay, onEnd);
+    }
+
+    _getInterpolatedValue(inputVal: number|string): number | string {
+        if (!this._interpolationConfig) {
+            throw 'There is no interpolation config but one is required';
+        }
+
+        if (!_.isNumber(inputVal)) {
+            throw 'Numeric inputVals required for interpolated values';
+        }
+
+        if (this._interpolationConfig[inputVal]) {
+            return this._interpolationConfig[inputVal];
+        }
+
+        if (!_.isNumber(this._config.outputRange[0])) {
+            throw 'Non-transitional interpolations on web only supported as numerics';
+        }
+
+        if (inputVal < this._config.inputRange[0]) {
+            return this._config.outputRange[0];
+        }
+        for (let i = 1; i < this._config.inputRange.length; i++) {
+            if (inputVal < this._config.inputRange[i]) {
+                const ratio = (inputVal - this._config.inputRange[i - 1]) /
+                    (this._config.inputRange[i] - this._config.inputRange[i - 1]);
+                return (this._config.outputRange as number[])[i] * ratio +
+                    (this._config.outputRange as number[])[i - 1] * (1 - ratio);
+            }
+        }
+        return this._config.outputRange[this._config.inputRange.length - 1];
+    }
+
+    _isInterpolated(): boolean {
+        return true;
     }
 }
 
@@ -396,7 +469,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
             if (attrib) {
                 const domNode = this._getDomNode();
                 if (domNode) {
-                    const cssValue = this._generateCssAttributeValue(attrib, valueObject, valueObject._getValue());
+                    const cssValue = this._generateCssAttributeValue(attrib, valueObject._getOutputValue());
                     (domNode.style as any)[attrib] = cssValue;
                 }
                 return;
@@ -431,8 +504,8 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
                 }
                 this._animatedAttributes[attrib].activeTransition = {
                     property: Styles.convertJsToCssStyle(attrib),
-                    from: this._generateCssAttributeValue(attrib, this._animatedAttributes[attrib].valueObject, fromValue),
-                    to: this._generateCssAttributeValue(attrib, this._animatedAttributes[attrib].valueObject, toValue),
+                    from: this._generateCssAttributeValue(attrib, fromValue),
+                    to: this._generateCssAttributeValue(attrib, toValue),
                     duration,
                     timing: easing,
                     delay,
@@ -611,11 +684,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
 
         // Generates the CSS value for the specified attribute given
         // an animated value object.
-        private _generateCssAttributeValue(attrib: string, valueObj: Value, newValue: number|string): string {
-            if (valueObj._isInterpolated()) {
-                newValue = valueObj._getInterpolatedValue(newValue as number);
-            }
-
+        private _generateCssAttributeValue(attrib: string, newValue: number | string): string {
             // If the value is a raw number, append the default units.
             // If it's a string, we assume the caller has specified the units.
             if (typeof newValue === 'number') {
@@ -624,11 +693,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
             return newValue;
         }
 
-        private _generateCssTransformValue(transform: string, valueObj: Value, newValue: number|string): string {
-            if (valueObj._isInterpolated()) {
-                newValue = valueObj._getInterpolatedValue(newValue as number);
-            }
-
+        private _generateCssTransformValue(transform: string, newValue: number | string): string {
             // If the value is a raw number, append the default units.
             // If it's a string, we assume the caller has specified the units.
             if (typeof newValue === 'number') {
@@ -644,8 +709,8 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
                 transformList.push(transform + '(' + value + ')');
             });
             _.each(this._animatedTransforms, (value, transform) => {
-                let newValue = useActiveValues && value.activeTransition ? value.activeTransition.to : value.valueObject._getValue();
-                transformList.push(transform + '(' + this._generateCssTransformValue(transform, value.valueObject, newValue) + ')');
+                let newValue = useActiveValues && value.activeTransition ? value.activeTransition.to : value.valueObject._getOutputValue();
+                transformList.push(transform + '(' + this._generateCssTransformValue(transform, newValue) + ')');
             });
             return transformList.join(' ');
         }
@@ -666,8 +731,8 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
 
                 // Is this a dynamic (animated) value?
                 if (rawStyles[attrib] instanceof Value) {
-                    let valueObj = rawStyles[attrib];
-                    this._processedStyle[attrib] = this._generateCssAttributeValue(attrib, valueObj, valueObj._getValue());
+                    let valueObj = rawStyles[attrib] as Value;
+                    this._processedStyle[attrib] = this._generateCssAttributeValue(attrib, valueObj._getOutputValue());
                     newAnimatedAttributes[attrib] = valueObj;
                 } else {
                     // Copy the static style value.

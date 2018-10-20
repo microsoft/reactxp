@@ -66,6 +66,20 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
     private _isMounted = false;
     private _test1Timer: number | undefined;
 
+    private _scrollAnimEventValue = RX.Animated.createValue(0);
+    private _coupledOpacityValue = this._scrollAnimEventValue.interpolate({
+        inputRange: [0, 500],
+        outputRange: [1, 0.2]
+    });
+    private _coupledTranslateXValue = this._scrollAnimEventValue.interpolate({
+        inputRange: [0, 500],
+        outputRange: [500, 0]
+    });
+    private _coupledAnimStyle = RX.Styles.createAnimatedViewStyle({
+        opacity: this._coupledOpacityValue,
+        transform: [{ translateX: this._coupledTranslateXValue }]
+    });
+
     constructor(props: RX.CommonProps) {
         super(props);
 
@@ -125,6 +139,7 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
                         scrollEventThrottle={ 1000 }
                         scrollIndicatorInsets={ { top: 20, left: 0, bottom: 20, right: 0 } }
                         onScroll={ this._onScrollTest1 }
+                        scrollYAnimatedValue={ this._scrollAnimEventValue }
                         onContentSizeChange={ this._onContentSizeChangeTest1 }
                         onScrollBeginDrag={ this._onScrollBeginDragTest1 }
                         onScrollEndDrag={ this._onScrollEndDragTest1 }
@@ -134,6 +149,9 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
                         </RX.View>
                     </RX.ScrollView>
                 </RX.View>
+                <RX.Animated.View style={ this._coupledAnimStyle }>
+                    This should move left and go translucent as you scroll.
+                </RX.Animated.View>
                 <RX.View>
                     <RX.Text style={ _styles.labelText }>
                         { 'Scroll top: ' + this.state.test1ScrollTop }

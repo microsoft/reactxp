@@ -97,6 +97,8 @@ export interface VirtualListViewProps<ItemInfo extends VirtualListViewItemInfo> 
     disableBouncing?: boolean; // iOS only, bounce override
     scrollIndicatorInsets?: { top: number, left: number, bottom: number, right: number }; // iOS only
     onScroll?: (scrollTop: number, scrollLeft: number) => void;
+    scrollXAnimatedValue?: RX.Types.AnimatedValue;
+    scrollYAnimatedValue?: RX.Types.AnimatedValue;
 
     // Logging callback to debug issues related to the VirtualListView.
     logInfo?: (textToLog: string) => void;
@@ -1146,10 +1148,12 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
                 testId={this.props.testId}
                 onLayout={ this._onLayoutContainer }
                 onScroll={ this._onScroll }
+                scrollXAnimatedValue={ this.props.scrollXAnimatedValue }
+                scrollYAnimatedValue={ this.props.scrollYAnimatedValue }
                 keyboardDismissMode={ this.props.keyboardDismissMode }
                 keyboardShouldPersistTaps={ this.props.keyboardShouldPersistTaps }
                 scrollsToTop={ this.props.scrollsToTop }
-                scrollEventThrottle={ 32 } // 30 events per second max
+                scrollEventThrottle={ 32 } // 32ms throttle -> ~30 events per second max
                 style={ scrollViewStyle }
                 bounces={ !this.props.disableBouncing }
                 onKeyPress={ this._onKeyDown }

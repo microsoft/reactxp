@@ -192,13 +192,21 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         // Force the list of deferred changes to be reported now.
         ViewBase._reportDeferredLayoutChanges();
 
-        if (this.props.onScroll) {
+        if (this.props.onScroll || this.props.scrollXAnimatedValue || this.props.scrollYAnimatedValue) {
             onLayoutPromise.then(() => {
                 const container = this._getContainer();
                 if (!container) {
                     return;
                 }
-                this.props.onScroll!!!(container.scrollTop, container.scrollLeft);
+                if (this.props.onScroll) {
+                    this.props.onScroll!!!(container.scrollTop, container.scrollLeft);
+                }
+                if (this.props.scrollXAnimatedValue) {
+                    this.props.scrollXAnimatedValue.setValue(container.scrollLeft);
+                }        
+                if (this.props.scrollYAnimatedValue) {
+                    this.props.scrollYAnimatedValue.setValue(container.scrollTop);
+                }        
             });
         }
     }, (this.props.scrollEventThrottle || _defaultScrollThrottleValue), { leading: true, trailing: true });

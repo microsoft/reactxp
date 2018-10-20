@@ -92,4 +92,12 @@ declare module 'react-native' {
     interface ExtendedAlertOptions extends RN.AlertOptions {
         rootViewHint?: number;
     }
+
+    // Private interfaces adapted from react-native.d.ts related to Animated.event
+    type EventMapping = { [key: string]: Mapping } | AnimatedValue;
+    type ValueListenerCallback = (state: { value: number }) => void;
+    interface AnimatedEventConfig<T> {
+        listener?: (event: RN.NativeSyntheticEvent<T>) => void;
+        useNativeDriver?: boolean;
+    }
 }
