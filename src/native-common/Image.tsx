@@ -202,9 +202,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
                 // Filter out Cache-Control: max-stale. It has the opposite effect on iOS: instead of having
                 // the cache return stale data it disables the cache altogether. We emulate the header by
                 // retrying with cache: 'only-if-cached'.
-                const headers = _.clone(this.props.headers);
-                delete headers[cacheControlHeader];
-                return headers;
+                return _.omit(this.props.headers, [cacheControlHeader]);
             }
         }
         return this.props.headers;
