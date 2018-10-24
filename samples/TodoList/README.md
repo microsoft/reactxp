@@ -101,12 +101,12 @@ If a service must be started at app launch time, it can be started within the ap
 ## Custom Fonts
 This sample demonstrates how to include custom fonts within your project. It uses a platform-specific module called "fonts" to provide per-platform font selection.
 
-On the web, the custom fonts are referenced by "@font-face" CSS directives in "web\css\app.css". They are included directly within the various native projects (XCode, gradle, Visual Studio) for the native projects.
+On the web, the custom fonts are referenced by "@font-face" CSS directives in ```web\css\app.css```. They are included directly within the various native projects (XCode, gradle, Visual Studio) for the native projects.
 
 ## Static Images
 This sample demonstrates how to include static images within your project. It uses a platform-specific module called "images" to provide per-platform image selection. This is required because the RN Packager demands the use of static require paths within the code, whereas web builds require a relative URL.
 
-Refer to the "modules/images/" directory for details.
+Refer to the ```modules/images/``` directory for details.
 
 ## Navigation Contexts
 There are many ways to implement navigation in React apps. This sample demonstrates one such technique that allows the app to switch between "stack-based" navigation (which is most appropriate for small screen sizes) and "composite" navigation where multiple panels are visible side by side (most appropriate for larger screen sizes). The sample app is able to switch between these two modes as you resize your browser.
