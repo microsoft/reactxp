@@ -6,12 +6,12 @@
  * pick between two values.
  */
 
+import * as RX from 'reactxp';
 import React from 'react';
-import RX  from 'reactxp';
 
-const _knobLeftOff = 2; // In pixels
-const _knobLeftOn = 22; // In pixels
-const _animationDuration = 250; // In milliseconds
+const ANIMATION_DURATION = 250; // In milliseconds
+const KNOB_LEFT_OFF = 2; // In pixels
+const KNOB_LEFT_ON = 22; // In pixels
 
 const _styles = {
     container: RX.Styles.createButtonStyle({
@@ -43,7 +43,7 @@ const _styles = {
     })
 };
 
-export default class ToggleSwitch extends RX.Component {
+export class ToggleSwitch extends RX.Component {
     _knobLeftAnimationValue;
     _knobLeftAnimationStyle;
 
@@ -55,7 +55,7 @@ export default class ToggleSwitch extends RX.Component {
 
         // This value controls the left offset of the knob, which we will
         // animate when the user toggles the control.
-        this._knobLeftAnimationValue = RX.Animated.createValue(this.props.value ? _knobLeftOn : _knobLeftOff);
+        this._knobLeftAnimationValue = RX.Animated.createValue(props.value ? KNOB_LEFT_ON : KNOB_LEFT_OFF);
         this._knobLeftAnimationStyle = RX.Styles.createAnimatedViewStyle({
             left: this._knobLeftAnimationValue
         });
@@ -64,36 +64,33 @@ export default class ToggleSwitch extends RX.Component {
         // use of the interpolate method to smoothly transition between two colors.
         this._toggleColorAnimationValue = RX.Animated.createValue(this.props.value ? 1 : 0);
         this._toggleColorAnimationStyle = RX.Styles.createAnimatedTextInputStyle({
-            backgroundColor: RX.Animated.interpolate(this._toggleColorAnimationValue,
-                [0, 1], ['#66f', '#ddd'])
+            backgroundColor: RX.Animated.interpolate(this._toggleColorAnimationValue, [0, 1], ['#66f', '#ddd'])
         });
-        this._handleClick = this._handleClick.bind(this);
     }
 
-    componentDidUpdate(oldProps) {
-
+    componentDidUpdate(prevProps) {
         // If the value of the toggle changes, animate the toggle sliding
         // from one side to the other. In parallel, animate the opacity change.
-        if (oldProps.value !== this.props.value) {
+        if (prevProps.value !== this.props.value) {
             RX.Animated.parallel([
                 RX.Animated.timing(this._knobLeftAnimationValue, {
-                    toValue: this.props.value ? _knobLeftOn : _knobLeftOff,
-                    duration: _animationDuration,
+                    duration: ANIMATION_DURATION,
+                    toValue: this.props.value ? KNOB_LEFT_ON : KNOB_LEFT_OFF,
                     easing: RX.Animated.Easing.InOut()
                 }),
+
                 RX.Animated.timing(this._toggleColorAnimationValue, {
+                    duration: ANIMATION_DURATION,
                     toValue: this.props.value ? 1 : 0,
-                    duration: _animationDuration,
                     easing: RX.Animated.Easing.InOut()
                 })
-            ])
-                .start();
+            ]) .start();
         }
     }
 
     render() {
-        const knobStyles = [_styles.toggleKnob, this._knobLeftAnimationStyle];
         const backgroundStyle = [_styles.toggleSwitchBackground, this._toggleColorAnimationStyle];
+        const knobStyles = [_styles.toggleKnob, this._knobLeftAnimationStyle];
 
         return (
             <RX.Button style={ _styles.container } onPress={ this._handleClick }>
@@ -105,7 +102,7 @@ export default class ToggleSwitch extends RX.Component {
         );
     }
 
-    _handleClick(e) {
+    _handleClick = (e) => {
         e.stopPropagation();
 
         if (this.props.onChange) {
