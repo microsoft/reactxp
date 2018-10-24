@@ -81,7 +81,7 @@ This aliasing technique is implemented primarily in the buildconfig.js file. Ref
 To incorporate this techinque into your project, copy the relevant sections of buildconfig.js, gulpfile.js, and webpack.config.ts.
 
 ## Local Web Server
-The other ReactXP samples allow you to run the resulting web app by simply opening the "index.html``` file in your browser. This sample shows a more advanced technique that uses a simple local web server running in node. This web server is not intended for development only, not for production hosting.
+The other ReactXP samples allow you to run the resulting web app by simply opening the ```index.html``` file in your browser. This sample shows a more advanced technique that uses a simple local web server running in node. This web server is not intended for development only, not for production hosting.
 
 To configure and run the local web server, refer to the instructions in docs/setup.
 
