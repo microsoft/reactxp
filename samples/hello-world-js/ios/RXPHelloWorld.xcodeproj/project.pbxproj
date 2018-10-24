@@ -25,7 +25,6 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		2308B86A2180FACB00A6ABC6 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308B8672180F9FD00A6ABC6 /* libRNSVG.a */; };
 		2308B8AD2181022300A6ABC6 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308B8722180FAF900A6ABC6 /* libRCTVideo.a */; };
-		2308B8BE218102AB00A6ABC6 /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308B8692180F9FD00A6ABC6 /* libRNSVG-tvOS.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -391,7 +390,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2308B8BE218102AB00A6ABC6 /* libRNSVG-tvOS.a in Frameworks */,
 				2308B8AD2181022300A6ABC6 /* libRCTVideo.a in Frameworks */,
 				2308B86A2180FACB00A6ABC6 /* libRNSVG.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
