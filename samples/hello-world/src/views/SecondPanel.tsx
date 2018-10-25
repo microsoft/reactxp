@@ -1,20 +1,17 @@
-/*
-* This file demonstrates a basic ReactXP app.
-*/
+import * as React from 'react';
+import * as RX from 'reactxp';
+import RXVideo from 'reactxp-video';
 
-import RX = require('reactxp');
-import { default as RXVideo } from 'reactxp-video';
-
-import ProgressIndicator from './ProgressIndicator';
-import ToggleSwitch from './ToggleSwitch';
+import { ProgressIndicator } from '../controls/ProgressIndicator';
+import { ToggleSwitch } from '../controls/ToggleSwitch';
 
 interface SecondPanelProps extends RX.CommonProps {
     onNavigateBack: () => void;
 }
 
 interface SecondPanelState {
-    toggleValue?: boolean;
     progressValue?: number;
+    toggleValue?: boolean;
 }
 
 const styles = {
@@ -56,18 +53,14 @@ const styles = {
     })
 };
 
-class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
+export class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
+    readonly state: SecondPanelState = {
+        progressValue: 0,
+        toggleValue: true
+    };
+
     private _progressTimerToken: number | undefined;
     private _mountedVideo: RXVideo | undefined;
-
-    constructor(props: SecondPanelProps) {
-        super(props);
-
-        this.state = {
-            toggleValue: true,
-            progressValue: 0
-        };
-    }
 
     componentDidMount() {
         this._startProgressIndicator();
@@ -100,20 +93,20 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
                             Here is an SVG image using the ImageSvg extension
                         </RX.Text>
                         <ProgressIndicator
-                            style={ styles.progressMargin as any }
-                            progress={ this.state.progressValue! }
                             fillColor={ '#ddd' }
+                            style={ styles.progressMargin as any }
                             size={ 32 }
+                            progress={ this.state.progressValue! }
                         />
 
                         <RX.Text style={ [styles.titleText, styles.videoTitleText] }>
                             Here is a video using the Video extension
                         </RX.Text>
                         <RXVideo
-                            ref={ this._onMountVideo }
-                            style={ styles.video as any }
                             source={ 'https://www.w3schools.com/html/mov_bbb.mp4' }
+                            style={ styles.video as any }
                             loop={ true }
+                            ref={ this._onMountVideo }
                             onCanPlay={ this._playVideo }
                         />
                     </RX.View>
@@ -156,9 +149,7 @@ class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState> {
     // that each time we pass the variable as a prop in the render function, it will
     // not change. We want to avoid unnecessary prop changes because this will trigger
     // extra work within React's virtual DOM diffing mechanism.
-    private _onChangeToggle = (newValue: boolean) => {
-        this.setState({ toggleValue: newValue });
+    private _onChangeToggle = (toggleValue: boolean) => {
+        this.setState({ toggleValue });
     }
 }
-
-export = SecondPanel;

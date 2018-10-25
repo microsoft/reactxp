@@ -1,8 +1,5 @@
-/*
-* This file demonstrates a basic ReactXP app.
-*/
-
-import RX = require('reactxp');
+import * as React from 'react';
+import * as RX from 'reactxp';
 
 interface MainPanelProps {
     onPressNavigate: () => void;
@@ -50,7 +47,7 @@ const styles = {
     })
 };
 
-class MainPanel extends RX.Component<MainPanelProps, RX.Stateless> {
+export class MainPanel extends RX.Component<MainPanelProps, RX.Stateless> {
     private _translationValue: RX.Animated.Value;
     private _animatedStyle: RX.Types.AnimatedTextStyleRuleSet;
 
@@ -59,23 +56,16 @@ class MainPanel extends RX.Component<MainPanelProps, RX.Stateless> {
 
         this._translationValue = RX.Animated.createValue(-100);
         this._animatedStyle = RX.Styles.createAnimatedTextStyle({
-            transform: [
-                {
-                    translateY: this._translationValue
-                }
-            ]
+            transform: [{ translateY: this._translationValue }]
         });
     }
 
     componentDidMount() {
-        let animation = RX.Animated.timing(this._translationValue, {
-              toValue: 0,
-              easing: RX.Animated.Easing.OutBack(),
-              duration: 500
-            }
-        );
-
-        animation.start();
+        RX.Animated.timing(this._translationValue, {
+            duration: 500,
+            toValue: 0,
+            easing: RX.Animated.Easing.OutBack()
+        }).start();
     }
 
     render() {
@@ -111,5 +101,3 @@ class MainPanel extends RX.Component<MainPanelProps, RX.Stateless> {
         this.props.onPressNavigate();
     }
 }
-
-export = MainPanel;
