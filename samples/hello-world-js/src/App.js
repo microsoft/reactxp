@@ -1,79 +1,20 @@
-/*
- * This file demonstrates a basic ReactXP app.
- */
-
+import * as RX from 'reactxp';
 import React from 'react';
-import RX from 'reactxp';
 
-import { Navigator } from 'reactxp-navigation';
+import { DEBUG, DEV	} from './config';
+import { RootView } from './views/RootView';
 
-import MainPanel from './MainPanel';
-import SecondPanel from './SecondPanel';
-
-let NavigationRouteId = {
-    MainPanel: "MainPanel",
-    SecondPanel: "SecondPanel"
-};
-
-const styles = {
-    // Standard navigator style should be an object. So we have to disable caching here.
-    navCardStyle: RX.Styles.createViewStyle({
-        backgroundColor: '#f5fcff'
-    }, false)
-};
-
-export default class App extends RX.Component {
-    _navigator;
-
-    constructor(props) {
-        super(props);
-        this._onNavigatorRef = this._onNavigatorRef.bind(this);
-        this._renderScene = this._renderScene.bind(this);
-        this._onPressNavigate = this._onPressNavigate.bind(this);
-        this._onPressBack = this._onPressBack.bind(this);
+class App {
+    init() {
+        RX.App.initialize(DEBUG, DEV);
+        RX.UserInterface.setMainView(this._renderRootView());
     }
 
-    componentDidMount() {
-        this._navigator.immediatelyResetRouteStack([{
-            routeId: NavigationRouteId.MainPanel,
-            sceneConfigType: "Fade"
-        }]);
-    }
-
-    render() {
+    _renderRootView() {
         return (
-            <Navigator
-                ref={ this._onNavigatorRef }
-                renderScene={ this._renderScene }
-                cardStyle={ styles.navCardStyle }
-            />
+            <RootView />
         );
     }
+}
 
-    _onNavigatorRef(navigator) {
-        this._navigator = navigator;
-    }
-
-    _renderScene(navigatorRoute) {
-        switch (navigatorRoute.routeId) {
-            case NavigationRouteId.MainPanel:
-                return <MainPanel onPressNavigate={ this._onPressNavigate }/>;
-
-            case NavigationRouteId.SecondPanel:
-                return <SecondPanel onNavigateBack={ this._onPressBack }/>;
-        }
-
-        return null;
-    }
-
-    _onPressNavigate() {
-        this._navigator.push({
-            routeId: NavigationRouteId.SecondPanel,
-            sceneConfigType: "FloatFromRight"
-        });
-    }
-
-    _onPressBack() {
-        this._navigator.pop();
-    }
-};
+export default new App();

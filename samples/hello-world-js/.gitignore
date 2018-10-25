@@ -53,4 +53,5 @@ fastlane/Preview.html
 fastlane/screenshots
 
 .vscode
-dist/
+dist
+dist-*

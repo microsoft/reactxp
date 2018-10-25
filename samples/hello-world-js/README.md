@@ -1,22 +1,40 @@
 # RXPHelloWorld
 
-This app works on React Native (iOS, Android) and web. Most of the app's code is contained in `App.tsx`.
-
+This app works on React Native (iOS, Android, Windows) and web.
 The commands in the instructions below assume you are in the root of this repo.
 
-### Initial Setup
+### To run your app on Web:
+  ```shell
+  npm run start:web
+  ```
 
-- Run `npm install`. This fetches the dependencies.
+### To build Web production version of your app:
+  ```shell
+  npm run build:web
+  ```
 
-### Building for Web
+### To run your app on iOS:
+  ```shell
+  npm run start:ios
+  ```
+##### - or -
+  open ios/RXPHelloWorld.xcodeproj project in Xcode
+  press the Run button
 
-- Run `npm run web-watch`. This transpiles the ES6 code and retranspiles it whenever any files are changed.
-- Open `index.html` in your browser to view the result.
+### To run your app on Android:
+Have an Android emulator running (quickest way to get started), or a device connected
 
-### Building for React Native
+  ```shell
+  npm run start:android
+  ```
+#####  - or -
+  open android/ project in Android Studio
+  press the Run button
 
-- Option 1:
-	- In a command prompt run `npm start`. This starts the React Native Packager.
-	- Use Xcode or Android Studio to build and deploy the native app code just like you would with any other React Native project.
-- Option 2
-	- In a command prompt run `npm run android` or `npm run ios`. This starts the React Native Packager and deploys your application to the appropriate platform.
+### To run your app on Windows:
+  ```shell
+  npm run start:windows
+  ```
+##### - or -
+  open windows/RXPHelloWorld.sln project in Visual Studio
+  press the Run button
