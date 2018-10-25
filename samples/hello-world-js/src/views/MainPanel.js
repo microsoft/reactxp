@@ -1,9 +1,5 @@
-/*
- * This file demonstrates a basic ReactXP app.
- */
-
+import * as RX from 'reactxp';
 import React from 'react';
-import RX from 'reactxp';
 
 const styles = {
     scroll: RX.Styles.createScrollViewStyle({
@@ -47,28 +43,21 @@ const styles = {
     })
 };
 
-export default class MainPanel extends RX.Component{
+export class MainPanel extends RX.Component{
     constructor(props) {
         super(props);
         this._translationValue = RX.Animated.createValue(-100);
         this._animatedStyle = RX.Styles.createAnimatedTextStyle({
-            transform: [
-                {
-                    translateY: this._translationValue
-                }
-            ]
+            transform: [{ translateY: this._translationValue }]
         });
     }
 
     componentDidMount() {
-        let animation = RX.Animated.timing(this._translationValue, {
-                toValue: 0,
-                easing: RX.Animated.Easing.OutBack(),
-                duration: 500
-            }
-        );
-
-        animation.start();
+        RX.Animated.timing(this._translationValue, {
+            duration: 500,
+            toValue: 0,
+            easing: RX.Animated.Easing.OutBack()
+        }).start();
     }
 
     render() {

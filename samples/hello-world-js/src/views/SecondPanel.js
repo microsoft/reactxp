@@ -1,13 +1,9 @@
-/*
- * This file demonstrates a basic ReactXP app.
- */
-
+import * as RX from 'reactxp';
 import React from 'react';
-import RX from 'reactxp';
-import {default as RXVideo} from 'reactxp-video';
+import RXVideo from 'reactxp-video';
 
-import ProgressIndicator from './ProgressIndicator';
-import ToggleSwitch from './ToggleSwitch';
+import { ProgressIndicator } from '../controls/ProgressIndicator';
+import { ToggleSwitch } from '../controls/ToggleSwitch';
 
 const styles = {
     scroll: RX.Styles.createScrollViewStyle({
@@ -48,15 +44,11 @@ const styles = {
     })
 };
 
-export default class SecondPanel extends RX.Component {
-
+export class SecondPanel extends RX.Component {
     _progressTimerToken;
 
     constructor(props) {
         super(props);
-        this._playVideo = this._playVideo.bind(this);
-        this._onMountVideo = this._onMountVideo.bind(this);
-        this._onChangeToggle = this._onChangeToggle.bind(this);
         this.state = {
             toggleValue: true,
             progressValue: 0
@@ -116,21 +108,21 @@ export default class SecondPanel extends RX.Component {
         );
     }
 
-    _playVideo() {
+    _playVideo = () => {
         if (this._mountedVideo) {
             this._mountedVideo.mute(true);
             this._mountedVideo.play();
         }
     }
 
-    _onMountVideo(component) {
+    _onMountVideo = (component) => {
         this._mountedVideo = component;
     }
 
     _startProgressIndicator() {
         this._progressTimerToken = window.setInterval(() =>{
             const newProgressValue = (this.state.progressValue + 0.02) % 1;
-            this.setState({progressValue: newProgressValue});
+            this.setState({ progressValue: newProgressValue });
         }, 1000 / 15);
     }
 
@@ -146,7 +138,7 @@ export default class SecondPanel extends RX.Component {
     // that each time we pass the variable as a prop in the render function, it will
     // not change. We want to avoid unnecessary prop changes because this will trigger
     // extra work within React's virtual DOM diffing mechanism.
-    _onChangeToggle(newValue) {
-        this.setState({toggleValue: newValue});
+    _onChangeToggle = (toggleValue) => {
+        this.setState({ toggleValue });
     }
 }
