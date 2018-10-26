@@ -91,6 +91,9 @@ const _styles = {
         padding: 12,
         borderRadius: 8,
         borderColor: 'black'
+    }),
+    testWarnText: RX.Styles.createTextStyle({
+        color: 'red'
     })
 };
 
@@ -252,21 +255,27 @@ class TextView extends RX.Component<RX.CommonProps, TextViewState> {
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.resultContainer }>
-                    <RX.Text style={ _styles.test7Text }>
-                        <RX.Text>
-                            { 'Do you have a bright ' }
+                    { RX.Platform.getType() !== 'web' ? (
+                        <RX.Text style={ _styles.testWarnText }>
+                            { 'Test disabled due to broken RN 0.57 support of inline views' } 
                         </RX.Text>
-                        <RX.View style={ _styles.inlineImageContainer }>
-                            <RX.Image
-                                source={ 'https://microsoft.github.io/reactxp/img/tests/bulb.jpg' }
-                                resizeMode={ 'contain' }
-                                style={ _styles.inlineImage }
-                            />
-                        </RX.View>
-                        <RX.Text>
-                            { ' to share?' }
+                    ) : ( 
+                        <RX.Text style={ _styles.test7Text }>
+                            <RX.Text>
+                                { 'Do you have a bright ' }
+                            </RX.Text>
+                            <RX.View style={ _styles.inlineImageContainer }>
+                                <RX.Image
+                                    source={ 'https://microsoft.github.io/reactxp/img/tests/bulb.jpg' }
+                                    resizeMode={ 'contain' }
+                                    style={ _styles.inlineImage }
+                                />
+                            </RX.View>
+                            <RX.Text>
+                                { ' to share?' }
+                            </RX.Text>
                         </RX.Text>
-                    </RX.Text>
+                    )}
                 </RX.View>
 
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation8' }>
@@ -275,22 +284,28 @@ class TextView extends RX.Component<RX.CommonProps, TextViewState> {
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.resultContainer }>
-                    <RX.Text style={ _styles.test8Text }>
-                        <RX.Text>
-                            { 'This is a really long string with a ' }
+                    { RX.Platform.getType() !== 'web' ? (
+                        <RX.Text style={ _styles.testWarnText }>
+                            { 'Test disabled due to broken RN 0.57 support of inline views' } 
                         </RX.Text>
-                        <RX.View style={ [_styles.inlineImageContainer, _styles.inlineImageContainerOffset] }>
-                            <RX.Image
-                                source={ 'https://microsoft.github.io/reactxp/img/tests/bulb.jpg' }
-                                resizeMode={ 'contain' }
-                                style={ _styles.inlineImage }
-                            />
-                        </RX.View>
-                        <RX.Text>
-                            { ' light bulb inlined within it. It is meant to demonstrate a' +
-                              ' larger-than-normal line height.' }
+                    ) : ( 
+                        <RX.Text style={ _styles.test8Text }>
+                            <RX.Text>
+                                { 'This is a really long string with a ' }
+                            </RX.Text>
+                            <RX.View style={ [_styles.inlineImageContainer, _styles.inlineImageContainerOffset] }>
+                                <RX.Image
+                                    source={ 'https://microsoft.github.io/reactxp/img/tests/bulb.jpg' }
+                                    resizeMode={ 'contain' }
+                                    style={ _styles.inlineImage }
+                                />
+                            </RX.View>
+                            <RX.Text>
+                                { ' light bulb inlined within it. It is meant to demonstrate a' +
+                                ' larger-than-normal line height.' }
+                            </RX.Text>
                         </RX.Text>
-                    </RX.Text>
+                    )}
                 </RX.View>
 
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation9' }>
