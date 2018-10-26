@@ -150,7 +150,9 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
                     </RX.ScrollView>
                 </RX.View>
                 <RX.Animated.View style={ this._coupledAnimStyle }>
-                    This should move left and go translucent as you scroll.
+                    <RX.Text style={ _styles.labelText }>
+                        { 'This should move left and go translucent as you scroll.' }
+                    </RX.Text>
                 </RX.Animated.View>
                 <RX.View>
                     <RX.Text style={ _styles.labelText }>
