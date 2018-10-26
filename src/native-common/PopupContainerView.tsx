@@ -191,6 +191,10 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
     }
 
     private _recalcPositionFromLayoutData(anchorRect: ClientRect, popupRect: ClientRect): void {
+        if (!this._mountedComponent) {
+            return;
+        }
+
         // If the popup hasn't been rendered yet, skip.
         if (popupRect.width > 0 && popupRect.height > 0) {
             // Make a copy of the old state.
