@@ -7,7 +7,7 @@ permalink: docs/animations.html
 next: accessibility
 ---
 
-ReactXP supports a powerful animation abstraction. Inidividual style elements (e.g. transforms, opacity, or backgroundColor) can be animated.
+ReactXP supports a powerful animation abstraction. Individual style elements (e.g. transforms, opacity, or backgroundColor) can be animated.
 
 ## Animatable Components
 

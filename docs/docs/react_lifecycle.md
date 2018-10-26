@@ -39,7 +39,7 @@ In this example, a UserInfoCard component is rendered for each user in a list. E
 
 ## Mounting & Unmounting
 
-When React encounters a component spec that has no corresponding node in the current virtual DOM, it inserts the spec into the virtual DOM. It also allocates a corresponding DOM element (in the case of React JS) or native control (in the case of React Native). This is referred to as *mounting* a component. Likewise, when a component instance is removed from the real DOM or native control hierarhcy, it is said to be *unmounted*. Certain methods, such as *setState*, can be called only while a component is mounted.
+When React encounters a component spec that has no corresponding node in the current virtual DOM, it inserts the spec into the virtual DOM. It also allocates a corresponding DOM element (in the case of React JS) or native control (in the case of React Native). This is referred to as *mounting* a component. Likewise, when a component instance is removed from the real DOM or native control hierarchy, it is said to be *unmounted*. Certain methods, such as *setState*, can be called only while a component is mounted.
 
 The React.Component base class, from which all components derive, defines several methods that are called immediately before and after a component is mounted and before a component is unmounted. Component classes can override these methods if desired. For example, if you want to set the focus to a text input box, this can be done within the componentDidMount method.
 
