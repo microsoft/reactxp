@@ -2,6 +2,7 @@
  * Displays a simple list of images.
  */
 
+import * as React from 'react';
 import * as RX from 'reactxp';
 import { ComponentBase } from 'resub';
 import { VirtualListView, VirtualListViewItemInfo } from 'reactxp-virtuallistview';

@@ -2,7 +2,9 @@
  * Main entry point for sample image fetching app.
  */
 
+import * as React from 'react';
 import * as RX from 'reactxp';
+
 import { DEBUG, DEV } from './config';
 import RootView from './views/RootView';
 

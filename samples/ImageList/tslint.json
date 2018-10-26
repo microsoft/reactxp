@@ -10,6 +10,6 @@
     "member-access": [true, "no-public"],
     "arrow-parens": false,
     "quotemark": [true, "single"],
-    "indent": [true, "spaces"]
+    "indent": [true, "spaces", 4]
   }
 }
