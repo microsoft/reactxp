@@ -1,23 +1,29 @@
 {
-  "exclude": [
-    "node_modules"
-  ],
-  "compilerOptions": {
-    "declaration": false,
-    "noResolve": false,
-    "jsx": "react",
-    "reactNamespace": "RX",
-    "module": "commonjs",
-    "target": "es5",
-    "experimentalDecorators": true,
-    "sourceMap": true,
-    "skipLibCheck": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "outDir": "./dist/",
-    "strict": true
-  },
-  "include": [
-    "./src/**/*"
-  ]
+    "compilerOptions": {
+        "forceConsistentCasingInFileNames": true,
+        "strictPropertyInitialization": true,
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "moduleResolution": "node",
+        "strictNullChecks": true,
+        "esModuleInterop": true,
+        "noUnusedLocals": true,
+        "noImplicitThis": true,
+        "declarationDir": "dist-types",
+        "importHelpers": true,
+        "noImplicitAny": true,
+        "skipLibCheck": true,
+        "declaration": true,
+        "jsxFactory": "React",
+        "noResolve": false,
+        "module": "es2015",
+        "target": "es2015",
+        "jsx": "react",
+        "lib": ["es5", "es2015", "dom"]
+    },
+
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
 }
