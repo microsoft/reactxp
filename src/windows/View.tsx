@@ -12,21 +12,21 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import * as RNW from 'react-native-windows';
 
-import * as _ from '../native-common/utils/lodashMini';
-import {
-    applyFocusableComponentMixin,
-    FocusManagerFocusableComponent,
-    FocusManager,
-} from '../native-desktop/utils/FocusManager';
-import { PopupComponent } from '../common/PopupContainerViewBase';
-import { RestrictFocusType } from '../common/utils/FocusManager';
-import { Types } from '../common/Interfaces';
-import { View as ViewCommon, ViewContext as ViewContextCommon } from '../native-common/View';
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import AppConfig from '../common/AppConfig';
 import EventHelpers from '../native-common/utils/EventHelpers';
+import {
+    applyFocusableComponentMixin,
+    FocusManager,
+    FocusManagerFocusableComponent
+} from '../native-desktop/utils/FocusManager';
+import { RestrictFocusType } from '../common/utils/FocusManager';
+import { Types } from '../common/Interfaces';
+import * as _ from '../native-common/utils/lodashMini';
 import PopupContainerView from '../native-common/PopupContainerView';
+import { PopupComponent } from '../common/PopupContainerViewBase';
 import UserInterface from '../native-common/UserInterface';
+import { View as ViewCommon, ViewContext as ViewContextCommon } from '../native-common/View';
 
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_SPACE = 32;
@@ -44,8 +44,8 @@ export interface ViewContext extends ViewContextCommon {
     isRxParentAFocusableInSameFocusManager?: boolean;
 }
 
-let FocusableView = RNW.createFocusableComponent(RN.View);
-let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
+const FocusableView = RNW.createFocusableComponent(RN.View);
+const FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
 
 export class View extends ViewCommon implements React.ChildContextProvider<ViewContext>, FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
@@ -79,13 +79,13 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
     private _focusableElement : RNW.FocusableWindows<RN.ViewProps> | null = null;
 
-    private _focusManager: FocusManager|undefined;
+    private _focusManager: FocusManager | undefined;
     private _limitFocusWithin = false;
     private _isFocusLimited = false;
-    private _isFocusRestricted: boolean|undefined;
+    private _isFocusRestricted: boolean | undefined;
 
-    private _popupContainer: PopupContainerView|undefined;
-    private _popupToken: PopupComponent|undefined;
+    private _popupContainer: PopupContainerView | undefined;
+    private _popupToken: PopupComponent | undefined;
 
     constructor(props: Types.ViewProps, context: ViewContext) {
         super(props, context);
@@ -151,7 +151,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
         if (this._focusManager && this._popupContainer) {
             this._popupToken = this._popupContainer.registerPopupComponent(
-                () => this.enableFocusManager(), () => this.disableFocusManager());
+                () => this.enableFocusManager(), () => { this.disableFocusManager(); });
         }
     }
 
@@ -167,7 +167,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
     }
 
-    private hasTrait(trait: Types.AccessibilityTrait, traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined) {
+    private _hasTrait(trait: Types.AccessibilityTrait, traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined) {
         return traits === trait || (_.isArray(traits) && traits.indexOf(trait) !== -1);
     }
 
@@ -177,7 +177,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                 // need to simulate the mouse event so that we
                 // can show the context menu in the right position
                 if (this._isMounted) {
-                    let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, this._getContextMenuOffset());
+                    const mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, this._getContextMenuOffset());
                     if (this.props.onContextMenu) {
                         this.props.onContextMenu(mouseEvent);
                     }
@@ -195,8 +195,8 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         // However, a view that is also a group or a dialog should keep children visible to UI Automation.
         // The following condition checks and sets RN importantForAccessibility property
         // to 'yes-dont-hide-descendants' to keep view children visible.
-        const hasGroup = this.hasTrait(Types.AccessibilityTrait.Group, props.accessibilityTraits);
-        const hasDialog = this.hasTrait(Types.AccessibilityTrait.Dialog, props.accessibilityTraits);
+        const hasGroup = this._hasTrait(Types.AccessibilityTrait.Group, props.accessibilityTraits);
+        const hasDialog = this._hasTrait(Types.AccessibilityTrait.Dialog, props.accessibilityTraits);
         const i4aYes = props.importantForAccessibility === Types.ImportantForAccessibility.Yes;
         const i4aAuto = (props.importantForAccessibility === Types.ImportantForAccessibility.Auto
             || props.importantForAccessibility === undefined);
@@ -213,7 +213,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             if (this.props.tabIndex === undefined) {
                 if (!this._onKeyDown) {
                     this._onKeyDown =  (e: Types.SyntheticEvent) => {
-                        let keyEvent = EventHelpers.toKeyboardEvent(e);
+                        const keyEvent = EventHelpers.toKeyboardEvent(e);
                         if (this.props.onKeyPress) {
                             // A conversion to a KeyboardEvent looking event is needed
                             this.props.onKeyPress(keyEvent);
@@ -222,7 +222,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                         // This needs to be handled when there is no
                         // tabIndex so we do not lose the bubbled events
                         if (this.props.onContextMenu) {
-                            let key = keyEvent.keyCode;
+                            const key = keyEvent.keyCode;
                             if ((key === KEY_CODE_APP) || (key === KEY_CODE_F10 && keyEvent.shiftKey)) {
                                 this._showContextMenu(keyEvent);
                             }
@@ -255,7 +255,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                             if (e.preventDefault) {
                                 e.preventDefault();
                             }
-                        },
+                        }
                     });
                 };
             }
@@ -268,7 +268,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             if (handler) {
                 if (name === 'onDragStart') {
                     this._internalProps.allowDrag = true;
-                }                
+                }
 
                 this._internalProps[name] = (e: React.SyntheticEvent<View>) => {
                     handler({
@@ -284,7 +284,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                             if (e.preventDefault) {
                                 e.preventDefault();
                             }
-                        },
+                        }
                     });
                 };
             }
@@ -338,18 +338,18 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
     render(): JSX.Element {
         if (this.props.tabIndex !== undefined) {
-            let tabIndex: number = this.getTabIndex() || 0;
-            let windowsTabFocusable: boolean =  tabIndex >= 0;
-            let importantForAccessibility: string | undefined = this.getImportantForAccessibility();
+            const tabIndex: number = this.getTabIndex() || 0;
+            const windowsTabFocusable: boolean =  tabIndex >= 0;
+            const importantForAccessibility: string | undefined = this.getImportantForAccessibility();
 
             // We don't use 'string' ref type inside ReactXP
-            let originalRef = this._internalProps.ref;
+            const originalRef = this._internalProps.ref;
             if (typeof originalRef === 'string') {
                 throw new Error('View: ReactXP must not use string refs internally');
             }
-            let componentRef: Function = originalRef as Function;
+            const componentRef: Function = originalRef as Function;
 
-            let focusableViewProps: RNW.FocusableWindowsProps<RN.ViewProps> = {
+            const focusableViewProps: RNW.FocusableWindowsProps<RN.ViewProps> = {
                 ...this._internalProps,
                 ref: this._onFocusableRef,
                 componentRef: componentRef,
@@ -367,7 +367,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                 testID: this.props.testId
             };
 
-            let PotentiallyAnimatedFocusableView = this._isButton(this.props) ? FocusableAnimatedView : FocusableView;
+            const PotentiallyAnimatedFocusableView = this._isButton(this.props) ? FocusableAnimatedView : FocusableView;
             return (
                 <PotentiallyAnimatedFocusableView
                     { ...focusableViewProps }
@@ -418,7 +418,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         // Let descendant RX components know that their nearest RX ancestor is not an RX.Text.
         // Because they're in an RX.View, they should use their normal styling rather than their
         // special styling for appearing inline with text.
-        let childContext: ViewContext = super.getChildContext();
+        const childContext: ViewContext = super.getChildContext();
 
         childContext.isRxParentAText = false;
 
@@ -496,12 +496,13 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         // when restriction is enabled.
         // This covers cases where outside the view focusable controls are not controlled and/or not controllable
         // by FocusManager
-        this.setNativeProps({
+        const viewProps: RNW.ViewProps = {
             tabNavigation: restricted !== RestrictFocusType.Unrestricted ? 'cycle' : 'local'
-        } as RN.ViewProps);
+        };
+        this.setNativeProps(viewProps);
     }
 
-    public setNativeProps(nativeProps: RN.ViewProps) {
+    setNativeProps(nativeProps: RN.ViewProps & RNW.ViewProps) {
         // Redirect to focusable component if present.
         if (this._focusableElement) {
             this._focusableElement.setNativeProps(nativeProps);
@@ -516,13 +517,13 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
     private _onFocusableKeyDown = (e: React.SyntheticEvent<any>): void => {
 
-        let keyEvent = EventHelpers.toKeyboardEvent(e);
+        const keyEvent = EventHelpers.toKeyboardEvent(e);
         if (this.props.onKeyPress) {
             this.props.onKeyPress(keyEvent);
         }
 
         if (this.props.onPress) {
-            let key = keyEvent.keyCode;
+            const key = keyEvent.keyCode;
             // ENTER triggers press on key down
             if (key === KEY_CODE_ENTER) {
                 this.props.onPress(keyEvent);
@@ -530,7 +531,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         }
 
         if (this.props.onContextMenu) {
-            let key = keyEvent.keyCode;
+            const key = keyEvent.keyCode;
             if ((key === KEY_CODE_APP) || (key === KEY_CODE_F10 && keyEvent.shiftKey)) {
                 this._showContextMenu(keyEvent);
             }
@@ -538,7 +539,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 
     private _onFocusableKeyUp = (e: React.SyntheticEvent<any>): void => {
-        let keyEvent = EventHelpers.toKeyboardEvent(e);
+        const keyEvent = EventHelpers.toKeyboardEvent(e);
         if (keyEvent.keyCode === KEY_CODE_SPACE) {
             if (this.props.onPress) {
                 this.props.onPress(keyEvent);
@@ -583,9 +584,9 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
     updateNativeAccessibilityProps(): void {
         if (this._focusableElement) {
-            let tabIndex: number = this.getTabIndex() || 0;
-            let windowsTabFocusable: boolean = tabIndex >= 0;
-            let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
+            const tabIndex: number = this.getTabIndex() || 0;
+            const windowsTabFocusable: boolean = tabIndex >= 0;
+            const importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
             this._focusableElement.setNativeProps({
                 tabIndex: tabIndex,
@@ -602,8 +603,8 @@ function isKeyboardFocusable(tabIndex: number | undefined) : boolean {
 }
 
 // A value for tabIndex marks a View as being potentially keyboard focusable
-applyFocusableComponentMixin(View, function (this: View, nextProps?: Types.ViewProps) {
-    let tabIndex = nextProps && ('tabIndex' in nextProps) ? nextProps.tabIndex : this.props.tabIndex;
+applyFocusableComponentMixin(View, function(this: View, nextProps?: Types.ViewProps) {
+    const tabIndex = nextProps && ('tabIndex' in nextProps) ? nextProps.tabIndex : this.props.tabIndex;
     return isKeyboardFocusable(tabIndex);
 });
 

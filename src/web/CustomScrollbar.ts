@@ -33,8 +33,8 @@ export interface ScrollbarOptions {
     hiddenScrollbar?: boolean;
 }
 
-var _nativeSrollBarWidth: number = -1;
-var _isStyleSheetInstalled: boolean = false;
+let _nativeSrollBarWidth = -1;
+let _isStyleSheetInstalled = false;
 const _customScrollbarCss = `
     .rxCustomScroll .scrollViewport > * {
         box-sizing: border-box;
@@ -175,7 +175,7 @@ export class Scrollbar {
     private _handleWheelCallback = this._handleWheel.bind(this);
     private _handleMouseDownCallback = this._handleMouseDown.bind(this);
     private _updateCallback = this.update.bind(this);
-    private _asyncInitTimer: number|undefined;
+    private _asyncInitTimer: number | undefined;
 
     static getNativeScrollbarWidth() {
         // Have we cached the value alread?
@@ -183,11 +183,11 @@ export class Scrollbar {
             return _nativeSrollBarWidth;
         }
 
-        var inner = document.createElement('p');
+        const inner = document.createElement('p');
         inner.style.width = '100%';
         inner.style.height = '100%';
 
-        var outer = document.createElement('div');
+        const outer = document.createElement('div');
         outer.style.position = 'absolute';
         outer.style.top = '0';
         outer.style.left = '0';
@@ -199,9 +199,9 @@ export class Scrollbar {
 
         document.body.appendChild(outer);
 
-        var w1 = inner.offsetWidth;
+        const w1 = inner.offsetWidth;
         outer.style.overflow = 'scroll';
-        var w2 = inner.offsetWidth;
+        let w2 = inner.offsetWidth;
         if (w1 === w2) {
             w2 = outer.clientWidth;
         }
@@ -213,7 +213,7 @@ export class Scrollbar {
         return _nativeSrollBarWidth;
     }
 
-    static _installStyleSheet() {
+    private static _installStyleSheet() {
         // Have we installed the style sheet already?
         if (_isStyleSheetInstalled) {
             return;
@@ -222,8 +222,8 @@ export class Scrollbar {
         // We set the CSS style sheet here to avoid the need
         // for users of this class to carry along another CSS
         // file.
-        var head = document.head || document.getElementsByTagName('head')[0];
-        var style = document.createElement('style') as any;
+        const head = document.head || document.getElementsByTagName('head')[0];
+        const style = document.createElement('style') as any;
 
         style.type = 'text/css';
         if (style.styleSheet) {
@@ -245,22 +245,24 @@ export class Scrollbar {
     }
 
     private _tryLtrOverride() {
-        var rtlbox = document.createElement('div');
+        const rtlbox = document.createElement('div');
         rtlbox.style.cssText = 'position: absolute; overflow-y: scroll; width: 30px; visibility: hidden;';
+        // tslint:disable-next-line
         rtlbox.innerHTML = '<div class="probe"></div>';
         this._container.appendChild(rtlbox);
-        var probe = rtlbox.querySelector('.probe')!,
-            rtlboxRect = rtlbox.getBoundingClientRect(),
-            probeRect = probe.getBoundingClientRect(),
-            isLeftBound = rtlboxRect.left === probeRect.left,
-            isRightBound = rtlboxRect.right === probeRect.right,
-            isNeutral = isLeftBound && isRightBound;
+        const probe = rtlbox.querySelector('.probe')!;
+        const rtlboxRect = rtlbox.getBoundingClientRect();
+        const probeRect = probe.getBoundingClientRect();
+        const isLeftBound = rtlboxRect.left === probeRect.left;
+        const isRightBound = rtlboxRect.right === probeRect.right;
+        const isNeutral = isLeftBound && isRightBound;
 
         this._container.classList.remove(NEUTRAL_OVERRIDE_CLASS);
         if (isNeutral) {
             this._container.classList.add(NEUTRAL_OVERRIDE_CLASS);
         }
 
+        // tslint:disable-next-line
         rtlbox.innerHTML = '';
         this._container.removeChild(rtlbox);
     }
@@ -355,7 +357,7 @@ export class Scrollbar {
         if (e.deltaY) {
             return e.deltaY > 0 ? 100 : -100;
         }
-        var originalEvent = (e as any).originalEvent;
+        const originalEvent = (e as any).originalEvent;
         if (originalEvent && originalEvent.wheelDelta) {
             return originalEvent.wheelDelta;
         }
@@ -408,7 +410,7 @@ export class Scrollbar {
     }
 
     private _addScrollbars() {
-        let containerClass = this._hasVertical ? 'rxCustomScrollV' : 'rxCustomScrollH';
+        const containerClass = this._hasVertical ? 'rxCustomScrollV' : 'rxCustomScrollH';
 
         if (this._hasVertical) {
             this._addScrollBar(this._verticalBar, 'railV', this._hasHorizontal);
@@ -425,11 +427,13 @@ export class Scrollbar {
 
     private _removeScrollbars() {
         if (this._hasVertical) {
+            // tslint:disable-next-line
             this._verticalBar.rail!.innerHTML = '';
             this._container.removeChild(this._verticalBar.rail!);
         }
 
         if (this._hasHorizontal) {
+            // tslint:disable-next-line
             this._horizontalBar.rail!.innerHTML = '';
             this._container.removeChild(this._horizontalBar.rail!);
         }
@@ -472,7 +476,7 @@ export class Scrollbar {
         }
     }
 
-    update () {
+    update() {
         this._resize();
 
         // We add one below to provide a small fudge factor because browsers round their scroll and offset values to the

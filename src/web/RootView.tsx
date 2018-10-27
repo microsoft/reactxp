@@ -13,12 +13,12 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as _ from './utils/lodashMini';
-import { Types } from '../common/Interfaces';
 import AccessibilityAnnouncer from './AccessibilityAnnouncer';
-import Input from './Input';
-import ModalContainer from './ModalContainer';
 import FocusManager from './utils/FocusManager';
+import Input from './Input';
+import { Types } from '../common/Interfaces';
+import * as _ from './utils/lodashMini';
+import ModalContainer from './ModalContainer';
 import PopupContainerView from './PopupContainerView';
 import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
@@ -63,7 +63,7 @@ export interface RootViewState {
     constrainedPopupHeight: number;
 
     // Assign css focus class if focus is due to Keyboard or mouse
-    focusClass: string|undefined;
+    focusClass: string | undefined;
 }
 
 // Width of the "alley" around popups so they don't get too close to the boundary of the window.
@@ -85,7 +85,7 @@ if (typeof document !== 'undefined') {
     const style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(defaultBoxSizing));
-    document.head!.appendChild(style);
+    document.head.appendChild(style);
 }
 
 export interface MainViewContext {
@@ -119,19 +119,19 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         focusManager: PropTypes.object
     };
 
-    private _mountedComponent: Element|undefined;
-    private _hidePopupTimer: number|undefined;
-    private _respositionPopupTimer: number|undefined;
+    private _mountedComponent: Element | undefined;
+    private _hidePopupTimer: number | undefined;
+    private _respositionPopupTimer: number | undefined;
     private _clickHandlerInstalled = false;
     private _keyboardHandlerInstalled = false;
     private _focusManager: FocusManager;
-    private _isNavigatingWithKeyboardUpateTimer: number|undefined;
+    private _isNavigatingWithKeyboardUpateTimer: number | undefined;
 
     private _shouldEnableKeyboardNavigationModeOnFocus = false;
     private _applicationIsNotActive = false;
-    private _applicationIsNotActiveTimer: number|undefined;
-    private _prevFocusedElement: HTMLElement|undefined;
-    private _updateKeyboardNavigationModeOnFocusTimer: number|undefined;
+    private _applicationIsNotActiveTimer: number | undefined;
+    private _prevFocusedElement: HTMLElement | undefined;
+    private _updateKeyboardNavigationModeOnFocusTimer: number | undefined;
 
     constructor(props: RootViewProps) {
         super(props);
@@ -239,23 +239,23 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     private _renderPopup(popup: PopupDescriptor, hidden: boolean): JSX.Element {
-        let popupContainerStyle: React.CSSProperties = {
+        const popupContainerStyle: React.CSSProperties = {
             display: 'flex',
             position: 'fixed',
             zIndex: 100001
         };
 
         if (!hidden) {
-            popupContainerStyle['top'] = this.state.popupTop;
-            popupContainerStyle['left'] = this.state.popupLeft;
+            popupContainerStyle.top = this.state.popupTop;
+            popupContainerStyle.left = this.state.popupLeft;
 
             // Are we artificially constraining the width and/or height?
             if (this.state.constrainedPopupWidth && this.state.constrainedPopupWidth !== this.state.popupWidth) {
-                popupContainerStyle['width'] = this.state.constrainedPopupWidth;
+                popupContainerStyle.width = this.state.constrainedPopupWidth;
             }
 
             if (this.state.constrainedPopupHeight && this.state.constrainedPopupHeight !== this.state.popupHeight) {
-                popupContainerStyle['height'] = this.state.constrainedPopupHeight;
+                popupContainerStyle.height = this.state.constrainedPopupHeight;
             }
         }
 
@@ -288,7 +288,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             cursor: 'default'
         };
 
-        let optionalPopups: JSX.Element[] = [];
+        const optionalPopups: JSX.Element[] = [];
         if (this.props.activePopup) {
             optionalPopups.push(this._renderPopup(this.props.activePopup, false));
         }
@@ -296,7 +296,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             this.props.cachedPopup.forEach(popup => optionalPopups.push(this._renderPopup(popup, true)));
         }
 
-        let optionalModal: JSX.Element|null = null;
+        let optionalModal: JSX.Element | null = null;
         if (this.props.modal) {
             optionalModal = (
                 <ModalContainer>
@@ -321,8 +321,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         );
     }
 
-    protected _onMount = (component: PopupContainerView|null) => {
-        const domNode = component && ReactDOM.findDOMNode(component) as HTMLElement|null;
+    protected _onMount = (component: PopupContainerView | null) => {
+        const domNode = component && ReactDOM.findDOMNode(component) as HTMLElement | null;
         this._mountedComponent = domNode ? domNode : undefined;
     }
 
@@ -333,7 +333,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             return;
         }
         let clickInPopup = false;
-        let el = e.target as HTMLElement|undefined;
+        let el = e.target as HTMLElement | undefined;
         while (el) {
             if (el === popupContainer) {
                 clickInPopup = true;
@@ -386,9 +386,9 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         }
     }
 
-    private _determineIfClickOnElement(elementReference: React.Component<any, any>, eventSource: Element|null|undefined): boolean {
+    private _determineIfClickOnElement(elementReference: React.Component<any, any>, eventSource: Element | null | undefined): boolean {
         try {
-            const element = ReactDOM.findDOMNode(elementReference) as HTMLElement|null;
+            const element = ReactDOM.findDOMNode(elementReference) as HTMLElement | null;
             const isClickOnElement = !!element && !!eventSource && element.contains(eventSource);
             return isClickOnElement;
         } catch {
@@ -582,7 +582,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     // window size. If necessary, it also measures the unconstrained size of the popup.
     private _recalcPosition() {
         // Make a copy of the old state.
-        let newState: RootViewState = _.extend({}, this.state);
+        const newState: RootViewState = _.extend({}, this.state);
 
         if (this.state.isMeasuringPopup) {
             // Get the width/height of the popup.
@@ -597,7 +597,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         }
 
         // Get the anchor element.
-        let anchorComponent = this.props.activePopup!.popupOptions.getAnchor();
+        const anchorComponent = this.props.activePopup!.popupOptions.getAnchor();
         // if the anchor is unmounted, dismiss the popup.
         // Prevents app crash when we try to get dom node from unmounted Component
         if (!anchorComponent) {
@@ -605,9 +605,9 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             return;
         }
 
-        let anchor: HTMLElement|null = null;
+        let anchor: HTMLElement | null = null;
         try {
-            anchor = ReactDOM.findDOMNode(anchorComponent) as HTMLElement|null;
+            anchor = ReactDOM.findDOMNode(anchorComponent) as HTMLElement | null;
         } catch {
             anchor = null;
         }
@@ -623,11 +623,11 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         newState.constrainedPopupWidth = newState.popupWidth;
 
         // Get the width/height of the full window.
-        let windowHeight = window.innerHeight;
-        let windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        const windowWidth = window.innerWidth;
 
         // Calculate the absolute position of the anchor element's top/left.
-        let anchorRect = anchor.getBoundingClientRect();
+        const anchorRect = anchor.getBoundingClientRect();
 
         // If the anchor is no longer in the window's bounds, cancel the popup.
         if (anchorRect.left >= windowWidth || anchorRect.right <= 0 ||
@@ -708,8 +708,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                         break;
                 }
 
-                let effectiveWidth = constrainedWidth || newState.popupWidth;
-                let effectiveHeight = constrainedHeight || newState.popupHeight;
+                const effectiveWidth = constrainedWidth || newState.popupWidth;
+                const effectiveHeight = constrainedHeight || newState.popupHeight;
 
                 // Make sure we're not hanging off the bounds of the window.
                 if (absLeft < _popupAlleyWidth) {

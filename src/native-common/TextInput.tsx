@@ -10,10 +10,10 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import { Types } from '../common/Interfaces';
 import AccessibilityUtil from './AccessibilityUtil';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
+import { Types } from '../common/Interfaces';
 import Styles from './Styles';
 
 const _styles = {
@@ -46,7 +46,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     private _selectionToSet: Selection | undefined;
     private _selection: Selection = { start: 0, end: 0 };
-    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any> | null = null;
 
     constructor(props: Types.TextInputProps, context: TextInputContext) {
         super(props, context);
@@ -125,7 +125,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         return this._render(internalProps, this._onMount);
     }
 
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any> | null) => {
         this._mountedComponent = component;
     }
 
@@ -242,7 +242,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         this.forceUpdate();
     }
 
-    getSelectionRange(): { start: number, end: number } {
+    getSelectionRange(): { start: number; end: number } {
         return this._selection;
     }
 

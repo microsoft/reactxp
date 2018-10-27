@@ -12,8 +12,8 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
-import { Types } from './Interfaces';
 import FocusManagerBase from './utils/FocusManager';
+import { Types } from './Interfaces';
 
 export interface PopupContainerViewBaseProps extends Types.CommonProps {
     hidden?: boolean;
@@ -50,7 +50,7 @@ export abstract class PopupContainerViewBase<P extends PopupContainerViewBasePro
         };
     }
 
-    public registerPopupComponent(onShow: () => void, onHide: () => void): PopupComponent {
+    registerPopupComponent(onShow: () => void, onHide: () => void): PopupComponent {
         const component = {
             onShow,
             onHide
@@ -59,11 +59,11 @@ export abstract class PopupContainerViewBase<P extends PopupContainerViewBasePro
         return component;
     }
 
-    public unregisterPopupComponent(component: PopupComponent) {
+    unregisterPopupComponent(component: PopupComponent) {
         this._popupComponentStack = this._popupComponentStack.filter(c => c !== component);
     }
 
-    public isHidden(): boolean {
+    isHidden(): boolean {
         return !!this.props.hidden;
     }
 

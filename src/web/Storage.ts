@@ -12,9 +12,9 @@ import * as SyncTasks from 'synctasks';
 import * as RX from '../common/Interfaces';
 
 export class Storage extends RX.Storage {
-    getItem(key: string): SyncTasks.Promise<string|undefined> {
+    getItem(key: string): SyncTasks.Promise<string | undefined> {
         const value = window.localStorage.getItem(key);
-        return SyncTasks.Resolved<string|undefined>(value === null ? undefined : value);
+        return SyncTasks.Resolved<string | undefined>(value === null ? undefined : value);
     }
 
     setItem(key: string, value: string): SyncTasks.Promise<void> {

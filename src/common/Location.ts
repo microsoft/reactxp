@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Location.ts
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -8,6 +8,7 @@
  */
 
 import * as SyncTasks from 'synctasks';
+
 import * as RX from './Interfaces';
 
 export class Location extends RX.Location {
@@ -15,7 +16,7 @@ export class Location extends RX.Location {
         if (this.isAvailable()) {
             // Work around the fact "geolocation" type definition in ES6 lib
             // doesn't declare the RN-specific setRNConfiguration setter.
-            let configSetter: (config: RX.LocationConfiguration) => void =
+            const configSetter: (config: RX.LocationConfiguration) => void =
                 (navigator.geolocation as any).setRNConfiguration;
             if (configSetter) {
                 configSetter(config);
@@ -35,7 +36,7 @@ export class Location extends RX.Location {
         let reportedError = false;
 
         if (!this.isAvailable()) {
-            let error: PositionError = {
+            const error: PositionError = {
                 code: RX.Types.LocationErrorType.PositionUnavailable,
                 message: 'Position unavailable because device does not support it.',
                 PERMISSION_DENIED: 0,
@@ -75,14 +76,14 @@ export class Location extends RX.Location {
             if (errorCallback) {
                 errorCallback(error.code as RX.Types.LocationErrorType);
             }
-        }, options) as RX.Types.LocationWatchId;
+        }, options);
 
         return SyncTasks.Resolved<RX.Types.LocationWatchId>(watchId);
     }
 
     // Clears a location watcher from watchPosition.
     clearWatch(watchID: RX.Types.LocationWatchId): void {
-        navigator.geolocation.clearWatch(watchID as number);
+        navigator.geolocation.clearWatch(watchID);
     }
 }
 

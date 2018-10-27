@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ActivityIndicator.tsx
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -623,7 +623,7 @@ export interface ActivityIndicatorState {
 }
 
 export class ActivityIndicator extends React.Component<Types.ActivityIndicatorProps, ActivityIndicatorState> {
-    private static _isStyleSheetInstalled: boolean = false;
+    private static _isStyleSheetInstalled = false;
     private _isMounted = false;
 
     private static _installStyleSheet() {
@@ -635,8 +635,8 @@ export class ActivityIndicator extends React.Component<Types.ActivityIndicatorPr
         // We set the CSS style sheet here to avoid the need
         // for users of this class to carry along another CSS
         // file.
-        var head = document.head || document.getElementsByTagName('head')[0];
-        var style = document.createElement('style') as any;
+        const head = document.head || document.getElementsByTagName('head')[0];
+        const style = document.createElement('style') as any;
 
         style.type = 'text/css';
         if (style.styleSheet) {
@@ -676,11 +676,11 @@ export class ActivityIndicator extends React.Component<Types.ActivityIndicatorPr
     }
 
     render() {
-        var colorStyle = {
+        const colorStyle = {
             backgroundColor: this.props.color
         };
 
-        let spinnerClasses = ['rx-activity'];
+        const spinnerClasses = ['rx-activity'];
         if (this.props.size === 'tiny') {
             spinnerClasses.push('rx-activity-extra-small');
         } else if (this.props.size === 'small') {

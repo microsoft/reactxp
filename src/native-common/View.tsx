@@ -7,23 +7,23 @@
 * RN-specific implementation of the cross-platform View abstraction.
 */
 
+import * as assert from 'assert';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
-import * as assert from 'assert';
 
-import { clone, extend } from './utils/lodashMini';
-import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import { Types } from '../common/Interfaces';
 import AccessibilityUtil from './AccessibilityUtil';
 import Animated from './Animated';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
+import { Types } from '../common/Interfaces';
+import { clone, extend } from './utils/lodashMini';
 import Styles from './Styles';
 import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
 import ViewBase from './ViewBase';
 
-let LayoutAnimation = RN.LayoutAnimation;
+const LayoutAnimation = RN.LayoutAnimation;
 
 // Note: a lot of code is duplicated with Button due to View currently supporting a lot of features Button does.
 const _defaultActiveOpacity = 0.2;
@@ -62,10 +62,10 @@ function removeMixin(thisObj: any, mixin: {[propertyName: string]: any}, propert
 
 type ChildKey = string | number;
 function extractChildrenKeys(children: React.ReactNode): ChildKey[] {
-    var keys: ChildKey[] = [];
-    React.Children.forEach(children, function (child, index) {
+    const keys: ChildKey[] = [];
+    React.Children.forEach(children, function(child, index) {
         if (child) {
-            let childReactElement = child as React.ReactElement<any>;
+            const childReactElement = child as React.ReactElement<any>;
             assert(
                 childReactElement.key !== undefined && childReactElement.key !== null,
                 'Children passed to a `View` with child animations enabled must have a `key`'
@@ -79,10 +79,10 @@ function extractChildrenKeys(children: React.ReactNode): ChildKey[] {
 }
 
 function findInvalidRefs(children: React.ReactNode) {
-    let invalidRefs: string[] = [];
-    React.Children.forEach(children, function (child) {
+    const invalidRefs: string[] = [];
+    React.Children.forEach(children, function(child) {
         if (child) {
-            let childElement = child as any;
+            const childElement = child as any;
             if (typeof childElement.ref !== 'function' && childElement.ref !== undefined && childElement.ref !== null) {
                 invalidRefs.push(childElement.ref as string);
             }
@@ -146,18 +146,18 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     touchableHandleResponderTerminate!: (e: React.SyntheticEvent<any>) => void;
 
     private _mixinIsApplied = false;
-    private _childrenKeys: ChildKey[]|undefined;
+    private _childrenKeys: ChildKey[] | undefined;
 
     private _mixin_componentDidMount?: () => void;
     private _mixin_componentWillUnmount?: () => void;
 
     protected _isMounted = false;
-    private _hideTimeout: number|undefined;
-    private _defaultOpacityValue: number|undefined;
-    private _opacityAnimatedValue: RN.Animated.Value|undefined;
-    private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet|undefined;
+    private _hideTimeout: number | undefined;
+    private _defaultOpacityValue: number | undefined;
+    private _opacityAnimatedValue: RN.Animated.Value | undefined;
+    private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet | undefined;
 
-    private _focusArbitratorProvider: FocusArbitratorProvider|undefined;
+    private _focusArbitratorProvider: FocusArbitratorProvider | undefined;
 
     constructor(props: Types.ViewProps, context: ViewContext) {
         super(props, context);
@@ -206,22 +206,22 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
             ' Only callback refs are supported when using child animations on a `View`'
         );
 
-        let prevChildrenKeys = this._childrenKeys || [];
-        let nextChildrenKeys = extractChildrenKeys(nextProps.children);
+        const prevChildrenKeys = this._childrenKeys || [];
+        const nextChildrenKeys = extractChildrenKeys(nextProps.children);
         this._childrenKeys = nextChildrenKeys;
         if (_childrenEdited(prevChildrenKeys, nextChildrenKeys)) {
-            let updateConfig: RN.LayoutAnimationAnim = {
+            const updateConfig: RN.LayoutAnimationAnim = {
                 delay: 0,
                 duration: 300,
                 type: LayoutAnimation.Types.easeOut
             };
-            let createConfig: RN.LayoutAnimationAnim = {
+            const createConfig: RN.LayoutAnimationAnim = {
                 delay: 75,
                 duration: 150,
                 type: LayoutAnimation.Types.linear,
                 property: LayoutAnimation.Properties.opacity
             };
-            var configDictionary: RN.LayoutAnimationConfig = {
+            const configDictionary: RN.LayoutAnimationConfig = {
                 duration: 300
             };
 
@@ -256,7 +256,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     }
 
     private _updateMixin(props: Types.ViewProps, initial: boolean) {
-        let isButton = this._isButton(props);
+        const isButton = this._isButton(props);
         if (isButton && !this._mixinIsApplied) {
             // Create local handlers
             this.touchableHandlePress = this.touchableHandlePress.bind(this);
@@ -304,7 +304,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     }
 
     getChildContext() {
-        let childContext: ViewContext = {};
+        const childContext: ViewContext = {};
 
         if (this._focusArbitratorProvider) {
             childContext.focusArbitrator = this._focusArbitratorProvider;
@@ -336,7 +336,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
             accessibilityLabel: props.accessibilityLabel || props.title,
             accessibilityTraits: AccessibilityUtil.accessibilityTraitToString(props.accessibilityTraits),
             accessibilityComponentType: AccessibilityUtil.accessibilityComponentTypeToString(props.accessibilityTraits),
-            accessibilityLiveRegion: AccessibilityUtil.accessibilityLiveRegionToString(props.accessibilityLiveRegion),
+            accessibilityLiveRegion: AccessibilityUtil.accessibilityLiveRegionToString(props.accessibilityLiveRegion)
         };
         this._internalProps = extend(this._internalProps, accessibilityProps);
 
@@ -397,7 +397,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     }
 
     private _getDefaultOpacityValue(props: Types.ViewProps): number {
-        let flattenedStyles: { [key: string]: any }|undefined;
+        let flattenedStyles: { [key: string]: any } | undefined;
         if (props && props.style) {
             flattenedStyles = RN.StyleSheet.flatten(props.style as RN.StyleProp<RN.ViewStyle>);
         }
@@ -436,7 +436,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         this._nativeView.setNativeProps({
             style: [{
                 backgroundColor: _underlayInactive
-            }, this.props.style],
+            }, this.props.style]
         });
     }
 

@@ -9,7 +9,7 @@
  */
 
 export class ScrollViewConfig {
-    private _useCustomScrollbars: boolean = false;
+    private _useCustomScrollbars = false;
     // Enable native scrollbars for all instances.
     setUseCustomScrollbars(value: boolean): void {
         this._useCustomScrollbars = value;

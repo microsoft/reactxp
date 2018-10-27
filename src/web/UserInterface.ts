@@ -12,12 +12,12 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as SyncTasks from 'synctasks';
 
-import * as RX from '../common/Interfaces';
 import FrontLayerViewManager from './FrontLayerViewManager';
+import * as RX from '../common/Interfaces';
 import ScrollViewConfig from './ScrollViewConfig';
 
 export class UserInterface extends RX.UserInterface {
-    private _isNavigatingWithKeyboard: boolean = false;
+    private _isNavigatingWithKeyboard = false;
 
     constructor() {
         super();
@@ -27,7 +27,7 @@ export class UserInterface extends RX.UserInterface {
     measureLayoutRelativeToWindow(component: React.Component<any, any>) :
             SyncTasks.Promise<RX.Types.LayoutInfo> {
 
-        let deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
+        const deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
         let componentDomNode: HTMLElement | null = null;
 
         try {
@@ -55,7 +55,7 @@ export class UserInterface extends RX.UserInterface {
     measureLayoutRelativeToAncestor(component: React.Component<any, any>,
         ancestor: React.Component<any, any>) : SyncTasks.Promise<RX.Types.LayoutInfo> {
 
-        let deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
+        const deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
         let componentDomNode: HTMLElement | null = null;
         let ancestorDomNode: HTMLElement | null = null;
 
@@ -116,7 +116,7 @@ export class UserInterface extends RX.UserInterface {
     }
 
     getPixelRatio(): number {
-        var pixelRatio = 0;
+        let pixelRatio = 0;
         if (window.devicePixelRatio) {
             pixelRatio = window.devicePixelRatio;
         }

@@ -10,8 +10,8 @@
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import { AccessibilityPlatformUtil } from '../common/AccessibilityUtil';
 import Accessibility from '../native-common/Accessibility';
+import { AccessibilityPlatformUtil } from '../common/AccessibilityUtil';
 
 export class AccessibilityUtil extends AccessibilityPlatformUtil {
     setAccessibilityFocus(component: React.Component<any, any>): void {

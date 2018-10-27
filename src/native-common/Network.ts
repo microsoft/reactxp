@@ -16,7 +16,7 @@ export class Network extends RX.Network {
     constructor() {
         super();
 
-        let onEventOccuredHandler = this._onEventOccured.bind(this);
+        const onEventOccuredHandler = this._onEventOccured.bind(this);
 
         // The "change" event is being deprecated. See if the newer "connectionchange"
         // event is available instead. We can't determine this directly, but we can
@@ -27,7 +27,7 @@ export class Network extends RX.Network {
     }
 
     isConnected(): SyncTasks.Promise<boolean> {
-        let deferred = SyncTasks.Defer<boolean>();
+        const deferred = SyncTasks.Defer<boolean>();
 
         RN.NetInfo.isConnected.fetch().then(isConnected => {
             deferred.resolve(isConnected);

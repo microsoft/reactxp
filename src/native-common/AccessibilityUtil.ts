@@ -11,12 +11,12 @@
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import * as _ from './utils/lodashMini';
 import {
-    AccessibilityUtil as CommonAccessibilityUtil,
-    AccessibilityPlatformUtil
+    AccessibilityPlatformUtil,
+    AccessibilityUtil as CommonAccessibilityUtil
 } from '../common/AccessibilityUtil';
 import { Types } from '../common/Interfaces';
+import * as _ from './utils/lodashMini';
 
 export { ImportantForAccessibilityValue } from '../common/AccessibilityUtil';
 
@@ -100,7 +100,7 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
     // Converts an AccessibilityTrait to an accessibilityComponentType string, but the returned value is only needed for Android. Other
     // platforms ignore it.
     accessibilityComponentTypeToString(overrideTraits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined,
-        defaultTrait?: Types.AccessibilityTrait): AccessibilityComponentTypeValue|undefined {
+        defaultTrait?: Types.AccessibilityTrait): AccessibilityComponentTypeValue | undefined {
         // Check if there are valid override traits. Use them or else fallback to default traits.
         // Max enum value in this array is the componentType for android.
         if (!overrideTraits && !defaultTrait) {
@@ -113,7 +113,7 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
     }
 
     // Converts an AccessibilityLiveRegion to a string, but the return value is only needed for Android. Other platforms ignore it.
-    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion|undefined): AccessibilityLiveRegionValue|undefined {
+    accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion | undefined): AccessibilityLiveRegionValue | undefined {
         if (liveRegion && liveRegionMap[liveRegion]) {
             return liveRegionMap[liveRegion];
         }

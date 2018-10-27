@@ -7,4 +7,5 @@
  * Window module to enable easy mocking.
  */
 
-export = typeof(window) !== 'undefined' ? window : <Window>{};
+// tslint:disable-next-line
+export = typeof(window) !== 'undefined' ? window : {} as Window;

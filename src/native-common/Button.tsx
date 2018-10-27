@@ -7,19 +7,18 @@
  * RN-specific implementation of the cross-platform Button abstraction.
  */
 
+import * as assert from 'assert';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
-import * as assert from 'assert';
 
-import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import { Button as ButtonBase } from '../common/Interfaces';
-import { isEqual } from './utils/lodashMini';
-import { Types } from '../common/Interfaces';
 import AccessibilityUtil from './AccessibilityUtil';
 import Animated from './Animated';
 import AppConfig from '../common/AppConfig';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
+import { Button as ButtonBase, Types } from '../common/Interfaces';
+import { isEqual } from './utils/lodashMini';
 import Styles from './Styles';
 import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
@@ -93,10 +92,10 @@ export class Button extends ButtonBase {
     protected _isHoverStarted = false;
     protected _buttonElement: any = null;
 
-    private _hideTimeout: number|undefined;
-    private _defaultOpacityValue: number|undefined;
-    private _opacityAnimatedValue: RN.Animated.Value|undefined;
-    private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet|undefined;
+    private _hideTimeout: number | undefined;
+    private _defaultOpacityValue: number | undefined;
+    private _opacityAnimatedValue: RN.Animated.Value | undefined;
+    private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet | undefined;
 
     constructor(props: Types.ButtonProps, context: ButtonContext) {
         super(props, context);
@@ -142,7 +141,7 @@ export class Button extends ButtonBase {
             }, false);
         }
 
-        let extendedProps: RN.ExtendedViewProps = {
+        const extendedProps: RN.ExtendedViewProps = {
             onAccessibilityTapIOS: this.props.onAccessibilityTapIOS,
             onMouseEnter: this._onMouseEnter,
             onMouseLeave: this._onMouseLeave,
@@ -312,7 +311,7 @@ export class Button extends ButtonBase {
     }
 
     private _getDefaultOpacityValue(props: Types.ButtonProps): number {
-        let flattenedStyles: { [key: string]: any }|undefined;
+        let flattenedStyles: { [key: string]: any } | undefined;
         if (props && props.style) {
             flattenedStyles = RN.StyleSheet.flatten(props.style as RN.StyleProp<RN.ViewProps>);
         }

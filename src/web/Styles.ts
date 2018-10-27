@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Styles.ts
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -7,28 +7,28 @@
  * Web-specific implementation of style functions.
  */
 
-import * as _ from './utils/lodashMini';
-import * as RX from '../common/Interfaces';
 import AppConfig from '../common/AppConfig';
+import * as RX from '../common/Interfaces';
+import * as _ from './utils/lodashMini';
 import StyleLeakDetector from '../common/StyleLeakDetector';
 
 type CssAliasMap = { [prop: string]: string };
 
 export class Styles extends RX.Styles {
     // Combines a set of styles
-    combine<S>(ruleSet1: RX.Types.StyleRuleSetRecursive<S>|undefined, ruleSet2?: RX.Types.StyleRuleSetRecursive<S>)
-            : RX.Types.StyleRuleSetOrArray<S>|undefined {
+    combine<S>(ruleSet1: RX.Types.StyleRuleSetRecursive<S> | undefined, ruleSet2?: RX.Types.StyleRuleSetRecursive<S>)
+            : RX.Types.StyleRuleSetOrArray<S> | undefined {
         if (!ruleSet1 && !ruleSet2) {
             return undefined;
         }
 
-        let ruleSet = ruleSet1 ? (ruleSet2 ? [ruleSet1, ruleSet2] : ruleSet1) : ruleSet2;
+        const ruleSet = ruleSet1 ? (ruleSet2 ? [ruleSet1, ruleSet2] : ruleSet1) : ruleSet2;
 
         if (ruleSet instanceof Array) {
             let combinedStyles: any = {};
 
             for (let i = 0; i < ruleSet.length; i++) {
-                let subRuleSet = this.combine(ruleSet[i]);
+                const subRuleSet = this.combine(ruleSet[i]);
                 combinedStyles = _.extend(combinedStyles, subRuleSet);
             }
 
@@ -63,11 +63,11 @@ export class Styles extends RX.Styles {
             return combinedStyles as RX.Types.StyleRuleSet<S>;
         }
 
-        return ruleSet as RX.Types.StyleRuleSet<S>;
+        return ruleSet;
     }
 
     // Creates opaque styles that can be used for View
-    createViewStyle(ruleSet: RX.Types.ViewStyle, cacheStyle: boolean = true): RX.Types.ViewStyleRuleSet {
+    createViewStyle(ruleSet: RX.Types.ViewStyle, cacheStyle = true): RX.Types.ViewStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
@@ -77,22 +77,22 @@ export class Styles extends RX.Styles {
     }
 
     // Creates opaque styles that can be used for ScrollView
-    createScrollViewStyle(ruleSet: RX.Types.ScrollViewStyle, cacheStyle: boolean = true): RX.Types.ScrollViewStyleRuleSet {
+    createScrollViewStyle(ruleSet: RX.Types.ScrollViewStyle, cacheStyle = true): RX.Types.ScrollViewStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for Button
-    createButtonStyle(ruleSet: RX.Types.ButtonStyle, cacheStyle: boolean = true): RX.Types.ButtonStyleRuleSet {
+    createButtonStyle(ruleSet: RX.Types.ButtonStyle, cacheStyle = true): RX.Types.ButtonStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for WebView
-    createWebViewStyle(ruleSet: RX.Types.WebViewStyle, cacheStyle: boolean = true): RX.Types.WebViewStyleRuleSet {
+    createWebViewStyle(ruleSet: RX.Types.WebViewStyle, cacheStyle = true): RX.Types.WebViewStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for Text
-    createTextStyle(ruleSet: RX.Types.TextStyle, cacheStyle: boolean = true): RX.Types.TextStyleRuleSet {
+    createTextStyle(ruleSet: RX.Types.TextStyle, cacheStyle = true): RX.Types.TextStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle, true);
     }
 
@@ -102,7 +102,7 @@ export class Styles extends RX.Styles {
     }
 
     // Creates opaque styles that can be used for TextInput
-    createTextInputStyle(ruleSet: RX.Types.TextInputStyle, cacheStyle: boolean = true): RX.Types.TextInputStyleRuleSet {
+    createTextInputStyle(ruleSet: RX.Types.TextInputStyle, cacheStyle = true): RX.Types.TextInputStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle, true);
     }
 
@@ -112,12 +112,12 @@ export class Styles extends RX.Styles {
     }
 
     // Creates opaque styles that can be used for Link
-    createLinkStyle(ruleSet: RX.Types.LinkStyle, cacheStyle: boolean = true): RX.Types.LinkStyleRuleSet {
+    createLinkStyle(ruleSet: RX.Types.LinkStyle, cacheStyle = true): RX.Types.LinkStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for Image
-    createImageStyle(ruleSet: RX.Types.ImageStyle, cacheStyle: boolean = true): RX.Types.ImageStyleRuleSet {
+    createImageStyle(ruleSet: RX.Types.ImageStyle, cacheStyle = true): RX.Types.ImageStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
@@ -127,7 +127,7 @@ export class Styles extends RX.Styles {
     }
 
     // Creates opaque styles that can be used for Picker
-    createPickerStyle(ruleSet: RX.Types.PickerStyle, cacheStyle: boolean = true): RX.Types.PickerStyleRuleSet {
+    createPickerStyle(ruleSet: RX.Types.PickerStyle, cacheStyle = true): RX.Types.PickerStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
@@ -138,17 +138,17 @@ export class Styles extends RX.Styles {
             return undefined;
         }
 
-        let upperName = name.charAt(0).toUpperCase() + name.slice(1);
+        const upperName = name.charAt(0).toUpperCase() + name.slice(1);
         let propsToTest = [name, upperName];
 
         propsToTest = propsToTest.concat(['Webkit', 'webkit', 'Moz', 'O', 'ms'].map(
             prefix => prefix + upperName));
 
-        let testElement = this._createDummyElement();
-        let styleObj = testElement.style as any;
+        const testElement = this._createDummyElement();
+        const styleObj = testElement.style as any;
 
         for (let i = 0; i < propsToTest.length; i++) {
-            let prop = propsToTest[i];
+            const prop = propsToTest[i];
 
             if (styleObj[prop] !== undefined) {
                 return prop;
@@ -164,7 +164,7 @@ export class Styles extends RX.Styles {
     });
 
     private _getCssPropertyAliasesJsStyle = _.memoize(() => {
-        let props = [
+        const props = [
             'flex',
             'flexDirection',
             'alignItems',
@@ -184,10 +184,10 @@ export class Styles extends RX.Styles {
             'appRegion'
         ];
 
-        let aliases: CssAliasMap = {};
+        const aliases: CssAliasMap = {};
 
         props.forEach(prop => {
-            let alias = this._getCssPropertyAlias(prop);
+            const alias = this._getCssPropertyAlias(prop);
             if (alias && prop !== alias) {
                 aliases[prop] = alias;
             }
@@ -201,8 +201,8 @@ export class Styles extends RX.Styles {
         let cssString = '';
 
         if (prop) {
-            for (var i = 0; i < prop.length; i++) {
-                let lowerChar = prop[i].toLowerCase();
+            for (let i = 0; i < prop.length; i++) {
+                const lowerChar = prop[i].toLowerCase();
                 if (lowerChar === prop[i]) {
                     cssString += lowerChar;
                 } else {
@@ -215,9 +215,9 @@ export class Styles extends RX.Styles {
     }
 
     _cssPropertyAliasesCssStyle = memoize(() => {
-        let jsStyleAliases = this._getCssPropertyAliasesJsStyle();
+        const jsStyleAliases = this._getCssPropertyAliasesJsStyle();
 
-        let aliases: CssAliasMap = {};
+        const aliases: CssAliasMap = {};
 
         _.each(_.keys(jsStyleAliases), prop => {
             aliases[prop] = this.convertJsToCssStyle(jsStyleAliases[prop]);
@@ -232,7 +232,7 @@ export class Styles extends RX.Styles {
 
     getParentComponentName(component: any): string {
         let parentConstructor: any;
-        let internalInstance = component['_reactInternalInstance'];
+        const internalInstance = component._reactInternalInstance;
 
         if (internalInstance && internalInstance._currentElement &&
             internalInstance._currentElement._owner && internalInstance._currentElement._owner._instance) {
@@ -274,7 +274,7 @@ export class Styles extends RX.Styles {
                 }
             }
 
-            let flexValue = def.flex as number;
+            const flexValue = def.flex as number;
             delete def.flex;
 
             if (flexValue > 0) {
@@ -293,9 +293,9 @@ export class Styles extends RX.Styles {
         }
 
         if (def.transform) {
-            let transformStrings: string[] = [];
-            let animatedTransforms: { [key: string]: Object } = {};
-            let staticTransforms: { [key: string]: string } = {};
+            const transformStrings: string[] = [];
+            const animatedTransforms: { [key: string]: Object } = {};
+            const staticTransforms: { [key: string]: string } = {};
 
             _.each(def.transform, (t: { [key: string]: string }) => {
                 _.each(_.keys(t), key => {
@@ -320,12 +320,12 @@ export class Styles extends RX.Styles {
             delete def.transform;
 
             if (transformStrings.length > 0) {
-                def['transform'] = transformStrings.join(' ');
+                def.transform = transformStrings.join(' ');
             }
 
             if (_.keys(animatedTransforms).length > 0) {
-                def['animatedTransforms'] = animatedTransforms;
-                def['staticTransforms'] = staticTransforms;
+                def.animatedTransforms = animatedTransforms;
+                def.staticTransforms = staticTransforms;
             }
         }
 
@@ -352,9 +352,9 @@ export class Styles extends RX.Styles {
             }
 
             if (isTextStyle) {
-                def['textShadow'] = width + 'px ' + height + 'px ' + radius + 'px ' + color;
+                def.textShadow = width + 'px ' + height + 'px ' + radius + 'px ' + color;
             } else {
-                def['boxShadow'] = width + 'px ' + height + 'px ' + radius + 'px 0px ' + color;
+                def.boxShadow = width + 'px ' + height + 'px ' + radius + 'px 0px ' + color;
             }
         }
 
@@ -362,7 +362,7 @@ export class Styles extends RX.Styles {
         // size or a pixel count. The RX.Types interface always uses a pixel count. We need to
         // convert to the string notation to make CSS happy.
         if (def.lineHeight !== undefined) {
-            def['lineHeight'] = def.lineHeight + 'px';
+            def.lineHeight = def.lineHeight + 'px';
         }
 
         // Add default border width if border style or some subset of border widths
@@ -427,13 +427,13 @@ export class Styles extends RX.Styles {
 
         // CSS doesn't support 'textDecorationLine'
         if (def.textDecorationLine !== undefined) {
-            def['textDecoration'] = def.textDecorationLine;
+            def.textDecoration = def.textDecorationLine;
             delete def.textDecorationLine;
         }
 
         // Add common aliases if necessary.
-        let jsAliases = this._getCssPropertyAliasesJsStyle();
-        for (let prop in jsAliases) {
+        const jsAliases = this._getCssPropertyAliasesJsStyle();
+        for (const prop in jsAliases) {
             if (def[prop] !== undefined && jsAliases[prop]) {
                 def[jsAliases[prop]] = def[prop];
             }
@@ -441,7 +441,7 @@ export class Styles extends RX.Styles {
 
         // Add IE-specific word wrap property.
         if (def.wordBreak === 'break-word') {
-            def['wordWrap'] = 'break-word';
+            def.wordWrap = 'break-word';
         }
 
         return AppConfig.isDevelopmentMode() ? Object.freeze(def) : def;

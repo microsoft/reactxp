@@ -39,7 +39,7 @@ export abstract class Linking extends RX.Linking {
 
     // Escaped Email uri - mailto:[emailAddress]?subject=<emailSubject>&body=<emailBody>
     protected _createEmailUrl(emailInfo: RX.Types.EmailInfo) {
-        let emailUrl: string = 'mailto:';
+        let emailUrl = 'mailto:';
         let validEmails: string[];
 
         if (emailInfo.to && emailInfo.to.length > 0) {

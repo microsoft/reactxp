@@ -7,22 +7,24 @@
  * The top-most view that's used for proper layering or modals and popups.
  */
 
+// tslint:disable:function-name
+
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import {
-    BaseRootViewProps,
-    BaseRootView,
-    RootView as RootViewBase,
-    RootViewUsingProps as RootViewUsingPropsBase,
-    RootViewPropsWithMainViewType,
-    RootViewState,
-} from '../native-common/RootView';
-import Input from './Input';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import FocusManager from './utils/FocusManager';
 import FrontLayerViewManager from '../native-common/FrontLayerViewManager';
+import Input from './Input';
+import {
+    BaseRootView,
+    BaseRootViewProps,
+    RootView as RootViewBase,
+    RootViewPropsWithMainViewType,
+    RootViewState,
+    RootViewUsingProps as RootViewUsingPropsBase
+} from '../native-common/RootView';
 import Timers from '../common/utils/Timers';
 import UserInterface from '../native-common/UserInterface';
 
@@ -66,7 +68,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
         }
 
         _onKeyDownCapture = (e: RN.NativeSyntheticEvent<any>) => {
-            let kbdEvent = EventHelpers.toKeyboardEvent(e);
+            const kbdEvent = EventHelpers.toKeyboardEvent(e);
             if (kbdEvent.keyCode === KEY_CODE_TAB) {
                 this._updateKeyboardNavigationState(true);
             }
@@ -102,12 +104,12 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
         }
 
         _onKeyDown = (e: RN.NativeSyntheticEvent<any>) => {
-            let kbdEvent = EventHelpers.toKeyboardEvent(e);
+            const kbdEvent = EventHelpers.toKeyboardEvent(e);
             Input.dispatchKeyDown(kbdEvent);
         }
 
         _onKeyPress = (e: RN.NativeSyntheticEvent<any>) => {
-            let kbdEvent = EventHelpers.toKeyboardEvent(e);
+            const kbdEvent = EventHelpers.toKeyboardEvent(e);
             // This is temporary fix while we still have both keyPress and keyDown
             // events bubbling up for the same situation of user pressing down a key.
             // TODO: consolidate key events #602
@@ -115,9 +117,9 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
         }
 
         _onKeyUp = (e: RN.NativeSyntheticEvent<any>) => {
-            let kbdEvent = EventHelpers.toKeyboardEvent(e);
+            const kbdEvent = EventHelpers.toKeyboardEvent(e);
 
-            let activePopupId = FrontLayerViewManager.getActivePopupId();
+            const activePopupId = FrontLayerViewManager.getActivePopupId();
             if (activePopupId && (kbdEvent.keyCode === KEY_CODE_ESC)) {
                 if (e.stopPropagation) {
                     e.stopPropagation();
@@ -145,7 +147,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
 
             // Using "any" since onKeyDown/onKeyUp/etc. are not defined at RN.View property level
             // Yet the handlers are called as part of capturing/bubbling events for/from children.
-            let internalProps: any = {
+            const internalProps: any = {
                 onKeyDown: this._onKeyDown,
                 onKeyPress: this._onKeyPress,
                 onKeyDownCapture: this._onKeyDownCapture,
@@ -155,7 +157,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
             };
 
             return  (
-                <RN.View 
+                <RN.View
                     { ...internalProps }
                      style={ _styles.appWrapperStyle }
                 >

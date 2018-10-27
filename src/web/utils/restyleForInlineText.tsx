@@ -13,17 +13,17 @@
  * of its render method to this utility. See RX.View for an example.
  */
 
-import * as React from 'react';
 import * as assert from 'assert';
+import * as React from 'react';
 
 import { assign } from './../utils/lodashMini';
 
 function restyleForInlineText(reactElement: React.ReactElement<any>) {
-    let style = reactElement.props['style'];
+    const style = reactElement.props.style;
     assert(
         style &&
-        style['width'] !== undefined &&
-        style['height'] !== undefined,
+        style.width !== undefined &&
+        style.height !== undefined,
         'Children of an <RX.Text> must have a defined height and width'
     );
 

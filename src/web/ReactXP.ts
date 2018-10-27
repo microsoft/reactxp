@@ -32,10 +32,9 @@ import { ActivityIndicator as ActivityIndicatorImpl } from './ActivityIndicator'
 import AlertImpl from './Alert';
 import AppImpl from './App';
 import { Button as ButtonImpl } from './Button';
-import { Picker as PickerImpl } from './Picker';
-import { Image as ImageImpl } from './Image';
 import ClipboardImpl from './Clipboard';
 import { GestureView as GestureViewImpl } from './GestureView';
+import { Image as ImageImpl } from './Image';
 import InputImpl from './Input';
 import InternationalImpl from './International';
 import { Link as LinkImpl } from './Link';
@@ -43,6 +42,7 @@ import LinkingImpl from './Linking';
 import LocationImpl from '../common/Location';
 import ModalImpl from './Modal';
 import NetworkImpl from './Network';
+import { Picker as PickerImpl } from './Picker';
 import PlatformImpl from './Platform';
 import PopupImpl from '../web/Popup';
 import { ScrollView as ScrollViewImpl } from './ScrollView';
@@ -58,8 +58,8 @@ import { ViewBase } from './ViewBase';
 import { WebView as WebViewImpl } from './WebView';
 
 // Initialize AutofocusHelper.
-import FocusManager from './utils/FocusManager';
 import { setSortAndFilterFunc } from '../common/utils/AutoFocusHelper';
+import FocusManager from './utils/FocusManager';
 setSortAndFilterFunc(FocusManager.sortAndFilterAutoFocusCandidates);
 
 // -- STRANGE THINGS GOING ON HERE --
@@ -70,61 +70,61 @@ setSortAndFilterFunc(FocusManager.sortAndFilterAutoFocusCandidates);
 
 module ReactXP {
     export type Accessibility = RXInterfaces.Accessibility;
-    export var Accessibility: RXInterfaces.Accessibility = AccessibilityImpl;
+    export let Accessibility: RXInterfaces.Accessibility = AccessibilityImpl;
     export type ActivityIndicator = RXInterfaces.ActivityIndicator;
-    export var ActivityIndicator: typeof RXInterfaces.ActivityIndicator = ActivityIndicatorImpl;
+    export let ActivityIndicator: typeof RXInterfaces.ActivityIndicator = ActivityIndicatorImpl;
     export type Alert = RXInterfaces.Alert;
-    export var Alert: RXInterfaces.Alert = AlertImpl;
+    export let Alert: RXInterfaces.Alert = AlertImpl;
     export type App = RXInterfaces.App;
-    export var App: RXInterfaces.App = AppImpl;
+    export let App: RXInterfaces.App = AppImpl;
     export type Button = RXInterfaces.Button;
-    export var Button: typeof RXInterfaces.Button = ButtonImpl;
+    export let Button: typeof RXInterfaces.Button = ButtonImpl;
     export type Picker = RXInterfaces.Picker;
-    export var Picker: typeof RXInterfaces.Picker = PickerImpl;
+    export let Picker: typeof RXInterfaces.Picker = PickerImpl;
     export type Clipboard = RXInterfaces.Clipboard;
-    export var Clipboard: RXInterfaces.Clipboard = ClipboardImpl;
+    export let Clipboard: RXInterfaces.Clipboard = ClipboardImpl;
     export type GestureView = RXInterfaces.GestureView;
-    export var GestureView: typeof RXInterfaces.GestureView = GestureViewImpl;
+    export let GestureView: typeof RXInterfaces.GestureView = GestureViewImpl;
     export type Image = RXInterfaces.Image;
-    export var Image: RXInterfaces.ImageConstructor = ImageImpl;
+    export let Image: RXInterfaces.ImageConstructor = ImageImpl;
     export type Input = RXInterfaces.Input;
-    export var Input: RXInterfaces.Input = InputImpl;
+    export let Input: RXInterfaces.Input = InputImpl;
     export type International = RXInterfaces.International;
-    export var International: RXInterfaces.International = InternationalImpl;
+    export let International: RXInterfaces.International = InternationalImpl;
     export type Link = RXInterfaces.Link;
-    export var Link: typeof RXInterfaces.Link = LinkImpl;
+    export let Link: typeof RXInterfaces.Link = LinkImpl;
     export type Linking = RXInterfaces.Linking;
-    export var Linking: RXInterfaces.Linking = LinkingImpl;
+    export let Linking: RXInterfaces.Linking = LinkingImpl;
     export type Location = RXInterfaces.Location;
-    export var Location: RXInterfaces.Location = LocationImpl;
+    export let Location: RXInterfaces.Location = LocationImpl;
     export type Modal = RXInterfaces.Modal;
-    export var Modal: RXInterfaces.Modal = ModalImpl;
+    export let Modal: RXInterfaces.Modal = ModalImpl;
     export type Network = RXInterfaces.Network;
-    export var Network: RXInterfaces.Network = NetworkImpl;
+    export let Network: RXInterfaces.Network = NetworkImpl;
     export type Platform = RXInterfaces.Platform;
-    export var Platform: RXInterfaces.Platform = PlatformImpl;
+    export let Platform: RXInterfaces.Platform = PlatformImpl;
     export type Popup = RXInterfaces.Popup;
-    export var Popup: RXInterfaces.Popup = PopupImpl;
+    export let Popup: RXInterfaces.Popup = PopupImpl;
     export type ScrollView = RXInterfaces.ScrollView;
-    export var ScrollView: RXInterfaces.ScrollViewConstructor = ScrollViewImpl;
+    export let ScrollView: RXInterfaces.ScrollViewConstructor = ScrollViewImpl;
     export type StatusBar = RXInterfaces.StatusBar;
-    export var StatusBar: RXInterfaces.StatusBar = StatusBarImpl;
+    export let StatusBar: RXInterfaces.StatusBar = StatusBarImpl;
     export type Storage = RXInterfaces.Storage;
-    export var Storage: RXInterfaces.Storage = StorageImpl;
+    export let Storage: RXInterfaces.Storage = StorageImpl;
     export type Styles = RXInterfaces.Styles;
-    export var Styles: RXInterfaces.Styles = StylesImpl;
+    export let Styles: RXInterfaces.Styles = StylesImpl;
     export type Text = RXInterfaces.Text;
-    export var Text: typeof RXInterfaces.Text = TextImpl;
+    export let Text: typeof RXInterfaces.Text = TextImpl;
     export type TextInput = RXInterfaces.TextInput;
-    export var TextInput: typeof RXInterfaces.TextInput = TextInputImpl;
+    export let TextInput: typeof RXInterfaces.TextInput = TextInputImpl;
     export type UserInterface = RXInterfaces.UserInterface;
-    export var UserInterface: RXInterfaces.UserInterface = UserInterfaceImpl;
+    export let UserInterface: RXInterfaces.UserInterface = UserInterfaceImpl;
     export type UserPresence = RXInterfaces.UserPresence;
-    export var UserPresence: RXInterfaces.UserPresence = UserPresenceImpl;
+    export let UserPresence: RXInterfaces.UserPresence = UserPresenceImpl;
     export type View = RXInterfaces.View;
-    export var View: typeof RXInterfaces.View = ViewImpl;
+    export let View: typeof RXInterfaces.View = ViewImpl;
     export type WebView = RXInterfaces.WebView;
-    export var WebView: RXInterfaces.WebViewConstructor = WebViewImpl;
+    export let WebView: RXInterfaces.WebViewConstructor = WebViewImpl;
 
     export import Animated = AnimatedImpl;
     export import CommonProps = RXTypes.CommonProps;
@@ -134,9 +134,9 @@ module ReactXP {
 
     export import Component = React.Component;
     export import ComponentBase = RXTypes.ComponentBase;
-    export var createElement = React.createElement;
-    export var Children = React.Children;
-    export var __spread = (React as any).__spread;
+    export let createElement = React.createElement;
+    export let Children = React.Children;
+    export let __spread = (React as any).__spread;
 }
 
 ViewBase.setActivationState(AppImpl.getActivationState());
@@ -151,6 +151,7 @@ AppImpl.activationStateChangedEvent.subscribe(newState => {
 //    Note: RX must be a module so 'RX.Foo' can be a valid value ('new RX.Foo') and valid type ('var k: RX.Foo'), but modules cannot
 //    implement an interface. If RX was a class or variable then it could directly check this, but then 'RX.Foo' would not be a valid type.
 
+// tslint:disable-next-line
 var _rxImplementsRxInterface: typeof RXModuleInterface.ReactXP = ReactXP;
 _rxImplementsRxInterface = _rxImplementsRxInterface;
 export = ReactXP;

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Picker.tsx
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -9,8 +9,8 @@
 
 import * as React from 'react';
 
-import * as _ from './utils/lodashMini';
 import * as RX from '../common/Interfaces';
+import * as _ from './utils/lodashMini';
 import Styles from './Styles';
 
 export class Picker extends RX.Picker {

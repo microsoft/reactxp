@@ -5,8 +5,8 @@
  * Licensed under the MIT license.
  */
 
-import { clone } from './lodashMini';
 import { Types } from '../../common/Interfaces';
+import { clone } from './lodashMini';
 
 //
 // These helpers promote a SyntheticEvent to their higher level counterparts
@@ -21,8 +21,8 @@ export class EventHelpers {
             // keycodes for arrow keys when comparing with React (JS).
             // We align the keycodes for native desktop platforms to the other native ones, as a workaround.
             // Ideally all key codes should be consistent OR a set of constants should be exposed by ReactXP.
-            let keyName: string = e.nativeEvent.key;
-            let keyCode: number = 0;
+            const keyName: string = e.nativeEvent.key;
+            let keyCode = 0;
 
             if (keyName.length === 1) {
                 keyCode = keyName.charCodeAt(0);
@@ -235,7 +235,7 @@ export class EventHelpers {
 
         // Ideally we'd like to add a null set "relatedTarget", but the new typing doesn't allow that.
         // So keeping it a noop for now
-        return e as Types.FocusEvent;
+        return e;
     }
 
     toMouseEvent(e: Types.SyntheticEvent): Types.MouseEvent {
@@ -243,7 +243,7 @@ export class EventHelpers {
         // We need to add various properties to the original event, but React Native
         // reuses events, so we're not allowed to modify the original.
         // Instead, we'll clone it.
-        let mouseEvent = clone(e as Types.MouseEvent);
+        const mouseEvent = clone(e as Types.MouseEvent);
 
         const nativeEvent = e.nativeEvent;
 
@@ -305,7 +305,7 @@ export class EventHelpers {
         return 0;
     }
 
-    isActuallyMouseEvent(e: Types.TouchEvent|undefined): boolean {
+    isActuallyMouseEvent(e: Types.TouchEvent | undefined): boolean {
         if (!e) {
             return false;
         }
@@ -330,8 +330,8 @@ export class EventHelpers {
     // We simulate a mouse event so that we can show things like context Menus in the correct position.
     // Ensure offset is passed in {x = number, y= number} format. Using Top Left as anchor position.
     keyboardToMouseEvent(e: Types.KeyboardEvent, layoutInfo: Types.LayoutInfo,
-        contextMenuOffset: {x: number, y: number}): Types.MouseEvent {
-        let mouseEvent = this.toMouseEvent(e);
+        contextMenuOffset: { x: number; y: number }): Types.MouseEvent {
+        const mouseEvent = this.toMouseEvent(e);
 
         if ((layoutInfo.x !== undefined) && (contextMenuOffset.x !== undefined)) {
             mouseEvent.clientX = mouseEvent.pageX = layoutInfo.x + contextMenuOffset.x;

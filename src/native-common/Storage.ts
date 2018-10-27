@@ -13,22 +13,24 @@ import * as SyncTasks from 'synctasks';
 import * as RX from '../common/Interfaces';
 
 export class Storage extends RX.Storage {
-    getItem(key: string): SyncTasks.Promise<string|undefined> {
-        var deferred = SyncTasks.Defer<string|undefined>();
+    getItem(key: string): SyncTasks.Promise<string | undefined> {
+        const deferred = SyncTasks.Defer<string | undefined>();
 
-        RN.AsyncStorage.getItem(key, (error: any, result: string|undefined) => {
+        RN.AsyncStorage.getItem(key, (error: any, result: string | undefined) => {
             if (!error) {
                 deferred.resolve(result || undefined);
             } else {
                 deferred.reject(error);
             }
+        }).catch(err => {
+            deferred.reject(err);
         });
 
         return deferred.promise();
     }
 
     setItem(key: string, value: string): SyncTasks.Promise<void> {
-        var deferred = SyncTasks.Defer<void>();
+        const deferred = SyncTasks.Defer<void>();
 
         RN.AsyncStorage.setItem(key, value, (error: any) => {
             if (!error) {
@@ -36,13 +38,15 @@ export class Storage extends RX.Storage {
             } else {
                 deferred.reject(error);
             }
+        }).catch(err => {
+            deferred.reject(err);
         });
 
         return deferred.promise();
     }
 
     removeItem(key: string): SyncTasks.Promise<void> {
-        var deferred = SyncTasks.Defer<void>();
+        const deferred = SyncTasks.Defer<void>();
 
         RN.AsyncStorage.removeItem(key, (error: any) => {
             if (!error) {
@@ -50,13 +54,15 @@ export class Storage extends RX.Storage {
             } else {
                 deferred.reject(error);
             }
+        }).catch(err => {
+            deferred.reject(err);
         });
 
         return deferred.promise();
     }
 
     clear(): SyncTasks.Promise<void> {
-        var deferred = SyncTasks.Defer<void>();
+        const deferred = SyncTasks.Defer<void>();
 
         RN.AsyncStorage.clear((error: any) => {
             if (!error) {
@@ -64,6 +70,8 @@ export class Storage extends RX.Storage {
             } else {
                 deferred.reject(error);
             }
+        }).catch(err => {
+            deferred.reject(err);
         });
 
         return deferred.promise();

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Link.tsx
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -7,14 +7,13 @@
  * Web-specific implementation of the cross-platform Link abstraction.
  */
 
-import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { CSSProperties } from 'react';
+import * as React from 'react';
 
-import { applyFocusableComponentMixin } from './utils/FocusManager';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import { Types } from '../common/Interfaces';
 import EventHelpers from '../native-common/utils/EventHelpers';
+import { applyFocusableComponentMixin } from './utils/FocusManager';
+import { Types } from '../common/Interfaces';
 import Styles from './Styles';
 import Timers from '../common/utils/Timers';
 
@@ -32,7 +31,7 @@ const _styles = {
     ellipsis: {
         textOverflow: 'ellipsis',
         whiteSpace: 'pre',
-        msHyphens: 'none',
+        msHyphens: 'none'
     },
     selectable: {
         WebkitUserSelect: 'text',
@@ -55,8 +54,8 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
 
     context!: LinkContext;
 
-    private _mountedAnchor: HTMLAnchorElement|null = null;
-    private _longPressTimer: number|undefined;
+    private _mountedAnchor: HTMLAnchorElement | null = null;
+    private _longPressTimer: number | undefined;
 
     render() {
         // SECURITY WARNING:
@@ -111,17 +110,17 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
         }
     }
 
-    private _onMount = (ref: HTMLAnchorElement|null) => {
+    private _onMount = (ref: HTMLAnchorElement | null) => {
         this._mountedAnchor = ref;
     }
 
-    private _getStyles(): CSSProperties {
+    private _getStyles(): React.CSSProperties {
         // There's no way in HTML to properly handle numberOfLines > 1,
         //  but we can correctly handle the common case where numberOfLines is 1.
         const ellipsisStyles = this.props.numberOfLines === 1 ? _styles.ellipsis : {};
         const selectableStyles = this.props.selectable ? _styles.selectable : {};
 
-        return Styles.combine([ _styles.defaultStyle, ellipsisStyles, this.props.style, selectableStyles ]) as CSSProperties;
+        return Styles.combine([ _styles.defaultStyle, ellipsisStyles, this.props.style, selectableStyles ]) as React.CSSProperties;
     }
 
     private _onClick = (e: React.MouseEvent<any>) => {

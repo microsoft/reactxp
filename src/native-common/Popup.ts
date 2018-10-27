@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Popup.tsx
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -7,8 +7,8 @@
  * React Native implementation of the cross-platform Popup abstraction.
  */
 
-import * as RX from '../common/Interfaces';
 import FrontLayerViewManager from './FrontLayerViewManager';
+import * as RX from '../common/Interfaces';
 
 export class Popup extends RX.Popup {
     show(options: RX.Types.PopupOptions, popupId: string, delay?: number): boolean {

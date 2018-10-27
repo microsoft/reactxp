@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Text.tsx
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -10,9 +10,9 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
+import AccessibilityUtil from './AccessibilityUtil';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import { Text as TextBase, Types } from '../common/Interfaces';
-import AccessibilityUtil from './AccessibilityUtil';
 import Styles from './Styles';
 
 // Adding a CSS rule to display non-selectable texts. Those texts
@@ -24,7 +24,7 @@ if (typeof document !== 'undefined') {
     const style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(textAsPseudoElement));
-    document.head!.appendChild(style);
+    document.head.appendChild(style);
 }
 
 const _styles = {
@@ -65,7 +65,7 @@ export class Text extends TextBase {
         isRxParentAText: PropTypes.bool.isRequired
     };
 
-    private _mountedText: HTMLDivElement|null = null;
+    private _mountedText: HTMLDivElement | null = null;
 
     getChildContext() {
         // Let descendant Types components know that their nearest Types ancestor is an Types.Text.
@@ -121,33 +121,33 @@ export class Text extends TextBase {
         }
     }
 
-    private _onMount = (ref: HTMLDivElement|null) => {
+    private _onMount = (ref: HTMLDivElement | null) => {
         this._mountedText = ref;
     }
 
     private _getStyles(): Types.TextStyleRuleSet {
         // There's no way in HTML to properly handle numberOfLines > 1,
         // but we can correctly handle the common case where numberOfLines is 1.
-        let combinedStyles = Styles.combine([this.props.numberOfLines === 1 ?
+        const combinedStyles = Styles.combine([this.props.numberOfLines === 1 ?
             _styles.ellipsis : _styles.defaultStyle, this.props.style]) as any;
 
         if (this.props.selectable) {
-            combinedStyles['userSelect'] = 'text';
-            combinedStyles['WebkitUserSelect'] = 'text';
-            combinedStyles['MozUserSelect'] = 'text';
-            combinedStyles['msUserSelect'] = 'text';
+            combinedStyles.userSelect = 'text';
+            combinedStyles.WebkitUserSelect = 'text';
+            combinedStyles.MozUserSelect = 'text';
+            combinedStyles.msUserSelect = 'text';
         }
 
         // Handle cursor styles
         if (!combinedStyles.cursor) {
             if (this.props.selectable) {
-                combinedStyles['cursor'] = 'text';
+                combinedStyles.cursor = 'text';
             } else {
-                combinedStyles['cursor'] = 'inherit';
+                combinedStyles.cursor = 'inherit';
             }
 
             if (this.props.onPress) {
-                combinedStyles['cursor'] = 'pointer';
+                combinedStyles.cursor = 'pointer';
             }
         }
 

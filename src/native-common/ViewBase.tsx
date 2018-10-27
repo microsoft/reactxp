@@ -13,11 +13,11 @@ import * as RX from '../common/Interfaces';
 import { isEqual } from './utils/lodashMini';
 
 export abstract class ViewBase<P extends RX.Types.ViewProps, S> extends RX.ViewBase<P, S> {
-    private static _defaultViewStyle: RX.Types.ViewStyleRuleSet|undefined;
-    private _layoutEventValues: RX.Types.ViewOnLayoutEvent|undefined;
+    private static _defaultViewStyle: RX.Types.ViewStyleRuleSet | undefined;
+    private _layoutEventValues: RX.Types.ViewOnLayoutEvent | undefined;
 
     abstract render(): JSX.Element;
-    protected _nativeView: RN.View|undefined;
+    protected _nativeView: RN.View | undefined;
 
     static setDefaultViewStyle(defaultViewStyle: RX.Types.ViewStyleRuleSet) {
         ViewBase._defaultViewStyle = defaultViewStyle;
@@ -28,7 +28,7 @@ export abstract class ViewBase<P extends RX.Types.ViewProps, S> extends RX.ViewB
     }
 
     // To be able to use View inside TouchableHighlight/TouchableOpacity
-    public setNativeProps(nativeProps: RN.ViewProps) {
+    setNativeProps(nativeProps: RN.ViewProps) {
         if (this._nativeView) {
             this._nativeView.setNativeProps(nativeProps);
         }

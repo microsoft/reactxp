@@ -25,7 +25,7 @@ export abstract class AccessibilityPlatformUtil {
 }
 
 export abstract class AccessibilityUtil {
-    isHidden(importantForAccessibility: Types.ImportantForAccessibility|undefined): true|undefined {
+    isHidden(importantForAccessibility: Types.ImportantForAccessibility | undefined): true | undefined {
         // aria-hidden is false by default, returning true or undefined, so that it doesn't pollute the DOM.
         if (importantForAccessibility) {
             const importantForAccessibilityString = this.importantForAccessibilityToString(importantForAccessibility);
@@ -36,8 +36,8 @@ export abstract class AccessibilityUtil {
         return undefined;
     }
 
-    importantForAccessibilityToString(importantForAccessibility: Types.ImportantForAccessibility|undefined,
-        defaultImportantForAccessibility?: Types.ImportantForAccessibility): ImportantForAccessibilityValue|undefined {
+    importantForAccessibilityToString(importantForAccessibility: Types.ImportantForAccessibility | undefined,
+        defaultImportantForAccessibility?: Types.ImportantForAccessibility): ImportantForAccessibilityValue | undefined {
         importantForAccessibility = importantForAccessibility || defaultImportantForAccessibility;
 
         if (importantForAccessibility && ImportantForAccessibilityMap[importantForAccessibility]) {
@@ -46,7 +46,7 @@ export abstract class AccessibilityUtil {
         return undefined;
     }
 
-    protected abstract accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): string|undefined;
+    protected abstract accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): string | undefined;
     protected abstract accessibilityTraitToString(trait: Types.AccessibilityTrait | Types.AccessibilityTrait[],
         defaultTrait?: Types.AccessibilityTrait): string | string[] | undefined;
 }

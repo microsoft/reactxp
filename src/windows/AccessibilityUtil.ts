@@ -8,6 +8,7 @@
  */
 
 import * as React from 'react';
+
 import { AccessibilityPlatformUtil } from '../common/AccessibilityUtil';
 
 export class AccessibilityUtil extends AccessibilityPlatformUtil {

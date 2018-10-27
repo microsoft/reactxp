@@ -11,7 +11,7 @@
  * we can get compiler errors.
  */
 
-let timerProvider = window || global;
+const timerProvider = window || global;
 
 export default class Timers {
     static clearInterval(handle: number): void {

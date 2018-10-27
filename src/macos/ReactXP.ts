@@ -11,7 +11,7 @@
 import React = require('react');
 import RN = require('react-native');
 
-import { makeAnimated, CommonAnimatedClasses } from '../native-common/Animated';
+import { CommonAnimatedClasses, makeAnimated } from '../native-common/Animated';
 import RXInterfaces = require('../common/Interfaces');
 import RXModuleInterface = require('../common/ModuleInterface');
 import RXTypes = require('../common/Types');
@@ -24,10 +24,9 @@ import ActivityIndicatorImpl from '../native-common/ActivityIndicator';
 import AlertImpl from '../native-common/Alert';
 import AppImpl from '../native-common/App';
 import ButtonImpl from '../native-common/Button';
-import PickerImpl from '../native-common/Picker';
-import ImageImpl from '../native-common/Image';
 import ClipboardImpl from '../native-common/Clipboard';
 import GestureViewImpl from './GestureView';
+import ImageImpl from '../native-common/Image';
 import InputImpl from './Input';
 import InternationalImpl from '../native-common/International';
 import LinkImpl from '../native-common/Link';
@@ -35,6 +34,7 @@ import LinkingImpl from './Linking';
 import LocationImpl from '../common/Location';
 import ModalImpl from '../native-common/Modal';
 import NetworkImpl from '../native-common/Network';
+import PickerImpl from '../native-common/Picker';
 import PlatformImpl from '../native-common/Platform';
 import PopupImpl from '../native-common/Popup';
 import ScrollViewImpl from '../native-common/ScrollView';
@@ -46,8 +46,8 @@ import TextInputImpl from '../native-common/TextInput';
 import UserInterfaceImpl from '../native-common/UserInterface';
 import UserPresenceImpl from '../native-common/UserPresence';
 import ViewImpl from './View';
-import WebViewImpl from '../native-common/WebView';
 import ViewBase from '../native-common/ViewBase';
+import WebViewImpl from '../native-common/WebView';
 
 // Initialize the MacOS default view style. This is required because on RN for MacOS, the default
 // overflow is 'visible', but we want it to be 'hidden' (the default for ReactXP and RN Android).
@@ -69,61 +69,61 @@ AccessibilityUtil.setAccessibilityPlatformUtil(AccessibilityPlatformUtil);
 
 module ReactXP {
     export type Accessibility = RXInterfaces.Accessibility;
-    export var Accessibility: RXInterfaces.Accessibility = AccessibilityImpl;
+    export let Accessibility: RXInterfaces.Accessibility = AccessibilityImpl;
     export type ActivityIndicator = RXInterfaces.ActivityIndicator;
-    export var ActivityIndicator: typeof RXInterfaces.ActivityIndicator = ActivityIndicatorImpl;
+    export let ActivityIndicator: typeof RXInterfaces.ActivityIndicator = ActivityIndicatorImpl;
     export type Alert = RXInterfaces.Alert;
-    export var Alert: RXInterfaces.Alert = AlertImpl;
+    export let Alert: RXInterfaces.Alert = AlertImpl;
     export type App = RXInterfaces.App;
-    export var App: RXInterfaces.App = AppImpl;
+    export let App: RXInterfaces.App = AppImpl;
     export type Button = RXInterfaces.Button;
-    export var Button: typeof RXInterfaces.Button = ButtonImpl;
+    export let Button: typeof RXInterfaces.Button = ButtonImpl;
     export type Picker = RXInterfaces.Picker;
-    export var Picker: typeof RXInterfaces.Picker = PickerImpl;
+    export let Picker: typeof RXInterfaces.Picker = PickerImpl;
     export type Clipboard = RXInterfaces.Clipboard;
-    export var Clipboard: RXInterfaces.Clipboard = ClipboardImpl;
+    export let Clipboard: RXInterfaces.Clipboard = ClipboardImpl;
     export type GestureView = RXInterfaces.GestureView;
-    export var GestureView: typeof RXInterfaces.GestureView = GestureViewImpl;
+    export let GestureView: typeof RXInterfaces.GestureView = GestureViewImpl;
     export type Image = RXInterfaces.Image;
-    export var Image: RXInterfaces.ImageConstructor = ImageImpl;
+    export let Image: RXInterfaces.ImageConstructor = ImageImpl;
     export type Input = RXInterfaces.Input;
-    export var Input: RXInterfaces.Input = InputImpl;
+    export let Input: RXInterfaces.Input = InputImpl;
     export type International = RXInterfaces.International;
-    export var International: RXInterfaces.International = InternationalImpl;
+    export let International: RXInterfaces.International = InternationalImpl;
     export type Link = RXInterfaces.Link;
-    export var Link: typeof RXInterfaces.Link = LinkImpl;
+    export let Link: typeof RXInterfaces.Link = LinkImpl;
     export type Linking = RXInterfaces.Linking;
-    export var Linking: RXInterfaces.Linking = LinkingImpl;
+    export let Linking: RXInterfaces.Linking = LinkingImpl;
     export type Location = RXInterfaces.Location;
-    export var Location: RXInterfaces.Location = LocationImpl;
+    export let Location: RXInterfaces.Location = LocationImpl;
     export type Modal = RXInterfaces.Modal;
-    export var Modal: RXInterfaces.Modal = ModalImpl;
+    export let Modal: RXInterfaces.Modal = ModalImpl;
     export type Network = RXInterfaces.Network;
-    export var Network: RXInterfaces.Network = NetworkImpl;
+    export let Network: RXInterfaces.Network = NetworkImpl;
     export type Platform = RXInterfaces.Platform;
-    export var Platform: RXInterfaces.Platform = PlatformImpl;
+    export let Platform: RXInterfaces.Platform = PlatformImpl;
     export type Popup = RXInterfaces.Popup;
-    export var Popup: RXInterfaces.Popup = PopupImpl;
+    export let Popup: RXInterfaces.Popup = PopupImpl;
     export type ScrollView = RXInterfaces.ScrollView;
-    export var ScrollView: RXInterfaces.ScrollViewConstructor = ScrollViewImpl;
+    export let ScrollView: RXInterfaces.ScrollViewConstructor = ScrollViewImpl;
     export type StatusBar = RXInterfaces.StatusBar;
-    export var StatusBar: RXInterfaces.StatusBar = StatusBarImpl;
+    export let StatusBar: RXInterfaces.StatusBar = StatusBarImpl;
     export type Storage = RXInterfaces.Storage;
-    export var Storage: RXInterfaces.Storage = StorageImpl;
+    export let Storage: RXInterfaces.Storage = StorageImpl;
     export type Styles = RXInterfaces.Styles;
-    export var Styles: RXInterfaces.Styles = StylesImpl;
+    export let Styles: RXInterfaces.Styles = StylesImpl;
     export type Text = RXInterfaces.Text;
-    export var Text: typeof RXInterfaces.Text = TextImpl;
+    export let Text: typeof RXInterfaces.Text = TextImpl;
     export type TextInput = RXInterfaces.TextInput;
-    export var TextInput: typeof RXInterfaces.TextInput = TextInputImpl;
+    export let TextInput: typeof RXInterfaces.TextInput = TextInputImpl;
     export type UserInterface = RXInterfaces.UserInterface;
-    export var UserInterface: RXInterfaces.UserInterface = UserInterfaceImpl;
+    export let UserInterface: RXInterfaces.UserInterface = UserInterfaceImpl;
     export type UserPresence = RXInterfaces.UserPresence;
-    export var UserPresence: RXInterfaces.UserPresence = UserPresenceImpl;
+    export let UserPresence: RXInterfaces.UserPresence = UserPresenceImpl;
     export type View = RXInterfaces.View;
-    export var View: typeof RXInterfaces.View = ViewImpl;
+    export let View: typeof RXInterfaces.View = ViewImpl;
     export type WebView = RXInterfaces.WebView;
-    export var WebView: RXInterfaces.WebViewConstructor = WebViewImpl;
+    export let WebView: RXInterfaces.WebViewConstructor = WebViewImpl;
 
     const macAnimatedClasses =  {
         ...CommonAnimatedClasses,
@@ -141,13 +141,13 @@ module ReactXP {
     export import ComponentBase = RXTypes.ComponentBase;
     export import createElement = React.createElement;
     export import Children = React.Children;
-    export var __spread = (React as any).__spread;
+    export let __spread = (React as any).__spread;
 }
 
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.
 
-var _rxImplementsRxInterface: typeof RXModuleInterface.ReactXP = ReactXP;
+let _rxImplementsRxInterface: typeof RXModuleInterface.ReactXP = ReactXP;
 _rxImplementsRxInterface = _rxImplementsRxInterface;
 export = ReactXP;
 

@@ -10,23 +10,23 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { PopupDescriptor, RootView } from './RootView';
 import { Types } from '../common/Interfaces';
-import Timers from '../common/utils/Timers';
 import MouseResponder from './utils/MouseResponder';
+import { PopupDescriptor, RootView } from './RootView';
+import Timers from '../common/utils/Timers';
 
 const MAX_CACHED_POPUPS = 4;
 
 export class FrontLayerViewManager {
-    private _mainView: React.ReactElement<any>|undefined;
-    private _modalStack: { modal: React.ReactElement<Types.ViewProps>, id: string }[] = [];
+    private _mainView: React.ReactElement<any> | undefined;
+    private _modalStack: { modal: React.ReactElement<Types.ViewProps>; id: string }[] = [];
 
-    private _activePopupOptions: Types.PopupOptions|undefined;
-    private _activePopupId: string|undefined;
-    private _activePopupAutoDismiss: boolean = false;
-    private _activePopupAutoDismissDelay: number = 0;
-    private _activePopupShowDelay: number = 0;
-    private _popupShowDelayTimer: number|undefined;
+    private _activePopupOptions: Types.PopupOptions | undefined;
+    private _activePopupId: string | undefined;
+    private _activePopupAutoDismiss = false;
+    private _activePopupAutoDismissDelay = 0;
+    private _activePopupShowDelay = 0;
+    private _popupShowDelayTimer: number | undefined;
     private _cachedPopups: PopupDescriptor[] = [];
 
     // We need to be careful accessing document because it may not be defined
@@ -73,7 +73,7 @@ export class FrontLayerViewManager {
 
     private _shouldPopupBeDismissed = (options: Types.PopupOptions): boolean => {
         return !!this._activePopupOptions &&
-            this._activePopupOptions!.getAnchor() === options.getAnchor();
+            this._activePopupOptions.getAnchor() === options.getAnchor();
     }
 
     private _updateModalDisplayedState() {
@@ -187,7 +187,7 @@ export class FrontLayerViewManager {
 
         this._updateModalDisplayedState();
 
-        let rootView = (
+        const rootView = (
             <RootView
                 mainView={ this._mainView }
                 keyBoardFocusOutline={ this._mainView!.props.keyBoardFocusOutline }

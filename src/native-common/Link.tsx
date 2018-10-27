@@ -11,10 +11,10 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import * as RX from '../common/Interfaces';
-import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import AccessibilityUtil from './AccessibilityUtil';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
+import * as RX from '../common/Interfaces';
 import Linking from '../native-common/Linking';
 
 export interface LinkContext {
@@ -30,19 +30,19 @@ export class LinkBase<S> extends React.Component<RX.Types.LinkProps, S> {
 
     context!: LinkContext;
 
-    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any> | null = null;
     protected _isMounted = false;
 
     // To be able to use Link inside TouchableHighlight/TouchableOpacity
-    public setNativeProps(nativeProps: RN.TextProps) {
+    setNativeProps(nativeProps: RN.TextProps) {
         if (this._mountedComponent) {
             this._mountedComponent.setNativeProps(nativeProps);
         }
     }
 
     render() {
-        let internalProps: RN.ExtendedTextProps = {
-            style: this.props.style,
+        const internalProps: RN.ExtendedTextProps = {
+            style: this.props.style as any,
             numberOfLines: this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines,
             onPress: this._onPress,
             onLongPress: this._onLongPress,
@@ -51,7 +51,7 @@ export class LinkBase<S> extends React.Component<RX.Types.LinkProps, S> {
             children: this.props.children,
             tooltip: this.props.title,
             testID: this.props.testId
-        } as RN.ExtendedTextProps;
+        };
 
         return this._render(internalProps, this._onMount);
     }

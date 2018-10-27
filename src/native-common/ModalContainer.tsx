@@ -43,7 +43,7 @@ export class ModalContainer extends React.Component<ModalContainerProps, Types.S
     }
 
     render() {
-        let style = this.props.hidden ? _styles.hiddenContainer : _styles.defaultContainer;
+        const style = this.props.hidden ? _styles.hiddenContainer : _styles.defaultContainer;
 
         return (
             <RN.View style={ style as RN.StyleProp<RN.ViewStyle> }>

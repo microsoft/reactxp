@@ -13,10 +13,10 @@ import * as assert from 'assert';
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import { isUndefined } from './utils/lodashMini';
-import { Types } from '../common/Interfaces';
 import AccessibilityUtil from './AccessibilityUtil';
 import EventHelpers from './utils/EventHelpers';
+import { Types } from '../common/Interfaces';
+import { isUndefined } from './utils/lodashMini';
 import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
 import ViewBase from './ViewBase';
@@ -52,10 +52,10 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
     private _pendingGestureState: Types.MultiTouchGestureState | Types.PanGestureState | Types.TapGestureState | undefined;
 
     // State for tracking double taps
-    private _lastTapEvent: Types.TouchEvent|undefined;
+    private _lastTapEvent: Types.TouchEvent | undefined;
 
     // State for tracking single taps
-    private _lastGestureStartEvent: Types.TouchEvent|undefined;
+    private _lastGestureStartEvent: Types.TouchEvent | undefined;
 
     constructor(props: Types.GestureViewProps) {
         super(props);
@@ -136,8 +136,8 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
             // Something else wants to become responder. Should this view release the responder?
             // Returning true allows release
             onPanResponderTerminationRequest: (e: RN.GestureResponderEvent, gestureState:
-                RN.PanResponderGestureState) => this.props.releaseOnRequest
-        } as RN.PanResponderCallbacks);
+                RN.PanResponderGestureState) => !!this.props.releaseOnRequest
+        });
     }
 
     componentWillUnmount() {
@@ -301,7 +301,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
             this.props.onLongPress(tapEvent);
         }
-        
+
         this._pendingLongPressEvent = undefined;
     }
 
@@ -403,7 +403,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
     private _sendMultiTouchEvents(e: Types.TouchEvent, gestureState: RN.PanResponderGestureState,
             initializeFromEvent: boolean, isComplete: boolean) {
-        let p = this._pendingGestureState as Types.MultiTouchGestureState;
+        const p = this._pendingGestureState as Types.MultiTouchGestureState;
         let multiTouchEvent: Types.MultiTouchGestureState;
 
         // If the user lifted up one or both fingers, the multitouch gesture
@@ -412,26 +412,26 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
             multiTouchEvent = p;
             p.isComplete = isComplete;
         } else {
-            let centerPageX = (e.touches[0].pageX + e.touches[1].pageX) / 2;
-            let centerPageY = (e.touches[0].pageY + e.touches[1].pageY) / 2;
-            let centerClientX = (e.touches[0].locationX + e.touches[1].locationX) / 2;
-            let centerClientY = (e.touches[0].locationY + e.touches[1].locationY) / 2;
-            let width = Math.abs(e.touches[0].pageX - e.touches[1].pageX);
-            let height = Math.abs(e.touches[0].pageY - e.touches[1].pageY);
-            let distance = this._calcDistance(width, height);
-            let angle = this._calcAngle(e.touches);
+            const centerPageX = (e.touches[0].pageX + e.touches[1].pageX) / 2;
+            const centerPageY = (e.touches[0].pageY + e.touches[1].pageY) / 2;
+            const centerClientX = (e.touches[0].locationX + e.touches[1].locationX) / 2;
+            const centerClientY = (e.touches[0].locationY + e.touches[1].locationY) / 2;
+            const width = Math.abs(e.touches[0].pageX - e.touches[1].pageX);
+            const height = Math.abs(e.touches[0].pageY - e.touches[1].pageY);
+            const distance = this._calcDistance(width, height);
+            const angle = this._calcAngle(e.touches);
 
-            let initialCenterPageX = initializeFromEvent ? centerPageX : p.initialCenterPageX;
-            let initialCenterPageY = initializeFromEvent ? centerPageY : p.initialCenterPageY;
-            let initialCenterClientX = initializeFromEvent ? centerClientX : p.initialCenterClientX;
-            let initialCenterClientY = initializeFromEvent ? centerClientY : p.initialCenterClientY;
-            let initialWidth = initializeFromEvent ? width : p.initialWidth;
-            let initialHeight = initializeFromEvent ? height : p.initialHeight;
-            let initialDistance = initializeFromEvent ? distance : p.initialDistance;
-            let initialAngle = initializeFromEvent ? angle : p.initialAngle;
+            const initialCenterPageX = initializeFromEvent ? centerPageX : p.initialCenterPageX;
+            const initialCenterPageY = initializeFromEvent ? centerPageY : p.initialCenterPageY;
+            const initialCenterClientX = initializeFromEvent ? centerClientX : p.initialCenterClientX;
+            const initialCenterClientY = initializeFromEvent ? centerClientY : p.initialCenterClientY;
+            const initialWidth = initializeFromEvent ? width : p.initialWidth;
+            const initialHeight = initializeFromEvent ? height : p.initialHeight;
+            const initialDistance = initializeFromEvent ? distance : p.initialDistance;
+            const initialAngle = initializeFromEvent ? angle : p.initialAngle;
 
-            let velocityX = initializeFromEvent ? 0 : gestureState.vx;
-            let velocityY = initializeFromEvent ? 0 : gestureState.vy;
+            const velocityX = initializeFromEvent ? 0 : gestureState.vx;
+            const velocityY = initializeFromEvent ? 0 : gestureState.vy;
 
             multiTouchEvent = {
                 initialCenterPageX: initialCenterPageX,
@@ -473,7 +473,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
     private _sendPanEvent(e: Types.TouchEvent, gestureState: RN.PanResponderGestureState,
             gestureType: GestureType, initializeFromEvent: boolean, isComplete: boolean) {
-        let state = this._pendingGestureState as Types.PanGestureState;
+        const state = this._pendingGestureState as Types.PanGestureState;
 
         let pageX = e.pageX!;
         let pageY = e.pageY!;
@@ -492,21 +492,21 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
         assert.ok(this._lastGestureStartEvent, 'Gesture start event must not be null.');
 
-        let initialPageX = this._lastGestureStartEvent
+        const initialPageX = this._lastGestureStartEvent
             ? this._lastGestureStartEvent.pageX!
             : initializeFromEvent ? pageX : state.initialPageX;
-        let initialPageY = this._lastGestureStartEvent
+        const initialPageY = this._lastGestureStartEvent
             ? this._lastGestureStartEvent.pageY!
             : initializeFromEvent ? pageY : state.initialPageY;
-        let initialClientX = this._lastGestureStartEvent
+        const initialClientX = this._lastGestureStartEvent
             ? this._lastGestureStartEvent.locationX!
             : initializeFromEvent ? clientX : state.initialClientX;
-        let initialClientY = this._lastGestureStartEvent
+        const initialClientY = this._lastGestureStartEvent
             ? this._lastGestureStartEvent.locationY!
             : initializeFromEvent ? clientY : state.initialClientY;
 
-        let velocityX = initializeFromEvent ? 0 : gestureState.vx;
-        let velocityY = initializeFromEvent ? 0 : gestureState.vy;
+        const velocityX = initializeFromEvent ? 0 : gestureState.vx;
+        const velocityY = initializeFromEvent ? 0 : gestureState.vy;
 
         const panEvent: Types.PanGestureState = {
             initialPageX: initialPageX,
@@ -598,7 +598,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
                 clientX: e.locationX!,
                 clientY: e.locationY!,
                 timeStamp: e.timeStamp,
-                isTouch: !EventHelpers.isActuallyMouseEvent(e),
+                isTouch: !EventHelpers.isActuallyMouseEvent(e)
             };
 
             this.props.onDoubleTap(tapEvent);

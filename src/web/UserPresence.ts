@@ -1,4 +1,4 @@
-﻿/**
+/**
  * UserPresence.ts
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -12,8 +12,8 @@
  * but the user has not intereacted with the app in the last 60 seconds
  */
 
-import * as RX from '../common/Interfaces';
 import AppVisibilityUtils from './utils/AppVisibilityUtils';
+import * as RX from '../common/Interfaces';
 
 export class UserPresence extends RX.UserPresence {
     private _isPresent: boolean;

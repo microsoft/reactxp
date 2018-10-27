@@ -7,14 +7,16 @@
  * Manages focusable elements for better keyboard navigation.
  */
 
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+// tslint:disable:no-invalid-this
 
-import { Types } from '../../common/Interfaces';
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+
 import AppConfig from '../../common/AppConfig';
+import { Types } from '../../common/Interfaces';
 import Timers from './Timers';
 
-let _lastComponentId: number = 0;
+let _lastComponentId = 0;
 
 export enum RestrictFocusType {
     Unrestricted = 0,
@@ -52,22 +54,22 @@ export type FocusManagerRestrictionStateCallback = (restricted: RestrictFocusTyp
 
 export abstract class FocusManager {
     private static _restrictionStack: FocusManager[] = [];
-    protected static _currentRestrictionOwner: FocusManager|undefined;
-    private static _restoreRestrictionTimer: number|undefined;
-    private static _pendingPrevFocusedComponent: StoredFocusableComponent|undefined;
-    protected static _currentFocusedComponent: StoredFocusableComponent|undefined;
+    protected static _currentRestrictionOwner: FocusManager | undefined;
+    private static _restoreRestrictionTimer: number | undefined;
+    private static _pendingPrevFocusedComponent: StoredFocusableComponent | undefined;
+    protected static _currentFocusedComponent: StoredFocusableComponent | undefined;
     protected static _allFocusableComponents: { [id: string]: StoredFocusableComponent } = {};
     protected static _skipFocusCheck = false;
     protected static _resetFocusTimer: number | undefined;
 
-    private _parent: FocusManager|undefined;
+    private _parent: FocusManager | undefined;
     private _isFocusLimited: Types.LimitFocusType = Types.LimitFocusType.Unlimited;
     private _currentRestrictType: RestrictFocusType = RestrictFocusType.Unrestricted;
-    private _prevFocusedComponent: StoredFocusableComponent|undefined;
+    private _prevFocusedComponent: StoredFocusableComponent | undefined;
     protected _myFocusableComponentIds: { [id: string]: boolean } = {};
-    private _restrictionStateCallback: FocusManagerRestrictionStateCallback|undefined;
+    private _restrictionStateCallback: FocusManagerRestrictionStateCallback | undefined;
 
-    constructor(parent: FocusManager|undefined) {
+    constructor(parent: FocusManager | undefined) {
         this._parent = parent;
     }
 
@@ -81,7 +83,7 @@ export abstract class FocusManager {
     // Whenever the focusable element is mounted, we let the application
     // know so that FocusManager could account for this element during the
     // focus restriction.
-    addFocusableComponent(component: FocusableComponentInternal, accessibleOnly: boolean = false) {
+    addFocusableComponent(component: FocusableComponentInternal, accessibleOnly = false) {
         if (component.focusableComponentId) {
             return;
         }
@@ -89,7 +91,7 @@ export abstract class FocusManager {
         const numericComponentId = ++_lastComponentId;
         const componentId: string = 'fc-' + numericComponentId;
 
-        let storedComponent: StoredFocusableComponent = {
+        const storedComponent: StoredFocusableComponent = {
             id: componentId,
             numericId: numericComponentId,
             component: component,
@@ -105,9 +107,9 @@ export abstract class FocusManager {
         component.focusableComponentId = componentId;
         FocusManager._allFocusableComponents[componentId] = storedComponent;
 
-        let withinRestrictionOwner: boolean = false;
+        let withinRestrictionOwner = false;
 
-        for (let parent: FocusManager|undefined = this; parent; parent = parent._parent) {
+        for (let parent: FocusManager | undefined = this; parent; parent = parent._parent) {
             parent._myFocusableComponentIds[componentId] = true;
 
             if (FocusManager._currentRestrictionOwner === parent) {
@@ -150,7 +152,7 @@ export abstract class FocusManager {
 
             delete storedComponent.callbacks;
 
-            for (let parent: FocusManager|undefined = this; parent; parent = parent._parent) {
+            for (let parent: FocusManager | undefined = this; parent; parent = parent._parent) {
                 delete parent._myFocusableComponentIds[componentId];
             }
 
@@ -272,7 +274,7 @@ export abstract class FocusManager {
         this._isFocusLimited = limitType;
 
         Object.keys(this._myFocusableComponentIds).forEach(componentId => {
-            let storedComponent = FocusManager._allFocusableComponents[componentId];
+            const storedComponent = FocusManager._allFocusableComponents[componentId];
 
             if (limitType === Types.LimitFocusType.Accessible) {
                 storedComponent.limitedCountAccessible++;
@@ -290,7 +292,7 @@ export abstract class FocusManager {
         }
 
         Object.keys(this._myFocusableComponentIds).forEach(componentId => {
-            let storedComponent = FocusManager._allFocusableComponents[componentId];
+            const storedComponent = FocusManager._allFocusableComponents[componentId];
 
             if (this._isFocusLimited === Types.LimitFocusType.Accessible) {
                 storedComponent.limitedCountAccessible--;
@@ -331,7 +333,7 @@ export abstract class FocusManager {
         }
     }
 
-    setRestrictionStateCallback(callback: FocusManagerRestrictionStateCallback|undefined) {
+    setRestrictionStateCallback(callback: FocusManagerRestrictionStateCallback | undefined) {
         this._restrictionStateCallback = callback;
     }
 
@@ -345,7 +347,7 @@ export abstract class FocusManager {
         return FocusManager._currentFocusedComponent ? FocusManager._currentFocusedComponent.id : undefined;
     }
 
-    private static _getStoredComponent(component: FocusableComponentInternal): StoredFocusableComponent|undefined {
+    private static _getStoredComponent(component: FocusableComponentInternal): StoredFocusableComponent | undefined {
         const componentId: string | undefined = component.focusableComponentId;
 
         if (componentId) {
@@ -367,7 +369,7 @@ export abstract class FocusManager {
 
     private /* static */ _removeFocusRestriction() {
         Object.keys(FocusManager._allFocusableComponents).forEach(componentId => {
-            let storedComponent = FocusManager._allFocusableComponents[componentId];
+            const storedComponent = FocusManager._allFocusableComponents[componentId];
             storedComponent.restricted = false;
             this._updateComponentFocusRestriction(storedComponent);
         });
@@ -392,24 +394,24 @@ export abstract class FocusManager {
 // accessibleOnly is true for components that support just being focused
 // by screen readers.
 // By default components support both screen reader and keyboard focusing.
-export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function, accessibleOnly: boolean = false) {
-    let contextTypes = Component.contextTypes || {};
+export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function, accessibleOnly = false) {
+    const contextTypes = Component.contextTypes || {};
     contextTypes.focusManager = PropTypes.object;
     Component.contextTypes = contextTypes;
 
-    inheritMethod('componentDidMount', function (this: FocusableComponentInternal, focusManager: FocusManager) {
+    inheritMethod('componentDidMount', function(this: FocusableComponentInternal, focusManager: FocusManager) {
         if (!isConditionallyFocusable || isConditionallyFocusable.call(this)) {
             focusManager.addFocusableComponent(this, accessibleOnly);
         }
     });
 
-    inheritMethod('componentWillUnmount', function (this: FocusableComponentInternal, focusManager: FocusManager) {
+    inheritMethod('componentWillUnmount', function(this: FocusableComponentInternal, focusManager: FocusManager) {
         focusManager.removeFocusableComponent(this);
     });
 
-    inheritMethod('componentWillUpdate', function (this: FocusableComponentInternal, focusManager: FocusManager, origArgs: IArguments) {
+    inheritMethod('componentWillUpdate', function(this: FocusableComponentInternal, focusManager: FocusManager, origArgs: IArguments) {
         if (isConditionallyFocusable) {
-            let isFocusable = isConditionallyFocusable.apply(this, origArgs);
+            const isFocusable = isConditionallyFocusable.apply(this, origArgs);
 
             if (isFocusable && !this.focusableComponentId) {
                 focusManager.addFocusableComponent(this, accessibleOnly);
@@ -420,12 +422,12 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
     });
 
     function inheritMethod(methodName: string, action: Function) {
-        let origCallback = Component.prototype[methodName];
+        const origCallback = Component.prototype[methodName];
 
-        Component.prototype[methodName] = function () {
+        Component.prototype[methodName] = function() {
             if (!isConditionallyFocusable || isConditionallyFocusable.call(this)) {
 
-                let focusManager: FocusManager = this._focusManager || (this.context && this.context.focusManager);
+                const focusManager: FocusManager = this._focusManager || (this.context && this.context.focusManager);
 
                 if (focusManager) {
                     action.call(this, focusManager, arguments);

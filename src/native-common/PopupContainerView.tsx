@@ -1,4 +1,4 @@
-﻿/**
+/**
  * PopupContainerView.tsx
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -13,11 +13,11 @@ import * as assert from 'assert';
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext } from '../common/PopupContainerViewBase';
-import { extend, isEqual } from './utils/lodashMini';
-import { Types } from '../common/Interfaces';
 import AccessibilityUtil from './AccessibilityUtil';
+import { Types } from '../common/Interfaces';
 import International from './International';
+import { extend, isEqual } from './utils/lodashMini';
+import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext } from '../common/PopupContainerViewBase';
 import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
 
@@ -59,8 +59,8 @@ export interface PopupContainerViewState {
 
 export class PopupContainerView extends PopupContainerViewBase<PopupContainerViewProps, PopupContainerViewState> {
     private _mountedComponent: any;
-    private _viewHandle: number|null = null;
-    private _respositionPopupTimer: number|undefined;
+    private _viewHandle: number | null = null;
+    private _respositionPopupTimer: number | undefined;
 
     constructor(props: PopupContainerViewProps, context: PopupContainerViewContext) {
         super(props, context);
@@ -102,7 +102,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
         }
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this._viewHandle = RN.findNodeHandle(this._mountedComponent);
 
         if (this.props.popupOptions && !this.props.hidden) {
@@ -137,7 +137,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
             height: this.props.hidden ? 0 : undefined
         };
 
-        const importantForAccessibility = this.props.hidden 
+        const importantForAccessibility = this.props.hidden
             ? AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.NoHideDescendants)
             : undefined;
 
@@ -152,7 +152,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
         );
     }
 
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any> | null) => {
         this._mountedComponent = component;
     }
 
@@ -171,14 +171,14 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
 
                 assert.ok(!!this._viewHandle);
 
-                let anchorRect: ClientRect = {
+                const anchorRect: ClientRect = {
                     left: x, top: y, right: x + width, bottom: y + height,
                     width: width, height: height};
 
                 RN.NativeModules.UIManager.measureInWindow(
                     this._viewHandle,
                     (x: number, y: number, width: number, height: number) => {
-                        let popupRect: ClientRect = {
+                        const popupRect: ClientRect = {
                             left: x, top: y, right: x + width, bottom: y + height,
                             width: width, height: height
                         };
@@ -198,7 +198,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
         // If the popup hasn't been rendered yet, skip.
         if (popupRect.width > 0 && popupRect.height > 0) {
             // Make a copy of the old state.
-            let newState: PopupContainerViewState = extend({}, this.state);
+            const newState: PopupContainerViewState = extend({}, this.state);
 
             if (this.state.isMeasuringPopup) {
                 newState.isMeasuringPopup = false;
@@ -217,10 +217,10 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
             newState.constrainedPopupWidth = newState.popupWidth;
 
             // Get the width/height of root view window.
-            let window = UserInterface.measureWindow(this.props.popupOptions.rootViewId);
+            const window = UserInterface.measureWindow(this.props.popupOptions.rootViewId);
 
-            let windowWidth = window.width;
-            let windowHeight = window.height;
+            const windowWidth = window.width;
+            const windowHeight = window.height;
 
             // If the anchor is no longer in the window's bounds, cancel the popup.
             if (anchorRect.left >= windowWidth || anchorRect.right <= 0 ||
@@ -302,8 +302,8 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
                             break;
                     }
 
-                    let effectiveWidth = constrainedWidth || newState.popupWidth;
-                    let effectiveHeight = constrainedHeight || newState.popupHeight;
+                    const effectiveWidth = constrainedWidth || newState.popupWidth;
+                    const effectiveHeight = constrainedHeight || newState.popupHeight;
 
                     // Make sure we're not hanging off the bounds of the window.
                     if (absX < ALLEY_WIDTH) {

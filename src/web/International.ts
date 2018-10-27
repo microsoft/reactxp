@@ -7,8 +7,8 @@
  * Web-specific implementation for i18n.
  */
 
-import * as RX from '../common/Interfaces';
 import FrontLayerViewManager from './FrontLayerViewManager';
+import * as RX from '../common/Interfaces';
 
 export class International implements RX.International {
     allowRTL(allow: boolean): void {

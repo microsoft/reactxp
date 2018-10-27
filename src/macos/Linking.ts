@@ -7,8 +7,8 @@
  * MacOS-specific implementation for deep linking.
  */
 
-import { Linking as CommonLinking } from '../native-common/Linking';
 import { Types } from '../common/Interfaces';
+import { Linking as CommonLinking } from '../native-common/Linking';
 
 export class Linking extends CommonLinking {
     // Escaped SMS uri - sms:<phoneNumber>&body=<messageString>

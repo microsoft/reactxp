@@ -12,9 +12,9 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import SubscribableEvent from 'subscribableevent';
 
+import { Types } from '../common/Interfaces';
 import * as _ from './utils/lodashMini';
 import { ModalContainer } from '../native-common/ModalContainer';
-import { Types } from '../common/Interfaces';
 import PopupContainerView from './PopupContainerView';
 
 class ModalStackContext {
@@ -42,7 +42,7 @@ export class FrontLayerViewManager {
 
     event_changed = new SubscribableEvent<() => void>();
 
-    public showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions): void {
+    showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions): void {
         const index = this._findIndexOfModal(modalId);
 
         if (index === -1) {
@@ -51,7 +51,7 @@ export class FrontLayerViewManager {
         }
     }
 
-    public isModalDisplayed(modalId?: string) : boolean {
+    isModalDisplayed(modalId?: string) : boolean {
         if (modalId) {
             return this._findIndexOfModal(modalId) !== -1;
         }
@@ -59,7 +59,7 @@ export class FrontLayerViewManager {
         return this._overlayStack.some(iter => iter instanceof ModalStackContext);
     }
 
-    public dismissModal(modalId: string): void {
+    dismissModal(modalId: string): void {
         const index = this._findIndexOfModal(modalId);
 
         if (index >= 0) {
@@ -68,14 +68,14 @@ export class FrontLayerViewManager {
         }
     }
 
-    public dismissAllmodals(): void {
+    dismissAllmodals(): void {
         if (this._overlayStack.length > 0) {
             this._overlayStack = _.filter(this._overlayStack, iter => !(iter instanceof ModalStackContext));
             this.event_changed.fire();
         }
     }
 
-    public showPopup(popupOptions: Types.PopupOptions, popupId: string, delay?: number): boolean {
+    showPopup(popupOptions: Types.PopupOptions, popupId: string, delay?: number): boolean {
         const index = this._findIndexOfPopup(popupId);
         if (index === -1) {
             const nodeHandle = RN.findNodeHandle(popupOptions.getAnchor());
@@ -93,7 +93,7 @@ export class FrontLayerViewManager {
         return false;
     }
 
-    public dismissPopup(popupId: string): void {
+    dismissPopup(popupId: string): void {
         const index = this._findIndexOfPopup(popupId);
         if (index >= 0) {
             const popupContext = this._overlayStack[index] as PopupStackContext;
@@ -113,14 +113,14 @@ export class FrontLayerViewManager {
         }
     }
 
-    public dismissAllPopups(): void {
+    dismissAllPopups(): void {
         if (this._overlayStack.length > 0) {
             this._overlayStack = _.filter(this._overlayStack, iter => !(iter instanceof PopupStackContext));
             this.event_changed.fire();
         }
     }
 
-    public getModalLayerView(rootViewId?: string | null): React.ReactElement<any> | null {
+    getModalLayerView(rootViewId?: string | null): React.ReactElement<any> | null {
         if (rootViewId === null) {
             // The Modal layer is only supported on root views that have set an id, or
             // the default root view (which has an undefined id)
@@ -130,7 +130,7 @@ export class FrontLayerViewManager {
         const overlayContext =
             _.findLast(
                 this._overlayStack,
-                context => context instanceof ModalStackContext && this.modalOptionsMatchesRootViewId(context.modalOptions, rootViewId)
+                context => context instanceof ModalStackContext && this._modalOptionsMatchesRootViewId(context.modalOptions, rootViewId)
             ) as ModalStackContext;
 
         if (overlayContext) {
@@ -144,20 +144,20 @@ export class FrontLayerViewManager {
         return null;
     }
 
-    public getActivePopupId() : string | null {
-        let activeOverlay = this._getActiveOverlay();
+    getActivePopupId() : string | null {
+        const activeOverlay = this._getActiveOverlay();
         if (activeOverlay && (activeOverlay instanceof PopupStackContext)) {
             return activeOverlay.popupId;
         }
         return null;
     }
 
-    public releaseCachedPopups(): void {
+    releaseCachedPopups(): void {
         this._cachedPopups = [];
     }
 
     // Returns true if both are undefined, or if there are options and the rootViewIds are equal.
-    private modalOptionsMatchesRootViewId(options?: Types.ModalOptions, rootViewId?: string): boolean {
+    private _modalOptionsMatchesRootViewId(options?: Types.ModalOptions, rootViewId?: string): boolean {
         return !!(options === rootViewId || options && options.rootViewId === rootViewId);
     }
 
@@ -181,18 +181,18 @@ export class FrontLayerViewManager {
         ) as PopupStackContext | undefined;
     }
 
-    public isPopupActiveFor(rootViewId?: string | null): boolean {
+    isPopupActiveFor(rootViewId?: string | null): boolean {
         return this._getOverlayContext(rootViewId) !== undefined;
     }
 
-    public getPopupLayerView(rootViewId?: string | null): JSX.Element | null {
+    getPopupLayerView(rootViewId?: string | null): JSX.Element | null {
         if (rootViewId === null) {
             // The Popup layer is supported only on root views that have set an id and
             // the default root view (which has an undefined id).
             return null;
         }
 
-        let popupContainerViews: JSX.Element[] = [];
+        const popupContainerViews: JSX.Element[] = [];
 
         const overlayContext = this._getOverlayContext(rootViewId);
         if (overlayContext) {
@@ -231,7 +231,7 @@ export class FrontLayerViewManager {
                     activePopupContext.anchorHandle,
                     (x: number, y: number, width: number, height: number) => {
                         const touchEvent = e.nativeEvent;
-                        let anchorRect: ClientRect = { left: x, top: y, right: x + width,
+                        const anchorRect: ClientRect = { left: x, top: y, right: x + width,
                                 bottom: y + height, width: width, height: height };
 
                         // Find out if the press event was on the anchor so we can notify the caller about it.
@@ -267,11 +267,11 @@ export class FrontLayerViewManager {
     }
 
     private _findIndexOfModal(modalId: string): number {
-        return _.findIndex(this._overlayStack, (iter) => iter instanceof ModalStackContext && iter.modalId === modalId);
+        return _.findIndex(this._overlayStack, iter => iter instanceof ModalStackContext && iter.modalId === modalId);
     }
 
     private _findIndexOfPopup(popupId: string): number {
-        return _.findIndex(this._overlayStack, (iter) => iter instanceof PopupStackContext && iter.popupId === popupId);
+        return _.findIndex(this._overlayStack, iter => iter instanceof PopupStackContext && iter.popupId === popupId);
     }
 
     private _getActiveOverlay() {
@@ -279,7 +279,7 @@ export class FrontLayerViewManager {
         return this._overlayStack.length === 0 ? null : _.last(this._overlayStack);
     }
 
-    public isPopupDisplayed(popupId?: string): boolean {
+    isPopupDisplayed(popupId?: string): boolean {
         if (popupId) {
             return this._findIndexOfPopup(popupId) !== -1;
         }

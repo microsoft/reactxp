@@ -13,8 +13,8 @@ import * as React from 'react';
 import * as RX from '../Interfaces';
 import Timers from './Timers';
 
-let _sortAndFilter: SortAndFilterFunc|undefined;
-let _autoFocusTimer: number|undefined;
+let _sortAndFilter: SortAndFilterFunc | undefined;
+let _autoFocusTimer: number | undefined;
 let _lastFocusArbitratorProviderId = 0;
 let rootFocusArbitratorProvider: FocusArbitratorProvider;
 
@@ -55,7 +55,7 @@ export class FocusArbitratorProvider {
 
     private _notifyParent() {
         if (this._parentArbitratorProvider) {
-            this._parentArbitratorProvider._pendingChildren['fa-' + this._id] = this;
+            this._parentArbitratorProvider._pendingChildren['fa-' + this._id.toString()] = this;
             this._parentArbitratorProvider._notifyParent();
         }
     }

@@ -9,11 +9,11 @@
  */
 
 import * as React from 'react';
-import * as SyncTasks from 'synctasks';
 import SubscribableEvent from 'subscribableevent';
+import * as SyncTasks from 'synctasks';
 
-import * as Types from './Types';
 import AppConfig from './AppConfig';
+import * as Types from './Types';
 
 export { Types };
 
@@ -110,7 +110,7 @@ export abstract class Popup {
 
 export abstract class Linking {
     // Incoming deep links
-    abstract getInitialUrl(): SyncTasks.Promise<string|undefined>;
+    abstract getInitialUrl(): SyncTasks.Promise<string | undefined>;
     deepLinkRequestEvent = new SubscribableEvent<(url: string) => void>();
 
     // Outgoing deep links
@@ -153,8 +153,8 @@ export interface ImageConstructor {
 }
 
 export abstract class Image extends React.Component<Types.ImageProps> {
-    abstract getNativeWidth(): number|undefined;
-    abstract getNativeHeight(): number|undefined;
+    abstract getNativeWidth(): number | undefined;
+    abstract getNativeHeight(): number | undefined;
 }
 
 export abstract class Clipboard {
@@ -169,7 +169,7 @@ export abstract class Link extends React.Component<Types.LinkProps> implements F
 }
 
 export abstract class Storage {
-    abstract getItem(key: string): SyncTasks.Promise<string|undefined>;
+    abstract getItem(key: string): SyncTasks.Promise<string | undefined>;
     abstract setItem(key: string, value: string): SyncTasks.Promise<void>;
     abstract removeItem(key: string): SyncTasks.Promise<void>;
     abstract clear(): SyncTasks.Promise<void>;
@@ -227,8 +227,8 @@ export abstract class StatusBar {
 }
 
 export abstract class Styles {
-    abstract combine<T>(ruleSet1: Types.StyleRuleSetRecursive<T>|undefined, ruleSet2?: Types.StyleRuleSetRecursive<T>)
-        : Types.StyleRuleSetOrArray<T>|undefined;
+    abstract combine<T>(ruleSet1: Types.StyleRuleSetRecursive<T> | undefined, ruleSet2?: Types.StyleRuleSetRecursive<T>)
+        : Types.StyleRuleSetOrArray<T> | undefined;
     abstract createViewStyle(ruleSet: Types.ViewStyle, cacheStyle?: boolean): Types.ViewStyleRuleSet;
     abstract createAnimatedViewStyle(ruleSet: Types.AnimatedViewStyle): Types.AnimatedViewStyleRuleSet;
     abstract createScrollViewStyle(ruleSet: Types.ScrollViewStyle, cacheStyle?: boolean): Types.ScrollViewStyleRuleSet;

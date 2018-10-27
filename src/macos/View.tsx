@@ -8,9 +8,9 @@
  */
 import * as React from 'react';
 
-import { View as ViewCommon } from '../native-common/View';
-import { Types } from '../common/Interfaces';
 import EventHelpers from '../native-common/utils/EventHelpers';
+import { Types } from '../common/Interfaces';
+import { View as ViewCommon } from '../native-common/View';
 
 export class View extends ViewCommon {
 
@@ -37,7 +37,7 @@ export class View extends ViewCommon {
 
             if (name === 'onDragStart') {
                 this._internalProps.allowDrag = true;
-            }            
+            }
 
             if (handler) {
                 this._internalProps[name] = (e: React.SyntheticEvent<View>) => {

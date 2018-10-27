@@ -11,13 +11,13 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import { SubscriptionToken } from 'subscribableevent';
 
-import { isEqual } from './utils/lodashMini';
-import { Types } from '../common/Interfaces';
 import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
 import App from './App';
 import AppConfig from '../common/AppConfig';
 import FrontLayerViewManager from './FrontLayerViewManager';
+import { Types } from '../common/Interfaces';
+import { isEqual } from './utils/lodashMini';
 import MainViewStore from './MainViewStore';
 import Styles from './Styles';
 import UserInterface from '../native-common/UserInterface';
@@ -57,9 +57,9 @@ const _styles = {
 // Abstract RootView class which handles rendering, front layer view changes and announcement
 // changes. Subclasses must set the mainView state value.
 abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component<P, RootViewState> {
-    private _frontLayerViewChangedSubscription: SubscriptionToken|undefined;
-    private _newAnnouncementEventChangedSubscription: SubscriptionToken|undefined;
-    private _memoryWarningEventSubscription: SubscriptionToken|undefined;
+    private _frontLayerViewChangedSubscription: SubscriptionToken | undefined;
+    private _newAnnouncementEventChangedSubscription: SubscriptionToken | undefined;
+    private _memoryWarningEventSubscription: SubscriptionToken | undefined;
     protected _mainViewProps: {};
     protected _rootViewId?: string | null;
 
@@ -125,13 +125,13 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
 
         // When showing a modal/popup we want to hide the mainView shown behind from an accessibility
         // standpoint to ensure that it won't get the focus and the screen reader's attention.
-        const importantForAccessibility = (modalLayerView || isActivePopup) ? 
+        const importantForAccessibility = (modalLayerView || isActivePopup) ?
             AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.NoHideDescendants) :
             undefined;  // default
 
-        let content = (
+        const content = (
             <RN.Animated.View style={ _styles.rootViewStyle }>
-                <RN.View 
+                <RN.View
                     style={ _styles.rootViewStyle as RN.StyleProp<RN.ViewStyle> }
                     importantForAccessibility={ importantForAccessibility }
                 >
@@ -240,7 +240,7 @@ export {
     RootViewState,
     BaseRootView,
     RootViewUsingStore as RootView,
-    RootViewUsingProps,
+    RootViewUsingProps
 };
 
 export default RootViewUsingStore;

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Styles.ts
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -9,11 +9,11 @@
 
 import * as RN from 'react-native';
 
+import AppConfig from '../common/AppConfig';
 import * as RX from '../common/Interfaces';
 import { omit } from './utils/lodashMini';
-import AppConfig from '../common/AppConfig';
-import StyleLeakDetector from './StyleLeakDetector';
 import Platform from './Platform';
+import StyleLeakDetector from './StyleLeakDetector';
 
 const forbiddenProps: string[] = [
     'wordBreak',
@@ -41,18 +41,18 @@ type ReactNativeViewAndImageCommonStyle<Style extends RX.Types.ViewAndImageCommo
 };
 
 export class Styles extends RX.Styles {
-    combine<S>(ruleSet1: RX.Types.StyleRuleSetRecursive<S>|undefined, ruleSet2?: RX.Types.StyleRuleSetRecursive<S>)
-            : RX.Types.StyleRuleSetOrArray<S>|undefined {
+    combine<S>(ruleSet1: RX.Types.StyleRuleSetRecursive<S> | undefined, ruleSet2?: RX.Types.StyleRuleSetRecursive<S>)
+            : RX.Types.StyleRuleSetOrArray<S> | undefined {
         if (!ruleSet1 && !ruleSet2) {
             return undefined;
         }
 
-        let ruleSet = ruleSet1 ? (ruleSet2 ? [ruleSet1, ruleSet2] : ruleSet1) : ruleSet2;
+        const ruleSet = ruleSet1 ? (ruleSet2 ? [ruleSet1, ruleSet2] : ruleSet1) : ruleSet2;
 
         if (ruleSet instanceof Array) {
             let resultArray: RX.Types.StyleRuleSet<S>[] = [];
             for (let i = 0; i < ruleSet.length; i++) {
-                let subRuleSet = this.combine(ruleSet[i]);
+                const subRuleSet = this.combine(ruleSet[i]);
 
                 if (subRuleSet) {
                     if (subRuleSet instanceof Array) {
@@ -81,7 +81,7 @@ export class Styles extends RX.Styles {
     }
 
     // Creates opaque styles that can be used for View
-    createViewStyle(ruleSet: RX.Types.ViewStyle, cacheStyle: boolean = true): RX.Types.ViewStyleRuleSet {
+    createViewStyle(ruleSet: RX.Types.ViewStyle, cacheStyle = true): RX.Types.ViewStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
@@ -91,22 +91,22 @@ export class Styles extends RX.Styles {
     }
 
     // Creates opaque styles that can be used for ScrollView
-    createScrollViewStyle(ruleSet: RX.Types.ScrollViewStyle, cacheStyle: boolean = true): RX.Types.ScrollViewStyleRuleSet {
+    createScrollViewStyle(ruleSet: RX.Types.ScrollViewStyle, cacheStyle = true): RX.Types.ScrollViewStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for Button
-    createButtonStyle(ruleSet: RX.Types.ButtonStyle, cacheStyle: boolean = true): RX.Types.ButtonStyleRuleSet {
+    createButtonStyle(ruleSet: RX.Types.ButtonStyle, cacheStyle = true): RX.Types.ButtonStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for WebView
-    createWebViewStyle(ruleSet: RX.Types.WebViewStyle, cacheStyle: boolean = true): RX.Types.WebViewStyleRuleSet {
+    createWebViewStyle(ruleSet: RX.Types.WebViewStyle, cacheStyle = true): RX.Types.WebViewStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for Text
-    createTextStyle(ruleSet: RX.Types.TextStyle, cacheStyle: boolean = true): RX.Types.TextStyleRuleSet {
+    createTextStyle(ruleSet: RX.Types.TextStyle, cacheStyle = true): RX.Types.TextStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle, true);
     }
 
@@ -116,7 +116,7 @@ export class Styles extends RX.Styles {
     }
 
     // Creates opaque styles that can be used for TextInput
-    createTextInputStyle(ruleSet: RX.Types.TextInputStyle, cacheStyle: boolean = true): RX.Types.TextInputStyleRuleSet {
+    createTextInputStyle(ruleSet: RX.Types.TextInputStyle, cacheStyle = true): RX.Types.TextInputStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle, true);
     }
 
@@ -126,7 +126,7 @@ export class Styles extends RX.Styles {
     }
 
     // Creates opaque styles that can be used for Image
-    createImageStyle(ruleSet: RX.Types.ImageStyle, cacheStyle: boolean = true): RX.Types.ImageStyleRuleSet {
+    createImageStyle(ruleSet: RX.Types.ImageStyle, cacheStyle = true): RX.Types.ImageStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
@@ -136,12 +136,12 @@ export class Styles extends RX.Styles {
     }
 
     // Creates opaque styles that can be used for Link
-    createLinkStyle(ruleSet: RX.Types.LinkStyle, cacheStyle: boolean = true): RX.Types.LinkStyleRuleSet {
+    createLinkStyle(ruleSet: RX.Types.LinkStyle, cacheStyle = true): RX.Types.LinkStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
     // Creates opaque styles that can be used for Picker
-    createPickerStyle(ruleSet: RX.Types.PickerStyle, cacheStyle: boolean = true): RX.Types.PickerStyleRuleSet {
+    createPickerStyle(ruleSet: RX.Types.PickerStyle, cacheStyle = true): RX.Types.PickerStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
@@ -165,7 +165,7 @@ export class Styles extends RX.Styles {
         }
 
         // Convert text styling
-        let textStyle = adaptedRuleSet as RX.Types.TextStyle;
+        const textStyle = adaptedRuleSet as RX.Types.TextStyle;
         if (textStyle.font) {
             if (textStyle.font.fontFamily !== undefined) {
                 textStyle.fontFamily = textStyle.font.fontFamily;
@@ -204,7 +204,7 @@ export class Styles extends RX.Styles {
                 }
             }
 
-            let flexValue = def.flex;
+            const flexValue = def.flex;
             delete adaptedRuleSet.flex;
             if (flexValue > 0) {
                 // p 1 auto

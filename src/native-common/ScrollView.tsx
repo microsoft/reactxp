@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ScrollView.tsx
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -16,7 +16,7 @@ import ViewBase from './ViewBase';
 // TODO: #737970 Remove special case for UWP/MacOS when this bug is fixed. The bug
 //   causes you to have to click twice instead of once on some pieces of UI in
 //   order for the UI to acknowledge your interaction.
-const overrideKeyboardShouldPersistTaps = RN.Platform.OS === 'macos' || RN.Platform.OS === 'windows'; 
+const overrideKeyboardShouldPersistTaps = RN.Platform.OS === 'macos' || RN.Platform.OS === 'windows';
 export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stateless> implements RX.ScrollView {
     private _scrollTop = 0;
     private _scrollLeft = 0;
@@ -47,7 +47,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
             scrollThrottle = 16;
         }
 
-        var layoutCallback = this.props.onLayout ?
+        const layoutCallback = this.props.onLayout ?
             // We have a callback function, call the wrapper
             this._onLayout :
             undefined;
@@ -56,7 +56,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         if (this.props.scrollXAnimatedValue || this.props.scrollYAnimatedValue) {
             // For more details on this craziness, reference:
             // https://facebook.github.io/react-native/docs/animated#handling-gestures-and-other-events
-            let handlerWrapper: RN.EventMapping = {
+            const handlerWrapper: RN.EventMapping = {
                 nativeEvent: {
                     contentOffset: { }
                 }
@@ -67,7 +67,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
             if (this.props.scrollYAnimatedValue) {
                 handlerWrapper.nativeEvent.contentOffset.y = this.props.scrollYAnimatedValue;
             }
-            let eventConfig: RN.AnimatedEventConfig<RN.NativeScrollEvent> = {
+            const eventConfig: RN.AnimatedEventConfig<RN.NativeScrollEvent> = {
                 useNativeDriver: true
             };
             if (this.props.onScroll) {

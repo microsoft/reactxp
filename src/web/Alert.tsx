@@ -9,15 +9,15 @@
 
 import * as React from 'react';
 
-import * as RX from '../common/Interfaces';
 import { AlertModalContent } from './AlertModalContent';
+import * as RX from '../common/Interfaces';
 import Modal from './Modal';
 
 // Web/HTML implementation for alert dialog boxes
 export class Alert extends RX.Alert {
     private _modalId = 'RX.Alert_WebModal';
 
-    public show(title: string, message?: string, buttons?: RX.Types.AlertButtonSpec[],
+    show(title: string, message?: string, buttons?: RX.Types.AlertButtonSpec[],
             options?: RX.Types.AlertOptions): void {
         Modal.show(
             (

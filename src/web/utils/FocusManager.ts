@@ -10,17 +10,17 @@
 import * as ReactDOM from 'react-dom';
 
 import {
-    applyFocusableComponentMixin as applyFocusableComponentMixinCommon,
-    FocusableComponentStateCallback,
-    FocusableComponentInternal,
-    FocusManager as FocusManagerBase,
-    StoredFocusableComponent as StoredFocusableComponentBase,
-} from '../../common/utils/FocusManager';
-import {
     FocusArbitratorProvider,
     FocusCandidateInternal,
-    FocusCandidateType,
+    FocusCandidateType
 } from '../../common/utils/AutoFocusHelper';
+import {
+    applyFocusableComponentMixin as applyFocusableComponentMixinCommon,
+    FocusableComponentInternal,
+    FocusableComponentStateCallback,
+    FocusManager as FocusManagerBase,
+    StoredFocusableComponent as StoredFocusableComponentBase
+} from '../../common/utils/FocusManager';
 import Timers from '../../common/utils/Timers';
 import UserInterface from '../UserInterface';
 
@@ -38,21 +38,21 @@ export interface StoredFocusableComponent extends StoredFocusableComponentBase {
 }
 
 export class FocusManager extends FocusManagerBase {
-    private static _setTabIndexTimer: number|undefined;
-    private static _setTabIndexElement: HTMLElement|undefined;
-    private static _lastFocusedProgrammatically: HTMLElement|undefined;
+    private static _setTabIndexTimer: number | undefined;
+    private static _setTabIndexElement: HTMLElement | undefined;
+    private static _lastFocusedProgrammatically: HTMLElement | undefined;
 
     constructor(parent: FocusManager | undefined) {
         super(parent);
     }
 
     // Not really public
-    public static initListeners(): void {
+    static initListeners(): void {
         // The default behaviour on Electron is to release the focus after the
         // Tab key is pressed on a last focusable element in the page and focus
         // the first focusable element on a consecutive Tab key press.
         // We want to avoid losing this first Tab key press.
-        let _checkFocusTimer: number|undefined;
+        let _checkFocusTimer: number | undefined;
 
         // Checking if Shift is pressed to move the focus into the right direction.
         window.addEventListener('keydown', event => {
@@ -106,7 +106,7 @@ export class FocusManager extends FocusManagerBase {
 
     protected removeFocusListenerFromComponent(component: FocusableComponentInternal, onFocus: () => void): void {
         try {
-            const el = ReactDOM.findDOMNode(component) as HTMLElement|null;
+            const el = ReactDOM.findDOMNode(component) as HTMLElement | null;
             if (el) {
                 el.removeEventListener('focus', onFocus);
             }
@@ -117,7 +117,7 @@ export class FocusManager extends FocusManagerBase {
 
     protected focusComponent(component: FocusableComponentInternal): boolean {
         try {
-            const el = ReactDOM.findDOMNode(component) as HTMLElement|null;
+            const el = ReactDOM.findDOMNode(component) as HTMLElement | null;
             if (el && el.focus) {
                 FocusManager.setLastFocusedProgrammatically(el);
                 el.focus();
@@ -129,11 +129,11 @@ export class FocusManager extends FocusManagerBase {
         return false;
     }
 
-    static setLastFocusedProgrammatically(element: HTMLElement|undefined) {
+    static setLastFocusedProgrammatically(element: HTMLElement | undefined) {
         this._lastFocusedProgrammatically = element;
     }
 
-    static getLastFocusedProgrammatically(reset?: boolean): HTMLElement|undefined {
+    static getLastFocusedProgrammatically(reset?: boolean): HTMLElement | undefined {
         const ret = FocusManager._lastFocusedProgrammatically;
         if (ret && reset) {
             FocusManager._lastFocusedProgrammatically = undefined;
@@ -154,7 +154,7 @@ export class FocusManager extends FocusManagerBase {
             .filter(componentId => !parent || (componentId in parent._myFocusableComponentIds))
             .map(componentId => FocusManager._allFocusableComponents[componentId])
             .filter(FocusManager._isComponentAvailable)
-            .map(storedComponent => { return { storedComponent, el: ReactDOM.findDOMNode(storedComponent.component) as HTMLElement }; })
+            .map(storedComponent => ({ storedComponent, el: ReactDOM.findDOMNode(storedComponent.component) as HTMLElement }))
             .filter(f => f.el && f.el.focus && ((f.el.tabIndex || 0) >= 0) && !(f.el as any).disabled);
 
         if (focusable.length) {
@@ -252,12 +252,12 @@ export class FocusManager extends FocusManagerBase {
     }
 
     protected /* static */  _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
-        let newAriaHidden = storedComponent.restricted || (storedComponent.limitedCount > 0) ? true : undefined;
-        let newTabIndex = newAriaHidden || (storedComponent.limitedCountAccessible > 0) ? -1 : undefined;
+        const newAriaHidden = storedComponent.restricted || (storedComponent.limitedCount > 0) ? true : undefined;
+        const newTabIndex = newAriaHidden || (storedComponent.limitedCountAccessible > 0) ? -1 : undefined;
         const restrictionRemoved = newTabIndex === undefined;
 
         if ((storedComponent.curTabIndex !== newTabIndex) || (storedComponent.curAriaHidden !== newAriaHidden)) {
-            const el = ReactDOM.findDOMNode(storedComponent.component) as HTMLElement|null;
+            const el = ReactDOM.findDOMNode(storedComponent.component) as HTMLElement | null;
 
             if (el) {
                 if (storedComponent.curTabIndex !== newTabIndex) {
@@ -296,7 +296,7 @@ export class FocusManager extends FocusManagerBase {
         }
     }
 
-    private static _setTabIndex(element: HTMLElement, value: number|undefined): number|undefined {
+    private static _setTabIndex(element: HTMLElement, value: number | undefined): number | undefined {
         // If a tabIndex assignment is pending for this element, cancel it now.
         if (FocusManager._setTabIndexTimer && element === FocusManager._setTabIndexElement) {
             clearTimeout(FocusManager._setTabIndexTimer);
@@ -331,7 +331,7 @@ export class FocusManager extends FocusManagerBase {
         return prev;
     }
 
-    private static _setAriaHidden(element: HTMLElement, value: string|undefined): string|undefined {
+    private static _setAriaHidden(element: HTMLElement, value: string | undefined): string | undefined {
         const prev = element.hasAttribute(ATTR_NAME_ARIA_HIDDEN) ? element.getAttribute(ATTR_NAME_ARIA_HIDDEN) || undefined : undefined;
 
         if (value === undefined) {
@@ -359,7 +359,7 @@ export class FocusManager extends FocusManagerBase {
                 }
                 return true;
             })
-            .map(candidate => { return { candidate, el: ReactDOM.findDOMNode(candidate.component) as HTMLElement }; })
+            .map(candidate => ({ candidate, el: ReactDOM.findDOMNode(candidate.component) as HTMLElement }))
             .sort((a, b) => {
                 // Some element which is mounted later could come earlier in the DOM,
                 // so, we sort the elements by their appearance in the DOM.
@@ -378,16 +378,18 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
     const origFocus = Component.prototype.focus;
 
     if (origFocus) {
-        Component.prototype.focus = function () {
+        Component.prototype.focus = function() {
             try {
-                const el = ReactDOM.findDOMNode(this) as HTMLElement|null;
+                // tslint:disable-next-line
+                const el = ReactDOM.findDOMNode(this) as HTMLElement | null;
                 if (el) {
                     FocusManager.setLastFocusedProgrammatically(el);
                 }
             } catch {
                 // Swallow exception due to component unmount race condition.
             }
-    
+
+            // tslint:disable-next-line
             origFocus.apply(this, arguments);
         };
     }

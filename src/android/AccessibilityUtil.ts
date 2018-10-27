@@ -10,8 +10,8 @@
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import { AccessibilityPlatformUtil as CommonAccessibilityNativeUtil } from '../common/AccessibilityUtil';
 import Accessibility from '../native-common/Accessibility';
+import { AccessibilityPlatformUtil as CommonAccessibilityNativeUtil } from '../common/AccessibilityUtil';
 
 export class AccessibilityUtil extends CommonAccessibilityNativeUtil {
     private _sendAccessibilityEvent(component: React.Component<any, any>, eventId: number) {

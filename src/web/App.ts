@@ -7,8 +7,8 @@
  * Implements App interface for ReactXP.
  */
 
-import * as RX from '../common/Interfaces';
 import AppVisibilityUtils from './utils/AppVisibilityUtils';
+import * as RX from '../common/Interfaces';
 
 export class App extends RX.App {
     private _activationState: RX.Types.AppActivationState;

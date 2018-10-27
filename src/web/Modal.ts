@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Modal.tsx
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -9,8 +9,8 @@
 
 import * as React from 'react';
 
-import * as RX from '../common/Interfaces';
 import FrontLayerViewManager from './FrontLayerViewManager';
+import * as RX from '../common/Interfaces';
 
 export class Modal extends RX.Modal {
     isDisplayed(modalId?: string): boolean {

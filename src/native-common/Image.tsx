@@ -12,9 +12,9 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import * as SyncTasks from 'synctasks';
 
-import * as _ from './utils/lodashMini';
-import { Types } from '../common/Interfaces';
 import { DEFAULT_RESIZE_MODE } from '../common/Image';
+import { Types } from '../common/Interfaces';
+import * as _ from './utils/lodashMini';
 import Platform from './Platform';
 import Styles from './Styles';
 
@@ -39,7 +39,7 @@ export interface ImageState {
 
 export class Image extends React.Component<Types.ImageProps, ImageState> implements React.ChildContextProvider<ImageContext> {
     static childContextTypes: React.ValidationMap<any> = {
-        isRxParentAText: PropTypes.bool.isRequired,
+        isRxParentAText: PropTypes.bool.isRequired
     };
 
     static prefetch(url: string): SyncTasks.Promise<boolean> {
@@ -87,7 +87,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
             onLoad: this.props.onLoad ? this._onLoad : undefined,
             ref: this._onMount,
             ...this._getAdditionalProps(),
-            ...extendedProps,
+            ...extendedProps
         };
 
         /**
@@ -130,7 +130,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
         this._mountedComponent = component;
     }
 
-    public setNativeProps(nativeProps: RN.ImageProps) {
+    setNativeProps(nativeProps: RN.ImageProps) {
         if (this._mountedComponent) {
             this._mountedComponent.setNativeProps(nativeProps);
         }
@@ -195,7 +195,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
         }
     }
 
-    private _buildHeaders(): Types.Headers|undefined {
+    private _buildHeaders(): Types.Headers | undefined {
         if (this.props.headers) {
             const cacheControlHeader = this._getMaxStaleHeader();
             if (cacheControlHeader) {
@@ -222,9 +222,9 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
         return source;
     }
 
-    private _getMaxStaleHeader(): string|undefined {
+    private _getMaxStaleHeader(): string | undefined {
         if (Platform.getType() === 'ios' && this.props.headers) {
-            for (let key in this.props.headers) {
+            for (const key in this.props.headers) {
                 // We don't know how stale the cached data is so we're matching only the simple 'max-stale' attribute
                 // without a value.
                 if (key.toLowerCase() === 'cache-control' && this.props.headers[key].toLowerCase() === 'max-stale') {
@@ -236,11 +236,11 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
     }
 
     // Note: This works only if you have an onLoaded handler and wait for the image to load.
-    getNativeWidth(): number|undefined {
+    getNativeWidth(): number | undefined {
         return this._nativeImageWidth;
     }
 
-    getNativeHeight(): number|undefined {
+    getNativeHeight(): number | undefined {
         return this._nativeImageHeight;
     }
 }

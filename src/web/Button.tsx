@@ -10,12 +10,11 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
-import { applyFocusableComponentMixin } from './utils/FocusManager';
-import { Button as ButtonBase } from '../common/Interfaces';
-import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import { Types } from '../common/Interfaces';
 import AccessibilityUtil from './AccessibilityUtil';
 import AppConfig from '../common/AppConfig';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import { applyFocusableComponentMixin } from './utils/FocusManager';
+import { Button as ButtonBase, Types } from '../common/Interfaces';
 import Styles from './Styles';
 import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
@@ -58,10 +57,10 @@ export class Button extends ButtonBase {
         hasRxButtonAscendant: PropTypes.bool
     };
 
-    private _mountedButton: HTMLButtonElement|null = null;
-    private _lastMouseDownEvent: Types.SyntheticEvent|undefined;
+    private _mountedButton: HTMLButtonElement | null = null;
+    private _lastMouseDownEvent: Types.SyntheticEvent | undefined;
     private _ignoreClick = false;
-    private _longPressTimer: number|undefined;
+    private _longPressTimer: number | undefined;
     private _isMouseOver = false;
     private _isFocusedWithKeyboard = false;
     private _isHoverStarted = false;
@@ -147,7 +146,7 @@ export class Button extends ButtonBase {
         }
     }
 
-    private _onMount = (ref: HTMLButtonElement|null) => {
+    private _onMount = (ref: HTMLButtonElement | null) => {
         this._mountedButton = ref;
     }
 
@@ -161,8 +160,8 @@ export class Button extends ButtonBase {
     }
 
     private _getStyles(): Types.ButtonStyleRuleSet {
-        let buttonStyleMutations: Types.ButtonStyle = {};
-        let buttonStyles = Styles.combine(this.props.style) as any;
+        const buttonStyleMutations: Types.ButtonStyle = {};
+        const buttonStyles = Styles.combine(this.props.style) as any;
 
         // Specify default style for padding only if padding is not already specified
         if (buttonStyles && buttonStyles.padding === undefined  &&

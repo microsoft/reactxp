@@ -13,19 +13,19 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import * as SyncTasks from 'synctasks';
 
-import * as RX from '../common/Interfaces';
 import AppConfig from '../common/AppConfig';
+import * as RX from '../common/Interfaces';
 import MainViewStore from './MainViewStore';
 
 export class UserInterface extends RX.UserInterface {
-    private _touchLatencyThresholhdMs: number|undefined;
-    private _isNavigatingWithKeyboard: boolean = false;
+    private _touchLatencyThresholhdMs: number | undefined;
+    private _isNavigatingWithKeyboard = false;
     private _rootViewUsingPropsFactory: RN.ComponentProvider | undefined;
     private _rootViewRegistry: {[id: string]: number};
 
     constructor() {
         super();
-        RN.Dimensions.addEventListener('change', (event) => {
+        RN.Dimensions.addEventListener('change', event => {
             this.contentSizeMultiplierChangedEvent.fire(event.window.fontScale);
         });
         this.keyboardNavigationEvent.subscribe(this._keyboardNavigationStateChanged);
@@ -35,8 +35,8 @@ export class UserInterface extends RX.UserInterface {
     measureLayoutRelativeToWindow(component: React.Component<any, any>):
         SyncTasks.Promise<RX.Types.LayoutInfo> {
 
-        let deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
-        let nodeHandle = RN.findNodeHandle(component);
+        const deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
+        const nodeHandle = RN.findNodeHandle(component);
 
         assert.ok(!!nodeHandle);
         RN.NativeModules.UIManager.measureInWindow(
@@ -56,9 +56,9 @@ export class UserInterface extends RX.UserInterface {
     measureLayoutRelativeToAncestor(component: React.Component<any, any>,
         ancestor: React.Component<any, any>): SyncTasks.Promise<RX.Types.LayoutInfo> {
 
-        let deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
-        let nodeHandle = RN.findNodeHandle(component);
-        let ancestorNodeHander = RN.findNodeHandle(ancestor);
+        const deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
+        const nodeHandle = RN.findNodeHandle(component);
+        const ancestorNodeHander = RN.findNodeHandle(ancestor);
 
         RN.NativeModules.UIManager.measureLayout(
             nodeHandle, ancestorNodeHander, () => {
@@ -99,7 +99,7 @@ export class UserInterface extends RX.UserInterface {
     }
 
     getContentSizeMultiplier(): SyncTasks.Promise<number> {
-        let deferred = SyncTasks.Defer<number>();
+        const deferred = SyncTasks.Defer<number>();
 
         // TODO: #727532 Remove conditional after implementing UIManager.getContentSizeMultiplier for UWP
         // TODO:(alregner) Remove conditional after implementing UIManager.getContentSizeMultiplier for macos
@@ -113,7 +113,7 @@ export class UserInterface extends RX.UserInterface {
     }
 
     getMaxContentSizeMultiplier(): SyncTasks.Promise<number> {
-        let deferred = SyncTasks.Defer<number>();
+        const deferred = SyncTasks.Defer<number>();
 
         // TODO: #727532 Remove conditional after implementing UIManager.getContentSizeMultiplier for UWP
         // TODO:(alregner) Remove conditional after implementing UIManager.getContentSizeMultiplier for macos
@@ -143,13 +143,13 @@ export class UserInterface extends RX.UserInterface {
     dismissKeyboard() {
         // Work around the fact that the react-native type definition file
         // doesn't properly specify RN.TextInput.State as static.
-        let staticState = (RN.TextInput as any).State as RN.TextInputState;
+        const staticState = (RN.TextInput as any).State as RN.TextInputState;
         staticState.blurTextInput(staticState.currentlyFocusedField());
     }
 
     isHighPixelDensityScreen() {
-        let ratio = RN.PixelRatio.get();
-        let isHighDef = ratio > 1;
+        const ratio = RN.PixelRatio.get();
+        const isHighDef = ratio > 1;
         return isHighDef;
     }
 

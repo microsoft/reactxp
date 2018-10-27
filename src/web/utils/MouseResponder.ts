@@ -7,8 +7,8 @@
  * Handles tracking of mouse movements.
  */
 
-import * as _ from './../utils/lodashMini';
 import { Types } from '../../common/Interfaces';
+import * as _ from './../utils/lodashMini';
 
 const _compareDOMOrder = (a: Responder, b: Responder) => {
     if (a.target.compareDocumentPosition(b.target) & Node.DOCUMENT_POSITION_PRECEDING) {
@@ -92,7 +92,7 @@ export default class MouseResponder {
 
         return {
             dispose() {
-                _.remove(MouseResponder._responders, (r) => { return r.id === responder.id; });
+                _.remove(MouseResponder._responders, r => r.id === responder.id);
 
                 if (MouseResponder._responders.length === 0) {
                     MouseResponder._removeEventHandlers();
@@ -147,7 +147,7 @@ export default class MouseResponder {
             velocityY: 0,
             timeStamp: Date.now(),
             isComplete: false,
-            isTouch: false,
+            isTouch: false
         };
 
         // We must sort them properly to be consistent with native PanResponder picks it's first responders

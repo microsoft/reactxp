@@ -11,10 +11,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { clone } from './../utils/lodashMini';
-import { MonitorListEdits, Edits } from './MonitorListEdits';
-import { Types } from '../../common/Interfaces';
 import executeTransition from '../animated/executeTransition';
+import { Types } from '../../common/Interfaces';
+import { clone } from './../utils/lodashMini';
+import { Edits, MonitorListEdits } from './MonitorListEdits';
 
 export interface AnimateListEditsProps {
     animateChildEnter?: boolean;
@@ -23,9 +23,9 @@ export interface AnimateListEditsProps {
 }
 
 export class AnimateListEdits extends React.Component<AnimateListEditsProps, Types.Stateless> {
-    _handleWillAnimate(edits: Edits, done: () => void) {
+    private _handleWillAnimate(edits: Edits, done: () => void) {
         let counter = 1;
-        let animationCompleted = function () {
+        const animationCompleted = function() {
             --counter;
             if (counter === 0) {
                 done();
@@ -34,9 +34,9 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, Typ
 
         let delay = 0;
         if (edits.removed.length > 0 && this.props.animateChildLeave) {
-            edits.removed.forEach(function (move) {
+            edits.removed.forEach(function(move) {
                 try {
-                    let domNode = ReactDOM.findDOMNode(move.element) as HTMLElement|null;
+                    const domNode = ReactDOM.findDOMNode(move.element) as HTMLElement | null;
                     if (domNode) {
                         domNode.style.transform = 'translateY(' + -move.topDelta + 'px)';
 
@@ -58,11 +58,11 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, Typ
         }
 
         if (edits.moved.length > 0 && this.props.animateChildMove) {
-            edits.moved.forEach(function (move) {
+            edits.moved.forEach(function(move) {
                 counter++;
 
                 try {
-                    let domNode = ReactDOM.findDOMNode(move.element) as HTMLElement|null;
+                    const domNode = ReactDOM.findDOMNode(move.element) as HTMLElement | null;
                     if (domNode) {
                         executeTransition(domNode, [{
                             property: 'transform',
@@ -81,11 +81,11 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, Typ
         delay += 75;
 
         if (edits.added.length > 0 && this.props.animateChildEnter) {
-            edits.added.forEach(function (move) {
+            edits.added.forEach(function(move) {
                 counter++;
 
                 try {
-                    let domNode = ReactDOM.findDOMNode(move.element) as HTMLElement|null;
+                    const domNode = ReactDOM.findDOMNode(move.element) as HTMLElement | null;
                     if (domNode) {
                         executeTransition(domNode, [{
                             property: 'opacity',
@@ -106,7 +106,7 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, Typ
     render() {
         // Do a shallow clone and remove the props that don't
         // apply to the MontiroListEdits component.
-        let props = clone(this.props) as AnimateListEditsProps;
+        const props = clone(this.props) as AnimateListEditsProps;
         delete props.animateChildEnter;
         delete props.animateChildLeave;
         delete props.animateChildMove;

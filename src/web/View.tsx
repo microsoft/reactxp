@@ -11,15 +11,15 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import { FocusManager, applyFocusableComponentMixin } from './utils/FocusManager';
-import { PopupComponent } from '../common/PopupContainerViewBase';
-import { RestrictFocusType } from '../common/utils/FocusManager';
-import { Types } from '../common/Interfaces';
 import AccessibilityUtil from './AccessibilityUtil';
 import AnimateListEdits from './listAnimations/AnimateListEdits';
 import AppConfig from '../common/AppConfig';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import { applyFocusableComponentMixin, FocusManager } from './utils/FocusManager';
+import { RestrictFocusType } from '../common/utils/FocusManager';
+import { Types } from '../common/Interfaces';
 import PopupContainerView from './PopupContainerView';
+import { PopupComponent } from '../common/PopupContainerViewBase';
 import restyleForInlineText from './utils/restyleForInlineText';
 import Styles from './Styles';
 import ViewBase from './ViewBase';
@@ -68,7 +68,7 @@ if (typeof document !== 'undefined') {
     const style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(ignorePointerEvents));
-    head!.appendChild(style);
+    head.appendChild(style);
 }
 
 export interface ViewContext {
@@ -95,18 +95,18 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         focusArbitrator: PropTypes.object
     };
 
-    private _focusManager: FocusManager|undefined;
+    private _focusManager: FocusManager | undefined;
     private _limitFocusWithin = false;
     private _isFocusLimited = false;
-    private _isFocusRestricted: boolean|undefined;
+    private _isFocusRestricted: boolean | undefined;
 
-    private _focusArbitratorProvider: FocusArbitratorProvider|undefined;
+    private _focusArbitratorProvider: FocusArbitratorProvider | undefined;
 
-    private _resizeDetectorAnimationFrame: number|undefined;
-    private _resizeDetectorNodes: { grow?: HTMLElement, shrink?: HTMLElement } = {};
+    private _resizeDetectorAnimationFrame: number | undefined;
+    private _resizeDetectorNodes: { grow?: HTMLElement; shrink?: HTMLElement } = {};
 
-    private _popupContainer: PopupContainerView|undefined;
-    private _popupToken: PopupComponent|undefined;
+    private _popupContainer: PopupContainerView | undefined;
+    private _popupToken: PopupComponent | undefined;
 
     constructor(props: Types.ViewProps, context: ViewContext) {
         super(props, context);
@@ -130,7 +130,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         }
     }
 
-    private _renderResizeDetectorIfNeeded(containerStyles: any): React.ReactNode|null {
+    private _renderResizeDetectorIfNeeded(containerStyles: any): React.ReactNode | null {
         // If needed, additional invisible DOM elements will be added inside the
         // view to track the size changes that are performed behind our back by
         // the browser's layout engine faster (ViewBase checks for the layout
@@ -155,16 +155,16 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
             return null;
         }
 
-        let initResizer = (key: 'grow' | 'shrink', ref: any) => {
+        const initResizer = (key: 'grow' | 'shrink', ref: any) => {
             const cur: HTMLElement | undefined = this._resizeDetectorNodes[key];
-            let element: HTMLElement|null = null;
+            let element: HTMLElement | null = null;
 
             try {
-                element = ReactDOM.findDOMNode(ref) as HTMLElement|null;
+                element = ReactDOM.findDOMNode(ref) as HTMLElement | null;
             } catch {
                 // Swallow exception due to component unmount race condition.
             }
-    
+
             if (cur) {
                 delete this._resizeDetectorNodes[key];
             }
@@ -181,7 +181,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
                 <div
                     key={ 'grow' }
                     style={ _styles.resizeDetectorContainerStyles as any }
-                    ref={ (ref) => initResizer('grow', ref) }
+                    ref={ref => initResizer('grow', ref) }
                     onScroll={ () => this._resizeDetectorOnScroll() }>
 
                     <div style={ _styles.resizeGrowDetectorStyles as any } />
@@ -191,7 +191,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
                 <div
                     key={ 'shrink' }
                     style={ _styles.resizeDetectorContainerStyles as any }
-                    ref={ (ref) => initResizer('shrink', ref) }
+                    ref={ref => initResizer('shrink', ref) }
                     onScroll={ () => this._resizeDetectorOnScroll() }>
 
                     <div style={ _styles.resizeShrinkDetectorStyles as any } />
@@ -239,7 +239,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         // Let descendant Types components know that their nearest Types ancestor is not an Types.Text.
         // Because they're in an Types.View, they should use their normal styling rather than their
         // special styling for appearing inline with text.
-        let childContext: ViewContext = {
+        const childContext: ViewContext = {
             isRxParentAText: false
         };
 
@@ -259,12 +259,12 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         return childContext;
     }
 
-    protected _getContainer(): HTMLElement|null {
+    protected _getContainer(): HTMLElement | null {
         if (!this._isMounted) {
             return null;
         }
         try {
-            return ReactDOM.findDOMNode(this) as HTMLElement|null;
+            return ReactDOM.findDOMNode(this) as HTMLElement | null;
         } catch {
             // Handle exception due to potential unmount race condition.
             return null;
@@ -326,7 +326,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     }
 
     render() {
-        let combinedStyles = Styles.combine([_styles.defaultStyle, this.props.style]) as any;
+        const combinedStyles = Styles.combine([_styles.defaultStyle, this.props.style]) as any;
         let ariaRole = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
         const tabIndex = this.props.tabIndex;
         const ariaSelected = AccessibilityUtil.accessibilityTraitToAriaSelected(this.props.accessibilityTraits);
@@ -348,7 +348,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
             ariaRole = 'none';
         }
 
-        let props: React.HTMLAttributes<any> = {
+        const props: React.HTMLAttributes<any> = {
             role: ariaRole,
             tabIndex: tabIndex,
             style: combinedStyles,
@@ -382,11 +382,11 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
 
         if (this.props.ignorePointerEvents) {
             props.className = 'reactxp-ignore-pointer-events';
-            combinedStyles['pointerEvents'] = 'none';
+            combinedStyles.pointerEvents = 'none';
         }
 
         let reactElement: React.ReactElement<any>;
-        let childAnimationsEnabled = this.props.animateChildEnter || this.props.animateChildMove || this.props.animateChildLeave;
+        const childAnimationsEnabled = this.props.animateChildEnter || this.props.animateChildMove || this.props.animateChildLeave;
         if (childAnimationsEnabled) {
             reactElement = (
                 <AnimateListEdits
@@ -479,7 +479,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     blur() {
         if (this._isMounted) {
             try {
-                const el = ReactDOM.findDOMNode(this) as HTMLDivElement|null;
+                const el = ReactDOM.findDOMNode(this) as HTMLDivElement | null;
                 if (el) {
                     el.blur();
                 }
@@ -500,7 +500,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     focus() {
         if (this._isMounted) {
             try {
-                const el = ReactDOM.findDOMNode(this) as HTMLDivElement|null;
+                const el = ReactDOM.findDOMNode(this) as HTMLDivElement | null;
                 if (el) {
                     el.focus();
                 }
@@ -511,7 +511,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     }
 }
 
-applyFocusableComponentMixin(View, function (this: View, nextProps?: Types.ViewProps) {
+applyFocusableComponentMixin(View, function(this: View, nextProps?: Types.ViewProps) {
     // VoiceOver with the VoiceOver key combinations (Ctrl+Option+Left/Right) focuses
     // <div>s when whatever tabIndex is set (even if tabIndex=-1). So, View is focusable
     // when tabIndex is not undefined.

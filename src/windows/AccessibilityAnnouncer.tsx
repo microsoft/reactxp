@@ -11,9 +11,9 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import { SubscriptionToken } from 'subscribableevent';
 
-import { Types } from '../common/Interfaces';
 import Accessibility from './Accessibility';
 import AccessibilityUtil from '../native-common/AccessibilityUtil';
+import { Types } from '../common/Interfaces';
 import Styles from '../native-common/Styles';
 import Timers from '../common/utils/Timers';
 
@@ -67,7 +67,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
         );
     }
 
-    private _onViewRef = (view: RN.View|null): void => {
+    private _onViewRef = (view: RN.View | null): void => {
         this._viewElement = view;
         if (view !== null) {
             this._tryDequeueAndAnnounce();
@@ -90,7 +90,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
                 // The behavior is screen reader specific. NVDA is better than Narrator in this situation but
                 // ultimately does not fully support this case. Narrator tends to ignore subsequent identical texts at all.
                 // NVDA tends to announce 2 or 3 subsequent identical texts but usually ignores 4+ ones.
-                const textToAnnounce = (announcement === this._lastAnnouncement) ? announcement + ' ' : announcement;
+                const textToAnnounce = (announcement && announcement === this._lastAnnouncement) ? announcement + ' ' : announcement;
 
                 this._viewElement.setNativeProps({
                     accessibilityLabel : textToAnnounce

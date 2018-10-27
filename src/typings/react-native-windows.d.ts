@@ -17,11 +17,16 @@ declare module 'react-native-windows' {
     }
 
     interface TextWindowsProps {
+        children?: React.ReactNode;
         onSelectionChange?: (e: RN.NativeSyntheticEvent<TextWindowsSelectionChangeEventData>) => void;
     }
 
     interface AccessibilityEvents {
         onAccessibilityTap?: (e: RN.NativeSyntheticEvent<any>) => void;
+    }
+
+    interface ViewProps {
+        tabNavigation?: 'cycle' | 'local';
     }
 
     //

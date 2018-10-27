@@ -10,6 +10,7 @@
 import * as RN from 'react-native';
 
 import { Accessibility as CommonAccessibility } from '../common/Accessibility';
+import AppConfig from '../common/AppConfig';
 
 export class Accessibility extends CommonAccessibility {
     protected _isScreenReaderEnabled = false;
@@ -31,6 +32,10 @@ export class Accessibility extends CommonAccessibility {
             RN.AccessibilityInfo.fetch().then(isEnabled => {
                 if (!initialStateChanged) {
                     this._updateScreenReaderStatus(isEnabled);
+                }
+            }).catch(err => {
+                if (AppConfig.isDevelopmentMode()) {
+                    console.error('Accessibility: RN.AccessibilityInfo.fetch failed');
                 }
             });
         }

@@ -11,11 +11,11 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import { compact } from './utils/lodashMini';
-import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import { Types } from '../common/Interfaces';
 import AccessibilityUtil from './AccessibilityUtil';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
+import { Types } from '../common/Interfaces';
+import { compact } from './utils/lodashMini';
 import Styles from './Styles';
 
 const _styles = {
@@ -39,13 +39,13 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
     context!: TextContext;
 
     static childContextTypes: React.ValidationMap<any> = {
-        isRxParentAText: PropTypes.bool.isRequired,
+        isRxParentAText: PropTypes.bool.isRequired
     };
 
-    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any>|null = null;
+    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any> | null = null;
 
     // To be able to use Text inside TouchableHighlight/TouchableOpacity
-    public setNativeProps(nativeProps: RN.TextProps) {
+    setNativeProps(nativeProps: RN.TextProps) {
         if (this._mountedComponent) {
             this._mountedComponent.setNativeProps(nativeProps);
         }

@@ -24,7 +24,7 @@ export interface TransitionSpec {
 export function executeTransition(element: HTMLElement, transitions: TransitionSpec[], done: () => void): void {
     let longestDurationPlusDelay = 0;
     let longestDurationProperty = '';
-    let cssTransitions: string[] = [];
+    const cssTransitions: string[] = [];
 
     _.each(transitions, (transition: TransitionSpec) => {
         const property = transition.property;
@@ -54,7 +54,7 @@ export function executeTransition(element: HTMLElement, transitions: TransitionS
     element.style.transition = cssTransitions.join(', ');
 
     let finish: () => void;
-    let onTransitionEnd = (ev: TransitionEvent) => {
+    const onTransitionEnd = (ev: TransitionEvent) => {
         if (ev.target === element && ev.propertyName === longestDurationProperty) {
             finish();
         }
@@ -66,18 +66,18 @@ export function executeTransition(element: HTMLElement, transitions: TransitionS
 
     let timeoutId = 0;
     let didFinish = false;
-    finish = function () {
+    finish = function() {
         if (!didFinish) {
             clearTimeout(timeoutId);
 
             // Only complete the transition if we are ending the same transition it was initially set.
             // There are cases where transitions may be overriden before the transition ends.
-            if (element.dataset['transitionId'] === timeoutId.toString()) {
+            if (element.dataset.transitionId === timeoutId.toString()) {
                 // TODO: Cross-browser equivalent of 'transitionEnd' event (e.g. vendor prefixed).
                 element.removeEventListener('webkitTransitionEnd', onTransitionEnd);
                 element.removeEventListener('transitionEnd', onTransitionEnd);
 
-                delete element.dataset['transitionId'];
+                delete element.dataset.transitionId;
                 element.style.transition = 'none';
 
                 didFinish = true;
@@ -87,7 +87,7 @@ export function executeTransition(element: HTMLElement, transitions: TransitionS
     };
 
     // Watchdog timeout for cases where transitionEnd event doesn't fire.
-    timeoutId = Timers.setTimeout(function () {
+    timeoutId = Timers.setTimeout(function() {
         // If the item was removed from the DOM (which can happen if a
         // rerender occurred), don't bother finishing. We don't want to do
         // this in the transition event finish path because it's expensive
@@ -97,7 +97,7 @@ export function executeTransition(element: HTMLElement, transitions: TransitionS
             finish();
         }
     }, longestDurationPlusDelay + 10);
-    element.dataset['transitionId'] = timeoutId.toString();
+    element.dataset.transitionId = timeoutId.toString();
 
     // Set the "to" values.
     _.each(transitions, (transition: TransitionSpec) => {

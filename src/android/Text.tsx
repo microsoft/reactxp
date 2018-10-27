@@ -10,12 +10,12 @@
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import { Text as CommonText } from '../native-common/Text';
-import { Types } from '../common/Interfaces';
 import AccessibilityUtil from '../native-common/AccessibilityUtil';
+import { Types } from '../common/Interfaces';
 import Styles from '../native-common/Styles';
+import { Text as CommonText } from '../native-common/Text';
 
-var _styles = {
+const _styles = {
     defaultText: Styles.createTextStyle({
         includeFontPadding: false,
         textAlignVertical: 'center'

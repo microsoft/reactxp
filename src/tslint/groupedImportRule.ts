@@ -1,4 +1,4 @@
-﻿/**
+/**
 * groupedImportRule.ts
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -61,7 +61,7 @@ class GroupedImportModuleWalker extends RuleWalker {
     }
 
     private _checkImportType(node: ts.ImportEqualsDeclaration | ts.ImportDeclaration): ImportType {
-        let modulePath: string|undefined;
+        let modulePath: string | undefined;
         if (tsutils.isImportEqualsDeclaration(node)) {
             if (node.moduleReference.kind === ts.SyntaxKind.ExternalModuleReference) {
                 const matches = node.moduleReference.getFullText().match(/require\s*\(\s*'([^']+)'\s*\)/);

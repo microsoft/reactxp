@@ -30,7 +30,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
         const source = this._buildSource();
 
         // Force use of webkit on iOS (applies to RN 0.57 and newer only).
-        let extendedProps: RN.ExtendedWebViewProps = {
+        const extendedProps: RN.ExtendedWebViewProps = {
             useWebKit: true
         };
 
@@ -85,7 +85,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
                 origin: '*',
                 data: e.nativeEvent.data,
                 stopPropagation: () => e.stopPropagation(),
-                preventDefault: () => e.preventDefault(),
+                preventDefault: () => e.preventDefault()
             };
 
             this.props.onMessage(event);
@@ -106,7 +106,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
         return undefined;
     }
 
-    postMessage(message: string, targetOrigin: string = '*') {
+    postMessage(message: string, targetOrigin = '*') {
         if (this._mountedComponent) {
             this._mountedComponent.postMessage(message);
         }

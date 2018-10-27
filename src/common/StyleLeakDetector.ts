@@ -14,8 +14,8 @@
 
 import { Dictionary, sortBy } from './lodashMini';
 
-import { Types } from './Interfaces';
 import AppConfig from './AppConfig';
+import { Types } from './Interfaces';
 
 export class StyleLeakDetector {
     private _fingerprintRegistry: {[key: string]: string} = {};
@@ -39,9 +39,9 @@ export class StyleLeakDetector {
     }
 
     private _sortObject(object: Dictionary<any>) {
-        let result: Dictionary<any> = {};
+        const result: Dictionary<any> = {};
         let keys: string [] = [];
-        for (let key in object) {
+        for (const key in object) {
             if (object.hasOwnProperty(key)) {
                 keys.push(key);
             }
@@ -49,9 +49,9 @@ export class StyleLeakDetector {
 
         keys = sortBy(keys);
         const keysLength = keys.length;
-        for (let i: number = 0; i < keysLength; i++) {
-            let key: any = keys[i];
-            let value: any = object[key];
+        for (let i = 0; i < keysLength; i++) {
+            const key: any = keys[i];
+            const value: any = object[key];
             result[key] = this._sortAny(value);
         }
 
@@ -60,7 +60,7 @@ export class StyleLeakDetector {
 
     private _sortArray(object: any[]): any[] {
         const length = object.length;
-        for (let i: number = 0; i < length; i++) {
+        for (let i = 0; i < length; i++) {
             object[i] = this._sortAny(object[i]);
         }
 
@@ -77,7 +77,7 @@ export class StyleLeakDetector {
             // we detect leaks on chrome and firefox only, other browser have now this member
             const stack = error.stack;
             if (stack) {
-                const styleAllocationId = stack + this._getFingerprint(style);
+                const styleAllocationId = stack.toString() + this._getFingerprint(style);
                 const firstAllocation = this._fingerprintRegistry[styleAllocationId];
                 if (firstAllocation) {
                     console.warn('Possible style leak of: ', style, 'first allocation: ', firstAllocation);

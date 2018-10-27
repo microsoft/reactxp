@@ -39,7 +39,7 @@ export class App extends RX.App {
 
     initialize(debug: boolean, development: boolean) {
         super.initialize(debug, development);
-        window['rxdebug'] = debug;
+        window.rxdebug = debug;
         RN.AppRegistry.registerComponent('RXApp', this.getRootViewFactory());
         UserInterface.registerRootViewUsingPropsFactory(this.getRootViewUsingPropsFactory());
     }

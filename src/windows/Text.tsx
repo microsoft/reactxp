@@ -13,8 +13,8 @@ import { ExtendedTextProps, NativeSyntheticEvent } from 'react-native';
 import { TextWindowsSelectionChangeEventData as SelectionChangeEventData } from 'react-native-windows';
 
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
-import { Text as TextBase, TextContext as TextContextBase } from '../native-common/Text';
 import { Types } from '../common/Interfaces';
+import { Text as TextBase, TextContext as TextContextBase } from '../native-common/Text';
 
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 export interface TextContext extends TextContextBase {
@@ -27,7 +27,7 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
         ...TextBase.contextTypes
     };
 
-    private _selectedText: string = '';
+    private _selectedText = '';
 
     // Context is provided by super - just re-typing here
     context!: TextContext;
@@ -54,7 +54,7 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
     }
 
     getChildContext(): TextContext {
-        let childContext: TextContext = super.getChildContext();
+        const childContext: TextContext = super.getChildContext();
 
         // This control will hide other "accessible focusable" controls as part of being restricted/limited by a focus manager
         // (more detailed description is in windows/View.tsx)
@@ -85,7 +85,7 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
 
     updateNativeAccessibilityProps(): void {
         if (this._mountedComponent) {
-            let importantForAccessibility = this.getImportantForAccessibility();
+            const importantForAccessibility = this.getImportantForAccessibility();
             this._mountedComponent.setNativeProps({
                 importantForAccessibility: importantForAccessibility
             });
@@ -98,7 +98,7 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
 }
 
 // Text is focusable just by screen readers
-applyFocusableComponentMixin(Text, function (this: Text, nextProps?: Types.TextProps, nextState?: any, nextCtx?: TextContext) {
+applyFocusableComponentMixin(Text, function(this: Text, nextProps?: Types.TextProps, nextState?: any, nextCtx?: TextContext) {
     // This control should be tracked by a FocusManager if there's no other control tracked by the same FocusManager in
     // the parent path
     return nextCtx && ('isRxParentAFocusableInSameFocusManager' in nextCtx)

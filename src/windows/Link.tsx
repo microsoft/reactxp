@@ -11,12 +11,12 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import * as RNW from 'react-native-windows';
 
-import { applyFocusableComponentMixin, FocusManager, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
-import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import { LinkBase } from '../native-common/Link';
-import { Types } from '../common/Interfaces';
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from '../native-common/utils/EventHelpers';
+import { applyFocusableComponentMixin, FocusManager, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
+import { Types } from '../common/Interfaces';
+import { LinkBase } from '../native-common/Link';
 import UserInterface from '../native-common/UserInterface';
 
 const KEY_CODE_ENTER = 13;
@@ -27,7 +27,7 @@ const KEY_CODE_APP = 500;
 const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER, KEY_CODE_APP, KEY_CODE_F10];
 const UP_KEYCODES = [KEY_CODE_SPACE];
 
-let FocusableText = RNW.createFocusableComponent(RN.Text);
+const FocusableText = RNW.createFocusableComponent(RN.Text);
 
 export interface LinkState {
     isRestrictedOrLimited: boolean;
@@ -84,7 +84,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     }
 
     private _renderLinkAsFocusableText(internalProps: RN.TextProps, onMount: (text: any) => void) {
-        let focusableTextProps = this._createFocusableTextProps(internalProps);
+        const focusableTextProps = this._createFocusableTextProps(internalProps);
         return (
             <FocusableText { ...focusableTextProps } ref={ onMount }/>
         );
@@ -97,18 +97,18 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     }
 
     private _createFocusableTextProps(internalProps: RN.TextProps) {
-        let tabIndex: number | undefined = this.getTabIndex();
-        let windowsTabFocusable: boolean =  tabIndex !== undefined && tabIndex >= 0;
-        let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
+        const tabIndex: number | undefined = this.getTabIndex();
+        const windowsTabFocusable: boolean =  tabIndex !== undefined && tabIndex >= 0;
+        const importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
         // We don't use 'string' ref type inside ReactXP
-        let originalRef = (internalProps as any).ref;
+        const originalRef = (internalProps as any).ref;
         if (typeof originalRef === 'string') {
             throw new Error('Link: ReactXP must not use string refs internally');
         }
-        let componentRef: Function = originalRef as Function;
+        const componentRef: Function = originalRef as Function;
 
-        let focusableTextProps: RNW.FocusableWindowsProps<RN.TextProps | RNW.AccessibilityEvents> = {
+        const focusableTextProps: RNW.FocusableWindowsProps<RN.TextProps | RNW.AccessibilityEvents> = {
             ...internalProps,
             componentRef: componentRef,
             ref: this._onFocusableRef,
@@ -136,7 +136,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     private _renderLinkAsNativeHyperlink(internalProps: RN.TextProps) {
 
         // We don't use 'string' ref type inside ReactXP
-        let originalRef = (internalProps as any).ref;
+        const originalRef = (internalProps as any).ref;
         if (typeof originalRef === 'string') {
             throw new Error('Link: ReactXP must not use string refs internally');
         }
@@ -178,7 +178,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     requestFocus() {
         FocusArbitratorProvider.requestFocus(
             this,
-            () => this.focus(),
+            () => { this.focus(); },
             () => this._isAvailableToFocus()
         );
     }
@@ -189,8 +189,8 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     }
 
     private _onKeyDown = (e: React.SyntheticEvent<any>): void => {
-        let keyEvent = EventHelpers.toKeyboardEvent(e);
-        let key = keyEvent.keyCode;
+        const keyEvent = EventHelpers.toKeyboardEvent(e);
+        const key = keyEvent.keyCode;
         // ENTER triggers press on key down
         if (key === KEY_CODE_ENTER) {
             // Defer to base class
@@ -198,14 +198,14 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         }
 
         if (this.props.onContextMenu) {
-            let key = keyEvent.keyCode;
+            const key = keyEvent.keyCode;
             if ((key === KEY_CODE_APP) || (key === KEY_CODE_F10 && keyEvent.shiftKey)) {
                 if (this._isMounted) {
                     UserInterface.measureLayoutRelativeToWindow(this).then( layoutInfo => {
                         // need to simulate the mouse event so that we
                         // can show the context menu in the right position
                         if (this._isMounted) {
-                            let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, this._getContextMenuOffset());
+                            const mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo, this._getContextMenuOffset());
                             if (this.props.onContextMenu) {
                                 this.props.onContextMenu(mouseEvent);
                             }
@@ -217,7 +217,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     }
 
     private _onKeyUp = (e: React.SyntheticEvent<any>): void => {
-        let keyEvent = EventHelpers.toKeyboardEvent(e);
+        const keyEvent = EventHelpers.toKeyboardEvent(e);
         if (keyEvent.keyCode === KEY_CODE_SPACE) {
             // Defer to base class
             this._onPress(keyEvent);
@@ -251,9 +251,9 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
 
     updateNativeAccessibilityProps(): void {
         if (this._focusableElement) {
-            let tabIndex: number | undefined = this.getTabIndex();
-            let windowsTabFocusable: boolean = tabIndex !== undefined && tabIndex >= 0;
-            let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
+            const tabIndex: number | undefined = this.getTabIndex();
+            const windowsTabFocusable: boolean = tabIndex !== undefined && tabIndex >= 0;
+            const importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
             this._focusableElement.setNativeProps({
                 tabIndex: tabIndex,

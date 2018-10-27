@@ -13,12 +13,12 @@ import * as RNW from 'react-native-windows';
 
 import { AccessibilityAnnouncer } from './AccessibilityAnnouncer';
 import {
-    RootView as RootViewBase,
-    RootViewUsingProps as RootViewUsingPropsBase,
+    BaseRootView,
     BaseRootViewProps,
+    RootView as RootViewBase,
     RootViewPropsWithMainViewType,
     RootViewState,
-    BaseRootView,
+    RootViewUsingProps as RootViewUsingPropsBase
 } from '../native-desktop/RootView';
 
 //

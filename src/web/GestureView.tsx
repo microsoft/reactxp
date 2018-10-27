@@ -11,9 +11,9 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
-import { clone, isUndefined } from './utils/lodashMini';
-import { Types } from '../common/Interfaces';
 import AccessibilityUtil from './AccessibilityUtil';
+import { Types } from '../common/Interfaces';
+import { clone, isUndefined } from './utils/lodashMini';
 import MouseResponder, { MouseResponderSubscription } from './utils/MouseResponder';
 import Styles from './Styles';
 import Timers from '../common/utils/Timers';
@@ -53,17 +53,17 @@ let _idCounter = 1;
 export class GestureView extends React.Component<Types.GestureViewProps, Types.Stateless> {
     private _id = _idCounter++;
 
-    private _container: HTMLElement|null|   undefined;
+    private _container: HTMLElement | null |   undefined;
 
     // State for tracking long presses
     private _pendingLongPressEvent: React.MouseEvent<any> | undefined;
     private _longPressTimer: number | undefined;
 
     // State for tracking double taps
-    private _doubleTapTimer: number|undefined;
-    private _lastTapEvent: React.MouseEvent<any>|undefined;
+    private _doubleTapTimer: number | undefined;
+    private _lastTapEvent: React.MouseEvent<any> | undefined;
 
-    private _responder: MouseResponderSubscription|undefined;
+    private _responder: MouseResponderSubscription | undefined;
 
     // private _pendingGestureState: Types.PanGestureState = null;
     private _pendingGestureType = GestureType.None;
@@ -137,7 +137,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
             },
             onTerminate: (event: MouseEvent, gestureState: Types.PanGestureState) => {
                 this._cancelLongPressTimer();
-                
+
                 this._pendingGestureType = this._detectGestureType(gestureState);
                 this._sendPanEvent(gestureState);
 
@@ -154,7 +154,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
         }
     }
 
-    private _setContainerRef = (container: HTMLElement|null) => {
+    private _setContainerRef = (container: HTMLElement | null) => {
         // safe since div refs resolve into HTMLElement and not react element.
         this._container = container;
 
@@ -166,9 +166,9 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
     }
 
     private _getStyles(): any {
-        let combinedStyles = Styles.combine([_styles.defaultView, this.props.style]) as any;
+        const combinedStyles = Styles.combine([_styles.defaultView, this.props.style]) as any;
 
-        let cursorName: string|undefined;
+        let cursorName: string | undefined;
         switch (this.props.mouseOverCursor) {
             case Types.GestureMouseCursor.Grab:
                 cursorName = 'grab';
@@ -184,7 +184,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
         }
 
         if (cursorName) {
-            combinedStyles['cursor'] = cursorName;
+            combinedStyles.cursor = cursorName;
         }
 
         return combinedStyles;
@@ -198,7 +198,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
 
     private _onClick = (e: React.MouseEvent<any>) => {
         this._cancelLongPressTimer();
-        
+
         if (!this.props.onDoubleTap) {
             // If there is no double-tap handler, we can invoke the tap handler immediately.
             this._sendTapEvent(e);
@@ -404,17 +404,17 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
     private _reportLongPress() {
         if (this.props.onLongPress) {
             const tapEvent: Types.TapGestureState = {
-                pageX: this._pendingLongPressEvent!.pageX!,
-                pageY: this._pendingLongPressEvent!.pageY!,
-                clientX: this._pendingLongPressEvent!.clientX!,
-                clientY: this._pendingLongPressEvent!.clientY!,
+                pageX: this._pendingLongPressEvent!.pageX,
+                pageY: this._pendingLongPressEvent!.pageY,
+                clientX: this._pendingLongPressEvent!.clientX,
+                clientY: this._pendingLongPressEvent!.clientY,
                 timeStamp: this._pendingLongPressEvent!.timeStamp,
                 isTouch: false
             };
 
             this.props.onLongPress(tapEvent);
         }
-        
+
         this._pendingLongPressEvent = undefined;
     }
 

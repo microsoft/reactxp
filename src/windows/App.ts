@@ -8,6 +8,7 @@
  */
 
 import { ComponentProvider } from 'react-native';
+
 import { App as AppCommon } from '../native-common/App';
 import { RootView, RootViewUsingProps } from './RootView';
 

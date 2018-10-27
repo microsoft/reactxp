@@ -10,12 +10,12 @@
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import * as RX from '../common/Interfaces';
 import Easing from '../common/Easing';
 import RXImage from './Image';
-import RXView from './View';
+import * as RX from '../common/Interfaces';
 import RXText from './Text';
 import RXTextInput from './TextInput';
+import RXView from './View';
 
 export interface AnimatedClasses {
     Image: typeof RN.ReactNativeBaseComponent;
@@ -63,7 +63,7 @@ class AnimatedWrapper<P, T> extends RX.AnimatedComponent<P, T> {
         }
     }
 
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any>|null) => {
+    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any> | null) => {
         this._mountedComponent = component;
     }
 }
@@ -148,12 +148,12 @@ class FocusRestrictedAnimatedView extends AnimatedView {
     }
 }
 
-let timing = function(
+const timing = function(
     value: RX.Types.AnimatedValue,
     config: RX.Types.Animated.TimingAnimationConfig)
     : RX.Types.Animated.CompositeAnimation {
 
-    let isLooping = config.loop !== undefined && config.loop != null;
+    let isLooping = config.loop !== undefined && config.loop !== null;
     return {
         start: function(onEnd?: RX.Types.Animated.EndCallback): void {
             function animate() : void {
@@ -186,7 +186,7 @@ let timing = function(
         stop: function(): void {
             isLooping = false;
             (value as any).stopAnimation();
-        },
+        }
     };
 };
 
@@ -195,7 +195,7 @@ export function makeAnimated(nativeAnimatedClasses: AnimatedClasses, useFocusRes
         animatedClasses = nativeAnimatedClasses;
     }
 
-    return {
+    const animated: RX.Animated = {
         // platform specific animated components
         Image: AnimatedImage,
         Text: AnimatedText,
@@ -203,14 +203,15 @@ export function makeAnimated(nativeAnimatedClasses: AnimatedClasses, useFocusRes
         View: useFocusRestrictedView ? FocusRestrictedAnimatedView :  AnimatedView,
         // common stuff
         ...AnimatedCommon
-    } as RX.Animated;
+    };
+
+    return animated;
 }
 
 export let AnimatedCommon = {
     Easing: Easing as RX.Types.Animated.Easing,
 
     timing: timing,
-    delay: RN.Animated.delay,
     parallel: RN.Animated.parallel,
     sequence: RN.Animated.sequence,
 

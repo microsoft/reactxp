@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MainViewStore.tsx
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -12,7 +12,7 @@ import * as React from 'react';
 import SubscribableEvent from 'subscribableevent';
 
 export class MainViewStore extends SubscribableEvent<() => void> {
-    private _mainView: React.ReactElement<any>|undefined;
+    private _mainView: React.ReactElement<any> | undefined;
 
     getMainView() {
         return this._mainView;

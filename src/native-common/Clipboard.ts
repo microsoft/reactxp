@@ -13,11 +13,11 @@ import * as SyncTasks from 'synctasks';
 import * as RX from '../common/Interfaces';
 
 export class Clipboard extends RX.Clipboard  {
-    public setText(text: string) {
+    setText(text: string) {
         RN.Clipboard.setString(text);
     }
 
-    public getText(): SyncTasks.Promise<string> {
+    getText(): SyncTasks.Promise<string> {
         return SyncTasks.fromThenable(RN.Clipboard.getString());
     }
 }

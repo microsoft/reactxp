@@ -10,10 +10,10 @@
 import * as React from 'react';
 
 import * as RX from '../common/Interfaces';
-import { View } from './View';
 import Styles from './Styles';
+import { View } from './View';
 
-let _styles = {
+const _styles = {
     webViewDefault: Styles.createWebViewStyle({
         flex: 1,
         alignSelf: 'stretch',
@@ -41,8 +41,8 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
     private static _onMessageReceived: RX.Types.SubscribableEvent<(e: WebViewMessageEventInternal) => void>;
     private static _messageListenerInstalled = false;
 
-    private _mountedComponent: HTMLIFrameElement|null = null;
-    private _onMessageReceivedToken: RX.Types.SubscriptionToken|undefined;
+    private _mountedComponent: HTMLIFrameElement | null = null;
+    private _onMessageReceivedToken: RX.Types.SubscriptionToken | undefined;
 
     constructor(props: RX.Types.WebViewProps) {
         super(props);
@@ -59,7 +59,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
     componentDidMount() {
         this._postRender();
 
-        let customContents = this._getCustomHtml(this.props);
+        const customContents = this._getCustomHtml(this.props);
         if (customContents) {
             this._setContents(customContents);
         }
@@ -68,8 +68,8 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
     componentDidUpdate(prevProps: RX.Types.WebViewProps, prevState: WebViewState) {
         this._postRender();
 
-        let oldCustomContents = this._getCustomHtml(prevProps);
-        let newCustomContents = this._getCustomHtml(this.props);
+        const oldCustomContents = this._getCustomHtml(prevProps);
+        const newCustomContents = this._getCustomHtml(this.props);
 
         if (newCustomContents) {
             if (oldCustomContents !== newCustomContents) {
@@ -85,7 +85,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
         }
     }
 
-    private _getCustomHtml(props: RX.Types.WebViewProps): string|undefined {
+    private _getCustomHtml(props: RX.Types.WebViewProps): string | undefined {
         if (props.url || !props.source) {
             return undefined;
         }
@@ -114,7 +114,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
                 (e: WebViewMessageEventInternal) => void>(true);
 
             window.addEventListener('message', (e: MessageEvent) => {
-                let event: WebViewMessageEventInternal = {
+                const event: WebViewMessageEventInternal = {
                     data: e.data,
                     origin: e.origin,
                     nativeEvent: e,
@@ -169,8 +169,8 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
     }
 
     render() {
-        let styles = Styles.combine([_styles.webViewDefault, this.props.style]);
-        let sandbox = this.props.sandbox !== undefined
+        const styles = Styles.combine([_styles.webViewDefault, this.props.style]);
+        const sandbox = this.props.sandbox !== undefined
             ? this.props.sandbox
             : (this.props.javaScriptEnabled ? RX.Types.WebViewSandboxMode.AllowScripts : RX.Types.WebViewSandboxMode.None);
 
@@ -192,7 +192,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
         );
     }
 
-    protected _onMount = (component: HTMLIFrameElement|null) => {
+    protected _onMount = (component: HTMLIFrameElement | null) => {
         this._mountedComponent = component;
     }
 
@@ -203,7 +203,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
     }
 
     private _sandboxToStringValue = (sandbox: RX.Types.WebViewSandboxMode) => {
-        let values: string[] = [];
+        const values: string[] = [];
 
         if (sandbox & RX.Types.WebViewSandboxMode.AllowForms) {
             values.push('allow-forms');
@@ -239,7 +239,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
         return values.join(' ');
     }
 
-    postMessage(message: string, targetOrigin: string = '*') {
+    postMessage(message: string, targetOrigin = '*') {
         const iframeDOM = this._mountedComponent;
         if (iframeDOM && iframeDOM.contentWindow) {
             iframeDOM.contentWindow.postMessage(message, targetOrigin);

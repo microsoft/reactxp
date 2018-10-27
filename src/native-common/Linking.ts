@@ -10,8 +10,8 @@
 import * as RN from 'react-native';
 import * as SyncTasks from 'synctasks';
 
-import { Linking as CommonLinking } from '../common/Linking';
 import { Types } from '../common/Interfaces';
+import { Linking as CommonLinking } from '../common/Linking';
 
 export class Linking extends CommonLinking {
     constructor() {
@@ -26,31 +26,34 @@ export class Linking extends CommonLinking {
         return SyncTasks.fromThenable(RN.Linking.canOpenURL(url))
         .then(value => {
             if (!value) {
-                return SyncTasks.Rejected({
+                const linkingError: Types.LinkingErrorInfo = {
                     code: Types.LinkingErrorCode.NoAppFound,
                     url: url,
                     description: 'No app found to handle url: ' + url
-                } as Types.LinkingErrorInfo);
+                };
+                return SyncTasks.Rejected(linkingError);
             } else {
                 return SyncTasks.fromThenable(RN.Linking.openURL(url));
             }
         }).catch(error => {
-            return SyncTasks.Rejected({
+            const linkingError: Types.LinkingErrorInfo = {
                 code: Types.LinkingErrorCode.UnexpectedFailure,
                 url: url,
                 description: error
-            } as Types.LinkingErrorInfo);
+            };
+            return SyncTasks.Rejected(linkingError);
         });
     }
 
-    getInitialUrl(): SyncTasks.Promise<string|undefined> {
+    getInitialUrl(): SyncTasks.Promise<string | undefined> {
         return SyncTasks.fromThenable(RN.Linking.getInitialURL())
         .then(url => !!url ? url : undefined)
         .catch(error => {
-            return SyncTasks.Rejected({
+            const linkingError: Types.LinkingErrorInfo = {
                 code: Types.LinkingErrorCode.InitialUrlNotFound,
                 description: error
-            } as Types.LinkingErrorInfo);
+            };
+            return SyncTasks.Rejected(linkingError);
         });
     }
 

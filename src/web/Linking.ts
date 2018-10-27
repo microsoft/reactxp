@@ -9,8 +9,8 @@
 
 import * as SyncTasks from 'synctasks';
 
-import { Linking as CommonLinking } from '../common/Linking';
 import { Types } from '../common/Interfaces';
+import { Linking as CommonLinking } from '../common/Linking';
 
 export class Linking extends CommonLinking {
     protected _openUrl(url: string): SyncTasks.Promise<void> {
@@ -19,11 +19,12 @@ export class Linking extends CommonLinking {
             // window opening was blocked by browser (probably not
             // invoked in direct reaction to user action, like thru
             // promise or setTimeout).
-            return SyncTasks.Rejected<void>({
+            const linkingError: Types.LinkingErrorInfo = {
                 code: Types.LinkingErrorCode.Blocked,
                 url: url,
                 description: 'Window was blocked by popup blocker'
-            } as Types.LinkingErrorInfo);
+            };
+            return SyncTasks.Rejected<void>(linkingError);
         }
         // SECURITY WARNING:
         //   Destroy the back-link to this window. Otherwise the (untrusted) URL we are about to load can redirect OUR window.
@@ -46,7 +47,7 @@ export class Linking extends CommonLinking {
         return SyncTasks.Resolved<void>();
     }
 
-    getInitialUrl(): SyncTasks.Promise<string|undefined> {
+    getInitialUrl(): SyncTasks.Promise<string | undefined> {
         return SyncTasks.Resolved(undefined);
     }
 }

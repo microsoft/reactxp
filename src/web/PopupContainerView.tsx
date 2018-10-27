@@ -9,9 +9,9 @@
 
 import * as React from 'react';
 
+import { Types } from '../common/Interfaces';
 import { clone } from './utils/lodashMini';
 import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext } from '../common/PopupContainerViewBase';
-import { Types } from '../common/Interfaces';
 
 export interface PopupContainerViewProps extends PopupContainerViewBaseProps {
     style: React.CSSProperties;
@@ -25,7 +25,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
     }
 
     render() {
-        let style = clone(this.props.style);
+        const style = clone(this.props.style);
         if (this.props.hidden) {
             style.visibility = 'hidden';
         }

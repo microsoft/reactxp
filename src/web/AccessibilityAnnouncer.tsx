@@ -10,9 +10,9 @@
 import * as React from 'react';
 import { SubscriptionToken } from 'subscribableevent';
 
-import { Types } from '../common/Interfaces';
 import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
+import { Types } from '../common/Interfaces';
 import Styles from './Styles';
 
 export interface AccessibilityAnnouncerState {
@@ -37,12 +37,12 @@ const _styles = {
         right: 0,
         height: 30,
         whiteSpace: 'pre'
-    }),
+    })
 };
 
 export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnnouncerState> {
-    private _clearAnnouncementTimer: number|undefined;
-    private _newAnnouncementEventChangedSubscription: SubscriptionToken|undefined;
+    private _clearAnnouncementTimer: number | undefined;
+    private _newAnnouncementEventChangedSubscription: SubscriptionToken | undefined;
 
     constructor(props: {}) {
         super(props);
@@ -102,7 +102,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
     }
 
     render() {
-        let announcement: any = this.state.announcementTextInNestedDiv ?
+        const announcement: any = this.state.announcementTextInNestedDiv ?
             ( <div> { this.state.announcementText } </div> ) :
             this.state.announcementText;
 

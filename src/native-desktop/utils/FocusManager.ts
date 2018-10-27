@@ -7,15 +7,17 @@
  * Manages focusable elements for better keyboard navigation (RN desktop version)
  */
 
+// tslint:disable:no-invalid-this
+
+import { ImportantForAccessibilityValue } from '../../native-common/AccessibilityUtil';
+import AppConfig from '../../common/AppConfig';
 import {
     applyFocusableComponentMixin as applyFocusableComponentMixinBase,
     FocusableComponentInternal as FocusableComponentInternalBase,
-    FocusManager as FocusManagerBase,
-    StoredFocusableComponent as StoredFocusableComponentBase,
     FocusableComponentStateCallback,
+    FocusManager as FocusManagerBase,
+    StoredFocusableComponent as StoredFocusableComponentBase
 } from '../../common/utils/FocusManager';
-import { ImportantForAccessibilityValue } from '../../native-common/AccessibilityUtil';
-import AppConfig from '../../common/AppConfig';
 import Platform from '../../native-common/Platform';
 import Timers from '../../common/utils/Timers';
 import UserInterface from '../../native-common/UserInterface';
@@ -76,7 +78,7 @@ export class FocusManager extends FocusManagerBase {
         return false;
     }
 
-    private static focusFirst() {
+    private static _focusFirst() {
         const focusable = Object.keys(FocusManager._allFocusableComponents)
             .map(componentId => FocusManager._allFocusableComponents[componentId])
             .filter(storedComponent =>
@@ -103,7 +105,7 @@ export class FocusManager extends FocusManagerBase {
                 }
             });
 
-            let fc = focusable[0].component as FocusableComponentInternal;
+            const fc = focusable[0].component as FocusableComponentInternal;
 
             if (fc && fc.focus) {
                 fc.focus();
@@ -137,7 +139,7 @@ export class FocusManager extends FocusManagerBase {
                     storedComponent.restricted ||
                     (storedComponent.limitedCount > 0) ||
                     (storedComponent.limitedCountAccessible > 0)) {
-                    FocusManager.focusFirst();
+                    FocusManager._focusFirst();
                 }
             }, 500);
         }
@@ -152,7 +154,7 @@ export class FocusManager extends FocusManagerBase {
             newOverrideType = OverrideType.Accessible;
         }
 
-        let curOverrideType: OverrideType = storedComponent.curOverrideType || OverrideType.None;
+        const curOverrideType: OverrideType = storedComponent.curOverrideType || OverrideType.None;
 
         if (newOverrideType !== curOverrideType) {
             FocusManager._updateComponentTabIndexAndIFAOverrides(storedComponent.component as FocusableComponentInternal,
@@ -200,13 +202,13 @@ function updateNativeAccessibilityProps(component: FocusableComponentInternal) {
     }
 }
 
-export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function, accessibleOnly: boolean = false) {
+export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function, accessibleOnly = false) {
     // Call base
     // This adds the basic "monitor focusable components" functionality.
     applyFocusableComponentMixinBase(Component, isConditionallyFocusable, accessibleOnly);
 
     // Hook 'getImportantForAccessibility'
-    inheritMethod('getImportantForAccessibility', function (this: FocusableComponentInternal, origCallback: any) {
+    inheritMethod('getImportantForAccessibility', function(this: FocusableComponentInternal, origCallback: any) {
         // Check local override first, then focus manager one
         if (this.importantForAccessibilityOverride !== undefined) {
             // Local override available, use this one
@@ -219,7 +221,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
 
     if (!accessibleOnly) {
         // Hook 'onFocus'
-        inheritMethod('onFocus', function (this: FocusableComponentInternal, origCallback: Function) {
+        inheritMethod('onFocus', function(this: FocusableComponentInternal, origCallback: Function) {
             if (this.onFocusSink) {
                 this.onFocusSink();
             } else {
@@ -232,7 +234,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
         });
 
         // Hook 'getTabIndex'
-        inheritMethod('getTabIndex', function (this: FocusableComponentInternal, origCallback: any) {
+        inheritMethod('getTabIndex', function(this: FocusableComponentInternal, origCallback: any) {
             // Check local override first, then focus manager one
             if (this.tabIndexLocalOverride !== undefined) {
                 // Local override available, use this one
@@ -252,8 +254,8 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
             // A negative tabIndex disables focusing/keyboard input completely instead (though a component already having keyboard focus
             // doesn't lose it right away).
             // We try to simulate the right behavior through a trick.
-            inheritMethod('focus', function (this: FocusableComponentInternal, origCallback: any) {
-                let tabIndex: number | undefined = this.getTabIndex();
+            inheritMethod('focus', function(this: FocusableComponentInternal, origCallback: any) {
+                const tabIndex: number | undefined = this.getTabIndex();
                 // Check effective tabIndex
                 if (tabIndex !== undefined && tabIndex < 0) {
                     // A negative tabIndex maps to non focusable in UWP.
@@ -286,7 +288,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
                 return origCallback.call(this);
             });
 
-            inheritMethod('componentWillUnmount', function (this: FocusableComponentInternal, origCallback: any) {
+            inheritMethod('componentWillUnmount', function(this: FocusableComponentInternal, origCallback: any) {
                 // Reset any pending local override timer
                 delete this.tabIndexLocalOverrideTimer;
                 // To original (base mixin already has an implementation)
@@ -296,10 +298,10 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
     }
 
     function inheritMethod(methodName: string, action: Function) {
-        let origCallback = Component.prototype[methodName];
+        const origCallback = Component.prototype[methodName];
 
         if (origCallback) {
-            Component.prototype[methodName] = function () {
+            Component.prototype[methodName] = function() {
                 return action.call(this, origCallback, arguments);
             };
         } else {

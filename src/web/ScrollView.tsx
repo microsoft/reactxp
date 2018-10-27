@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ScrollView.tsx
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -9,14 +9,14 @@
 
 import * as React from 'react';
 
-import * as _ from './utils/lodashMini';
-import * as RX from '../common/Interfaces';
 import CustomScrollbar from './CustomScrollbar';
-import Styles from './Styles';
+import * as RX from '../common/Interfaces';
+import * as _ from './utils/lodashMini';
 import ScrollViewConfig from './ScrollViewConfig';
+import Styles from './Styles';
 import ViewBase from './ViewBase';
 
-let _styles = {
+const _styles = {
     defaultStyle: {
         position: 'relative',
         overflow: 'hidden',
@@ -45,7 +45,7 @@ let _styles = {
 };
 
 let _initializedCustomStyles = false;
-let _customStyles = {
+const _customStyles = {
     defaultStyle: {
         overflow: 'hidden',
         msOverflowStyle: 'auto',
@@ -76,7 +76,7 @@ let _customStyles = {
 const _defaultScrollThrottleValue = 1000 / 60;
 
 export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stateless> implements RX.ScrollView {
-    private _mountedComponent: HTMLElement|null = null;
+    private _mountedComponent: HTMLElement | null = null;
 
     constructor(props: RX.Types.ScrollViewProps) {
         super(props);
@@ -149,7 +149,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         super.componentDidMount();
         this._mounted = true;
 
-        this.createCustomScrollbarsIfNeeded(this.props);
+        this._createCustomScrollbarsIfNeeded(this.props);
     }
 
     componentWillReceiveProps(newProps: RX.Types.ScrollViewProps) {
@@ -167,7 +167,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         }
     }
 
-    protected _getContainer(): HTMLElement|null {
+    protected _getContainer(): HTMLElement | null {
         return this._mountedComponent;
     }
 
@@ -198,14 +198,14 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                     return;
                 }
                 if (this.props.onScroll) {
-                    this.props.onScroll!(container.scrollTop, container.scrollLeft);
+                    this.props.onScroll(container.scrollTop, container.scrollLeft);
                 }
                 if (this.props.scrollXAnimatedValue) {
                     this.props.scrollXAnimatedValue.setValue(container.scrollLeft);
-                }        
+                }
                 if (this.props.scrollYAnimatedValue) {
                     this.props.scrollYAnimatedValue.setValue(container.scrollTop);
-                }        
+                }
             });
         }
     }, (this.props.scrollEventThrottle || _defaultScrollThrottleValue), { leading: true, trailing: true });
@@ -215,10 +215,10 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
 
         // If we're turning on custom scrollbars or toggling vertical and/or horizontal, we need to re-create
         // the scrollbar.
-        this.createCustomScrollbarsIfNeeded(props);
+        this._createCustomScrollbarsIfNeeded(props);
     }
 
-    private createCustomScrollbarsIfNeeded(props: RX.Types.ScrollViewProps) {
+    private _createCustomScrollbarsIfNeeded(props: RX.Types.ScrollViewProps) {
         if (this._mounted && this._customScrollbarEnabled) {
             if (this._customScrollbar) {
                 if (this.props.horizontal === props.horizontal &&
@@ -246,8 +246,8 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
     }
 
     private _getContainerStyle(): RX.Types.ScrollViewStyleRuleSet {
-        let styles: any = [{ display: 'block' }];
-        let sourceStyles = this._customScrollbarEnabled ? _customStyles : _styles;
+        const styles: any = [{ display: 'block' }];
+        const sourceStyles = this._customScrollbarEnabled ? _customStyles : _styles;
 
         styles.push(sourceStyles.defaultStyle);
 
@@ -281,7 +281,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
     private _renderWithCustomScrollbar() {
         let containerStyles: any = _customStyles.customScrollContainer;
 
-        let scrollComponentClassNames = ['scrollViewport'];
+        const scrollComponentClassNames = ['scrollViewport'];
         if (this.props.horizontal) {
             scrollComponentClassNames.push('scrollViewportH');
         }
@@ -315,7 +315,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         );
     }
 
-    protected _onMount = (component: HTMLElement|null) => {
+    protected _onMount = (component: HTMLElement | null) => {
         this._mountedComponent = component;
     }
 
@@ -333,7 +333,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
 
             const animateScroll = (elapsedTime: number) => {
                 elapsedTime += increment;
-                var position = this._easeInOut(elapsedTime, start, change, duration);
+                const position = this._easeInOut(elapsedTime, start, change, duration);
                 container.scrollTop = position;
                 if (elapsedTime < duration) {
                     setTimeout(function() {
@@ -362,7 +362,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
 
             const animateScroll = (elapsedTime: number) => {
                 elapsedTime += increment;
-                var position = this._easeInOut(elapsedTime, start, change, duration);
+                const position = this._easeInOut(elapsedTime, start, change, duration);
                 container.scrollLeft = position;
                 if (elapsedTime < duration) {
                     setTimeout(function() {

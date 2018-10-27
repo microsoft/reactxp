@@ -6,12 +6,14 @@
  */
 
 import * as RN from 'react-native';
+
+import { Accessibility as NativeAccessibility } from '../native-common/Accessibility';
+
 // Be aware that we import class and extend it here, but the default export of native-common/Accessibility
 // is an instance of the class we import here. So any state in the default export from native-common will be in
 // a different instance than default export of this windows/Accessibility. For example, susbscribing to
 // newAnnouncementReadyEvent on this default export instance and calling announceForAccessibility on
 // native-common default export will not raise this instance event.
-import { Accessibility as NativeAccessibility } from '../native-common/Accessibility';
 
 export class Accessibility extends NativeAccessibility {
     // Work around the fact that the public react-native type definition doesn't

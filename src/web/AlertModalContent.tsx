@@ -9,8 +9,8 @@
 
 import * as React from 'react';
 
-import * as RX from '../common/Interfaces';
 import Button from './Button';
+import * as RX from '../common/Interfaces';
 import Modal from './Modal';
 import Styles from './Styles';
 import Text from './Text';
@@ -98,13 +98,13 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
         };
     }
 
-    public render() {
+    render() {
         const theme = this.props.theme;
 
         const buttons = this.props.buttons && this.props.buttons.map((btnSpec, i) => {
-            let isCancel = btnSpec.style === 'cancel';
-            let buttonStyle = [_styles.defaultButton, isCancel ? _styles.defaultCancelButton : undefined];
-            let buttonTextStyle = [_styles.defaultBtnText, isCancel ? _styles.defaultCancelBtnText : undefined];
+            const isCancel = btnSpec.style === 'cancel';
+            const buttonStyle = [_styles.defaultButton, isCancel ? _styles.defaultCancelButton : undefined];
+            const buttonTextStyle = [_styles.defaultBtnText, isCancel ? _styles.defaultCancelBtnText : undefined];
 
             // Is the mouse pointer currently hovering over this button?
             if (this.state.hoverIndex === i) {

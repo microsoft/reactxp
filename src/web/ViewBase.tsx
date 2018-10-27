@@ -9,10 +9,10 @@
 
 import * as SyncTasks from 'synctasks';
 
-import * as _ from './utils/lodashMini';
-import * as RX from '../common/Interfaces';
-import FrontLayerViewManager from './FrontLayerViewManager';
 import AppConfig from '../common/AppConfig';
+import FrontLayerViewManager from './FrontLayerViewManager';
+import * as RX from '../common/Interfaces';
+import * as _ from './utils/lodashMini';
 import Timers from '../common/utils/Timers';
 
 // We create a periodic timer to detect layout changes that are performed behind
@@ -22,13 +22,13 @@ const _layoutTimerActiveDuration = 1000;
 const _layoutTimerInactiveDuration = 10000;
 
 export abstract class ViewBase<P extends RX.Types.ViewProps, S> extends RX.ViewBase<P, S> {
-    private static _viewCheckingTimer: number|undefined;
+    private static _viewCheckingTimer: number | undefined;
     private static _isResizeHandlerInstalled = false;
     private static _viewCheckingList: ViewBase<RX.Types.ViewProps, RX.Types.Stateless>[] = [];
     private static _appActivationState = RX.Types.AppActivationState.Active;
 
     abstract render(): JSX.Element;
-    protected abstract _getContainer(): HTMLElement|null;
+    protected abstract _getContainer(): HTMLElement | null;
     protected _isMounted = false;
     private _isPopupDisplayed = false;
 
@@ -76,7 +76,7 @@ export abstract class ViewBase<P extends RX.Types.ViewProps, S> extends RX.ViewB
     }
 
     private static _layoutReportList: Function[] = [];
-    private static _layoutReportingTimer: number|undefined;
+    private static _layoutReportingTimer: number | undefined;
     private static _reportLayoutChange(func: Function) {
         this._layoutReportList.push(func);
 

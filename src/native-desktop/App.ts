@@ -7,8 +7,8 @@
  * Native desktop implementation of App API namespace.
  */
 
-import { ComponentProvider } from 'react-native';
 import { App as AppCommon } from '../native-common/App';
+import { ComponentProvider } from 'react-native';
 import { RootView, RootViewUsingProps } from './RootView';
 
 export class App extends AppCommon {

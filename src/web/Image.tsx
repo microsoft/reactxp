@@ -10,11 +10,10 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as SyncTasks from 'synctasks';
-import { CSSProperties } from 'react';
 
-import * as _ from './utils/lodashMini';
 import { DEFAULT_RESIZE_MODE } from '../common/Image';
 import { Types } from '../common/Interfaces';
+import * as _ from './utils/lodashMini';
 import restyleForInlineText from './utils/restyleForInlineText';
 import Styles from './Styles';
 
@@ -54,10 +53,10 @@ interface XhrBlobUrlCacheEntry {
 class XhrBlobUrlCache {
     // Use a global cache to work around the image loading delays introduced by the xhr requests. This is especially
     // visible when scrolling a virtual list view which contains xhr images.
-    private static _maximumItems: number = 128;
+    private static _maximumItems = 128;
     private static _cachedXhrBlobUrls: { [source: string]: XhrBlobUrlCacheEntry } = {};
 
-    static get(source: string): string|undefined {
+    static get(source: string): string | undefined {
         if (this._cachedXhrBlobUrls[source]) {
             this._cachedXhrBlobUrls[source].refCount++;
 
@@ -95,8 +94,8 @@ class XhrBlobUrlCache {
         // If we've reached maximum capacity, clean up the oldest freeable cache entry if any. An entry is freeable is
         // it's not currently in use (refCount == 0). Return whether we have room to add more entries to the cache.
         if (Object.keys(XhrBlobUrlCache._cachedXhrBlobUrls).length + 1 > XhrBlobUrlCache._maximumItems) {
-            let oldestFreeableKey: string|undefined;
-            let oldestFreeableEntry: XhrBlobUrlCacheEntry|undefined;
+            let oldestFreeableKey: string | undefined;
+            let oldestFreeableEntry: XhrBlobUrlCacheEntry | undefined;
 
             Object.keys(XhrBlobUrlCache._cachedXhrBlobUrls).forEach(key => {
                 if ((!oldestFreeableEntry || XhrBlobUrlCache._cachedXhrBlobUrls[key].insertionDate < oldestFreeableEntry.insertionDate) &&
@@ -126,7 +125,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         isRxParentAText: PropTypes.bool.isRequired
     };
 
-    private _mountedComponent: HTMLImageElement|null = null;
+    private _mountedComponent: HTMLImageElement | null = null;
 
     getChildContext() {
         // Let descendant RX components know that their nearest RX ancestor is not an RX.Text.
@@ -181,8 +180,8 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
     }
 
     private _isMounted = false;
-    private _nativeImageWidth: number|undefined;
-    private _nativeImageHeight: number|undefined;
+    private _nativeImageWidth: number | undefined;
+    private _nativeImageHeight: number | undefined;
 
     constructor(props: Types.ImageProps) {
         super(props);
@@ -195,7 +194,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
     }
 
     componentWillReceiveProps(nextProps: Types.ImageProps) {
-        let sourceOrHeaderChanged = (nextProps.source !== this.props.source ||
+        const sourceOrHeaderChanged = (nextProps.source !== this.props.source ||
             !_.isEqual(nextProps.headers || {}, this.props.headers || {}));
 
         if (!nextProps.onLoad !== !this.props.onLoad || !nextProps.onError !== !this.props.onError || sourceOrHeaderChanged) {
@@ -301,14 +300,14 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
                         this._onError(new Error(response.statusText));
                     }
 
-                    response.blob().then(blob => {
+                    return response.blob().then(blob => {
                         this._handleXhrBlob(blob);
                     });
                 }, (err: Error) => {
                     this._onError(err);
                 });
         } else {
-            var req = new XMLHttpRequest();
+            const req = new XMLHttpRequest();
             req.open('GET', props.source, true);
             if (withCredentials) {
                 req.withCredentials = true;
@@ -376,13 +375,13 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
             reactElement;
     }
 
-    protected _onMount = (component: HTMLImageElement|null) => {
+    protected _onMount = (component: HTMLImageElement | null) => {
         this._mountedComponent = component;
     }
 
-    private _getStyles(): CSSProperties {
+    private _getStyles(): React.CSSProperties {
         const { resizeMode } = this.props;
-        const styles = (Styles.combine([_styles.defaultContainer, this.props.style]) || {}) as CSSProperties;
+        const styles = (Styles.combine([_styles.defaultContainer, this.props.style]) || {}) as React.CSSProperties;
 
         const backgroundRepeat = resizeMode === 'repeat' ? 'repeat' : 'no-repeat';
         const backgroundSize = this._buildBackgroundSize(resizeMode);
@@ -402,7 +401,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
             backgroundImage,
             backgroundSize,
             borderStyle,
-            display: 'flex',
+            display: 'flex'
         };
     }
 
@@ -483,11 +482,11 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
     }
 
     // Note: This works only if you have an onLoaded handler and wait for the image to load.
-    getNativeWidth(): number|undefined {
+    getNativeWidth(): number | undefined {
         return this._nativeImageWidth;
     }
 
-    getNativeHeight(): number|undefined {
+    getNativeHeight(): number | undefined {
         return this._nativeImageHeight;
     }
 }

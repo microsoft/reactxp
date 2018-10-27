@@ -12,11 +12,11 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import * as RNW from 'react-native-windows';
 
-import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
-import { Button as ButtonBase, ButtonContext as ButtonContextBase } from '../native-common/Button';
-import { Types } from '../common/Interfaces';
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
+import { Button as ButtonBase, ButtonContext as ButtonContextBase } from '../native-common/Button';
 import EventHelpers from '../native-common/utils/EventHelpers';
+import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
+import { Types } from '../common/Interfaces';
 import UserInterface from '../native-common/UserInterface';
 
 const KEY_CODE_ENTER = 13;
@@ -27,7 +27,7 @@ const KEY_CODE_APP = 500;
 const DOWN_KEYCODES = [KEY_CODE_SPACE, KEY_CODE_ENTER, KEY_CODE_F10, KEY_CODE_APP];
 const UP_KEYCODES = [KEY_CODE_SPACE];
 
-let FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
+const FocusableAnimatedView = RNW.createFocusableComponent(RN.Animated.View);
 
 export interface ButtonContext extends ButtonContextBase {
     isRxParentAContextMenuResponder?: boolean;
@@ -55,23 +55,23 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
     protected _render(internalProps: RN.ViewProps, onMount: (btn: any) => void): JSX.Element {
         // RNW.FocusableProps tabIndex: default is 0.
         // -1 has no special semantic similar to DOM.
-        let tabIndex: number | undefined = this.getTabIndex();
+        const tabIndex: number | undefined = this.getTabIndex();
         // RNW.FocusableProps windowsTabFocusable:
         // - true: keyboard focusable through any mean, receives keyboard input
         // - false: not focusable at all, doesn't receive keyboard input
         // The intermediate "focusable, but not in the tab order" case is not supported.
-        let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
+        const windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
 
-        let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
+        const importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
         // We don't use 'string' ref type inside ReactXP
-        let originalRef = (internalProps as any).ref;
+        const originalRef = (internalProps as any).ref;
         if (typeof originalRef === 'string') {
             throw new Error('Button: ReactXP must not use string refs internally');
         }
-        let componentRef: Function = originalRef as Function;
+        const componentRef: Function = originalRef as Function;
 
-        let focusableViewProps: RNW.FocusableWindowsProps<RN.ExtendedViewProps | RNW.AccessibilityEvents> = {
+        const focusableViewProps: RNW.FocusableWindowsProps<RN.ExtendedViewProps | RNW.AccessibilityEvents> = {
             ...internalProps,
             ref: onMount,
             componentRef: componentRef,
@@ -120,7 +120,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
     }
 
     getChildContext(): ButtonContext {
-        let childContext: ButtonContext = super.getChildContext();
+        const childContext: ButtonContext = super.getChildContext();
 
         // We use a context field to signal any component in the subtree to disable any system provided context menus.
         // This is not a bulletproof mechanism, context changes not being guaranteed to be detected by children, depending on factors
@@ -148,13 +148,13 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
     private _onKeyDown = (e: React.SyntheticEvent<any>): void => {
         if (!this.props.disabled) {
-            let keyEvent = EventHelpers.toKeyboardEvent(e);
+            const keyEvent = EventHelpers.toKeyboardEvent(e);
             if (this.props.onKeyPress) {
                 this.props.onKeyPress(keyEvent);
             }
 
             if (this.props.onPress) {
-                let key = keyEvent.keyCode;
+                const key = keyEvent.keyCode;
                 // ENTER triggers press on key down
                 if (key === KEY_CODE_ENTER) {
                     this.props.onPress(keyEvent);
@@ -162,14 +162,14 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
             }
 
             if (this.props.onContextMenu) {
-                let key = keyEvent.keyCode;
+                const key = keyEvent.keyCode;
                 if ((key === KEY_CODE_APP) || (key === KEY_CODE_F10 && keyEvent.shiftKey)) {
                     if (this._isMounted) {
                         UserInterface.measureLayoutRelativeToWindow(this).then( layoutInfo => {
                             // need to simulate the mouse event so that we
                             // can show the context menu in the right position
                             if (this._isMounted) {
-                                let mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo,
+                                const mouseEvent = EventHelpers.keyboardToMouseEvent(keyEvent, layoutInfo,
                                     this._getContextMenuOffset());
                                 if (this.props.onContextMenu) {
                                     this.props.onContextMenu(mouseEvent);
@@ -183,7 +183,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
     }
 
     private _onKeyUp = (e: React.SyntheticEvent<any>): void => {
-        let keyEvent = EventHelpers.toKeyboardEvent(e);
+        const keyEvent = EventHelpers.toKeyboardEvent(e);
         if (keyEvent.keyCode === KEY_CODE_SPACE) {
             if (!this.props.disabled && this.props.onPress) {
                 this.props.onPress(keyEvent);
@@ -256,9 +256,9 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
     updateNativeAccessibilityProps(): void {
         if (this._buttonElement) {
-            let tabIndex: number | undefined = this.getTabIndex();
-            let windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
-            let importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
+            const tabIndex: number | undefined = this.getTabIndex();
+            const windowsTabFocusable: boolean = !this.props.disabled && tabIndex !== undefined && tabIndex >= 0;
+            const importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
 
             this._buttonElement.setNativeProps({
                 tabIndex: tabIndex,

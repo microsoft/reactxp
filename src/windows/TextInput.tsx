@@ -10,10 +10,10 @@
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
-import { TextInput as TextInputBase } from '../native-common/TextInput';
-import { Types } from '../common/Interfaces';
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
+import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
+import { Types } from '../common/Interfaces';
+import { TextInput as TextInputBase } from '../native-common/TextInput';
 
 export class TextInput extends TextInputBase implements FocusManagerFocusableComponent {
 
@@ -28,7 +28,7 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
                 { ...extendedProps }
                 ref={ onMount }
                 importantForAccessibility={ this.getImportantForAccessibility() }
-                onFocus={ (e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>) => this._onFocusEx(e, props.onFocus) }
+                onFocus={ (e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>) => { this._onFocusEx(e, props.onFocus); } }
             />
         );
     }
@@ -67,8 +67,8 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
 
     updateNativeAccessibilityProps(): void {
         if (this._mountedComponent) {
-            let tabIndex = this.getTabIndex();
-            let importantForAccessibility = this.getImportantForAccessibility();
+            const tabIndex = this.getTabIndex();
+            const importantForAccessibility = this.getImportantForAccessibility();
             this._mountedComponent.setNativeProps({
                 tabIndex: tabIndex,
                 value: this.state.inputValue, // mandatory for some reason
