@@ -4,6 +4,7 @@
  * Display first screen of the image list sample application.
  */
 
+import * as React from 'react';
 import * as RX from 'reactxp';
 
 import ImageStore from '../stores/ImageStore';

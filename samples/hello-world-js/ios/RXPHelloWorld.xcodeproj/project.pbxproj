@@ -1373,7 +1373,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.ProjectName-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.RXPHelloWorld-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;

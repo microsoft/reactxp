@@ -1,5 +1,5 @@
 const merge = require('webpack-merge');
-const { buildConfig, APP_PATH } = require('./webpack.common');
+const { buildConfig, APP_PATH } = require('./common');
 
 module.exports = (env, argv) => (
   merge(buildConfig(env, argv), {

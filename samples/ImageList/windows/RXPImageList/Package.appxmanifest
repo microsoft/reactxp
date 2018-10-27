@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="ba9bd4f6-365b-4092-8346-2a88c3aaca0b"
+    Name="d76ffc84-b8a0-4bc0-ba56-5971ed9cf120"
     Publisher="CN=User"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="ba9bd4f6-365b-4092-8346-2a88c3aaca0b" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="d76ffc84-b8a0-4bc0-ba56-5971ed9cf120" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>RXPImageList</DisplayName>
