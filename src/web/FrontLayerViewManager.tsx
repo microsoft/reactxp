@@ -52,7 +52,7 @@ export class FrontLayerViewManager {
     showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string, options?: Types.ModalOptions) {
         // Dismiss any active popups.
         if (this._activePopupOptions) {
-            this.dismissPopup(this._activePopupId!!!);
+            this.dismissPopup(this._activePopupId!);
         }
 
         this._modalStack.push({ modal: modal, id: modalId });
@@ -73,7 +73,7 @@ export class FrontLayerViewManager {
 
     private _shouldPopupBeDismissed = (options: Types.PopupOptions): boolean => {
         return !!this._activePopupOptions &&
-            this._activePopupOptions!!!.getAnchor() === options.getAnchor();
+            this._activePopupOptions!.getAnchor() === options.getAnchor();
     }
 
     private _updateModalDisplayedState() {
@@ -101,7 +101,7 @@ export class FrontLayerViewManager {
         this._cachedPopups = this._cachedPopups.filter(popup => popup.popupId !== popupId);
         if (this._activePopupOptions && this._activePopupOptions.cacheable && this._activePopupId !== popupId) {
             // Old popup is transitioning from active to cached.
-            this._cachedPopups.push({ popupOptions: this._activePopupOptions, popupId: this._activePopupId!!! });
+            this._cachedPopups.push({ popupOptions: this._activePopupOptions, popupId: this._activePopupId! });
             this._cachedPopups = this._cachedPopups.slice(-MAX_CACHED_POPUPS);
         }
 
@@ -183,21 +183,21 @@ export class FrontLayerViewManager {
         const topModal = this._modalStack.length > 0 ?
             this._modalStack[this._modalStack.length - 1].modal : undefined;
         const activePopup = (!this._activePopupOptions || this._activePopupShowDelay > 0) ? undefined :
-            { popupOptions: this._activePopupOptions, popupId: this._activePopupId!!! };
+            { popupOptions: this._activePopupOptions, popupId: this._activePopupId! };
 
         this._updateModalDisplayedState();
 
         let rootView = (
             <RootView
                 mainView={ this._mainView }
-                keyBoardFocusOutline={ this._mainView!!!.props.keyBoardFocusOutline }
-                mouseFocusOutline={ this._mainView!!!.props.mouseFocusOutline }
+                keyBoardFocusOutline={ this._mainView!.props.keyBoardFocusOutline }
+                mouseFocusOutline={ this._mainView!.props.mouseFocusOutline }
                 modal={ topModal }
                 activePopup={ activePopup }
                 cachedPopup={ this._cachedPopups }
                 autoDismiss={ this._activePopupAutoDismiss }
                 autoDismissDelay={ this._activePopupAutoDismissDelay }
-                onDismissPopup={ () => this.dismissPopup(this._activePopupId!!!) }
+                onDismissPopup={ () => this.dismissPopup(this._activePopupId!) }
                 writingDirection={ this._isRtlForced ? 'rtl' : (this._isRtlAllowed ? 'auto' : 'ltr') }
             />
         );

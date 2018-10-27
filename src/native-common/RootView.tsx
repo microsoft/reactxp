@@ -92,7 +92,7 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
 
     componentDidMount(): void {
         if (this._rootViewId) {
-            UserInterface.notifyRootViewInstanceCreated(this._rootViewId, RN.findNodeHandle(this)!!!);
+            UserInterface.notifyRootViewInstanceCreated(this._rootViewId, RN.findNodeHandle(this)!);
         }
     }
 

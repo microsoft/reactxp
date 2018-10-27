@@ -404,11 +404,11 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
     private _reportLongPress() {
         if (this.props.onLongPress) {
             const tapEvent: Types.TapGestureState = {
-                pageX: this._pendingLongPressEvent!!!.pageX!!!,
-                pageY: this._pendingLongPressEvent!!!.pageY!!!,
-                clientX: this._pendingLongPressEvent!!!.clientX!!!,
-                clientY: this._pendingLongPressEvent!!!.clientY!!!,
-                timeStamp: this._pendingLongPressEvent!!!.timeStamp,
+                pageX: this._pendingLongPressEvent!.pageX!,
+                pageY: this._pendingLongPressEvent!.pageY!,
+                clientX: this._pendingLongPressEvent!.clientX!,
+                clientY: this._pendingLongPressEvent!.clientY!,
+                timeStamp: this._pendingLongPressEvent!.timeStamp,
                 isTouch: false
             };
 

@@ -48,7 +48,7 @@ export default class ServiceManager {
     static hasStarted(startupable: Service): boolean {
         let startupInfo = _.find(ServiceManager._serviceInfos, info => info.service === startupable);
         assert.ok(startupInfo, 'Service not found in hasStarted: ' + ServiceManager._getName(startupable));
-        return startupInfo!!!.isComplete;
+        return startupInfo!.isComplete;
     }
 
     static ensureStarted(services: Service[]): SyncTasks.Promise<void> {

@@ -316,7 +316,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
 
         if (!this._isHidden()) {
             if (limited && !this._isFocusLimited) {
-                this._focusManager.limitFocusWithin(this.props.limitFocusWithin!!!);
+                this._focusManager.limitFocusWithin(this.props.limitFocusWithin!);
             } else if (!limited && this._isFocusLimited) {
                 this._focusManager.removeFocusLimitation();
             }
@@ -437,7 +437,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
             }
 
             if (this._limitFocusWithin && this._isFocusLimited) {
-                this._focusManager.limitFocusWithin(this.props.limitFocusWithin!!!);
+                this._focusManager.limitFocusWithin(this.props.limitFocusWithin!);
             }
         }
     }
@@ -472,7 +472,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         this.disableFocusManager();
 
         if (this._popupToken) {
-            this._popupContainer!!!.unregisterPopupComponent(this._popupToken);
+            this._popupContainer!.unregisterPopupComponent(this._popupToken);
         }
     }
 

@@ -219,13 +219,13 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         }
 
         const initialTimeStamp = this._getEventTimestamp(this._lastGestureStartEvent);
-        const initialPageX = this._lastGestureStartEvent.pageX!!!;
-        const initialPageY = this._lastGestureStartEvent.pageY!!!;
+        const initialPageX = this._lastGestureStartEvent.pageX!;
+        const initialPageY = this._lastGestureStartEvent.pageY!;
 
         const timeStamp = this._getEventTimestamp(e);
 
         return (timeStamp - initialTimeStamp <= _tapDurationThreshold &&
-            this._calcDistance(initialPageX - e.pageX!!!, initialPageY - e.pageY!!!) <= _tapPixelThreshold);
+            this._calcDistance(initialPageX - e.pageX!, initialPageY - e.pageY!) <= _tapPixelThreshold);
     }
 
     // This method assumes that the caller has already determined that two
@@ -291,12 +291,12 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
     private _reportLongPress() {
         if (this.props.onLongPress) {
             const tapEvent: Types.TapGestureState = {
-                isTouch: !EventHelpers.isActuallyMouseEvent(this._pendingLongPressEvent!!!),
-                pageX: this._pendingLongPressEvent!!!.pageX!!!,
-                pageY: this._pendingLongPressEvent!!!.pageY!!!,
-                clientX: this._pendingLongPressEvent!!!.locationX!!!,
-                clientY: this._pendingLongPressEvent!!!.locationY!!!,
-                timeStamp: this._pendingLongPressEvent!!!.timeStamp
+                isTouch: !EventHelpers.isActuallyMouseEvent(this._pendingLongPressEvent!),
+                pageX: this._pendingLongPressEvent!.pageX!,
+                pageY: this._pendingLongPressEvent!.pageY!,
+                clientX: this._pendingLongPressEvent!.locationX!,
+                clientY: this._pendingLongPressEvent!.locationY!,
+                timeStamp: this._pendingLongPressEvent!.timeStamp
             };
 
             this.props.onLongPress(tapEvent);
@@ -475,10 +475,10 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
             gestureType: GestureType, initializeFromEvent: boolean, isComplete: boolean) {
         let state = this._pendingGestureState as Types.PanGestureState;
 
-        let pageX = e.pageX!!!;
-        let pageY = e.pageY!!!;
-        let clientX = e.locationX!!!;
-        let clientY = e.locationY!!!;
+        let pageX = e.pageX!;
+        let pageY = e.pageY!;
+        let clientX = e.locationX!;
+        let clientY = e.locationY!;
 
         // Grab the first touch. If the user adds additional touch events,
         // we will ignore them. If we use e.pageX/Y, we will be using the average
@@ -493,16 +493,16 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         assert.ok(this._lastGestureStartEvent, 'Gesture start event must not be null.');
 
         let initialPageX = this._lastGestureStartEvent
-            ? this._lastGestureStartEvent.pageX!!!
+            ? this._lastGestureStartEvent.pageX!
             : initializeFromEvent ? pageX : state.initialPageX;
         let initialPageY = this._lastGestureStartEvent
-            ? this._lastGestureStartEvent.pageY!!!
+            ? this._lastGestureStartEvent.pageY!
             : initializeFromEvent ? pageY : state.initialPageY;
         let initialClientX = this._lastGestureStartEvent
-            ? this._lastGestureStartEvent.locationX!!!
+            ? this._lastGestureStartEvent.locationX!
             : initializeFromEvent ? clientX : state.initialClientX;
         let initialClientY = this._lastGestureStartEvent
-            ? this._lastGestureStartEvent.locationY!!!
+            ? this._lastGestureStartEvent.locationY!
             : initializeFromEvent ? clientY : state.initialClientY;
 
         let velocityX = initializeFromEvent ? 0 : gestureState.vx;
@@ -556,10 +556,10 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
             // Always handle secondary button, even if context menu is not set - it shouldn't trigger onTap.
             if (this.props.onContextMenu) {
                 const tapEvent: Types.TapGestureState = {
-                    pageX: e.pageX!!!,
-                    pageY: e.pageY!!!,
-                    clientX: e.locationX!!!,
-                    clientY: e.locationY!!!,
+                    pageX: e.pageX!,
+                    pageY: e.pageY!,
+                    clientX: e.locationX!,
+                    clientY: e.locationY!,
                     timeStamp: e.timeStamp,
                     isTouch: !EventHelpers.isActuallyMouseEvent(e)
                 };
@@ -568,10 +568,10 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
             }
         } else if (this.props.onTap) {
             const tapEvent: Types.TapGestureState = {
-                pageX: e.pageX!!!,
-                pageY: e.pageY!!!,
-                clientX: e.locationX!!!,
-                clientY: e.locationY!!!,
+                pageX: e.pageX!,
+                pageY: e.pageY!,
+                clientX: e.locationX!,
+                clientY: e.locationY!,
                 timeStamp: e.timeStamp,
                 isTouch: !EventHelpers.isActuallyMouseEvent(e)
             };
@@ -583,20 +583,20 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
     private _sendDoubleTapEvent(e: Types.TouchEvent) {
         // If user did a double click with different mouse buttons, eg. left (50ms) right
         // both clicks need to be registered as separate events.
-        const lastButton = EventHelpers.toMouseButton(this._lastTapEvent!!!);
+        const lastButton = EventHelpers.toMouseButton(this._lastTapEvent!);
         const button = EventHelpers.toMouseButton(e);
         if (lastButton !== button || button === 2) {
-            this._sendTapEvent(this._lastTapEvent!!!);
+            this._sendTapEvent(this._lastTapEvent!);
             this._sendTapEvent(e);
             return;
         }
 
         if (this.props.onDoubleTap) {
             const tapEvent: Types.TapGestureState = {
-                pageX: e.pageX!!!,
-                pageY: e.pageY!!!,
-                clientX: e.locationX!!!,
-                clientY: e.locationY!!!,
+                pageX: e.pageX!,
+                pageY: e.pageY!,
+                clientX: e.locationX!,
+                clientY: e.locationY!,
                 timeStamp: e.timeStamp,
                 isTouch: !EventHelpers.isActuallyMouseEvent(e),
             };

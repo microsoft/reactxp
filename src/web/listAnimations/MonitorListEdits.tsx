@@ -241,7 +241,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
         });
 
         if (this._phase === ComponentPhaseEnum.willAnimate) {
-            _.each(this._willAnimatePhaseInfo!!!.removed, childElement => {
+            _.each(this._willAnimatePhaseInfo!.removed, childElement => {
                 if (childElement) {
                     this._childrenToRender.push(React.cloneElement(childElement, {
                         ref: (refValue: React.Component<any, any>) => {
@@ -272,7 +272,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
         );
 
         if (this._phase === ComponentPhaseEnum.willAnimate) {
-            let phaseInfo = this._willAnimatePhaseInfo!!!;
+            let phaseInfo = this._willAnimatePhaseInfo!;
             let prevPositions = phaseInfo.prevPositions;
             let nextPositions = computePositions(this._itemRefs);
 

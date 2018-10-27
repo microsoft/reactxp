@@ -314,7 +314,7 @@ export class FocusManager extends FocusManagerBase {
                 // If a tabIndex assignment is pending for another element, run it now as we know
                 // that it's not active anymore.
                 if (FocusManager._setTabIndexTimer) {
-                    FocusManager._setTabIndexElement!!!.tabIndex = -1;
+                    FocusManager._setTabIndexElement!.tabIndex = -1;
                     clearTimeout(FocusManager._setTabIndexTimer);
                     FocusManager._setTabIndexTimer = undefined;
                 }

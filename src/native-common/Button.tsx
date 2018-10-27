@@ -308,7 +308,7 @@ export class Button extends ButtonBase {
     }
 
     private _opacityInactive(duration: number) {
-        this.setOpacityTo(this._defaultOpacityValue!!!, duration);
+        this.setOpacityTo(this._defaultOpacityValue!, duration);
     }
 
     private _getDefaultOpacityValue(props: Types.ButtonProps): number {
@@ -355,7 +355,7 @@ export class Button extends ButtonBase {
     */
     setOpacityTo(value: number, duration: number) {
        Animated.timing(
-            this._opacityAnimatedValue!!!,
+            this._opacityAnimatedValue!,
             {
                 toValue: value,
                 duration: duration,

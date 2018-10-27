@@ -242,7 +242,7 @@ export class FrontLayerViewManager {
                             // UI making it not doing one of the two animations (i.e.: Opening an actionsheet
                             // while dismissing a popup). We introduce this delay to make sure the popup
                             // dimissing animation has finished before we call the event handler.
-                            setTimeout(() => { activePopupContext.popupOptions.onAnchorPressed!!!(e); }, 500);
+                            setTimeout(() => { activePopupContext.popupOptions.onAnchorPressed!(e); }, 500);
                         }
                     }
                 );

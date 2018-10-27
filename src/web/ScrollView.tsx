@@ -111,7 +111,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                 minWidth: 0
             };
 
-            _customStyles.bothStyle = Styles.combine([_customStyles.verticalStyle, _customStyles.horizontalStyle])!!!;
+            _customStyles.bothStyle = Styles.combine([_customStyles.verticalStyle, _customStyles.horizontalStyle])!;
         }
     }
 
@@ -198,7 +198,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                     return;
                 }
                 if (this.props.onScroll) {
-                    this.props.onScroll!!!(container.scrollTop, container.scrollLeft);
+                    this.props.onScroll!(container.scrollTop, container.scrollLeft);
                 }
                 if (this.props.scrollXAnimatedValue) {
                     this.props.scrollXAnimatedValue.setValue(container.scrollLeft);

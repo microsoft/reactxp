@@ -125,7 +125,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             }
 
             if (this._limitFocusWithin && this._isFocusLimited) {
-                this._focusManager.limitFocusWithin(this.props.limitFocusWithin!!!);
+                this._focusManager.limitFocusWithin(this.props.limitFocusWithin!);
             }
         }
     }
@@ -163,7 +163,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             this._focusManager.setRestrictionStateCallback(undefined);
         }
         if (this._popupToken) {
-            this._popupContainer!!!.unregisterPopupComponent(this._popupToken);
+            this._popupContainer!.unregisterPopupComponent(this._popupToken);
         }
     }
 
@@ -483,7 +483,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
         if (!this._isHidden()) {
             if (limited && !this._isFocusLimited) {
-                this._focusManager.limitFocusWithin(this.props.limitFocusWithin!!!);
+                this._focusManager.limitFocusWithin(this.props.limitFocusWithin!);
             } else if (!limited && this._isFocusLimited) {
                 this._focusManager.removeFocusLimitation();
             }

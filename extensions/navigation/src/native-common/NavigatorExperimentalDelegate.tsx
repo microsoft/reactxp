@@ -240,14 +240,14 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
 
         let  useNewStateAsScene = false;
 
-        let command = commandQueue.shift()!!!;
+        let command = commandQueue.shift()!;
         let route = command.param.route;
         let value = command.param.value;
         console.log('processing navigation command:', JSON.stringify(command), 'on stack:', JSON.stringify(this._state));
         switch (command.type) {
             case CommandType.Push:
                 useNewStateAsScene = true;
-                this._state = StateUtils.push(this._state, this._createState(route!!!));
+                this._state = StateUtils.push(this._state, this._createState(route!));
                 break;
 
             case CommandType.Pop:
@@ -268,10 +268,10 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
             case CommandType.Replace:
                 if (value === -1) {
                     this._state = StateUtils.replaceAtIndex(this._state, this._state.routes.length - 2,
-                        this._createState(route!!!));
+                        this._createState(route!));
                 } else {
                     this._state = StateUtils.replaceAtIndex(this._state, this._state.routes.length - 1,
-                        this._createState(route!!!));
+                        this._createState(route!));
                 }
 
                 break;

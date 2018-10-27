@@ -393,7 +393,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     }
 
     private _opacityInactive(duration: number) {
-        this._setOpacityTo(this._defaultOpacityValue!!!, duration);
+        this._setOpacityTo(this._defaultOpacityValue!, duration);
     }
 
     private _getDefaultOpacityValue(props: Types.ViewProps): number {
@@ -407,7 +407,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
 
     private _setOpacityTo(value: number, duration: number) {
        Animated.timing(
-            this._opacityAnimatedValue!!!,
+            this._opacityAnimatedValue!,
             {
                 toValue: value,
                 duration: duration,

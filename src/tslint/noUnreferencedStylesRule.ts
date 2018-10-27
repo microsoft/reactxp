@@ -64,7 +64,7 @@ class StylesWalker extends RuleWalker {
 
             if (objLiteral.properties) {
                 _.each(objLiteral.properties, property => {
-                    const nodeName = prefix + property.name!!!.getText();
+                    const nodeName = prefix + property.name!.getText();
 
                     // Recurse to pick up any nested style types.
                     const children = property.getChildren();

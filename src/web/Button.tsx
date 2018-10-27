@@ -207,7 +207,7 @@ export class Button extends ButtonBase {
                 this._longPressTimer = undefined;
                 if (this.props.onLongPress) {
                     // lastMouseDownEvent can never be undefined at this point
-                    this.props.onLongPress(this._lastMouseDownEvent!!!);
+                    this.props.onLongPress(this._lastMouseDownEvent!);
                     this._ignoreClick = true;
                 }
             }, _longPressTime);

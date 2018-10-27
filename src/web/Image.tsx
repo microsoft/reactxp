@@ -107,7 +107,7 @@ class XhrBlobUrlCache {
             });
 
             if (oldestFreeableKey) {
-                URL.revokeObjectURL(oldestFreeableEntry!!!.xhrBlobUrl);
+                URL.revokeObjectURL(oldestFreeableEntry!.xhrBlobUrl);
                 delete XhrBlobUrlCache._cachedXhrBlobUrls[oldestFreeableKey];
             }
         }
@@ -284,7 +284,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
 
             if (props.headers) {
                 Object.keys(props.headers).forEach(key => {
-                    headers.append(key, props.headers!!![key]);
+                    headers.append(key, props.headers![key]);
                 });
             }
 
@@ -316,7 +316,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
             req.responseType = 'blob';
             if (props.headers) {
                 Object.keys(props.headers).forEach(key => {
-                    req.setRequestHeader(key, props.headers!!![key]);
+                    req.setRequestHeader(key, props.headers![key]);
                 });
             }
 

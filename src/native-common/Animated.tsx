@@ -172,7 +172,7 @@ let timing = function(
                     }
 
                     if (isLooping) {
-                        value.setValue(config.loop!!!.restartFrom);
+                        value.setValue(config.loop!.restartFrom);
                         // Hack to get into the loop
                         animate();
                     }

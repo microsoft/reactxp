@@ -70,7 +70,7 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
         // Max enum value in this array of traits is role for web. Return corresponding
         // role string from roleMap.
         return combinedTraits.length > 0 ?
-            roleMap[_.max(_.filter(combinedTraits, t => roleMap.hasOwnProperty(t as any)))!!!]
+            roleMap[_.max(_.filter(combinedTraits, t => roleMap.hasOwnProperty(t as any)))!]
             : undefined;
     }
 

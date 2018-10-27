@@ -364,7 +364,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                                 // We can't pass through the DOM event argument to the anchor event handler as the event we have at this
                                 // point is a DOM Event and the anchor expect a Synthetic event. There doesn't seem to be any way to convert
                                 // between them. Passing null for now.
-                                this.props.activePopup!!!.popupOptions.onAnchorPressed!!!(undefined);
+                                this.props.activePopup!.popupOptions.onAnchorPressed!(undefined);
                             }, 500);
                         }
 
@@ -597,7 +597,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         }
 
         // Get the anchor element.
-        let anchorComponent = this.props.activePopup!!!.popupOptions.getAnchor();
+        let anchorComponent = this.props.activePopup!.popupOptions.getAnchor();
         // if the anchor is unmounted, dismiss the popup.
         // Prevents app crash when we try to get dom node from unmounted Component
         if (!anchorComponent) {
@@ -636,12 +636,12 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             return;
         }
 
-        let positionsToTry = this.props.activePopup!!!.popupOptions.positionPriorities;
+        let positionsToTry = this.props.activePopup!.popupOptions.positionPriorities;
         if (!positionsToTry || positionsToTry.length === 0) {
             positionsToTry = ['bottom', 'right', 'top', 'left'];
         }
 
-        if (this.props.activePopup!!!.popupOptions.useInnerPositioning) {
+        if (this.props.activePopup!.popupOptions.useInnerPositioning) {
             // If the popup is meant to be shown inside the anchor we need to recalculate
             // the position differently.
             this._recalcInnerPosition(anchorRect, newState);
@@ -768,7 +768,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
     private _recalcInnerPosition(anchorRect: ClientRect, newState: RootViewState) {
         // For inner popups we only accept the first position of the priorities since there should always be room for the bubble.
-        const pos = this.props.activePopup!!!.popupOptions.positionPriorities!!![0];
+        const pos = this.props.activePopup!.popupOptions.positionPriorities![0];
 
         switch (pos) {
             case 'top':
