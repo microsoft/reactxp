@@ -28,8 +28,13 @@ export class UserInterface extends RX.UserInterface {
             SyncTasks.Promise<RX.Types.LayoutInfo> {
 
         let deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
+        let componentDomNode: HTMLElement | null = null;
 
-        const componentDomNode = ReactDOM.findDOMNode(component) as HTMLElement|null;
+        try {
+            componentDomNode = ReactDOM.findDOMNode(component) as HTMLElement | null;
+        } catch {
+            // Component is no longer mounted.
+        }
 
         if (!componentDomNode) {
             deferred.reject('measureLayoutRelativeToWindow failed');
@@ -51,9 +56,15 @@ export class UserInterface extends RX.UserInterface {
         ancestor: React.Component<any, any>) : SyncTasks.Promise<RX.Types.LayoutInfo> {
 
         let deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
+        let componentDomNode: HTMLElement | null = null;
+        let ancestorDomNode: HTMLElement | null = null;
 
-        const componentDomNode = ReactDOM.findDOMNode(component) as HTMLElement|null;
-        const ancestorDomNode = ReactDOM.findDOMNode(ancestor) as HTMLElement|null;
+        try {
+            componentDomNode = ReactDOM.findDOMNode(component) as HTMLElement | null;
+            ancestorDomNode = ReactDOM.findDOMNode(ancestor) as HTMLElement | null;
+        } catch {
+            // Components are no longer mounted.
+        }
 
         if (!componentDomNode || !ancestorDomNode) {
             deferred.reject('measureLayoutRelativeToAncestor failed');

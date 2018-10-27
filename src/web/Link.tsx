@@ -8,7 +8,6 @@
  */
 
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import * as PropTypes from 'prop-types';
 import { CSSProperties } from 'react';
 
@@ -56,7 +55,7 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
 
     context!: LinkContext;
 
-    private _isMounted = false;
+    private _mountedAnchor: HTMLAnchorElement|null = null;
     private _longPressTimer: number|undefined;
 
     render() {
@@ -66,6 +65,7 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
         //   See: https://mathiasbynens.github.io/rel-noopener/
         return (
             <a
+                ref={ this._onMount }
                 style={ this._getStyles() }
                 title={ this.props.title }
                 href={ this.props.url }
@@ -86,44 +86,36 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
     }
 
     componentDidMount() {
-        this._isMounted = true;
-
         if (this.props.autoFocus) {
             this.requestFocus();
         }
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
     }
 
     requestFocus() {
         FocusArbitratorProvider.requestFocus(
             this,
             () => this.focus(),
-            () => this._isMounted
+            () => this._mountedAnchor !== null
         );
     }
 
     focus() {
-        if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLAnchorElement|null;
-            if (el) {
-                el.focus();
-            }
+        if (this._mountedAnchor) {
+            this._mountedAnchor.focus();
         }
     }
 
     blur() {
-        if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLAnchorElement|null;
-            if (el) {
-                el.blur();
-            }
+        if (this._mountedAnchor) {
+            this._mountedAnchor.blur();
         }
     }
 
-    _getStyles(): CSSProperties {
+    private _onMount = (ref: HTMLAnchorElement|null) => {
+        this._mountedAnchor = ref;
+    }
+
+    private _getStyles(): CSSProperties {
         // There's no way in HTML to properly handle numberOfLines > 1,
         //  but we can correctly handle the common case where numberOfLines is 1.
         const ellipsisStyles = this.props.numberOfLines === 1 ? _styles.ellipsis : {};

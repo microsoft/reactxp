@@ -93,26 +93,38 @@ export class FocusManager extends FocusManagerBase {
         });
     }
 
-    protected /* static */ addFocusListenerOnComponent(component: FocusableComponentInternal, onFocus: () => void): void {
-        const el = ReactDOM.findDOMNode(component) as HTMLElement|null;
-        if (el) {
-            el.addEventListener('focus', onFocus);
+    protected addFocusListenerOnComponent(component: FocusableComponentInternal, onFocus: () => void): void {
+        try {
+            const el = ReactDOM.findDOMNode(component) as HTMLElement | null;
+            if (el) {
+                el.addEventListener('focus', onFocus);
+            }
+        } catch {
+            // Swallow exception due to component unmount race condition.
         }
     }
 
-    protected /* static */ removeFocusListenerFromComponent(component: FocusableComponentInternal, onFocus: () => void): void {
-        const el = ReactDOM.findDOMNode(component) as HTMLElement|null;
-        if (el) {
-            el.removeEventListener('focus', onFocus);
+    protected removeFocusListenerFromComponent(component: FocusableComponentInternal, onFocus: () => void): void {
+        try {
+            const el = ReactDOM.findDOMNode(component) as HTMLElement|null;
+            if (el) {
+                el.removeEventListener('focus', onFocus);
+            }
+        } catch {
+            // Swallow exception due to component unmount race condition.
         }
     }
 
-    protected /* static */ focusComponent(component: FocusableComponentInternal): boolean {
-        const el = ReactDOM.findDOMNode(component) as HTMLElement|null;
-        if (el && el.focus) {
-            FocusManager.setLastFocusedProgrammatically(el);
-            el.focus();
-            return true;
+    protected focusComponent(component: FocusableComponentInternal): boolean {
+        try {
+            const el = ReactDOM.findDOMNode(component) as HTMLElement|null;
+            if (el && el.focus) {
+                FocusManager.setLastFocusedProgrammatically(el);
+                el.focus();
+                return true;
+            }
+        } catch {
+            // Swallow exception due to component unmount race condition.
         }
         return false;
     }
@@ -367,11 +379,15 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
 
     if (origFocus) {
         Component.prototype.focus = function () {
-            const el = ReactDOM.findDOMNode(this) as HTMLElement|null;
-            if (el) {
-                FocusManager.setLastFocusedProgrammatically(el);
+            try {
+                const el = ReactDOM.findDOMNode(this) as HTMLElement|null;
+                if (el) {
+                    FocusManager.setLastFocusedProgrammatically(el);
+                }
+            } catch {
+                // Swallow exception due to component unmount race condition.
             }
-
+    
             origFocus.apply(this, arguments);
         };
     }

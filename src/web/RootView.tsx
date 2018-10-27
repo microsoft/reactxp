@@ -85,7 +85,7 @@ if (typeof document !== 'undefined') {
     const style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(defaultBoxSizing));
-    document.head.appendChild(style);
+    document.head!.appendChild(style);
 }
 
 export interface MainViewContext {
@@ -387,9 +387,14 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     }
 
     private _determineIfClickOnElement(elementReference: React.Component<any, any>, eventSource: Element|null|undefined): boolean {
-        const element = ReactDOM.findDOMNode(elementReference) as HTMLElement|null;
-        const isClickOnElement = !!element && !!eventSource && element.contains(eventSource);
-        return isClickOnElement;
+        try {
+            const element = ReactDOM.findDOMNode(elementReference) as HTMLElement|null;
+            const isClickOnElement = !!element && !!eventSource && element.contains(eventSource);
+            return isClickOnElement;
+        } catch {
+            // Exception is due to race condition with unmounting.
+            return false;
+        }
     }
 
     private _onMouseDownCapture = (e: MouseEvent) => {
@@ -600,7 +605,12 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             return;
         }
 
-        let anchor = ReactDOM.findDOMNode(anchorComponent) as HTMLElement|null;
+        let anchor: HTMLElement|null = null;
+        try {
+            anchor = ReactDOM.findDOMNode(anchorComponent) as HTMLElement|null;
+        } catch {
+            anchor = null;
+        }
 
         // If the anchor has disappeared, dismiss the popup.
         if (!anchor) {

@@ -9,7 +9,6 @@
 
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 
 import { applyFocusableComponentMixin } from './utils/FocusManager';
 import { Button as ButtonBase } from '../common/Interfaces';
@@ -59,7 +58,7 @@ export class Button extends ButtonBase {
         hasRxButtonAscendant: PropTypes.bool
     };
 
-    private _isMounted = false;
+    private _mountedButton: HTMLButtonElement|null = null;
     private _lastMouseDownEvent: Types.SyntheticEvent|undefined;
     private _ignoreClick = false;
     private _longPressTimer: number|undefined;
@@ -92,6 +91,7 @@ export class Button extends ButtonBase {
         // NOTE: We use tabIndex=0 to support focus.
         return (
             <button
+                ref={ this._onMount }
                 style={ this._getStyles() as any }
                 role={ ariaRole }
                 title={ this.props.title }
@@ -122,41 +122,33 @@ export class Button extends ButtonBase {
     }
 
     componentDidMount() {
-        this._isMounted = true;
-
         if (this.props.autoFocus) {
             this.requestFocus();
         }
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
     }
 
     requestFocus() {
         FocusArbitratorProvider.requestFocus(
             this,
             () => this.focus(),
-            () => this._isMounted
+            () => this._mountedButton !== null
         );
     }
 
     focus() {
-        if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLButtonElement|null;
-            if (el) {
-                el.focus();
-            }
+        if (this._mountedButton) {
+            this._mountedButton.focus();
         }
     }
 
     blur() {
-        if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLButtonElement|null;
-            if (el) {
-                el.blur();
-            }
+        if (this._mountedButton) {
+            this._mountedButton.blur();
         }
+    }
+
+    private _onMount = (ref: HTMLButtonElement|null) => {
+        this._mountedButton = ref;
     }
 
     protected onClick = (e: Types.MouseEvent) => {

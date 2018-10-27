@@ -35,19 +35,23 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, Typ
         let delay = 0;
         if (edits.removed.length > 0 && this.props.animateChildLeave) {
             edits.removed.forEach(function (move) {
-                let domNode = ReactDOM.findDOMNode(move.element) as HTMLElement|null;
-                if (domNode) {
-                    domNode.style.transform = 'translateY(' + -move.topDelta + 'px)';
+                try {
+                    let domNode = ReactDOM.findDOMNode(move.element) as HTMLElement|null;
+                    if (domNode) {
+                        domNode.style.transform = 'translateY(' + -move.topDelta + 'px)';
 
-                    counter++;
-                    executeTransition(domNode, [{
-                        property: 'opacity',
-                        from: 1,
-                        to: 0,
-                        delay: delay,
-                        duration: 150,
-                        timing: 'linear'
-                    }], animationCompleted);
+                        counter++;
+                        executeTransition(domNode, [{
+                            property: 'opacity',
+                            from: 1,
+                            to: 0,
+                            delay: delay,
+                            duration: 150,
+                            timing: 'linear'
+                        }], animationCompleted);
+                    }
+                } catch {
+                    // Exception probably due to race condition in unmounting. Ignore.
                 }
             });
             delay += 75;
@@ -56,16 +60,21 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, Typ
         if (edits.moved.length > 0 && this.props.animateChildMove) {
             edits.moved.forEach(function (move) {
                 counter++;
-                let domNode = ReactDOM.findDOMNode(move.element) as HTMLElement|null;
-                if (domNode) {
-                    executeTransition(domNode, [{
-                        property: 'transform',
-                        from: 'translateY(' + -move.topDelta + 'px)',
-                        to: '',
-                        delay: delay,
-                        duration: 300,
-                        timing: 'ease-out'
-                    }], animationCompleted);
+
+                try {
+                    let domNode = ReactDOM.findDOMNode(move.element) as HTMLElement|null;
+                    if (domNode) {
+                        executeTransition(domNode, [{
+                            property: 'transform',
+                            from: 'translateY(' + -move.topDelta + 'px)',
+                            to: '',
+                            delay: delay,
+                            duration: 300,
+                            timing: 'ease-out'
+                        }], animationCompleted);
+                    }
+                } catch {
+                    // Exception probably due to race condition in unmounting. Ignore.
                 }
             });
         }
@@ -74,16 +83,21 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, Typ
         if (edits.added.length > 0 && this.props.animateChildEnter) {
             edits.added.forEach(function (move) {
                 counter++;
-                let domNode = ReactDOM.findDOMNode(move.element) as HTMLElement|null;
-                if (domNode) {
-                    executeTransition(domNode, [{
-                        property: 'opacity',
-                        from: 0,
-                        to: 1,
-                        delay: delay,
-                        duration: 150,
-                        timing: 'linear'
-                    }], animationCompleted);
+
+                try {
+                    let domNode = ReactDOM.findDOMNode(move.element) as HTMLElement|null;
+                    if (domNode) {
+                        executeTransition(domNode, [{
+                            property: 'opacity',
+                            from: 0,
+                            to: 1,
+                            delay: delay,
+                            duration: 150,
+                            timing: 'linear'
+                        }], animationCompleted);
+                    }
+                } catch {
+                    // Exception probably due to race condition in unmounting. Ignore.
                 }
             });
         }

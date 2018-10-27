@@ -9,7 +9,6 @@
 
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import { Text as TextBase, Types } from '../common/Interfaces';
@@ -25,7 +24,7 @@ if (typeof document !== 'undefined') {
     const style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(textAsPseudoElement));
-    document.head.appendChild(style);
+    document.head!.appendChild(style);
 }
 
 const _styles = {
@@ -66,7 +65,7 @@ export class Text extends TextBase {
         isRxParentAText: PropTypes.bool.isRequired
     };
 
-    private _isMounted = false;
+    private _mountedText: HTMLDivElement|null = null;
 
     getChildContext() {
         // Let descendant Types components know that their nearest Types ancestor is an Types.Text.
@@ -86,6 +85,7 @@ export class Text extends TextBase {
         if (this.props.selectable || typeof this.props.children !== 'string') {
             return (
                 <div
+                    ref={ this._onMount }
                     style={ this._getStyles() as any }
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
@@ -102,6 +102,7 @@ export class Text extends TextBase {
             // will be displayed as pseudo element.
             return (
                 <div
+                    ref={ this._onMount }
                     style={ this._getStyles() as any }
                     aria-hidden={ isAriaHidden }
                     onClick={ this.props.onPress }
@@ -115,18 +116,16 @@ export class Text extends TextBase {
     }
 
     componentDidMount() {
-        this._isMounted = true;
-
         if (this.props.autoFocus) {
             this.requestFocus();
         }
     }
 
-    componentWillUnmount() {
-        this._isMounted = false;
+    private _onMount = (ref: HTMLDivElement|null) => {
+        this._mountedText = ref;
     }
 
-    _getStyles(): Types.TextStyleRuleSet {
+    private _getStyles(): Types.TextStyleRuleSet {
         // There's no way in HTML to properly handle numberOfLines > 1,
         // but we can correctly handle the common case where numberOfLines is 1.
         let combinedStyles = Styles.combine([this.props.numberOfLines === 1 ?
@@ -156,11 +155,8 @@ export class Text extends TextBase {
     }
 
     blur() {
-        if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLDivElement|null;
-            if (el) {
-                el.blur();
-            }
+        if (this._mountedText) {
+            this._mountedText.blur();
         }
     }
 
@@ -168,16 +164,13 @@ export class Text extends TextBase {
         FocusArbitratorProvider.requestFocus(
             this,
             () => this.focus(),
-            () => this._isMounted
+            () => this._mountedText !== null
         );
     }
 
     focus() {
-        if (this._isMounted) {
-            const el = ReactDOM.findDOMNode(this) as HTMLDivElement|null;
-            if (el) {
-                el.focus();
-            }
+        if (this._mountedText) {
+            this._mountedText.focus();
         }
     }
 

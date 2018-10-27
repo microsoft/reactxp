@@ -8,7 +8,6 @@
  */
 
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 
 import * as _ from './utils/lodashMini';
 import * as RX from '../common/Interfaces';
@@ -233,9 +232,8 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                 this._customScrollbar = undefined;
             }
 
-            let element = ReactDOM.findDOMNode(this) as HTMLElement|null;
-            if (element) {
-                this._customScrollbar = new CustomScrollbar(element);
+            if (this._mountedComponent) {
+                this._customScrollbar = new CustomScrollbar(this._mountedComponent);
                 const horizontalHidden = (props.horizontal && props.showsHorizontalScrollIndicator === false);
                 const verticalHidden = (props.vertical && props.showsVerticalScrollIndicator === false);
                 this._customScrollbar.init({
