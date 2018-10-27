@@ -16,6 +16,22 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.5.0-rc.1 of reactxp - _27 Oct 2018_
+New functionality:
+* #848: Added support for RTL (right-to-left) change event on native platforms.
+* #843: Added new AlertOption preventDismissOnPress.
+* #847: Added support for Animated.Event, which allows animations to be associated with scroll events.
+* #868: Added support for placeholder text color on web platform.
+Bug fixes:
+* #833: Eliminated rerender of app when mousing over popups.
+* #846: Disabled mouse gestures in main view when a modal dialog is overlaying the main view.
+* #854: Removed draggable="false" in web implementation of View, since this is the default value.
+* #853: Emulate cache-control: max stale on iOS.
+* #869: Eliminate excess focus calls.
+* #877 and #875: Fixed crashes relating to popups due to race condition in unmounting.
+* #873: Fixed scroll view focus issue on MacOS.
+* Fixed several "hanging promises" that didn't properly deal with error conditions.
+
 #### Version 1.4.0 of reactxp - _30 Sep 2018_
 * Added the ability to programmatically retrieve the text selection for RX.Text (if selectable attribute is true). Includes test cases in RXPTest sample.
 * Added drag and drop capabilities to RX.View (including onDragStart, onDrag, onDragEnd props). Includes test cases in RXPTest sample.
