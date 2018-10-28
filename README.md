@@ -28,7 +28,7 @@ or
 npx create-rx-app AppName
 ```
 
-By Default the project will be created in TypeScript. However if you prefer JavaScript instead, add `-J` or `--javascript` when creating the project.
+By Default the project will be created in TypeScript. However if you prefer JavaScript instead, add `--javascript` when creating the project.
 
 This will create a directory called **AppName** inside the current working directory. Inside **AppName**, this will generate the initial project structure and install all of its dependencies. Once this installation is done, there are some commands you can run in the project directory:
 
@@ -37,7 +37,7 @@ This will create a directory called **AppName** inside the current working direc
 - `npm run start:ios` - runs the iOS version of the app and attempts to open in the iOS Simulator if you're on a Mac and have it installed
 - `npm run start:android` - runs the Android version of the app and attempts to open your app on a connected Android device or emulator
 - `npm run start:windows` - runs the Windows version of the app
-- `npm start` - runs react native (RN) development server
+- `npm start:rn-dev-server` - runs react native (RN) development server
 
 ### Prerequisites
 * [Node.Js](https://nodejs.org/) ([Setup Instructions](https://nodejs.org/en/download/package-manager/))
