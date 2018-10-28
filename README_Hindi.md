@@ -27,16 +27,16 @@ create-rx-app AppName
 ```sh
 npx create-rx-app AppName
 ```
-शुरुवात में प्रोजेक्ट TypeScript में उपलब्ध किया जाता hai. लेकिन अगर आपको JavaScript में  करना हो तोह प्रोजेक्ट बनाते समय `-J` या फिर `--javascript` का  उपयोग  करें.
+शुरुवात में प्रोजेक्ट TypeScript में उपलब्ध किया जाता hai. लेकिन अगर आपको JavaScript में  करना हो तोह प्रोजेक्ट बनाते समय फिर `--javascript` का  उपयोग  करें.
 
 ये **AppName** नाम का डायरेक्टरी बनाएगा वर्किंग डायरेक्टरी में. **AppName** के अंदर शुरुवाती प्रोजेक्ट का आकार बना हुआ रहेगा और सारे dependencies इनस्टॉल किये हुए रहेंगे. इंस्टालेशन ख़तम होने के बाद निचे दिए हुए कुछ commands आप रन कर सकते है प्रोजेक्ट डायरेक्टरी में :
 
 - `npm run start:web` - ऍप के Web version को development mode में run करने के लिए
 - `npm run build:web` - ऍप के Web version को बनता है production के लिए **dist-web** फोल्डर में
-- `npm run start:ios` - ऍप के iOS version को run करके iOS Simulator में खोलके की कोशिश करता है अगर आप Mac इस्तेमाल कर रहे हो और उसमे इनस्टॉल किया हुआ हो 
+- `npm run start:ios` - ऍप के iOS version को run करके iOS Simulator में खोलके की कोशिश करता है अगर आप Mac इस्तेमाल कर रहे हो और उसमे इनस्टॉल किया हुआ हो
 - `npm run start:android` - ऍप के Android version को run करके आपके ऍप को connected Android device या फिर emulator पर खोलने के कोशिश करता है
 - `npm run start:windows` - ऍप के Windows version को run करता है
-- `npm start` - React native (RN) development server run करता है
+- `npm start:rn-dev-server` - React native (RN) development server run करता है
 
 ### Prerequisites
 * [Node.Js](https://nodejs.org/) ([Setup Instructions](https://nodejs.org/en/download/package-manager/))
