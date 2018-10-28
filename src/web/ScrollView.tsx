@@ -8,6 +8,7 @@
  */
 
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import CustomScrollbar from './CustomScrollbar';
 import * as RX from '../common/Interfaces';
@@ -232,8 +233,9 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                 this._customScrollbar = undefined;
             }
 
-            if (this._mountedComponent) {
-                this._customScrollbar = new CustomScrollbar(this._mountedComponent);
+            const element = ReactDOM.findDOMNode(this) as HTMLElement | null;
+            if (element) {
+                this._customScrollbar = new CustomScrollbar(element);
                 const horizontalHidden = (props.horizontal && props.showsHorizontalScrollIndicator === false);
                 const verticalHidden = (props.vertical && props.showsVerticalScrollIndicator === false);
                 this._customScrollbar.init({

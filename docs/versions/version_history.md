@@ -16,6 +16,9 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.5.0-rc.2 of reactxp - _28 Oct 2018_
+* Fixed regression introduced recently in web version of ScrollView.
+
 #### Version 1.5.0-rc.1 of reactxp - _27 Oct 2018_
 New functionality:
 * #848: Added support for RTL (right-to-left) change event on native platforms.

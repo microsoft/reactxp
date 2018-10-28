@@ -367,13 +367,13 @@ export class Scrollbar {
     private _addListeners() {
         if (this._hasVertical) {
             this._verticalBar.slider!.addEventListener('mousedown', this._startDragVCallback);
-            this._verticalBar.rail!.addEventListener('wheel', this._handleWheelCallback);
+            this._verticalBar.rail!.addEventListener('wheel', this._handleWheelCallback, { passive: true });
             this._verticalBar.rail!.addEventListener('mousedown', this._handleMouseDownCallback);
         }
 
         if (this._hasHorizontal) {
             this._horizontalBar.slider!.addEventListener('mousedown', this._startDragHCallback);
-            this._horizontalBar.rail!.addEventListener('wheel', this._handleWheelCallback);
+            this._horizontalBar.rail!.addEventListener('wheel', this._handleWheelCallback, { passive: true });
             this._horizontalBar.rail!.addEventListener('mousedown', this._handleMouseDownCallback);
         }
     }
