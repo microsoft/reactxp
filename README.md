@@ -28,7 +28,7 @@ or
 npx create-rx-app AppName
 ```
 
-By Default the project will be created in TypeScript. However if you prefer JavaScript instead, add `--javascript` when creating the project.
+By default the project will be created in TypeScript. However if you prefer JavaScript instead, add `--javascript` when creating the project.
 
 This will create a directory called **AppName** inside the current working directory. Inside **AppName**, this will generate the initial project structure and install all of its dependencies. Once this installation is done, there are some commands you can run in the project directory:
 
