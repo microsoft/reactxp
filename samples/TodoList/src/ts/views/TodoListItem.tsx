@@ -62,7 +62,7 @@ const _styles = {
     })
 };
 
-export default class TodoManagementView extends ComponentBase<TodoListItemProps, TodoListItemState> {
+export default class TodoListItem extends ComponentBase<TodoListItemProps, TodoListItemState> {
     protected _buildState(props: TodoListItemProps, initState: boolean): Partial<TodoListItemState> | undefined {
         let partialState: Partial<TodoListItemState> = {
             heightStyle: RX.Styles.createViewStyle({
