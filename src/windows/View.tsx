@@ -429,7 +429,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             // This FocusManager instance can restrict/limit the controls it tracks.
             // The count of keyboard focusable controls is relatively low, yet the "accessible focusable" (by screen reader) one can
             // trigger performance issues.
-            // One way to narrow down to a manageable set is to ignore "accessible focusable" controls that are children of keyboard
+            // One way to narrow down to a manageable set is to ignore "accessible focusable" controls that are children of
             // focusable controls, as long as they are tracked by same FocusManager .
             childContext.isRxParentAFocusableInSameFocusManager = false;
         }
@@ -447,7 +447,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             childContext.isRxParentAContextMenuResponder = !!this.props.onContextMenu;
         }
 
-        if (isKeyboardFocusable(this.props.tabIndex)) {
+        if (this.props.tabIndex !== undefined) {
             // This button will hide other "accessible focusable" controls as part of being restricted/limited by a focus manager
             childContext.isRxParentAFocusableInSameFocusManager = true;
         }
@@ -597,15 +597,10 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 }
 
-// This keeps the conditional function in the mixin and View behavior in sync
-function isKeyboardFocusable(tabIndex: number | undefined) : boolean {
-    return tabIndex !== undefined && tabIndex >= 0;
-}
-
-// A value for tabIndex marks a View as being potentially keyboard focusable
+// A value for tabIndex marks a View as being potentially keyboard/screen reader focusable
 applyFocusableComponentMixin(View, function(this: View, nextProps?: Types.ViewProps) {
     const tabIndex = nextProps && ('tabIndex' in nextProps) ? nextProps.tabIndex : this.props.tabIndex;
-    return isKeyboardFocusable(tabIndex);
+    return tabIndex !== undefined;
 });
 
 export default View;

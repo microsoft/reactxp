@@ -86,7 +86,8 @@ export class FocusManager extends FocusManagerBase {
                 !storedComponent.removed &&
                 !storedComponent.restricted &&
                 !storedComponent.limitedCount &&
-                !storedComponent.limitedCountAccessible);
+                !storedComponent.limitedCountAccessible &&
+                ((storedComponent.component.props.tabIndex || 0) >= 0));
 
         if (focusable.length) {
             focusable.sort((a, b) => {
