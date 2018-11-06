@@ -19,7 +19,7 @@ export interface VirtualListCellProps<ItemInfo extends VirtualListCellInfo> exte
     onLayout?: (itemKey: string, height: number) => void;
     onAnimateStartStop?: (itemKey: string, start: boolean) => void;
     onCellFocus?: (itemKey: string|undefined) => void;
-    renderItem: (item: ItemInfo|undefined, focused?: boolean) => JSX.Element | JSX.Element[];
+    renderItem: (item: ItemInfo, focused: boolean) => JSX.Element | JSX.Element[];
 
     // Props that do not impact render (position is set by animated style).
     itemKey: string|undefined;
@@ -46,7 +46,7 @@ interface StaticRendererProps<ItemInfo extends VirtualListCellInfo> extends RX.C
     isFocused: boolean;
     style: RX.Types.StyleRuleSetRecursive<RX.Types.AnimatedViewStyleRuleSet | RX.Types.ViewStyleRuleSet>;
     item: ItemInfo|undefined;
-    renderItem: (item: ItemInfo|undefined, focused: boolean) => JSX.Element | JSX.Element[];
+    renderItem: (item: ItemInfo, focused: boolean) => JSX.Element | JSX.Element[];
 }
 
 const _styles = {
@@ -81,6 +81,11 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
         }
 
         render() {
+            // If we don't have an item to render, return null here
+            if (!this.props.item) {
+                return null;
+            }
+
             // Because of the React limitation that Render should returm single element and not array,
             // we have to wrap results of this.props.render() into the View.
             return (
