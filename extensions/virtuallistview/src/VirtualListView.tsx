@@ -345,6 +345,15 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             if (!(item.key in newItemMap)) {
                 // If we're deleting an item that's above the current render block,
                 // update the adjustment so we avoid an unnecessary scroll.
+                
+                // Update focused item if it's the one removed, if we're unable to, reset focus
+                if (item.key === this.state.lastFocusedItemKey) {
+                    if (!this._selectSubsequentItem(FocusDirection.Down, false) &&
+                            !this._selectSubsequentItem(FocusDirection.Down, false)) {
+                        this.setState({ lastFocusedItemKey: undefined });
+                    }
+                }
+
                 if (itemIndex < this._itemsAboveRenderBlock) {
                     this._heightAboveRenderAdjustment += this._getHeightOfItem(oldItems[itemIndex]);
                 }
@@ -1080,7 +1089,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             let isFocused = false;
             if (cell.item) {
                 if (cell.item && cell.item.isNavigable) {
-                    if (!this._isMounted && cell.itemIndex === 0) {
+                    if (this.state.lastFocusedItemKey === undefined && cell.itemIndex === 0) {
                         tabIndexValue = 0;
                     } else {
                         tabIndexValue = cell.item.key === this.state.lastFocusedItemKey ? 0 : -1;
@@ -1193,13 +1202,14 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         }
     }
 
-    private _selectSubsequentItem(direction: FocusDirection, retry = true) {
+    // Returns true if successfully found/focused, false if not found/focused
+    private _selectSubsequentItem(direction: FocusDirection, retry = true): boolean {
         let index = _.findIndex(this._navigatableItemsRendered, item => item.key === this.state.lastFocusedItemKey);
 
         if (index !== -1 && index + direction > -1 && index + direction < this._navigatableItemsRendered.length) {
             let newElementForFocus = this.refs[this._navigatableItemsRendered[index + direction].vc_key] as VirtualListCell;
             newElementForFocus.focus();
-            return;
+            return true;
         }
 
         if (index === -1 && retry) {
@@ -1207,13 +1217,15 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
 
             if (index === undefined) {
                 assert.ok(false, 'Something went wrong in finding last focused item');
-                return;
+                return false;
             }
 
             const height = index === 0 ? 0 : this._calcHeightOfItems(this.props, 0, index - 1);
             this.scrollToTop(false, height);
             this._pendingFocusDirection = direction;
+            return true;
         }
+        return false;
     }
 
     private _screenReaderStateChanged = (isEnabled: boolean) => {
