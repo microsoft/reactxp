@@ -349,7 +349,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
                 // Update focused item if it's the one removed, if we're unable to, reset focus
                 if (item.key === this.state.lastFocusedItemKey) {
                     if (!this._selectSubsequentItem(FocusDirection.Down, false) &&
-                            !this._selectSubsequentItem(FocusDirection.Down, false)) {
+                            !this._selectSubsequentItem(FocusDirection.Up, false)) {
                         this.setState({ lastFocusedItemKey: undefined });
                     }
                 }
