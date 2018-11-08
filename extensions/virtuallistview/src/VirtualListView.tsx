@@ -137,6 +137,10 @@ const _styles = {
     })
 };
 
+const _isNativeAndroid = RX.Platform.getType() === 'android';
+const _isNativeIOS = RX.Platform.getType() === 'ios';
+const _isNativeMacOs = RX.Platform.getType() === 'macos';
+
 // How many items with unknown heights will we allow? A larger value will fill the view more
 // quickly but will result in a bunch of long-running work that can cause frame skips during
 // animations.
@@ -144,7 +148,8 @@ const _maxSimultaneousMeasures = 16;
 
 // Recycled cells remain mounted to reduce the allocations and deallocations.
 // This value controls how many we maintain before culling.
-const _maxRecycledCells = 50;
+// Disable cell recycling on MacOs to ensure keyboard accessibility works
+const _maxRecycledCells = _isNativeMacOs ? 0 : 50;
 
 const _maxRecycledCellsForAccessibility = 0;
 
@@ -152,9 +157,6 @@ const _scrollViewRef = 'scrollview';
 
 const _virtualKeyPrefix = 'vc_';
 const _accessibilityVirtualKeyPrefix = 'ac_';
-
-const _isNativeAndroid = RX.Platform.getType() === 'android';
-const _isNativeIOS = RX.Platform.getType() === 'ios';
 
 // Key codes used on web
 const _keyCodeUpArrow = 38;
