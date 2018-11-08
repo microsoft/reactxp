@@ -12,8 +12,10 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
 
+import { MacComponentAccessibilityProps } from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
 import Animated from './Animated';
+import App from '../native-common/App';
 import AppConfig from '../common/AppConfig';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
@@ -36,7 +38,7 @@ const _styles = {
     })
 };
 
-const _isMacOs = Platform.getType() === 'macos';
+const _isNativeMacOs = Platform.getType() === 'macos';
 
 const _defaultAccessibilityTrait = Types.AccessibilityTrait.Button;
 const _defaultImportantForAccessibility = Types.ImportantForAccessibility.Yes;
@@ -89,8 +91,6 @@ export class Button extends ButtonBase {
     touchableHandleResponderMove!: (e: RN.GestureResponderEvent) => void;
     touchableHandleResponderRelease!: (e: RN.GestureResponderEvent) => void;
     touchableHandleResponderTerminate!: (e: RN.GestureResponderEvent) => void;
-
-    static supportsKeyboardNavigation = false;
 
     protected _isMounted = false;
     protected _isMouseOver = false;
@@ -168,17 +168,11 @@ export class Button extends ButtonBase {
         };
 
         // Mac RN requires some addition props for button accessibility
-        if (_isMacOs && Button.supportsKeyboardNavigation) {
+        if (_isNativeMacOs && App.supportsExperimentalKeyboardNavigation && this.props.onPress) {
             // Cast to the object that mac expects to indirectly mutate extendedProps
-            const macExtendedProps = extendedProps as any as {
-                onClick?: (e: Types.SyntheticEvent) => void;
-                acceptsKeyboardFocus: boolean;
-                enableFocusRing: boolean;
-            };
-            if (this.props.onPress) {
-                macExtendedProps.onClick = this.touchableHandlePress;
-            }
-            macExtendedProps.acceptsKeyboardFocus = this._hasPressHandler();
+            const macExtendedProps: MacComponentAccessibilityProps = extendedProps as any;
+            macExtendedProps.onClick = this.touchableHandlePress;
+            macExtendedProps.acceptsKeyboardFocus = true;
             macExtendedProps.enableFocusRing = true;
         }
 

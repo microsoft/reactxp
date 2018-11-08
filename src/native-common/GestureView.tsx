@@ -13,10 +13,13 @@ import * as assert from 'assert';
 import * as React from 'react';
 import * as RN from 'react-native';
 
+import { MacComponentAccessibilityProps } from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
+import App from '../native-common/App';
 import EventHelpers from './utils/EventHelpers';
 import { Types } from '../common/Interfaces';
 import { isUndefined } from './utils/lodashMini';
+import Platform from './Platform';
 import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
 import ViewBase from './ViewBase';
@@ -39,6 +42,7 @@ const _doubleTapDurationThreshold = 250;
 const _doubleTapPixelThreshold = 20;
 
 const _defaultImportantForAccessibility = Types.ImportantForAccessibility.Yes;
+const _isNativeMacOs = Platform.getType() === 'macos';
 
 export abstract class GestureView extends React.Component<Types.GestureViewProps, Types.Stateless> {
     private _panResponder: RN.PanResponderInstance;
@@ -550,7 +554,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         return panEvent;
     }
 
-    private _sendTapEvent(e: Types.TouchEvent) {
+    private _sendTapEvent = (e: Types.TouchEvent) => {
         const button = EventHelpers.toMouseButton(e);
         if (button === 2) {
             // Always handle secondary button, even if context menu is not set - it shouldn't trigger onTap.
@@ -611,6 +615,12 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         const accessibilityTrait = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
         const accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(this.props.accessibilityTraits);
 
+        const macAccessibilityProps: MacComponentAccessibilityProps | undefined =
+            _isNativeMacOs && App.supportsExperimentalKeyboardNavigation ? {
+                acceptsKeyboardFocus: this.props.onTap ? true : undefined,
+                enableFocusRing: this.props.onTap ? true : undefined,
+                onClick: this.props.onTap ? this._sendTapEvent : undefined
+            } : undefined;
         return (
             <RN.View
                 style={ [ViewBase.getDefaultViewStyle(), this.props.style] as RN.StyleProp<RN.ViewStyle> }
@@ -619,7 +629,8 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
                 accessibilityComponentType={ accessibilityComponentType }
                 accessibilityLabel={ this.props.accessibilityLabel }
                 testID={ this.props.testId }
-                { ...this._panResponder.panHandlers }
+                {...this._panResponder.panHandlers}
+                {...macAccessibilityProps}
             >
                 {this.props.children}
             </RN.View>
