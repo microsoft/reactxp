@@ -78,10 +78,10 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
     // We use the override traits if they are present, else use the default trait.
     // If ensureDefaultTrait is true, ensure the return result contains the defaultTrait.
     accessibilityTraitToString(overrideTraits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined,
-        defaultTrait?: Types.AccessibilityTrait, ensureDefaultTrait?: boolean): RN.AccessibilityTrait[] {
+        defaultTrait?: Types.AccessibilityTrait, ensureDefaultTrait?: boolean): RN.AccessibilityTrait[] | undefined {
         // Check if there are valid override traits. Use them or else fallback to default traits.
         if (!overrideTraits && !defaultTrait) {
-            return [];
+            return undefined;
         }
 
         let traits : (Types.AccessibilityTrait | undefined)[];
