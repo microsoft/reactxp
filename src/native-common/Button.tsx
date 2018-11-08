@@ -19,6 +19,7 @@ import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
 import { Button as ButtonBase, Types } from '../common/Interfaces';
 import { isEqual } from './utils/lodashMini';
+import Platform from './Platform';
 import Styles from './Styles';
 import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
@@ -34,6 +35,8 @@ const _styles = {
         opacity: 0.5
     })
 };
+
+const _isMacOs = Platform.getType() === 'macos';
 
 const _defaultAccessibilityTrait = Types.AccessibilityTrait.Button;
 const _defaultImportantForAccessibility = Types.ImportantForAccessibility.Yes;
@@ -86,6 +89,8 @@ export class Button extends ButtonBase {
     touchableHandleResponderMove!: (e: RN.GestureResponderEvent) => void;
     touchableHandleResponderRelease!: (e: RN.GestureResponderEvent) => void;
     touchableHandleResponderTerminate!: (e: RN.GestureResponderEvent) => void;
+
+    static supportsKeyboardNavigation = false;
 
     protected _isMounted = false;
     protected _isMouseOver = false;
@@ -161,6 +166,21 @@ export class Button extends ButtonBase {
             shouldRasterizeIOS: this.props.shouldRasterizeIOS,
             testID: this.props.testId
         };
+
+        // Mac RN requires some addition props for button accessibility
+        if (_isMacOs && Button.supportsKeyboardNavigation) {
+            // Cast to the object that mac expects to indirectly mutate extendedProps
+            const macExtendedProps = extendedProps as any as {
+                onClick?: (e: Types.SyntheticEvent) => void;
+                acceptsKeyboardFocus: boolean;
+                enableFocusRing: boolean;
+            };
+            if (this.props.onPress) {
+                macExtendedProps.onClick = this.touchableHandlePress;
+            }
+            macExtendedProps.acceptsKeyboardFocus = this._hasPressHandler();
+            macExtendedProps.enableFocusRing = true;
+        }
 
         return this._render(extendedProps, this._onMount);
     }
