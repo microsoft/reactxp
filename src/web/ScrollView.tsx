@@ -273,6 +273,9 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                 onTouchStart={ this._onTouchStart }
                 onTouchEnd={ this._onTouchEnd }
                 style={ this._getContainerStyle() as any }
+                onKeyDown={ this.props.onKeyPress }
+                onFocus={ this.props.onFocus }
+                onBlur={ this.props.onBlur }
                 data-test-id={ this.props.testId }
             >
                 { this.props.children }
