@@ -46,6 +46,8 @@ export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewP
 }
 
 export abstract class App {
+    supportsExperimentalKeyboardNavigation = false;
+
     // Initialization
     initialize(debug: boolean, development: boolean): void {
         AppConfig.setAppConfig(debug, development);

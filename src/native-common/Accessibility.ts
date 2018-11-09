@@ -11,6 +11,13 @@ import * as RN from 'react-native';
 
 import { Accessibility as CommonAccessibility } from '../common/Accessibility';
 import AppConfig from '../common/AppConfig';
+import { Types } from '../common/Interfaces';
+
+export interface MacComponentAccessibilityProps {
+    onClick?: (e: Types.SyntheticEvent) => void;
+    acceptsKeyboardFocus?: true;
+    enableFocusRing?: true;
+}
 
 export class Accessibility extends CommonAccessibility {
     protected _isScreenReaderEnabled = false;
