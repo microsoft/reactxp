@@ -8,6 +8,7 @@
         "target": "es5",
         "outDir": "dist/",
         "skipLibCheck": true,
+        "strict": true,
         "lib": [
             "es5",
             "dom"

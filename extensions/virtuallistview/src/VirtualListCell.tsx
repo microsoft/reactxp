@@ -14,15 +14,15 @@ export interface VirtualListCellInfo {
     key: string;
 }
 
-export interface VirtualListCellProps extends RX.CommonProps {
+export interface VirtualListCellProps<ItemInfo extends VirtualListCellInfo> extends RX.CommonProps {
     // All callbacks should be prebound to optimize performance.
-    onLayout: (itemKey: string, height: number) => void;
+    onLayout?: (itemKey: string, height: number) => void;
     onAnimateStartStop?: (itemKey: string, start: boolean) => void;
-    onCellFocus?: (itemKey: string) => void;
-    renderItem: (item: VirtualListCellInfo, focused: boolean) => JSX.Element | JSX.Element[];
+    onCellFocus?: (itemKey: string|undefined) => void;
+    renderItem: (item: ItemInfo, focused: boolean) => JSX.Element | JSX.Element[];
 
     // Props that do not impact render (position is set by animated style).
-    itemKey: string;
+    itemKey: string|undefined;
     left: number;
     top: number;
     width: number;
@@ -38,15 +38,15 @@ export interface VirtualListCellProps extends RX.CommonProps {
     isFocused: boolean;
     tabIndex?: number;
     shouldUpdate: boolean;
-    item: VirtualListCellInfo;
+    item: ItemInfo|undefined;
 }
 
-interface StaticRendererProps extends RX.CommonProps {
+interface StaticRendererProps<ItemInfo extends VirtualListCellInfo> extends RX.CommonProps {
     shouldUpdate: boolean;
     isFocused: boolean;
     style: RX.Types.StyleRuleSetRecursive<RX.Types.AnimatedViewStyleRuleSet | RX.Types.ViewStyleRuleSet>;
-    item: VirtualListCellInfo;
-    renderItem: (item: VirtualListCellInfo, focused: boolean) => JSX.Element | JSX.Element[];
+    item: ItemInfo|undefined;
+    renderItem: (item: ItemInfo, focused: boolean) => JSX.Element | JSX.Element[];
 }
 
 const _styles = {
@@ -66,20 +66,26 @@ const _skypeEaseInAnimationCurve = RX.Animated.Easing.CubicBezier(1, 0, 0.78, 1)
 const _skypeEaseOutAnimationCurve = RX.Animated.Easing.CubicBezier(0.33, 0, 0, 1);
 const _virtualCellRef = 'virtualCell';
 
-export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
+export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Component<VirtualListCellProps<ItemInfo>, RX.Stateless> {
     // Helper class used to render child elements inside RX.Animated.View only when parent
     // allows that. If we know that none of the children changed - we would like to skip
     // the render completely, to improve performance.
-    private static StaticRenderer = class extends RX.Component<StaticRendererProps, null> {
-        constructor(props?: StaticRendererProps) {
+    private static StaticRenderer = class <CellItemInfo extends VirtualListCellInfo> extends
+            RX.Component<StaticRendererProps<CellItemInfo>, RX.Stateless> {
+        constructor(props: StaticRendererProps<CellItemInfo>) {
             super(props);
         }
 
-        shouldComponentUpdate(nextProps: StaticRendererProps): boolean {
+        shouldComponentUpdate(nextProps: StaticRendererProps<CellItemInfo>): boolean {
             return nextProps.shouldUpdate || this.props.isFocused !== nextProps.isFocused;
         }
 
         render() {
+            // If we don't have an item to render, return null here
+            if (!this.props.item) {
+                return null;
+            }
+
             // Because of the React limitation that Render should returm single element and not array,
             // we have to wrap results of this.props.render() into the View.
             return (
@@ -104,11 +110,11 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
     // but native driver doesnt support width
     private _animatedStylePosition: RX.Types.AnimatedViewStyleRuleSet;
     private _animatedStyleWidth: RX.Types.AnimatedViewStyleRuleSet;
-    private _topAnimation: RX.Types.Animated.CompositeAnimation;
+    private _topAnimation: RX.Types.Animated.CompositeAnimation|undefined;
 
-    private _itemKey = '';
+    private _itemKey: string|undefined;
 
-    constructor(props?: VirtualListCellProps) {
+    constructor(props: VirtualListCellProps<ItemInfo>) {
         super(props);
 
         this._isVisible = props.isVisible;
@@ -146,7 +152,7 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
         });
     }
 
-    componentWillReceiveProps(nextProps: VirtualListCellProps) {
+    componentWillReceiveProps(nextProps: VirtualListCellProps<ItemInfo>) {
         // If it's inactive, it had better be invisible.
         assert.ok(nextProps.isActive || !nextProps.isVisible);
 
@@ -178,7 +184,7 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
         }
     }
 
-    shouldComponentUpdate(nextProps: VirtualListCellProps): boolean {
+    shouldComponentUpdate(nextProps: VirtualListCellProps<ItemInfo>): boolean {
         // No need to update inactive (recycled) cells.
         if (!nextProps.isActive) {
             return false;
@@ -194,10 +200,10 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
         return nextProps.shouldUpdate;
     }
 
-    componentDidUpdate(prevProps: VirtualListCellProps) {
+    componentDidUpdate(prevProps: VirtualListCellProps<ItemInfo>) {
         // We need to simulate a layout event here because recycled cells may not
         // generate a layout event if the cell contents haven't changed.
-        if (this.props.onLayout && this.props.isActive && this._calculatedHeight) {
+        if (this.props.onLayout && this.props.isActive && this._calculatedHeight && this._itemKey) {
             this.props.onLayout(this._itemKey, this._calculatedHeight);
         }
     }
@@ -242,7 +248,7 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
                     // times. If we're not replacing the animation with another animation,
                     // allow the onAnimateStartStop to proceed.
                     if (animate) {
-                        this._topAnimation = null;
+                        this._topAnimation = undefined;
                     }
                     animationToCancel.stop();
                     isReplacingPendingAnimation = true;
@@ -272,14 +278,14 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
                         });
                     }
 
-                    if (!isReplacingPendingAnimation) {
+                    if (!isReplacingPendingAnimation && this.props.onAnimateStartStop && this._itemKey) {
                         this.props.onAnimateStartStop(this._itemKey, true);
                     }
                     this._topAnimation.start(() => {
                         // Has the animation been canceled?
                         if (this._topAnimation) {
-                            this._topAnimation = null;
-                            if (this.props.onAnimateStartStop) {
+                            this._topAnimation = undefined;
+                            if (this.props.onAnimateStartStop && this._itemKey) {
                                 this.props.onAnimateStartStop(this._itemKey, false);
                             }
                         }
@@ -297,7 +303,7 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
         }
     }
 
-    setItemKey(key: string) {
+    setItemKey(key: string|undefined) {
         this._itemKey = key;
     }
 
@@ -343,12 +349,12 @@ export class VirtualListCell extends RX.Component<VirtualListCellProps, null> {
 
     private _onBlur = (e: RX.Types.FocusEvent) => {
         if (this.props.onCellFocus) {
-            this.props.onCellFocus(null);
+            this.props.onCellFocus(undefined);
         }
     }
 
     private _onLayout = (layoutInfo: RX.Types.ViewOnLayoutEvent) => {
-        if (this.props.onLayout && this.props.isActive) {
+        if (this.props.onLayout && this.props.isActive && this._itemKey) {
             this._calculatedHeight = layoutInfo.height;
             this.props.onLayout(this._itemKey, layoutInfo.height);
         }
