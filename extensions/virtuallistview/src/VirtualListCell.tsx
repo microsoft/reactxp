@@ -327,8 +327,8 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
                 ref={ _virtualCellRef }
                 tabIndex={ this.props.tabIndex }
                 onLayout={ this.props.onLayout ? this._onLayout : undefined }
-                onFocus={ this._onFocus ? this._onFocus : undefined }
-                onBlur={ this._onBlur ? this._onBlur : undefined }
+                onFocus={ this.props.onCellFocus ? this._onFocus : undefined }
+                onBlur={ this.props.onCellFocus ? this._onBlur : undefined }
             >
                 <VirtualListCell.StaticRenderer
                     shouldUpdate={ this.props.shouldUpdate }
