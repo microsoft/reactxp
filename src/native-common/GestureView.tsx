@@ -629,8 +629,8 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
                 accessibilityComponentType={ accessibilityComponentType }
                 accessibilityLabel={ this.props.accessibilityLabel }
                 testID={ this.props.testId }
-                {...this._panResponder.panHandlers}
-                {...macAccessibilityProps}
+                { ...this._panResponder.panHandlers }
+                { ...macAccessibilityProps }
             >
                 {this.props.children}
             </RN.View>
