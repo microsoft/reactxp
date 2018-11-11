@@ -16,6 +16,16 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.5.0-rc.1 of reactxp-virtuallistview - _11 Nov 2018_
+* #899: Fix web accessibility
+* #902: Mac accessibility improvements (keyboard focus).
+
+#### Version 1.5.0-rc.3 of reactxp - _11 Nov 2018_
+* #898: Ensure taht onKeyDown/Focus/Blur events are sent from ScrollView.
+* #895: On Windows, make FocusManager track View instances with negative tabIndex.
+* #901: Optimization on native platforms: when there are no accessibilityTraits, don't create an additional unneeded array.
+* #902: Mac accessibility improvements (keyboard focus).
+
 #### Version 1.5.0-rc.2 of reactxp - _28 Oct 2018_
 * Fixed regression introduced recently in web version of ScrollView.
 
