@@ -103,7 +103,7 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     private _focusArbitratorProvider: FocusArbitratorProvider | undefined;
 
     private _resizeDetectorAnimationFrame: number | undefined;
-    private _resizeDetectorNodes: { grow?: HTMLElement; shrink?: HTMLElement } = {};
+    private _resizeDetectorNodes: { grow?: HTMLDivElement; shrink?: HTMLDivElement } = {};
 
     private _popupContainer: PopupContainerView | undefined;
     private _popupToken: PopupComponent | undefined;
@@ -155,35 +155,14 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
             return null;
         }
 
-        const initResizer = (key: 'grow' | 'shrink', ref: any) => {
-            const cur: HTMLElement | undefined = this._resizeDetectorNodes[key];
-            let element: HTMLElement | null = null;
-
-            try {
-                element = ReactDOM.findDOMNode(ref) as HTMLElement | null;
-            } catch {
-                // Swallow exception due to component unmount race condition.
-            }
-
-            if (cur) {
-                delete this._resizeDetectorNodes[key];
-            }
-
-            if (element) {
-                this._resizeDetectorNodes[key] = element;
-            }
-
-            this._resizeDetectorOnScroll();
-        };
-
         return [
             (
                 <div
                     key={ 'grow' }
                     style={ _styles.resizeDetectorContainerStyles as any }
-                    ref={ref => initResizer('grow', ref) }
-                    onScroll={ () => this._resizeDetectorOnScroll() }>
-
+                    ref={ this._onResizeDetectorGrowRef }
+                    onScroll={ this._resizeDetectorOnScroll }
+                >
                     <div style={ _styles.resizeGrowDetectorStyles as any } />
                 </div>
             ),
@@ -191,13 +170,23 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
                 <div
                     key={ 'shrink' }
                     style={ _styles.resizeDetectorContainerStyles as any }
-                    ref={ref => initResizer('shrink', ref) }
-                    onScroll={ () => this._resizeDetectorOnScroll() }>
-
+                    ref={ this._onResizeDetectorShrinkRef }
+                    onScroll={ this._resizeDetectorOnScroll }
+                >
                     <div style={ _styles.resizeShrinkDetectorStyles as any } />
                 </div>
             )
         ];
+    }
+
+    private _onResizeDetectorGrowRef = (node: HTMLDivElement | null) => {
+        this._resizeDetectorNodes.grow = node || undefined;
+        this._resizeDetectorOnScroll();
+    }
+
+    private _onResizeDetectorShrinkRef = (node: HTMLDivElement | null) => {
+        this._resizeDetectorNodes.shrink = node || undefined;
+        this._resizeDetectorOnScroll();
     }
 
     private _resizeDetectorReset() {
@@ -221,18 +210,19 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
         }
     }
 
-    private _resizeDetectorOnScroll() {
+    private _resizeDetectorOnScroll = () => {
         if (this._resizeDetectorAnimationFrame) {
             // Do not execute action more often than once per animation frame.
             return;
         }
 
         this._resizeDetectorAnimationFrame = window.requestAnimationFrame(() => {
-            this._resizeDetectorReset();
-            this._resizeDetectorAnimationFrame = undefined;
-            ViewBase._checkViews();
+            if (this._isMounted) {
+                this._resizeDetectorReset();
+                this._resizeDetectorAnimationFrame = undefined;
+                ViewBase._checkViews();
+            }
         });
-
     }
 
     getChildContext() {
