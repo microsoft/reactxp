@@ -74,7 +74,7 @@ export class Accessibility extends NativeAccessibility {
 
         const postedAnnouncement = this._announcementQueue[0];
         // Handle retries if it's the announcement we posted. Drop other announcements.
-        if (payload.announcement === postedAnnouncement) {
+        if (this._compareRawAnnouncements(postedAnnouncement, payload.announcement)) {
             const timeElapsed = Date.now() - this._retryTimestamp;
 
             if (!payload.success && timeElapsed < RetryTimeout) {
@@ -88,6 +88,11 @@ export class Accessibility extends NativeAccessibility {
                 }
             }
         }
+    }
+
+    private _compareRawAnnouncements(postedAnnouncement: string, payloadAnnouncement: string): boolean {
+        const spacesCommasRegExp = /[s,]/g; // special regex for iOS 12
+        return payloadAnnouncement.replace(spacesCommasRegExp, '') === postedAnnouncement.replace(spacesCommasRegExp, '')
     }
 }
 
