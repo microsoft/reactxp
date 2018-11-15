@@ -43,6 +43,7 @@ export class EventHelpers {
                         break;
 
                     case 'Enter':
+                    case 'ENTER':
                         keyCode = 13;
                         break;
 
@@ -126,30 +127,36 @@ export class EventHelpers {
                         break;
 
                     case 'PageUp':
+                    case 'PAGE_UP':
                         keyCode = 92;
                         break;
 
                     case 'PageDown':
+                    case 'PAGE_DOWN':
                         keyCode = 93;
                         break;
 
                     case 'Left':
                     case 'ArrowLeft':
+                    case 'LEFT_ARROW':
                         keyCode = 21;
                         break;
 
                     case 'Up':
                     case 'ArrowUp':
+                    case 'UP_ARROW':
                         keyCode = 19;
                         break;
 
                     case 'Right':
                     case 'ArrowRight':
+                    case 'RIGHT_ARROW':
                         keyCode = 22;
                         break;
 
                     case 'Down':
                     case 'ArrowDown':
+                    case 'DOWN_ARROW':
                         keyCode = 20;
                         break;
 
