@@ -17,7 +17,7 @@ export class ScrollView extends ScrollViewBase {
     protected _render(nativeProps: RN.ScrollViewProps & React.Props<RN.ScrollView>): JSX.Element {
         const onKeyDownCallback = this.props.onKeyPress ? this._onKeyDown : undefined;
 
-        // Have to hack the windows-specific onKeyDown into the props here.
+        // Have to hack the OSX-specific onKeyDown into the props here.
         const updatedNativeProps: any = {
             ...nativeProps,
             onKeyDown: onKeyDownCallback
