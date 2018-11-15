@@ -569,7 +569,9 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless, RN.View> {
     }
 
     blur() {
-        // Nothing to do.
+        if (this._nativeComponent && this._nativeComponent.blur) {
+            this._nativeComponent.blur();
+        }
     }
 
     requestFocus() {
@@ -583,6 +585,17 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless, RN.View> {
     focus() {
         if (this._isMounted) {
             AccessibilityUtil.setAccessibilityFocus(this);
+        }
+        if (this._nativeComponent) {
+            if (this._nativeComponent.focus) {
+                this._nativeComponent.focus();
+            } else if ((this._nativeComponent as any)._component) {
+                // Components can be wrapped by RN.Animated implementation, peek at the inner workings here
+                const innerComponent = (this._nativeComponent as any)._component;
+                if (innerComponent && innerComponent.focus) {
+                    innerComponent.focus();
+                }
+            }
         }
     }
 }

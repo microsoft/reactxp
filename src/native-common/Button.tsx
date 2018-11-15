@@ -286,12 +286,17 @@ export class Button extends ButtonBase {
     }
 
     blur() {
-         // native mobile platforms doesn't have the notion of blur for buttons, so ignore.
+        if (this._buttonElement && this._buttonElement.blur) {
+            this._buttonElement.blur();
+        }
     }
 
     focus() {
         if (this._isMounted) {
             AccessibilityUtil.setAccessibilityFocus(this);
+        }
+        if (this._buttonElement && this._buttonElement.focus) {
+            this._buttonElement.focus();
         }
     }
 
