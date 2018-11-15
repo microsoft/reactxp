@@ -216,8 +216,6 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
 // focus
 // setScrollLeft
 // setScrollTop
-// addToScrollLeft
-// addToScrollTop
 
 class ScrollViewTest implements Test {
     useFullScreenContainer = true;
