@@ -327,7 +327,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
         }
     }
 
-    private _saveRef(reactElement: any, refValue: React.Component<any, any>) {
+    private _saveRef(reactElement: any, refValue: React.Component<any, any> | null) {
         if (refValue === null) {
             delete this._itemRefs[reactElement.key];
         } else {

@@ -42,7 +42,7 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
         isRxParentAText: PropTypes.bool.isRequired
     };
 
-    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any> | null = null;
+    protected _mountedComponent: RN.Text | undefined;
 
     // To be able to use Text inside TouchableHighlight/TouchableOpacity
     setNativeProps(nativeProps: RN.TextProps) {
@@ -60,7 +60,7 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
         return (
             <RN.Text
                 style={ this._getStyles() as RN.StyleProp<RN.TextStyle> }
-                ref={ this._onMount as any }
+                ref={ this._onMount }
                 importantForAccessibility={ importantForAccessibility }
                 numberOfLines={ this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
@@ -82,8 +82,8 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
         }
     }
 
-    protected _onMount = (component: any) => {
-        this._mountedComponent = component;
+    protected _onMount = (component: RN.Text | null) => {
+        this._mountedComponent = component || undefined;
     }
 
     protected _getExtendedProperties(): RN.ExtendedTextProps {

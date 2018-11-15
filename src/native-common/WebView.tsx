@@ -23,7 +23,7 @@ const _styles = {
 type MixedContentMode = 'never' | 'always' | 'compatibility' | undefined;
 
 export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Stateless> implements RX.WebView {
-    private _mountedComponent: RN.WebView | null = null;
+    private _mountedComponent: RN.WebView | undefined;
 
     render() {
         const styles = [_styles.webViewDefault, this.props.style] as RN.StyleProp<RN.ViewStyle>;
@@ -70,8 +70,8 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
         return 'never';
     }
 
-    protected _onMount = (component: RN.WebView) => {
-        this._mountedComponent = component;
+    protected _onMount = (component: RN.WebView | null) => {
+        this._mountedComponent = component || undefined;
     }
 
     protected _onMessage = (e: RN.NativeSyntheticEvent<RN.WebViewMessageEventData>) => {

@@ -30,7 +30,7 @@ export class LinkBase<S> extends React.Component<RX.Types.LinkProps, S> {
 
     context!: LinkContext;
 
-    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any> | null = null;
+    protected _mountedComponent: RN.Text | undefined;
     protected _isMounted = false;
 
     // To be able to use Link inside TouchableHighlight/TouchableOpacity
@@ -68,14 +68,14 @@ export class LinkBase<S> extends React.Component<RX.Types.LinkProps, S> {
         this._isMounted = false;
     }
 
-    protected _render(internalProps: RN.TextProps, onMount: (text: any) => void) {
+    protected _render(internalProps: RN.TextProps, onMount: (text: RN.Text | null) => void) {
         return (
             <RN.Text { ...internalProps } ref={ onMount }/>
         );
     }
 
-    protected _onMount = (component: any) => {
-        this._mountedComponent = component;
+    protected _onMount = (component: RN.Text | null) => {
+        this._mountedComponent = component || undefined;
     }
 
     protected _onPress = (e: RX.Types.SyntheticEvent) => {

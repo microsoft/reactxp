@@ -95,7 +95,7 @@ export class Button extends ButtonBase {
     protected _isMounted = false;
     protected _isMouseOver = false;
     protected _isHoverStarted = false;
-    protected _buttonElement: any = null;
+    protected _buttonElement: RN.View | undefined;
 
     private _hideTimeout: number | undefined;
     private _defaultOpacityValue: number | undefined;
@@ -120,7 +120,7 @@ export class Button extends ButtonBase {
         }
     }
 
-    protected _render(internalProps: RN.ViewProps, onMount: (btn: any) => void): JSX.Element {
+    protected _render(internalProps: RN.ViewProps, onMount: (btn: RN.View | null) => void): JSX.Element {
         return (
             <RN.Animated.View { ...internalProps } ref={ onMount }>
                 { this.props.children }
@@ -138,7 +138,7 @@ export class Button extends ButtonBase {
             _defaultAccessibilityTrait);
 
         const opacityStyle = !this.props.disableTouchOpacityAnimation && this._opacityAnimatedStyle;
-        let disabledStyle = this.props.disabled && _styles.disabled;
+        let disabledStyle = this.props.disabled ? _styles.disabled : undefined;
 
         if (this.props.disabled && this.props.disabledOpacity !== undefined) {
             disabledStyle = Styles.createButtonStyle({
@@ -306,8 +306,8 @@ export class Button extends ButtonBase {
         }
     }
 
-    private _onMount = (btn: any): void => {
-        this._buttonElement = btn;
+    private _onMount = (btn: RN.View | null): void => {
+        this._buttonElement = btn || undefined;
     }
 
     private _isTouchFeedbackApplicable() {
