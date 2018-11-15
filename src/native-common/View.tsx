@@ -343,17 +343,20 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
             accessibilityComponentType: AccessibilityUtil.accessibilityComponentTypeToString(props.accessibilityTraits),
             accessibilityLiveRegion: AccessibilityUtil.accessibilityLiveRegionToString(props.accessibilityLiveRegion)
         };
-        if (_isNativeMacOs && App.supportsExperimentalKeyboardNavigation && (this.props.onPress ||
-                (this.props.tabIndex !== undefined && this.props.tabIndex >= 0))) {
+
+        if (_isNativeMacOs && App.supportsExperimentalKeyboardNavigation) {
             const macAccessibilityProps: MacComponentAccessibilityProps = accessibilityProps as any;
-            if (this.props.tabIndex !== -1) {
+
+            if (this.props.tabIndex !== undefined && this.props.tabIndex >= 0) {
                 macAccessibilityProps.acceptsKeyboardFocus = true;
                 macAccessibilityProps.enableFocusRing = true;
             }
+
             if (this.props.onPress) {
                 macAccessibilityProps.onClick = this.props.onPress;
             }
         }
+
         this._internalProps = extend(this._internalProps, accessibilityProps);
 
         if (props.onLayout) {
@@ -362,10 +365,8 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
 
         if (props.blockPointerEvents) {
             this._internalProps.pointerEvents = 'none';
-        } else {
-            if (props.ignorePointerEvents) {
-                this._internalProps.pointerEvents = 'box-none';
-            }
+        } else if (props.ignorePointerEvents) {
+            this._internalProps.pointerEvents = 'box-none';
         }
 
         const baseStyle = this._getStyles(props);
@@ -422,14 +423,11 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     }
 
     private _setOpacityTo(value: number, duration: number) {
-       Animated.timing(
-            this._opacityAnimatedValue!,
-            {
-                toValue: value,
-                duration: duration,
-                easing: Animated.Easing.InOut()
-            }
-        ).start();
+        Animated.timing(this._opacityAnimatedValue!, {
+            toValue: value,
+            duration: duration,
+            easing: Animated.Easing.InOut()
+        }).start();
     }
 
     private _showUnderlay() {

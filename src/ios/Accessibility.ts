@@ -92,7 +92,7 @@ export class Accessibility extends NativeAccessibility {
 
     private _compareRawAnnouncements(postedAnnouncement: string, payloadAnnouncement: string): boolean {
         const spacesCommasRegExp = /[\s,]/g; // special regex for iOS 12
-        return payloadAnnouncement.replace(spacesCommasRegExp, '') === postedAnnouncement.replace(spacesCommasRegExp, '')
+        return payloadAnnouncement.replace(spacesCommasRegExp, '') === postedAnnouncement.replace(spacesCommasRegExp, '');
     }
 }
 
