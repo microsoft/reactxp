@@ -37,7 +37,7 @@ import NetworkImpl from '../native-common/Network';
 import PickerImpl from '../native-common/Picker';
 import PlatformImpl from '../native-common/Platform';
 import PopupImpl from '../native-common/Popup';
-import ScrollViewImpl from './native-desktop/ScrollView';
+import ScrollViewImpl from '../native-desktop/ScrollView';
 import StatusBarImpl from './StatusBar';
 import StorageImpl from '../native-common/Storage';
 import StylesImpl from '../native-common/Styles';
