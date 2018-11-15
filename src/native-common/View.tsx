@@ -343,11 +343,16 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
             accessibilityComponentType: AccessibilityUtil.accessibilityComponentTypeToString(props.accessibilityTraits),
             accessibilityLiveRegion: AccessibilityUtil.accessibilityLiveRegionToString(props.accessibilityLiveRegion)
         };
-        if (_isNativeMacOs && App.supportsExperimentalKeyboardNavigation && this.props.onPress) {
+        if (_isNativeMacOs && App.supportsExperimentalKeyboardNavigation && (this.props.onPress ||
+                (this.props.tabIndex !== undefined && this.props.tabIndex >= 0))) {
             const macAccessibilityProps: MacComponentAccessibilityProps = accessibilityProps as any;
-            macAccessibilityProps.acceptsKeyboardFocus = true;
-            macAccessibilityProps.enableFocusRing = true;
-            macAccessibilityProps.onClick = this.props.onPress;
+            if (this.props.tabIndex !== -1) {
+                macAccessibilityProps.acceptsKeyboardFocus = true;
+                macAccessibilityProps.enableFocusRing = true;
+            }
+            if (this.props.onPress) {
+                macAccessibilityProps.onClick = this.props.onPress;
+            }
         }
         this._internalProps = extend(this._internalProps, accessibilityProps);
 
