@@ -12,12 +12,12 @@ import * as RN from 'react-native';
 import * as RX from '../common/Interfaces';
 import { isEqual } from './utils/lodashMini';
 
-export abstract class ViewBase<P extends RX.Types.ViewProps, S> extends RX.ViewBase<P, S> {
+export abstract class ViewBase<P extends RX.Types.ViewProps, S, T extends RN.View | RN.ScrollView> extends RX.ViewBase<P, S> {
     private static _defaultViewStyle: RX.Types.ViewStyleRuleSet | undefined;
     private _layoutEventValues: RX.Types.ViewOnLayoutEvent | undefined;
 
     abstract render(): JSX.Element;
-    protected _nativeView: RN.View | undefined;
+    protected _nativeComponent: T | undefined;
 
     static setDefaultViewStyle(defaultViewStyle: RX.Types.ViewStyleRuleSet) {
         ViewBase._defaultViewStyle = defaultViewStyle;
@@ -29,13 +29,15 @@ export abstract class ViewBase<P extends RX.Types.ViewProps, S> extends RX.ViewB
 
     // To be able to use View inside TouchableHighlight/TouchableOpacity
     setNativeProps(nativeProps: RN.ViewProps) {
-        if (this._nativeView) {
-            this._nativeView.setNativeProps(nativeProps);
+        // We know that View and ScrollView both has setNative props even if the typings don't exist
+        const nativeComponent = this._nativeComponent as any as RN.ReactNativeBaseComponent<any, any> | null;
+        if (nativeComponent && nativeComponent.setNativeProps) {
+            nativeComponent.setNativeProps(nativeProps);
         }
     }
 
-    protected _setNativeView = (view: any | undefined) => {
-        this._nativeView = view;
+    protected _setNativeComponent = (view: T | null) => {
+        this._nativeComponent = view || undefined;
     }
 
     protected _getStyles(props: RX.Types.ViewProps) {

@@ -46,7 +46,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     private _selectionToSet: Selection | undefined;
     private _selection: Selection = { start: 0, end: 0 };
-    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any> | null = null;
+    protected _mountedComponent: RN.TextInput | undefined;
 
     constructor(props: Types.TextInputProps, context: TextInputContext) {
         super(props, context);
@@ -71,7 +71,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
     }
 
-    protected _render(props: RN.TextInputProps, onMount: (textInput: any) => void): JSX.Element {
+    protected _render(props: RN.TextInputProps, onMount: (textInput: RN.TextInput | null) => void): JSX.Element {
         return (
             <RN.TextInput { ...props } ref={ onMount } />
         );
@@ -125,8 +125,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         return this._render(internalProps, this._onMount);
     }
 
-    protected _onMount = (component: RN.ReactNativeBaseComponent<any, any> | null) => {
-        this._mountedComponent = component;
+    protected _onMount = (component: RN.TextInput | null) => {
+        this._mountedComponent = component || undefined;
     }
 
     private _onFocus = (e: Types.FocusEvent) => {

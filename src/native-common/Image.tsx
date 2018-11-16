@@ -62,7 +62,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
         });
     }
 
-    protected _mountedComponent: RN.Image | null = null;
+    protected _mountedComponent: RN.Image | undefined;
     private _nativeImageWidth: number | undefined;
     private _nativeImageHeight: number | undefined;
     readonly state: ImageState = { forceCache: false, lastNativeError: undefined, headers: this._buildHeaders() };
@@ -127,7 +127,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
     }
 
     protected _onMount = (component: RN.Image | null) => {
-        this._mountedComponent = component;
+        this._mountedComponent = component || undefined;
     }
 
     setNativeProps(nativeProps: RN.ImageProps) {

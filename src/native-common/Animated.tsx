@@ -34,7 +34,7 @@ export const CommonAnimatedClasses: AnimatedClasses = {
 let animatedClasses: AnimatedClasses = CommonAnimatedClasses;
 
 class AnimatedWrapper<P, T> extends RX.AnimatedComponent<P, T> {
-    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any> | null | undefined;
+    protected _mountedComponent: RN.ReactNativeBaseComponent<any, any> | undefined;
 
     setNativeProps(props: P) {
         if (this._mountedComponent && this._mountedComponent.setNativeProps) {
@@ -64,7 +64,7 @@ class AnimatedWrapper<P, T> extends RX.AnimatedComponent<P, T> {
     }
 
     protected _onMount = (component: RN.ReactNativeBaseComponent<any, any> | null) => {
-        this._mountedComponent = component;
+        this._mountedComponent = component || undefined;
     }
 }
 

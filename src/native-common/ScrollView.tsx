@@ -17,10 +17,9 @@ import ViewBase from './ViewBase';
 //   causes you to have to click twice instead of once on some pieces of UI in
 //   order for the UI to acknowledge your interaction.
 const overrideKeyboardShouldPersistTaps = RN.Platform.OS === 'macos' || RN.Platform.OS === 'windows';
-export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stateless> implements RX.ScrollView {
+export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stateless, RN.ScrollView> implements RX.ScrollView {
     private _scrollTop = 0;
     private _scrollLeft = 0;
-    protected _nativeView: any;
 
     protected _render(nativeProps: RN.ScrollViewProps & React.Props<RN.ScrollView>): JSX.Element {
         if (this.props.scrollXAnimatedValue || this.props.scrollYAnimatedValue) {
@@ -95,7 +94,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         // we use are virtualized anyway.
 
         const internalProps: RN.ScrollViewProps & React.Props<RN.ScrollView> = {
-            ref: this._setNativeView,
+            ref: this._setNativeComponent,
             // Bug in react-native.d.ts.  style should be "style?: StyleProp<ScrollViewStyle>;" but instead is ViewStyle.
             style: this.props.style as any,
             onScroll: scrollHandler,
@@ -138,15 +137,15 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
     }
 
     setScrollTop(scrollTop: number, animate?: boolean): void {
-        if (this._nativeView) {
-            this._nativeView.scrollTo(
+        if (this._nativeComponent) {
+            this._nativeComponent.scrollTo(
                 { x: this._scrollLeft, y: scrollTop, animated: animate });
         }
     }
 
     setScrollLeft(scrollLeft: number, animate?: boolean): void {
-        if (this._nativeView) {
-            this._nativeView.scrollTo(
+        if (this._nativeComponent) {
+            this._nativeComponent.scrollTo(
                 { x: scrollLeft, y: this._scrollTop, animated: animate });
         }
     }
