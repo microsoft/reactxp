@@ -6,8 +6,10 @@
   "license": "MIT",
   "scripts": {
     "build": "npm run tslint && tsc",
+    "build-release": "npm run tslint-release && tsc",
     "watch": "npm run tslint && tsc --watch",
-    "tslint": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
+    "tslint": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true",
+    "tslint-release": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib"
   },
   "dependencies": {
     "@types/react": "16.3.18",
