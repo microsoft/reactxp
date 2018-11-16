@@ -382,22 +382,6 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         }
     }
 
-    addToScrollTop(deltaTop: number, animate: boolean): void {
-        const container = this._getContainer();
-        if (!container) {
-            return;
-        }
-        this.setScrollTop(container.scrollTop + deltaTop, animate);
-    }
-
-    addToScrollLeft(deltaLeft: number, animate: boolean): void {
-        const container = this._getContainer();
-        if (!container) {
-            return;
-        }
-        this.setScrollLeft(container.scrollLeft + deltaLeft, animate);
-    }
-
     private _easeInOut(currentTime: number, start: number, change: number, duration: number) {
         currentTime /= duration / 2;
         if (currentTime < 1) {

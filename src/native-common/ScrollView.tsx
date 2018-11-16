@@ -151,20 +151,6 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         }
     }
 
-    addToScrollTop(deltaTop: number, animate?: boolean): void {
-        if (this._nativeView) {
-            this._nativeView.scrollBy(
-                { deltaX: 0, deltaY: deltaTop, animated: animate });
-        }
-    }
-
-    addToScrollLeft(deltaLeft: number, animate?: boolean): void {
-        if (this._nativeView) {
-            this._nativeView.scrollBy(
-                { deltaX: deltaLeft, deltaY: 0, animated: animate });
-        }
-    }
-
     static useCustomScrollbars() {
         // not needed
     }

@@ -215,8 +215,6 @@ export interface ScrollViewConstructor {
 export interface ScrollView extends React.Component<Types.ScrollViewProps> {
     setScrollTop(scrollTop: number, animate?: boolean): void;
     setScrollLeft(scrollLeft: number, animate?: boolean): void;
-    addToScrollTop(deltaTop: number, animate?: boolean): void;
-    addToScrollLeft(deltaLeft: number, animate?: boolean): void;
 }
 
 export abstract class StatusBar {
