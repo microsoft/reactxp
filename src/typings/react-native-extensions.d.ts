@@ -31,6 +31,13 @@ declare module 'react-native' {
         tabIndex?: number;
     }
 
+    interface ExtendedDesktopScrollViewProps extends RN.ScrollViewProps, React.Props<RN.ScrollView> {
+        onKeyDown?: (e: React.SyntheticEvent) => void;
+        // Windows-only props
+        tabNavigation?: 'local' | 'cycle' | 'once';
+        disableKeyboardBasedScrolling?: true;
+    }
+
     interface ExtendedImageProps extends RN.ImageProps {
         tooltip?: string;
     }

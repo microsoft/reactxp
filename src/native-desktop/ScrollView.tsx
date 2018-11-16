@@ -14,20 +14,13 @@ import EventHelpers from '../native-common/utils/EventHelpers';
 import { ScrollView as ScrollViewBase } from '../native-common/ScrollView';
 
 type ScrollViewProps = RN.ScrollViewProps & React.Props<RN.ScrollView>;
-interface DesktopScrollViewProps extends ScrollViewProps {
-    onKeyDown?: (e: React.SyntheticEvent) => void;
-    // Windows-only props
-    tabNavigation?: 'local' | 'cycle' | 'once';
-    disableKeyboardBasedScrolling?: true;
-}
 
 const isNativeWindows = RN.Platform.OS === 'windows';
 
 export class ScrollView extends ScrollViewBase {
-
     protected _render(nativeProps: ScrollViewProps): JSX.Element {
         // Have to hack the windows/osx-specific onKeyDown into the props here.
-        const updatedNativeProps: DesktopScrollViewProps = nativeProps as any;
+        const updatedNativeProps: RN.ExtendedDesktopScrollViewProps = nativeProps;
         if (this.props.onKeyPress) {
             updatedNativeProps.onKeyDown = this._onKeyDown;
         }
