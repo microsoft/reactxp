@@ -343,15 +343,15 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless, RN.View> {
             accessibilityComponentType: AccessibilityUtil.accessibilityComponentTypeToString(props.accessibilityTraits),
             accessibilityLiveRegion: AccessibilityUtil.accessibilityLiveRegionToString(props.accessibilityLiveRegion)
         };
-        if (_isNativeMacOs && App.supportsExperimentalKeyboardNavigation && (this.props.onPress ||
-                (this.props.tabIndex !== undefined && this.props.tabIndex >= 0))) {
+        if (_isNativeMacOs && App.supportsExperimentalKeyboardNavigation && (props.onPress ||
+                (props.tabIndex !== undefined && props.tabIndex >= 0))) {
             const macAccessibilityProps: MacComponentAccessibilityProps = accessibilityProps as any;
-            if (this.props.tabIndex !== -1) {
+            if (props.tabIndex !== -1) {
                 macAccessibilityProps.acceptsKeyboardFocus = true;
                 macAccessibilityProps.enableFocusRing = true;
             }
-            if (this.props.onPress) {
-                macAccessibilityProps.onClick = this.props.onPress;
+            if (props.onPress) {
+                macAccessibilityProps.onClick = props.onPress;
             }
         }
         this._internalProps = extend(this._internalProps, accessibilityProps);
@@ -558,7 +558,9 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless, RN.View> {
     }
 
     blur() {
-        // Nothing to do.
+        if (this._nativeComponent && this._nativeComponent.blur) {
+            this._nativeComponent.blur();
+        }
     }
 
     requestFocus() {
@@ -572,6 +574,9 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless, RN.View> {
     focus() {
         if (this._isMounted) {
             AccessibilityUtil.setAccessibilityFocus(this);
+        }
+        if (this._nativeComponent && this._nativeComponent.focus) {
+            this._nativeComponent.focus();
         }
     }
 }
