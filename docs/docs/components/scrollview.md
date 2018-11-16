@@ -107,12 +107,6 @@ focus(): void;
 // position.
 setScrollLeft(scrollLeft: number, animate: boolean): void;
 setScrollTop(scrollTop: number, animate: boolean): void;
-
-// Adds a value to the current top or left position (measured in pixels) of the
-// viewport within the scroll view. Optionally animates from the current
-// position.
-addToScrollLeft(deltaLeft: number, animate: boolean): void;
-addToScrollTop(deltaTop: number, animate: boolean): void;
 ```
 
 
