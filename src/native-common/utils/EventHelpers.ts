@@ -199,6 +199,16 @@ export class EventHelpers {
                     case 'Number9':
                         keyCode = 57;
                         break;
+
+                    case 'Add':
+                    case '187':
+                        keyCode = 187;
+                        break;
+
+                    case 'Subtract':
+                    case '189':
+                        keyCode = 189;
+                        break;
                 }
             }
 
