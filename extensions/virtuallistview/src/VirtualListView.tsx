@@ -1092,12 +1092,26 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         // change, and perf suffers.
         cellList = cellList.sort((a, b) => a.cellInfo.virtualKey < b.cellInfo.virtualKey ? 1 : -1);
 
+        let focusIndex: number | undefined;
+        if (this.state.lastFocusedItemKey === undefined) {
+            const itemToFocus = _.minBy(cellList, cell => {
+                if (!cell.item || !cell.item.isNavigable) {
+                    return Number.MAX_VALUE;
+                }
+                return cell.itemIndex;
+            });
+
+            if (itemToFocus) {
+                focusIndex = itemToFocus.itemIndex;
+            }
+        }
+
         _.each(cellList, cell => {
             let tabIndexValue: number|undefined;
             let isFocused = false;
             if (cell.item) {
                 if (cell.item && cell.item.isNavigable) {
-                    if (this.state.lastFocusedItemKey === undefined && cell.itemIndex === 0) {
+                    if (cell.itemIndex === focusIndex) {
                         tabIndexValue = 0;
                     } else {
                         tabIndexValue = cell.item.key === this.state.lastFocusedItemKey ? 0 : -1;
