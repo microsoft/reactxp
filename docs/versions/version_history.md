@@ -16,6 +16,18 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.5.0-rc.4 of reactxp - _18 Nov 2018_
+* #909: Eliminated not-prebound callbacks in view resize detector on web (perf improvement).
+* #912: Fixed VoiceOver iOS 12 issue.
+* #913 and #923: Added key codes that are specific for MacOS.
+* #916: Added basic tabindex handling on views for MacOS.
+* #920: Removed deep comparison on every button prop change (perf improvement).
+* #917: Added onKeyDown support for MacOS ScrollView.
+* #922: Removed undocumented and broken (onRN) API: addToScrolLeft and addToScrollTop on RX.ScrollView.
+* #928: Fixed bug in _buildInternalProps of View relating to tabIndex.
+* #927: Fixed drag support on MacOS.
+* Added CONTRIBUTION guide.
+
 #### Version 1.5.0-rc.1 of reactxp-virtuallistview - _11 Nov 2018_
 * #899: Fix web accessibility
 * #902: Mac accessibility improvements (keyboard focus).
