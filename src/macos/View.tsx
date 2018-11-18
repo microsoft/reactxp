@@ -39,7 +39,7 @@ export class View extends ViewCommon {
                 if (name === 'onDragStart') {
                     this._internalProps.allowDrag = true;
                 }
-                
+
                 this._internalProps[name] = (e: React.SyntheticEvent<View>) => {
                     const dndEvent = EventHelpers.toDragEvent(e);
                     handler(dndEvent);
