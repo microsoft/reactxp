@@ -168,7 +168,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     }
 
     private _hasTrait(trait: Types.AccessibilityTrait, traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined) {
-        return traits === trait || (_.isArray(traits) && traits.indexOf(trait) !== -1);
+        return traits === trait || (Array.isArray(traits) && traits.indexOf(trait) !== -1);
     }
 
     private _showContextMenu(keyEvent: Types.KeyboardEvent) {

@@ -19,7 +19,6 @@ import findIndex = require('lodash/findIndex');
 import findLast = require('lodash/findLast');
 import flatten = require('lodash/flatten');
 import get = require('lodash/get');
-import isArray = require('lodash/isArray');
 import isEmpty = require('lodash/isEmpty');
 import isEqual = require('lodash/isEqual');
 import isNumber = require('lodash/isNumber');
@@ -50,7 +49,6 @@ export {
     findLast,
     flatten,
     get,
-    isArray,
     isEmpty,
     isEqual,
     isNumber,
