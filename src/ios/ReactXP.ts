@@ -141,6 +141,7 @@ module ReactXP {
 
 let _rxImplementsRxInterface: typeof RXModuleInterface.ReactXP = ReactXP;
 _rxImplementsRxInterface = _rxImplementsRxInterface;
+
 export = ReactXP;
 
 /*

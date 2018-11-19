@@ -31,6 +31,8 @@ export class Accessibility extends NativeAccessibility {
         if (RN.AccessibilityInfo) {
             // Subscribe to an event to get notified when an announcement will finish.
             RN.AccessibilityInfo.addEventListener('announcementFinished', this._recalcAnnouncement);
+            // Subscribe to clear queue depending on app state
+            RN.AppState.addEventListener('change', this._trackQueueStatus);
         }
     }
 
@@ -53,6 +55,13 @@ export class Accessibility extends NativeAccessibility {
             if (this._announcementQueue.length === 1) {
                 this._postAnnouncement(announcement);
             }
+        }
+    }
+
+    private _trackQueueStatus(newState: string) {
+        if (this._isScreenReaderEnabled && ['background', 'inactive'].indexOf(newState) >= 0) {
+            this._announcementQueue = [];
+            this._retryTimestamp = NaN;
         }
     }
 
