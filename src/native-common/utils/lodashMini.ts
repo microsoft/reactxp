@@ -13,7 +13,6 @@ import extend = require('lodash/extend');
 import filter = require('lodash/filter');
 import findIndex = require('lodash/findIndex');
 import findLast = require('lodash/findLast');
-import isArray = require('lodash/isArray');
 import isEqual = require('lodash/isEqual');
 import isUndefined = require('lodash/isUndefined');
 import last = require('lodash/last');
@@ -29,7 +28,6 @@ export {
     filter,
     findIndex,
     findLast,
-    isArray,
     isEqual,
     isUndefined,
     last,

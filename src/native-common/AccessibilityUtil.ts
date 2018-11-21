@@ -86,13 +86,13 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
 
         let traits : (Types.AccessibilityTrait | undefined)[];
         if (defaultTrait && ensureDefaultTrait) {
-            if (_.isArray(overrideTraits)) {
+            if (Array.isArray(overrideTraits)) {
                 traits = overrideTraits.indexOf(defaultTrait) === -1 ? overrideTraits.concat([defaultTrait]) : overrideTraits;
             } else {
                 traits = overrideTraits === defaultTrait ? [overrideTraits] : [overrideTraits, defaultTrait];
             }
         } else {
-            traits = _.isArray(overrideTraits) ? overrideTraits : [overrideTraits || defaultTrait];
+            traits = Array.isArray(overrideTraits) ? overrideTraits : [overrideTraits || defaultTrait];
         }
         return _.compact(_.map(traits, t  => t ? traitsMap[t] : undefined)) as RN.AccessibilityTrait[];
     }
@@ -107,7 +107,7 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
             return undefined;
         }
 
-        const combinedTraits = _.isArray(overrideTraits) ? overrideTraits : [overrideTraits || defaultTrait];
+        const combinedTraits = Array.isArray(overrideTraits) ? overrideTraits : [overrideTraits || defaultTrait];
         const maxTrait = _.max(_.filter(combinedTraits, t => componentTypeMap.hasOwnProperty(t as any)));
         return maxTrait ? componentTypeMap[maxTrait] : undefined;
     }
