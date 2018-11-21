@@ -143,6 +143,7 @@ module ReactXP {
     export import createElement = React.createElement;
     export import Children = React.Children;
     export let __spread = (React as any).__spread;
+    export import Fragment = React.Fragment;
 }
 
 // -- STRANGE THINGS GOING ON HERE --
