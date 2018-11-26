@@ -11,7 +11,6 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import EventHelpers from '../native-common/utils/EventHelpers';
 import { applyFocusableComponentMixin } from './utils/FocusManager';
 import { Types } from '../common/Interfaces';
 import Styles from './Styles';
@@ -156,11 +155,11 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
         }
     }
 
-    private _onContextMenu = (e: Types.SyntheticEvent) => {
+    private _onContextMenu = (e: React.MouseEvent<any>) => {
         if (this.props.onContextMenu) {
             e.stopPropagation();
             e.preventDefault();
-            this.props.onContextMenu(EventHelpers.toMouseEvent(e));
+            this.props.onContextMenu(e);
         }
     }
 }
