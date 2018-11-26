@@ -100,7 +100,9 @@ export abstract class AnimatedValue {
     abstract interpolate(config: InterpolationConfig): InterpolatedValue;
 }
 
-export abstract class InterpolatedValue {
+export declare abstract class InterpolatedValue {
+    private constructor();
+    abstract interpolate(config: InterpolationConfig): InterpolatedValue;
 }
 
 export interface AnimatedFlexboxStyle {
