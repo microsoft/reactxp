@@ -44,11 +44,22 @@ private isConnected: boolean;
 
 constructor() {
     // Query the initial connectivity state.
-    this.isConnected = RX.Network.isConnected();
+    this.isConnected = false;
+    RX.Network.isConnected().then(isConnected => {
+        this.isConnected = isConnected;
+    });
 
     RX.Network.connectivityChangedEvent.subscribe(isConnected => {
         // Update the connectivity state.
         this.isConnected = isConnected;
     });
 }
+```
+
+## Other Notes
+
+On Android, the following permission must be added to make use of the network interfaces.
+
+``` xml
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 ```
