@@ -368,6 +368,10 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless, RN.View> {
             }
         }
 
+        if (props.onKeyPress) {
+            this._internalProps.onKeyPress = this._onKeyPress;
+        }
+
         const baseStyle = this._getStyles(props);
         this._internalProps.style = baseStyle;
         if (this._mixinIsApplied) {
@@ -400,6 +404,13 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless, RN.View> {
             this._internalProps.style = Styles.combine([this._internalProps.style, safeInsetsStyle]);
         }
     }
+
+    private _onKeyPress = (e: RN.NativeSyntheticEvent<RN.TextInputKeyPressEventData>) => {
+        if (this.props.onKeyPress) {
+            this.props.onKeyPress(EventHelpers.toKeyboardEvent(e));
+        }
+    }
+
     private _isTouchFeedbackApplicable() {
         return this._isMounted && this._mixinIsApplied && !!this._nativeComponent;
     }
