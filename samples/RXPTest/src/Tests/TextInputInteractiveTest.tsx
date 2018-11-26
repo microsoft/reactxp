@@ -26,7 +26,8 @@ const _styles = {
     resultContainer: RX.Styles.createViewStyle({
         margin: 12,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        alignSelf: 'stretch'
     }),
     resultText: RX.Styles.createTextStyle({
         flex: -1,
@@ -84,6 +85,19 @@ const _styles = {
     placeholder: RX.Styles.createViewStyle({
         width: 1,
         height: 300
+    }),
+    button: RX.Styles.createButtonStyle({
+        alignSelf: 'flex-start',
+        borderWidth: 1,
+        borderColor: '#666',
+        borderRadius: 6,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        marginTop: 4
+    }),
+    buttonText: RX.Styles.createTextStyle({
+        fontSize: CommonStyles.generalFontSize,
+        color: '#666'
     })
 };
 
@@ -96,6 +110,8 @@ interface TextInputViewState {
 }
 
 class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
+    private _multilineTextInput: RX.TextInput | null = null;
+
     constructor(props: RX.CommonProps) {
         super(props);
 
@@ -148,9 +164,18 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
                           'Text should be green. ' +
                           'It supports auto correct, auto capitalization (individual words), and spell checking. ' }
                     </RX.Text>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'Press this button to set the focus to the multi-line text input box below. ' }
+                    </RX.Text>
+                    <RX.Button style={ _styles.button } onPress={ this._onPressFocus }>
+                        <RX.Text style={ _styles.buttonText }>
+                            { 'Focus' }
+                        </RX.Text>
+                    </RX.Button>
                 </RX.View>
                 <RX.View style={ _styles.resultContainer }>
                     <RX.TextInput
+                        ref={ this._onMountTextInput }
                         style={ _styles.textInput2 }
                         placeholder={ 'Placeholder text' }
                         returnKeyType={ 'go' }
@@ -280,6 +305,17 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
 
             </RX.View>
         );
+    }
+
+    private _onMountTextInput = (elem: any) => {
+        this._multilineTextInput = elem;
+    }
+
+    private _onPressFocus = (e: RX.Types.SyntheticEvent) => {
+        e.stopPropagation();
+        if (this._multilineTextInput) {
+            this._multilineTextInput.focus();
+        }
     }
 
     private _onChangeTextTest6 = (value: string) => {
