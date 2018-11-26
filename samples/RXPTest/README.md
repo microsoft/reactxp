@@ -8,8 +8,7 @@ This app provides tests for all of the functionality exposed by ReactXP.
 
 ### Building RXPTest for Web
 
-- Run `npm run web-watch`. This compiles the TypeScript code and recompiles it whenever any files are changed.
-- Open `index.html` in your browser to run the test in a browser.
+- Run `npm run web` - runs the Web version of the RXPTest. Compiles the TypeScript code and recompiles it whenever any files are changed.
 
 ### Building for React Native
 
