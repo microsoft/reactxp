@@ -467,15 +467,9 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     }
 
     blur() {
-        if (this._isMounted) {
-            try {
-                const el = ReactDOM.findDOMNode(this) as HTMLDivElement | null;
-                if (el) {
-                    el.blur();
-                }
-            } catch {
-                // Handle exception due to potential unmount race condition.
-            }
+        const el = this._getContainer();
+        if (el) {
+            el.blur();
         }
     }
 
@@ -488,15 +482,9 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless> {
     }
 
     focus() {
-        if (this._isMounted) {
-            try {
-                const el = ReactDOM.findDOMNode(this) as HTMLDivElement | null;
-                if (el) {
-                    el.focus();
-                }
-            } catch {
-                // Handle exception due to potential unmount race condition.
-            }
+        const el = this._getContainer();
+        if (el) {
+            el.focus();
         }
     }
 }

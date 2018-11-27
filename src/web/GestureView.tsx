@@ -10,6 +10,7 @@
 
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import AccessibilityUtil from './AccessibilityUtil';
 import { Types } from '../common/Interfaces';
@@ -52,6 +53,7 @@ let _idCounter = 1;
 
 export class GestureView extends React.Component<Types.GestureViewProps, Types.Stateless> {
     private _id = _idCounter++;
+    private _isMounted = false;
 
     private _container: HTMLElement | null |   undefined;
 
@@ -74,7 +76,12 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
         isInRxMainView: PropTypes.bool
     };
 
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
     componentWillUnmount() {
+        this._isMounted = false;
         // Dispose of timer before the component goes away.
         this._cancelDoubleTapTimer();
     }
@@ -86,10 +93,14 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
         return (
             <div
                 style={ this._getStyles() }
+                tabIndex={ this.props.tabIndex }
                 ref={ this._setContainerRef }
                 onMouseDown={ this._onMouseDown }
                 onClick={ this._onClick }
                 onWheel={ this._onWheel }
+                onFocus={ this.props.onFocus }
+                onBlur={ this.props.onBlur }
+                onKeyPress={ this.props.onKeyPress }
                 role={ ariaRole }
                 aria-label={ this.props.accessibilityLabel }
                 aria-hidden={ isAriaHidden }
@@ -99,6 +110,32 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
                 { this.props.children }
             </div>
         );
+    }
+
+    blur() {
+        const el = this._getContainer();
+        if (el) {
+            el.blur();
+        }
+    }
+
+    focus() {
+        const el = this._getContainer();
+        if (el) {
+            el.focus();
+        }
+    }
+
+    protected _getContainer(): HTMLElement | null {
+        if (!this._isMounted) {
+            return null;
+        }
+        try {
+            return ReactDOM.findDOMNode(this) as HTMLElement | null;
+        } catch {
+            // Handle exception due to potential unmount race condition.
+            return null;
+        }
     }
 
     private _createMouseResponder(container: HTMLElement) {
