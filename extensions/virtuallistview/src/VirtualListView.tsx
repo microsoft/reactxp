@@ -269,14 +269,35 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
 
         this._updateStateFromProps(props, true);
         this.state = {
-            lastFocusedItemKey: props.initialSelectedKey,
-            selectedItemKey: props.initialSelectedKey
+            lastFocusedItemKey: _.some(props.itemList, item => item.key === props.initialSelectedKey) ?
+                props.initialSelectedKey :
+                undefined,
+            selectedItemKey: _.some(props.itemList, item => item.key === props.initialSelectedKey) ?
+                props.initialSelectedKey :
+                undefined,
         };
     }
 
     componentWillReceiveProps(nextProps: VirtualListViewProps<ItemInfo>): void {
         if (!_.isEqual(this.props, nextProps)) {
             this._updateStateFromProps(nextProps, false);
+        }
+    }
+
+    componentWillUpdate(nextProps: VirtualListViewProps<ItemInfo>, nextState: VirtualListViewState) {
+        const updatedState: Partial<VirtualListViewState> = {};
+        let updateState = false;
+        if (nextState.lastFocusedItemKey && !_.some(nextProps.itemList, item => item.key === nextState.lastFocusedItemKey)) {
+            updateState = true;
+            updatedState.lastFocusedItemKey = undefined;
+        }
+        if (nextState.selectedItemKey && !_.some(nextProps.itemList, item => item.key === nextState.selectedItemKey)) {
+            updateState = true;
+            updatedState.selectedItemKey = undefined;
+        }
+
+        if (updateState) {
+            this.setState(updatedState);
         }
     }
 
