@@ -1115,7 +1115,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         }
 
         _.each(cellList, cell => {
-            let tabIndexValue: number | undefined;
+            let tabIndexValue = -1;
             let isFocused = false;
             if (cell.item) {
                 if (cell.item && cell.item.isNavigable) {
