@@ -58,7 +58,7 @@ export class Accessibility extends NativeAccessibility {
         }
     }
 
-    private _trackQueueStatus(newState: string) {
+    private _trackQueueStatus = (newState: string) => {
         if (this._isScreenReaderEnabled && ['background', 'inactive'].indexOf(newState) >= 0) {
             this._announcementQueue = [];
             this._retryTimestamp = NaN;
