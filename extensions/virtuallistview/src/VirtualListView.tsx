@@ -163,8 +163,7 @@ const _maxSimultaneousMeasures = 16;
 
 // Recycled cells remain mounted to reduce the allocations and deallocations.
 // This value controls how many we maintain before culling.
-// Disable cell recycling on MacOs to ensure keyboard accessibility works
-const _maxRecycledCells = _isNativeMacOs ? 0 : 50;
+const _maxRecycledCells = 50;
 
 const _maxRecycledCellsForAccessibility = 0;
 
