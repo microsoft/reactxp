@@ -788,6 +788,10 @@ export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet>, C
     onLongPress?: (gestureState: TapGestureState) => void;
     onContextMenu?: (gestureState: TapGestureState) => void;
 
+    onFocus?: (e: FocusEvent) => void;
+    onBlur?: (e: FocusEvent) => void;
+    onKeyPress?: (e: KeyboardEvent) => void;
+
     // We can set vertical or horizontal as preferred
     preferredPan?: PreferredPanGesture;
 

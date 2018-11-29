@@ -61,6 +61,8 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
     // State for tracking single taps
     private _lastGestureStartEvent: Types.TouchEvent | undefined;
 
+    private _view: RN.View | undefined;
+
     constructor(props: Types.GestureViewProps) {
         super(props);
 
@@ -615,26 +617,57 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         const accessibilityTrait = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits);
         const accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(this.props.accessibilityTraits);
 
-        const macAccessibilityProps: MacComponentAccessibilityProps | undefined =
-            _isNativeMacOs && App.supportsExperimentalKeyboardNavigation ? {
-                acceptsKeyboardFocus: this.props.onTap ? true : undefined,
-                enableFocusRing: this.props.onTap ? true : undefined,
-                onClick: this.props.onTap ? this._sendTapEvent : undefined
-            } : undefined;
+        const extendedProps: RN.ExtendedViewProps & MacComponentAccessibilityProps = {
+            onFocus: this.props.onFocus,
+            onBlur: this.props.onBlur,
+            onKeyPress: this.props.onKeyPress ? this._onKeyPress : undefined
+        };
+
+        if (_isNativeMacOs && App.supportsExperimentalKeyboardNavigation && this.props.onTap) {
+            extendedProps.onClick = this._sendTapEvent;
+            if (this.props.tabIndex === undefined || this.props.tabIndex >= 0) {
+                extendedProps.acceptsKeyboardFocus = true;
+                extendedProps.enableFocusRing = true;
+            }
+        }
+
         return (
             <RN.View
+                ref={ this._onRef }
                 style={ [ViewBase.getDefaultViewStyle(), this.props.style] as RN.StyleProp<RN.ViewStyle> }
                 importantForAccessibility={ importantForAccessibility }
                 accessibilityTraits={ accessibilityTrait }
                 accessibilityComponentType={ accessibilityComponentType }
                 accessibilityLabel={ this.props.accessibilityLabel }
-                testID={ this.props.testId }
+                testID={this.props.testId}
                 { ...this._panResponder.panHandlers }
-                { ...macAccessibilityProps }
+                { ...extendedProps }
             >
                 {this.props.children}
             </RN.View>
         );
+    }
+
+    private _onRef = (ref: RN.View | null) => {
+        this._view = ref || undefined;
+    }
+
+    private _onKeyPress = (e: RN.NativeSyntheticEvent<RN.TextInputKeyPressEventData>) => {
+        if (this.props.onKeyPress) {
+            this.props.onKeyPress(EventHelpers.toKeyboardEvent(e));
+        }
+    }
+
+    focus() {
+        if (this._view && this._view.focus) {
+            this._view.focus();
+        }
+    }
+
+    blur() {
+        if (this._view && this._view.blur) {
+            this._view.blur();
+        }
     }
 }
 
