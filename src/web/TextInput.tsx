@@ -207,6 +207,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     style={ combinedStyles }
                     value={ this.state.inputValue }
                     title={ this.props.title }
+                    tabIndex={ this.props.tabIndex }
 
                     autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
@@ -239,6 +240,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     style={ combinedStyles }
                     value={ this.state.inputValue }
                     title={ this.props.title }
+                    tabIndex={ this.props.tabIndex }
 
                     className={className}
 
