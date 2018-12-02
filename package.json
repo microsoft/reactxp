@@ -1,6 +1,6 @@
 {
   "name": "reactxp",
-  "version": "1.5.0-rc.4",
+  "version": "1.5.0",
   "description": "Cross-platform abstraction layer for writing React-based applications a single time that work identically across web, React Native, and Electron distribution",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
@@ -13,11 +13,11 @@
   },
   "dependencies": {
     "@types/react": "16.3.18",
-    "@types/lodash": "4.14.116",
+    "@types/lodash": "4.14.118",
     "@types/react-dom": "16.0.7",
     "@types/react-native": "0.56.12",
     "assert": "^1.4.1",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.11",
     "prop-types": "^15.6.2",
     "rebound": "^0.1.0",
     "subscribableevent": "^1.0.1",
@@ -31,9 +31,9 @@
   },
   "devDependencies": {
     "tslint": "5.11.0",
-    "tslint-microsoft-contrib": "5.2.1",
-    "tsutils": "3.0.0",
-    "typescript": "3.0.3"
+    "tslint-microsoft-contrib": "6.0.0",
+    "tsutils": "3.5.1",
+    "typescript": "3.2.1"
   },
   "homepage": "https://microsoft.github.io/reactxp/",
   "repository": {
