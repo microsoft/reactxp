@@ -16,6 +16,21 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.5.0 of reactxp-imagesvg, reactxp-navigation, reactxp-video, reactxp-virtuallistview - _1 Dec 2018_
+* No new features; updated dependencies.
+
+#### Version 1.5.0 of reactxp - _1 Dec 2018_
+* #935: Maded ReactXP compatible with React.Fragment.
+* #933: Reset VoiceOver queue when app goes inactive or in background (iOS and Windows).
+* #939: Added keyboard event mapping for kePress handling in View (Windows and MacOS).
+* #941: Updated RX.Animated.InterpolatedValue to allow for chaining interpolations.
+* #942: Added key mappings for MacOS and wired onKeyPress for RX.View.
+* #943: Added focus and blur calls for RX.Button, RX.Link, RX.Text and RX.View.
+* #946: Fixed crashing bug in accessibility for iOS and MacOS.
+* #949: Added onFocus, onBlur and onKeyPress support for GestureView.
+* #948: Respect negative tabIndex in Button on MacOS.
+* #953: Wired up tabIndex prop for web implementation of RX.TextInput.
+
 #### Version 1.5.0-rc.4 of reactxp - _18 Nov 2018_
 * #909: Eliminated not-prebound callbacks in view resize detector on web (perf improvement).
 * #912: Fixed VoiceOver iOS 12 issue.
