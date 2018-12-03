@@ -1155,7 +1155,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             let isFocused = false;
             let isSelected = false;
             if (cell.item) {
-                if (cell.item && cell.item.isNavigable) {
+                if (cell.item.isNavigable) {
                     if (cell.itemIndex === focusIndex) {
                         tabIndexValue = 0;
                     } else {
@@ -1266,7 +1266,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
 
     // Sets selection & focus to specified key
     selectItemKey(key: string) {
-        // Set focus and selection)
+        // Set focus and selection
         this.setState({
             lastFocusedItemKey: key,
             selectedItemKey: key

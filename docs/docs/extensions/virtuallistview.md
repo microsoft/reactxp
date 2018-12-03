@@ -139,47 +139,46 @@ interface VirtualListViewItemInfo {
 
 ## Props
 ``` javascript    testId?: string;
+// Ordered list of descriptors for items to display in the list.
+itemList: ItemInfo[];
 
-    // Ordered list of descriptors for items to display in the list.
-    itemList: ItemInfo[];
+// Callback for rendering item when it becomes visible within view port.
+renderItem: (renderDetails: VirtualListCellRenderDetails<ItemInfo>) => JSX.Element | JSX.Element[];
+onItemSelected?: (item: ItemInfo) => void;
 
-    // Callback for rendering item when it becomes visible within view port.
-    renderItem: (renderDetails: VirtualListCellRenderDetails<ItemInfo>) => JSX.Element | JSX.Element[];
-    onItemSelected?: (item: ItemInfo) => void;
+initialSelectedKey?: string;
 
-    initialSelectedKey?: string;
+// Optional padding around the scrolling content within the list.
+padding?: number;
 
-    // Optional padding around the scrolling content within the list.
-    padding?: number;
+// If true, allows each item to overflow its visible cell boundaries; by default,
+// item contents are clipped to cell boundaries.
+showOverflow?: boolean;
 
-    // If true, allows each item to overflow its visible cell boundaries; by default,
-    // item contents are clipped to cell boundaries.
-    showOverflow?: boolean;
+// Should the list animate additions, removals and moves within the list?
+animateChanges?: boolean;
 
-    // Should the list animate additions, removals and moves within the list?
-    animateChanges?: boolean;
+// By default, VirtualListView re-renders every item during the render. Setting
+// this flag to true allows the list view to re-render only items from itemList
+// whose descriptor has changed, thus avoiding unnecessary rendering. It uses
+// _.isEqual to perform this check. In this mode, renderItem should not depend
+// on any external state, only on VirtualListViewItemInfo, to render item.
+skipRenderIfItemUnchanged?: boolean;
 
-    // By default, VirtualListView re-renders every item during the render. Setting
-    // this flag to true allows the list view to re-render only items from itemList
-    // whose descriptor has changed, thus avoiding unnecessary rendering. It uses
-    // _.isEqual to perform this check. In this mode, renderItem should not depend
-    // on any external state, only on VirtualListViewItemInfo, to render item.
-    skipRenderIfItemUnchanged?: boolean;
+// Pass-through properties for scroll view.
+keyboardDismissMode?: 'none' | 'interactive' | 'on-drag';
+keyboardShouldPersistTaps?: boolean;
+disableScrolling?: boolean;
+scrollsToTop?: boolean; // iOS only, scroll to top when user taps on status bar
+disableBouncing?: boolean; // iOS only, bounce override
+scrollIndicatorInsets?: { top: number, left: number, bottom: number, right: number }; // iOS only
+onScroll?: (scrollTop: number, scrollLeft: number) => void;
+onLayout?: (e: RX.Types.ViewOnLayoutEvent) => void;
+scrollXAnimatedValue?: RX.Types.AnimatedValue;
+scrollYAnimatedValue?: RX.Types.AnimatedValue;
 
-    // Pass-through properties for scroll view.
-    keyboardDismissMode?: 'none' | 'interactive' | 'on-drag';
-    keyboardShouldPersistTaps?: boolean;
-    disableScrolling?: boolean;
-    scrollsToTop?: boolean; // iOS only, scroll to top when user taps on status bar
-    disableBouncing?: boolean; // iOS only, bounce override
-    scrollIndicatorInsets?: { top: number, left: number, bottom: number, right: number }; // iOS only
-    onScroll?: (scrollTop: number, scrollLeft: number) => void;
-    onLayout?: (e: RX.Types.ViewOnLayoutEvent) => void;
-    scrollXAnimatedValue?: RX.Types.AnimatedValue;
-    scrollYAnimatedValue?: RX.Types.AnimatedValue;
-
-    // Logging callback to debug issues related to the VirtualListView.
-    logInfo?: (textToLog: string) => void;
+// Logging callback to debug issues related to the VirtualListView.
+logInfo?: (textToLog: string) => void;
 ```
 
 ## Methods

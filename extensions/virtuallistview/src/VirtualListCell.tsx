@@ -80,6 +80,7 @@ const _skypeEaseOutAnimationCurve = RX.Animated.Easing.CubicBezier(0.33, 0, 0, 1
 const _virtualCellRef = 'virtualCell';
 const _keyCodeEnter = 13;
 const _keyCodeSpace = 32;
+const _keyCodeReturn = 3;
 
 export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Component<VirtualListCellProps<ItemInfo>, RX.Stateless> {
     // Helper class used to render child elements. If we know that none of the children changed - we would like to skip
@@ -364,9 +365,12 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
     }
 
     private _onKeyPress = (e: RX.Types.KeyboardEvent) => {
-        const isSelectItemKeyPress = e.keyCode === _keyCodeEnter || e.keyCode === _keyCodeSpace;
+        const isSelectItemKeyPress = e.keyCode === _keyCodeEnter ||
+            e.keyCode === _keyCodeSpace ||
+            e.keyCode === _keyCodeReturn;
         if (isSelectItemKeyPress && this.props.onItemSelected && this.props.item) {
             this.props.onItemSelected(this.props.item);
+            e.stopPropagation();
         }
         if (this.props.onKeyPress) {
             this.props.onKeyPress(e);
@@ -382,6 +386,7 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
     private _onPress = (e: RX.Types.SyntheticEvent) => {
         if (this.props.onItemSelected && this.props.item) {
             this.props.onItemSelected(this.props.item);
+            e.stopPropagation();
         }
     }
 
