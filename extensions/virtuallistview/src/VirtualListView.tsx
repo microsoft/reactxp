@@ -1231,7 +1231,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         return (
             <RX.ScrollView
                 ref={ _scrollViewRef }
-                testId={this.props.testId}
+                testId={ this.props.testId }
                 onLayout={ this._onLayoutContainer }
                 onScroll={ this._onScroll }
                 scrollXAnimatedValue={ this.props.scrollXAnimatedValue }

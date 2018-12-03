@@ -104,11 +104,11 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
 
             return (
                 <Fragment>
-                    {this.props.renderItem({
+                    { this.props.renderItem({
                         item: this.props.item,
                         selected: this.props.isSelected,
                         focused: this.props.isFocused
-                    })}
+                    }) }
                 </Fragment>
             );
         }
@@ -348,8 +348,8 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
                 onLayout={ this.props.onLayout ? this._onLayout : undefined }
                 onFocus={ this.props.onCellFocus ? this._onFocus : undefined }
                 onBlur={ this.props.onCellFocus ? this._onBlur : undefined }
-                onPress={this.props.onItemSelected ? this._onPress : undefined}
-                onKeyPress={this.props.onKeyPress || this.props.onItemSelected ? this._onKeyPress : undefined}
+                onPress={ this.props.onItemSelected ? this._onPress : undefined }
+                onKeyPress={ this.props.onKeyPress || this.props.onItemSelected ? this._onKeyPress : undefined }
                 disableTouchOpacityAnimation={ this.props.item ? this.props.item.disableTouchOpacityAnimation : undefined }
             >
                 <VirtualListCell.StaticRenderer
