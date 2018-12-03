@@ -8,8 +8,8 @@
  */
 
  // Replace with RX.Fragment when support is added in ReactXP major release
-import { Fragment } from 'react';
 import * as assert from 'assert';
+import { Fragment } from 'react';
 import * as RX from 'reactxp';
 
 export interface VirtualListCellInfo {
@@ -93,7 +93,7 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
         shouldComponentUpdate(nextProps: StaticRendererProps<CellItemInfo>): boolean {
             return nextProps.shouldUpdate ||
                 this.props.isFocused !== nextProps.isFocused ||
-                this.props.isSelected !== nextProps.isSelected;   
+                this.props.isSelected !== nextProps.isSelected;
         }
 
         render() {

@@ -273,7 +273,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
                 undefined,
             selectedItemKey: _.some(props.itemList, item => item.key === props.initialSelectedKey) ?
                 props.initialSelectedKey :
-                undefined,
+                undefined
         };
     }
 
@@ -1168,7 +1168,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
                 }
 
                 if (this.state.isFocused && cell.item.key === this.state.lastFocusedItemKey) {
-                    isFocused = true;   
+                    isFocused = true;
                 }
             }
 
@@ -1189,7 +1189,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
                     top={ cell.cellInfo.top }
                     isVisible={ cell.cellInfo.isVisible }
                     isActive={ cell.item ? true : false }
-                    isFocused={isFocused}
+                    isFocused={ isFocused }
                     isSelected={ isSelected }
                     tabIndex={ tabIndexValue }
                     onCellFocus={ this._onCellFocus }
@@ -1197,8 +1197,8 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
                     shouldUpdate={ !this.props.skipRenderIfItemUnchanged || cell.cellInfo.shouldUpdate }
                     showOverflow={ this.props.showOverflow }
                     isScreenReaderModeEnabled={ this._isAndroidScreenReaderEnabled() }
-                    renderItem={this.props.renderItem}
-                    onKeyPress={this._onKeyDown}
+                    renderItem={ this.props.renderItem }
+                    onKeyPress={ this._onKeyDown }
                 />
             );
 
