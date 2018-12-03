@@ -632,7 +632,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
         // Grab the actual element from the DOM.
         let element = ReactDOM.findDOMNode(component) as HTMLElement|null;
         if (element) {
-            const flatStyles: RX.Types.ViewStyleRuleSet = _.isArray(currentStyles) ? _.flatten(currentStyles) : currentStyles;
+            const flatStyles: RX.Types.ViewStyleRuleSet = Array.isArray(currentStyles) ? _.flatten(currentStyles) : currentStyles;
 
             // Modify styles
             _.assign(element.style, flatStyles);

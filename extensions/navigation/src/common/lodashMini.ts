@@ -12,7 +12,6 @@ import clone = require('lodash/clone');
 import cloneDeep = require('lodash/cloneDeep');
 import flatten = require('lodash/flatten');
 import get = require('lodash/get');
-import isArray = require('lodash/isArray');
 import isEmpty = require('lodash/isEmpty');
 import isEqual = require('lodash/isEqual');
 import isNumber = require('lodash/isNumber');
@@ -29,7 +28,6 @@ export {
     cloneDeep,
     flatten,
     get,
-    isArray,
     isEmpty,
     isEqual,
     isNumber,
