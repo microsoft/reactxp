@@ -639,11 +639,11 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
                 accessibilityTraits={ accessibilityTrait }
                 accessibilityComponentType={ accessibilityComponentType }
                 accessibilityLabel={ this.props.accessibilityLabel }
-                testID={this.props.testId}
+                testID={ this.props.testId }
                 { ...this._panResponder.panHandlers }
                 { ...extendedProps }
             >
-                {this.props.children}
+                { this.props.children }
             </RN.View>
         );
     }

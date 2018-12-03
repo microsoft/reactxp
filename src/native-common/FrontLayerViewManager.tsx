@@ -207,7 +207,7 @@ export class FrontLayerViewManager {
                         onPressOut={ this._onBackgroundPressed }
                         importantForAccessibility={ 'no' }
                     >
-                        <RN.View style={ _styles.fullScreenView as RN.StyleProp<RN.ViewStyle>}>
+                        <RN.View style={ _styles.fullScreenView as RN.StyleProp<RN.ViewStyle> }>
                             { popupContainerViews }
                         </RN.View>
                     </RN.TouchableWithoutFeedback>
