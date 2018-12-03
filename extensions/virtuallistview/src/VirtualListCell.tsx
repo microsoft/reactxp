@@ -14,6 +14,8 @@ import * as RX from 'reactxp';
 
 export interface VirtualListCellInfo {
     key: string;
+
+    disableTouchOpacityAnimation?: boolean;
 }
 
 export interface VirtualListCellRenderDetails<T extends VirtualListCellInfo> {
@@ -347,7 +349,8 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
                 onFocus={ this.props.onCellFocus ? this._onFocus : undefined }
                 onBlur={ this.props.onCellFocus ? this._onBlur : undefined }
                 onPress={this.props.onItemSelected ? this._onPress : undefined}
-                onKeyPress={ this.props.onKeyPress || this.props.onItemSelected ? this._onKeyPress : undefined}
+                onKeyPress={this.props.onKeyPress || this.props.onItemSelected ? this._onKeyPress : undefined}
+                disableTouchOpacityAnimation={ this.props.item ? this.props.item.disableTouchOpacityAnimation : undefined }
             >
                 <VirtualListCell.StaticRenderer
                     shouldUpdate={ this.props.shouldUpdate }
