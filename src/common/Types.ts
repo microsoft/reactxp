@@ -1019,7 +1019,7 @@ export interface WebViewProps extends CommonStyledProps<WebViewStyleRuleSet, RX.
     sandbox?: WebViewSandboxMode;
 }
 
-export type PopupPosition  = 'top' | 'right' | 'bottom' | 'left';
+export type PopupPosition  = 'top' | 'right' | 'bottom' | 'left' | 'context';
 
 // Popup
 export interface PopupOptions {

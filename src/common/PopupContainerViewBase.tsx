@@ -146,6 +146,31 @@ export function recalcPositionFromLayoutData(windowDims: Dimensions, anchorRect:
                         constrainedWidth = anchorRect.left - ALLEY_WIDTH;
                     }
                     break;
+
+                case 'context':
+                    // Search for perfect fits on the LR, LL, TR, and TL corners.
+                    const fitsAbove = anchorRect.top - popupRect.height >= ALLEY_WIDTH;
+                    const fitsBelow = anchorRect.top + anchorRect.height + popupRect.height <= windowDims.height - ALLEY_WIDTH;
+                    const fitsLeft = anchorRect.left - popupRect.width >= ALLEY_WIDTH;
+                    const fitsRight = anchorRect.left + anchorRect.width + popupRect.width <= windowDims.width - ALLEY_WIDTH;
+                    if (fitsBelow && fitsRight) {
+                        foundPerfectFit = true;
+                        absX = anchorRect.left + anchorRect.width;
+                        absY = anchorRect.top + anchorRect.height;
+                    } else if (fitsBelow && fitsLeft) {
+                        foundPerfectFit = true;
+                        absX = anchorRect.left - popupRect.width;
+                        absY = anchorRect.top + anchorRect.height;
+                    } else if (fitsAbove && fitsRight) {
+                        foundPerfectFit = true;
+                        absX = anchorRect.left + anchorRect.width;
+                        absY = anchorRect.top - popupRect.height;
+                    } else if (fitsAbove && fitsLeft) {
+                        foundPerfectFit = true;
+                        absX = anchorRect.left - popupRect.width;
+                        absY = anchorRect.top - popupRect.height;
+                    }
+                    break;
             }
 
             const effectiveWidth = constrainedWidth || popupRect.width;
