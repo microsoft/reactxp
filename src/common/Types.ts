@@ -856,6 +856,13 @@ export interface ScrollViewProps extends CommonStyledProps<ScrollViewStyleRuleSe
     pagingEnabled?: boolean;
     snapToInterval?: number;
 
+    // An array of child indices determining which children get docked to the
+    // top of the screen when scrolling. For example passing
+    // `stickyHeaderIndices={[0]}` will cause the first child to be fixed to the
+    // top of the scroll view. This property is not supported in conjunction
+    // with `horizontal={true}`.
+    stickyHeaderIndices?: number[];
+
     // Mobile only property (currently only iOS). If set to true, this scroll view will be
     // scrolled to the top if the status bar is tapped. The default value is true.
     // This maps to the actual behavior of the same property of ScrollView component in React Native.

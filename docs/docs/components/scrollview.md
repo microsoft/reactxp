@@ -62,6 +62,11 @@ overScrollMode?: 'auto' | 'always' | 'never';
 pagingEnabled: boolean = false; // Android & iOS only
 snapToInterval: number = undefined; // iOS only
 
+// Native Only: An array of child indices determining which children get docked to the top of the screen when scrolling.
+// For example passing `stickyHeaderIndices={[0]}` will cause the first child to be fixed to the
+// top of the scroll view. This property is not supported in conjunction with `horizontal={true}`.
+stickyHeaderIndices?: number[];
+
 // Is scrolling enabled?
 scrollEnabled: boolean = true;
 

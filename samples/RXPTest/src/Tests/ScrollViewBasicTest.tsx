@@ -19,16 +19,16 @@ const _styles = {
         alignItems: 'flex-start'
     }),
     explainTextContainer: RX.Styles.createViewStyle({
-        margin: 12
+        margin: 6
     }),
     explainText: RX.Styles.createTextStyle({
         fontSize: CommonStyles.generalFontSize,
         color: CommonStyles.explainTextColor
     }),
     scrollViewContainer: RX.Styles.createViewStyle({
-        margin: 12,
+        margin: 6,
         alignSelf: 'stretch',
-        height: 150,
+        height: 100,
         width: 320
     }),
     scrollView1: RX.Styles.createScrollViewStyle({
@@ -54,7 +54,7 @@ const _styles = {
     }),
     numberItem: RX.Styles.createViewStyle({
         paddingHorizontal: 12,
-        height: 50,
+        height: 30,
         borderWidth: 1,
         borderColor: '#eee',
         justifyContent: 'center'
@@ -62,9 +62,9 @@ const _styles = {
     button: RX.Styles.createButtonStyle({
         backgroundColor: '#ddd',
         borderWidth: 1,
-        margin: 16,
+        margin: 8,
         paddingHorizontal: 12,
-        paddingVertical: 6,
+        paddingVertical: 2,
         borderRadius: 8,
         borderColor: 'black'
     }),
@@ -80,6 +80,7 @@ const _colors = ['red', 'green', 'blue'];
 interface ScrollViewState {
     horizontalIndicator: boolean;
     verticalIndicator: boolean;
+    stickyHeaderIndices: number[]|undefined;
 }
 
 class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
@@ -88,7 +89,8 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
 
         this.state = {
             horizontalIndicator: true,
-            verticalIndicator: true
+            verticalIndicator: true,
+            stickyHeaderIndices: undefined
         };
     }
 
@@ -155,24 +157,52 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
                         overScrollMode={ 'never' }
                         showsHorizontalScrollIndicator={ this.state.horizontalIndicator }
                         showsVerticalScrollIndicator={ this.state.verticalIndicator }
-                        testId={ 'scrollView1' }
+                        testId={'scrollView1'}
                     >
                         <RX.View style={ _styles.numberGrid }>
                             { numberBoxes }
                         </RX.View>
                     </RX.ScrollView>
                 </RX.View>
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation1' }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'Vertical Scroll view. Press buttons to toggle sticky header.' }
+                    </RX.Text>
+                </RX.View>
+
+                <RX.Button
+                    style={ _styles.button }
+                    onPress={ () => {
+                        this.setState({ stickyHeaderIndices: this.state.stickyHeaderIndices ? undefined : [0] });
+                    } }
+                >
+                    <RX.Text style={ _styles.buttonText }>
+                        { 'Sticky Header Indicies: ' + (this.state.stickyHeaderIndices ? 'On' : 'Off') }
+                    </RX.Text>
+                </RX.Button>
+
+                <RX.View style={ _styles.scrollViewContainer }>
+                    <RX.ScrollView
+                        style={ _styles.scrollView1 }
+                        bounces={ false }
+                        overScrollMode={ 'never' }
+                        testId={'scrollView2'}
+                        stickyHeaderIndices={ this.state.stickyHeaderIndices }
+                    >
+                        { numberItems }
+                    </RX.ScrollView>
+                </RX.View>
 
                 <RX.View style={ _styles.explainTextContainer } key={ 'explanation2' }>
                     <RX.Text style={ _styles.explainText }>
-                        { 'Scroll view with vertical paging with 50px pages.' +
+                        { 'Scroll view with vertical paging with 30px pages.' +
                           'Scrolls to top (iOS) when tapping on the status bar.' }
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.scrollViewContainer }>
                     <RX.ScrollView
                         style={ _styles.scrollView1 }
-                        snapToInterval={ 50 }
+                        snapToInterval={ 30 }
                         scrollsToTop={ true }
                     >
                         <RX.View style={ _styles.listContainer }>

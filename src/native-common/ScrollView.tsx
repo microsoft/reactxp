@@ -119,7 +119,8 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
             onScrollBeginDrag: this.props.onScrollBeginDrag,
             onScrollEndDrag: this.props.onScrollEndDrag,
             children: this.props.children,
-            testID: this.props.testId
+            testID: this.props.testId,
+            stickyHeaderIndices: this.props.stickyHeaderIndices
         };
 
         return this._render(internalProps);
