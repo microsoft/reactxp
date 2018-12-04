@@ -1081,7 +1081,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         return (cellInfo && cellInfo.isVisible);
     }
 
-    scrollToTop(animated = true, top = 0) {
+    scrollToTop = (animated = true, top = 0) => {
         const scrollView = this.refs[_scrollViewRef] as RX.ScrollView;
         if (scrollView) {
             scrollView.setScrollTop(top, animated);
