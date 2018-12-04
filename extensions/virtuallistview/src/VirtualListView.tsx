@@ -1171,7 +1171,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
                     }
                 }
 
-                if (this.state.isFocused && cell.item.key === this.state.lastFocusedItemKey) {
+                if (cell.item.key === this.state.lastFocusedItemKey) {
                     isFocused = true;
                 }
             }
