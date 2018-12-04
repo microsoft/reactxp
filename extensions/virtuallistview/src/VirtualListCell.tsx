@@ -28,7 +28,7 @@ export interface VirtualListCellProps<ItemInfo extends VirtualListCellInfo> exte
     // All callbacks should be prebound to optimize performance.
     onLayout?: (itemKey: string, height: number) => void;
     onAnimateStartStop?: (itemKey: string, start: boolean) => void;
-    onCellFocus?: (itemKey: string | undefined) => void;
+    onFocusItem?: (itemKey: ItemInfo | undefined) => void;
     onItemSelected?: (item: ItemInfo) => void;
     renderItem: (details: VirtualListCellRenderDetails<ItemInfo>) => JSX.Element | JSX.Element[];
     onKeyPress: (ev: RX.Types.KeyboardEvent) => void;
@@ -179,7 +179,7 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
 
         // All callbacks should be prebound to optimize performance.
         assert.ok(this.props.onLayout === nextProps.onLayout);
-        assert.ok(this.props.onCellFocus === nextProps.onCellFocus);
+        assert.ok(this.props.onFocusItem === nextProps.onFocusItem);
         assert.ok(this.props.onAnimateStartStop === nextProps.onAnimateStartStop);
         assert.ok(this.props.renderItem === nextProps.renderItem);
 
@@ -347,8 +347,8 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
                 ref={ _virtualCellRef }
                 tabIndex={ this.props.tabIndex }
                 onLayout={ this.props.onLayout ? this._onLayout : undefined }
-                onFocus={ this.props.onCellFocus ? this._onFocus : undefined }
-                onBlur={ this.props.onCellFocus ? this._onBlur : undefined }
+                onFocus={ this.props.onFocusItem ? this._onFocus : undefined }
+                onBlur={ this.props.onFocusItem ? this._onBlur : undefined }
                 onPress={ this.props.onItemSelected ? this._onPress : undefined }
                 onKeyPress={ this.props.onKeyPress || this.props.onItemSelected ? this._onKeyPress : undefined }
                 disableTouchOpacityAnimation={ this.props.item ? this.props.item.disableTouchOpacityAnimation : undefined }
@@ -378,8 +378,8 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
     }
 
     private _onFocus = (e: RX.Types.FocusEvent) => {
-        if (this.props.onCellFocus) {
-            this.props.onCellFocus(this.props.itemKey);
+        if (this.props.onFocusItem) {
+            this.props.onFocusItem(this.props.item);
         }
     }
 
@@ -391,8 +391,8 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
     }
 
     private _onBlur = (e: RX.Types.FocusEvent) => {
-        if (this.props.onCellFocus) {
-            this.props.onCellFocus(undefined);
+        if (this.props.onFocusItem) {
+            this.props.onFocusItem(undefined);
         }
     }
 

@@ -76,6 +76,7 @@ export interface VirtualListViewProps<ItemInfo extends VirtualListViewItemInfo> 
     // Callback for rendering item when it becomes visible within view port.
     renderItem: (renderDetails: VirtualListCellRenderDetails<ItemInfo>) => JSX.Element | JSX.Element[];
     onItemSelected?: (item: ItemInfo) => void;
+    onItemFocused?: (item: ItemInfo | undefined) => void;
 
     initialSelectedKey?: string;
 
@@ -112,6 +113,9 @@ export interface VirtualListViewProps<ItemInfo extends VirtualListViewItemInfo> 
     onLayout?: (e: RX.Types.ViewOnLayoutEvent) => void;
     scrollXAnimatedValue?: RX.Types.AnimatedValue;
     scrollYAnimatedValue?: RX.Types.AnimatedValue;
+
+    // Use this if you want to vertically offset the focused item when using keyboard nav
+    keyboardFocusScrollOffset?: number;
 
     // Logging callback to debug issues related to the VirtualListView.
     logInfo?: (textToLog: string) => void;
@@ -392,8 +396,8 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
 
                 // Update focused item if it's the one removed, if we're unable to, reset focus
                 if (item.key === this.state.lastFocusedItemKey) {
-                    if (!this._focusSubsequentItem(FocusDirection.Down, false) &&
-                            !this._focusSubsequentItem(FocusDirection.Up, false)) {
+                    if (!this._focusSubsequentItem(FocusDirection.Down, false, false) &&
+                            !this._focusSubsequentItem(FocusDirection.Up, false, false)) {
                         this.setState({ lastFocusedItemKey: undefined });
                     }
                 }
@@ -1192,7 +1196,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
                     isFocused={ isFocused }
                     isSelected={ isSelected }
                     tabIndex={ tabIndexValue }
-                    onCellFocus={ this._onCellFocus }
+                    onFocusItem={ this._onFocusItem }
                     onItemSelected={ this._onItemSelected }
                     shouldUpdate={ !this.props.skipRenderIfItemUnchanged || cell.cellInfo.shouldUpdate }
                     showOverflow={ this.props.showOverflow }
@@ -1253,14 +1257,18 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         );
     }
 
-    private _onCellFocus = (itemKey: string | undefined) => {
-        if (itemKey) {
+    private _onFocusItem = (item?: ItemInfo) => {
+        if (item) {
             this.setState({
-                lastFocusedItemKey: itemKey,
+                lastFocusedItemKey: item.key,
                 isFocused: true
             });
         } else {
             this.setState({ isFocused: false });
+        }
+
+        if (this.props.onItemFocused) {
+            this.props.onItemFocused(item);
         }
     }
 
@@ -1290,20 +1298,24 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
 
         // Is it an "up arrow" key?
         if (e.keyCode === _keyCodeUpArrow) {
-            this._focusSubsequentItem(FocusDirection.Up);
+            this._focusSubsequentItem(FocusDirection.Up, true);
         // Is it a "down arrow" key?
         } else if (e.keyCode === _keyCodeDownArrow) {
-            this._focusSubsequentItem(FocusDirection.Down);
+            this._focusSubsequentItem(FocusDirection.Down, true);
         }
     }
 
     // Returns true if successfully found/focused, false if not found/focused
-    private _focusSubsequentItem(direction: FocusDirection, retry = true): boolean {
+    private _focusSubsequentItem(direction: FocusDirection, viaKeyboard: boolean, retry = true): boolean {
         let index = _.findIndex(this._navigatableItemsRendered, item => item.key === this.state.lastFocusedItemKey);
 
         if (index !== -1 && index + direction > -1 && index + direction < this._navigatableItemsRendered.length) {
             const newElementForFocus = this.refs[this._navigatableItemsRendered[index + direction].vc_key] as VirtualListCell<ItemInfo>;
             newElementForFocus.focus();
+            if (viaKeyboard) {
+                this.scrollToTop(false, this._calcHeightOfItems(this.props, 0, index + direction) -
+                    (this.props.keyboardFocusScrollOffset || 0));
+            }
             return true;
         }
 
@@ -1381,7 +1393,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
     // If there was a pending focus setting before we re-rendered, set the same.
     private _setFocusIfNeeded() {
         if (this._pendingFocusDirection) {
-            this._focusSubsequentItem(this._pendingFocusDirection, false /* do not retry if this fails */);
+            this._focusSubsequentItem(this._pendingFocusDirection, false, false /* do not retry if this fails */);
             this._pendingFocusDirection = undefined;
         }
     }
