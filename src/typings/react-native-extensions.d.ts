@@ -41,6 +41,10 @@ declare module 'react-native' {
         disableKeyboardBasedScrolling?: true;
     }
 
+    interface ExtendedScrollViewProps extends RN.ScrollViewProps, React.Props<RN.ScrollView> {
+        invertStickyHeaders?: boolean;
+    }
+
     interface ExtendedImageProps extends RN.ImageProps {
         tooltip?: string;
     }

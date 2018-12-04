@@ -863,6 +863,9 @@ export interface ScrollViewProps extends CommonStyledProps<ScrollViewStyleRuleSe
     // with `horizontal={true}`.
     stickyHeaderIndices?: number[];
 
+    // If sticky headers should stick at the bottom instead of the top of the ScrollView. This is usually used with inverted ScrollViews.
+    invertStickyHeaders?: boolean;
+
     // Mobile only property (currently only iOS). If set to true, this scroll view will be
     // scrolled to the top if the status bar is tapped. The default value is true.
     // This maps to the actual behavior of the same property of ScrollView component in React Native.
