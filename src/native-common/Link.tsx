@@ -125,10 +125,15 @@ export class LinkBase<S> extends React.Component<RX.Types.LinkProps, S> {
         if (this._mountedComponent) {
             AccessibilityUtil.setAccessibilityFocus(this);
         }
+        if (this._mountedComponent && this._mountedComponent.focus) {
+            this._mountedComponent.focus();
+        }
     }
 
     blur() {
-        // No-op
+        if (this._mountedComponent && this._mountedComponent.blur) {
+            this._mountedComponent.blur();
+        }
     }
 }
 

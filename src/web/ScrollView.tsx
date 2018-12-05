@@ -298,7 +298,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         return (
             <div
                 role={ 'none' }
-                className = 'rxCustomScroll'
+                className='rxCustomScroll'
                 style={ containerStyles }
                 data-test-id={ this.props.testId }
             >

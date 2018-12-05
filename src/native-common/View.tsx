@@ -368,6 +368,10 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless, RN.View> {
             }
         }
 
+        if (props.onKeyPress) {
+            this._internalProps.onKeyPress = this._onKeyPress;
+        }
+
         const baseStyle = this._getStyles(props);
         this._internalProps.style = baseStyle;
         if (this._mixinIsApplied) {
@@ -400,6 +404,13 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless, RN.View> {
             this._internalProps.style = Styles.combine([this._internalProps.style, safeInsetsStyle]);
         }
     }
+
+    private _onKeyPress = (e: RN.NativeSyntheticEvent<RN.TextInputKeyPressEventData>) => {
+        if (this.props.onKeyPress) {
+            this.props.onKeyPress(EventHelpers.toKeyboardEvent(e));
+        }
+    }
+
     private _isTouchFeedbackApplicable() {
         return this._isMounted && this._mixinIsApplied && !!this._nativeComponent;
     }
@@ -558,7 +569,9 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless, RN.View> {
     }
 
     blur() {
-        // Nothing to do.
+        if (this._nativeComponent && this._nativeComponent.blur) {
+            this._nativeComponent.blur();
+        }
     }
 
     requestFocus() {
@@ -572,6 +585,17 @@ export class View extends ViewBase<Types.ViewProps, Types.Stateless, RN.View> {
     focus() {
         if (this._isMounted) {
             AccessibilityUtil.setAccessibilityFocus(this);
+        }
+        if (this._nativeComponent) {
+            if (this._nativeComponent.focus) {
+                this._nativeComponent.focus();
+            } else if ((this._nativeComponent as any)._component) {
+                // Components can be wrapped by RN.Animated implementation, peek at the inner workings here
+                const innerComponent = (this._nativeComponent as any)._component;
+                if (innerComponent && innerComponent.focus) {
+                    innerComponent.focus();
+                }
+            }
         }
     }
 }

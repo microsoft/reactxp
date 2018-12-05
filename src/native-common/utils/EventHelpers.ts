@@ -4,11 +4,12 @@
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT license.
  */
+import { Platform } from 'react-native';
 
 import { Types } from '../../common/Interfaces';
 import { clone } from './lodashMini';
 
-//
+const _isNativeMacOs = Platform.OS === 'macos';
 // These helpers promote a SyntheticEvent to their higher level counterparts
 export class EventHelpers {
 
@@ -209,6 +210,27 @@ export class EventHelpers {
                     case '189':
                         keyCode = 189;
                         break;
+                }
+            }
+
+            // Remap some characters on macos
+            if (_isNativeMacOs) {
+                // Handle F-Keys
+                if (keyCode >= 63236 && keyCode <= 63247) {
+                    // Re-map to proper F-keys
+                    keyCode = keyCode - 632124;
+                } else if (keyCode === 63272) {
+                    // Delete
+                    keyCode = 46;
+                } else if (keyCode === 127) {
+                    // Backspace
+                    keyCode = 8;
+                } else if (keyCode >= 632376 && keyCode <= 632377) {
+                    // Page Up / Down
+                    keyCode = keyCode - 63184;
+                } else if (keyCode >= 63232 && keyCode <= 63235) {
+                    // Arrow Keys
+                    keyCode = keyCode - 63213;
                 }
             }
 

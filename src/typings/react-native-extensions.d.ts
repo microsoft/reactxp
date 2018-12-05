@@ -17,6 +17,9 @@ declare module 'react-native' {
         onMouseLeave?: (e: RN.NativeSyntheticEvent) => void;
         onAccessibilityTapIOS?: (e: RN.NativeSyntheticEvent) => void;
         tooltip?: string;
+        onFocus?: (e: RN.NativeSyntheticEvent) => void;
+        onBlur?: (e: RN.NativeSyntheticEvent) => void;
+        onKeyPress?: (e: RN.NativeSyntheticEvent) => void;
     }
 
     interface ExtendedTextProps extends RN.TextProps, RNW.TextWindowsProps {

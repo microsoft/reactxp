@@ -172,8 +172,11 @@ export class Button extends ButtonBase {
             // Cast to the object that mac expects to indirectly mutate extendedProps
             const macExtendedProps: MacComponentAccessibilityProps = extendedProps as any;
             macExtendedProps.onClick = this.touchableHandlePress;
-            macExtendedProps.acceptsKeyboardFocus = true;
-            macExtendedProps.enableFocusRing = true;
+            // Negative tabIndex prevents keyboard focus
+            if (this.props.tabIndex === undefined || this.props.tabIndex >= 0) {
+                macExtendedProps.acceptsKeyboardFocus = true;
+                macExtendedProps.enableFocusRing = true;
+            }
         }
 
         return this._render(extendedProps, this._onMount);
@@ -286,12 +289,17 @@ export class Button extends ButtonBase {
     }
 
     blur() {
-         // native mobile platforms doesn't have the notion of blur for buttons, so ignore.
+        if (this._buttonElement && this._buttonElement.blur) {
+            this._buttonElement.blur();
+        }
     }
 
     focus() {
         if (this._isMounted) {
             AccessibilityUtil.setAccessibilityFocus(this);
+        }
+        if (this._buttonElement && this._buttonElement.focus) {
+            this._buttonElement.focus();
         }
     }
 

@@ -1,6 +1,6 @@
 {
   "name": "reactxp-virtuallistview",
-  "version": "1.5.0-rc.1",
+  "version": "1.5.0",
   "description": "General-purpose virtualized list view built on the cross-platform ReactXP library",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
@@ -17,10 +17,10 @@
   },
   "devDependencies": {
     "@types/assert": "^1.4.0",
-    "reactxp": "^1.5.0-rc.4",
-    "tslint": "5.10.0",
-    "tslint-microsoft-contrib": "5.0.3",
-    "typescript": "3.1.6"
+    "reactxp": "^1.5.0",
+    "tslint": "5.11.0",
+    "tslint-microsoft-contrib": "6.0.0",
+    "typescript": "3.2.1"
   },
   "homepage": "https://microsoft.github.io/reactxp/docs/extensions/virtuallistview.html",
   "repository": {

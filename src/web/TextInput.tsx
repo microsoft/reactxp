@@ -207,6 +207,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     style={ combinedStyles }
                     value={ this.state.inputValue }
                     title={ this.props.title }
+                    tabIndex={ this.props.tabIndex }
 
                     autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
@@ -214,7 +215,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     maxLength={ this.props.maxLength }
                     placeholder={ this.props.placeholder }
 
-                    className={className}
+                    className={ className }
 
                     onChange={ this._onInputChanged }
                     onKeyDown={ this._onKeyDown }
@@ -239,8 +240,9 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     style={ combinedStyles }
                     value={ this.state.inputValue }
                     title={ this.props.title }
+                    tabIndex={ this.props.tabIndex }
 
-                    className={className}
+                    className={ className }
 
                     autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
@@ -249,7 +251,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     placeholder={ this.props.placeholder }
                     size={ 1 }
 
-                    onChange= { this._onInputChanged }
+                    onChange={ this._onInputChanged }
                     onKeyDown={ this._onKeyDown }
                     onKeyUp={ this._checkSelectionChanged }
                     onInput={ this._onInput }
@@ -268,7 +270,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             if (wrapInForm) {
                 // Wrap the input in a form tag if required
                 input = (
-                    <form action='' onSubmit={ev => { /* prevent form submission/page reload */ ev.preventDefault(); this.blur(); } }
+                    <form action='' onSubmit={ ev => { /* prevent form submission/page reload */ ev.preventDefault(); this.blur(); } }
                           style={ _styles.formStyle }>
                         { input }
                     </form>

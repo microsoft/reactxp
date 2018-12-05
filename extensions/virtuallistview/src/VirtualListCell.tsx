@@ -18,11 +18,11 @@ export interface VirtualListCellProps<ItemInfo extends VirtualListCellInfo> exte
     // All callbacks should be prebound to optimize performance.
     onLayout?: (itemKey: string, height: number) => void;
     onAnimateStartStop?: (itemKey: string, start: boolean) => void;
-    onCellFocus?: (itemKey: string|undefined) => void;
+    onCellFocus?: (itemKey: string | undefined) => void;
     renderItem: (item: ItemInfo, focused: boolean) => JSX.Element | JSX.Element[];
 
     // Props that do not impact render (position is set by animated style).
-    itemKey: string|undefined;
+    itemKey: string | undefined;
     left: number;
     top: number;
     width: number;
@@ -38,14 +38,14 @@ export interface VirtualListCellProps<ItemInfo extends VirtualListCellInfo> exte
     isFocused: boolean;
     tabIndex?: number;
     shouldUpdate: boolean;
-    item: ItemInfo|undefined;
+    item: ItemInfo | undefined;
 }
 
 interface StaticRendererProps<ItemInfo extends VirtualListCellInfo> extends RX.CommonProps {
     shouldUpdate: boolean;
     isFocused: boolean;
     style: RX.Types.StyleRuleSetRecursive<RX.Types.AnimatedViewStyleRuleSet | RX.Types.ViewStyleRuleSet>;
-    item: ItemInfo|undefined;
+    item: ItemInfo | undefined;
     renderItem: (item: ItemInfo, focused: boolean) => JSX.Element | JSX.Element[];
 }
 
@@ -58,7 +58,7 @@ const _styles = {
     }),
     overflowHidden: RX.Styles.createViewStyle({
         overflow: 'hidden'
-    }),
+    })
 };
 
 const _isNativeMacOS = RX.Platform.getType() === 'macos';
@@ -110,9 +110,9 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
     // but native driver doesnt support width
     private _animatedStylePosition: RX.Types.AnimatedViewStyleRuleSet;
     private _animatedStyleWidth: RX.Types.AnimatedViewStyleRuleSet;
-    private _topAnimation: RX.Types.Animated.CompositeAnimation|undefined;
+    private _topAnimation: RX.Types.Animated.CompositeAnimation | undefined;
 
-    private _itemKey: string|undefined;
+    private _itemKey: string | undefined;
 
     constructor(props: VirtualListCellProps<ItemInfo>) {
         super(props);
@@ -141,7 +141,7 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
             // within the item itself, it doesn't handle that combination.
             this._animatedStylePosition = RX.Styles.createAnimatedViewStyle({
                 top: this._topValue,
-                left: this._leftValue,
+                left: this._leftValue
             });
         }
 
@@ -240,7 +240,7 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
 
                 // Stop any pending animation.
                 if (this._topAnimation) {
-                    let animationToCancel = this._topAnimation;
+                    const animationToCancel = this._topAnimation;
 
                     // The call to stop() will invoke the stop callback. If we are
                     // going to replace a pending animation, we'll make it look like
@@ -261,12 +261,12 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
                                 toValue: top + animationOvershoot,
                                 duration: 200,
                                 delay: animationDelay,
-                                easing: _skypeEaseInAnimationCurve,
+                                easing: _skypeEaseInAnimationCurve
                             }),
                             RX.Animated.timing(this._topValue, {
                                 toValue: top,
                                 duration: 400,
-                                easing: _skypeEaseOutAnimationCurve,
+                                easing: _skypeEaseOutAnimationCurve
                             })
                         ]);
                     } else {
@@ -274,7 +274,7 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
                             toValue: top,
                             duration: 200,
                             delay: animationDelay,
-                            easing: RX.Animated.Easing.InOut(),
+                            easing: RX.Animated.Easing.InOut()
                         });
                     }
 
@@ -303,7 +303,7 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
         }
     }
 
-    setItemKey(key: string|undefined) {
+    setItemKey(key: string | undefined) {
         this._itemKey = key;
     }
 

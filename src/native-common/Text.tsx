@@ -131,10 +131,16 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
         if (this._mountedComponent) {
             AccessibilityUtil.setAccessibilityFocus(this);
         }
+
+        if (this._mountedComponent && this._mountedComponent.focus) {
+            this._mountedComponent.focus();
+        }
     }
 
     blur() {
-        // No-op
+        if (this._mountedComponent && this._mountedComponent.blur) {
+            this._mountedComponent.blur();
+        }
     }
 
     getSelectedText(): string {

@@ -33,6 +33,8 @@ export interface LinkState {
     isRestrictedOrLimited: boolean;
 }
 
+type Without<T, K> = Pick<T, Exclude<keyof T, K>>;
+
 export class Link extends LinkBase<LinkState> implements FocusManagerFocusableComponent {
 
     // Offset to show context menu using keyboard.
@@ -99,7 +101,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     private _createFocusableTextProps(internalProps: RN.TextProps) {
         const tabIndex: number | undefined = this.getTabIndex();
         const windowsTabFocusable: boolean =  tabIndex !== undefined && tabIndex >= 0;
-        const importantForAccessibility: ImportantForAccessibilityValue | undefined = this.getImportantForAccessibility();
+        const importantForAccessibility = this.getImportantForAccessibility();
 
         // We don't use 'string' ref type inside ReactXP
         const originalRef = (internalProps as any).ref;
@@ -108,13 +110,14 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         }
         const componentRef: Function = originalRef as Function;
 
-        const focusableTextProps: RNW.FocusableWindowsProps<RN.TextProps | RNW.AccessibilityEvents> = {
+        const focusableTextProps: RNW.FocusableWindowsProps<
+                Without<RN.TextProps, 'onAccessibilityTap'> & RNW.AccessibilityEvents> = {
             ...internalProps,
-            componentRef: componentRef,
+            componentRef,
             ref: this._onFocusableRef,
             isTabStop: windowsTabFocusable,
-            tabIndex: tabIndex,
-            importantForAccessibility: importantForAccessibility,
+            tabIndex,
+            importantForAccessibility,
             disableSystemFocusVisuals: false,
             handledKeyDownKeys: DOWN_KEYCODES,
             handledKeyUpKeys: UP_KEYCODES,

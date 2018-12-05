@@ -40,6 +40,13 @@ onDoubleTap: (gestureState: TapGestureState) => void = undefined;
 onContextMenu: (gestureState: TapGestureState) => void = undefined;
 onLongPress: (gestureState: TapGestureState) => void = undefined;
 
+// Focus Events
+onFocus: (e: FocusEvent) => void = undefined;
+onBlur: (e: FocusEvent) => void = undefined;
+
+// Keyboard Events
+onKeyPress: (e: KeyboardEvent) => void = undefined;
+
 // We can set vertical or horizontal as preferred
 preferredPan: PreferredPanGesture = undefined; // Horizontal or vertical
 
