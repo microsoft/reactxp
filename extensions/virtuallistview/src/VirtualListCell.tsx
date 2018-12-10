@@ -7,9 +7,7 @@
  * container for a single list item.
  */
 
- // Replace with RX.Fragment when support is added in ReactXP major release
 import * as assert from 'assert';
-import { Fragment } from 'react';
 import * as RX from 'reactxp';
 
 export interface VirtualListCellInfo {
@@ -28,7 +26,7 @@ export interface VirtualListCellProps<ItemInfo extends VirtualListCellInfo> exte
     // All callbacks should be prebound to optimize performance.
     onLayout?: (itemKey: string, height: number) => void;
     onAnimateStartStop?: (itemKey: string, start: boolean) => void;
-    onFocusItem?: (itemKey: ItemInfo | undefined) => void;
+    onItemFocused?: (item: ItemInfo | undefined) => void;
     onItemSelected?: (item: ItemInfo) => void;
     renderItem: (details: VirtualListCellRenderDetails<ItemInfo>) => JSX.Element | JSX.Element[];
     onKeyPress: (ev: RX.Types.KeyboardEvent) => void;
@@ -104,13 +102,13 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
             }
 
             return (
-                <Fragment>
+                <RX.Fragment>
                     { this.props.renderItem({
                         item: this.props.item,
                         selected: this.props.isSelected,
                         focused: this.props.isFocused
                     }) }
-                </Fragment>
+                </RX.Fragment>
             );
         }
     };
@@ -178,10 +176,11 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
         assert.ok(nextProps.useNativeDriver === this.props.useNativeDriver);
 
         // All callbacks should be prebound to optimize performance.
-        assert.ok(this.props.onLayout === nextProps.onLayout);
-        assert.ok(this.props.onFocusItem === nextProps.onFocusItem);
-        assert.ok(this.props.onAnimateStartStop === nextProps.onAnimateStartStop);
-        assert.ok(this.props.renderItem === nextProps.renderItem);
+        assert.ok(this.props.onLayout === nextProps.onLayout, 'onLayout callback changed');
+        assert.ok(this.props.onItemSelected === nextProps.onItemSelected, 'onItemSelected callback changed');
+        assert.ok(this.props.onItemFocused === nextProps.onItemFocused, 'onItemFocused callback changed');
+        assert.ok(this.props.onAnimateStartStop === nextProps.onAnimateStartStop, 'onAnimateStartStop callback changed');
+        assert.ok(this.props.renderItem === nextProps.renderItem, 'renderItem callback changed');
 
         // We assume this prop doesn't change for perf reasons. Callers should modify
         // the key to force an unmount/remount if these need to change.
@@ -347,8 +346,8 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
                 ref={ _virtualCellRef }
                 tabIndex={ this.props.tabIndex }
                 onLayout={ this.props.onLayout ? this._onLayout : undefined }
-                onFocus={ this.props.onFocusItem ? this._onFocus : undefined }
-                onBlur={ this.props.onFocusItem ? this._onBlur : undefined }
+                onFocus={ this.props.onItemFocused ? this._onFocus : undefined }
+                onBlur={ this.props.onItemFocused ? this._onBlur : undefined }
                 onPress={ this.props.onItemSelected ? this._onPress : undefined }
                 onKeyPress={ this.props.onKeyPress || this.props.onItemSelected ? this._onKeyPress : undefined }
                 disableTouchOpacityAnimation={ this.props.item ? this.props.item.disableTouchOpacityAnimation : undefined }
@@ -378,8 +377,8 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
     }
 
     private _onFocus = (e: RX.Types.FocusEvent) => {
-        if (this.props.onFocusItem) {
-            this.props.onFocusItem(this.props.item);
+        if (this.props.onItemFocused) {
+            this.props.onItemFocused(this.props.item);
         }
     }
 
@@ -391,8 +390,8 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
     }
 
     private _onBlur = (e: RX.Types.FocusEvent) => {
-        if (this.props.onFocusItem) {
-            this.props.onFocusItem(undefined);
+        if (this.props.onItemFocused) {
+            this.props.onItemFocused(undefined);
         }
     }
 

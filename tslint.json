@@ -1,6 +1,7 @@
 {
     "rulesDirectory": [
-        "./node_modules/tslint-microsoft-contrib"
+        "./node_modules/tslint-microsoft-contrib",
+        "./node_modules/tslint-react/rules"
     ],
     "rules": {
         // Rules from tslint-microsoft-contrib
@@ -23,6 +24,10 @@
         "react-this-binding-issue": [true, { "allow-anonymous-listeners": true }],
         "no-inner-html": true,
         "no-document-write": true,
+
+        // Rules from tslint-react
+        "jsx-curly-spacing": [true, "always"],
+        "jsx-equals-spacing": [true, "never"],
 
         // Rules that are built in to tslint
         "align": [true, "statements"],
