@@ -147,6 +147,10 @@ initialSelectedKey?: string;
 // Ordered list of descriptors for items to display in the list.
 itemList: VirtualListViewItemInfo[];
 
+// Use this if you want to vertically offset the focused item from the 
+// top of the viewport when using keyboard nav
+keyboardFocusScrollOffset?: number;
+
 // Logging callback to debug issues related to the VirtualListView.
 logInfo?: (textToLog: string) => void;
 
@@ -184,6 +188,7 @@ disableBouncing?: boolean; // iOS only, bounce override
 scrollIndicatorInsets?: { top: number, left: number,
     bottom: number, right: number }; // iOS only
 onLayout?: (e: RX.Types.ViewOnLayoutEvent) => void;
+scrollEventThrottle?: number;
 onScroll?: (scrollTop: number, scrollLeft: number) => void;
 scrollXAnimatedValue?: RX.Types.AnimatedValue;
 scrollYAnimatedValue?: RX.Types.AnimatedValue;
