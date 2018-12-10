@@ -178,6 +178,7 @@ scrollsToTop?: boolean; // iOS only, scroll to top on status bar tap
 disableBouncing?: boolean; // iOS only, bounce override
 scrollIndicatorInsets?: { top: number, left: number,
     bottom: number, right: number }; // iOS only
+scrollEventThrottle?: number;
 onScroll?: (scrollTop: number, scrollLeft: number) => void;
 scrollXAnimatedValue?: RX.Types.AnimatedValue;
 scrollYAnimatedValue?: RX.Types.AnimatedValue;

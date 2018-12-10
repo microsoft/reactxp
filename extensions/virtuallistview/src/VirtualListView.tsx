@@ -101,6 +101,7 @@ export interface VirtualListViewProps<ItemInfo extends VirtualListViewItemInfo> 
         bottom: number;
         right: number;
     }; // iOS only
+    scrollEventThrottle?: number;
     onScroll?: (scrollTop: number, scrollLeft: number) => void;
     scrollXAnimatedValue?: RX.Types.AnimatedValue;
     scrollYAnimatedValue?: RX.Types.AnimatedValue;
@@ -1184,7 +1185,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         return (
             <RX.ScrollView
                 ref={ _scrollViewRef }
-                testId={this.props.testId}
+                testId={ this.props.testId }
                 onLayout={ this._onLayoutContainer }
                 onScroll={ this._onScroll }
                 scrollXAnimatedValue={ this.props.scrollXAnimatedValue }
@@ -1192,7 +1193,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
                 keyboardDismissMode={ this.props.keyboardDismissMode }
                 keyboardShouldPersistTaps={ this.props.keyboardShouldPersistTaps }
                 scrollsToTop={ this.props.scrollsToTop }
-                scrollEventThrottle={ 32 } // 32ms throttle -> ~30 events per second max
+                scrollEventThrottle={ this.props.scrollEventThrottle || 32 } // 32ms throttle -> ~30 events per second max
                 style={ scrollViewStyle }
                 bounces={ !this.props.disableBouncing }
                 onKeyPress={ this._onKeyDown }
