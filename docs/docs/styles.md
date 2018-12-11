@@ -186,6 +186,7 @@ elevation: number; // Android only
 wordBreak: 'break-all' | 'break-word'; // Web only
 appRegion: 'drag' | 'no-drag'; // Web only
 cursor: 'pointer' | 'default'; // Web only
+zIndex: number;
 ```
 
 ## Transform Style Attributes

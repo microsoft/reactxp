@@ -169,6 +169,7 @@ export interface ViewAndImageCommonStyle extends FlexboxStyle, TransformStyle {
 
     backgroundColor?: string;
     opacity?: number;
+    zIndex?: number;
 }
 
 export interface AnimatedViewAndImageCommonStyle extends AnimatedFlexboxStyle, AnimatedTransformStyle {
