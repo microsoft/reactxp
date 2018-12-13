@@ -142,6 +142,14 @@ interface VirtualListViewItemInfo {
 // Should the list animate additions, removals and moves within the list?
 animateChanges?: boolean;
 
+// Cell recycling is an optimization to re-use similar VLV cells & decrease the cost
+// of render operations. However, in some cases, disabling cell recycling can be
+// benificial, recycled cells continue their regular react lifecycle even when not
+// visible, which can lead to excessive background re-rendering in some cases. When
+//  combining VLV with react libraries (like ReSub) that have subscriptions managed
+// by components can cause this behaviour to manifest.
+disableCellRecycling?: boolean;
+
 initialSelectedKey?: string;
 
 // Ordered list of descriptors for items to display in the list.
