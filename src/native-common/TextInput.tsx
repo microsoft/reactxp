@@ -79,7 +79,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     render() {
         const editable = this.props.editable !== false;
-        const blurOnSubmit = this.props.blurOnSubmit || !this.props.multiline;
+        // If blurOnSubmit value is explicitly specified, use it, otherwise auto-blur single line inputs
+        const blurOnSubmit = this.props.blurOnSubmit !== undefined ? this.props.blurOnSubmit : !this.props.multiline;
 
         const internalProps: RN.ExtendedTextInputProps = {
             multiline: this.props.multiline,
