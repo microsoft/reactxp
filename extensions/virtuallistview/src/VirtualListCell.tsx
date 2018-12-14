@@ -12,14 +12,24 @@ import * as RX from 'reactxp';
 
 export interface VirtualListCellInfo {
     key: string;
+
+    disableTouchOpacityAnimation?: boolean;
+}
+
+export interface VirtualListCellRenderDetails<T extends VirtualListCellInfo> {
+    item: T;
+    selected: boolean;
+    focused: boolean;
 }
 
 export interface VirtualListCellProps<ItemInfo extends VirtualListCellInfo> extends RX.CommonProps {
     // All callbacks should be prebound to optimize performance.
     onLayout?: (itemKey: string, height: number) => void;
     onAnimateStartStop?: (itemKey: string, start: boolean) => void;
-    onCellFocus?: (itemKey: string | undefined) => void;
-    renderItem: (item: ItemInfo, focused: boolean) => JSX.Element | JSX.Element[];
+    onItemFocused?: (item: ItemInfo | undefined) => void;
+    onItemSelected?: (item: ItemInfo) => void;
+    renderItem: (details: VirtualListCellRenderDetails<ItemInfo>) => JSX.Element | JSX.Element[];
+    onKeyPress: (ev: RX.Types.KeyboardEvent) => void;
 
     // Props that do not impact render (position is set by animated style).
     itemKey: string | undefined;
@@ -36,6 +46,7 @@ export interface VirtualListCellProps<ItemInfo extends VirtualListCellInfo> exte
     // Props that impact render, should be validated in shouldComponentUpdate.
     isActive: boolean;
     isFocused: boolean;
+    isSelected: boolean;
     tabIndex?: number;
     shouldUpdate: boolean;
     item: ItemInfo | undefined;
@@ -44,9 +55,9 @@ export interface VirtualListCellProps<ItemInfo extends VirtualListCellInfo> exte
 interface StaticRendererProps<ItemInfo extends VirtualListCellInfo> extends RX.CommonProps {
     shouldUpdate: boolean;
     isFocused: boolean;
-    style: RX.Types.StyleRuleSetRecursive<RX.Types.AnimatedViewStyleRuleSet | RX.Types.ViewStyleRuleSet>;
+    isSelected: boolean;
     item: ItemInfo | undefined;
-    renderItem: (item: ItemInfo, focused: boolean) => JSX.Element | JSX.Element[];
+    renderItem: (details: VirtualListCellRenderDetails<ItemInfo>) => JSX.Element | JSX.Element[];
 }
 
 const _styles = {
@@ -65,10 +76,12 @@ const _isNativeMacOS = RX.Platform.getType() === 'macos';
 const _skypeEaseInAnimationCurve = RX.Animated.Easing.CubicBezier(1, 0, 0.78, 1);
 const _skypeEaseOutAnimationCurve = RX.Animated.Easing.CubicBezier(0.33, 0, 0, 1);
 const _virtualCellRef = 'virtualCell';
+const _keyCodeEnter = 13;
+const _keyCodeSpace = 32;
+const _keyCodeReturn = 3;
 
 export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Component<VirtualListCellProps<ItemInfo>, RX.Stateless> {
-    // Helper class used to render child elements inside RX.Animated.View only when parent
-    // allows that. If we know that none of the children changed - we would like to skip
+    // Helper class used to render child elements. If we know that none of the children changed - we would like to skip
     // the render completely, to improve performance.
     private static StaticRenderer = class <CellItemInfo extends VirtualListCellInfo> extends
             RX.Component<StaticRendererProps<CellItemInfo>, RX.Stateless> {
@@ -77,7 +90,9 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
         }
 
         shouldComponentUpdate(nextProps: StaticRendererProps<CellItemInfo>): boolean {
-            return nextProps.shouldUpdate || this.props.isFocused !== nextProps.isFocused;
+            return nextProps.shouldUpdate ||
+                this.props.isFocused !== nextProps.isFocused ||
+                this.props.isSelected !== nextProps.isSelected;
         }
 
         render() {
@@ -86,12 +101,14 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
                 return null;
             }
 
-            // Because of the React limitation that Render should returm single element and not array,
-            // we have to wrap results of this.props.render() into the View.
             return (
-                <RX.Animated.View style={ this.props.style } >
-                    { this.props.renderItem(this.props.item, this.props.isFocused) }
-                </RX.Animated.View>
+                <RX.Fragment>
+                    { this.props.renderItem({
+                        item: this.props.item,
+                        selected: this.props.isSelected,
+                        focused: this.props.isFocused
+                    }) }
+                </RX.Fragment>
             );
         }
     };
@@ -159,10 +176,11 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
         assert.ok(nextProps.useNativeDriver === this.props.useNativeDriver);
 
         // All callbacks should be prebound to optimize performance.
-        assert.ok(this.props.onLayout === nextProps.onLayout);
-        assert.ok(this.props.onCellFocus === nextProps.onCellFocus);
-        assert.ok(this.props.onAnimateStartStop === nextProps.onAnimateStartStop);
-        assert.ok(this.props.renderItem === nextProps.renderItem);
+        assert.ok(this.props.onLayout === nextProps.onLayout, 'onLayout callback changed');
+        assert.ok(this.props.onItemSelected === nextProps.onItemSelected, 'onItemSelected callback changed');
+        assert.ok(this.props.onItemFocused === nextProps.onItemFocused, 'onItemFocused callback changed');
+        assert.ok(this.props.onAnimateStartStop === nextProps.onAnimateStartStop, 'onAnimateStartStop callback changed');
+        assert.ok(this.props.renderItem === nextProps.renderItem, 'renderItem callback changed');
 
         // We assume this prop doesn't change for perf reasons. Callers should modify
         // the key to force an unmount/remount if these need to change.
@@ -193,7 +211,8 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
         // Check if props important for rendering changed.
         if (this.props.tabIndex !== nextProps.tabIndex ||
             this.props.itemKey !== nextProps.itemKey ||
-            this.props.isFocused !== nextProps.isFocused) {
+            this.props.isFocused !== nextProps.isFocused ||
+            this.props.isSelected !== nextProps.isSelected) {
             return true;
         }
 
@@ -323,17 +342,20 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
 
         return (
             <RX.Animated.View
-                style={ [_styles.cellView, overflow, this._animatedStylePosition] }
+                style={ [_styles.cellView, overflow, this._animatedStylePosition, this._animatedStyleWidth] }
                 ref={ _virtualCellRef }
                 tabIndex={ this.props.tabIndex }
                 onLayout={ this.props.onLayout ? this._onLayout : undefined }
-                onFocus={ this.props.onCellFocus ? this._onFocus : undefined }
-                onBlur={ this.props.onCellFocus ? this._onBlur : undefined }
+                onFocus={ this.props.onItemFocused ? this._onFocus : undefined }
+                onBlur={ this.props.onItemFocused ? this._onBlur : undefined }
+                onPress={ this.props.onItemSelected ? this._onPress : undefined }
+                onKeyPress={ this.props.onKeyPress || this.props.onItemSelected ? this._onKeyPress : undefined }
+                disableTouchOpacityAnimation={ this.props.item ? this.props.item.disableTouchOpacityAnimation : undefined }
             >
                 <VirtualListCell.StaticRenderer
                     shouldUpdate={ this.props.shouldUpdate }
                     isFocused={ this.props.isFocused }
-                    style={ [overflow, this._animatedStyleWidth] }
+                    isSelected={ this.props.isSelected }
                     item={ this.props.item }
                     renderItem={ this.props.renderItem }
                 />
@@ -341,15 +363,35 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
         );
     }
 
+    private _onKeyPress = (e: RX.Types.KeyboardEvent) => {
+        const isSelectItemKeyPress = e.keyCode === _keyCodeEnter ||
+            e.keyCode === _keyCodeSpace ||
+            e.keyCode === _keyCodeReturn;
+        if (isSelectItemKeyPress && this.props.onItemSelected && this.props.item) {
+            this.props.onItemSelected(this.props.item);
+            e.stopPropagation();
+        }
+        if (this.props.onKeyPress) {
+            this.props.onKeyPress(e);
+        }
+    }
+
     private _onFocus = (e: RX.Types.FocusEvent) => {
-        if (this.props.onCellFocus) {
-            this.props.onCellFocus(this.props.itemKey);
+        if (this.props.onItemFocused) {
+            this.props.onItemFocused(this.props.item);
+        }
+    }
+
+    private _onPress = (e: RX.Types.SyntheticEvent) => {
+        if (this.props.onItemSelected && this.props.item) {
+            this.props.onItemSelected(this.props.item);
+            e.stopPropagation();
         }
     }
 
     private _onBlur = (e: RX.Types.FocusEvent) => {
-        if (this.props.onCellFocus) {
-            this.props.onCellFocus(undefined);
+        if (this.props.onItemFocused) {
+            this.props.onItemFocused(undefined);
         }
     }
 

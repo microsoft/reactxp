@@ -24,7 +24,7 @@ To install: ```npm install reactxp-virtuallistview```
 
 The VirtualListView employs a number of tricks to improve performance.
 
-It uses a technique called "cell recycling" to minimize the number of mounts and unmounts. A cell is a container for a list item. When a cell is no longer visible, it can be temporarily hidden and then reused for the next item that becomes visible. This optimization is most effective when the recycled cell and its contents are used for an item that is similar in content. For this reason, callers need to specify a "template" field to identify similar items.
+It uses a technique called "cell recycling" to minimize the number of mounts and unmounts. A cell is a container for a list item. When a cell is no longer visible, it can be temporarily hidden and then reused for the next item that becomes visible. This optimization is most effective when the recycled cell and its contents are used for an item that is similar in content. For this reason, callers need to specify a "template" field to identify similar items. In some cases, disabling cell recycling can be benificial as recycled cells continue their regular react lifecycle even when not visible, which can lead to excessive background re-rendering in some cases. When combining VLV with react libraries (like ReSub) that have subscriptions managed by components can cause this behaviour to manifest.  To disable cell recycling on specific cells, exclude the template field from the item descriptor.
 
 It also supports "overdraw" to render items above and below the view port. This minimizes chances that the user will scroll to a new portion of the list before new items can be rendered in that area. Overdraw is employed only after the view port is initially filled. This reduces the performance impact of rendering.
 
@@ -86,9 +86,9 @@ class FruitListView extends RX.Component<null, FruitListState> {
         );
     }
 
-    private _renderItem(item: FruitListItemInfo, hasFocus?: boolean) {
+    private _renderItem(details: VirtualListViewCellRenderDetails<FruitListItemInfo>) {
         const viewStyle = RX.Styles.createViewStyle({
-            height: item.height,
+            height: details.item.height,
             backgroundColor: item.template === _headerItemTemplate ?
                 '#ddd' : '#fff',
             alignItems: 'center'
@@ -97,7 +97,7 @@ class FruitListView extends RX.Component<null, FruitListState> {
         return (
             <RX.View style={ viewStyle }>
                 <RX.Text>
-                    { item.text }
+                    { details.item.text }
                 </RX.Text>
             </RX.View>
         );
@@ -142,17 +142,26 @@ interface VirtualListViewItemInfo {
 // Should the list animate additions, removals and moves within the list?
 animateChanges?: boolean;
 
+initialSelectedKey?: string;
+
 // Ordered list of descriptors for items to display in the list.
 itemList: VirtualListViewItemInfo[];
 
+// Use this if you want to vertically offset the focused item from the 
+// top of the viewport when using keyboard nav
+keyboardFocusScrollOffset?: number;
+
 // Logging callback to debug issues related to the VirtualListView.
 logInfo?: (textToLog: string) => void;
+
+// Callback when an item in the VLV is selected
+onItemSelected?: (item: ItemInfo) => void;
 
 // Optional padding around the scrolling content within the list.
 padding?: number;
 
 // Callback for rendering item when it becomes visible within view port.
-renderItem: (item: VirtualListViewItemInfo, hasFocus?: boolean) =>
+renderItem: (renderDetails: VirtualListCellRenderDetails<ItemInfo>) => 
     JSX.Element | JSX.Element[];
 
 // If true, allows each item to overflow its visible cell boundaries;
@@ -174,18 +183,24 @@ testId: string = undefined;
 keyboardDismissMode?: 'none' | 'interactive' | 'on-drag';
 keyboardShouldPersistTaps?: boolean;
 disableScrolling?: boolean;
-scrollsToTop?: boolean; // iOS only, scroll to top on status bar tap
+scrollsToTop?: boolean; // iOS only, scroll to top when user taps on status bar
 disableBouncing?: boolean; // iOS only, bounce override
 scrollIndicatorInsets?: { top: number, left: number,
     bottom: number, right: number }; // iOS only
+onLayout?: (e: RX.Types.ViewOnLayoutEvent) => void;
+scrollEventThrottle?: number;
 onScroll?: (scrollTop: number, scrollLeft: number) => void;
 scrollXAnimatedValue?: RX.Types.AnimatedValue;
 scrollYAnimatedValue?: RX.Types.AnimatedValue;
+
 ```
 
 ## Methods
 ``` javascript
 // Scrolls the view to the specified top value (specified in pixels).
 scrollToTop(animated = true, top = 0);
+
+// Sets selection & focus to specified key
+selectItemKey(key: string);
 ```
 

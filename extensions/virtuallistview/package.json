@@ -1,12 +1,12 @@
 {
   "name": "reactxp-virtuallistview",
-  "version": "1.5.0",
+  "version": "2.0.0-rc.1",
   "description": "General-purpose virtualized list view built on the cross-platform ReactXP library",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
   "scripts": {
     "build": "npm run tslint && tsc",
-    "tslint": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
+    "tslint": "tslint --project tsconfig.json -r tslint.json --fix || true"
   },
   "dependencies": {
     "assert": "^1.4.1",
@@ -20,6 +20,7 @@
     "reactxp": "^1.5.0",
     "tslint": "5.11.0",
     "tslint-microsoft-contrib": "6.0.0",
+    "tslint-react": "3.6.0",
     "typescript": "3.2.1"
   },
   "homepage": "https://microsoft.github.io/reactxp/docs/extensions/virtuallistview.html",
