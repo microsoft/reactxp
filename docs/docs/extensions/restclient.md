@@ -21,13 +21,13 @@ To install: ```npm install simplerestclients``` or  ```yarn add simplerestclient
 import { GenericRestClient, ApiCallOptions }  from 'simplerestclients';
 import SyncTasks = require('synctasks');
 
-interface User {
+export interface User {
     id: string;
     firstName: string;
     lastName: string;
 }
 
-class MyRestClient extends GenericRestClient {
+export default class MyRestClient extends GenericRestClient {
     constructor(private _appId: string) {
         super('https://myhost.com/api/v1/');
     }
