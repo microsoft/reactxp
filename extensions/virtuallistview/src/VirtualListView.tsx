@@ -57,7 +57,7 @@ export interface VirtualListViewItemInfo extends VirtualListCellInfo {
     // the list view attempts to recycle cells whose templates match. When an item
     // scrolls off the screen and others appear on screen, the contents of the
     // cell are simply updated rather than torn down and rebuilt.
-    template: string;
+    template?: string;
 
     // Is the item navigable by keyboard or through accessibility mechanisms?
     isNavigable?: boolean;
@@ -97,14 +97,6 @@ export interface VirtualListViewProps<ItemInfo extends VirtualListViewItemInfo> 
     // on any external state, only on VirtualListViewItemInfo, to render item.
     skipRenderIfItemUnchanged?: boolean;
 
-    // Cell recycling is an optimization to re-use similar VLV cells & decrease the cost
-    // of render operations. However, in some cases, disabling cell recycling can be
-    // benificial, recycled cells continue their regular react lifecycle even when not
-    // visible, which can lead to excessive background re-rendering in some cases. When
-    //  combining VLV with react libraries (like ReSub) that have subscriptions managed
-    // by components can cause this behaviour to manifest.
-    disableCellRecycling?: boolean;
-
     // Pass-through properties for scroll view.
     keyboardDismissMode?: 'none' | 'interactive' | 'on-drag';
     keyboardShouldPersistTaps?: boolean;
@@ -138,7 +130,7 @@ export interface VirtualListViewState {
 
 export interface VirtualCellInfo {
     virtualKey: string;
-    itemTemplate: string;
+    itemTemplate?: string;
     isHeightConstant: boolean;
     height: number;
     cachedItemKey: string;
@@ -976,7 +968,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
 
     // Cell Management Methods
 
-    private _allocateCell(itemKey: string, itemTemplate: string, itemIndex: number, isHeightConstant: boolean,
+    private _allocateCell(itemKey: string, itemTemplate: string | undefined, itemIndex: number, isHeightConstant: boolean,
         height: number, top: number, isVisible: boolean): VirtualCellInfo {
         let newCell: VirtualCellInfo | null = null;
 
@@ -1042,12 +1034,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         const virtualCellInfo = this._activeCells[itemKey];
 
         if (virtualCellInfo) {
-            // If cell recycling is disabled, clear out any existing recycled cells
-            if (!this.props.disableCellRecycling && this._recycledCells.length > 0) {
-                this._recycledCells = [];
-            }
-
-            if (!this.props.disableCellRecycling && this._maxRecycledCells > 0) {
+            if (this._maxRecycledCells > 0) {
                 this._setCellTopAndVisibility(itemKey, false, virtualCellInfo.top, false);
 
                 // Is there a "template" hint associated with this cell? If so,
@@ -1140,16 +1127,14 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             }
         }
 
-        if (!this.props.disableCellRecycling) {
-            _.each(this._recycledCells, virtualCellInfo => {
-                assert.ok(virtualCellInfo, 'Recycled Cells array contains a null/undefined object');
-                cellList.push({
-                    cellInfo: virtualCellInfo,
-                    item: undefined,
-                    itemIndex: undefined
-                });
+        _.each(this._recycledCells, virtualCellInfo => {
+            assert.ok(virtualCellInfo, 'Recycled Cells array contains a null/undefined object');
+            cellList.push({
+                cellInfo: virtualCellInfo,
+                item: undefined,
+                itemIndex: undefined
             });
-        }
+        });
 
         // Sort the list of cells by virtual key so the order doesn't change. Otherwise
         // the underlying render engine (the browser or React Native) treat it as a DOM

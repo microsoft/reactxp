@@ -24,7 +24,7 @@ To install: ```npm install reactxp-virtuallistview```
 
 The VirtualListView employs a number of tricks to improve performance.
 
-It uses a technique called "cell recycling" to minimize the number of mounts and unmounts. A cell is a container for a list item. When a cell is no longer visible, it can be temporarily hidden and then reused for the next item that becomes visible. This optimization is most effective when the recycled cell and its contents are used for an item that is similar in content. For this reason, callers need to specify a "template" field to identify similar items.
+It uses a technique called "cell recycling" to minimize the number of mounts and unmounts. A cell is a container for a list item. When a cell is no longer visible, it can be temporarily hidden and then reused for the next item that becomes visible. This optimization is most effective when the recycled cell and its contents are used for an item that is similar in content. For this reason, callers need to specify a "template" field to identify similar items. In some cases, disabling cell recycling can be benificial as recycled cells continue their regular react lifecycle even when not visible, which can lead to excessive background re-rendering in some cases. When combining VLV with react libraries (like ReSub) that have subscriptions managed by components can cause this behaviour to manifest.  To disable cell recycling on specific cells, exclude the template field from the item descriptor.
 
 It also supports "overdraw" to render items above and below the view port. This minimizes chances that the user will scroll to a new portion of the list before new items can be rendered in that area. Overdraw is employed only after the view port is initially filled. This reduces the performance impact of rendering.
 
@@ -141,14 +141,6 @@ interface VirtualListViewItemInfo {
 ``` javascript
 // Should the list animate additions, removals and moves within the list?
 animateChanges?: boolean;
-
-// Cell recycling is an optimization to re-use similar VLV cells & decrease the cost
-// of render operations. However, in some cases, disabling cell recycling can be
-// benificial, recycled cells continue their regular react lifecycle even when not
-// visible, which can lead to excessive background re-rendering in some cases. When
-//  combining VLV with react libraries (like ReSub) that have subscriptions managed
-// by components can cause this behaviour to manifest.
-disableCellRecycling?: boolean;
 
 initialSelectedKey?: string;
 
