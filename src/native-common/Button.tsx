@@ -137,7 +137,7 @@ export class Button extends ButtonBase {
         const accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(this.props.accessibilityTraits,
             _defaultAccessibilityTrait);
 
-        const opacityStyle = !this.props.disableTouchOpacityAnimation && this._opacityAnimatedStyle;
+        const opacityStyle = this.props.disableTouchOpacityAnimation ? undefined : this._opacityAnimatedStyle;
         let disabledStyle = this.props.disabled ? _styles.disabled : undefined;
 
         if (this.props.disabled && this.props.disabledOpacity !== undefined) {
