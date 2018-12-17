@@ -13,10 +13,12 @@ import * as React from 'react';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import { applyFocusableComponentMixin } from './utils/FocusManager';
 import { Types } from '../common/Interfaces';
+import { isEmpty } from './utils/lodashMini';
 import Styles from './Styles';
 
 export interface TextInputState {
     inputValue?: string;
+    autoResize?: boolean;
 }
 
 const _isMac = (typeof navigator !== 'undefined') && (typeof navigator.platform === 'string') && (navigator.platform.indexOf('Mac') >= 0);
@@ -142,15 +144,23 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         super(props, context);
 
         this.state = {
-            inputValue: props.value !== undefined ? props.value : (props.defaultValue || '')
+            inputValue: props.value !== undefined ? props.value : (props.defaultValue || ''),
+            autoResize: TextInput._shouldAutoResize(props)
         };
     }
 
     componentWillReceiveProps(nextProps: Types.TextInputProps) {
+        const nextState: Partial<TextInputState> = {};
+
         if (nextProps.value !== undefined && nextProps.value !== this.state.inputValue) {
-            this.setState({
-                inputValue: nextProps.value
-            });
+            nextState.inputValue = nextProps.value;
+        }
+
+        if (nextProps.style !== this.props.style || nextProps.multiline !== this.props.multiline) {
+            const fixedHeight = TextInput._shouldAutoResize(nextProps);
+            if (this.state.autoResize !== fixedHeight) {
+                nextState.autoResize = fixedHeight;
+            }
         }
 
         if (nextProps.placeholderTextColor !== this.props.placeholderTextColor) {
@@ -161,6 +171,15 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             if (this.props.placeholderTextColor) {
                 TextInputPlaceholderSupport.removeRef(this.props.placeholderTextColor);
             }
+        }
+
+        if (!isEmpty(nextState)) {
+            this.setState(nextState, () => {
+                // Resize as needed after state is set
+                if (this._mountedComponent instanceof HTMLTextAreaElement) {
+                    TextInput._updateScrollPositions(this._mountedComponent, !!this.state.autoResize);
+                }
+            });
         }
     }
 
@@ -220,7 +239,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     onChange={ this._onInputChanged }
                     onKeyDown={ this._onKeyDown }
                     onKeyUp={ this._checkSelectionChanged }
-                    onInput={ this._onInput }
+                    onInput={ this._onMultilineInput }
                     onFocus={ this._onFocus }
                     onBlur={ this._onBlur }
                     onMouseDown={ this._checkSelectionChanged }
@@ -271,7 +290,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 // Wrap the input in a form tag if required
                 input = (
                     <form action='' onSubmit={ ev => { /* prevent form submission/page reload */ ev.preventDefault(); this.blur(); } }
-                          style={ _styles.formStyle }>
+                        style={ _styles.formStyle }>
                         { input }
                     </form>
                 );
@@ -283,6 +302,13 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     private _onMount = (comp: HTMLInputElement | HTMLTextAreaElement | null) => {
         this._mountedComponent = comp;
+        if (this._mountedComponent && this._mountedComponent instanceof HTMLTextAreaElement) {
+            TextInput._updateScrollPositions(this._mountedComponent, !!this.state.autoResize);
+        }
+    }
+    private _onMultilineInput = (ev: React.FormEvent<HTMLTextAreaElement>) => {
+        this._onInput();
+        TextInput._updateScrollPositions(ev.currentTarget, !!this.state.autoResize);
     }
 
     private _onInput = () => {
@@ -293,6 +319,62 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             this._mountedComponent.setAttribute('aria-live', 'assertive');
             this._ariaLiveEnabled = true;
         }
+    }
+
+    private static _shouldAutoResize(props: Types.TextInputProps) {
+        // Single line boxes don't need auto-resize
+        if (!props.multiline) {
+            return false;
+        }
+
+        const combinedStyles = Styles.combine(props.style);
+        if (!combinedStyles || typeof combinedStyles === 'number') {
+            // Number-type styles aren't allowed on web but if they're found we can't decode them so assume not fixed height
+            return true;
+        } else if (Array.isArray(combinedStyles)) {
+            // Iterate across the array and see if there's any height value
+            return combinedStyles.some(style => {
+                if (!style || typeof style === 'number') {
+                    return true;
+                }
+                return style.height === undefined;
+            });
+        } else {
+            return combinedStyles.height === undefined;
+
+        }
+    }
+
+    private static _updateScrollPositions(element: HTMLTextAreaElement, autoResize: boolean) {
+        // If the height is fixed, there's nothing more to do
+        if (!autoResize) {
+            return;
+        }
+
+        // When scrolling we need to retain scroll tops of all elements
+        const scrollTops = this._getParentElementAndTops(element);
+
+        // Reset height to 1px so that we can detect shrinking TextInputs
+        element.style.height = '1px';
+        element.style.height = element.scrollHeight + 'px';
+
+        scrollTops.forEach(obj => {
+          obj.el.scrollTop = obj.top;
+        });
+
+    }
+
+    private static _getParentElementAndTops(textAreaElement: HTMLTextAreaElement) {
+        let element: HTMLElement = textAreaElement;
+        const results = [];
+        while (element && element.parentElement) {
+            element = element.parentElement;
+            results.push({
+                el: element,
+                top: element.scrollTop
+            });
+        }
+        return results;
     }
 
     private _onFocus = (e: Types.FocusEvent) => {
@@ -414,10 +496,16 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         this._checkSelectionChanged();
     }
 
-    private _onScroll = (e: React.UIEvent<any>) => {
+    private _onScroll = (e: React.UIEvent<HTMLTextAreaElement>) => {
+        const targetElement = e.currentTarget;
+        // Fix scrollTop if the TextInput can auto-grow
+        // If the item is bounded by max-height, don't scroll since we want input to follow the cursor at that point
+        if (this.state.autoResize && targetElement.scrollHeight < targetElement.clientHeight) {
+            targetElement.scrollTop = 0;
+        }
+
         if (this.props.onScroll) {
-            const { scrollLeft, scrollTop } = (e.target as Element);
-            this.props.onScroll(scrollLeft, scrollTop);
+            this.props.onScroll(targetElement.scrollLeft, targetElement.scrollTop);
         }
     }
 
