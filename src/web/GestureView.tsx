@@ -395,7 +395,9 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
     }
 
     private _startLongPressTimer(event: React.MouseEvent<any>) {
-		event.persist();
+        
+        event.persist();
+        
         this._pendingLongPressEvent = event;
 
         this._longPressTimer = Timers.setTimeout(() => {
