@@ -9,11 +9,11 @@
  * through properties.
  */
 
-import * as assert from 'assert';
 import * as React from 'react';
 import * as RN from 'react-native';
 
 import AccessibilityUtil from './AccessibilityUtil';
+import assert from '../common/assert';
 import { Types } from '../common/Interfaces';
 import International from './International';
 import { extend, isEqual } from './utils/lodashMini';
@@ -163,7 +163,8 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
             return;
         }
 
-        assert.ok(!!this.props.anchorHandle);
+        assert(!!this.props.anchorHandle);
+
         RN.NativeModules.UIManager.measureInWindow(
             this.props.anchorHandle,
             (x: number, y: number, width: number, height: number) => {
@@ -171,7 +172,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
                     return;
                 }
 
-                assert.ok(!!this._viewHandle);
+                assert(!!this._viewHandle);
 
                 const anchorRect: ClientRect = {
                     left: x, top: y, right: x + width, bottom: y + height,

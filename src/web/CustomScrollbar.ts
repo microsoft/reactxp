@@ -9,6 +9,7 @@
 
 import * as React from 'react';
 
+import assert from '../common/assert';
 import Timers from '../common/utils/Timers';
 
 const UNIT = 'px';
@@ -237,9 +238,7 @@ export class Scrollbar {
     }
 
     constructor(container: HTMLElement) {
-        if (!container) {
-            throw new Error('Container must not be null');
-        }
+        assert(container, 'Container must not be null');
 
         this._container = container;
     }

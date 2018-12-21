@@ -9,6 +9,7 @@
 
 import * as React from 'react';
 
+import assert from '../common/assert';
 import FrontLayerViewManager from './FrontLayerViewManager';
 import * as RX from '../common/Interfaces';
 
@@ -18,21 +19,14 @@ export class Modal extends RX.Modal {
     }
 
     show(modal: React.ReactElement<RX.Types.ViewProps>, modalId: string, options?: RX.Types.ModalOptions): void {
-        if (!modal) {
-            throw new Error(`modal must be valid. Actual ${modal}`);
-        }
-
-        if (!modalId) {
-            throw new Error(`modalId must be a non-empty string. Actual: ${modalId}`);
-        }
+        assert(modal, `modal must be valid. Actual ${ modal }`);
+        assert(modalId, `modalId must be a non-empty string. Actual: ${ modalId }`);
 
         FrontLayerViewManager.showModal(modal, modalId, options);
     }
 
     dismiss(modalId: string): void {
-        if (!modalId) {
-            throw new Error(`modalId must be a non-empty string. Actual: ${modalId}`);
-        }
+        assert(modalId, `modalId must be a non-empty string. Actual: ${ modalId }`);
 
         FrontLayerViewManager.dismissModal(modalId);
     }

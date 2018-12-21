@@ -7,7 +7,6 @@
  * RN-specific implementation of the cross-platform Button abstraction.
  */
 
-import * as assert from 'assert';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
@@ -17,6 +16,7 @@ import AccessibilityUtil from './AccessibilityUtil';
 import Animated from './Animated';
 import App from '../native-common/App';
 import AppConfig from '../common/AppConfig';
+import assert from '../common/assert';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
 import { Button as ButtonBase, Types } from '../common/Interfaces';

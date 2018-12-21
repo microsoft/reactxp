@@ -7,7 +7,6 @@
 * RN-specific implementation of the cross-platform View abstraction.
 */
 
-import * as assert from 'assert';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
@@ -16,6 +15,7 @@ import { MacComponentAccessibilityProps } from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
 import Animated from './Animated';
 import App from './App';
+import assert from '../common/assert';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
 import { Types } from '../common/Interfaces';

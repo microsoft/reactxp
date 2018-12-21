@@ -9,13 +9,13 @@
  * pinch-and-zoom, panning, single tap and double tap gestures.
  */
 
-import * as assert from 'assert';
 import * as React from 'react';
 import * as RN from 'react-native';
 
 import { MacComponentAccessibilityProps } from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
 import App from '../native-common/App';
+import assert from '../common/assert';
 import EventHelpers from './utils/EventHelpers';
 import { Types } from '../common/Interfaces';
 import { isUndefined } from './utils/lodashMini';
@@ -496,7 +496,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
             clientY = e.touches[0].locationY;
         }
 
-        assert.ok(this._lastGestureStartEvent, 'Gesture start event must not be null.');
+        assert(this._lastGestureStartEvent, 'Gesture start event must not be null.');
 
         const initialPageX = this._lastGestureStartEvent
             ? this._lastGestureStartEvent.pageX!
