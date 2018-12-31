@@ -13,9 +13,9 @@
  * of its render method to this utility. See RX.View for an example.
  */
 
-import * as assert from 'assert';
 import * as React from 'react';
 
+import assert from '../../common/assert';
 import { assign } from './../utils/lodashMini';
 
 function restyleForInlineText(reactElement: React.ReactElement<any>) {

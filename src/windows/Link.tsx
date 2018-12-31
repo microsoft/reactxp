@@ -12,6 +12,7 @@ import * as RN from 'react-native';
 import * as RNW from 'react-native-windows';
 
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
+import assert from '../common/assert';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import { applyFocusableComponentMixin, FocusManager, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
@@ -105,11 +106,9 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
 
         // We don't use 'string' ref type inside ReactXP
         const originalRef = (internalProps as any).ref;
-        if (typeof originalRef === 'string') {
-            throw new Error('Link: ReactXP must not use string refs internally');
-        }
-        const componentRef: Function = originalRef as Function;
+        assert(typeof originalRef === 'string', 'Link: ReactXP must not use string refs internally');
 
+        const componentRef = originalRef as Function;
         const focusableTextProps: RNW.FocusableWindowsProps<
                 Without<RN.TextProps, 'onAccessibilityTap'> & RNW.AccessibilityEvents> = {
             ...internalProps,
@@ -137,12 +136,9 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     }
 
     private _renderLinkAsNativeHyperlink(internalProps: RN.TextProps) {
-
         // We don't use 'string' ref type inside ReactXP
         const originalRef = (internalProps as any).ref;
-        if (typeof originalRef === 'string') {
-            throw new Error('Link: ReactXP must not use string refs internally');
-        }
+        assert(typeof originalRef === 'string', 'Link: ReactXP must not use string refs internally');
 
         return (
             <RNW.HyperlinkWindows

@@ -13,6 +13,7 @@ import * as RN from 'react-native';
 import * as RNW from 'react-native-windows';
 
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
+import assert from '../common/assert';
 import { Button as ButtonBase, ButtonContext as ButtonContextBase } from '../native-common/Button';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
@@ -66,11 +67,9 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
         // We don't use 'string' ref type inside ReactXP
         const originalRef = (internalProps as any).ref;
-        if (typeof originalRef === 'string') {
-            throw new Error('Button: ReactXP must not use string refs internally');
-        }
-        const componentRef: Function = originalRef as Function;
+        assert(typeof originalRef === 'string', 'Button: ReactXP must not use string refs internally');
 
+        const componentRef = originalRef as Function;
         const focusableViewProps: RNW.FocusableWindowsProps<RN.ExtendedViewProps | RNW.AccessibilityEvents> = {
             ...internalProps,
             ref: onMount,
@@ -139,10 +138,8 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
     }
 
     private _onAccessibilityTap = (e: RN.NativeSyntheticEvent<any>): void => {
-        if (!this.props.disabled) {
-            if (this.props.onPress) {
-                this.props.onPress(e);
-            }
+        if (!this.props.disabled && this.props.onPress) {
+            this.props.onPress(e);
         }
     }
 
@@ -184,10 +181,8 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
     private _onKeyUp = (e: React.SyntheticEvent<any>): void => {
         const keyEvent = EventHelpers.toKeyboardEvent(e);
-        if (keyEvent.keyCode === KEY_CODE_SPACE) {
-            if (!this.props.disabled && this.props.onPress) {
-                this.props.onPress(keyEvent);
-            }
+        if (keyEvent.keyCode === KEY_CODE_SPACE && !this.props.disabled && this.props.onPress) {
+            this.props.onPress(keyEvent);
         }
     }
 

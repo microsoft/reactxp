@@ -11,6 +11,7 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as SyncTasks from 'synctasks';
 
+import assert from '../common/assert';
 import { DEFAULT_RESIZE_MODE } from '../common/Image';
 import { Types } from '../common/Interfaces';
 import * as _ from './utils/lodashMini';
@@ -337,14 +338,12 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
 
     render() {
         const { source } = this.props;
+        const isSourceValid = !(typeof source !== 'string' && typeof source !== 'undefined');
 
         // Prepare image source (necessary as iOS implementation also allows objects)
-        if (typeof source !== 'string' && typeof source !== 'undefined') {
-            throw new Error(`Types/web/Image only accepts string sources! You passed: ${ source } of type ${ typeof source }`);
-        }
+        assert(isSourceValid, `Types/web/Image only accepts string sources! You passed: ${ source } of type ${ typeof source }`);
 
         let optionalImg: JSX.Element | null = null;
-
         if (this.state.showImgTag) {
             optionalImg = (
                 <img

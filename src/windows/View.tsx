@@ -14,6 +14,7 @@ import * as RNW from 'react-native-windows';
 
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
 import AppConfig from '../common/AppConfig';
+import assert from '../common/assert';
 import EventHelpers from '../native-common/utils/EventHelpers';
 import {
     applyFocusableComponentMixin,
@@ -344,11 +345,9 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
             // We don't use 'string' ref type inside ReactXP
             const originalRef = this._internalProps.ref;
-            if (typeof originalRef === 'string') {
-                throw new Error('View: ReactXP must not use string refs internally');
-            }
-            const componentRef: Function = originalRef as Function;
+            assert(typeof originalRef === 'string', 'View: ReactXP must not use string refs internally');
 
+            const componentRef: Function = originalRef as Function;
             const focusableViewProps: RNW.FocusableWindowsProps<RN.ViewProps> = {
                 ...this._internalProps,
                 ref: this._onFocusableRef,
