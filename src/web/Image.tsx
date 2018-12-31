@@ -338,12 +338,10 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
 
     render() {
         const { source } = this.props;
+        const isSourceValid = !(typeof source !== 'string' && typeof source !== 'undefined');
 
         // Prepare image source (necessary as iOS implementation also allows objects)
-        assert(
-            typeof source === 'string',
-            `Types/web/Image only accepts string sources! You passed: ${ source } of type ${ typeof source }`
-        );
+        assert(isSourceValid, `Types/web/Image only accepts string sources! You passed: ${ source } of type ${ typeof source }`);
 
         let optionalImg: JSX.Element | null = null;
         if (this.state.showImgTag) {
