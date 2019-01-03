@@ -333,6 +333,8 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             return true;
         } else if (Array.isArray(combinedStyles)) {
             // Iterate across the array and see if there's any height value
+            // It's possible that the height could be set via another mechanism (like absolute positioning) which would potenailly
+            // incorrectly engage the autoResize mode
             return combinedStyles.some(style => {
                 if (!style || typeof style === 'number') {
                     return true;
@@ -341,7 +343,6 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             });
         } else {
             return combinedStyles.height === undefined;
-
         }
     }
 
