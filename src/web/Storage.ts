@@ -18,7 +18,11 @@ export class Storage extends RX.Storage {
     }
 
     setItem(key: string, value: string): SyncTasks.Promise<void> {
-        window.localStorage.setItem(key, value);
+        try {
+            window.localStorage.setItem(key, value);
+        } catch (e) {
+            return SyncTasks.Rejected(e);
+        }
         return SyncTasks.Resolved<void>();
     }
 
