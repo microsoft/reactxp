@@ -16,6 +16,9 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 2.0.0-rc.1 of reactxp-virtuallistview - _11 Jan 2019_
+* #944: Rework VirtualListView for improved accessibility/performance (this contains breaking API changes - see documentation for new API)
+
 #### Version 1.5.0 of reactxp-imagesvg, reactxp-navigation, reactxp-video, reactxp-virtuallistview - _1 Dec 2018_
 * No new features; updated dependencies.
 
