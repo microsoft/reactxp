@@ -1280,6 +1280,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             lastFocusedItemKey: key,
             selectedItemKey: key
         });
+        this._scrollToItemKey(key);
     }
 
     private _onItemSelected = (itemInfo?: ItemInfo) => {
@@ -1300,10 +1301,30 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         // Is it an "up arrow" key?
         if (e.keyCode === _keyCodeUpArrow) {
             this._focusSubsequentItem(FocusDirection.Up, true);
+            e.preventDefault();
         // Is it a "down arrow" key?
         } else if (e.keyCode === _keyCodeDownArrow) {
             this._focusSubsequentItem(FocusDirection.Down, true);
+            e.preventDefault();
         }
+    }
+
+    private _scrollToItemKey(key: string): void {
+        let indexToSelect: number | undefined;
+        _.each(this.props.itemList, (item, idx) => {
+            if (item.key === key) {
+                indexToSelect = idx;
+                return true;
+            }
+        });
+
+        if (indexToSelect !== undefined) {
+            this._scrollToItemIndex(indexToSelect);
+        }
+    }
+
+    private _scrollToItemIndex(index: number): void {
+        this.scrollToTop(false, this._calcHeightOfItems(this.props, 0, index - 1) - (this.props.keyboardFocusScrollOffset || 0));
     }
 
     // Returns true if successfully found/focused, false if not found/focused
@@ -1313,9 +1334,8 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         if (index !== -1 && index + direction > -1 && index + direction < this._navigatableItemsRendered.length) {
             const newElementForFocus = this.refs[this._navigatableItemsRendered[index + direction].vc_key] as VirtualListCell<ItemInfo>;
             newElementForFocus.focus();
-            if (viaKeyboard) {
-                this.scrollToTop(false, this._calcHeightOfItems(this.props, 0, index + direction) -
-                    (this.props.keyboardFocusScrollOffset || 0));
+            if (viaKeyboard && newElementForFocus.props.itemKey) {
+                this._scrollToItemKey(newElementForFocus.props.itemKey);
             }
             return true;
         }
@@ -1360,6 +1380,11 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
 
         this._isMounted = true;
         this._componentDidRender();
+
+        // If an initial selection key was provided, ensure that we scroll to the item
+        if (this.props.initialSelectedKey) {
+            this._scrollToItemKey(this.props.initialSelectedKey);
+        }
     }
 
     componentWillUnmount() {
@@ -1418,7 +1443,11 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         return !item.measureHeight || !_.isUndefined(this._heightCache[item.key]);
     }
 
-    private _getHeightOfItem(item: VirtualListViewItemInfo) {
+    private _getHeightOfItem(item: VirtualListViewItemInfo | undefined) {
+        if (!item) {
+            return 0;
+        }
+
         // See if the item height was passed as "known"
         if (!item.measureHeight) {
             return item.height;
