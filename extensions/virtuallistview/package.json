@@ -1,6 +1,6 @@
 {
   "name": "reactxp-virtuallistview",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0-rc.2",
   "description": "General-purpose virtualized list view built on the cross-platform ReactXP library",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",

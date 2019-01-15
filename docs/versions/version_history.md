@@ -16,6 +16,10 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 2.0.0-rc.2 of reactxp-virtuallistview - _15 Jan 2019_
+* #989: Auto-scroll VLV on mount when initialScrollKey prop is provided
+* #989: Fix keyboard scrolling bugs when non-keyboard-navigable items are interspersed with keyboard-navigable items
+
 #### Version 2.0.0-rc.1 of reactxp-virtuallistview - _11 Jan 2019_
 * #944: Rework VirtualListView for improved accessibility/performance (this contains breaking API changes - see documentation for new API)
 
