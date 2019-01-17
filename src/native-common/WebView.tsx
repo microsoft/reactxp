@@ -41,6 +41,8 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
                 source={ source }
                 startInLoadingState={ this.props.startInLoadingState }
                 javaScriptEnabled={ this.props.javaScriptEnabled }
+                allowsInlineMediaPlayback={ this.props.allowsInlineMediaPlayback }
+                mediaPlaybackRequiresUserAction={ this.props.mediaPlaybackRequiresUserAction }
                 injectedJavaScript={ this.props.injectedJavaScript }
                 domStorageEnabled={ this.props.domStorageEnabled }
                 scalesPageToFit={ this.props.scalesPageToFit }

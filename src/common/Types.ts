@@ -1012,6 +1012,8 @@ export interface WebViewProps extends CommonStyledProps<WebViewStyleRuleSet> {
     scalesPageToFit?: boolean;
     injectedJavaScript?: string;
     javaScriptEnabled?: boolean;
+    mediaPlaybackRequiresUserAction?: boolean;
+    allowsInlineMediaPlayback?: boolean;
 
     // Native only
     startInLoadingState?: boolean;
