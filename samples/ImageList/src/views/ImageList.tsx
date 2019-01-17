@@ -5,7 +5,7 @@
 import * as React from 'react';
 import * as RX from 'reactxp';
 import { ComponentBase } from 'resub';
-import { VirtualListView, VirtualListViewItemInfo } from 'reactxp-virtuallistview';
+import { VirtualListView, VirtualListViewItemInfo, VirtualListViewCellRenderDetails } from 'reactxp-virtuallistview';
 
 import ImageStore, { Image } from '../stores/ImageStore';
 
@@ -106,7 +106,8 @@ export class ImageList extends ComponentBase<{}, ImageListState> {
         };
     }
 
-    private _renderItem = (item: ImageListItemInfo) => {
+    private _renderItem = (details: VirtualListViewCellRenderDetails<ImageListItemInfo>) => {
+        const item = details.item;
         return (
             <RX.View style={ _styles.row }>
                 <RX.Image

@@ -16,6 +16,7 @@ import { Colors, Fonts, FontSizes } from '../app/Styles';
 import TodoListItem from './TodoListItem';
 import { Todo } from '../models/TodoModels';
 import TodosStore from '../stores/TodosStore';
+import { VirtualListCellRenderDetails } from 'reactxp-virtuallistview/dist/VirtualListCell';
 
 interface TodoListItemInfo extends VirtualListViewItemInfo {
     todo: Todo;
@@ -129,6 +130,7 @@ export default class TodoListPanel extends ComponentBase<TodoListPanelProps, Tod
                     itemList={ this.state.filteredTodoList }
                     renderItem={ this._renderItem }
                     style={ _styles.listScroll }
+                    onItemSelected={ this._onPressTodo }
                 />
             </RX.View>
         );
@@ -161,19 +163,20 @@ export default class TodoListPanel extends ComponentBase<TodoListPanelProps, Tod
         });
     }
 
-    private _renderItem = (item: TodoListItemInfo, hasFocus?: boolean) => {
+    private _renderItem = (details: VirtualListCellRenderDetails<TodoListItemInfo>) => {
+        const item = details.item;
         return (
             <TodoListItem
                 todo={ item.todo }
                 height={ _listItemHeight }
                 isSelected={ item.todo.id === this.props.selectedTodoId }
                 searchString={ this.state.searchString }
-                onPress={ this._onPressTodo }
             />
         );
     };
 
-    private _onPressTodo = (todo: Todo) => {
+    private _onPressTodo = (itemInfo: TodoListItemInfo) => {
+        const todo = itemInfo.todo;
         this.props.onSelect(todo.id);
         this.setState({
             searchString: '',
