@@ -35,8 +35,7 @@ const _styles = {
         flexShrink: 0,
         overflow: 'hidden',
         whiteSpace: 'pre-wrap',
-        overflowWrap: 'break-word',
-        msHyphens: 'auto'
+        overflowWrap: 'break-word'
     },
     ellipsis: {
         position: 'relative',
