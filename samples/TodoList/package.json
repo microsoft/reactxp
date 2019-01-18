@@ -43,6 +43,7 @@
         "gulp-watch": "^5.0.1",
         "jshint": "^2.9.6",
         "jshint-stylish": "^2.2.1",
+        "metro-react-native-babel-preset": "0.50.0",
         "node-notifier": "^5.2.1",
         "path": "^0.12.7",
         "pretty-hrtime": "^1.0.3",
