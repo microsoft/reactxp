@@ -19,6 +19,7 @@ import MouseResponder, { MouseResponderSubscription } from './utils/MouseRespond
 import Styles from './Styles';
 import Timers from '../common/utils/Timers';
 
+// Cast to any to allow merging of web and RX styles
 const _styles = {
     defaultView: {
         position: 'relative',
@@ -29,7 +30,7 @@ const _styles = {
         overflow: 'hidden',
         alignItems: 'stretch',
         justifyContent: 'center'
-    }
+    } as any
 };
 
 const _longPressDurationThreshold = 750;
@@ -203,7 +204,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
     }
 
     private _getStyles(): any {
-        const combinedStyles = Styles.combine([_styles.defaultView, this.props.style]) as any;
+        const combinedStyles = Styles.combine([_styles.defaultView, this.props.style]);
 
         let cursorName: string | undefined;
         switch (this.props.mouseOverCursor) {

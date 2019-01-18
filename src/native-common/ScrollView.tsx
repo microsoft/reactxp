@@ -17,7 +17,8 @@ import ViewBase from './ViewBase';
 //   causes you to have to click twice instead of once on some pieces of UI in
 //   order for the UI to acknowledge your interaction.
 const overrideKeyboardShouldPersistTaps = RN.Platform.OS === 'macos' || RN.Platform.OS === 'windows';
-export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stateless, RN.ScrollView> implements RX.ScrollView {
+export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stateless, RN.ScrollView, RX.ScrollView>
+        implements RX.ScrollView {
     private _scrollTop = 0;
     private _scrollLeft = 0;
 

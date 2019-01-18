@@ -27,6 +27,7 @@ if (typeof document !== 'undefined') {
     document.head.appendChild(style);
 }
 
+// Cast to any to allow merging of web and RX styles
 const _styles = {
     defaultStyle: {
         position: 'relative',
@@ -37,7 +38,7 @@ const _styles = {
         whiteSpace: 'pre-wrap',
         overflowWrap: 'break-word',
         msHyphens: 'auto'
-    },
+    } as any,
     ellipsis: {
         position: 'relative',
         display: 'inline',
@@ -46,7 +47,7 @@ const _styles = {
         overflow: 'hidden',
         whiteSpace: 'pre',
         textOverflow: 'ellipsis'
-    }
+    } as any
 };
 
 export interface TextContext {
@@ -129,7 +130,7 @@ export class Text extends TextBase {
         // There's no way in HTML to properly handle numberOfLines > 1,
         // but we can correctly handle the common case where numberOfLines is 1.
         const combinedStyles = Styles.combine([this.props.numberOfLines === 1 ?
-            _styles.ellipsis : _styles.defaultStyle, this.props.style]) as any;
+            _styles.ellipsis : _styles.defaultStyle, this.props.style]);
 
         if (this.props.selectable) {
             combinedStyles.userSelect = 'text';

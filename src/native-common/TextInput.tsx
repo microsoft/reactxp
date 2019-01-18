@@ -48,7 +48,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     private _selection: Selection = { start: 0, end: 0 };
     protected _mountedComponent: RN.TextInput | undefined;
 
-    constructor(props: Types.TextInputProps, context: TextInputContext) {
+    constructor(props: Types.TextInputProps, context?: TextInputContext) {
         super(props, context);
 
         this.state = {

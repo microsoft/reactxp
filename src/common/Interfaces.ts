@@ -24,20 +24,21 @@ export abstract class Alert {
         options?: Types.AlertOptions): void;
 }
 
-export abstract class AnimatedComponent<P extends Types.CommonProps, T> extends React.Component<P, T> {
+export abstract class AnimatedComponent<P extends Types.CommonProps<C>, T, C> extends React.Component<P, T> {
     abstract setNativeProps(props: P): void;
 }
 
-export abstract class AnimatedImage extends AnimatedComponent<Types.AnimatedImageProps, Types.Stateless> {
+export abstract class AnimatedImage extends AnimatedComponent<Types.AnimatedImageProps, Types.Stateless, AnimatedImage> {
 }
 
-export abstract class AnimatedText extends AnimatedComponent<Types.AnimatedTextProps, Types.Stateless> {
+export abstract class AnimatedText extends AnimatedComponent<Types.AnimatedTextProps, Types.Stateless, AnimatedText> {
 }
 
-export abstract class AnimatedTextInput extends AnimatedComponent<Types.AnimatedTextInputProps, Types.Stateless> {
+export abstract class AnimatedTextInput extends AnimatedComponent<Types.AnimatedTextInputProps, Types.Stateless, AnimatedTextInput> {
 }
 
-export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewProps, Types.Stateless> implements FocusableComponent {
+export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewProps, Types.Stateless, AnimatedView>
+        implements FocusableComponent {
     abstract setFocusRestricted(restricted: boolean): void;
     abstract setFocusLimited(limited: boolean): void;
     abstract focus(): void;

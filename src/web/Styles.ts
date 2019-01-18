@@ -15,9 +15,8 @@ import StyleLeakDetector from '../common/StyleLeakDetector';
 type CssAliasMap = { [prop: string]: string };
 
 export class Styles extends RX.Styles {
-    // Combines a set of styles
-    combine<S>(ruleSet1: RX.Types.StyleRuleSetRecursive<S> | undefined, ruleSet2?: RX.Types.StyleRuleSetRecursive<S>)
-            : RX.Types.StyleRuleSetOrArray<S> | undefined {
+    // Combines a set of styles - for web we need to flatten to a single object
+    combine<S>(ruleSet1: RX.Types.StyleRuleSetRecursive<S> | undefined, ruleSet2?: RX.Types.StyleRuleSetRecursive<S>): S | undefined {
         if (!ruleSet1 && !ruleSet2) {
             return undefined;
         }
@@ -60,10 +59,10 @@ export class Styles extends RX.Styles {
                 }
             }
 
-            return combinedStyles as RX.Types.StyleRuleSet<S>;
+            return combinedStyles as S;
         }
 
-        return ruleSet;
+        return ruleSet as S;
     }
 
     // Creates opaque styles that can be used for View

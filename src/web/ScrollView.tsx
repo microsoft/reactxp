@@ -76,7 +76,7 @@ const _customStyles = {
 // Default to once per frame.
 const _defaultScrollThrottleValue = 1000 / 60;
 
-export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stateless> implements RX.ScrollView {
+export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stateless, RX.ScrollView> implements RX.ScrollView {
     private _mountedComponent: HTMLElement | null = null;
 
     constructor(props: RX.Types.ScrollViewProps) {

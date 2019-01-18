@@ -350,16 +350,10 @@ export type ComponentBase = React.Component<any, any>;
  * Components
  */
 
-// Redefine RefObject here rather than using React.RefObject because
-// older versions of React don't support it.
-interface RefObject<T> {
-    readonly current: T | null;
-}
-
-export interface CommonProps {
+// Rely on RefAttributes type, which exists only in newer typescript definitions, but has support from React 16.3 (released Mar 29, 2018)
+export interface CommonProps<C = React.Component> extends React.RefAttributes<C> {
+    // ref and key are typed by react itself
     children?: ReactNode | ReactNode[];
-    ref?: string | ((obj: ComponentBase | null) => void) | RefObject<ComponentBase>;
-    key?: string | number;
     testId?: string;
 }
 
@@ -475,12 +469,12 @@ export interface FocusCandidate {
     accessibilityId?: string;
 }
 
-export interface CommonStyledProps<T> extends CommonProps {
+export interface CommonStyledProps<T, C> extends CommonProps<C> {
     style?: StyleRuleSetRecursive<T>;
 }
 
 // Button
-export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, CommonAccessibilityProps {
+export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet, RX.Button>, CommonAccessibilityProps {
     title?: string;
     disabled?: boolean;
     disabledOpacity?: number;
@@ -516,7 +510,7 @@ export interface PickerPropsItem {
     label: string;
     value: string;
 }
-export interface PickerProps extends CommonProps {
+export interface PickerProps extends CommonProps<RX.Picker> {
     items: PickerPropsItem[];
     selectedValue: string;
     onValueChange: (itemValue: string, itemPosition: number) => void;
@@ -534,7 +528,7 @@ export interface Headers {
 // Image
 export type ImageResizeMode = 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat';
 
-export interface ImagePropsShared extends CommonProps {
+export interface ImagePropsShared<C> extends CommonProps<C> {
     source: string;
     headers?: Headers;
     accessibilityLabel?: string;
@@ -547,7 +541,7 @@ export interface ImagePropsShared extends CommonProps {
     onError?: (err?: Error) => void;
 }
 
-export interface ImageProps extends ImagePropsShared {
+export interface ImageProps extends ImagePropsShared<RX.Image> {
     style?: StyleRuleSetRecursive<ImageStyleRuleSet>;
 }
 
@@ -556,7 +550,7 @@ export interface ImageMetadata {
     height: number;
 }
 
-export interface AnimatedImageProps extends ImagePropsShared {
+export interface AnimatedImageProps extends ImagePropsShared<RX.AnimatedImage> {
     style?: StyleRuleSetRecursive<AnimatedImageStyleRuleSet | ImageStyleRuleSet>;
 }
 
@@ -569,7 +563,7 @@ export interface AnimatedImageProps extends ImagePropsShared {
 // | I am a very |
 // | important   |
 // | example     |
-export interface TextPropsShared extends CommonProps {
+export interface TextPropsShared<C> extends CommonProps<C> {
     selectable?: boolean;
     numberOfLines?: number;
 
@@ -599,11 +593,11 @@ export interface TextPropsShared extends CommonProps {
     onContextMenu?: (e: MouseEvent) => void;
 }
 
-export interface TextProps extends TextPropsShared {
+export interface TextProps extends TextPropsShared<RX.Text> {
     style?: StyleRuleSetRecursive<TextStyleRuleSet>;
 }
 
-export interface AnimatedTextProps extends TextPropsShared {
+export interface AnimatedTextProps extends TextPropsShared<RX.AnimatedText> {
     style?: StyleRuleSetRecursive<AnimatedTextStyleRuleSet | TextStyleRuleSet>;
 }
 
@@ -620,7 +614,7 @@ export enum LimitFocusType {
 }
 
 // View
-export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
+export interface ViewPropsShared<C> extends CommonProps<C>, CommonAccessibilityProps {
     title?: string;
     ignorePointerEvents?: boolean;
     blockPointerEvents?: boolean; // Native-only prop for disabling touches on self and all child views
@@ -689,12 +683,12 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     onResponderTerminationRequest?: (e: SyntheticEvent) => boolean;
 }
 
-export interface ViewProps extends ViewPropsShared {
+export interface ViewProps extends ViewPropsShared<RX.View> {
     style?: StyleRuleSetRecursive<ViewStyleRuleSet>;
     useSafeInsets?: boolean;
 }
 
-export interface AnimatedViewProps extends ViewPropsShared {
+export interface AnimatedViewProps extends ViewPropsShared<RX.AnimatedView> {
     style?: StyleRuleSetRecursive<AnimatedViewStyleRuleSet | ViewStyleRuleSet>;
 }
 
@@ -770,7 +764,7 @@ export enum PreferredPanGesture {
     Vertical
 }
 
-export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet>, CommonAccessibilityProps {
+export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet, RX.GestureView>, CommonAccessibilityProps {
     // Gestures and attributes that apply only to touch inputs
     onPinchZoom?: (gestureState: MultiTouchGestureState) => void;
     onRotate?: (gestureState: MultiTouchGestureState) => void;
@@ -812,7 +806,7 @@ export interface ScrollIndicatorInsets {
 }
 
 // ScrollView
-export interface ScrollViewProps extends CommonStyledProps<ScrollViewStyleRuleSet>, CommonAccessibilityProps {
+export interface ScrollViewProps extends CommonStyledProps<ScrollViewStyleRuleSet, RX.ScrollView>, CommonAccessibilityProps {
     children?: ReactNode;
 
     vertical?: boolean; // By default true
@@ -881,7 +875,7 @@ export interface ScrollViewProps extends CommonStyledProps<ScrollViewStyleRuleSe
 }
 
 // Link
-export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
+export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet, RX.Link> {
     title?: string;
     url: string;
     children?: ReactNode;
@@ -901,7 +895,7 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet> {
 }
 
 // TextInput
-export interface TextInputPropsShared extends CommonProps, CommonAccessibilityProps {
+export interface TextInputPropsShared<C> extends CommonProps<C>, CommonAccessibilityProps {
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
     autoCorrect?: boolean;
     autoFocus?: boolean; // The component is a candidate for being autofocused.
@@ -952,16 +946,16 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     onScroll?: (newScrollLeft: number, newScrollTop: number) => void;
 }
 
-export interface TextInputProps extends TextInputPropsShared {
+export interface TextInputProps extends TextInputPropsShared<RX.TextInput> {
     style?: StyleRuleSetRecursive<TextInputStyleRuleSet>;
 }
 
-export interface AnimatedTextInputProps extends TextInputPropsShared {
+export interface AnimatedTextInputProps extends TextInputPropsShared<RX.AnimatedTextInput> {
     style?: StyleRuleSetRecursive<AnimatedTextInputStyleRuleSet | TextInputStyleRuleSet>;
 }
 
 // ActivityIndicator
-export interface ActivityIndicatorProps extends CommonStyledProps<ActivityIndicatorStyleRuleSet> {
+export interface ActivityIndicatorProps extends CommonStyledProps<ActivityIndicatorStyleRuleSet, RX.ActivityIndicator> {
     color: string;
     size?: 'large' | 'medium' | 'small' | 'tiny';
     deferTime?: number; // Number of ms to wait before displaying
@@ -1003,7 +997,7 @@ export interface WebViewSource {
     baseUrl?: string;
 }
 
-export interface WebViewProps extends CommonStyledProps<WebViewStyleRuleSet> {
+export interface WebViewProps extends CommonStyledProps<WebViewStyleRuleSet, RX.WebView> {
     url?: string;
     source?: WebViewSource;
     headers?: Headers;

@@ -23,6 +23,7 @@ export interface TextInputState {
 
 const _isMac = (typeof navigator !== 'undefined') && (typeof navigator.platform === 'string') && (navigator.platform.indexOf('Mac') >= 0);
 
+// Cast to any to allow merging of web and RX styles
 const _styles = {
     defaultStyle: {
         position: 'relative',
@@ -34,11 +35,11 @@ const _styles = {
         overflowX: 'hidden',
         overflowY: 'auto',
         alignItems: 'stretch'
-    },
+    } as any,
     formStyle: {
         display: 'flex',
         flex: 1
-    }
+    } as any
 };
 
 export interface TextInputContext {
@@ -140,7 +141,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     private _isFocused = false;
     private _ariaLiveEnabled = false;
 
-    constructor(props: Types.TextInputProps, context: TextInputContext) {
+    constructor(props: Types.TextInputProps, context?: TextInputContext) {
         super(props, context);
 
         this.state = {
@@ -200,7 +201,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     }
 
     render() {
-        const combinedStyles = Styles.combine([_styles.defaultStyle, this.props.style]) as any;
+        const combinedStyles = Styles.combine([_styles.defaultStyle, this.props.style]);
 
         // Always hide the outline.
         combinedStyles.outline = 'none';
