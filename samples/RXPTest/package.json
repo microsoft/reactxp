@@ -29,7 +29,7 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-native": "^0.57.7",
-    "react-native-windows": "^0.57.0-rc.0",
+    "react-native-windows": "^0.57.0-rc.4",
     "reactxp": "^1.5.0"
   }
 }
