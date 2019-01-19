@@ -718,7 +718,8 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps<C>, C>(C
             return transformList.join(' ');
         }
 
-        // TODO: Find a better type here - previous type of 'object' didn't help us at all
+        // Typing of `any` on StyleRuleSet isn't desirable, but there's not accurate typings that can be used to represent
+        // our merging of web/RX styles here here
         private _updateStyles(props: RX.Types.CommonStyledProps<RX.Types.StyleRuleSet<any>, C>) {
             this._propsWithoutStyle = _.omit(props, 'style');
 

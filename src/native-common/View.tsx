@@ -334,8 +334,8 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
         }
 
         // Translate accessibilityProps from RX to RN, there are type diferrences for example:
-        // accessibilityLiveRegion prop is number (RX.RX.Types.AccessibilityLiveRegion) in RX, but
-        // string is expected by RN.View.
+        // accessibilityLiveRegion prop is number (RX.Types.AccessibilityLiveRegion) in RX, but
+        // string is expected by RN.View
         const accessibilityProps = {
             importantForAccessibility: AccessibilityUtil.importantForAccessibilityToString(props.importantForAccessibility),
             accessibilityLabel: props.accessibilityLabel || props.title,
