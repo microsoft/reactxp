@@ -15,18 +15,18 @@ const timerProvider = window || global;
 
 export default class Timers {
     static clearInterval(handle: number): void {
-        timerProvider.clearInterval(handle as any);
+        timerProvider.clearInterval(handle);
     }
 
     static clearTimeout(handle: number): void {
-        timerProvider.clearTimeout(handle as any);
+        timerProvider.clearTimeout(handle);
     }
 
     static setInterval(handler: () => void, timeout: number): number {
-        return timerProvider.setInterval(handler, timeout) as any;
+        return timerProvider.setInterval(handler, timeout);
     }
 
     static setTimeout(handler: () => void, timeout: number): number {
-        return timerProvider.setTimeout(handler, timeout) as any;
+        return timerProvider.setTimeout(handler, timeout);
     }
 }
