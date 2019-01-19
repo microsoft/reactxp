@@ -8,6 +8,7 @@
 import * as _ from 'lodash';
 import * as RX from 'reactxp';
 import { VirtualListView, VirtualListViewItemInfo } from 'reactxp-virtuallistview';
+import { VirtualListCellRenderDetails } from 'reactxp-virtuallistview/dist/VirtualListCell';
 import { ComponentBase } from 'resub';
 
 import AppConfig from '../app/AppConfig';
@@ -16,7 +17,6 @@ import { Colors, Fonts, FontSizes } from '../app/Styles';
 import TodoListItem from './TodoListItem';
 import { Todo } from '../models/TodoModels';
 import TodosStore from '../stores/TodosStore';
-import { VirtualListCellRenderDetails } from 'reactxp-virtuallistview/dist/VirtualListCell';
 
 interface TodoListItemInfo extends VirtualListViewItemInfo {
     todo: Todo;

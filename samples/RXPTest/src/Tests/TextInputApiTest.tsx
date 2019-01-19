@@ -150,12 +150,6 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
         this._testResult = new TestResult();
         this._testCompletion = complete;
 
-        if (RX.Platform.getType() === 'windows') {
-            this._testResult!.errors.push('Test disabled and failed by default due to RNW 0.57.0-rc.0 crashing bug');
-            this._testCompletion!(this._testResult!);
-            return;
-        }
-
         // Kick off the first stage.
         this._executeNextStage();
     }
