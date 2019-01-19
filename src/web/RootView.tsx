@@ -27,7 +27,7 @@ export class PopupDescriptor {
     constructor(public popupId: string, public popupOptions: Types.PopupOptions) {}
 }
 
-export interface RootViewProps extends Types.CommonProps {
+export interface RootViewProps extends Types.CommonProps<RootView> {
     mainView?: React.ReactNode;
     modal?: React.ReactElement<Types.ViewProps>;
     activePopup?: PopupDescriptor;
@@ -95,7 +95,7 @@ export interface MainViewContext {
 // This helper class wraps the main view and passes a boolean value
 // "isInRxMainView" to all children found within it. This is used to
 // prevent gesture handling within the main view when a modal is displayed.
-export class MainViewContainer extends React.Component<Types.CommonProps, Types.Stateless>
+export class MainViewContainer extends React.Component<Types.CommonProps<MainViewContainer>, Types.Stateless>
         implements React.ChildContextProvider<MainViewContext> {
     static childContextTypes: React.ValidationMap<any> = {
         isInRxMainView: PropTypes.bool

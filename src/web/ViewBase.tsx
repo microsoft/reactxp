@@ -21,10 +21,10 @@ import Timers from '../common/utils/Timers';
 const _layoutTimerActiveDuration = 1000;
 const _layoutTimerInactiveDuration = 10000;
 
-export abstract class ViewBase<P extends RX.Types.ViewProps, S> extends RX.ViewBase<P, S> {
+export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, C extends RX.View | RX.ScrollView> extends RX.ViewBase<P, S> {
     private static _viewCheckingTimer: number | undefined;
     private static _isResizeHandlerInstalled = false;
-    private static _viewCheckingList: ViewBase<RX.Types.ViewProps, RX.Types.Stateless>[] = [];
+    private static _viewCheckingList: ViewBase<RX.Types.ViewPropsShared<RX.View | RX.ScrollView>, any, RX.View | RX.ScrollView>[] = [];
     private static _appActivationState = RX.Types.AppActivationState.Active;
 
     abstract render(): JSX.Element;
@@ -57,7 +57,7 @@ export abstract class ViewBase<P extends RX.Types.ViewProps, S> extends RX.ViewB
         }
     }
 
-    componentWillReceiveProps(nextProps: RX.Types.ViewProps) {
+    componentWillReceiveProps(nextProps: RX.Types.ViewPropsShared<C>) {
         if (!!this.props.onLayout !== !!nextProps.onLayout) {
             if (this.props.onLayout) {
                 this._checkViewCheckerUnbuild();

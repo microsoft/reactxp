@@ -28,7 +28,7 @@ const ALLEY_WIDTH = 2;
 // attempting a different position?
 const MIN_ANCHOR_OFFSET = 16;
 
-export interface PopupContainerViewProps extends PopupContainerViewBaseProps {
+export interface PopupContainerViewProps extends PopupContainerViewBaseProps<PopupContainerView> {
     popupOptions: Types.PopupOptions;
     anchorHandle?: number;
     onDismissPopup?: () => void;
@@ -57,12 +57,12 @@ export interface PopupContainerViewState {
     constrainedPopupHeight: number;
 }
 
-export class PopupContainerView extends PopupContainerViewBase<PopupContainerViewProps, PopupContainerViewState> {
+export class PopupContainerView extends PopupContainerViewBase<PopupContainerViewProps, PopupContainerViewState, PopupContainerView> {
     private _mountedComponent: RN.View | undefined;
     private _viewHandle: number | null = null;
     private _respositionPopupTimer: number | undefined;
 
-    constructor(props: PopupContainerViewProps, context: PopupContainerViewContext) {
+    constructor(props: PopupContainerViewProps, context?: PopupContainerViewContext) {
         super(props, context);
         this.state = this._getInitialState();
     }

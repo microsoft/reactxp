@@ -15,7 +15,7 @@ import * as React from 'react';
 import FocusManagerBase from './utils/FocusManager';
 import { Types } from './Interfaces';
 
-export interface PopupContainerViewBaseProps extends Types.CommonProps {
+export interface PopupContainerViewBaseProps<C> extends Types.CommonProps<C> {
     hidden?: boolean;
 }
 
@@ -28,7 +28,7 @@ export interface PopupComponent {
     onHide: () => void;
 }
 
-export abstract class PopupContainerViewBase<P extends PopupContainerViewBaseProps, S> extends React.Component<P, S> {
+export abstract class PopupContainerViewBase<P extends PopupContainerViewBaseProps<C>, S, C> extends React.Component<P, S> {
     static contextTypes: React.ValidationMap<any> = {
         focusManager: PropTypes.object
     };
@@ -39,14 +39,14 @@ export abstract class PopupContainerViewBase<P extends PopupContainerViewBasePro
 
     private _popupComponentStack: PopupComponent[] = [];
 
-    constructor(props: P, context: PopupContainerViewContext) {
+    constructor(props: P, context?: PopupContainerViewContext) {
         super(props, context);
     }
 
     getChildContext() {
         return {
             focusManager: this.context.focusManager,
-            popupContainer: this as PopupContainerViewBase<P, S>
+            popupContainer: this as PopupContainerViewBase<P, S, C>
         };
     }
 
