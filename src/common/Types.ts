@@ -1021,7 +1021,10 @@ export interface WebViewProps extends CommonStyledProps<WebViewStyleRuleSet, RX.
     sandbox?: WebViewSandboxMode;
 }
 
-export type PopupPosition  = 'top' | 'right' | 'bottom' | 'left';
+// 'context' mode makes it attempt to behave like a context menu -- defaulting
+// to the lower right of the anchor element and working its way around.  It is not supported
+// with inner positioning and will throw an exception if used there.
+export type PopupPosition  = 'top' | 'right' | 'bottom' | 'left' | 'context';
 
 // Popup
 export interface PopupOptions {

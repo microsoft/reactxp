@@ -19,7 +19,10 @@ Popups are identified by a caller-specified ID that should be unique.
 
 ## Types
 ``` javascript
-type PopupPosition  = 'top' | 'right' | 'bottom' | 'left';
+// 'context' mode makes it attempt to behave like a context menu -- defaulting
+// to the lower right of the anchor element and working its way around.  It is not supported
+// with inner positioning and will throw an exception if used there.
+type PopupPosition  = 'top' | 'right' | 'bottom' | 'left' | 'context';
 
 interface PopupOptions {
     // Returns a mounted component instance that serves as the
