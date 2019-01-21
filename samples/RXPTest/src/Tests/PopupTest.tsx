@@ -96,7 +96,17 @@ const _styles = {
     comboBoxText: RX.Styles.createTextStyle({
         fontSize: 14,
         color: '#666'
-    })
+    }),
+    popupAnchor6: RX.Styles.createViewStyle({
+        alignSelf: 'center',
+        borderRadius: 15,
+        height: 30,
+        width: 160,
+        marginTop: 40,
+        backgroundColor: '#eee',
+        alignItems: 'center',
+        justifyContent: 'center',
+    }),
 };
 
 const popup1Id = 'popup1';
@@ -104,6 +114,7 @@ const popup2Id = 'popup2';
 const popup3Id = 'popup3';
 const popup4Id = 'popup4';
 const popup5Id = 'popup5';
+const popup6Id = 'popup6';
 
 interface PopupBoxProps extends RX.CommonProps {
     text: string;
@@ -175,6 +186,7 @@ class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
     private _anchor3: RX.Button | undefined;
     private _anchor4: RX.Button | undefined;
     private _anchor5: RX.TextInput | undefined;
+    private _anchor6: RX.Button | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);
@@ -245,6 +257,15 @@ class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
                     value={ this.state.textInputValue || '' }
                     onChangeText={ this._onChangeTextInput }
                 />
+                <RX.Button
+                    style={ [_styles.popupAnchor6] }
+                    ref={ (comp: any) => { this._anchor6 = comp; } }
+                    onPress={ this._showPopup6 }
+                >
+                    <RX.Text style={ _styles.anchorText }>
+                        { `6: isDisplayed = ${RX.Popup.isDisplayed(popup6Id)}` }
+                    </RX.Text>
+                </RX.Button>
             </RX.View>
         );
     }
@@ -348,6 +369,33 @@ class PopupView extends RX.Component<RX.CommonProps, PopupViewState> {
                 );
             }
         }, popup4Id);
+    }
+
+    private _showPopup6 = () => {
+        RX.Popup.show({
+            dismissIfShown: true,
+            cacheable: true,
+            getAnchor: () => {
+                return this._anchor6!;
+            },
+            getElementTriggeringPopup: () => {
+                return this._anchor6!;
+            },
+            positionPriorities: ['context'],
+            renderPopup: (anchorPosition: RX.Types.PopupPosition, anchorOffset: number,
+                popupWidth: number, popupHeight: number) => {
+
+                return (
+                    <PopupBox
+                        text={ 'Context Menu Behavior' }
+                        anchorOffset={ anchorOffset }
+                        anchorPosition={ anchorPosition }
+                        popupWidth={ popupWidth }
+                        popupHeight={ popupHeight }
+                    />
+                );
+            }
+        }, popup6Id);
     }
 
     private _onChangeTextInput = (newText: string) => {

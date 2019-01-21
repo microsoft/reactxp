@@ -70,6 +70,10 @@ export function recalcPositionFromLayoutData(windowDims: Dimensions, anchorRect:
     if (!positionsToTry || positionsToTry.length === 0) {
         positionsToTry = ['bottom', 'right', 'top', 'left'];
     }
+    if (positionsToTry.length === 1 && positionsToTry[0] === 'context') {
+        // Context only works with exact matches, so fall back to walking around the compass if it doesn't fit exactly.
+        positionsToTry.push('bottom', 'right', 'top', 'left');
+    }
 
     if (useInnerPositioning) {
         // If the popup is meant to be shown inside the anchor we need to recalculate
@@ -259,6 +263,9 @@ function recalcInnerPosition(anchorRect: ClientRect, positionToUse: PopupPositio
             popupX = anchorRect.left;
             anchorOffset = popupHeight / 2;
             break;
+
+        case 'context':
+            throw new Error('Context popup mode not allowed with inner positioning');
     }
 
     const result: RecalcResult = {
