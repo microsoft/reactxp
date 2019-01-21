@@ -63,6 +63,12 @@ injectedJavaScript: string = undefined; // Native only
 // Is JavaScript executed within the control?
 javaScriptEnabled: boolean = true;
 
+// Determines whether HTML5 audio and video requires the user to tap them before they start playing.
+mediaPlaybackRequiresUserAction: boolean = true; // Native only
+
+// Determines whether HTML5 videos play inline or use the native full-screen controller.
+allowsInlineMediaPlayback: boolean = false; // iOS only
+
 // HTTP headers to include when fetching the URL.
 headers: { [headerName: string]: string } = undefined;
 
