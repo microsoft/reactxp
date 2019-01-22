@@ -428,9 +428,9 @@ interface AnimatedAttribute {
 type AnimatedValueMap = { [transform: string]: AnimatedAttribute };
 
 // Function for creating wrapper AnimatedComponent around passed in component
-function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Component: any): any {
+function createAnimatedComponent<PropsType extends RX.Types.CommonProps<C>, C>(Component: any): any {
     class AnimatedComponentGenerated extends React.Component<PropsType, void>
-            implements RX.AnimatedComponent<PropsType, void>, ValueListener {
+            implements RX.AnimatedComponent<PropsType, void, C>, ValueListener {
 
         private _mountedComponent: any = null;
         private _propsWithoutStyle: any;
@@ -456,7 +456,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
             }
         }
 
-        componentWillReceiveProps(props: RX.Types.CommonStyledProps<RX.Types.StyleRuleSet<Object>>) {
+        componentWillReceiveProps(props: RX.Types.CommonStyledProps<RX.Types.StyleRuleSet<Object>, C>) {
             this._updateStyles(props);
         }
 
@@ -718,10 +718,12 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
             return transformList.join(' ');
         }
 
-        private _updateStyles(props: RX.Types.CommonStyledProps<RX.Types.StyleRuleSet<Object>>) {
+        // Typing of `any` on StyleRuleSet isn't desirable, but there's not accurate typings that can be used to represent
+        // our merging of web/RX styles here here
+        private _updateStyles(props: RX.Types.CommonStyledProps<RX.Types.StyleRuleSet<any>, C>) {
             this._propsWithoutStyle = _.omit(props, 'style');
 
-            const rawStyles = Styles.combine(props.style || {}) as any;
+            const rawStyles = Styles.combine(props.style || {});
             this._processedStyle = {};
 
             const newAnimatedAttributes: { [transform: string]: Value } = {};
@@ -881,7 +883,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps>(Compone
     return AnimatedComponentGenerated;
 }
 
-export let Image = createAnimatedComponent<RX.Types.ImageProps>(RXImage) as typeof RX.AnimatedImage;
+export let Image = createAnimatedComponent(RXImage) as typeof RX.AnimatedImage;
 export let Text = createAnimatedComponent(RXText) as typeof RX.AnimatedText;
 export let TextInput = createAnimatedComponent(RXTextInput) as typeof RX.AnimatedTextInput;
 export let View = createAnimatedComponent(RXView) as typeof RX.AnimatedView;

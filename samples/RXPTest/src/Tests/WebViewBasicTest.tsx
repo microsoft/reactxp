@@ -105,6 +105,8 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
                         onLoad={ this._onLoadTest1 }
                         onError={ this._onErrorTest1 }
                         testId={ 'webView1' }
+                        mediaPlaybackRequiresUserAction={ true }
+                        allowsInlineMediaPlayback={ false }
                     />
                 </RX.View>
                 <RX.View style={ _styles.buttonBank }>

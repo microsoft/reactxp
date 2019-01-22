@@ -33,7 +33,7 @@ const _styles = {
     }
 };
 
-export interface ModalContainerProps extends Types.CommonProps {
+export interface ModalContainerProps extends Types.CommonProps<ModalContainer> {
     hidden?: boolean;
 }
 

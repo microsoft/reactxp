@@ -13,14 +13,14 @@ import { Types } from '../common/Interfaces';
 import { clone } from './utils/lodashMini';
 import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext } from '../common/PopupContainerViewBase';
 
-export interface PopupContainerViewProps extends PopupContainerViewBaseProps {
+export interface PopupContainerViewProps extends PopupContainerViewBaseProps<PopupContainerView> {
     style: React.CSSProperties;
     onMouseEnter?: (e: React.MouseEvent<HTMLDivElement>) => void;
     onMouseLeave?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-export class PopupContainerView extends PopupContainerViewBase<PopupContainerViewProps, Types.Stateless> {
-    constructor(props: PopupContainerViewProps, context: PopupContainerViewContext) {
+export class PopupContainerView extends PopupContainerViewBase<PopupContainerViewProps, Types.Stateless, PopupContainerView> {
+    constructor(props: PopupContainerViewProps, context?: PopupContainerViewContext) {
         super(props, context);
     }
 

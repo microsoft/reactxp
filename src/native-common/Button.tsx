@@ -102,7 +102,7 @@ export class Button extends ButtonBase {
     private _opacityAnimatedValue: RN.Animated.Value | undefined;
     private _opacityAnimatedStyle: Types.AnimatedViewStyleRuleSet | undefined;
 
-    constructor(props: Types.ButtonProps, context: ButtonContext) {
+    constructor(props: Types.ButtonProps, context?: ButtonContext) {
         super(props, context);
         applyMixin(this, RN.Touchable.Mixin, [
             // Properties that Button and RN.Touchable.Mixin have in common. Button needs
@@ -113,7 +113,7 @@ export class Button extends ButtonBase {
         this.state = this.touchableGetInitialState();
         this._setOpacityStyles(props);
 
-        if (context.hasRxButtonAscendant) {
+        if (context && context.hasRxButtonAscendant) {
             if (AppConfig.isDevelopmentMode()) {
                 console.warn('Button components should not be embedded. Some APIs, e.g. Accessibility, will not work.');
             }

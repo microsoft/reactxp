@@ -16,7 +16,7 @@
         "noImplicitAny": true,
         "skipLibCheck": true,
         "declaration": true,
-        "jsxFactory": "React",
+        "jsxFactory": "React.createElement",
         "noResolve": false,
         "module": "es2015",
         "target": "es2015",

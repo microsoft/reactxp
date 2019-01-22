@@ -65,10 +65,10 @@ export class Button extends ButtonBase {
     private _isFocusedWithKeyboard = false;
     private _isHoverStarted = false;
 
-    constructor(props: Types.ButtonProps, context: ButtonContext) {
+    constructor(props: Types.ButtonProps, context?: ButtonContext) {
         super(props, context);
 
-        if (context.hasRxButtonAscendant) {
+        if (context && context.hasRxButtonAscendant) {
             if (AppConfig.isDevelopmentMode()) {
                 console.warn('Button components should not be embedded. Some APIs, e.g. Accessibility, will not work.');
             }
