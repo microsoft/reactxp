@@ -39,6 +39,7 @@ const animatedPropUnits: { [key: string]: string } = {
     rotate: 'deg',
     rotateX: 'deg',
     rotateY: 'deg',
+    rotateZ: 'deg',
     scale: '',
     scaleX: '',
     scaleY: '',
