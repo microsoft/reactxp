@@ -12,9 +12,9 @@
  */
 
 // global typing doesn't exist without node.d.ts, but we don't want it since this isn't a nodeJS app by default
-declare var global: {};
+declare var global: any;
 
-const timerProvider = window || global;
+const timerProvider = typeof window !== 'undefined' ? window : global;
 
 export default class Timers {
     static clearInterval(handle: number): void {
