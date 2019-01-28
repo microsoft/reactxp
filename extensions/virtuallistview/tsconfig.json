@@ -2,6 +2,8 @@
     "compilerOptions": {
         "declaration": true,
         "noResolve": false,
+        "importHelpers": true,
+        "downlevelIteration": false,
         "jsx": "react",
         "reactNamespace": "RX",
         "module": "commonjs",
@@ -11,7 +13,9 @@
         "strict": true,
         "lib": [
             "es5",
-            "dom"
+            "dom",
+            "es2015.collection",
+            "es2015.iterable"
         ],
         "types" : ["lodash", "react", "react-dom"]
     },
