@@ -478,6 +478,13 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             this._itemsAboveRenderBlock + this._itemsInRenderBlock - 1);
         this._heightBelowRenderBlock = this._calcHeightOfItems(props,
             this._itemsAboveRenderBlock + this._itemsInRenderBlock, props.itemList.length - 1);
+
+        // Pre-populate the container height with known values early - if there are dynamically sized items in the list, this will be
+        // corrected during the onLayout phase
+        if (this._containerHeight === 0) {
+            this._containerHeight = this._heightAboveRenderBlock + this._heightOfRenderBlock + this._heightBelowRenderBlock;
+            this._containerHeightValue.setValue(this._containerHeight);
+        }
     }
 
     private _calcOverdrawAmount() {
