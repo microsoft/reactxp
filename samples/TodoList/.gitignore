@@ -7,6 +7,15 @@ yarn-error.log
 
 temp/
 
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+local.properties
+*.iml
+
+
 # Certificate information for node webserver
 cert.pem
 key.pem
