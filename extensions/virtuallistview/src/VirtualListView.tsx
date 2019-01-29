@@ -1275,12 +1275,15 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
     }
 
     // Sets selection & focus to specified key
-    selectItemKey(key: string) {
+    selectItemKey(key: string, scrollToItem = true) {
         // Set focus and selection
         this.setState({
             lastFocusedItemKey: key,
             selectedItemKey: key
         });
+        if (scrollToItem) {
+            this._scrollToItemKey(key);
+        }
     }
 
     private _onItemSelected = (itemInfo?: ItemInfo) => {
