@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@types/node": "^10.12.11",
+    "@types/react": "^16.7.20"
     "@types/webpack": "^4.4.20",
     "awesome-typescript-loader": "^5.2.1",
     "rnpm-plugin-windows": "^0.2.8",
