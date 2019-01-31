@@ -377,11 +377,11 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
         if (this._mixinIsApplied) {
             const responderProps = {
                 onStartShouldSetResponder: this.props.onStartShouldSetResponder || this.touchableHandleStartShouldSetResponder,
-                onResponderTerminationRequest: this.touchableHandleResponderTerminationRequest,
-                onResponderGrant: this.touchableHandleResponderGrant,
+                onResponderTerminationRequest: this.props.onResponderTerminationRequest || this.touchableHandleResponderTerminationRequest,
+                onResponderGrant: this.props.onResponderGrant || this.touchableHandleResponderGrant,
                 onResponderMove: this.touchableHandleResponderMove,
-                onResponderRelease: this.touchableHandleResponderRelease,
-                onResponderTerminate: this.touchableHandleResponderTerminate
+                onResponderRelease: this.props.onResponderRelease || this.touchableHandleResponderRelease,
+                onResponderTerminate: this.props.onResponderTerminate || this.touchableHandleResponderTerminate
             };
             this._internalProps = extend(this._internalProps, responderProps);
 

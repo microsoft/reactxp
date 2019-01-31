@@ -53,8 +53,26 @@ const _styles = {
 };
 
 interface TouchViewState {
-    view2hasAskedTobeResponder?: boolean;
-    view3hasAskedTobeResponder?: boolean;
+    touchResponderTest: {
+        view2TouchResponderEventHandlerState: {
+            start: boolean;
+            grant: boolean;
+            release: boolean;
+            terminationRequest: boolean;
+            terminate: boolean;
+        };
+        view3TouchResponderEventHandlerState: {
+            start: boolean;
+            grant: boolean;
+            release: boolean;
+            terminationRequest: boolean;
+            terminate: boolean;
+        };
+    };
+    nestedViewTouchTest: {
+        parentOnPress: boolean;
+        childOnPress: boolean;
+    };
     pressEvent?: RX.Types.TouchEvent;
 }
 
@@ -62,7 +80,28 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
 
     constructor(props: RX.CommonProps) {
         super(props);
-        this.state = { };
+        this.state = {
+            touchResponderTest: {
+                view2TouchResponderEventHandlerState: {
+                    start: false,
+                    grant: false,
+                    release: false,
+                    terminationRequest: false,
+                    terminate: false,
+                },
+                view3TouchResponderEventHandlerState: {
+                    start: false,
+                    grant: false,
+                    release: false,
+                    terminationRequest: false,
+                    terminate: false,
+                },
+            },
+            nestedViewTouchTest: {
+                parentOnPress: false,
+                childOnPress: false,
+            }
+        };
     }
 
     private static getTouchEventText(touchEvent?: RX.Types.TouchEvent): string {
@@ -80,6 +119,22 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                 ' touches = ' + touchEvent.touches;
         }
         return 'N/A';
+    }
+
+    private isView2TouchResponderEventHasBeenAllFired = () => {
+        return this.state.touchResponderTest.view2TouchResponderEventHandlerState.start &&
+            this.state.touchResponderTest.view2TouchResponderEventHandlerState.grant && 
+            this.state.touchResponderTest.view2TouchResponderEventHandlerState.release && 
+            this.state.touchResponderTest.view2TouchResponderEventHandlerState.terminationRequest && 
+            this.state.touchResponderTest.view2TouchResponderEventHandlerState.terminate;
+    }
+
+    private isView3TouchResponderEventHasBeenAllFired = () => {
+        return this.state.touchResponderTest.view3TouchResponderEventHandlerState.start &&
+            this.state.touchResponderTest.view3TouchResponderEventHandlerState.grant && 
+            this.state.touchResponderTest.view3TouchResponderEventHandlerState.release && 
+            this.state.touchResponderTest.view3TouchResponderEventHandlerState.terminationRequest && 
+            this.state.touchResponderTest.view3TouchResponderEventHandlerState.terminate;
     }
 
     render(): any {
@@ -105,18 +160,134 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                 </RX.View>
                 <RX.View style={_styles.wrapper}>
                     <RX.View
-                        style={[_styles.testContainer2, this.state.view2hasAskedTobeResponder ? _styles.success : undefined]}
+                        style={[_styles.testContainer2, this.isView2TouchResponderEventHasBeenAllFired() ? _styles.success : undefined]}
                         onStartShouldSetResponder={() => {
-                            this.setState({ view2hasAskedTobeResponder: true });
+                            console.log('onStartShouldSetResponder');
+                            this.setState({
+                                touchResponderTest: {
+                                    ...this.state.touchResponderTest,
+                                    view2TouchResponderEventHandlerState: {
+                                        ...this.state.touchResponderTest.view2TouchResponderEventHandlerState,
+                                        start: true
+                                    }
+                                }
+                            });
                             return true;
+                        }}
+                        onResponderGrant={() => {
+                            console.log('onResponderGrant');
+                            this.setState({
+                                touchResponderTest: {
+                                    ...this.state.touchResponderTest,
+                                    view2TouchResponderEventHandlerState: {
+                                        ...this.state.touchResponderTest.view2TouchResponderEventHandlerState,
+                                        grant: true
+                                    }
+                                }
+                            });
+                        }}
+                        onResponderRelease={() => {
+                            console.log('onResponderRelease');
+                            this.setState({
+                                touchResponderTest: {
+                                    ...this.state.touchResponderTest,
+                                    view2TouchResponderEventHandlerState: {
+                                        ...this.state.touchResponderTest.view2TouchResponderEventHandlerState,
+                                        release: true
+                                    }
+                                }
+                            });
+                        }}
+                        onResponderTerminationRequest={() => {
+                            console.log('onResponderTerminationRequest');
+                            this.setState({
+                                touchResponderTest: {
+                                    ...this.state.touchResponderTest,
+                                    view2TouchResponderEventHandlerState: {
+                                        ...this.state.touchResponderTest.view2TouchResponderEventHandlerState,
+                                        terminationRequest: true
+                                    }
+                                }
+                            });
+                            return true;
+                        }}
+                        onResponderTerminate={() => {
+                            console.log('onResponderTerminate');
+                            this.setState({
+                                touchResponderTest: {
+                                    ...this.state.touchResponderTest,
+                                    view2TouchResponderEventHandlerState: {
+                                        ...this.state.touchResponderTest.view2TouchResponderEventHandlerState,
+                                        terminate: true
+                                    }
+                                }
+                            });
                         }}
                     />
                     <RX.View
-                        style={[_styles.testContainer3, this.state.view3hasAskedTobeResponder ? _styles.success : undefined]}
+                        style={[_styles.testContainer3, this.isView3TouchResponderEventHasBeenAllFired() ? _styles.success : undefined]}
                         onPress={() => null}
                         onStartShouldSetResponder={() => {
-                            this.setState({ view3hasAskedTobeResponder: true });
+                            console.log('onStartShouldSetResponder');
+                            this.setState({
+                                touchResponderTest: {
+                                    ...this.state.touchResponderTest,
+                                    view3TouchResponderEventHandlerState: {
+                                        ...this.state.touchResponderTest.view3TouchResponderEventHandlerState,
+                                        start: true
+                                    }
+                                }
+                            });
                             return true;
+                        }}
+                        onResponderGrant={() => {
+                            console.log('onResponderGrant');
+                            this.setState({
+                                touchResponderTest: {
+                                    ...this.state.touchResponderTest,
+                                    view3TouchResponderEventHandlerState: {
+                                        ...this.state.touchResponderTest.view3TouchResponderEventHandlerState,
+                                        grant: true
+                                    }
+                                }
+                            });
+                        }}
+                        onResponderRelease={() => {
+                            console.log('onResponderRelease');
+                            this.setState({
+                                touchResponderTest: {
+                                    ...this.state.touchResponderTest,
+                                    view3TouchResponderEventHandlerState: {
+                                        ...this.state.touchResponderTest.view3TouchResponderEventHandlerState,
+                                        release: true
+                                    }
+                                }
+                            });
+                        }}
+                        onResponderTerminationRequest={() => {
+                            console.log('onResponderTerminationRequest');
+                            this.setState({
+                                touchResponderTest: {
+                                    ...this.state.touchResponderTest,
+                                    view3TouchResponderEventHandlerState: {
+                                        ...this.state.touchResponderTest.view3TouchResponderEventHandlerState,
+                                        terminationRequest: true
+                                    }
+                                }
+                            });
+                            return true;
+                        }}
+                        onResponderTerminate={() => {
+                            console.log('onResponderTerminate');
+                            this.setState({
+                                touchResponderTest: {
+                                    ...this.state.touchResponderTest,
+                                    view3TouchResponderEventHandlerState: {
+                                        ...this.state.touchResponderTest.view3TouchResponderEventHandlerState,
+                                        terminate: true
+                                    }
+                                }
+                            });
                         }}
                     />
                 </RX.View>
