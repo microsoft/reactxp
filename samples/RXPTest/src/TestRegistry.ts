@@ -37,6 +37,7 @@ import UserInterfaceTest from './Tests/UserInterfaceTest';
 import UserPresenceTest from './Tests/UserPresenceTest';
 import ViewBasicTest from './Tests/ViewBasicTest';
 import ViewMouseTest from './Tests/ViewMouseTest';
+import ViewTouchTest from './Tests/ViewTouchTest';
 import WebViewBasicTest from './Tests/WebViewBasicTest';
 import WebViewDynamicTest from './Tests/WebViewDynamicTest';
 
@@ -80,6 +81,7 @@ class TestRegistry {
         this.registerTest(TextInputInteractiveTest);
         this.registerTest(ViewBasicTest);
         this.registerTest(ViewMouseTest);
+        this.registerTest(ViewTouchTest);
         this.registerTest(WebViewBasicTest);
         this.registerTest(WebViewDynamicTest);
 
