@@ -376,7 +376,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
         this._internalProps.style = baseStyle;
         if (this._mixinIsApplied) {
             const responderProps = {
-                onStartShouldSetResponder: this.touchableHandleStartShouldSetResponder,
+                onStartShouldSetResponder: this.props.onStartShouldSetResponder || this.touchableHandleStartShouldSetResponder,
                 onResponderTerminationRequest: this.touchableHandleResponderTerminationRequest,
                 onResponderGrant: this.touchableHandleResponderGrant,
                 onResponderMove: this.touchableHandleResponderMove,

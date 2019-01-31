@@ -123,6 +123,8 @@ class AnimationView extends RX.Component<RX.CommonProps, AnimationViewState> {
     private _test3Animation = RX.Styles.createAnimatedTextStyle({
         transform: [{
             rotate: RX.Animated.interpolate(this._test3Angle, [0, 1], ['0deg', '360deg'])
+        }, {
+            rotateZ: RX.Animated.interpolate(this._test3Angle, [0, 1], ['0deg', '90deg'])
         }]
     });
 
