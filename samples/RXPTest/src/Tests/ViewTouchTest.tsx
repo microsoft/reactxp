@@ -162,7 +162,6 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                     <RX.View
                         style={[_styles.testContainer2, this.isView2TouchResponderEventHasBeenAllFired() ? _styles.success : undefined]}
                         onStartShouldSetResponder={() => {
-                            console.log('onStartShouldSetResponder');
                             this.setState({
                                 touchResponderTest: {
                                     ...this.state.touchResponderTest,
@@ -175,7 +174,6 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                             return true;
                         }}
                         onResponderGrant={() => {
-                            console.log('onResponderGrant');
                             this.setState({
                                 touchResponderTest: {
                                     ...this.state.touchResponderTest,
@@ -187,7 +185,6 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                             });
                         }}
                         onResponderRelease={() => {
-                            console.log('onResponderRelease');
                             this.setState({
                                 touchResponderTest: {
                                     ...this.state.touchResponderTest,
@@ -199,7 +196,6 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                             });
                         }}
                         onResponderTerminationRequest={() => {
-                            console.log('onResponderTerminationRequest');
                             this.setState({
                                 touchResponderTest: {
                                     ...this.state.touchResponderTest,
@@ -212,7 +208,6 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                             return true;
                         }}
                         onResponderTerminate={() => {
-                            console.log('onResponderTerminate');
                             this.setState({
                                 touchResponderTest: {
                                     ...this.state.touchResponderTest,
@@ -228,7 +223,6 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                         style={[_styles.testContainer3, this.isView3TouchResponderEventHasBeenAllFired() ? _styles.success : undefined]}
                         onPress={() => null}
                         onStartShouldSetResponder={() => {
-                            console.log('onStartShouldSetResponder');
                             this.setState({
                                 touchResponderTest: {
                                     ...this.state.touchResponderTest,
@@ -241,7 +235,6 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                             return true;
                         }}
                         onResponderGrant={() => {
-                            console.log('onResponderGrant');
                             this.setState({
                                 touchResponderTest: {
                                     ...this.state.touchResponderTest,
@@ -253,7 +246,6 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                             });
                         }}
                         onResponderRelease={() => {
-                            console.log('onResponderRelease');
                             this.setState({
                                 touchResponderTest: {
                                     ...this.state.touchResponderTest,
@@ -265,7 +257,6 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                             });
                         }}
                         onResponderTerminationRequest={() => {
-                            console.log('onResponderTerminationRequest');
                             this.setState({
                                 touchResponderTest: {
                                     ...this.state.touchResponderTest,
@@ -278,7 +269,6 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                             return true;
                         }}
                         onResponderTerminate={() => {
-                            console.log('onResponderTerminate');
                             this.setState({
                                 touchResponderTest: {
                                     ...this.state.touchResponderTest,
