@@ -379,7 +379,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
                 onStartShouldSetResponder: this.props.onStartShouldSetResponder || this.touchableHandleStartShouldSetResponder,
                 onResponderTerminationRequest: this.props.onResponderTerminationRequest || this.touchableHandleResponderTerminationRequest,
                 onResponderGrant: this.props.onResponderGrant || this.touchableHandleResponderGrant,
-                onResponderMove: this.touchableHandleResponderMove,
+                onResponderMove: this.props.onResponderMove || this.touchableHandleResponderMove,
                 onResponderRelease: this.props.onResponderRelease || this.touchableHandleResponderRelease,
                 onResponderTerminate: this.props.onResponderTerminate || this.touchableHandleResponderTerminate
             };
