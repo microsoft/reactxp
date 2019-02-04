@@ -52,6 +52,9 @@ class TodosStore extends StoreBase {
 
     deleteTodo(todoId: string) {
         this._todos = _.filter(this._todos, todo => todo.id !== todoId);
+
+        // Asynchronously delete the todo item from the DB.
+        LocalDb.deleteTodo(todoId);
         this.trigger();
     }
 }
