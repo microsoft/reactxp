@@ -51,7 +51,7 @@ class LocalDb {
     }
 
     private _openListOfProviders(providersToTry: DbProvider[], dbName: string, schema: DbSchema):
-            SyncTasks.Promise<DbProvider> {
+        SyncTasks.Promise<DbProvider> {
 
         const task = SyncTasks.Defer<DbProvider>();
         let providerIndex = 0;
@@ -105,6 +105,22 @@ class LocalDb {
             return tx.getStore(Stores.todoItems);
         }).then(store => {
             return store.put(todo);
+        }).fail(this._handleDbFail);
+    }
+
+    /**
+     * Deletes a todo item from the DB
+     * @param todoId item to delete
+     */
+    deleteTodo(todoId: string): SyncTasks.Promise<void> {
+        if (!this._db) {
+            return SyncTasks.Rejected('Database not open');
+        }
+
+        return this._db.openTransaction([Stores.todoItems], true).then(tx => {
+            return tx.getStore(Stores.todoItems);
+        }).then(store => {
+            return store.remove(todoId);
         }).fail(this._handleDbFail);
     }
 
