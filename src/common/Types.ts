@@ -756,7 +756,14 @@ export enum GestureMouseCursor {
     Default,
     Pointer,
     Grab,
-    Move
+    Move,
+    EWResize,
+    NSResize,
+    NESWResize,
+    NWSEResize,
+    NotAllowed,
+    ZoomIn,
+    ZoomOut
 }
 
 export enum PreferredPanGesture {

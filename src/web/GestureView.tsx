@@ -219,6 +219,34 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
             case Types.GestureMouseCursor.Pointer:
                 cursorName = 'pointer';
                 break;
+
+            case Types.GestureMouseCursor.NSResize:
+                cursorName = 'ns-resize';
+                break;
+
+            case Types.GestureMouseCursor.EWResize:
+                cursorName = 'ew-resize';
+                break;
+
+            case Types.GestureMouseCursor.NESWResize:
+                cursorName = 'nesw-resize';
+                break;
+
+            case Types.GestureMouseCursor.NWSEResize:
+                cursorName = 'nwse-resize';
+                break;
+
+            case Types.GestureMouseCursor.NotAllowed:
+                cursorName = 'not-allowed';
+                break;
+
+            case Types.GestureMouseCursor.ZoomIn:
+                cursorName = 'zoom-in';
+                break;
+
+            case Types.GestureMouseCursor.ZoomOut:
+                cursorName = 'zoom-out';
+                break;
         }
 
         if (cursorName) {
