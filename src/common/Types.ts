@@ -350,8 +350,18 @@ export type ComponentBase = React.Component<any, any>;
  * Components
  */
 
-// Rely on RefAttributes type, which exists only in newer typescript definitions, but has support from React 16.3 (released Mar 29, 2018)
-export interface CommonProps<C = React.Component> extends React.RefAttributes<C> {
+// Use a private version of RefAttributes rather than the one defined
+// in React because older versions of @types/React don't include it.
+interface RefObject<T> {
+    readonly current: T | null;
+}
+type Ref<T> = (instance: T | null) => void | RefObject<T> | null;
+interface RefAttributes<T> {
+    ref?: Ref<T>;
+    key?: string | number;
+}
+
+export interface CommonProps<C = React.Component> extends RefAttributes<C> {
     // ref and key are typed by react itself
     children?: ReactNode | ReactNode[];
     testId?: string;
