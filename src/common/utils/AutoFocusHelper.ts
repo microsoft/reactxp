@@ -11,6 +11,7 @@
 import * as React from 'react';
 
 import * as RX from '../Interfaces';
+
 import Timers from './Timers';
 
 let _sortAndFilter: SortAndFilterFunc | undefined;

@@ -11,19 +11,20 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import { MacComponentAccessibilityProps } from './Accessibility';
-import AccessibilityUtil from './AccessibilityUtil';
-import Animated from './Animated';
 import App from '../native-common/App';
 import AppConfig from '../common/AppConfig';
 import assert from '../common/assert';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import EventHelpers from './utils/EventHelpers';
 import { Button as ButtonBase, Types } from '../common/Interfaces';
-import Platform from './Platform';
-import Styles from './Styles';
 import Timers from '../common/utils/Timers';
 import { ButtonStyleRuleSet, StyleRuleSetRecursive } from '../common/Types';
+
+import { MacComponentAccessibilityProps } from './Accessibility';
+import AccessibilityUtil from './AccessibilityUtil';
+import Animated from './Animated';
+import EventHelpers from './utils/EventHelpers';
+import Platform from './Platform';
+import Styles from './Styles';
 import UserInterface from './UserInterface';
 
 const _styles = {

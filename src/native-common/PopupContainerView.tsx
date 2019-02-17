@@ -12,14 +12,15 @@
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import AccessibilityUtil from './AccessibilityUtil';
 import assert from '../common/assert';
 import { Types } from '../common/Interfaces';
-import International from './International';
-import { extend, isEqual } from './utils/lodashMini';
 import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext,
     recalcPositionFromLayoutData, RecalcResult } from '../common/PopupContainerViewBase';
 import Timers from '../common/utils/Timers';
+
+import AccessibilityUtil from './AccessibilityUtil';
+import International from './International';
+import { extend, isEqual } from './utils/lodashMini';
 import UserInterface from './UserInterface';
 
 export interface PopupContainerViewProps extends PopupContainerViewBaseProps<PopupContainerView> {

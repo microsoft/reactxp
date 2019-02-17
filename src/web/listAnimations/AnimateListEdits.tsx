@@ -13,6 +13,7 @@ import * as ReactDOM from 'react-dom';
 
 import executeTransition from '../animated/executeTransition';
 import { Types } from '../../common/Interfaces';
+
 import { clone } from './../utils/lodashMini';
 import { Edits, MonitorListEdits } from './MonitorListEdits';
 

@@ -11,6 +11,7 @@ import * as React from 'react';
 import * as RN from 'react-native';
 
 import * as RX from '../common/Interfaces';
+
 import ViewBase from './ViewBase';
 
 // TODO: #737970 Remove special case for UWP/MacOS when this bug is fixed. The bug

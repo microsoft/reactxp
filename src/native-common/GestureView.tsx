@@ -12,15 +12,16 @@
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import { MacComponentAccessibilityProps } from './Accessibility';
-import AccessibilityUtil from './AccessibilityUtil';
 import App from '../native-common/App';
 import assert from '../common/assert';
-import EventHelpers from './utils/EventHelpers';
 import { Types } from '../common/Interfaces';
+import Timers from '../common/utils/Timers';
+
+import { MacComponentAccessibilityProps } from './Accessibility';
+import AccessibilityUtil from './AccessibilityUtil';
+import EventHelpers from './utils/EventHelpers';
 import { isUndefined } from './utils/lodashMini';
 import Platform from './Platform';
-import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
 import ViewBase from './ViewBase';
 

@@ -9,8 +9,9 @@
 
 import SubscribableEvent from 'subscribableevent';
 
-import { isUndefined } from './lodashMini';
 import Timers from '../../common/utils/Timers';
+
+import { isUndefined } from './lodashMini';
 
 const idleTimeInMs = 60 * 1000;
 

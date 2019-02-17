@@ -11,8 +11,9 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import { applyFocusableComponentMixin } from './utils/FocusManager';
 import { Types } from '../common/Interfaces';
+
+import { applyFocusableComponentMixin } from './utils/FocusManager';
 import { isEmpty } from './utils/lodashMini';
 import Styles from './Styles';
 

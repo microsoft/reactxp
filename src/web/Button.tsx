@@ -10,13 +10,14 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
-import AccessibilityUtil from './AccessibilityUtil';
 import AppConfig from '../common/AppConfig';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import { applyFocusableComponentMixin } from './utils/FocusManager';
 import { Button as ButtonBase, Types } from '../common/Interfaces';
-import Styles from './Styles';
 import Timers from '../common/utils/Timers';
+
+import AccessibilityUtil from './AccessibilityUtil';
+import { applyFocusableComponentMixin } from './utils/FocusManager';
+import Styles from './Styles';
 import UserInterface from './UserInterface';
 
 const _styles = {

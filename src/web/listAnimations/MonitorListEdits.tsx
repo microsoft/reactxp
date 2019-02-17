@@ -14,6 +14,7 @@ import * as ReactDOM from 'react-dom';
 
 import assert from '../../common/assert';
 import { Types } from '../../common/Interfaces';
+
 import * as _ from './../utils/lodashMini';
 
 function getPosition(el: HTMLElement): { left: number; top: number } {

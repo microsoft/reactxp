@@ -8,8 +8,9 @@
  * notifying when the transition is complete.
  */
 
-import * as _ from './../utils/lodashMini';
 import Timers from '../../common/utils/Timers';
+
+import * as _ from './../utils/lodashMini';
 
 export interface TransitionSpec {
     property: string;

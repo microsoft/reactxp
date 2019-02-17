@@ -7,6 +7,7 @@
 import { Platform } from 'react-native';
 
 import { Types } from '../../common/Interfaces';
+
 import { clone } from './lodashMini';
 
 const _isNativeMacOs = Platform.OS === 'macos';

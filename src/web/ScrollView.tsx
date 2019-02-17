@@ -10,8 +10,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import CustomScrollbar from './CustomScrollbar';
 import * as RX from '../common/Interfaces';
+
+import CustomScrollbar from './CustomScrollbar';
 import * as _ from './utils/lodashMini';
 import ScrollViewConfig from './ScrollViewConfig';
 import Styles from './Styles';

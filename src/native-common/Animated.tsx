@@ -11,8 +11,9 @@ import * as React from 'react';
 import * as RN from 'react-native';
 
 import Easing from '../common/Easing';
-import RXImage from './Image';
 import * as RX from '../common/Interfaces';
+
+import RXImage from './Image';
 import RXText from './Text';
 import RXTextInput from './TextInput';
 import RXView from './View';

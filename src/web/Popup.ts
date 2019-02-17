@@ -8,8 +8,9 @@
  */
 
 import assert from '../common/assert';
-import FrontLayerViewManager from './FrontLayerViewManager';
 import * as RX from '../common/Interfaces';
+
+import FrontLayerViewManager from './FrontLayerViewManager';
 
 export class Popup extends RX.Popup {
     show(options: RX.Types.PopupOptions, popupId: string, delay?: number): boolean {

@@ -9,8 +9,9 @@
 
 import * as React from 'react';
 
-import { AlertModalContent } from './AlertModalContent';
 import * as RX from '../common/Interfaces';
+
+import { AlertModalContent } from './AlertModalContent';
 import Modal from './Modal';
 
 // Web/HTML implementation for alert dialog boxes

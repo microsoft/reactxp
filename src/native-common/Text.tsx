@@ -11,10 +11,11 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import AccessibilityUtil from './AccessibilityUtil';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import EventHelpers from './utils/EventHelpers';
 import { Types } from '../common/Interfaces';
+
+import AccessibilityUtil from './AccessibilityUtil';
+import EventHelpers from './utils/EventHelpers';
 import { compact } from './utils/lodashMini';
 import Styles from './Styles';
 

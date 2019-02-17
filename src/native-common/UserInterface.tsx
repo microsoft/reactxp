@@ -15,6 +15,7 @@ import * as SyncTasks from 'synctasks';
 import AppConfig from '../common/AppConfig';
 import assert from '../common/assert';
 import * as RX from '../common/Interfaces';
+
 import MainViewStore from './MainViewStore';
 
 export class UserInterface extends RX.UserInterface {

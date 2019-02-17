@@ -12,12 +12,13 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import AccessibilityUtil from './AccessibilityUtil';
 import { Types } from '../common/Interfaces';
+import Timers from '../common/utils/Timers';
+
+import AccessibilityUtil from './AccessibilityUtil';
 import { clone, isUndefined } from './utils/lodashMini';
 import MouseResponder, { MouseResponderSubscription } from './utils/MouseResponder';
 import Styles from './Styles';
-import Timers from '../common/utils/Timers';
 
 // Cast to any to allow merging of web and RX styles
 const _styles = {

@@ -16,6 +16,7 @@
 import * as React from 'react';
 
 import assert from '../../common/assert';
+
 import { assign } from './../utils/lodashMini';
 
 function restyleForInlineText(reactElement: React.ReactElement<any>) {

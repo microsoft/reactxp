@@ -14,6 +14,7 @@ import * as SyncTasks from 'synctasks';
 
 import { DEFAULT_RESIZE_MODE } from '../common/Image';
 import { Types } from '../common/Interfaces';
+
 import * as _ from './utils/lodashMini';
 import Platform from './Platform';
 import Styles from './Styles';

@@ -10,9 +10,10 @@
 import * as React from 'react';
 import { SubscriptionToken } from 'subscribableevent';
 
+import { Types } from '../common/Interfaces';
+
 import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
-import { Types } from '../common/Interfaces';
 import Styles from './Styles';
 
 export interface AccessibilityAnnouncerState {

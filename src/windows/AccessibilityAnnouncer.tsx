@@ -11,11 +11,12 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import { SubscriptionToken } from 'subscribableevent';
 
-import Accessibility from './Accessibility';
 import AccessibilityUtil from '../native-common/AccessibilityUtil';
 import { Types } from '../common/Interfaces';
 import Styles from '../native-common/Styles';
 import Timers from '../common/utils/Timers';
+
+import Accessibility from './Accessibility';
 
 const _styles = {
     liveRegionContainer: Styles.createViewStyle({

@@ -10,6 +10,7 @@
 import * as RN from 'react-native';
 
 import * as RX from '../common/Interfaces';
+
 import { RootView, RootViewUsingProps } from './RootView';
 import UserInterface from './UserInterface';
 

@@ -13,10 +13,10 @@ import { ExtendedTextProps, NativeSyntheticEvent } from 'react-native';
 import { TextWindowsSelectionChangeEventData as SelectionChangeEventData } from 'react-native-windows';
 
 import AccessibilityUtil, { ImportantForAccessibilityValue } from '../native-common/AccessibilityUtil';
+import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 import { Types } from '../common/Interfaces';
 import { Text as TextBase, TextContext as TextContextBase } from '../native-common/Text';
 
-import { applyFocusableComponentMixin, FocusManagerFocusableComponent } from '../native-desktop/utils/FocusManager';
 export interface TextContext extends TextContextBase {
     isRxParentAFocusableInSameFocusManager?: boolean;
 }

@@ -10,6 +10,7 @@
 
 import { AccessibilityUtil as CommonAccessibiltiyUtil } from '../common/AccessibilityUtil';
 import { Types } from '../common/Interfaces';
+
 import * as _ from './utils/lodashMini';
 
 // Map of accessibility trait to an aria role attribute.

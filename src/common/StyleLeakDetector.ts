@@ -12,10 +12,9 @@
  *    but please make sure that it doesn't leaks first please
  */
 
-import { Dictionary, sortBy } from './lodashMini';
-
 import AppConfig from './AppConfig';
 import { Types } from './Interfaces';
+import { Dictionary, sortBy } from './lodashMini';
 
 export class StyleLeakDetector {
     private _fingerprintRegistry: {[key: string]: string} = {};

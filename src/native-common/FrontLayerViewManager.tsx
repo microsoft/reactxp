@@ -13,8 +13,9 @@ import * as RN from 'react-native';
 import SubscribableEvent from 'subscribableevent';
 
 import { Types } from '../common/Interfaces';
-import * as _ from './utils/lodashMini';
 import { ModalContainer } from '../native-common/ModalContainer';
+
+import * as _ from './utils/lodashMini';
 import PopupContainerView from './PopupContainerView';
 
 class ModalStackContext {

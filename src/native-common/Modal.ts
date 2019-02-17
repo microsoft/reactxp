@@ -10,8 +10,9 @@
 import * as React from 'react';
 
 import assert from '../common/assert';
-import FrontLayerViewManager from './FrontLayerViewManager';
 import * as RX from '../common/Interfaces';
+
+import FrontLayerViewManager from './FrontLayerViewManager';
 
 export class Modal extends RX.Modal {
     isDisplayed(modalId?: string): boolean {

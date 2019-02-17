@@ -11,10 +11,11 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import { applyFocusableComponentMixin } from './utils/FocusManager';
 import { Types } from '../common/Interfaces';
-import Styles from './Styles';
 import Timers from '../common/utils/Timers';
+
+import { applyFocusableComponentMixin } from './utils/FocusManager';
+import Styles from './Styles';
 
 const _styles = {
     defaultStyle: {

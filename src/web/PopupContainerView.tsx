@@ -10,8 +10,9 @@
 import * as React from 'react';
 
 import { Types } from '../common/Interfaces';
-import { clone } from './utils/lodashMini';
 import { PopupContainerViewBase, PopupContainerViewBaseProps, PopupContainerViewContext } from '../common/PopupContainerViewBase';
+
+import { clone } from './utils/lodashMini';
 
 export interface PopupContainerViewProps extends PopupContainerViewBaseProps<PopupContainerView> {
     style: React.CSSProperties;

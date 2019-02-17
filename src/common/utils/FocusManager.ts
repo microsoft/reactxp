@@ -14,6 +14,7 @@ import * as React from 'react';
 
 import AppConfig from '../../common/AppConfig';
 import { Types } from '../../common/Interfaces';
+
 import Timers from './Timers';
 
 let _lastComponentId = 0;

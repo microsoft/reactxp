@@ -11,6 +11,7 @@ import * as RN from 'react-native';
 
 import AppConfig from '../common/AppConfig';
 import * as RX from '../common/Interfaces';
+
 import { omit } from './utils/lodashMini';
 import Platform from './Platform';
 import StyleLeakDetector from './StyleLeakDetector';

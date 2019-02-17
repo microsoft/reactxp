@@ -11,16 +11,17 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import { SubscriptionToken } from 'subscribableevent';
 
+import AppConfig from '../common/AppConfig';
+import { Types } from '../common/Interfaces';
+import UserInterface from '../native-common/UserInterface';
+
 import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
 import App from './App';
-import AppConfig from '../common/AppConfig';
 import FrontLayerViewManager from './FrontLayerViewManager';
-import { Types } from '../common/Interfaces';
 import { isEqual } from './utils/lodashMini';
 import MainViewStore from './MainViewStore';
 import Styles from './Styles';
-import UserInterface from '../native-common/UserInterface';
 
 // Fields should be prefixed with 'reactxp' to help avoid naming collisions.
 // All fields should be removed from this.props before passing downwards.

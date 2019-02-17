@@ -11,15 +11,16 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import AccessibilityUtil from './AccessibilityUtil';
-import AnimateListEdits from './listAnimations/AnimateListEdits';
 import AppConfig from '../common/AppConfig';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import { applyFocusableComponentMixin, FocusManager } from './utils/FocusManager';
 import { RestrictFocusType } from '../common/utils/FocusManager';
 import * as RX from '../common/Interfaces';
-import PopupContainerView from './PopupContainerView';
 import { PopupComponent } from '../common/PopupContainerViewBase';
+
+import AccessibilityUtil from './AccessibilityUtil';
+import AnimateListEdits from './listAnimations/AnimateListEdits';
+import { applyFocusableComponentMixin, FocusManager } from './utils/FocusManager';
+import PopupContainerView from './PopupContainerView';
 import restyleForInlineText from './utils/restyleForInlineText';
 import Styles from './Styles';
 import ViewBase from './ViewBase';

@@ -16,6 +16,7 @@ import {
     AccessibilityUtil as CommonAccessibilityUtil
 } from '../common/AccessibilityUtil';
 import { Types } from '../common/Interfaces';
+
 import * as _ from './utils/lodashMini';
 
 export { ImportantForAccessibilityValue } from '../common/AccessibilityUtil';

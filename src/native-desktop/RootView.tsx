@@ -14,9 +14,7 @@ import * as React from 'react';
 import * as RN from 'react-native';
 
 import EventHelpers from '../native-common/utils/EventHelpers';
-import FocusManager from './utils/FocusManager';
 import FrontLayerViewManager from '../native-common/FrontLayerViewManager';
-import Input from './Input';
 import {
     BaseRootView,
     BaseRootViewProps,
@@ -27,6 +25,9 @@ import {
 } from '../native-common/RootView';
 import Timers from '../common/utils/Timers';
 import UserInterface from '../native-common/UserInterface';
+
+import FocusManager from './utils/FocusManager';
+import Input from './Input';
 
 const KEY_CODE_TAB = 9;
 const KEY_CODE_ESC = 27;

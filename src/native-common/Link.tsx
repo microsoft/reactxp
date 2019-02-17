@@ -11,11 +11,12 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
 
-import AccessibilityUtil from './AccessibilityUtil';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
-import EventHelpers from './utils/EventHelpers';
 import * as RX from '../common/Interfaces';
 import Linking from '../native-common/Linking';
+
+import AccessibilityUtil from './AccessibilityUtil';
+import EventHelpers from './utils/EventHelpers';
 
 export interface LinkContext {
     focusArbitrator?: FocusArbitratorProvider;

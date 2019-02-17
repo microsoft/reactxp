@@ -10,9 +10,10 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
-import AccessibilityUtil from './AccessibilityUtil';
 import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import { Text as TextBase, Types } from '../common/Interfaces';
+
+import AccessibilityUtil from './AccessibilityUtil';
 import Styles from './Styles';
 
 // Adding a CSS rule to display non-selectable texts. Those texts

@@ -10,41 +10,31 @@
 
 import React = require('react');
 
-import AnimatedImpl = require('./Animated');
+import { setSortAndFilterFunc } from '../common/utils/AutoFocusHelper';
 import RXInterfaces = require('../common/Interfaces');
+import LocationImpl from '../common/Location';
 import RXModuleInterface = require('../common/ModuleInterface');
+import PopupImpl from '../web/Popup';
 import RXTypes = require('../common/Types');
-
-// -- STRANGE THINGS GOING ON HERE --
-//
-// 1) 'export var Foo = Foo;'
-//    TypeScript will get confused if (in the module RX below) you try to create a var with the same name as an import.
-//    To avoid this problem, the imports are renamed to 'FooImpl'.
-//
-// 2) 'import { default as FooImpl }... export var foo = FooImpl;'
-//    The way we generate RX.d.ts has extra rules around having the name of the type in scope.
-//    This is not a problem if the class was imported directly (regardless of renames). However, the 'default' import is not sufficient as
-//    a type name. In order to generate the type of 'foo', the actual 'Foo' class needs to be imported. Of course, the same naming problem
-//    exists as (1) so it is imported as 'FooType'. Note: you will see 'FooType' in the generated RX.d.ts ('export var Foo: FooType').
 
 import AccessibilityImpl from './Accessibility';
 import { ActivityIndicator as ActivityIndicatorImpl } from './ActivityIndicator';
 import AlertImpl from './Alert';
+import AnimatedImpl = require('./Animated');
 import AppImpl from './App';
 import { Button as ButtonImpl } from './Button';
 import ClipboardImpl from './Clipboard';
+import FocusManager from './utils/FocusManager';
 import { GestureView as GestureViewImpl } from './GestureView';
 import { Image as ImageImpl } from './Image';
 import InputImpl from './Input';
 import InternationalImpl from './International';
 import { Link as LinkImpl } from './Link';
 import LinkingImpl from './Linking';
-import LocationImpl from '../common/Location';
 import ModalImpl from './Modal';
 import NetworkImpl from './Network';
 import { Picker as PickerImpl } from './Picker';
 import PlatformImpl from './Platform';
-import PopupImpl from '../web/Popup';
 import { ScrollView as ScrollViewImpl } from './ScrollView';
 import StatusBarImpl from './StatusBar';
 import StorageImpl from './Storage';
@@ -56,10 +46,6 @@ import UserPresenceImpl from './UserPresence';
 import ViewImpl from './View';
 import { ViewBase } from './ViewBase';
 import { WebView as WebViewImpl } from './WebView';
-
-// Initialize AutofocusHelper.
-import { setSortAndFilterFunc } from '../common/utils/AutoFocusHelper';
-import FocusManager from './utils/FocusManager';
 setSortAndFilterFunc(FocusManager.sortAndFilterAutoFocusCandidates);
 
 // -- STRANGE THINGS GOING ON HERE --

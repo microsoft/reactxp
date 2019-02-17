@@ -12,8 +12,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as SyncTasks from 'synctasks';
 
-import FrontLayerViewManager from './FrontLayerViewManager';
 import * as RX from '../common/Interfaces';
+
+import FrontLayerViewManager from './FrontLayerViewManager';
 import ScrollViewConfig from './ScrollViewConfig';
 
 export class UserInterface extends RX.UserInterface {

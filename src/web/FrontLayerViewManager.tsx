@@ -11,9 +11,10 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { Types } from '../common/Interfaces';
+import Timers from '../common/utils/Timers';
+
 import MouseResponder from './utils/MouseResponder';
 import { PopupDescriptor, RootView } from './RootView';
-import Timers from '../common/utils/Timers';
 
 const MAX_CACHED_POPUPS = 4;
 

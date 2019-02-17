@@ -13,15 +13,16 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+import { Types } from '../common/Interfaces';
+import { recalcPositionFromLayoutData, RecalcResult } from '../common/PopupContainerViewBase';
+import Timers from '../common/utils/Timers';
+
 import AccessibilityAnnouncer from './AccessibilityAnnouncer';
 import FocusManager from './utils/FocusManager';
 import Input from './Input';
-import { Types } from '../common/Interfaces';
 import * as _ from './utils/lodashMini';
 import ModalContainer from './ModalContainer';
 import PopupContainerView from './PopupContainerView';
-import { recalcPositionFromLayoutData, RecalcResult } from '../common/PopupContainerViewBase';
-import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
 
 export class PopupDescriptor {

@@ -11,56 +11,41 @@
 import React = require('react');
 import RN = require('react-native');
 
-import { CommonAnimatedClasses, makeAnimated } from '../native-common/Animated';
-import RXInterfaces = require('../common/Interfaces');
-import RXModuleInterface = require('../common/ModuleInterface');
-import RXTypes = require('../common/Types');
-
-// -- STRANGE THINGS GOING ON HERE --
-// See web/ReactXP.tsx for more details.
-
-import AccessibilityImpl from './Accessibility';
+import AccessibilityUtil from '../native-common/AccessibilityUtil';
 import ActivityIndicatorImpl from '../native-common/ActivityIndicator';
 import AlertImpl from '../native-common/Alert';
-import AppImpl from './App';
-import ButtonImpl from './Button';
+import { CommonAnimatedClasses, makeAnimated } from '../native-common/Animated';
 import ClipboardImpl from '../native-common/Clipboard';
-import GestureViewImpl from './GestureView';
 import ImageImpl from '../native-common/Image';
 import InputImpl from '../native-desktop/Input';
+import RXInterfaces = require('../common/Interfaces');
 import InternationalImpl from '../native-common/International';
-import LinkImpl from './Link';
 import LinkingImpl from '../native-common/Linking';
 import LocationImpl from '../common/Location';
 import ModalImpl from '../native-common/Modal';
+import RXModuleInterface = require('../common/ModuleInterface');
 import NetworkImpl from '../native-common/Network';
 import PickerImpl from '../native-common/Picker';
 import PlatformImpl from '../native-common/Platform';
 import PopupImpl from '../native-common/Popup';
 import ScrollViewImpl from '../native-desktop/ScrollView';
-import StatusBarImpl from './StatusBar';
 import StorageImpl from '../native-common/Storage';
 import StylesImpl from '../native-common/Styles';
-import TextImpl from './Text';
-import TextInputImpl from './TextInput';
+import RXTypes = require('../common/Types');
 import UserInterfaceImpl from '../native-common/UserInterface';
 import UserPresenceImpl from '../native-common/UserPresence';
-import ViewImpl from './View';
-import ViewBase from '../native-common/ViewBase';
 import WebViewImpl from '../native-common/WebView';
 
-// Initialize the Windows default view style. This is required because on RN for Windows, the default
-// overflow is 'visible', but we want it to be 'hidden' (the default for ReactXP and RN Android).
-const _defaultViewStyle = StylesImpl.createViewStyle({
-    overflow: 'hidden'
-});
-ViewBase.setDefaultViewStyle(_defaultViewStyle);
-
-// Initialize Windows implementation of platform accessibility helpers inside the singleton
-// instance of native-common AccessibilityUtil. This is to let native-common components access
-// platform specific APIs through native-common implementation itself.
-import AccessibilityUtil from '../native-common/AccessibilityUtil';
+import AccessibilityImpl from './Accessibility';
 import AccessibilityPlatformUtil from './AccessibilityUtil';
+import AppImpl from './App';
+import ButtonImpl from './Button';
+import GestureViewImpl from './GestureView';
+import LinkImpl from './Link';
+import StatusBarImpl from './StatusBar';
+import TextImpl from './Text';
+import TextInputImpl from './TextInput';
+import ViewImpl from './View';
 
 AccessibilityUtil.setAccessibilityPlatformUtil(AccessibilityPlatformUtil);
 

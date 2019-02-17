@@ -7,8 +7,9 @@
  * Defines a common base module type information set for all platforms to implement.
  */
 
-import * as RX from './Interfaces';
 import * as React from 'react';
+
+import * as RX from './Interfaces';
 
 export declare module ReactXP {
     export type Accessibility = RX.Accessibility;

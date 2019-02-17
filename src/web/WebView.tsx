@@ -10,6 +10,7 @@
 import * as React from 'react';
 
 import * as RX from '../common/Interfaces';
+
 import Styles from './Styles';
 import { View } from './View';
 

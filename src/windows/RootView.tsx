@@ -11,7 +11,6 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import * as RNW from 'react-native-windows';
 
-import { AccessibilityAnnouncer } from './AccessibilityAnnouncer';
 import {
     BaseRootView,
     BaseRootViewProps,
@@ -20,6 +19,8 @@ import {
     RootViewState,
     RootViewUsingProps as RootViewUsingPropsBase
 } from '../native-desktop/RootView';
+
+import { AccessibilityAnnouncer } from './AccessibilityAnnouncer';
 
 //
 // We use a custom RNW provided component to capture key input before being dispatched to native controls.

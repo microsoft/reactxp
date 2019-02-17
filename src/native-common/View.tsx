@@ -11,18 +11,19 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
 
+import assert from '../common/assert';
+import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
+import * as RX from '../common/Interfaces';
+import Timers from '../common/utils/Timers';
+
 import { MacComponentAccessibilityProps } from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
 import Animated from './Animated';
 import App from './App';
-import assert from '../common/assert';
-import { FocusArbitratorProvider } from '../common/utils/AutoFocusHelper';
 import EventHelpers from './utils/EventHelpers';
-import * as RX from '../common/Interfaces';
 import { clone, extend } from './utils/lodashMini';
 import Platform from './Platform';
 import Styles from './Styles';
-import Timers from '../common/utils/Timers';
 import UserInterface from './UserInterface';
 import ViewBase from './ViewBase';
 

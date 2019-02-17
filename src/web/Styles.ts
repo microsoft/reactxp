@@ -9,8 +9,9 @@
 
 import AppConfig from '../common/AppConfig';
 import * as RX from '../common/Interfaces';
-import * as _ from './utils/lodashMini';
 import StyleLeakDetector from '../common/StyleLeakDetector';
+
+import * as _ from './utils/lodashMini';
 
 type CssAliasMap = { [prop: string]: string };
 

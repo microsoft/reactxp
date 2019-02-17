@@ -14,9 +14,10 @@ import * as ReactDOM from 'react-dom';
 
 import AppConfig from '../common/AppConfig';
 import Easing from '../common/Easing';
+import * as RX from '../common/Interfaces';
+
 import { executeTransition, TransitionSpec } from './animated/executeTransition';
 import RXImage from './Image';
-import * as RX from '../common/Interfaces';
 import * as _ from './utils/lodashMini';
 import Styles from './Styles';
 import RXText from './Text';

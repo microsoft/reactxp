@@ -10,10 +10,11 @@
 import * as SyncTasks from 'synctasks';
 
 import AppConfig from '../common/AppConfig';
-import FrontLayerViewManager from './FrontLayerViewManager';
 import * as RX from '../common/Interfaces';
-import * as _ from './utils/lodashMini';
 import Timers from '../common/utils/Timers';
+
+import FrontLayerViewManager from './FrontLayerViewManager';
+import * as _ from './utils/lodashMini';
 
 // We create a periodic timer to detect layout changes that are performed behind
 // our back by the browser's layout engine. We do this more aggressively when

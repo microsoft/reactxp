@@ -8,6 +8,7 @@
  */
 
 import { Types } from '../../common/Interfaces';
+
 import * as _ from './../utils/lodashMini';
 
 const _compareDOMOrder = (a: Responder, b: Responder) => {

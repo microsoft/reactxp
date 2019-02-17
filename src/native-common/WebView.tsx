@@ -11,6 +11,7 @@ import * as React from 'react';
 import * as RN from 'react-native';
 
 import * as RX from '../common/Interfaces';
+
 import Styles from './Styles';
 
 const _styles = {

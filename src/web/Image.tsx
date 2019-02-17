@@ -14,6 +14,7 @@ import * as SyncTasks from 'synctasks';
 import assert from '../common/assert';
 import { DEFAULT_RESIZE_MODE } from '../common/Image';
 import { Types } from '../common/Interfaces';
+
 import * as _ from './utils/lodashMini';
 import restyleForInlineText from './utils/restyleForInlineText';
 import Styles from './Styles';

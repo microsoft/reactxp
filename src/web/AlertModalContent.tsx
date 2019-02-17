@@ -9,8 +9,9 @@
 
 import * as React from 'react';
 
-import Button from './Button';
 import * as RX from '../common/Interfaces';
+
+import Button from './Button';
 import Modal from './Modal';
 import Styles from './Styles';
 import Text from './Text';
