@@ -12,24 +12,24 @@
     "tslint": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
   },
   "devDependencies": {
-    "@types/node": "^10.12.11",
-    "@types/webpack": "^4.4.20",
+    "@types/node": "^11.9.4",
+    "@types/webpack": "^4.4.24",
     "awesome-typescript-loader": "^5.2.1",
     "rnpm-plugin-windows": "^0.2.8",
     "source-map-loader": "^0.2.4",
-    "ts-node": "^7.0.1",
-    "tslint": "^5.11.0",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.12.1",
     "tslint-loader": "^3.5.4",
     "tslint-microsoft-contrib": "^6.0.0",
-    "typescript": "^3.2.1",
-    "webpack": "^4.26.1",
-    "webpack-cli": "^3.1.2"
+    "typescript": "^3.3.3",
+    "webpack": "^4.29.4",
+    "webpack-cli": "^3.2.3"
   },
   "dependencies": {
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-native": "^0.57.8",
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2",
+    "react-native": "^0.58.4",
     "react-native-windows": "^0.57.0-rc.4",
-    "reactxp": "^1.5.0"
+    "reactxp": "^1.6.0-rc.1"
   }
 }
