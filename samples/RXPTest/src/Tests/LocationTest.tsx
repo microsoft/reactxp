@@ -142,12 +142,16 @@ class LocationView extends RX.Component<RX.CommonProps, LocationState> {
                         this._formatPosition(position) + '\n'
                 });
             }).catch(err => {
-                // Log the error, but make sure we don't log it
-                // more than once.
-                if (!loggedPolledLocationError) {
-                    result.errors.push('RX.Location.getCurrentPosition returned error: ' +
-                        this._formatError(err.code as RX.Types.LocationErrorType));
-                    loggedPolledLocationError = true;
+                // Log the error, but make sure we don't log it more than once.
+                const errCode = err.code as RX.Types.LocationErrorType;
+
+                // Don't log a timeout as an error.
+                if (errCode !== RX.Types.LocationErrorType.Timeout) {
+                    if (!loggedPolledLocationError) {
+                        result.errors.push('RX.Location.getCurrentPosition returned error: ' +
+                            this._formatError(errCode));
+                        loggedPolledLocationError = true;
+                    }
                 }
 
                 this.setState({
@@ -178,12 +182,16 @@ class LocationView extends RX.Component<RX.CommonProps, LocationState> {
         });
 
         let logWatchedLocationError = (err: RX.Types.LocationErrorType) => {
-            // Log the error, but make sure we don't log it
-            // more than once.
-            if (!loggedWatchedLocationError) {
-                result.errors.push('RX.Location.watchPosition returned error: ' +
-                    this._formatError(err as RX.Types.LocationErrorType));
-                loggedWatchedLocationError = true;
+            // Log the error, but make sure we don't log it more than once.
+            const errCode = err as RX.Types.LocationErrorType;
+            
+            // Don't log a timeout as an error.
+            if (errCode !== RX.Types.LocationErrorType.Timeout) {
+                if (!loggedWatchedLocationError) {
+                    result.errors.push('RX.Location.watchPosition returned error: ' +
+                        this._formatError(errCode));
+                    loggedWatchedLocationError = true;
+                }
             }
 
             this.setState({
