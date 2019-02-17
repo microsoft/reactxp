@@ -244,35 +244,62 @@ export class InterpolatedValue extends Value {
         super._startTransition(toValue, duration, easing, delay, onEnd);
     }
 
+    _convertValueToNumeric(inputVal: number | string): number {
+        if (_.isNumber(inputVal)) {
+            return inputVal;
+        }
+
+        return parseInt(inputVal, 10);
+    }
+
+    _addUnitsToNumericValue(value: number, templateValue: number | string): number | string {
+        if (_.isNumber(templateValue)) {
+            return value;
+        }
+
+        // Does the template contain any of the common units?
+        const templateString = templateValue;
+        const commonUnits = ['deg', 'grad', 'rad'];
+        for (const unit of commonUnits) {
+            if (templateString.indexOf(unit) > 0) {
+                return value.toString() + unit;
+            }
+        }
+
+        return value;
+    }
+
     _getInterpolatedValue(inputVal: number | string): number | string {
         if (!this._interpolationConfig) {
             throw new Error('There is no interpolation config but one is required');
         }
 
-        if (!_.isNumber(inputVal)) {
-            throw new Error('Numeric inputVals required for interpolated values');
-        }
+        const numericInputValue = this._convertValueToNumeric(inputVal);
+        const outputValues = this._config.outputRange.map(value => {
+            return this._convertValueToNumeric(value);
+        });
 
-        if (this._interpolationConfig[inputVal]) {
-            return this._interpolationConfig[inputVal];
-        }
-
-        if (!_.isNumber(this._config.outputRange[0])) {
-            throw new Error('Non-transitional interpolations on web only supported as numerics');
+        if (this._interpolationConfig[numericInputValue]) {
+            return this._interpolationConfig[numericInputValue];
         }
 
         if (inputVal < this._config.inputRange[0]) {
-            return this._config.outputRange[0];
+            return outputValues[0];
         }
+
         for (let i = 1; i < this._config.inputRange.length; i++) {
             if (inputVal < this._config.inputRange[i]) {
-                const ratio = (inputVal - this._config.inputRange[i - 1]) /
+                const ratio = (numericInputValue - this._config.inputRange[i - 1]) /
                     (this._config.inputRange[i] - this._config.inputRange[i - 1]);
-                return (this._config.outputRange as number[])[i] * ratio +
-                    (this._config.outputRange as number[])[i - 1] * (1 - ratio);
+                return this._addUnitsToNumericValue(
+                    (this._config.outputRange as number[])[i] * ratio +
+                    (this._config.outputRange as number[])[i - 1] * (1 - ratio),
+                    inputVal);
             }
         }
-        return this._config.outputRange[this._config.inputRange.length - 1];
+        return this._addUnitsToNumericValue(
+            outputValues[this._config.inputRange.length - 1],
+            inputVal);
     }
 
     _isInterpolated(): boolean {
