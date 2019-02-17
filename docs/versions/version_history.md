@@ -16,6 +16,24 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.6.0-rc.1 of reactxp - _17 Feb 2019_
+* #961: Fixed crash when calling setScrollTop/Left on native version of ScrollView.
+* #972: If blurOnSubmit is specified on a TextInput, the code now respects that value.
+* #974: Fixed bug in native Button implementation where 'false' style would be passed when disableTouchOpacityAnimation was specified.
+* #980: Fixed bug in web implementation of onLongPress.
+* #976: Made multiline TextInput growth behavior on web match native.
+* #984: Added code to catch exception in web implementation of Storage.setItem method.
+* #996: Added stronger typings for ref callbacks.
+* #993: Added support for mediaPlaybackRequiresUserAction and allowsInlinedMediaPlayer props for WebView.
+* #957: Added context mode to the popup container handling type list.
+* #994: Removed msHyphens css property in web implementation of Text.
+* #1001: Fixed units for rotateZ translation type for web animations.
+* #1004: Fixed bug that resulted in crash when ReactXP ran in node (test) environment.
+* #1006: Made selectItemKey scrollTo behaviour configurable - scrolling isn't always desired.
+* #1016: View responder events props are now triggered properly.
+* #1024: Added more mouse cursor types for web version of GestureView.
+* Added support for interpolated animation values that have angle units (e.g. "90deg") on web.
+
 #### Version 2.0.0-rc.3 of reactxp-virtuallistview - _30 Jan 2019_
 * #1006: Make selectItemKey scrollTo behaviour configurable - scrolling isn't always desired
 * #1007: Perf Improvements
