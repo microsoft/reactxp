@@ -3,6 +3,10 @@ This sample demonstrates a ReactXP app that fetches information from a REST serv
 
 The commands in the instructions below assume you are in the root of this repo.
 
+### Building
+
+- From the RXPImageList directory, run `npm install`. This fetches the dependencies.
+
 ### To run your app on Web:
   ```shell
   npm run start:web

@@ -4,6 +4,10 @@ This app works on React Native (iOS, Android, Windows) and web.
 
 The commands in the instructions below assume you are in the root of this repo.
 
+### Building
+
+- From the RXPTodoList directory, run `npm install`. This fetches the dependencies.
+
 ### Building for Web
 
 - Run `npm run start-web`. This compiles the TypeScript code and recompiles it whenever any files are changed.
