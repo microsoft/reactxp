@@ -11,7 +11,7 @@ ReactXP supports a powerful animation abstraction. Individual style elements (e.
 
 ## Animatable Components
 
-Three base RX classes can have animatable styles:
+Four base RX classes can have animatable styles:
 
 * Animated.View
 
