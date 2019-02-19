@@ -3,6 +3,10 @@
 This app works on React Native (iOS, Android, Windows) and web.
 The commands in the instructions below assume you are in the root of this repo.
 
+### Building
+
+- From the hello-world-js directory, run `npm install`. This fetches the dependencies.
+
 ### To run your app on Web:
   ```shell
   npm run start:web
