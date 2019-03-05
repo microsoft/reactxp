@@ -431,6 +431,26 @@ export class Styles extends RX.Styles {
             delete def.textDecorationLine;
         }
 
+        // CSS doesn't support 'textDecorationStyle'
+        if (def.textDecorationStyle !== undefined) {
+            if (def.textDecoration !== undefined) {
+                def.textDecoration += ' ' + def.textDecorationStyle;
+            } else {
+                def.textDecoration = def.textDecorationStyle;
+            }
+            delete def.textDecorationStyle;
+        }
+
+        // CSS doesn't support 'textDecorationColor'
+        if (def.textDecorationColor !== undefined) {
+            if (def.textDecoration !== undefined) {
+                def.textDecoration += ' ' + def.textDecorationColor;
+            } else {
+                def.textDecoration = def.textDecorationColor;
+            }
+            delete def.textDecorationColor;
+        }
+
         // Add common aliases if necessary.
         const jsAliases = this._getCssPropertyAliasesJsStyle();
         for (const prop in jsAliases) {
