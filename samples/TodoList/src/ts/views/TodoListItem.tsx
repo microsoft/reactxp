@@ -18,6 +18,7 @@ interface TodoListItemProps extends RX.CommonProps {
     todo: Todo;
     isSelected: boolean;
     searchString?: string;
+    onPress: (todoId: string) => void;
 }
 
 interface TodoListItemState {
@@ -73,8 +74,17 @@ export default class TodoListItem extends ComponentBase<TodoListItemProps, TodoL
 
     render(): JSX.Element | null {
         return (
-            <HoverButton onRenderChild={ this._onRenderItem } />
+            <HoverButton
+              onRenderChild={ this._onRenderItem }
+              onPress={ this._onPress }/>
         );
+    }
+
+    private _onPress = (e: RX.Types.SyntheticEvent) => {
+        // Prevent VirtualListView.onItemSelected from
+        // being triggering in the web app.
+        e.stopPropagation();
+        this.props.onPress(this.props.todo.id);
     }
 
     private _onRenderItem = (isHovering: boolean) => {

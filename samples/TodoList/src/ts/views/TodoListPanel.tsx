@@ -130,7 +130,6 @@ export default class TodoListPanel extends ComponentBase<TodoListPanelProps, Tod
                     itemList={ this.state.filteredTodoList }
                     renderItem={ this._renderItem }
                     style={ _styles.listScroll }
-                    onItemSelected={ this._onPressTodo }
                 />
             </RX.View>
         );
@@ -171,13 +170,13 @@ export default class TodoListPanel extends ComponentBase<TodoListPanelProps, Tod
                 height={ _listItemHeight }
                 isSelected={ item.todo.id === this.props.selectedTodoId }
                 searchString={ this.state.searchString }
+                onPress={ this._onPressTodo }
             />
         );
     };
 
-    private _onPressTodo = (itemInfo: TodoListItemInfo) => {
-        const todo = itemInfo.todo;
-        this.props.onSelect(todo.id);
+    private _onPressTodo = (todoId: string) => {
+        this.props.onSelect(todoId);
         this.setState({
             searchString: '',
             filteredTodoList: this.state.todos
