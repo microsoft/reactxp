@@ -16,7 +16,10 @@ const _styles = {
     }),
     view1: RX.Styles.createViewStyle({
         margin: 20,
-        backgroundColor: '#ccf'
+        backgroundColor: '#ccf',
+        transform: [{
+            rotate: '5deg'
+        }]
     }),
     view2: RX.Styles.createViewStyle({
         margin: 20,
