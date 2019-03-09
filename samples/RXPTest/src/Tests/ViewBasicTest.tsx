@@ -27,6 +27,10 @@ const _styles = {
         borderWidth: 2,
         borderColor: 'black'
     }),
+    view2MarginOverride: RX.Styles.createViewStyle({
+        marginLeft: 30,
+        marginRight: 10
+    }),
     view3: RX.Styles.createViewStyle({
         margin: 20,
         backgroundColor: 'yellow',
@@ -158,7 +162,7 @@ class BasicView extends RX.Component<RX.CommonProps, RX.Stateless> {
                     underlayColor={ '#fee' }
                     tabIndex={ 3 }
                 >
-                    <RX.Text style={ _styles.labelText }>
+                    <RX.Text style={ [_styles.view2MarginOverride, _styles.labelText] }>
                         { 'Press me' }
                     </RX.Text>
                 </RX.View>

@@ -32,18 +32,43 @@ export class Styles extends RX.Styles {
                 combinedStyles = _.extend(combinedStyles, subRuleSet);
             }
 
-            if (AppConfig.isDevelopmentMode()) {
-                if ((combinedStyles.marginLeft !== undefined || combinedStyles.marginRight !== undefined ||
-                        combinedStyles.marginTop !== undefined || combinedStyles.marginBottom !== undefined) &&
-                        combinedStyles.margin !== undefined) {
-                    console.error('Conflicting rules for margin specified.');
+            // Use the React Native model for combining styles. Specific attributes
+            // always override the general.
+            // https://github.com/necolas/react-native-web/blob/0.10.0/docs/guides/style.md#how-styles-are-resolved
+            if ((combinedStyles.marginLeft !== undefined || combinedStyles.marginRight !== undefined ||
+                    combinedStyles.marginTop !== undefined || combinedStyles.marginBottom !== undefined) &&
+                    combinedStyles.margin !== undefined) {
+                if (combinedStyles.marginLeft === undefined) {
+                    combinedStyles.marginLeft = combinedStyles.margin;
                 }
+                if (combinedStyles.marginRight === undefined) {
+                    combinedStyles.marginRight = combinedStyles.margin;
+                }
+                if (combinedStyles.marginTop === undefined) {
+                    combinedStyles.marginTop = combinedStyles.margin;
+                }
+                if (combinedStyles.marginBottom === undefined) {
+                    combinedStyles.marginBottom = combinedStyles.margin;
+                }
+                delete combinedStyles.margin;
+            }
 
-                if ((combinedStyles.paddingLeft !== undefined || combinedStyles.paddingRight !== undefined ||
-                        combinedStyles.paddingTop !== undefined || combinedStyles.paddingBottom !== undefined) &&
-                        combinedStyles.padding !== undefined) {
-                    console.error('Conflicting rules for padding specified.');
+            if ((combinedStyles.paddingLeft !== undefined || combinedStyles.paddingRight !== undefined ||
+                    combinedStyles.paddingTop !== undefined || combinedStyles.paddingBottom !== undefined) &&
+                    combinedStyles.padding !== undefined) {
+                if (combinedStyles.paddingLeft === undefined) {
+                    combinedStyles.paddingLeft = combinedStyles.padding;
                 }
+                if (combinedStyles.paddingRight === undefined) {
+                    combinedStyles.paddingRight = combinedStyles.padding;
+                }
+                if (combinedStyles.paddingTop === undefined) {
+                    combinedStyles.paddingTop = combinedStyles.padding;
+                }
+                if (combinedStyles.paddingBottom === undefined) {
+                    combinedStyles.paddingBottom = combinedStyles.padding;
+                }
+                delete combinedStyles.padding;
             }
 
             if (combinedStyles.borderWidth ||
@@ -384,43 +409,43 @@ export class Styles extends RX.Styles {
 
         // CSS doesn't support vertical/horizontal margins or padding.
         if (def.marginVertical !== undefined) {
-            def.marginTop = def.marginVertical;
-            def.marginBottom = def.marginVertical;
+            if (def.marginTop === undefined) {
+                def.marginTop = def.marginVertical;
+            }
+            if (def.marginBottom === undefined) {
+                def.marginBottom = def.marginVertical;
+            }
             delete def.marginVertical;
         }
 
         if (def.marginHorizontal !== undefined) {
-            def.marginLeft = def.marginHorizontal;
-            def.marginRight = def.marginHorizontal;
+            if (def.marginLeft === undefined) {
+                def.marginLeft = def.marginHorizontal;
+            }
+            if (def.marginRight === undefined) {
+                def.marginRight = def.marginHorizontal;
+            }
             delete def.marginHorizontal;
         }
 
-        if (AppConfig.isDevelopmentMode()) {
-            if ((def.marginHorizontal !== undefined || def.marginVertical !== undefined ||
-                    def.marginLeft !== undefined || def.marginRight !== undefined ||
-                    def.marginTop !== undefined || def.marginBottom !== undefined) && def.margin !== undefined) {
-                console.error('Conflicting rules for margin specified.');
-            }
-        }
-
         if (def.paddingVertical !== undefined) {
-            def.paddingTop = def.paddingVertical;
-            def.paddingBottom = def.paddingVertical;
+            if (def.paddingTop === undefined) {
+                def.paddingTop = def.paddingVertical;
+            }
+            if (def.paddingBottom === undefined) {
+                def.paddingBottom = def.paddingVertical;
+            }
             delete def.paddingVertical;
         }
 
         if (def.paddingHorizontal !== undefined) {
-            def.paddingLeft = def.paddingHorizontal;
-            def.paddingRight = def.paddingHorizontal;
-            delete def.paddingHorizontal;
-        }
-
-        if (AppConfig.isDevelopmentMode()) {
-            if ((def.paddingHorizontal !== undefined || def.paddingVertical !== undefined ||
-                    def.paddingLeft !== undefined || def.paddingRight !== undefined ||
-                    def.paddingTop !== undefined || def.paddingBottom !== undefined) && def.padding !== undefined) {
-                console.error('Conflicting rules for padding specified.');
+            if (def.paddingLeft === undefined) {
+                def.paddingLeft = def.paddingHorizontal;
             }
+            if (def.paddingRight === undefined) {
+                def.paddingRight = def.paddingHorizontal;
+            }
+            delete def.paddingHorizontal;
         }
 
         // CSS doesn't support 'textDecorationLine'

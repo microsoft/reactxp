@@ -24,7 +24,7 @@ Many base components share common subsets of style attributes. For example, almo
 
 ## Combining Styles
 
-All of the base components support a *style* prop that can accept a single style or an array of styles. If an array of styles is provided, the styles are combined in such a way that styles with larger indices override styles with smaller indices. Falsy values (false, null, undefined) can also be specified in a style array. This allows for the following common pattern.
+All of the base components support a *style* prop that can accept a single style or an array of styles (or a nested array). If an array of styles is provided, the styles are combined in a depth-first manner left to right. Falsy values (false, null, undefined) can also be specified in a style array. This allows for the following common pattern.
 
 ``` javascript
     let buttonTextStyles = [_styles.baseText, this.state.hovering && _styles.hoverText];
@@ -39,7 +39,7 @@ if (this.state.hovering) {
 }
 ```
 
-Within a style array, you can also pass nested arrays. This allows easy manipulation of composite styles.
+If "margin" and "padding" attributes are combined with edge-specific attributes (e.g. "marginLeft" or "paddingBottom"), the specific attributes always override the general. This matches the [combining behavior of React Native](https://github.com/necolas/react-native-web/blob/0.10.0/docs/guides/style.md#how-styles-are-resolved) (but differs from CSS).
 
 ``` javascript
 // this.props.style might be undefined, a single style, or a (potentially-nested)
