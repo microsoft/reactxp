@@ -8,6 +8,7 @@ import SyncTasks = require('synctasks');
 
 import * as CommonStyles from '../CommonStyles';
 import { AutoExecutableTest, TestResult, TestType } from '../Test';
+import { approxEquals } from '../Utilities';
 
 const _styles = {
     container: RX.Styles.createViewStyle({
@@ -151,21 +152,21 @@ class UserInterfaceView extends RX.Component<RX.CommonProps, UserInterfaceState>
         }).then(layoutInfo => {
             childRelative = layoutInfo;
 
-            if (!this._approxEquals(parentAbsolute.height, 100) || !this._approxEquals(parentAbsolute.width, 100)) {
-                result.errors.push(`Expected parent view to be 100x100. Got ${parentAbsolute.height}x${parentAbsolute.width}`);
+            if (!approxEquals(parentAbsolute.width, 100) || !approxEquals(parentAbsolute.height, 100)) {
+                result.errors.push(`Expected parent view to be 100x100. Got ${parentAbsolute.width}x${parentAbsolute.height}`);
             }
 
-            if (!this._approxEquals(childAbsolute.height, 24) || !this._approxEquals(childAbsolute.width, 24)) {
-                result.errors.push(`Expected child view to be 24x24. Got ${childAbsolute.height}x${childAbsolute.width}`);
+            if (!approxEquals(childAbsolute.width, 24) || !approxEquals(childAbsolute.height, 24)) {
+                result.errors.push(`Expected child view to be 24x24. Got ${childAbsolute.width}x${childAbsolute.height}`);
             }
 
             const xValue = childAbsolute.x - parentAbsolute.x;
             const yValue = childAbsolute.y - parentAbsolute.y;
-            if (!this._approxEquals(xValue, 20) || !this._approxEquals(yValue, 20)) {
+            if (!approxEquals(xValue, 20) || !approxEquals(yValue, 20)) {
                 result.errors.push(`Expected absolute position of child view to be 20x20 from parent. Got ${xValue}x${yValue}`);
             }
 
-            if (!this._approxEquals(childRelative.x, 20) || !this._approxEquals(childRelative.y, 20)) {
+            if (!approxEquals(childRelative.x, 20) || !approxEquals(childRelative.y, 20)) {
                 result.errors.push(`Expected relative position of child view to be 20x20 from parent. Got ${childRelative.x}x${childRelative.y}`);
             }
         }).catch(err => {
@@ -184,13 +185,6 @@ class UserInterfaceView extends RX.Component<RX.CommonProps, UserInterfaceState>
             // Mark the test as complete.
             complete(result);
         });
-    }
-
-    private _approxEquals(value1: number, value2: number, epsilon?: number): boolean {
-        if (epsilon == null) {
-            epsilon = 0.0001;
-        }
-        return Math.abs(value1 - value2) < epsilon;
     }
 }
 

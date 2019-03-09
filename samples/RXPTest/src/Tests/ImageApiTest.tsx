@@ -7,6 +7,7 @@ import RX = require('reactxp');
 
 import * as CommonStyles from '../CommonStyles';
 import { AutoExecutableTest, TestResult, TestType } from '../Test';
+import { approxEquals } from '../Utilities';
 
 const _styles = {
     container: RX.Styles.createViewStyle({
@@ -123,16 +124,18 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
         if (this._testResult) {
             if (!dimensions) {
                 this._testResult.errors.push('Received undefined dimensions from onLoad');
-            } else if (dimensions.width !== image1ExpectedWidth || dimensions.height !== image1ExpectedHeight) {
-                this._testResult.errors.push('Received unexpected dimensions from onLoad');
+            } else if (!approxEquals(dimensions.width, image1ExpectedWidth) || !approxEquals(dimensions.height, image1ExpectedHeight)) {
+                this._testResult.errors.push(`Expected dimensions from onLoad to be ${image1ExpectedWidth}x${image1ExpectedHeight}. Got ${dimensions.width}x${dimensions.height}`);
             }
 
             // Now call the component back to see if we get the same dimensions.
-            if (this._image1Ref!.getNativeWidth() !== image1ExpectedWidth) {
-                this._testResult.errors.push('Received unexpected width from getNativeWidth');
+            const width = this._image1Ref!.getNativeWidth();
+            const height = this._image1Ref!.getNativeHeight();
+            if (width == null || !approxEquals(width, image1ExpectedWidth)) {
+                this._testResult.errors.push(`Expected width from getNativeWidth to be ${image1ExpectedWidth}. Got ${width}`);
             }
-            if (this._image1Ref!.getNativeHeight() !== image1ExpectedHeight) {
-                this._testResult.errors.push('Received unexpected height from getNativeHeight');
+            if (height == null || !approxEquals(height, image1ExpectedHeight)) {
+                this._testResult.errors.push(`Expected height from getNativeHeight to be ${image1ExpectedHeight}. Got ${height}`);
             }
         }
 
