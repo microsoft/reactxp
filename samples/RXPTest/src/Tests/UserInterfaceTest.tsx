@@ -151,20 +151,22 @@ class UserInterfaceView extends RX.Component<RX.CommonProps, UserInterfaceState>
         }).then(layoutInfo => {
             childRelative = layoutInfo;
 
-            if (parentAbsolute.height !== 100 || parentAbsolute.width !== 100) {
-                result.errors.push('Expected parent view to be 100x100.');
+            if (!this._approxEquals(parentAbsolute.height, 100) || !this._approxEquals(parentAbsolute.width, 100)) {
+                result.errors.push(`Expected parent view to be 100x100. Got ${parentAbsolute.height}x${parentAbsolute.width}`);
             }
 
-            if (childAbsolute.height !== 24 || childAbsolute.width !== 24) {
-                result.errors.push('Expected child view to be 24x24.');
+            if (!this._approxEquals(childAbsolute.height, 24) || !this._approxEquals(childAbsolute.width, 24)) {
+                result.errors.push(`Expected child view to be 24x24. Got ${childAbsolute.height}x${childAbsolute.width}`);
             }
 
-            if (childAbsolute.x - parentAbsolute.x !== 20 || childAbsolute.y - parentAbsolute.y !== 20) {
-                result.errors.push('Expected absolute position of child view to be 20x20 from parent.');
+            const xValue = childAbsolute.x - parentAbsolute.x;
+            const yValue = childAbsolute.y - parentAbsolute.y;
+            if (!this._approxEquals(xValue, 20) || !this._approxEquals(yValue, 20)) {
+                result.errors.push(`Expected absolute position of child view to be 20x20 from parent. Got ${xValue}x${yValue}`);
             }
 
-            if (childRelative.x !== 20 || childRelative.y !== 20) {
-                result.errors.push('Expected relative position of child view to be 20x20 from parent.');
+            if (!this._approxEquals(childRelative.x, 20) || !this._approxEquals(childRelative.y, 20)) {
+                result.errors.push(`Expected relative position of child view to be 20x20 from parent. Got ${childRelative.x}x${childRelative.y}`);
             }
         }).catch(err => {
             result.errors.push('Error occurred when measuring views.');
@@ -182,6 +184,13 @@ class UserInterfaceView extends RX.Component<RX.CommonProps, UserInterfaceState>
             // Mark the test as complete.
             complete(result);
         });
+    }
+
+    private _approxEquals(value1: number, value2: number, epsilon?: number): boolean {
+        if (epsilon == null) {
+            epsilon = 0.0001;
+        }
+        return Math.abs(value1 - value2) < epsilon;
     }
 }
 
