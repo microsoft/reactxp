@@ -8,6 +8,7 @@ import SyncTasks = require('synctasks');
 
 import * as CommonStyles from '../CommonStyles';
 import { AutoExecutableTest, TestResult, TestType } from '../Test';
+import { approxEquals } from '../Utilities';
 
 const _styles = {
     container: RX.Styles.createViewStyle({
@@ -151,20 +152,22 @@ class UserInterfaceView extends RX.Component<RX.CommonProps, UserInterfaceState>
         }).then(layoutInfo => {
             childRelative = layoutInfo;
 
-            if (parentAbsolute.height !== 100 || parentAbsolute.width !== 100) {
-                result.errors.push('Expected parent view to be 100x100.');
+            if (!approxEquals(parentAbsolute.width, 100) || !approxEquals(parentAbsolute.height, 100)) {
+                result.errors.push(`Expected parent view to be 100x100. Got ${parentAbsolute.width}x${parentAbsolute.height}`);
             }
 
-            if (childAbsolute.height !== 24 || childAbsolute.width !== 24) {
-                result.errors.push('Expected child view to be 24x24.');
+            if (!approxEquals(childAbsolute.width, 24) || !approxEquals(childAbsolute.height, 24)) {
+                result.errors.push(`Expected child view to be 24x24. Got ${childAbsolute.width}x${childAbsolute.height}`);
             }
 
-            if (childAbsolute.x - parentAbsolute.x !== 20 || childAbsolute.y - parentAbsolute.y !== 20) {
-                result.errors.push('Expected absolute position of child view to be 20x20 from parent.');
+            const xValue = childAbsolute.x - parentAbsolute.x;
+            const yValue = childAbsolute.y - parentAbsolute.y;
+            if (!approxEquals(xValue, 20) || !approxEquals(yValue, 20)) {
+                result.errors.push(`Expected absolute position of child view to be 20x20 from parent. Got ${xValue}x${yValue}`);
             }
 
-            if (childRelative.x !== 20 || childRelative.y !== 20) {
-                result.errors.push('Expected relative position of child view to be 20x20 from parent.');
+            if (!approxEquals(childRelative.x, 20) || !approxEquals(childRelative.y, 20)) {
+                result.errors.push(`Expected relative position of child view to be 20x20 from parent. Got ${childRelative.x}x${childRelative.y}`);
             }
         }).catch(err => {
             result.errors.push('Error occurred when measuring views.');
