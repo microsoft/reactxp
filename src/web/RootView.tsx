@@ -164,6 +164,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 this._startRepositionPopupTimer();
             }
 
+            this._startHidePopupTimer();
+
             if (!this._clickHandlerInstalled) {
                 document.addEventListener('mousedown', this._tryClosePopup);
                 document.addEventListener('touchstart', this._tryClosePopup);
