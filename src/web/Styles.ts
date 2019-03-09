@@ -305,9 +305,7 @@ export class Styles extends RX.Styles {
                         animatedTransforms[key] = t[key];
                     } else {
                         let value: string = t[key].toString();
-                        if (key.indexOf('rotate') === 0) {
-                            value += 'deg';
-                        } else if (key.indexOf('translate') === 0) {
+                        if (key.indexOf('translate') === 0) {
                             value += 'px';
                         }
 
