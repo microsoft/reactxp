@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.6.0-rc.2 of reactxp - _9 Mar 2019_
+* #1041: Fixed textDecorationStyle and textDecorationColor on web.
+* #1042: Fixed transform rotate styles on web so they take a unit (e.g. "deg") for consistency with RN.
+* #1040: Fixed auto-dismissing popups on the web.
+* #1026: Changed margin and padding style combination rules on web to match RN.
+
 #### Version 1.6.0-rc.1 of reactxp - _17 Feb 2019_
 * #961: Fixed crash when calling setScrollTop/Left on native version of ScrollView.
 * #972: If blurOnSubmit is specified on a TextInput, the code now respects that value.
