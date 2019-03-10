@@ -16,6 +16,9 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.6.0-rc.3 of reactxp - _10 Mar 2019_
+* #891: Fixed bad interaction between RX.Clipboard.getText() and iOS Safari.
+
 #### Version 1.6.0-rc.2 of reactxp - _9 Mar 2019_
 * #1041: Fixed textDecorationStyle and textDecorationColor on web.
 * #1042: Fixed transform rotate styles on web so they take a unit (e.g. "deg") for consistency with RN.
