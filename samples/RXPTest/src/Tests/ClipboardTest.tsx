@@ -50,7 +50,7 @@ interface ClipboardViewState {
     pastedText: string;
 }
 
-const _copyString = 'Copied text ';
+const _copyString = 'Text to copy\n(including line breaks)\n';
 
 class ClipboardView extends RX.Component<RX.CommonProps, ClipboardViewState> {
     private _presencesChangedEvent: RX.Types.SubscriptionToken | undefined;
