@@ -30,6 +30,6 @@
     "react-dom": "16.6.3",
     "react-native": "0.58.6",
     "react-native-windows": "^0.57.0-rc.5",
-    "reactxp": "^1.6.0-rc.3"
+    "reactxp": "^1.6.0-rc.4"
   }
 }
