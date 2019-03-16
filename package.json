@@ -23,9 +23,9 @@
     "synctasks": "^0.3.3"
   },
   "peerDependencies": {
-    "react": "16.6.3",
-    "react-dom": "16.6.3",
-    "react-native": "0.58.6",
+    "react": "16.8.3",
+    "react-dom": "16.8.3",
+    "react-native": "0.59.1",
     "react-native-windows": "^0.57.0-rc.5"
   },
   "devDependencies": {
