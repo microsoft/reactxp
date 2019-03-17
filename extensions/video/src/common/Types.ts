@@ -7,6 +7,7 @@
  * Type definitions to support the plugin.
  */
 
+import * as React from 'react';
 import { Types as RXTypes } from 'reactxp';
 
 // Video interfaces from react-native-video
@@ -26,7 +27,7 @@ export interface VideoInfo {
     };
 }
 
-export interface VideoProps extends RXTypes.CommonStyledProps<RXTypes.ViewStyleRuleSet> {
+export interface VideoProps extends RXTypes.CommonStyledProps<RXTypes.ViewStyleRuleSet, Video> {
     source: string;
     accessibilityLabel?: string;
     showControls?: boolean;
@@ -45,3 +46,5 @@ export interface VideoProps extends RXTypes.CommonStyledProps<RXTypes.ViewStyleR
     onLoadedData?: (info: VideoInfo) => void;
     onProgress?: (progress: VideoProgress) => void;
 }
+
+export abstract class Video extends React.Component<VideoProps, RXTypes.Stateless> {}

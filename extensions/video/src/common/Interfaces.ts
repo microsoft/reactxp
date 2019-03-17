@@ -12,7 +12,7 @@ import * as RX from 'reactxp';
 
 import * as Types from './Types';
 
-export abstract class Video extends RX.Component<Types.VideoProps, any> {
+export abstract class Video extends RX.Component<Types.VideoProps, RX.Stateless> {
     abstract seek(position: number): void;
     abstract play(): void;
     abstract pause(): void;

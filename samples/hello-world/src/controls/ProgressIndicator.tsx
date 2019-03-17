@@ -9,7 +9,7 @@ import * as React from 'react';
 import * as RX from 'reactxp';
 import RXImageSvg, { SvgPath as RXSvgPath, Types as SvgTypes } from 'reactxp-imagesvg';
 
-export interface ProgressIndicatorProps extends RX.CommonStyledProps<SvgTypes.ImageSvgStyleRuleSet>  {
+export interface ProgressIndicatorProps extends RX.CommonStyledProps<SvgTypes.ImageSvgStyleRuleSet, ProgressIndicator>  {
     fillColor: string;
     progress: number;
     size: number;

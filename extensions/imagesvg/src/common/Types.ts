@@ -7,9 +7,11 @@
  */
 
 import { Types as RXTypes } from 'reactxp';
+import * as React from 'react';
 
 export interface ImageSvgStyle extends RXTypes.ViewStyle {
 }
+
 export declare type ImageSvgStyleRuleSet = RXTypes.StyleRuleSet<ImageSvgStyle>;
 
 export interface SvgCommonProps {
@@ -21,7 +23,7 @@ export interface SvgCommonProps {
     fillOpacity?: number;
 }
 
-export interface ImageSvgProps extends SvgCommonProps, RXTypes.CommonStyledProps<ImageSvgStyleRuleSet> {
+export interface ImageSvgProps extends SvgCommonProps, RXTypes.CommonStyledProps<ImageSvgStyleRuleSet, ImageSvg> {
     children?: RXTypes.ReactNode;
     height: number;
     width: number;
@@ -31,12 +33,16 @@ export interface ImageSvgProps extends SvgCommonProps, RXTypes.CommonStyledProps
     preserveAspectRatio?: string;
     webShadow?: string;
 }
+
 export interface SvgPathProps extends SvgCommonProps {
     d?: string;
 }
+
 export interface SvgRectProps extends SvgCommonProps {
     width: number;
     height: number;
     x: number;
     y: number;
 }
+
+export class ImageSvg extends React.Component<ImageSvgProps, RXTypes.Stateless> {}

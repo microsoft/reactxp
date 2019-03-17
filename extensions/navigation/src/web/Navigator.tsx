@@ -126,6 +126,10 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
     // Keep a map of all rendered scenes, keyed off their routeId
     private _renderedSceneMap: { [routeId: number]: JSX.Element } = {};
 
+    // References to mounted components.
+    private _containerRef: RX.View | null;
+    private _sceneRefs: { [sceneIndex: string]: RX.View } = {};
+
     // Save a public reference to the parent navigator if one was given in props.
     navigatorReference: Navigator;
 
@@ -207,7 +211,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
             >
                 <View
                     style={ _styles.transitioner }
-                    ref={ 'transitioner' }
+                    ref={ this._onMountContainer }
                 >
                     { scenes }
                 </View>
@@ -339,13 +343,19 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
         return this.state.routeStack.slice();
     }
 
+    private _onMountContainer = (comp: RX.View | null) => {
+        this._containerRef = comp;
+    }
+
     private _updateDimensionsCache() {
-        const transitioner = ReactDOM.findDOMNode(this.refs['transitioner']) as HTMLElement|null;
-        if (transitioner) {
-            this._dimensions = {
-                width: transitioner.offsetWidth,
-                height: transitioner.offsetHeight
-            };
+        if (this._containerRef) {
+            const transitioner = ReactDOM.findDOMNode(this._containerRef) as HTMLElement | null;
+            if (transitioner) {
+                this._dimensions = {
+                    width: transitioner.offsetWidth,
+                    height: transitioner.offsetHeight
+                };
+            }
         }
     }
 
@@ -372,7 +382,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
         return (
             <View
                 key={ 'scene_' + this._getRouteID(route) }
-                ref={ 'scene_' + index }
+                ref={ (comp) => this._onMountScene(comp, index) }
                 style={ styles }
             >
                 { this.props.renderScene(route) }
@@ -380,10 +390,22 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
         );
     }
 
+    private _onMountScene(comp: RX.View | null, sceneIndex: number) {
+        const sceneId = 'scene_' + sceneIndex;
+
+        if (!comp) {
+            delete this._sceneRefs[sceneId];
+        } else {
+            this._sceneRefs[sceneId] = comp;
+        }
+    }
+
     // Push a scene below the others so they don't block touches sent to the presented scenes.
     private _disableScene(sceneIndex: number) {
-        if (this.refs['scene_' + sceneIndex]) {
-            this._setNativeStyles(this.refs['scene_' + sceneIndex], {
+        const sceneId = 'scene_' + sceneIndex;
+
+        if (this._sceneRefs[sceneId]) {
+            this._setNativeStyles(this._sceneRefs[sceneId], {
                 opacity: 0,
                 zIndex: -10
             });

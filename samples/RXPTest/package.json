@@ -1,6 +1,6 @@
 {
   "name": "rxptest",
-  "version": "1.3.0",
+  "version": "1.6.0",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -12,24 +12,24 @@
     "tslint": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
   },
   "devDependencies": {
-    "@types/node": "^11.9.4",
-    "@types/webpack": "^4.4.24",
+    "@types/node": "^11.11.3",
+    "@types/webpack": "^4.4.25",
     "awesome-typescript-loader": "^5.2.1",
     "rnpm-plugin-windows": "^0.2.8",
     "source-map-loader": "^0.2.4",
-    "ts-node": "^8.0.2",
-    "tslint": "^5.12.1",
+    "ts-node": "^8.0.3",
+    "tslint": "^5.14.0",
     "tslint-loader": "^3.5.4",
-    "tslint-microsoft-contrib": "^6.0.0",
-    "typescript": "^3.3.3",
-    "webpack": "^4.29.4",
-    "webpack-cli": "^3.2.3"
+    "tslint-microsoft-contrib": "^6.1.0",
+    "typescript": "^3.3.3333",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
   },
   "dependencies": {
-    "react": "16.6.3",
-    "react-dom": "16.6.3",
-    "react-native": "0.58.6",
+    "react": "16.8.4",
+    "react-dom": "16.8.4",
+    "react-native": "0.59.1",
     "react-native-windows": "^0.57.0-rc.5",
-    "reactxp": "^1.6.0-rc.4"
+    "reactxp": "^1.6.0"
   }
 }

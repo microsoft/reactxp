@@ -16,6 +16,12 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.6.0 of reactxp-imagesvg, reactxp-navigation, reactxp-video - _16 Mar 2019_
+* No new features; updated dependencies.
+
+#### Version 1.6.0 of reactxp - _16 Mar 2019_
+* No new features; updated dependencies.
+
 #### Version 1.6.0-rc.4 of reactxp - _15 Mar 2019_
 * #1055: Fixed crash due to incompatibilty with newly-released RN 59.
 
