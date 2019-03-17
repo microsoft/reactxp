@@ -9,6 +9,7 @@
 
 import * as React from 'react';
 import * as RN from 'react-native';
+import * as RNWB from 'react-native-webview';
 
 import * as RX from '../common/Interfaces';
 
@@ -24,19 +25,19 @@ const _styles = {
 type MixedContentMode = 'never' | 'always' | 'compatibility' | undefined;
 
 export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Stateless> implements RX.WebView {
-    private _mountedComponent: RN.WebView | undefined;
+    private _mountedComponent: RNWB.WebView | undefined;
 
     render() {
         const styles = [_styles.webViewDefault, this.props.style] as RN.StyleProp<RN.ViewStyle>;
         const source = this._buildSource();
 
         // Force use of webkit on iOS (applies to RN 0.57 and newer only).
-        const extendedProps: RN.ExtendedWebViewProps = {
+        const extendedProps: RNWB.WebViewSharedProps = {
             useWebKit: true
         };
 
         return (
-            <RN.WebView
+            <RNWB.WebView
                 ref={ this._onMount }
                 style={ styles }
                 source={ source }
@@ -73,11 +74,11 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
         return 'never';
     }
 
-    protected _onMount = (component: RN.WebView | null) => {
+    protected _onMount = (component: RNWB.WebView | null) => {
         this._mountedComponent = component || undefined;
     }
 
-    protected _onMessage = (e: RN.NativeSyntheticEvent<RN.WebViewMessageEventData>) => {
+    protected _onMessage = (e: RNWB.WebViewMessageEvent) => {
         if (this.props.onMessage) {
             const event: RX.Types.WebViewMessageEvent = {
                 defaultPrevented: e.defaultPrevented,
@@ -95,7 +96,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
         }
     }
 
-    private _buildSource(): RN.WebViewUriSource | RN.WebViewHtmlSource | undefined {
+    private _buildSource(): RNWB.WebViewSourceUri | RNWB.WebViewSourceHtml | undefined {
         const { headers, source, url } = this.props;
 
         if (url) {
