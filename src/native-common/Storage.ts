@@ -7,7 +7,7 @@
  * Native implementation of the cross-platform database storage abstraction.
  */
 
-import * as RN from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import * as SyncTasks from 'synctasks';
 
 import * as RX from '../common/Interfaces';
@@ -16,7 +16,7 @@ export class Storage extends RX.Storage {
     getItem(key: string): SyncTasks.Promise<string | undefined> {
         const deferred = SyncTasks.Defer<string | undefined>();
 
-        RN.AsyncStorage.getItem(key, (error: any, result: string | undefined) => {
+        AsyncStorage.getItem(key, (error: any, result: string | undefined) => {
             if (!error) {
                 deferred.resolve(result || undefined);
             } else {
@@ -32,7 +32,7 @@ export class Storage extends RX.Storage {
     setItem(key: string, value: string): SyncTasks.Promise<void> {
         const deferred = SyncTasks.Defer<void>();
 
-        RN.AsyncStorage.setItem(key, value, (error: any) => {
+        AsyncStorage.setItem(key, value, (error: any) => {
             if (!error) {
                 deferred.resolve(void 0);
             } else {
@@ -48,7 +48,7 @@ export class Storage extends RX.Storage {
     removeItem(key: string): SyncTasks.Promise<void> {
         const deferred = SyncTasks.Defer<void>();
 
-        RN.AsyncStorage.removeItem(key, (error: any) => {
+        AsyncStorage.removeItem(key, (error: any) => {
             if (!error) {
                 deferred.resolve(void 0);
             } else {
@@ -64,7 +64,7 @@ export class Storage extends RX.Storage {
     clear(): SyncTasks.Promise<void> {
         const deferred = SyncTasks.Defer<void>();
 
-        RN.AsyncStorage.clear((error: any) => {
+        AsyncStorage.clear((error: any) => {
             if (!error) {
                 deferred.resolve(void 0);
             } else {

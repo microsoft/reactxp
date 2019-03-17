@@ -23,12 +23,14 @@
     "synctasks": "^0.3.3"
   },
   "peerDependencies": {
+    "@react-native-community/async-storage": "1.2.1",
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-native": "0.59.1",
     "react-native-windows": "^0.57.0-rc.5"
   },
   "devDependencies": {
+    "@react-native-community/async-storage": "1.2.1",
     "tslint": "^5.14.0",
     "tslint-microsoft-contrib": "^6.1.0",
     "tslint-react": "^3.6.0",
