@@ -15,12 +15,12 @@ export class Network extends RX.Network {
     constructor() {
         super();
 
-        const onEventOccuredHandler = this._onEventOccured.bind(this);
+        const onEventOccurredHandler = this._onEventOccurred.bind(this);
 
         // Avoid accessing window if it's not defined (for test environment).
         if (typeof(window) !== 'undefined') {
-            window.addEventListener('online', onEventOccuredHandler);
-            window.addEventListener('offline', onEventOccuredHandler);
+            window.addEventListener('online', onEventOccurredHandler);
+            window.addEventListener('offline', onEventOccurredHandler);
         }
     }
 
@@ -32,7 +32,7 @@ export class Network extends RX.Network {
         return SyncTasks.Resolved(RX.Types.DeviceNetworkType.Unknown);
     }
 
-    private _onEventOccured() {
+    private _onEventOccurred() {
         this.connectivityChangedEvent.fire(navigator.onLine);
     }
 }
