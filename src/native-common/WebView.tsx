@@ -36,6 +36,14 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
             useWebKit: true
         };
 
+        // Keep compatibility with old code that uses window.postMessage. For more information,
+        // see https://github.com/react-native-community/react-native-webview/releases/tag/v5.0.0
+        const injectedJavascript = `(function() {
+            window.postMessage = function(data) {
+                window.ReactNativeWebView.postMessage(data);
+            };
+        })();`;
+
         return (
             <RNWB.WebView
                 ref={ this._onMount }
@@ -45,7 +53,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
                 javaScriptEnabled={ this.props.javaScriptEnabled }
                 allowsInlineMediaPlayback={ this.props.allowsInlineMediaPlayback }
                 mediaPlaybackRequiresUserAction={ this.props.mediaPlaybackRequiresUserAction }
-                injectedJavaScript={ this.props.injectedJavaScript }
+                injectedJavaScript={ injectedJavascript + this.props.injectedJavaScript }
                 domStorageEnabled={ this.props.domStorageEnabled }
                 scalesPageToFit={ this.props.scalesPageToFit }
                 onNavigationStateChange={ this.props.onNavigationStateChange }
