@@ -67,7 +67,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
 
         // We don't use 'string' ref type inside ReactXP
         const originalRef = (internalProps as any).ref;
-        assert(typeof originalRef === 'string', 'Button: ReactXP must not use string refs internally');
+        assert(!(typeof originalRef === 'string'), 'Button: ReactXP must not use string refs internally');
 
         const componentRef = originalRef as Function;
         const focusableViewProps: RNW.FocusableWindowsProps<RN.ExtendedViewProps | RNW.AccessibilityEvents> = {

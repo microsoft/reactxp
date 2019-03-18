@@ -106,7 +106,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
 
         // We don't use 'string' ref type inside ReactXP
         const originalRef = (internalProps as any).ref;
-        assert(typeof originalRef === 'string', 'Link: ReactXP must not use string refs internally');
+        assert(!(typeof originalRef === 'string'), 'Link: ReactXP must not use string refs internally');
 
         const componentRef = originalRef as Function;
         const focusableTextProps: RNW.FocusableWindowsProps<
@@ -138,7 +138,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
     private _renderLinkAsNativeHyperlink(internalProps: RN.TextProps) {
         // We don't use 'string' ref type inside ReactXP
         const originalRef = (internalProps as any).ref;
-        assert(typeof originalRef === 'string', 'Link: ReactXP must not use string refs internally');
+        assert(!(typeof originalRef === 'string'), 'Link: ReactXP must not use string refs internally');
 
         return (
             <RNW.HyperlinkWindows
