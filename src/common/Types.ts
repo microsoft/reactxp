@@ -355,7 +355,7 @@ export type ComponentBase = React.Component<any, any>;
 interface RefObject<T> {
     readonly current: T | null;
 }
-type Ref<T> = (instance: T | null) => void | RefObject<T> | null;
+type Ref<T> = { bivarianceHack(instance: T | null): void }['bivarianceHack'] | RefObject<T> | null;
 interface RefAttributes<T> {
     ref?: Ref<T>;
     key?: string | number;
