@@ -83,6 +83,16 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         // If blurOnSubmit value is explicitly specified, use it, otherwise auto-blur single line inputs
         const blurOnSubmit = this.props.blurOnSubmit !== undefined ? this.props.blurOnSubmit : !this.props.multiline;
 
+        // There is currently a bug in React Native for Android that causes secureTextEntry to not work if
+        // keyboardType === 'email-address' so let's guard against that.
+        // TODO: Remove this code once https://github.com/facebook/react-native/issues/20606 is fixed.
+        let keyboardType = this.props.keyboardType;
+        if (RN.Platform.OS === 'android') {
+            if (this.props.secureTextEntry && keyboardType === 'email-address') {
+                keyboardType = 'default';
+            }
+        }
+
         const internalProps: RN.ExtendedTextInputProps = {
             multiline: this.props.multiline,
             style: Styles.combine([_styles.defaultTextInput, this.props.style]) as RN.StyleProp<RN.TextStyle>,
@@ -91,7 +101,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             autoCorrect: this.props.autoCorrect,
             spellCheck: this.props.spellCheck,
             autoCapitalize: this.props.autoCapitalize,
-            keyboardType: this.props.keyboardType,
+            keyboardType: keyboardType,
             editable: editable,
             selectionColor: this.props.selectionColor,
             maxLength: this.props.maxLength,
