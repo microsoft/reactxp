@@ -53,7 +53,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         super(props, context);
 
         this.state = {
-            inputValue: props.value || '',
+            inputValue: props.value !== undefined ? props.value : (props.defaultValue || ''),
             isFocused: false
         };
     }
