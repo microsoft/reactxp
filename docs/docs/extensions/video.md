@@ -85,8 +85,8 @@ resizeMode: 'contain'|'cover'|'stretch' = 'contain';
 // Displays controls for play, pause, etc.
 showControls: boolean = false;
 
-// Source of video (URL)
-source: string;
+// Source of video (URL) or resource `id` as resolved by `require()` for `react-native` targets.
+source: string | number;
 
 // See below for supported styles
 style: ViewStyleRuleSet | ViewStyleRuleSet[] = [];
