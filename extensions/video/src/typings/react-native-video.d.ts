@@ -40,7 +40,7 @@ declare module 'react-native-video' {
 
             // Some versions of react-native-video may not support this option.
             authToken?: string;
-        };
+        } | number;
 
         resizeMode?: string;
         poster?: string;

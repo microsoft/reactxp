@@ -68,11 +68,15 @@ class Video extends RX.Component<Types.VideoProps, {}> {
             });
         }
 
+        // The HTML version of video doesn't support numeric-based source
+        // references, only string-based URIs.
+        const source = typeof this.props.source === 'string' ? this.props.source : '';
+
         return (
             <video
                 ref='video'
                 style={ combinedStyles }
-                src={ this.props.source }
+                src={ source }
                 controls={ this.props.showControls }
                 loop={ this.props.loop }
                 onLoadedData={ this._onLoadedData }
