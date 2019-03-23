@@ -16,6 +16,17 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.6.1 of reactxp - _23 Mar 2019_
+* #1062: Fixed TextInput defaultValue not working on native platforms
+* #1060: Fixed Ref<T> type.
+* #1058: Fixed ref assert on Windows.
+
+#### Version 1.6.1 of reactxp-video - _23 Mar 2019_
+* #1066: Fixed video extension to support react-native local assets.
+
+#### Version 1.6.1 of reactxp-navigation - _23 Mar 2019_
+* #1063: Fixed regression in reactxp-navigation.
+
 #### Version 1.6.0 of reactxp-imagesvg, reactxp-navigation, reactxp-video - _16 Mar 2019_
 * No new features; updated dependencies.
 
