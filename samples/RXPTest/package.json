@@ -9,6 +9,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "android": "node node_modules/react-native/local-cli/cli.js run-android",
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
+    "windows": "node node_modules/react-native/local-cli/cli.js run-windows",
     "tslint": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
   },
   "devDependencies": {
