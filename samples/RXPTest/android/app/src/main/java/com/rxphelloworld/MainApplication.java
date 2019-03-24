@@ -9,7 +9,6 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 
 import java.util.Arrays;
@@ -28,7 +27,6 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new AsyncStoragePackage(),
-          new NetInfoPackage(),
           new RNCWebViewPackage()
       );
     }
