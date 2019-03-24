@@ -12,7 +12,7 @@
     "tslint": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
   },
   "devDependencies": {
-    "@types/node": "^11.11.3",
+    "@types/node": "^11.11.6",
     "@types/webpack": "^4.4.25",
     "awesome-typescript-loader": "^5.2.1",
     "rnpm-plugin-windows": "^0.2.8",
@@ -32,6 +32,6 @@
     "react-native": "0.59.1",
     "react-native-webview": "5.3.1",
     "react-native-windows": "^0.57.0-rc.5",
-    "reactxp": "^1.6.0"
+    "reactxp": "^1.6.1"
   }
 }
