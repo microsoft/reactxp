@@ -479,7 +479,7 @@ export interface FocusCandidate {
     accessibilityId?: string;
 }
 
-export interface CommonStyledProps<T, C> extends CommonProps<C> {
+export interface CommonStyledProps<T, C = React.Component> extends CommonProps<C> {
     style?: StyleRuleSetRecursive<T>;
 }
 
@@ -538,7 +538,7 @@ export interface Headers {
 // Image
 export type ImageResizeMode = 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat';
 
-export interface ImagePropsShared<C> extends CommonProps<C> {
+export interface ImagePropsShared<C = React.Component> extends CommonProps<C> {
     source: string;
     headers?: Headers;
     accessibilityLabel?: string;
@@ -573,7 +573,7 @@ export interface AnimatedImageProps extends ImagePropsShared<RX.AnimatedImage> {
 // | I am a very |
 // | important   |
 // | example     |
-export interface TextPropsShared<C> extends CommonProps<C> {
+export interface TextPropsShared<C = React.Component> extends CommonProps<C> {
     selectable?: boolean;
     numberOfLines?: number;
 
@@ -624,7 +624,7 @@ export enum LimitFocusType {
 }
 
 // View
-export interface ViewPropsShared<C> extends CommonProps<C>, CommonAccessibilityProps {
+export interface ViewPropsShared<C = React.Component> extends CommonProps<C>, CommonAccessibilityProps {
     title?: string;
     ignorePointerEvents?: boolean;
     blockPointerEvents?: boolean; // Native-only prop for disabling touches on self and all child views
@@ -912,7 +912,7 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet, RX.Link> 
 }
 
 // TextInput
-export interface TextInputPropsShared<C> extends CommonProps<C>, CommonAccessibilityProps {
+export interface TextInputPropsShared<C = React.Component> extends CommonProps<C>, CommonAccessibilityProps {
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
     autoCorrect?: boolean;
     autoFocus?: boolean; // The component is a candidate for being autofocused.
