@@ -9,7 +9,15 @@
 
 import * as React from 'react';
 import * as RN from 'react-native';
-import * as RNWB from 'react-native-webview';
+import {
+    WebView as RNWebView,
+    WebViewProps as RNWebViewProps
+} from 'react-native-webview';
+import {
+    WebViewMessageEvent as RNWebViewMessageEvent,
+    WebViewSourceHtml as RNWebViewSourceHtml,
+    WebViewSourceUri as RNWebViewSourceUri
+} from 'react-native-webview/lib/WebViewTypes';
 
 import * as RX from '../common/Interfaces';
 
@@ -25,27 +33,41 @@ const _styles = {
 type MixedContentMode = 'never' | 'always' | 'compatibility' | undefined;
 
 export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Stateless> implements RX.WebView {
-    private _mountedComponent: RNWB.WebView | undefined;
+    private _mountedComponent: RNWebView | undefined;
 
     render() {
         const styles = [_styles.webViewDefault, this.props.style] as RN.StyleProp<RN.ViewStyle>;
         const source = this._buildSource();
 
         // Force use of webkit on iOS (applies to RN 0.57 and newer only).
-        const extendedProps: RNWB.WebViewSharedProps = {
+        const extendedProps: RNWebViewProps = {
             useWebKit: true
         };
 
         // Keep compatibility with old code that uses window.postMessage. For more information,
         // see https://github.com/react-native-community/react-native-webview/releases/tag/v5.0.0
-        const injectedJavascript = `(function() {
+        const injectedJavascript = `
+        // WebView -> Native
+        (function() {
             window.postMessage = function(data) {
                 window.ReactNativeWebView.postMessage(data);
             };
-        })();`;
+        })();
+
+        // Native -> WebView
+        function postMessageFromReactXP(message) {
+            var event;
+            try {
+                event = new MessageEvent('message', { data: message });
+            } catch (e) {
+                event = document.createEvent('MessageEvent');
+                event.initMessageEvent('message', true, true, data.data, data.origin, data.lastEventId, data.source);
+            }
+            document.dispatchEvent(event);
+        };`;
 
         return (
-            <RNWB.WebView
+            <RNWebView
                 ref={ this._onMount }
                 style={ styles }
                 source={ source }
@@ -82,11 +104,11 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
         return 'never';
     }
 
-    protected _onMount = (component: RNWB.WebView | null) => {
+    protected _onMount = (component: RNWebView | null) => {
         this._mountedComponent = component || undefined;
     }
 
-    protected _onMessage = (e: RNWB.WebViewMessageEvent) => {
+    protected _onMessage = (e: RNWebViewMessageEvent) => {
         if (this.props.onMessage) {
             const event: RX.Types.WebViewMessageEvent = {
                 defaultPrevented: e.defaultPrevented,
@@ -104,7 +126,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
         }
     }
 
-    private _buildSource(): RNWB.WebViewSourceUri | RNWB.WebViewSourceHtml | undefined {
+    private _buildSource(): RNWebViewSourceUri | RNWebViewSourceHtml | undefined {
         const { headers, source, url } = this.props;
 
         if (url) {
@@ -120,7 +142,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
 
     postMessage(message: string, targetOrigin = '*') {
         if (this._mountedComponent) {
-            this._mountedComponent.postMessage(message);
+            this._mountedComponent.injectJavaScript(`postMessageFromReactXP('${message}');`);
         }
     }
 
