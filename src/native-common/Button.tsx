@@ -54,7 +54,7 @@ function noop() { /* noop */ }
 
 function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, propertiesToSkip: string[]) {
     Object.getOwnPropertyNames(mixin).forEach(name => {
-        if (name !== 'constructor' && propertiesToSkip.indexOf(name) === -1 && typeof mixin[name].bind === 'function') {
+        if (name !== 'constructor' && propertiesToSkip.indexOf(name) === -1 && typeof mixin[name].bind === 'function' && mixin[name].bind) {
             assert(
                 !(name in thisObj),
                 `An object cannot have a method with the same name as one of its mixins: "${name}"`
