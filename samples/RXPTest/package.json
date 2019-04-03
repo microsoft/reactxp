@@ -12,13 +12,13 @@
     "tslint": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
   },
   "devDependencies": {
-    "@types/node": "^11.12.2",
+    "@types/node": "^11.13.0",
     "@types/webpack": "^4.4.25",
     "awesome-typescript-loader": "^5.2.1",
     "rnpm-plugin-windows": "^0.2.8",
     "source-map-loader": "^0.2.4",
     "ts-node": "^8.0.3",
-    "tslint": "^5.14.0",
+    "tslint": "^5.15.0",
     "tslint-loader": "^3.5.4",
     "tslint-microsoft-contrib": "^6.1.0",
     "typescript": "^3.3.4000",
@@ -29,8 +29,8 @@
     "@react-native-community/async-storage": "^1.2.2",
     "react": "16.8.3",
     "react-dom": "16.8.3",
-    "react-native": "0.59.2",
-    "react-native-webview": "^5.5.0",
+    "react-native": "0.59.3",
+    "react-native-webview": "^5.6.1",
     "react-native-windows": "^0.57.1",
     "reactxp": "^1.6.1"
   }
