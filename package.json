@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.123",
-    "@types/react": "^16.8.10",
+    "@types/react": "^16.8.12",
     "@types/react-dom": "^16.8.3",
     "@types/react-native": "^0.57.42",
     "lodash": "^4.17.11",
@@ -23,7 +23,7 @@
     "synctasks": "^0.3.3"
   },
   "peerDependencies": {
-    "@react-native-community/async-storage": "^1.2.2",
+    "@react-native-community/async-storage": "^1.2.3",
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-native": "0.59.3",
@@ -31,8 +31,8 @@
     "react-native-windows": "^0.57.1"
   },
   "devDependencies": {
-    "@react-native-community/async-storage": "^1.2.2",
-    "react-native-webview": "^5.6.1",
+    "@react-native-community/async-storage": "^1.2.3",
+    "react-native-webview": "^5.6.2",
     "tslint": "^5.15.0",
     "tslint-microsoft-contrib": "^6.1.0",
     "tslint-react": "^3.6.0",

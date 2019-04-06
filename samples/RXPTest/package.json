@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@types/node": "^11.13.0",
-    "@types/webpack": "^4.4.25",
+    "@types/webpack": "^4.4.27",
     "awesome-typescript-loader": "^5.2.1",
     "rnpm-plugin-windows": "^0.2.8",
     "source-map-loader": "^0.2.4",
@@ -26,11 +26,11 @@
     "webpack-cli": "^3.3.0"
   },
   "dependencies": {
-    "@react-native-community/async-storage": "^1.2.2",
+    "@react-native-community/async-storage": "^1.2.3",
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-native": "0.59.3",
-    "react-native-webview": "^5.6.1",
+    "react-native-webview": "^5.6.2",
     "react-native-windows": "^0.57.1",
     "reactxp": "^1.6.1"
   }
