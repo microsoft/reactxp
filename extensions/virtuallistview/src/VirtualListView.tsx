@@ -37,6 +37,7 @@
 
 import * as assert from 'assert';
 import * as _ from 'lodash';
+import { createRef, RefObject } from 'react';
 import * as RX from 'reactxp';
 
 import { VirtualListCell, VirtualListCellInfo, VirtualListCellRenderDetails } from './VirtualListCell';
@@ -67,7 +68,8 @@ export interface VirtualListViewCellRenderDetails<T extends VirtualListViewItemI
 
 }
 
-export interface VirtualListViewProps<ItemInfo extends VirtualListViewItemInfo> extends RX.CommonStyledProps<RX.Types.ViewStyleRuleSet> {
+export interface VirtualListViewProps<ItemInfo extends VirtualListViewItemInfo> extends
+        RX.CommonStyledProps<RX.Types.ViewStyleRuleSet, VirtualListView<ItemInfo>> {
     testId?: string;
 
     // Ordered list of descriptors for items to display in the list.
@@ -128,7 +130,8 @@ export interface VirtualListViewState {
     selectedItemKey?: string;
 }
 
-export interface VirtualCellInfo {
+export interface VirtualCellInfo<ItemInfo extends VirtualListViewItemInfo> {
+    cellRef: RefObject<VirtualListCell<ItemInfo>>;
     virtualKey: string;
     itemTemplate?: string;
     isHeightConstant: boolean;
@@ -172,8 +175,6 @@ const _maxRecycledCells = 50;
 
 const _maxRecycledCellsForAccessibility = 0;
 
-const _scrollViewRef = 'scrollview';
-
 const _virtualKeyPrefix = 'vc_';
 const _accessibilityVirtualKeyPrefix = 'ac_';
 
@@ -204,6 +205,8 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
 
     // A dictionary of items that maps item keys to item indexes.
     private _itemMap = new Map<string, number>();
+
+    private _scrollViewRef = createRef<RX.ScrollView>();
 
     // When we need to actually re-render, mark this until it's resolved
     private _isRenderDirty = false;
@@ -238,11 +241,11 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
     private static _nextCellKey = 1;
 
     // Cells that contain visible items.
-    private _activeCells = new Map<string, VirtualCellInfo>();
+    private _activeCells = new Map<string, VirtualCellInfo<ItemInfo>>();
 
     // Cells that were previously allocated but no longer contain items that are visible.
     // They are kept around and reused to avoid exceess allocations.
-    private _recycledCells: VirtualCellInfo[] = [];
+    private _recycledCells: VirtualCellInfo<ItemInfo>[] = [];
 
     // List of cells that are rendered
     private _navigatableItemsRendered: {
@@ -979,7 +982,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
     // Cell Management Methods
 
     private _allocateCell(itemKey: string, itemTemplate: string | undefined, itemIndex: number, isHeightConstant: boolean,
-        height: number, top: number, isVisible: boolean): VirtualCellInfo {
+        height: number, top: number, isVisible: boolean): VirtualCellInfo<ItemInfo> {
         let newCell = this._activeCells.get(itemKey);
 
         if (!newCell) {
@@ -1012,7 +1015,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             assert.ok(newCell.isHeightConstant === isHeightConstant, 'isHeightConstant assumed to not change');
             assert.ok(newCell.itemTemplate === itemTemplate, 'itemTemplate assumed to not change');
 
-            const mountedCell = this.refs[newCell.virtualKey] as VirtualListCell<ItemInfo>;
+            const mountedCell = newCell.cellRef.current;
             if (mountedCell) {
                 mountedCell.setVisibility(isVisible);
                 mountedCell.setTop(top);
@@ -1021,6 +1024,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         } else {
             // We didn't find a recycled cell that we could use. Allocate a new one.
             newCell = {
+                cellRef: createRef<VirtualListCell<ItemInfo>>(),
                 virtualKey: _virtualKeyPrefix + VirtualListView._nextCellKey,
                 itemTemplate: itemTemplate,
                 isHeightConstant: isHeightConstant,
@@ -1082,7 +1086,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         cellInfo.top = top;
 
         // Set the "live" values as well.
-        const cell = this.refs[cellInfo.virtualKey] as VirtualListCell<ItemInfo>;
+        const cell = cellInfo.cellRef.current;
         if (cell) {
             cell.setVisibility(isVisibile);
             cell.setTop(top, animate);
@@ -1095,7 +1099,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
     }
 
     scrollToTop = (animated = true, top = 0) => {
-        const scrollView = this.refs[_scrollViewRef] as RX.ScrollView;
+        const scrollView = this._scrollViewRef.current;
         if (scrollView) {
             scrollView.setScrollTop(top, animated);
         }
@@ -1112,7 +1116,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         // Build a list of all the cells we're going to render. This includes all of the active
         // cells plus any recycled (offscreen) cells.
         let cellList: {
-            cellInfo: VirtualCellInfo;
+            cellInfo: VirtualCellInfo<ItemInfo>;
             item: ItemInfo | undefined;
             itemIndex: number | undefined;
         }[] = [];
@@ -1190,7 +1194,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             // We can't disable it.
             itemsRendered.push(
                 <VirtualListCell
-                    ref={ cell.cellInfo.virtualKey }
+                    ref={ cell.cellInfo.cellRef }
                     key={ this._isAndroidScreenReaderEnabled() ? _accessibilityVirtualKeyPrefix +
                         cell.cellInfo.virtualKey : cell.cellInfo.virtualKey }
                     onLayout={ !cell.cellInfo.isHeightConstant ? this._onLayoutItem : undefined }
@@ -1243,7 +1247,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
 
         return (
             <RX.ScrollView
-                ref={ _scrollViewRef }
+                ref={ this._scrollViewRef }
                 testId={ this.props.testId }
                 onLayout={ this._onLayoutContainer }
                 onScroll={ this._onScroll }
@@ -1303,7 +1307,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
     }
 
     private _onKeyDown = (e: RX.Types.KeyboardEvent) => {
-        if ((this.refs && !this.refs[_scrollViewRef]) ||
+        if (!this._scrollViewRef.current ||
                 (e.keyCode !== _keyCodeUpArrow && e.keyCode !== _keyCodeDownArrow)) {
             return;
         }
@@ -1342,10 +1346,14 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         let index: number | undefined = _.findIndex(this._navigatableItemsRendered, item => item.key === this.state.lastFocusedItemKey);
 
         if (index !== -1 && index + direction > -1 && index + direction < this._navigatableItemsRendered.length) {
-            const newElementForFocus = this.refs[this._navigatableItemsRendered[index + direction].vc_key] as VirtualListCell<ItemInfo>;
-            newElementForFocus.focus();
-            if (viaKeyboard && newElementForFocus.props.itemKey) {
-                this._scrollToItemKey(newElementForFocus.props.itemKey);
+            const newFocusKey = this._navigatableItemsRendered[index + direction].key;
+            const cellForFocus = this._activeCells.get(newFocusKey);
+            if (cellForFocus && cellForFocus.cellRef.current) {
+                const newElementForFocus = cellForFocus.cellRef.current;
+                newElementForFocus.focus();
+                if (viaKeyboard && newElementForFocus.props.itemKey) {
+                    this._scrollToItemKey(newElementForFocus.props.itemKey);
+                }
             }
             return true;
         }
