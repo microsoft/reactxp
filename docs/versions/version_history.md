@@ -16,6 +16,9 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 2.0.0 of reactxp-virtuallistview - _6 Apr 2019_
+* #1073: Removed internal string-based refs with React.RefObject.
+
 #### Version 1.6.1 of reactxp - _23 Mar 2019_
 * #1062: Fixed TextInput defaultValue not working on native platforms
 * #1060: Fixed Ref<T> type.

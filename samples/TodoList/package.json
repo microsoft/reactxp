@@ -68,7 +68,7 @@
         "react-native-windows": "0.57.0-rc.5",
         "reactxp": "^1.6.0",
         "reactxp-navigation": "^1.6.0",
-        "reactxp-virtuallistview": "^2.0.0-rc.3",
+        "reactxp-virtuallistview": "^2.0.0",
         "resub": "^1.0.13",
         "simplerestclients": "^0.2.7",
         "synctasks": "0.3.3"
