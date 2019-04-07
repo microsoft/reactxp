@@ -49,22 +49,26 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
         const injectedJavascript = `
         // WebView -> Native
         (function() {
-            window.postMessage = function(data) {
-                window.ReactNativeWebView.postMessage(data);
-            };
+            if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+                window.postMessage = function(data) {
+                    window.ReactNativeWebView.postMessage(data);
+                };
+            }
         })();
 
         // Native -> WebView
-        function postMessageFromReactXP(message) {
-            var event;
-            try {
-                event = new MessageEvent('message', { data: message });
-            } catch (e) {
-                event = document.createEvent('MessageEvent');
-                event.initMessageEvent('message', true, true, data.data, data.origin, data.lastEventId, data.source);
-            }
-            document.dispatchEvent(event);
-        };`;
+        (function() {
+            window.postMessageFromReactXP = function(message) {
+                var event;
+                try {
+                    event = new MessageEvent('message', { data: message });
+                } catch (e) {
+                    event = document.createEvent('MessageEvent');
+                    event.initMessageEvent('message', true, true, data.data, data.origin, data.lastEventId, data.source);
+                }
+                document.dispatchEvent(event);
+            };
+        })();`;
 
         return (
             <RNWebView
@@ -142,7 +146,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
 
     postMessage(message: string, targetOrigin = '*') {
         if (this._mountedComponent) {
-            this._mountedComponent.injectJavaScript(`postMessageFromReactXP('${message}');`);
+            this._mountedComponent.injectJavaScript(`window.postMessageFromReactXP('${message}');`);
         }
     }
 
