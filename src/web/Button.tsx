@@ -102,6 +102,8 @@ export class Button extends ButtonBase {
                 aria-selected={ ariaSelected }
                 aria-checked={ ariaChecked }
                 onClick={ this.onClick }
+                onTouchStart={ this._onMouseDown }
+                onTouchEnd={ this._onMouseUp }
                 onContextMenu={ this._onContextMenu }
                 onMouseDown={ this._onMouseDown }
                 onMouseUp={ this._onMouseUp }
