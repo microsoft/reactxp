@@ -357,6 +357,8 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RX.Vi
             onMouseLeave: this.props.onMouseLeave,
             onMouseOver: this.props.onMouseOver,
             onMouseMove: this.props.onMouseMove,
+            // Weird things happens: ReactXP.Types.Touch is not assignable to React.Touch
+            onTouchMove: this.props.onTouchMove as React.HTMLAttributes<any>['onTouchMove'],
             draggable: this.props.onDragStart ? true : undefined,
             onDragStart: this.props.onDragStart,
             onDrag: this.props.onDrag,
