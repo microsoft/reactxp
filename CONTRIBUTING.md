@@ -22,7 +22,9 @@ To test your change:
 3. Update dependencies: `npm i`
 4. Copy the locally-built reactxp library: `cp -r ../../dist/* ./node_modules/reactxp/dist`
 5. Rebuild the test app: `npm run web-watch` or `npm run rn-watch`
-6. If testing the web version, open the test in the browser: `open ./index.html` and run the test
+6. If testing the web version: 
+  - for desktop: open the test in the browser: `open ./index.html` and run the test
+  - for mobile: run `npm run web -- -host YOUR_LOCAL_IP` then on your mobile enter `http://YOUR_LOCAL_IP:8080`
 7. If testing one or more RN versions, open the corresponding native project and build and run the test
 
 ## Contributor License Agreement ("CLA")

@@ -10,6 +10,7 @@
     "android": "node node_modules/react-native/local-cli/cli.js run-android",
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "windows": "node node_modules/react-native/local-cli/cli.js run-windows",
+    "web": "webpack-dev-server",
     "tslint": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
   },
   "devDependencies": {
@@ -24,7 +25,8 @@
     "tslint-microsoft-contrib": "^6.1.0",
     "typescript": "^3.3.3333",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0"
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.3.1"
   },
   "dependencies": {
     "react": "16.8.4",
