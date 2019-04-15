@@ -212,7 +212,7 @@ export class Button extends ButtonBase {
                     this.props.onLongPress(this._lastMouseDownEvent!);
                     this._ignoreClick = true;
                 }
-            }, _longPressTime);
+            }, this.props.delayLongPress || _longPressTime);
         }
     }
 
