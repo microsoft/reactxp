@@ -194,7 +194,7 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                 </RX.View>
                 <RX.View
                     style={ _styles.testContainer4 }
-                    onTouchMove={ e => {
+                    onResponderMove={ e => {
                         const touch = e.touches[0];
                         if (touch) {
                             this.setState({ touchPositionOnPage: {
