@@ -217,6 +217,10 @@ export class Button extends ButtonBase {
     }
 
     private _onMouseUp = (e: Types.SyntheticEvent) => {
+        if (this._ignoreClick) {
+            e.stopPropagation();
+            this._ignoreClick = false;
+        }
         if (this.props.onPressOut) {
             this.props.onPressOut(e);
         }
