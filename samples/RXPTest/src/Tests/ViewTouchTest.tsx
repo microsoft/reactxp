@@ -46,6 +46,14 @@ const _styles = {
         backgroundColor: '#eee',
         borderColor: 'black',
     }),
+    testContainer4: RX.Styles.createViewStyle({
+        flex: 1,
+        height: 150,
+        margin: 20,        
+        borderWidth: 1,
+        backgroundColor: '#eee',
+        borderColor: 'black',
+    }),
     success: RX.Styles.createViewStyle({
         borderWidth: 2,
         backgroundColor: 'green'
@@ -59,6 +67,10 @@ interface TouchViewState {
     view3TouchResponderTestStart: boolean;
     view3TouchResponderTestGrant: boolean;
     view3TouchResponderTestRelease: boolean;
+    touchPositionOnPage: {
+        x: number | null
+        y: number | null
+    };
     nestedViewTouchTestParent: boolean;
     nestedViewTouchTestChild: boolean;
     pressEvent?: RX.Types.TouchEvent;
@@ -75,6 +87,10 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
             view3TouchResponderTestStart: false,
             view3TouchResponderTestGrant: false,
             view3TouchResponderTestRelease: false,
+            touchPositionOnPage: {
+                x: null,
+                y: null
+            },
             nestedViewTouchTestParent: false,
             nestedViewTouchTestChild: false,
         };
@@ -83,7 +99,7 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
     private static getTouchEventText(touchEvent?: RX.Types.TouchEvent): string {
         if (touchEvent) {
             return 'altKey = ' + touchEvent.altKey +
-                ' changedTouches.length = ' + touchEvent.changedTouches.length +
+                ' changedTouches.length = ' + (touchEvent.changedTouches && touchEvent.changedTouches.length) +
                 ' ctrlKey = ' + touchEvent.ctrlKey +
                 ' metaKey = ' + touchEvent.metaKey +
                 ' shiftKey = ' + touchEvent.shiftKey +
@@ -170,6 +186,27 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                             });
                         }}
                     />
+                </RX.View>
+                <RX.View style={ _styles.explainTextContainer }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'When touching this view, it will display the page coordinates of the touch position.' }
+                    </RX.Text>
+                </RX.View>
+                <RX.View
+                    style={ _styles.testContainer4 }
+                    onResponderMove={ e => {
+                        const touch = e.touches[0];
+                        if (touch) {
+                            this.setState({ touchPositionOnPage: {
+                                x: Math.round(touch.pageX),
+                                y: Math.round(touch.pageY)
+                            }});
+                        }
+                    }}
+                >
+                    <RX.Text style={ _styles.labelText }>
+                        { `Touch position on page: x: ${this.state.touchPositionOnPage.x} y: ${this.state.touchPositionOnPage.y}`}
+                    </RX.Text>
                 </RX.View>
             </RX.View>
         );
