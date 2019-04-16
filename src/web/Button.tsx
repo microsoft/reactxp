@@ -60,6 +60,7 @@ export class Button extends ButtonBase {
 
     private _mountedButton: HTMLButtonElement | null = null;
     private _lastMouseDownEvent: Types.SyntheticEvent | undefined;
+    private _ignoreMouseUp = false;
     private _ignoreClick = false;
     private _longPressTimer: number | undefined;
     private _isMouseOver = false;
@@ -210,13 +211,21 @@ export class Button extends ButtonBase {
                 if (this.props.onLongPress) {
                     // lastMouseDownEvent can never be undefined at this point
                     this.props.onLongPress(this._lastMouseDownEvent!);
+                    this._ignoreMouseUp = true;
                     this._ignoreClick = true;
                 }
             }, this.props.delayLongPress || _longPressTime);
         }
     }
 
-    private _onMouseUp = (e: Types.SyntheticEvent) => {
+    private _onMouseUp = (e: Types.SyntheticEvent | Types.TouchEvent) => {
+        if (this._ignoreMouseUp) {
+            e.stopPropagation();
+            // Touch event won't trigger onClick when a long press is released. So we reset the ignore flag here.
+            if ('touches' in e) {
+                this._ignoreClick = false;
+            }
+        }
         if (this.props.onPressOut) {
             this.props.onPressOut(e);
         }
