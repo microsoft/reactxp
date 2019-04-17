@@ -251,6 +251,7 @@ export class Button extends ButtonBase {
     }
 
     private _onMouseEnter = (e: Types.SyntheticEvent) => {
+        this._isMouseOver = true;
         this._onHoverStart(e);
     }
 
