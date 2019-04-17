@@ -258,6 +258,11 @@ export class Button extends ButtonBase {
     private _onMouseLeave = (e: Types.SyntheticEvent) => {
         this._isMouseOver = false;
         this._onHoverEnd(e);
+
+        // Cancel longpress if mouse has left.
+        if (this._longPressTimer) {
+            clearTimeout(this._longPressTimer);
+        }
     }
 
     // When we get focus on an element, show the hover effect on the element.
