@@ -221,14 +221,14 @@ export class Button extends ButtonBase {
 
     private _onTouchMove = (e: React.SyntheticEvent<HTMLButtonElement, TouchEvent>) => {
         const buttonRect = (e.target as HTMLButtonElement).getBoundingClientRect();
-        const isTouchOutside =
-            e.nativeEvent.touches[0].clientX < buttonRect.left ||
-            e.nativeEvent.touches[0].clientX > buttonRect.right ||
-            e.nativeEvent.touches[0].clientY < buttonRect.top ||
-            e.nativeEvent.touches[0].clientY > buttonRect.bottom;
+        this._isMouseOver =
+            e.nativeEvent.touches[0].clientX > buttonRect.left &&
+            e.nativeEvent.touches[0].clientX < buttonRect.right &&
+            e.nativeEvent.touches[0].clientY > buttonRect.top &&
+            e.nativeEvent.touches[0].clientY < buttonRect.bottom;
 
         // Touch has left the button, cancel the longpress handler.
-        if (isTouchOutside && this._longPressTimer) {
+        if (this._isMouseOver && this._longPressTimer) {
             clearTimeout(this._longPressTimer);
         }
     }
@@ -251,13 +251,15 @@ export class Button extends ButtonBase {
     }
 
     private _onMouseEnter = (e: Types.SyntheticEvent) => {
-        this._isMouseOver = true;
         this._onHoverStart(e);
     }
 
     private _onMouseLeave = (e: Types.SyntheticEvent) => {
         this._isMouseOver = false;
         this._onHoverEnd(e);
+
+        // The mouse is still down. A long press may be just happened. Re-enable the next click.
+        this._ignoreClick = false;
 
         // Cancel longpress if mouse has left.
         if (this._longPressTimer) {
