@@ -104,6 +104,7 @@ export class Button extends ButtonBase {
                 aria-checked={ ariaChecked }
                 onClick={ this.onClick }
                 onTouchStart={ this._onMouseDown }
+                onTouchMove={ this._onTouchMove }
                 onTouchEnd={ this._onMouseUp }
                 onContextMenu={ this._onContextMenu }
                 onMouseDown={ this._onMouseDown }
@@ -215,6 +216,20 @@ export class Button extends ButtonBase {
                     this._ignoreClick = true;
                 }
             }, this.props.delayLongPress || _longPressTime);
+        }
+    }
+
+    private _onTouchMove = (e: React.SyntheticEvent<HTMLButtonElement, TouchEvent>) => {
+        const buttonRect = (e.target as HTMLButtonElement).getBoundingClientRect();
+        const isTouchOutside =
+            e.nativeEvent.touches[0].clientX < buttonRect.left ||
+            e.nativeEvent.touches[0].clientX > buttonRect.right ||
+            e.nativeEvent.touches[0].clientY < buttonRect.top ||
+            e.nativeEvent.touches[0].clientY > buttonRect.bottom;
+
+        // Touch has left the button, cancel the longpress handler.
+        if (isTouchOutside && this._longPressTimer) {
+            clearTimeout(this._longPressTimer);
         }
     }
 
