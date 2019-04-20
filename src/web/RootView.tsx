@@ -329,12 +329,12 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             _.defer(() => {
                 if (this.props.activePopup) {
                     const anchorReference = this.props.activePopup.popupOptions.getAnchor();
-                    const isClickOnAnchor = this._determineIfClickOnElement(anchorReference, e.srcElement);
+                    const isClickOnAnchor = this._determineIfClickOnElement(anchorReference, e.srcElement as Element);
 
                     let isClickOnContainer = false;
                     if (!isClickOnAnchor && this.props.activePopup.popupOptions.getElementTriggeringPopup) {
                         const containerRef = this.props.activePopup.popupOptions.getElementTriggeringPopup();
-                        isClickOnContainer = this._determineIfClickOnElement(containerRef, e.srcElement);
+                        isClickOnContainer = this._determineIfClickOnElement(containerRef, e.srcElement as Element);
                     }
 
                     if (isClickOnAnchor || isClickOnContainer) {

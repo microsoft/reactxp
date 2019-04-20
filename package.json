@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.123",
-    "@types/react": "^16.8.8",
-    "@types/react-dom": "^16.8.2",
-    "@types/react-native": "^0.57.40",
+    "@types/react": "^16.8.14",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-native": "^0.57.47",
     "lodash": "^4.17.11",
     "prop-types": "^15.7.2",
     "rebound": "^0.1.0",
@@ -29,11 +29,11 @@
     "react-native-windows": "^0.57.0-rc.5"
   },
   "devDependencies": {
-    "tslint": "^5.14.0",
-    "tslint-microsoft-contrib": "^6.1.0",
-    "tslint-react": "^3.6.0",
-    "tsutils": "^3.9.1",
-    "typescript": "^3.3.3333"
+    "tslint": "^5.16.0",
+    "tslint-microsoft-contrib": "^6.1.1",
+    "tslint-react": "^4.0.0",
+    "tsutils": "^3.10.0",
+    "typescript": "^3.4.4"
   },
   "homepage": "https://microsoft.github.io/reactxp/",
   "repository": {

@@ -49,7 +49,10 @@ export class Clipboard extends RX.Clipboard {
 
         document.execCommand('copy');
 
-        window.getSelection().removeAllRanges();
+        const selection = window.getSelection();
+        if (selection) {
+            selection.removeAllRanges();
+        }
     }
 }
 
