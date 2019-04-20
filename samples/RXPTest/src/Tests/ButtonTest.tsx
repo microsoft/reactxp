@@ -66,6 +66,19 @@ const _styles = {
     labelText: RX.Styles.createTextStyle({
         fontSize: CommonStyles.generalFontSize,
         color: 'black'
+    }),
+    dropView: RX.Styles.createTextStyle({
+        flexDirection: 'row',
+        margin: 20,
+        backgroundColor: '#4575',
+        borderWidth: 1,
+        borderColor: '#457'
+    }),
+    wait: RX.Styles.createViewStyle({
+        backgroundColor: 'orange',
+    }),
+    ready: RX.Styles.createViewStyle({
+        backgroundColor: 'green',
     })
 };
 
@@ -78,6 +91,10 @@ interface ButtonViewState {
 
     button5PressCount: number;
     button5LongPressCount: number;
+
+    longPressed: boolean;
+    onResponderReleaseReceived: boolean;
+    onPressReceived: boolean;
 }
 
 class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
@@ -90,7 +107,10 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
             button4PressOutCount: 0,
             button4PressCount: 0,
             button5PressCount: 0,
-            button5LongPressCount: 0
+            button5LongPressCount: 0,
+            longPressed: false,
+            onResponderReleaseReceived: false,
+            onPressReceived: false
         };
     }
 
@@ -267,6 +287,44 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                     </RX.Text>
                 </RX.Button>
 
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation9' }>
+                    <RX.Text style={ _styles.explainText }>
+                        Long press the button and leave it to release the touch in the blue View.
+                        The View should turn green when receiving the onResponderRelease (touch) or onPress (mouse) event
+                        only when the long press has been triggered.
+                    </RX.Text>
+                </RX.View>
+                <RX.View>
+                    <RX.View 
+                        style={ [
+                            _styles.dropView,
+                            this.state.onResponderReleaseReceived || this.state.onPressReceived ? _styles.ready : undefined
+                        ] }
+                        onPress={ () => {
+                            if (this.state.longPressed) {
+                                this.setState({onPressReceived: true });
+                            }
+                        }}
+                        onResponderRelease={ () => {
+                            if (this.state.longPressed) {
+                                this.setState({onResponderReleaseReceived: true})};
+                            }
+                        }
+                    >
+                        <RX.Button
+                            style={ [_styles.button2, this.state.longPressed ? _styles.ready : _styles.wait] }
+                            onPressIn={ () => this.setState({
+                                longPressed: false,
+                                onResponderReleaseReceived: false,
+                                onPressReceived: false
+                            })}
+                            onLongPress={ () => this.setState({longPressed: true})}
+                        >
+                            <RX.Text style={ _styles.button2Text }>Long press here</RX.Text>
+                        </RX.Button>
+                        <RX.Text style={ _styles.button2Text }>Release here, on the parent View</RX.Text>
+                    </RX.View>
+                </RX.View>
             </RX.View>
         );
     }
