@@ -437,7 +437,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
 
     private _cancelLongPressTimer() {
         if (this._longPressTimer) {
-            clearTimeout(this._longPressTimer);
+            Timers.clearTimeout(this._longPressTimer);
             this._longPressTimer = undefined;
         }
         this._pendingLongPressEvent = undefined;
@@ -456,7 +456,7 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
     // Cancels any pending double-tap timer.
     private _cancelDoubleTapTimer() {
         if (this._doubleTapTimer) {
-            clearTimeout(this._doubleTapTimer);
+            Timers.clearTimeout(this._doubleTapTimer);
             this._doubleTapTimer = undefined;
         }
     }

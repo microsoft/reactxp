@@ -68,7 +68,7 @@ export class FocusManager extends FocusManagerBase {
             }
 
             if (_checkFocusTimer) {
-                clearTimeout(_checkFocusTimer);
+                Timers.clearTimeout(_checkFocusTimer);
             }
 
             if (FocusManager._skipFocusCheck) {
@@ -193,7 +193,7 @@ export class FocusManager extends FocusManagerBase {
 
     protected /* static */ resetFocus(focusFirstWhenNavigatingWithKeyboard: boolean) {
         if (FocusManager._resetFocusTimer) {
-            clearTimeout(FocusManager._resetFocusTimer);
+            Timers.clearTimeout(FocusManager._resetFocusTimer);
             FocusManager._resetFocusTimer = undefined;
         }
 
@@ -299,7 +299,7 @@ export class FocusManager extends FocusManagerBase {
     private static _setTabIndex(element: HTMLElement, value: number | undefined): number | undefined {
         // If a tabIndex assignment is pending for this element, cancel it now.
         if (FocusManager._setTabIndexTimer && element === FocusManager._setTabIndexElement) {
-            clearTimeout(FocusManager._setTabIndexTimer);
+            Timers.clearTimeout(FocusManager._setTabIndexTimer);
             FocusManager._setTabIndexTimer = undefined;
         }
 
@@ -315,7 +315,7 @@ export class FocusManager extends FocusManagerBase {
                 // that it's not active anymore.
                 if (FocusManager._setTabIndexTimer) {
                     FocusManager._setTabIndexElement!.tabIndex = -1;
-                    clearTimeout(FocusManager._setTabIndexTimer);
+                    Timers.clearTimeout(FocusManager._setTabIndexTimer);
                     FocusManager._setTabIndexTimer = undefined;
                 }
 

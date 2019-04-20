@@ -206,7 +206,7 @@ export class Button extends ButtonBase {
 
             // In the unlikely event we get 2 mouse down events, clear existing timer
             if (this._longPressTimer) {
-                clearTimeout(this._longPressTimer);
+                Timers.clearTimeout(this._longPressTimer);
             }
             this._longPressTimer = Timers.setTimeout(() => {
                 this._longPressTimer = undefined;
@@ -234,7 +234,7 @@ export class Button extends ButtonBase {
 
         // Touch has left the button, cancel the longpress handler.
         if (this._isMouseOver && this._longPressTimer) {
-            clearTimeout(this._longPressTimer);
+            Timers.clearTimeout(this._longPressTimer);
         }
     }
 
@@ -244,7 +244,7 @@ export class Button extends ButtonBase {
         }
 
         if (this._longPressTimer) {
-            clearTimeout(this._longPressTimer);
+            Timers.clearTimeout(this._longPressTimer);
         }
     }
 
@@ -278,7 +278,7 @@ export class Button extends ButtonBase {
         }
 
         if (this._longPressTimer) {
-            clearTimeout(this._longPressTimer);
+            Timers.clearTimeout(this._longPressTimer);
         }
     }
 
@@ -296,7 +296,7 @@ export class Button extends ButtonBase {
 
         // Cancel longpress if mouse has left.
         if (this._longPressTimer) {
-            clearTimeout(this._longPressTimer);
+            Timers.clearTimeout(this._longPressTimer);
         }
     }
 

@@ -115,7 +115,7 @@ export class FrontLayerViewManager {
         this._activePopupShowDelay = showDelay || 0;
 
         if (this._popupShowDelayTimer) {
-            clearTimeout(this._popupShowDelayTimer);
+            Timers.clearTimeout(this._popupShowDelayTimer);
             this._popupShowDelayTimer = undefined;
         }
         if (this._activePopupShowDelay > 0) {
@@ -138,7 +138,7 @@ export class FrontLayerViewManager {
     autoDismissPopup(popupId: string, dismissDelay?: number): void {
         if (popupId === this._activePopupId && this._activePopupOptions) {
             if (this._popupShowDelayTimer) {
-                clearTimeout(this._popupShowDelayTimer);
+                Timers.clearTimeout(this._popupShowDelayTimer);
                 this._popupShowDelayTimer = undefined;
             }
 
@@ -151,7 +151,7 @@ export class FrontLayerViewManager {
     dismissPopup(popupId: string): void {
         if (popupId === this._activePopupId && this._activePopupOptions) {
             if (this._popupShowDelayTimer) {
-                clearTimeout(this._popupShowDelayTimer);
+                Timers.clearTimeout(this._popupShowDelayTimer);
                 this._popupShowDelayTimer = undefined;
             }
 

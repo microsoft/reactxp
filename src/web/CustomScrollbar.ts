@@ -533,7 +533,7 @@ export class Scrollbar {
 
     dispose() {
         if (this._asyncInitTimer) {
-            clearInterval(this._asyncInitTimer);
+            Timers.clearInterval(this._asyncInitTimer);
             this._asyncInitTimer = undefined;
         }
         this._stopDrag();

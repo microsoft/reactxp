@@ -378,7 +378,7 @@ export abstract class FocusManager {
 
     private static _clearRestoreRestrictionTimeout() {
         if (FocusManager._restoreRestrictionTimer) {
-            clearTimeout(FocusManager._restoreRestrictionTimer);
+            Timers.clearTimeout(FocusManager._restoreRestrictionTimer);
             FocusManager._restoreRestrictionTimer = undefined;
             FocusManager._pendingPrevFocusedComponent = undefined;
         }

@@ -11,6 +11,7 @@ import * as React from 'react';
 import { SubscriptionToken } from 'subscribableevent';
 
 import { Types } from '../common/Interfaces';
+import Timers from '../common/utils/Timers';
 
 import Accessibility from './Accessibility';
 import AccessibilityUtil from './AccessibilityUtil';
@@ -121,7 +122,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
 
     private _cancelClearAnnouncementTimer() {
         if (this._clearAnnouncementTimer) {
-            clearTimeout(this._clearAnnouncementTimer);
+            Timers.clearTimeout(this._clearAnnouncementTimer);
             this._clearAnnouncementTimer = undefined;
         }
     }
@@ -129,7 +130,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
     private _startClearAnnouncementTimer() {
         this._cancelClearAnnouncementTimer();
 
-        this._clearAnnouncementTimer = window.setTimeout(() => {
+        this._clearAnnouncementTimer = Timers.setTimeout(() => {
             this.setState({
                 announcementText: ''
             });

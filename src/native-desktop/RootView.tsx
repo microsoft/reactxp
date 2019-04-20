@@ -80,7 +80,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
                 const activeComponent = FocusManager.getCurrentFocusedComponent();
 
                 if (this._isNavigatingWithKeyboardUpateTimer) {
-                    clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
+                    Timers.clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
                 }
 
                 this._isNavigatingWithKeyboardUpateTimer = Timers.setTimeout(() => {
@@ -95,7 +95,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
 
         _updateKeyboardNavigationState(isNavigatingWithKeyboard: boolean) {
             if (this._isNavigatingWithKeyboardUpateTimer) {
-                clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
+                Timers.clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
                 this._isNavigatingWithKeyboardUpateTimer = undefined;
             }
 

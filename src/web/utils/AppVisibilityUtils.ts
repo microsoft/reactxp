@@ -75,7 +75,7 @@ export class AppVisibilityUtils {
 
     private _wakeUpAndSetTimerForIdle = () => {
         if (!isUndefined(this._timer)) {
-            clearTimeout(this._timer);
+            Timers.clearTimeout(this._timer);
         }
 
         if (!this.hasFocus()) {

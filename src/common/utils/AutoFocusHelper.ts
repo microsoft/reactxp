@@ -153,7 +153,7 @@ export class FocusArbitratorProvider {
             type?: FocusCandidateType): void {
 
         if (_autoFocusTimer) {
-            clearTimeout(_autoFocusTimer);
+            Timers.clearTimeout(_autoFocusTimer);
         }
 
         const focusArbitratorProvider: FocusArbitratorProvider =
