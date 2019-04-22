@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.123",
-    "@types/react": "^16.8.12",
-    "@types/react-dom": "^16.8.3",
-    "@types/react-native": "^0.57.42",
+    "@types/react": "^16.8.14",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-native": "^0.57.47",
     "lodash": "^4.17.11",
     "prop-types": "^15.7.2",
     "rebound": "^0.1.0",
@@ -23,19 +23,19 @@
     "synctasks": "^0.3.3"
   },
   "peerDependencies": {
-    "@react-native-community/async-storage": "^1.2.3",
+    "@react-native-community/async-storage": "^1.3.0",
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-native": "0.59.3",
-    "react-native-webview": "^5.6.0",
+    "react-native-webview": "^5.6.3",
     "react-native-windows": "^0.57.1"
   },
   "devDependencies": {
-    "@react-native-community/async-storage": "^1.2.3",
-    "react-native-webview": "^5.6.2",
-    "tslint": "^5.15.0",
-    "tslint-microsoft-contrib": "^6.1.0",
-    "tslint-react": "^3.6.0",
+    "@react-native-community/async-storage": "^1.3.3",
+    "react-native-webview": "^5.7.0",
+    "tslint": "^5.16.0",
+    "tslint-microsoft-contrib": "^6.1.1",
+    "tslint-react": "^4.0.0",
     "tsutils": "^3.10.0",
     "typescript": "^3.3.4000"
   },
