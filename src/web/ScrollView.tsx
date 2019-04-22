@@ -11,6 +11,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import * as RX from '../common/Interfaces';
+import Timers from '../common/utils/Timers';
 
 import CustomScrollbar from './CustomScrollbar';
 import * as _ from './utils/lodashMini';
@@ -342,7 +343,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                 const position = this._easeInOut(elapsedTime, start, change, duration);
                 container.scrollTop = position;
                 if (elapsedTime < duration) {
-                    setTimeout(function() {
+                    Timers.setTimeout(function() {
                         animateScroll(elapsedTime);
                     }, increment);
                 }
@@ -371,7 +372,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                 const position = this._easeInOut(elapsedTime, start, change, duration);
                 container.scrollLeft = position;
                 if (elapsedTime < duration) {
-                    setTimeout(function() {
+                    Timers.setTimeout(function() {
                         animateScroll(elapsedTime);
                     }, increment);
                 }

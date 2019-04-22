@@ -41,7 +41,7 @@ export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, C exten
 
             // Cancel any existing timers.
             if (ViewBase._viewCheckingTimer) {
-                clearInterval(ViewBase._viewCheckingTimer);
+                Timers.clearInterval(ViewBase._viewCheckingTimer);
                 ViewBase._viewCheckingTimer = undefined;
             }
 
@@ -178,7 +178,7 @@ export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, C exten
 
         if (ViewBase._viewCheckingList.length === 0) {
             if (ViewBase._viewCheckingTimer) {
-                clearInterval(ViewBase._viewCheckingTimer);
+                Timers.clearInterval(ViewBase._viewCheckingTimer);
                 ViewBase._viewCheckingTimer = undefined;
             }
 

@@ -10,6 +10,7 @@
 import * as React from 'react';
 
 import { Types } from '../common/Interfaces';
+import Timers from '../common/utils/Timers';
 
 const _activityIndicatorCss = `
 .rx-activity {
@@ -661,7 +662,7 @@ export class ActivityIndicator extends React.Component<Types.ActivityIndicatorPr
         this._isMounted = true;
 
         if (this.props.deferTime && this.props.deferTime > 0) {
-            setTimeout(() => {
+            Timers.setTimeout(() => {
                 if (this._isMounted) {
                     this.setState({ isVisible: true });
                 }

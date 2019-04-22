@@ -2,6 +2,7 @@
 <html>
 <head>
   <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset='utf-8'>
   <style>
     html, body, .app-container {
@@ -14,6 +15,11 @@
     }
     *:focus {
         outline: 0;
+    }
+    button,
+    button > *  {
+      -moz-user-select: none;
+      -webkit-user-select: none;
     }
   </style>
 </head>

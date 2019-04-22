@@ -435,8 +435,9 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
             (enabledSceneNativeProps.style as any).opacity = 0;
         }
 
-        if (this.refs['scene_' + sceneIndex]) {
-            this._setNativeStyles(this.refs['scene_' + sceneIndex], enabledSceneNativeProps.style);
+        const sceneId = 'scene_' + sceneIndex;
+        if (this._sceneRefs[sceneId]) {
+            this._setNativeStyles(this._sceneRefs[sceneId], enabledSceneNativeProps.style);
         }
     }
 
@@ -555,7 +556,8 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
     }
 
     private _transitionSceneStyle(fromIndex: number, toIndex: number, progress: number, index: number) {
-        const viewAtIndex = this.refs['scene_' + index];
+        const sceneId = 'scene_' + index;
+        const viewAtIndex = this._sceneRefs[sceneId];
         if (viewAtIndex === undefined) {
             return;
         }

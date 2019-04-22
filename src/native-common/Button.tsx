@@ -216,7 +216,7 @@ export class Button extends ButtonBase {
         if (this._isTouchFeedbackApplicable()) {
             if (this.props.underlayColor) {
                 if (this._hideTimeout) {
-                    clearTimeout(this._hideTimeout);
+                    Timers.clearTimeout(this._hideTimeout);
                     this._hideTimeout = undefined;
                 }
                 this._showUnderlay();
@@ -237,7 +237,7 @@ export class Button extends ButtonBase {
         if (this._isTouchFeedbackApplicable()) {
             if (this.props.underlayColor) {
                 if (this._hideTimeout) {
-                    clearTimeout(this._hideTimeout);
+                    Timers.clearTimeout(this._hideTimeout);
                 }
                 this._hideTimeout = Timers.setTimeout(this._hideUnderlay, _hideUnderlayTimeout);
             }

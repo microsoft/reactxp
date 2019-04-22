@@ -8,6 +8,7 @@
  */
 
 import * as assert from 'assert';
+import { createRef } from 'react';
 import * as RX from 'reactxp';
 
 export interface VirtualListCellInfo {
@@ -75,7 +76,6 @@ const _styles = {
 const _isNativeMacOS = RX.Platform.getType() === 'macos';
 const _skypeEaseInAnimationCurve = RX.Animated.Easing.CubicBezier(1, 0, 0.78, 1);
 const _skypeEaseOutAnimationCurve = RX.Animated.Easing.CubicBezier(0.33, 0, 0, 1);
-const _virtualCellRef = 'virtualCell';
 const _keyCodeEnter = 13;
 const _keyCodeSpace = 32;
 const _keyCodeReturn = 3;
@@ -122,6 +122,7 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
     private _topValue: RX.Animated.Value;
     private _leftValue: RX.Animated.Value;
     private _widthValue: RX.Animated.Value;
+    private _ref = createRef<RX.Animated.View>();
 
     // we need to split style for position and width because we use native driver for position,
     // but native driver doesnt support width
@@ -331,8 +332,8 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
     }
 
     focus() {
-        if (this.refs && this.refs[_virtualCellRef] && this.props.tabIndex) {
-            const virtualCellComponent = this.refs[_virtualCellRef] as RX.View;
+        if (this._ref.current && this.props.tabIndex) {
+            const virtualCellComponent = this._ref.current;
             virtualCellComponent.focus();
         }
     }
@@ -343,7 +344,7 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
         return (
             <RX.Animated.View
                 style={ [_styles.cellView, overflow, this._animatedStylePosition, this._animatedStyleWidth] }
-                ref={ _virtualCellRef }
+                ref={ this._ref }
                 tabIndex={ this.props.tabIndex }
                 onLayout={ this.props.onLayout ? this._onLayout : undefined }
                 onFocus={ this.props.onItemFocused ? this._onFocus : undefined }

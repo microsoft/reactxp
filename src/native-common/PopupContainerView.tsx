@@ -226,7 +226,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
 
     private _stopRepositionPopupTimer() {
         if (this._respositionPopupTimer) {
-            clearInterval(this._respositionPopupTimer);
+            Timers.clearInterval(this._respositionPopupTimer);
             this._respositionPopupTimer = undefined;
         }
     }

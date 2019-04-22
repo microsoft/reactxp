@@ -1,6 +1,6 @@
 {
   "name": "reactxp-video",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Plugin for ReactXP that provides a video player component for all platforms",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",

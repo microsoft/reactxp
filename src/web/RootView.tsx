@@ -329,12 +329,12 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             _.defer(() => {
                 if (this.props.activePopup) {
                     const anchorReference = this.props.activePopup.popupOptions.getAnchor();
-                    const isClickOnAnchor = this._determineIfClickOnElement(anchorReference, e.srcElement);
+                    const isClickOnAnchor = this._determineIfClickOnElement(anchorReference, e.srcElement as Element);
 
                     let isClickOnContainer = false;
                     if (!isClickOnAnchor && this.props.activePopup.popupOptions.getElementTriggeringPopup) {
                         const containerRef = this.props.activePopup.popupOptions.getElementTriggeringPopup();
-                        isClickOnContainer = this._determineIfClickOnElement(containerRef, e.srcElement);
+                        isClickOnContainer = this._determineIfClickOnElement(containerRef, e.srcElement as Element);
                     }
 
                     if (isClickOnAnchor || isClickOnContainer) {
@@ -343,7 +343,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                         // two animations (i.e.: Opening an actionsheet while dismissing a popup). We introduce this delay to make sure
                         // the popup dimissing animation has finished before we call the event handler.
                         if (this.props.activePopup.popupOptions.onAnchorPressed) {
-                            setTimeout(() => {
+                            Timers.setTimeout(() => {
                                 // We can't pass through the DOM event argument to the anchor event handler as the event we have at this
                                 // point is a DOM Event and the anchor expect a Synthetic event. There doesn't seem to be any way to convert
                                 // between them. Passing null for now.
@@ -404,10 +404,10 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             const activeElement = document.activeElement;
 
             if (this._isNavigatingWithKeyboardUpateTimer) {
-                clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
+                Timers.clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
             }
 
-            this._isNavigatingWithKeyboardUpateTimer = window.setTimeout(() => {
+            this._isNavigatingWithKeyboardUpateTimer = Timers.setTimeout(() => {
                 this._isNavigatingWithKeyboardUpateTimer = undefined;
 
                 if ((document.activeElement === activeElement) && activeElement && (activeElement !== document.body)) {
@@ -428,7 +428,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         const target = e.target as HTMLElement;
 
         if (this._updateKeyboardNavigationModeOnFocusTimer) {
-            clearTimeout(this._updateKeyboardNavigationModeOnFocusTimer);
+            Timers.clearTimeout(this._updateKeyboardNavigationModeOnFocusTimer);
         }
 
         this._updateKeyboardNavigationModeOnFocusTimer = Timers.setTimeout(() => {
@@ -475,14 +475,14 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
     private _cancelApplicationIsNotActive() {
         if (this._applicationIsNotActiveTimer) {
-            clearTimeout(this._applicationIsNotActiveTimer);
+            Timers.clearTimeout(this._applicationIsNotActiveTimer);
             this._applicationIsNotActiveTimer = undefined;
         }
     }
 
     private _updateKeyboardNavigationState(isNavigatingWithKeyboard: boolean) {
         if (this._isNavigatingWithKeyboardUpateTimer) {
-            clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
+            Timers.clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
             this._isNavigatingWithKeyboardUpateTimer = undefined;
         }
 
@@ -525,7 +525,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         if (this.props.autoDismiss) {
             // Should we immediately hide it, or did the caller request a delay?
             if (!_.isUndefined(this.props.autoDismissDelay) && this.props.autoDismissDelay > 0) {
-                this._hidePopupTimer = window.setTimeout(() => {
+                this._hidePopupTimer = Timers.setTimeout(() => {
                     this._hidePopupTimer = undefined;
                     this._dismissPopup();
                 }, this.props.autoDismissDelay);
@@ -537,7 +537,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
     private _stopHidePopupTimer() {
         if (this._hidePopupTimer) {
-            clearTimeout(this._hidePopupTimer);
+            Timers.clearTimeout(this._hidePopupTimer);
             this._hidePopupTimer = undefined;
         }
     }
@@ -556,7 +556,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
     private _stopRepositionPopupTimer() {
         if (this._respositionPopupTimer) {
-            clearInterval(this._respositionPopupTimer);
+            Timers.clearInterval(this._respositionPopupTimer);
             this._respositionPopupTimer = undefined;
         }
     }

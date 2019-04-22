@@ -268,7 +268,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
 
     private _startXhrImageFetch(props: Types.ImageProps) {
         // Test hook to simulate a slower hxr request.
-        // window.setTimeout(() => this._actuallyStartXhrImageFetch(props), 2500);
+        // Timers.setTimeout(() => this._actuallyStartXhrImageFetch(props), 2500);
         this._actuallyStartXhrImageFetch(props);
     }
 

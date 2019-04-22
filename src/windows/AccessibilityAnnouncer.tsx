@@ -53,7 +53,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
             this._newAnnouncementEventChangedSubscription = undefined;
         }
         if (this._announcementQueueTimer) {
-            clearTimeout(this._announcementQueueTimer);
+            Timers.clearTimeout(this._announcementQueueTimer);
             this._announcementQueueTimer = undefined;
         }
     }

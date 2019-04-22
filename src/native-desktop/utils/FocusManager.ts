@@ -116,7 +116,7 @@ export class FocusManager extends FocusManagerBase {
 
     protected /* static */ resetFocus(focusFirstWhenNavigatingWithKeyboard: boolean) {
         if (FocusManager._resetFocusTimer) {
-            clearTimeout(FocusManager._resetFocusTimer);
+            Timers.clearTimeout(FocusManager._resetFocusTimer);
             FocusManager._resetFocusTimer = undefined;
         }
 

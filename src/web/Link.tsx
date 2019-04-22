@@ -151,7 +151,7 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
 
     private _onMouseUp = (e: Types.SyntheticEvent) => {
         if (this._longPressTimer) {
-            clearTimeout(this._longPressTimer);
+            Timers.clearTimeout(this._longPressTimer);
             this._longPressTimer = undefined;
         }
     }
