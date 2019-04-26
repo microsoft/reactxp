@@ -226,16 +226,23 @@ export class Button extends ButtonBase {
 
     private _onTouchMove = (e: React.SyntheticEvent<HTMLButtonElement, TouchEvent>) => {
         const buttonRect = (e.target as HTMLButtonElement).getBoundingClientRect();
-        this._isMouseOver =
+        const wasMouseOver = this._isMouseOver;
+        const isMouseOver =
             e.nativeEvent.touches[0].clientX > buttonRect.left &&
             e.nativeEvent.touches[0].clientX < buttonRect.right &&
             e.nativeEvent.touches[0].clientY > buttonRect.top &&
             e.nativeEvent.touches[0].clientY < buttonRect.bottom;
 
         // Touch has left the button, cancel the longpress handler.
-        if (this._isMouseOver && this._longPressTimer) {
-            Timers.clearTimeout(this._longPressTimer);
+        if (wasMouseOver && !isMouseOver) {
+            if (this._longPressTimer) {
+                clearTimeout(this._longPressTimer);
+            }
+            if (this.props.onHoverEnd) {
+                this.props.onHoverEnd(e);
+            }
         }
+        this._isMouseOver = isMouseOver;
     }
 
     private _onMouseUp = (e: Types.SyntheticEvent | Types.TouchEvent) => {
