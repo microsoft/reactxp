@@ -250,16 +250,17 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
     }
 
     private _getContainerStyle(): RX.Types.ScrollViewStyleRuleSet {
+        const { scrollEnabled = true } = this.props;
         const styles: any = [{ display: 'block' }];
         const sourceStyles = this._customScrollbarEnabled ? _customStyles : _styles;
 
         styles.push(sourceStyles.defaultStyle);
 
-        if (this.props.horizontal && this.props.vertical) {
+        if (scrollEnabled && this.props.horizontal && this.props.vertical) {
             styles.push(sourceStyles.bothStyle);
-        } else if (this.props.horizontal) {
+        } else if (scrollEnabled && this.props.horizontal) {
             styles.push(sourceStyles.horizontalStyle);
-        } else {
+        } else if (scrollEnabled) {
             styles.push(sourceStyles.verticalStyle);
         }
 
