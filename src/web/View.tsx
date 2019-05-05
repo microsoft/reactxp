@@ -359,7 +359,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RX.Vi
             onMouseMove: this.props.onMouseMove,
             // Weird things happen: ReactXP.Types.Touch is not assignable to React.Touch
             onTouchStart: this.props.onResponderStart as React.HTMLAttributes<any>['onTouchStart'],
-            onTouchStartCapture: this.props.onResponderStart as React.HTMLAttributes<any>['onTouchStartCapture'],
+            onTouchStartCapture: this.props.onTouchStartCapture as React.HTMLAttributes<any>['onTouchStartCapture'],
             onTouchMove: this.props.onResponderMove as React.HTMLAttributes<any>['onTouchMove'],
             onTouchMoveCapture: this.props.onTouchMoveCapture as React.HTMLAttributes<any>['onTouchMoveCapture'],
             onTouchEnd: this.props.onResponderRelease,
