@@ -151,11 +151,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
         }
 
         // End the injectedJavascript with 'true;' or else you'll sometimes get silent failures
-        if (injectedJavascript[injectedJavascript.length - 1] === ';') {
-            injectedJavascript += 'true;';
-        } else {
-            injectedJavascript += ';true;';
-        }
+        injectedJavascript += ';true;';
 
         return injectedJavascript;
     }
