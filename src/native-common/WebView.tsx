@@ -38,37 +38,12 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
     render() {
         const styles = [_styles.webViewDefault, this.props.style] as RN.StyleProp<RN.ViewStyle>;
         const source = this._buildSource();
+        const injectedJavascript = this._buildInjectedJavascript();
 
         // Force use of webkit on iOS (applies to RN 0.57 and newer only).
         const extendedProps: RNWebViewProps = {
             useWebKit: true
         };
-
-        // Keep compatibility with old code that uses window.postMessage. For more information,
-        // see https://github.com/react-native-community/react-native-webview/releases/tag/v5.0.0
-        const injectedJavascript = `
-        // WebView -> Native
-        (function() {
-            if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
-                window.postMessage = function(data) {
-                    window.ReactNativeWebView.postMessage(data);
-                };
-            }
-        })();
-
-        // Native -> WebView
-        (function() {
-            window.postMessageFromReactXP = function(message) {
-                var event;
-                try {
-                    event = new MessageEvent('message', { data: message });
-                } catch (e) {
-                    event = document.createEvent('MessageEvent');
-                    event.initMessageEvent('message', true, true, data.data, data.origin, data.lastEventId, data.source);
-                }
-                document.dispatchEvent(event);
-            };
-        })();`;
 
         return (
             <RNWebView
@@ -79,7 +54,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
                 javaScriptEnabled={ this.props.javaScriptEnabled }
                 allowsInlineMediaPlayback={ this.props.allowsInlineMediaPlayback }
                 mediaPlaybackRequiresUserAction={ this.props.mediaPlaybackRequiresUserAction }
-                injectedJavaScript={ injectedJavascript + this.props.injectedJavaScript }
+                injectedJavaScript={ injectedJavascript }
                 domStorageEnabled={ this.props.domStorageEnabled }
                 scalesPageToFit={ this.props.scalesPageToFit }
                 onNavigationStateChange={ this.props.onNavigationStateChange }
@@ -142,6 +117,47 @@ export class WebView extends React.Component<RX.Types.WebViewProps, RX.Types.Sta
         }
 
         return undefined;
+    }
+
+    private _buildInjectedJavascript(): string {
+        // Keep compatibility with old code that uses window.postMessage. For more information,
+        // see https://github.com/react-native-community/react-native-webview/releases/tag/v5.0.0
+        let injectedJavascript = `
+            // WebView -> Native
+            (function() {
+                if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+                    window.postMessage = function(data) {
+                        window.ReactNativeWebView.postMessage(data);
+                    };
+                }
+            })();
+
+            // Native -> WebView
+            (function() {
+                window.postMessageFromReactXP = function(message) {
+                    var event;
+                    try {
+                        event = new MessageEvent('message', { data: message });
+                    } catch (e) {
+                        event = document.createEvent('MessageEvent');
+                        event.initMessageEvent('message', true, true, data.data, data.origin, data.lastEventId, data.source);
+                    }
+                    document.dispatchEvent(event);
+                };
+            })();`;
+
+        if (this.props.injectedJavaScript !== undefined) {
+            injectedJavascript += this.props.injectedJavaScript;
+        }
+
+        // End the injectedJavascript with 'true;' or else you'll sometimes get silent failures
+        if (injectedJavascript[injectedJavascript.length - 1] === ';') {
+            injectedJavascript += 'true;';
+        } else {
+            injectedJavascript += ';true;';
+        }
+
+        return injectedJavascript;
     }
 
     postMessage(message: string, targetOrigin = '*') {
