@@ -267,10 +267,6 @@ export class Button extends ButtonBase {
      * 4- Press in > leave button > release touch
      */
     private _onTouchEnd = (e: Types.SyntheticEvent | Types.TouchEvent) => {
-        if ('touches' in e) {
-            // Stop the to event sequence to prevent trigger button.onMouseDown
-            e.preventDefault();
-        }
         if (this._isMouseOver && this._ignoreTouchEnd) {
             /* 1 */
             e.stopPropagation();
@@ -290,6 +286,13 @@ export class Button extends ButtonBase {
 
         if (this._longPressTimer) {
             Timers.clearTimeout(this._longPressTimer);
+        }
+        if ('touches' in e) {
+            // Stop the to event sequence to prevent trigger button.onMouseDown
+            e.preventDefault();
+            if (this.props.onPress) {
+                this.props.onPress(e);
+            }
         }
     }
 
