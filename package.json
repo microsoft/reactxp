@@ -15,7 +15,7 @@
     "@types/lodash": "^4.14.123",
     "@types/react": "^16.8.14",
     "@types/react-dom": "^16.8.4",
-    "@types/react-native": "^0.57.47",
+    "@types/react-native": "^0.57.51",
     "lodash": "^4.17.11",
     "prop-types": "^15.7.2",
     "rebound": "^0.1.0",
@@ -23,17 +23,19 @@
     "synctasks": "^0.3.3"
   },
   "peerDependencies": {
-    "react": "16.6.3",
-    "react-dom": "16.6.3",
-    "react-native": "0.58.6",
-    "react-native-windows": "^0.57.0-rc.5"
+    "react": "^16.0",
+    "react-dom": "^16.0",
+    "react-native": ">=0.57 <0.60",
+    "react-native-webview": "^5.6.3",
+    "react-native-windows": "^0.57.1"
   },
   "devDependencies": {
+    "react-native-webview": "^5.7.2",
     "tslint": "^5.16.0",
     "tslint-microsoft-contrib": "^6.1.1",
     "tslint-react": "^4.0.0",
     "tsutils": "^3.10.0",
-    "typescript": "^3.4.4"
+    "typescript": "^3.4.5"
   },
   "homepage": "https://microsoft.github.io/reactxp/",
   "repository": {

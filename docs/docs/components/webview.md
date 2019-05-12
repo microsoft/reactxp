@@ -38,6 +38,13 @@ interface WebViewNavigationState {
     loading: boolean;
     url: string;
     title: string;
+    readonly navigationType:
+        | 'click'
+        | 'formsubmit'
+        | 'backforward'
+        | 'reload'
+        | 'formresubmit'
+        | 'other';
 }
 
 interface WebViewErrorState {

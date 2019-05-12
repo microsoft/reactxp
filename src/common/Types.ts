@@ -979,12 +979,19 @@ export interface ActivityIndicatorProps extends CommonStyledProps<ActivityIndica
 }
 
 // WebView
-export interface WebViewNavigationState extends Event {
+export interface WebViewNavigationState {
     canGoBack: boolean;
     canGoForward: boolean;
     loading: boolean;
     url: string;
     title: string;
+    readonly navigationType:
+        | 'click'
+        | 'formsubmit'
+        | 'backforward'
+        | 'reload'
+        | 'formresubmit'
+        | 'other';
 }
 
 export interface WebViewErrorState extends WebViewNavigationState {
