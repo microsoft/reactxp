@@ -23,7 +23,7 @@
     "synctasks": "^0.3.3"
   },
   "peerDependencies": {
-    "@react-native-community/netinfo": "^2.0.10",
+    "@react-native-community/netinfo": "^3.0.0",
     "react": "^16.0",
     "react-dom": "^16.0",
     "react-native": ">=0.57 <0.60",
@@ -31,7 +31,7 @@
     "react-native-windows": "^0.57.1"
   },
   "devDependencies": {
-    "@react-native-community/netinfo": "^2.0.10",
+    "@react-native-community/netinfo": "^3.0.0",
     "react-native-webview": "^5.7.2",
     "tslint": "^5.16.0",
     "tslint-microsoft-contrib": "^6.1.1",

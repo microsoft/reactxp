@@ -67,6 +67,10 @@ class NetworkView extends RX.Component<RX.CommonProps, NetworkState> {
 
     componentWillUnmount() {
         this._isMounted = false;
+
+        if (this._connectivityChangedEvent) {
+            this._connectivityChangedEvent.unsubscribe();
+        }
     }
 
     private _queryConnectivityState() {

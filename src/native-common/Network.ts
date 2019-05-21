@@ -18,14 +18,14 @@ export class Network extends RX.Network {
 
         const onEventOccurredHandler = this._onEventOccurred.bind(this);
 
-        NetInfo.isConnected.addEventListener('connectionChange', onEventOccurredHandler);
+        NetInfo.addEventListener(onEventOccurredHandler);
     }
 
     isConnected(): SyncTasks.Promise<boolean> {
         const deferred = SyncTasks.Defer<boolean>();
 
-        NetInfo.isConnected.fetch().then(isConnected => {
-            deferred.resolve(isConnected);
+        NetInfo.fetch().then((state: NetInfo.NetInfoState) => {
+            deferred.resolve(state.isConnected);
         }).catch(() => {
             deferred.reject('NetInfo.isConnected.fetch() failed');
         });
@@ -34,25 +34,33 @@ export class Network extends RX.Network {
     }
 
     getType(): SyncTasks.Promise<RX.Types.DeviceNetworkType> {
-        return SyncTasks.fromThenable(NetInfo.getConnectionInfo()).then(info => {
-            return Network._getNetworkTypeFromConnectionInfo(info);
+        return SyncTasks.fromThenable(NetInfo.fetch()).then((state: NetInfo.NetInfoState) => {
+            return Network._getNetworkTypeFromConnectionInfo(state);
         });
     }
 
-    private _onEventOccurred(isConnected: boolean) {
-        this.connectivityChangedEvent.fire(isConnected);
+    private _onEventOccurred(state: NetInfo.NetInfoState) {
+        this.connectivityChangedEvent.fire(state.isConnected);
     }
 
-    private static _getNetworkTypeFromConnectionInfo(info: NetInfo.NetInfoData): RX.Types.DeviceNetworkType {
-        if (info.effectiveType === '2g') {
-            return RX.Types.DeviceNetworkType.Mobile2G;
-        } else if (info.effectiveType === '3g') {
-            return RX.Types.DeviceNetworkType.Mobile3G;
-        } else if (info.effectiveType === '4g') {
-            return RX.Types.DeviceNetworkType.Mobile4G;
-        } else if (info.type === 'wifi' || info.type === 'ethernet' || info.type === 'wimax') {
+    private static _getNetworkTypeFromConnectionInfo(state: NetInfo.NetInfoState): RX.Types.DeviceNetworkType {
+        if (state.type === NetInfo.NetInfoStateType.cellular) {
+            if (state.details === null || state.details.cellularGeneration === null) {
+                return RX.Types.DeviceNetworkType.Unknown;
+            } else if (state.details.cellularGeneration === '2g') {
+                return RX.Types.DeviceNetworkType.Mobile2G;
+            } else if (state.details.cellularGeneration === '3g') {
+                return RX.Types.DeviceNetworkType.Mobile3G;
+            } else if (state.details.cellularGeneration === '4g') {
+                return RX.Types.DeviceNetworkType.Mobile4G;
+            }
+        } else if (state.type === NetInfo.NetInfoStateType.wifi ) {
             return RX.Types.DeviceNetworkType.Wifi;
-        } else if (info.type === 'none') {
+        } else if (state.type === NetInfo.NetInfoStateType.ethernet ) {
+            return RX.Types.DeviceNetworkType.Wifi;
+        } else if (state.type === NetInfo.NetInfoStateType.wimax ) {
+            return RX.Types.DeviceNetworkType.Wifi;
+        } else if (state.type === NetInfo.NetInfoStateType.none) {
             return RX.Types.DeviceNetworkType.None;
         }
 
