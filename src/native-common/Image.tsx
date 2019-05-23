@@ -66,7 +66,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
     protected _mountedComponent: RN.Image | undefined;
     private _nativeImageWidth: number | undefined;
     private _nativeImageHeight: number | undefined;
-    readonly state: ImageState = { forceCache: false, lastNativeError: undefined, headers: this._buildHeaders() };
+    readonly state: ImageState = { forceCache: false, lastNativeError: undefined, headers: Image._maybeOverrideHeaders(this.props) };
 
     protected _getAdditionalProps(): RN.ImageProperties | {} {
         return {};
@@ -123,7 +123,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
         const sourceOrHeaderChanged = (nextProps.source !== this.props.source ||
             !_.isEqual(nextProps.headers || {}, this.props.headers || {}));
         if (sourceOrHeaderChanged) {
-            this.setState({ forceCache: false, lastNativeError: undefined, headers: this._buildHeaders() });
+            this.setState({ forceCache: false, lastNativeError: undefined, headers: Image._maybeOverrideHeaders(nextProps) });
         }
     }
 
@@ -182,7 +182,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
             return;
         }
 
-        if (!this.state.forceCache && !!this._getMaxStaleHeader()) {
+        if (!this.state.forceCache && !!Image._getMaxStaleHeader(this.props.headers)) {
             // Some platforms will not use expired cache data unless explicitly told so.
             // Let's try again with cache: 'only-if-cached'.
             this.setState({ forceCache: true, lastNativeError: e.nativeEvent.error });
@@ -196,17 +196,17 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
         }
     }
 
-    private _buildHeaders(): Types.Headers | undefined {
-        if (this.props.headers) {
-            const cacheControlHeader = this._getMaxStaleHeader();
+    private static _maybeOverrideHeaders(props: Types.ImageProps): Types.Headers | undefined {
+        if (props.headers) {
+            const cacheControlHeader = Image._getMaxStaleHeader(props.headers);
             if (cacheControlHeader) {
                 // Filter out Cache-Control: max-stale. It has the opposite effect on iOS: instead of having
                 // the cache return stale data it disables the cache altogether. We emulate the header by
                 // retrying with cache: 'only-if-cached'.
-                return _.omit(this.props.headers, [cacheControlHeader]);
+                return _.omit(props.headers, [cacheControlHeader]);
             }
         }
-        return this.props.headers;
+        return undefined;
     }
 
     private _buildSource(): RN.ImageSourcePropType {
@@ -215,7 +215,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
             return this.props.source;
         }
 
-        const source: RN.ImageSourcePropType = { uri: this.props.source, headers: this.state.headers };
+        const source: RN.ImageSourcePropType = { uri: this.props.source, headers: this.state.headers || this.props.headers };
         if (this.state.forceCache) {
             source.cache = 'only-if-cached';
         }
@@ -223,12 +223,12 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
         return source;
     }
 
-    private _getMaxStaleHeader(): string | undefined {
-        if (Platform.getType() === 'ios' && this.props.headers) {
-            for (const key in this.props.headers) {
+    private static _getMaxStaleHeader(headers?: Types.Headers): string | undefined {
+        if (Platform.getType() === 'ios' && headers) {
+            for (const key in headers) {
                 // We don't know how stale the cached data is so we're matching only the simple 'max-stale' attribute
                 // without a value.
-                if (key.toLowerCase() === 'cache-control' && this.props.headers[key].toLowerCase() === 'max-stale') {
+                if (key.toLowerCase() === 'cache-control' && headers[key].toLowerCase() === 'max-stale') {
                     return key;
                 }
             }
