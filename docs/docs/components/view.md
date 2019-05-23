@@ -142,6 +142,8 @@ onBlur: (e: FocusEvent) => void = undefined;
 onKeyPress: (e: KeyboardEvent) => void = undefined;
 
 // Touch-specific Events
+onTouchStartCapture: (e: React.SyntheticEvent) => void = undefined;
+onTouchMoveCapture: (e: React.SyntheticEvent) => void = undefined;
 onLongPress: (e: SyntheticEvent) => void = undefined;
 onMoveShouldSetResponder: (e: React.SyntheticEvent) => boolean =
     undefined;
