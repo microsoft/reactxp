@@ -54,6 +54,17 @@ const _styles = {
         backgroundColor: '#eee',
         borderColor: 'black',
     }),
+    testContainer5: RX.Styles.createViewStyle({
+        flex: 1,
+        margin: 20,        
+        padding: 20,        
+        borderWidth: 1,
+        backgroundColor: '#eee',
+        borderColor: 'black',
+    }),
+    successText: RX.Styles.createTextStyle({
+       color: 'green'
+    }),
     success: RX.Styles.createViewStyle({
         borderWidth: 2,
         backgroundColor: 'green'
@@ -74,6 +85,8 @@ interface TouchViewState {
     nestedViewTouchTestParent: boolean;
     nestedViewTouchTestChild: boolean;
     pressEvent?: RX.Types.TouchEvent;
+    didCapturedTouchIn?: boolean;
+    didCapturedTouchMove?: boolean;
 }
 
 class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
@@ -206,6 +219,25 @@ class ViewTouch extends RX.Component<RX.CommonProps, TouchViewState> {
                 >
                     <RX.Text style={ _styles.labelText }>
                         { `Touch position on page: x: ${this.state.touchPositionOnPage.x} y: ${this.state.touchPositionOnPage.y}`}
+                    </RX.Text>
+                </RX.View>
+                <RX.View style={ _styles.explainTextContainer }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'The view below shows textual representation of the capture phase of a touch in' }
+                        { '  - The text `View captured touch in` should turn green' }
+                        { '  - The text `View captured touch move` should turn green' }
+                    </RX.Text>
+                </RX.View>
+                <RX.View
+                    style={ _styles.testContainer5 }
+                    onTouchStartCapture={ () => this.setState({ didCapturedTouchIn: true }) }
+                    onTouchMoveCapture={ () => this.setState({ didCapturedTouchMove: true }) }
+                >
+                    <RX.Text style={ [_styles.labelText, this.state.didCapturedTouchIn ? _styles.successText : {}] }>
+                        View captured touch in
+                    </RX.Text>
+                    <RX.Text style={ [_styles.labelText, this.state.didCapturedTouchMove ? _styles.successText : {}] }>
+                        View captured touch move
                     </RX.Text>
                 </RX.View>
             </RX.View>
