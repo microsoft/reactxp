@@ -192,12 +192,6 @@ export interface LocationConfiguration {
     skipPermissionRequests: boolean;
 }
 
-export abstract class Network {
-    abstract isConnected(): SyncTasks.Promise<boolean>;
-    abstract getType(): SyncTasks.Promise<Types.DeviceNetworkType>;
-    connectivityChangedEvent = new SubscribableEvent<(isConnected: boolean) => void>();
-}
-
 export abstract class Platform {
     abstract getType(): Types.PlatformType;
     abstract select<T>(specifics: { [ platform in Types.PlatformType | 'default' ]?: T }): T | undefined;
