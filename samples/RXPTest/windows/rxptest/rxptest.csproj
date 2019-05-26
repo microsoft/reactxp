@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>9bbd0d12-a1ee-4f9f-b2f8-e2f3bf63ab5b</ProjectGuid>
+    <ProjectGuid>{CD08AF08-321A-4E52-A9A1-4B685D85154A}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>rxptest</RootNamespace>
@@ -18,7 +18,6 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>rxptest_TemporaryKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>50F7227C472371D7441028F660BDFCDF35B7FA83</PackageCertificateThumbprint>
-
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <DependencyConfiguration>Debug</DependencyConfiguration>
   </PropertyGroup>
@@ -208,6 +207,10 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\node_modules\%40react-native-community\netinfo\windows\RNCNetInfo\RNCNetInfo.csproj">
+      <Project>{4acdd44c-e556-423e-bd74-b4cef3e67ff0}</Project>
+      <Name>RNCNetInfo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\node_modules\react-native-windows\ReactWindows\ReactNative\ReactNative.csproj">
       <Project>{c7673ad5-e3aa-468c-a5fd-fa38154e205c}</Project>
       <Name>ReactNative</Name>

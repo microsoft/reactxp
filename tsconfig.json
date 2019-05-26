@@ -5,7 +5,6 @@
         "jsx": "react",
         "module": "commonjs",
         "target": "es5",
-        "downlevelIteration": true,
         "experimentalDecorators": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
@@ -18,7 +17,6 @@
         "outDir": "dist/",
         "lib": [
             "es5",
-            "es2015",
             "dom"
         ],
         "types" : ["lodash", "react", "react-dom", "react-native"]
