@@ -4,7 +4,7 @@
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT license.
  *
- * Base export for the Android implementation of the plugin.
+ * Base export for the Mac implementation of the plugin.
  */
 
 import * as Types from '../common/Types';

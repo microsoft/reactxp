@@ -4,8 +4,8 @@
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT license.
  *
- * Interface definition for cross-platform ReactXP plugin for
- * display videos and controlling video playback.
+ * Interface definition for cross-platform ReactXP plugin for gathering network/connectivity
+ * info. This was extracted from the reactxp core
  */
 
 import * as SyncTasks from 'synctasks';
