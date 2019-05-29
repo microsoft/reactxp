@@ -35,11 +35,11 @@
  *    position all in the same frame if possible.
  */
 
-import * as assert from 'assert';
 import * as _ from 'lodash';
 import { createRef, RefObject } from 'react';
 import * as RX from 'reactxp';
 
+import assert from './assert';
 import { VirtualListCell, VirtualListCellInfo, VirtualListCellRenderDetails } from './VirtualListCell';
 
 // Specifies information about each item to be displayed in the list.
@@ -372,7 +372,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             itemIndex++;
             // Make sure there are no duplicate keys.
             if (newItemMap.has(item.key)) {
-                assert.ok(false, 'Found a duplicate key: ' + item.key);
+                assert(false, 'Found a duplicate key: ' + item.key);
                 if (props.logInfo) {
                     props.logInfo('Item with key ' + item.key + ' is duplicated at positions ' + itemIndex +
                         ' and ' + newItemMap.get(item.key)!);
@@ -628,10 +628,10 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         if (this._isMounted) {
             const hasAnimation = this._pendingAnimations.has(itemKey);
             if (animateStart) {
-                assert.ok(!hasAnimation, 'unexpected animation start');
+                assert(!hasAnimation, 'unexpected animation start');
                 this._pendingAnimations.add(itemKey);
             } else {
-                assert.ok(hasAnimation, 'unexpected animation complete');
+                assert(hasAnimation, 'unexpected animation complete');
                 this._pendingAnimations.delete(itemKey);
 
                 // We defer this because there are cases where we can cancel animations
@@ -830,7 +830,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             const item = props.itemList[itemIndex];
             const isHeightKnown = this._isItemHeightKnown(item);
             const itemHeight = this._getHeightOfItem(item);
-            assert.ok(itemHeight > 0, 'list items should always have non-zero height');
+            assert(itemHeight > 0, 'list items should always have non-zero height');
 
             this._itemsInRenderBlock++;
             this._heightOfRenderBlock += itemHeight;
@@ -1012,8 +1012,8 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             newCell.top = top;
             newCell.shouldUpdate = true;
 
-            assert.ok(newCell.isHeightConstant === isHeightConstant, 'isHeightConstant assumed to not change');
-            assert.ok(newCell.itemTemplate === itemTemplate, 'itemTemplate assumed to not change');
+            assert(newCell.isHeightConstant === isHeightConstant, 'isHeightConstant assumed to not change');
+            assert(newCell.itemTemplate === itemTemplate, 'itemTemplate assumed to not change');
 
             const mountedCell = newCell.cellRef.current;
             if (mountedCell) {
@@ -1074,7 +1074,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
 
         const cellInfo = this._activeCells.get(itemKey);
         if (!cellInfo) {
-            assert.ok(false, 'Missing cell');
+            assert(false, 'Missing cell');
             return;
         }
 
@@ -1126,7 +1126,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             const item = this.props.itemList[itemIndex];
 
             const virtualCellInfo = this._activeCells.get(item.key)!;
-            assert.ok(virtualCellInfo, 'Active Cell not found for key ' + item.key + ', index=' + i);
+            assert(virtualCellInfo, 'Active Cell not found for key ' + item.key + ', index=' + i);
 
             cellList.push({
                 cellInfo: virtualCellInfo,
@@ -1140,7 +1140,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         }
 
         for (const virtualCellInfo of this._recycledCells) {
-            assert.ok(virtualCellInfo, 'Recycled Cells array contains a null/undefined object');
+            assert(virtualCellInfo, 'Recycled Cells array contains a null/undefined object');
             cellList.push({
                 cellInfo: virtualCellInfo,
                 item: undefined,
@@ -1362,7 +1362,7 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
             index = this._itemMap.get(this.state.lastFocusedItemKey);
 
             if (index === undefined) {
-                assert.ok(false, 'Something went wrong in finding last focused item');
+                assert(false, 'Something went wrong in finding last focused item');
                 return false;
             }
 

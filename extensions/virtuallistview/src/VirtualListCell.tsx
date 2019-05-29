@@ -7,9 +7,10 @@
  * container for a single list item.
  */
 
-import * as assert from 'assert';
 import { createRef } from 'react';
 import * as RX from 'reactxp';
+
+import assert from './assert';
 
 export interface VirtualListCellInfo {
     key: string;
@@ -172,20 +173,20 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
 
     componentWillReceiveProps(nextProps: VirtualListCellProps<ItemInfo>) {
         // If it's inactive, it had better be invisible.
-        assert.ok(nextProps.isActive || !nextProps.isVisible);
+        assert(nextProps.isActive || !nextProps.isVisible);
 
-        assert.ok(nextProps.useNativeDriver === this.props.useNativeDriver);
+        assert(nextProps.useNativeDriver === this.props.useNativeDriver);
 
         // All callbacks should be prebound to optimize performance.
-        assert.ok(this.props.onLayout === nextProps.onLayout, 'onLayout callback changed');
-        assert.ok(this.props.onItemSelected === nextProps.onItemSelected, 'onItemSelected callback changed');
-        assert.ok(this.props.onItemFocused === nextProps.onItemFocused, 'onItemFocused callback changed');
-        assert.ok(this.props.onAnimateStartStop === nextProps.onAnimateStartStop, 'onAnimateStartStop callback changed');
-        assert.ok(this.props.renderItem === nextProps.renderItem, 'renderItem callback changed');
+        assert(this.props.onLayout === nextProps.onLayout, 'onLayout callback changed');
+        assert(this.props.onItemSelected === nextProps.onItemSelected, 'onItemSelected callback changed');
+        assert(this.props.onItemFocused === nextProps.onItemFocused, 'onItemFocused callback changed');
+        assert(this.props.onAnimateStartStop === nextProps.onAnimateStartStop, 'onAnimateStartStop callback changed');
+        assert(this.props.renderItem === nextProps.renderItem, 'renderItem callback changed');
 
         // We assume this prop doesn't change for perf reasons. Callers should modify
         // the key to force an unmount/remount if these need to change.
-        assert.ok(this.props.isScreenReaderModeEnabled === nextProps.isScreenReaderModeEnabled);
+        assert(this.props.isScreenReaderModeEnabled === nextProps.isScreenReaderModeEnabled);
 
         this.setItemKey(nextProps.itemKey);
 

@@ -12,12 +12,12 @@
  * That's why we need to have the ability to pick different implementations for different platforms.
  */
 
-import * as assert from 'assert';
 import * as React from 'react';
 import * as RN from 'react-native';
 import * as RX from 'reactxp';
 import * as Navigation from 'reactxp-experimental-navigation';
 
+import assert from '../common/assert';
 import * as _ from '../common/lodashMini';
 import {
     CommandType,
@@ -333,10 +333,10 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
     }
 
     private _popN(state: NavigationState, n: number): NavigationState {
-        assert.ok(n > 0, 'n < 0 please pass positive value');
+        assert(n > 0, 'n < 0 please pass positive value');
         const initialRoutes = state.routes;
         const initialLength = initialRoutes.length;
-        assert.ok(initialLength >= n, 'navigation stack underflow');
+        assert(initialLength >= n, 'navigation stack underflow');
 
         let result: NavigationState = _.clone(state);
         result.routes = initialRoutes.slice(0, initialLength - n);

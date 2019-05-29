@@ -9,7 +9,6 @@
     "tslint": "tslint --project tsconfig.json -r tslint.json --fix || true"
   },
   "dependencies": {
-    "assert": "^1.4.1",
     "lodash": "^4.17.10"
   },
   "peerDependencies": {

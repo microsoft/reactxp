@@ -9,7 +9,6 @@
     "tslint": "tslint -p tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
   },
   "dependencies": {
-    "assert": "1.4.1",
     "react-native-svg": "9.3.3"
   },
   "peerDependencies": {
