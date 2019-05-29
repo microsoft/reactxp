@@ -147,9 +147,8 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                 <RX.Button
                     style={ _styles.button2 }
                     disabled={ true }
-                    onPress={ () => {
-                        // no-op
-                    } }
+                    onLongPress={() => alert('Long press')}
+                    onPress={() => alert('press')}
                 >
                     <RX.Text style={ _styles.button2Text }>
                         { 'Disabled Button' }
