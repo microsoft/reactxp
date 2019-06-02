@@ -167,7 +167,8 @@ class UserInterfaceView extends RX.Component<RX.CommonProps, UserInterfaceState>
             }
 
             if (!approxEquals(childRelative.x, 20) || !approxEquals(childRelative.y, 20)) {
-                result.errors.push(`Expected relative position of child view to be 20x20 from parent. Got ${childRelative.x}x${childRelative.y}`);
+                result.errors.push(`Expected relative position of child view to be 20x20 from parent. ` +
+                    `Got ${childRelative.x}x${childRelative.y}`);
             }
         }).catch(err => {
             result.errors.push('Error occurred when measuring views.');

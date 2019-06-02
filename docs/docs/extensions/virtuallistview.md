@@ -4,6 +4,7 @@ title: VirtualListView
 layout: docs
 category: Extensions
 permalink: docs/extensions/virtuallistview.html
+next: extensions/webview
 ---
 
 This components supports a vertical list of items within a scrolling area. The visible portion of the list is referred to as the "view port". The list is virtualized, which means that items are rendered only when they are within the view port (or just above or below the view port).

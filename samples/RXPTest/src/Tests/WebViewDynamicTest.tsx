@@ -4,6 +4,7 @@
 
 import _ = require('lodash');
 import RX = require('reactxp');
+import RXWebView, { Types as RXNWebViewTypes } from 'reactxp-webview';
 
 import * as CommonStyles from '../CommonStyles';
 import { Test, TestResult, TestType } from '../Test';
@@ -29,7 +30,7 @@ const _styles = {
         borderWidth: 1,
         borderColor: '#ddd'
     }),
-    webView: RX.Styles.createWebViewStyle({
+    webView: RX.Styles.createViewStyle({
     }),
     eventHistoryScrollView: RX.Styles.createScrollViewStyle({
         margin: 12,
@@ -69,7 +70,7 @@ interface WebViewViewState {
 }
 
 class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
-    private _webViewTest1: RX.WebView | undefined;
+    private _webViewTest1: RXWebView | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);
@@ -90,8 +91,8 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.webViewContainer }>
-                    <RX.WebView
-                        sandbox={ RX.Types.WebViewSandboxMode.AllowScripts }
+                    <RXWebView
+                        sandbox={ RXNWebViewTypes.WebViewSandboxMode.AllowScripts }
                         style={ _styles.webView }
                         source={ { html: this.state.htmlContent || '' } }
                         ref={ (comp: any) => { this._webViewTest1 = comp; } }
@@ -162,7 +163,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
         return htmlContent;
     }
 
-    private _onNavChangeTest1 = (navState: RX.Types.WebViewNavigationState) => {
+    private _onNavChangeTest1 = (navState: RXNWebViewTypes.WebViewNavigationState) => {
         this._appendHistoryTest1('Nav state changed');
     }
 
@@ -178,7 +179,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
         this._appendHistoryTest1('Error');
     }
 
-    private _onMessageReceived = (e: RX.Types.WebViewMessageEvent) => {
+    private _onMessageReceived = (e: RXNWebViewTypes.WebViewMessageEvent) => {
         this._appendHistoryTest1('Received message: ' + e.data);
     }
 

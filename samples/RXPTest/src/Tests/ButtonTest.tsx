@@ -302,14 +302,14 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                         ] }
                         onPress={ () => {
                             if (this.state.longPressed) {
-                                this.setState({onPressReceived: true });
+                                this.setState({ onPressReceived: true });
                             }
-                        }}
+                        } }
                         onResponderRelease={ () => {
                             if (this.state.longPressed) {
-                                this.setState({onResponderReleaseReceived: true})};
+                                this.setState({ onResponderReleaseReceived: true });
                             }
-                        }
+                        } }
                     >
                         <RX.Button
                             style={ [_styles.button2, this.state.longPressed ? _styles.ready : _styles.wait] }
@@ -317,8 +317,8 @@ class ButtonView extends RX.Component<RX.CommonProps, ButtonViewState> {
                                 longPressed: false,
                                 onResponderReleaseReceived: false,
                                 onPressReceived: false
-                            })}
-                            onLongPress={ () => this.setState({longPressed: true})}
+                            }) }
+                            onLongPress={ () => this.setState({ longPressed: true }) }
                         >
                             <RX.Text style={ _styles.button2Text }>Long press here</RX.Text>
                         </RX.Button>

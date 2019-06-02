@@ -125,7 +125,8 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
             if (!dimensions) {
                 this._testResult.errors.push('Received undefined dimensions from onLoad');
             } else if (!approxEquals(dimensions.width, image1ExpectedWidth) || !approxEquals(dimensions.height, image1ExpectedHeight)) {
-                this._testResult.errors.push(`Expected dimensions from onLoad to be ${image1ExpectedWidth}x${image1ExpectedHeight}. Got ${dimensions.width}x${dimensions.height}`);
+                this._testResult.errors.push(`Expected dimensions from onLoad to be ${image1ExpectedWidth}x${image1ExpectedHeight}. ` +
+                    `Got ${dimensions.width}x${dimensions.height}`);
             }
 
             // Now call the component back to see if we get the same dimensions.

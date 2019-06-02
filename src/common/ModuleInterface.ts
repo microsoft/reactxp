@@ -66,8 +66,6 @@ export declare module ReactXP {
     export let UserPresence: RX.UserPresence;
     export type View = RX.View;
     export let View: typeof RX.View;
-    export type WebView = RX.WebView;
-    export let WebView: RX.WebViewConstructor;
 
     export type Animated = RX.Animated;
     export let Animated: RX.Animated;
