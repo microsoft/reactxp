@@ -1403,3 +1403,15 @@ export interface LayoutInfo {
 // Platform
 // ----------------------------------------------------------------------
 export type PlatformType = 'web' | 'ios' | 'android' | 'windows' | 'macos';
+
+//
+// Network
+// ----------------------------------------------------------------------
+export enum DeviceNetworkType {
+    Unknown,
+    None,
+    Wifi,
+    Mobile2G,
+    Mobile3G,
+    Mobile4G
+}

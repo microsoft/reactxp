@@ -1,24 +1,21 @@
 /**
- * Video.tsx
+ * Network.ts
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT license.
  *
- * Web-specific implementation of the cross-platform Video abstraction.
+ * Web-specific implementation of Network information APIs.
  */
 
 import * as SyncTasks from 'synctasks';
 
-import * as Types from '../common/Types';
-import * as Interfaces from '../common/Interfaces';
+import * as RX from '../common/Interfaces';
 
-export class NetInfo extends Interfaces.NetInfo {
+export class Network extends RX.Network {
     constructor() {
         super();
 
-        const onEventOccuredHandler = () => {
-            this.connectivityChangedEvent.fire(navigator.onLine);
-        };
+        const onEventOccuredHandler = this._onEventOccured.bind(this);
 
         // Avoid accessing window if it's not defined (for test environment).
         if (typeof(window) !== 'undefined') {
@@ -31,9 +28,13 @@ export class NetInfo extends Interfaces.NetInfo {
         return SyncTasks.Resolved(navigator.onLine);
     }
 
-    getType(): SyncTasks.Promise<Types.DeviceNetworkType> {
-        return SyncTasks.Resolved(Types.DeviceNetworkType.Unknown);
+    getType(): SyncTasks.Promise<RX.Types.DeviceNetworkType> {
+        return SyncTasks.Resolved(RX.Types.DeviceNetworkType.Unknown);
+    }
+
+    private _onEventOccured() {
+        this.connectivityChangedEvent.fire(navigator.onLine);
     }
 }
 
-export default new NetInfo();
+export default new Network();

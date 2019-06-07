@@ -32,6 +32,7 @@ import InternationalImpl from './International';
 import { Link as LinkImpl } from './Link';
 import LinkingImpl from './Linking';
 import ModalImpl from './Modal';
+import NetworkImpl from './Network';
 import { Picker as PickerImpl } from './Picker';
 import PlatformImpl from './Platform';
 import { ScrollView as ScrollViewImpl } from './ScrollView';
@@ -84,6 +85,8 @@ module ReactXP {
     export let Location: RXInterfaces.Location = LocationImpl;
     export type Modal = RXInterfaces.Modal;
     export let Modal: RXInterfaces.Modal = ModalImpl;
+    export type Network = RXInterfaces.Network;
+    export let Network: RXInterfaces.Network = NetworkImpl;
     export type Platform = RXInterfaces.Platform;
     export let Platform: RXInterfaces.Platform = PlatformImpl;
     export type Popup = RXInterfaces.Popup;
