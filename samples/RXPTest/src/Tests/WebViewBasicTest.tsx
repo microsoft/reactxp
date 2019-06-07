@@ -189,10 +189,13 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
         }
     }
 
+    // Keep a local buffer of eventHistory since back-to-back calls to append history can cause data loss (setState may not be synchronous)
+    private _test1EventHistory: string[] = [];
     private _appendHistoryTest1(newLine: string) {
         // Prepend it so we can always see the latest.
         // Limit to the last 20 items.
-        let newHistory = [newLine].concat(_.slice(this.state.test1EventHistory, 0, 18));
+        let newHistory = [newLine].concat(_.slice(this._test1EventHistory, 0, 18));
+        this._test1EventHistory = newHistory;
         this.setState({
             test1EventHistory: newHistory
         });
