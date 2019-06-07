@@ -4,7 +4,7 @@ title: Navigator
 layout: docs
 category: Extensions
 permalink: docs/extensions/navigator.html
-next: extensions/restclient
+next: extensions/netinfo
 ---
 
 This component provides a way for the app to present a virtual stack of "cards", allowing the user to push or pop those cards onto the stack in an animated manner. The caller can control the animation type and direction.

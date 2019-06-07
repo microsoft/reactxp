@@ -1,6 +1,7 @@
 using ReactNative;
 using ReactNative.Modules.Core;
 using ReactNative.Shell;
+using ReactNativeCommunity.NetInfo;
 using System.Collections.Generic;
 
 namespace rxptest
@@ -24,6 +25,7 @@ namespace rxptest
         protected override List<IReactPackage> Packages => new List<IReactPackage>
         {
             new MainReactPackage(),
+            new RNCNetInfoPackage(),
         };
     }
 }
