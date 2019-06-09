@@ -5,7 +5,7 @@
 
 import _ = require('lodash');
 import RX = require('reactxp');
-import RXWebView, { Types as RXNWebViewTypes } from 'reactxp-webview';
+import RXWebView, { Types as RXWebViewTypes } from 'reactxp-webview';
 
 import * as CommonStyles from '../CommonStyles';
 import { Test, TestResult, TestType } from '../Test';
@@ -150,7 +150,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
         );
     }
 
-    private _onNavChangeTest1 = (navState: RXNWebViewTypes.WebViewNavigationState) => {
+    private _onNavChangeTest1 = (navState: RXWebViewTypes.WebViewNavigationState) => {
         this._appendHistoryTest1('Nav state changed');
 
         this.setState({
