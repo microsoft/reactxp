@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "npm run tslint && tsc",
-    "tslint": "tslint -p tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
+    "tslint": "tslint -p tsconfig.json -r tslint.json --fix || true"
   },
   "dependencies": {
     "react-native-webview": "^5.6.3"
