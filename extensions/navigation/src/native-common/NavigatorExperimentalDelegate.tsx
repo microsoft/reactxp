@@ -57,10 +57,9 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
 
     constructor(navigator: Navigator<NavigatorState>) {
         super(navigator);
-        const route: NavigationRouteState = { key: '0', route: { routeId: 0, sceneConfigType: 0 }};
-        this._state = { index: 0, routes: [ route ] };
+        const route: NavigationRouteState = { key: '0', route: { routeId: 0, sceneConfigType: 0 } };
+        this._state = { index: 0, routes: [route] };
         this._transitionSpec = this._buildTransitionSpec(this._state);
-        console.log('initial transition spec is:', this._transitionSpec);
     }
 
     getRoutes(): NavigatorRoute[] {
@@ -72,29 +71,27 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
 
     // Reset route stack with default route stack
     immediatelyResetRouteStack(nextRouteStack: NavigatorRoute[]): void {
-        console.log('Stack state before reset:', this._state);
         const prevState = this._state;
         this._state = this._createParentState(nextRouteStack, prevState);
         this._transitionSpec = this._buildTransitionSpec(this._state);
-        console.log('Immediate stack reset:', this._state, this._transitionSpec);
-        this._owner.setState({state: this._state});
+        this._owner.setState({ state: this._state });
     }
 
     // Render without initial route to get a reference for Navigator object
     render(): JSX.Element {
         return (
             <Navigation.CardStack
-                direction = { this._transitionSpec.direction }
+                direction={ this._transitionSpec.direction }
                 customTransitionConfig={ this._transitionSpec.customTransitionConfig }
-                navigationState = { this._state }
-                onNavigateBack = { this._onNavigateBack }
-                onTransitionStart= { this._onTransitionStart }
-                onTransitionEnd = { this._onTransitionEnd }
+                navigationState={ this._state }
+                onNavigateBack={ this._onNavigateBack }
+                onTransitionStart={ this._onTransitionStart }
+                onTransitionEnd={ this._onTransitionEnd }
                 renderScene={ this._renderScene }
                 cardStyle={ this._transitionSpec.cardStyle || this._owner.props.cardStyle }
                 hideShadow={ this._transitionSpec.hideShadow }
-                enableGestures = { this._transitionSpec.enableGesture }
-                gestureResponseDistance = { this._transitionSpec.gestureResponseDistance }
+                enableGestures={ this._transitionSpec.enableGesture }
+                gestureResponseDistance={ this._transitionSpec.gestureResponseDistance }
             />
         );
     }
@@ -188,8 +185,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
 
     private _onTransitionEnd = () => {
         this._transitionSpec = this._buildTransitionSpec(this._state);
-        console.log('onTransitionEnd', this._transitionSpec);
-        this._owner.setState({state: this._state});
+        this._owner.setState({ state: this._state });
 
         if (this._owner.props.transitionCompleted) {
             this._owner.props.transitionCompleted();
@@ -197,7 +193,6 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
     }
 
     private _onTransitionStart = (transitionProps: NavigationTransitionProps, prevTransitionProps?: NavigationTransitionProps) => {
-        console.log('onTransitionStart', this._transitionSpec);
         if (this._owner.props.transitionStarted) {
             const fromIndex = prevTransitionProps && prevTransitionProps.scene ? prevTransitionProps.scene.index : undefined;
             const toIndex = transitionProps.scene ? transitionProps.scene.index : undefined;
@@ -238,12 +233,12 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
         }
         const previousState: NavigationState = this._state;
 
-        let  useNewStateAsScene = false;
+        let useNewStateAsScene = false;
 
         let command = commandQueue.shift()!;
         let route = command.param.route;
         let value = command.param.value;
-        console.log('processing navigation command:', JSON.stringify(command), 'on stack:', JSON.stringify(this._state));
+
         switch (command.type) {
             case CommandType.Push:
                 useNewStateAsScene = true;
@@ -281,17 +276,14 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
                 break;
         }
 
-        console.log('stack after execution is:', JSON.stringify(this._state));
-
         if (previousState !== this._state) {
             if (useNewStateAsScene) {
                 this._transitionSpec = this._buildTransitionSpec(this._state);
             } else {
                 this._transitionSpec = this._buildTransitionSpec(previousState);
             }
-            console.log('transition spec:', this._transitionSpec, useNewStateAsScene);
 
-            this._owner.setState({state: this._state});
+            this._owner.setState({ state: this._state });
         }
     }
 
@@ -303,7 +295,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
     }
 
     private _createState(route: NavigatorRoute): NavigationRouteState {
-        return { key: route.routeId.toString(), route: route};
+        return { key: route.routeId.toString(), route: route };
     }
 
     private _createParentState(routes: NavigatorRoute[], prevState: NavigationState): NavigationState {
