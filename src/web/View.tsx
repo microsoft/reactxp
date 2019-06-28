@@ -66,10 +66,12 @@ const _styles = {
 
 if (typeof document !== 'undefined') {
     const ignorePointerEvents = '.reactxp-ignore-pointer-events  * { pointer-events: auto; }';
+    const blockPointerEvents = '.reactxp-block-pointer-events * { pointer-events: none !important; }';
     const head = document.head;
     const style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(ignorePointerEvents));
+    style.appendChild(document.createTextNode(blockPointerEvents));
     head.appendChild(style);
 }
 
@@ -379,7 +381,12 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RX.Vi
             id: this.props.id
         };
 
-        if (this.props.ignorePointerEvents) {
+        if (this.props.blockPointerEvents) {
+            // Make this element and all children transparent to pointer events
+            props.className = 'reactxp-block-pointer-events';
+            combinedStyles.pointerEvents = 'none';
+        } else if (this.props.ignorePointerEvents) {
+            // Make this element transparent to pointer events, but allow children to still receive events
             props.className = 'reactxp-ignore-pointer-events';
             combinedStyles.pointerEvents = 'none';
         }
