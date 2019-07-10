@@ -4,6 +4,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "sync": "sync-glob '../../dist' ./node_modules/reactxp/dist",
     "web-watch": "webpack --progress --colors --watch",
     "rn-watch": "tsc --watch",
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -19,6 +20,7 @@
     "awesome-typescript-loader": "^5.2.1",
     "rnpm-plugin-windows": "^0.2.9",
     "source-map-loader": "^0.2.4",
+    "sync-glob": "^1.4.0",
     "ts-node": "^8.1.0",
     "tslint": "^5.16.0",
     "tslint-loader": "^3.5.4",

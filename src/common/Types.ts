@@ -626,8 +626,8 @@ export enum LimitFocusType {
 // View
 export interface ViewPropsShared<C = React.Component> extends CommonProps<C>, CommonAccessibilityProps {
     title?: string;
-    ignorePointerEvents?: boolean;
-    blockPointerEvents?: boolean; // Native-only prop for disabling touches on self and all child views
+    ignorePointerEvents?: boolean; // Prop for disabling touches on self
+    blockPointerEvents?: boolean; // Prop for disabling touches on self and all child views
     shouldRasterizeIOS?: boolean; // iOS-only prop, if view should be rendered as a bitmap before compositing
     viewLayerTypeAndroid?: ViewLayerType; // Android only property
 
