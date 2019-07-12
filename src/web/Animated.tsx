@@ -193,7 +193,7 @@ export class Value extends RX.Types.AnimatedValue {
     // After an animation is stopped or completed, updates
     // the final value.
     _updateFinalValue(value: number | string) {
-        this._value = value;
+        this.setValue(value);
     }
 }
 
