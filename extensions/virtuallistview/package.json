@@ -10,18 +10,24 @@
   },
   "dependencies": {
     "assert": "^1.4.1",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.11"
   },
   "peerDependencies": {
-    "reactxp": "^1.6.1"
+    "react": "^16.0",
+    "reactxp": "^1.6.1",
+    "react-dom": "^16.0",
+    "react-native": ">=0.57 <0.60",
+    "react-native-windows": "^0.57.1"
   },
   "devDependencies": {
     "@types/assert": "^1.4.0",
+    "@types/lodash": "^4.14.134",
     "reactxp": "^1.6.1",
-    "tslint": "5.11.0",
-    "tslint-microsoft-contrib": "6.0.0",
-    "tslint-react": "3.6.0",
-    "typescript": "3.2.1"
+    "tslint": "^5.17.0",
+    "tslint-microsoft-contrib": "^6.2.0",
+    "tslint-react": "^4.0.0",
+    "tsutils": "^3.14.0",
+    "typescript": "^3.5.1"
   },
   "homepage": "https://microsoft.github.io/reactxp/docs/extensions/virtuallistview.html",
   "repository": {
