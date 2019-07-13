@@ -195,6 +195,10 @@ export class Button extends ButtonBase {
     }
 
     private _onMouseDown = (e: React.SyntheticEvent<any>) => {
+        if (this.props.disabled) {
+            return;
+        }
+
         this._isMouseOver = true;
         if (this.props.onPressIn) {
             this.props.onPressIn(e);
@@ -246,7 +250,7 @@ export class Button extends ButtonBase {
     }
 
     private _onMouseUp = (e: Types.SyntheticEvent | Types.TouchEvent) => {
-        if (this.props.onPressOut) {
+        if (!this.props.disabled && this.props.onPressOut) {
             this.props.onPressOut(e);
         }
 

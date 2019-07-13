@@ -15,6 +15,7 @@ import { isEqual } from './utils/lodashMini';
 
 export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, T extends RN.View | RN.ScrollView,
         C extends RX.View | RX.ScrollView> extends RX.ViewBase<P, S> {
+    protected static readonly _supportsNativeFocusBlur = RN.Platform.OS !== 'android';
     private static _defaultViewStyle: RX.Types.ViewStyleRuleSet | undefined;
     private _layoutEventValues: RX.Types.ViewOnLayoutEvent | undefined;
 
