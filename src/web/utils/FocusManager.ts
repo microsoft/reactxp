@@ -301,6 +301,7 @@ export class FocusManager extends FocusManagerBase {
         if (FocusManager._setTabIndexTimer && element === FocusManager._setTabIndexElement) {
             Timers.clearTimeout(FocusManager._setTabIndexTimer);
             FocusManager._setTabIndexTimer = undefined;
+            FocusManager._setTabIndexElement = undefined;
         }
 
         const prev = element.hasAttribute(ATTR_NAME_TAB_INDEX) ? element.tabIndex : undefined;
@@ -317,11 +318,16 @@ export class FocusManager extends FocusManagerBase {
                     FocusManager._setTabIndexElement!.tabIndex = -1;
                     Timers.clearTimeout(FocusManager._setTabIndexTimer);
                     FocusManager._setTabIndexTimer = undefined;
+                    FocusManager._setTabIndexElement = undefined;
                 }
 
                 FocusManager._setTabIndexElement = element;
                 FocusManager._setTabIndexTimer = Timers.setTimeout(() => {
                     element.tabIndex = value;
+                    if (element === FocusManager._setTabIndexElement) {
+                        FocusManager._setTabIndexTimer = undefined;
+                        FocusManager._setTabIndexElement = undefined;
+                    }
                 }, 0);
             } else {
                 element.tabIndex = value;

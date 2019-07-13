@@ -258,6 +258,12 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
     }
 
     private _onMouseDown = (e: React.MouseEvent<any>) => {
+        if (this.props.onPan || this.props.onPanHorizontal || this.props.onPanVertical) {
+            // Disable mousedown default action that initiates a drag/drop operation and breaks panning with a not-allowed cursor.
+            // https://w3c.github.io/uievents/#mousedown
+            e.preventDefault();
+        }
+
         if (this.props.onLongPress) {
             this._startLongPressTimer(e);
         }

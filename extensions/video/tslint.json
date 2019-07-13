@@ -1,4 +1,8 @@
 {
+  "rulesDirectory": [
+      "./node_modules/tslint-microsoft-contrib",
+      "./node_modules/tslint-react/rules"
+  ],
   "rules": {
     "align": [true, "statements"],
     "class-name": true,

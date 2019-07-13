@@ -180,6 +180,22 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
                         </RX.View>
                     </RX.ScrollView>
                 </RX.View>
+
+                <RX.View style={ _styles.explainTextContainer } key={ 'explanation3' }>
+                    <RX.Text style={ _styles.explainText }>
+                        { 'Scroll is disabled' }
+                    </RX.Text>
+                </RX.View>
+                <RX.View style={ _styles.scrollViewContainer }>
+                    <RX.ScrollView
+                        style={ _styles.scrollView1 }
+                        scrollEnabled={ false }
+                    >
+                        <RX.View style={ _styles.listContainer }>
+                            { numberItems }
+                        </RX.View>
+                    </RX.ScrollView>
+                </RX.View>
             </RX.View>
         );
     }

@@ -8,14 +8,10 @@
     "build": "npm run tslint && tsc",
     "build-release": "npm run tslint-release && tsc",
     "watch": "npm run tslint && tsc --watch",
-    "tslint": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true",
-    "tslint-release": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib"
+    "tslint": "tslint --project tsconfig.json -r tslint.json --fix || true",
+    "tslint-release": "tslint --project tsconfig.json -r tslint.json"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.123",
-    "@types/react": "^16.8.14",
-    "@types/react-dom": "^16.8.4",
-    "@types/react-native": "^0.57.51",
     "lodash": "^4.17.11",
     "prop-types": "^15.7.2",
     "rebound": "^0.1.0",
@@ -30,12 +26,16 @@
     "react-native-windows": "^0.57.1"
   },
   "devDependencies": {
-    "react-native-webview": "^5.7.2",
-    "tslint": "^5.16.0",
-    "tslint-microsoft-contrib": "^6.1.1",
+    "@types/lodash": "^4.14.134",
+    "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-native": "^0.57.62",
+    "react-native-webview": "^5.11.0",
+    "tslint": "^5.17.0",
+    "tslint-microsoft-contrib": "^6.2.0",
     "tslint-react": "^4.0.0",
-    "tsutils": "^3.10.0",
-    "typescript": "^3.4.5"
+    "tsutils": "^3.14.0",
+    "typescript": "^3.5.1"
   },
   "homepage": "https://microsoft.github.io/reactxp/",
   "repository": {
