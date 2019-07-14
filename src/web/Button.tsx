@@ -267,8 +267,7 @@ export class Button extends ButtonBase {
      * 2- Long press > leave button > release touch
      * 3- Tap
      *
-     * Case where onPressOut is not triggered and the bubbling is NOT canceled:
-     * 4- Press in > leave button > release touch
+     * All other cases: onPressOut is not triggered and the bubbling is NOT canceled:
      */
     private _onTouchEnd = (e: Types.SyntheticEvent | Types.TouchEvent) => {
         if (this._isMouseOver && this._ignoreTouchEnd) {
@@ -280,13 +279,20 @@ export class Button extends ButtonBase {
             /* 3 */
             this._isMouseOver && !this._ignoreTouchEnd
         ) {
+            if ('touches' in e) {
+                // Stop the to event sequence to prevent trigger button.onMouseDown
+                e.preventDefault();
+                if (this.props.onPress) {
+                    this.props.onPress(e);
+                }
+            }
+
             if (this.props.onPressOut) {
                 this.props.onPressOut(e);
             }
-        } else {
-            /* 4 */
-            this._ignoreTouchEnd = false;
         }
+
+        this._ignoreTouchEnd = false;
 
         if (this._longPressTimer) {
             Timers.clearTimeout(this._longPressTimer);
