@@ -48,7 +48,7 @@ ariaLabelledBy?: string = undefined; // Web only
 ariaRoleDescription?: string = undefined; // Web only
 
 // Block touches for this component and all of its children
-blockPointerEvents: boolean = false; // iOS and Android only
+blockPointerEvents: boolean = false;
 
 // Disable default opacity animation on touch on views that have
 // onPress handlers
@@ -60,7 +60,7 @@ id: string = undefined; // Web only
 
 // Ignore clicks and other mouse events, allowing children or
 // components behind to receive them
-ignorePointerEvents: boolean = false; // web only
+ignorePointerEvents: boolean = false;
 
 // Expose the element and/or its children as accessible to Screen readers
 importantForAccessibility?: ImportantForAccessibility = Auto;
