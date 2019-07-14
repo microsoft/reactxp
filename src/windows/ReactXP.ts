@@ -34,7 +34,6 @@ import StylesImpl from '../native-common/Styles';
 import RXTypes = require('../common/Types');
 import UserInterfaceImpl from '../native-common/UserInterface';
 import UserPresenceImpl from '../native-common/UserPresence';
-import WebViewImpl from '../native-common/WebView';
 
 import AccessibilityImpl from './Accessibility';
 import AccessibilityPlatformUtil from './AccessibilityUtil';
@@ -107,8 +106,6 @@ module ReactXP {
     export let UserPresence: RXInterfaces.UserPresence = UserPresenceImpl;
     export type View = RXInterfaces.View;
     export let View: typeof RXInterfaces.View = ViewImpl;
-    export type WebView = RXInterfaces.WebView;
-    export let WebView: RXInterfaces.WebViewConstructor = WebViewImpl;
 
     const windowsAnimatedClasses =  {
         ...CommonAnimatedClasses,

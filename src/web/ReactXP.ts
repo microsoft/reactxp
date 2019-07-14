@@ -45,7 +45,6 @@ import UserInterfaceImpl from './UserInterface';
 import UserPresenceImpl from './UserPresence';
 import ViewImpl from './View';
 import { ViewBase } from './ViewBase';
-import { WebView as WebViewImpl } from './WebView';
 setSortAndFilterFunc(FocusManager.sortAndFilterAutoFocusCandidates);
 
 // -- STRANGE THINGS GOING ON HERE --
@@ -109,8 +108,6 @@ module ReactXP {
     export let UserPresence: RXInterfaces.UserPresence = UserPresenceImpl;
     export type View = RXInterfaces.View;
     export let View: typeof RXInterfaces.View = ViewImpl;
-    export type WebView = RXInterfaces.WebView;
-    export let WebView: RXInterfaces.WebViewConstructor = WebViewImpl;
 
     export import Animated = AnimatedImpl;
     export import CommonProps = RXTypes.CommonProps;

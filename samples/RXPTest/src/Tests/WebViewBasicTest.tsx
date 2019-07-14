@@ -5,6 +5,7 @@
 
 import _ = require('lodash');
 import RX = require('reactxp');
+import RXWebView, { Types as RXWebViewTypes } from 'reactxp-webview';
 
 import * as CommonStyles from '../CommonStyles';
 import { Test, TestResult, TestType } from '../Test';
@@ -30,7 +31,7 @@ const _styles = {
         borderWidth: 1,
         borderColor: '#ddd'
     }),
-    webView: RX.Styles.createWebViewStyle({
+    webView: RX.Styles.createViewStyle({
     }),
     eventHistoryScrollView: RX.Styles.createScrollViewStyle({
         margin: 12,
@@ -71,7 +72,7 @@ interface WebViewViewState {
 }
 
 class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
-    private _webViewTest1: RX.WebView | undefined;
+    private _webViewTest1: RXWebView | undefined;
 
     constructor(props: RX.CommonProps) {
         super(props);
@@ -96,9 +97,9 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.webViewContainer }>
-                    <RX.WebView
+                    <RXWebView
                         style={ _styles.webView }
-                        url={ 'https://microsoft.github.io/reactxp/docs/components/webview.html' }
+                        url={ 'https://microsoft.github.io/reactxp/docs/extensions/webview.html' }
                         ref={ (comp: any) => { this._webViewTest1 = comp; } }
                         onNavigationStateChange={ this._onNavChangeTest1 }
                         onLoadStart={ this._onLoadStartTest1 }
@@ -149,7 +150,7 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
         );
     }
 
-    private _onNavChangeTest1 = (navState: RX.Types.WebViewNavigationState) => {
+    private _onNavChangeTest1 = (navState: RXWebViewTypes.WebViewNavigationState) => {
         this._appendHistoryTest1('Nav state changed');
 
         this.setState({
@@ -188,10 +189,13 @@ class WebViewView extends RX.Component<RX.CommonProps, WebViewViewState> {
         }
     }
 
+    // Keep a local buffer of eventHistory since back-to-back calls to append history can cause data loss (setState may not be synchronous)
+    private _test1EventHistory: string[] = [];
     private _appendHistoryTest1(newLine: string) {
         // Prepend it so we can always see the latest.
         // Limit to the last 20 items.
-        let newHistory = [newLine].concat(_.slice(this.state.test1EventHistory, 0, 18));
+        let newHistory = [newLine].concat(_.slice(this._test1EventHistory, 0, 18));
+        this._test1EventHistory = newHistory;
         this.setState({
             test1EventHistory: newHistory
         });

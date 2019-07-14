@@ -101,11 +101,6 @@ export class Styles extends RX.Styles {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
-    // Creates opaque styles that can be used for WebView
-    createWebViewStyle(ruleSet: RX.Types.WebViewStyle, cacheStyle = true): RX.Types.WebViewStyleRuleSet {
-        return this._adaptStyles(ruleSet, cacheStyle);
-    }
-
     // Creates opaque styles that can be used for Text
     createTextStyle(ruleSet: RX.Types.TextStyle, cacheStyle = true): RX.Types.TextStyleRuleSet {
         return this._adaptStyles(ruleSet, cacheStyle, true);

@@ -235,15 +235,6 @@ export interface ButtonStyle extends ViewStyle {
 export type ButtonStyleRuleSet = StyleRuleSet<ButtonStyle>;
 
 // ------------------------------------------------------------
-// WebView Style Rules
-// ------------------------------------------------------------
-
-export interface WebViewStyle extends ViewStyle {
-}
-
-export type WebViewStyleRuleSet = StyleRuleSet<WebViewStyle>;
-
-// ------------------------------------------------------------
 // ActivityIndicator Style Rules
 // ------------------------------------------------------------
 
@@ -980,73 +971,6 @@ export interface ActivityIndicatorProps extends CommonStyledProps<ActivityIndica
     deferTime?: number; // Number of ms to wait before displaying
 }
 
-// WebView
-export interface WebViewNavigationState {
-    canGoBack: boolean;
-    canGoForward: boolean;
-    loading: boolean;
-    url: string;
-    title: string;
-    readonly navigationType:
-        | 'click'
-        | 'formsubmit'
-        | 'backforward'
-        | 'reload'
-        | 'formresubmit'
-        | 'other';
-}
-
-export interface WebViewErrorState extends WebViewNavigationState {
-    description: string;
-    domain: string;
-    code: string;
-}
-
-export enum WebViewSandboxMode {
-    None = 0,
-    AllowForms = 1 << 0,
-    AllowModals = 1 << 1,
-    AllowOrientationLock = 1 << 2,
-    AllowPointerLock = 1 << 3,
-    AllowPopups = 1 << 4,
-    AllowPopupsToEscapeSandbox = 1 << 5,
-    AllowPresentation = 1 << 6,
-    AllowSameOrigin = 1 << 7,
-    AllowScripts = 1 << 8,
-    AllowTopNavigation = 1 << 9,
-    AllowMixedContentAlways = 1 << 10,
-    AllowMixedContentCompatibilityMode = 1 << 11
-}
-
-export interface WebViewSource {
-    html: string;
-    baseUrl?: string;
-}
-
-export interface WebViewProps extends CommonStyledProps<WebViewStyleRuleSet, RX.WebView> {
-    url?: string;
-    source?: WebViewSource;
-    headers?: Headers;
-    onLoad?: (e: SyntheticEvent) => void;
-    onNavigationStateChange?: (navigationState: WebViewNavigationState) => void;
-    scalesPageToFit?: boolean;
-    injectedJavaScript?: string;
-    javaScriptEnabled?: boolean;
-    mediaPlaybackRequiresUserAction?: boolean;
-    allowsInlineMediaPlayback?: boolean;
-
-    // Native only
-    startInLoadingState?: boolean;
-    domStorageEnabled?: boolean;
-    onShouldStartLoadWithRequest?: (shouldStartLoadEvent: WebViewShouldStartLoadEvent) => boolean;
-    onLoadStart?: (e: SyntheticEvent) => void;
-    onError?: (e: SyntheticEvent) => void;
-    onMessage?: (e: WebViewMessageEvent) => void;
-
-    // Web only; overrides javaScriptEnabled if used
-    sandbox?: WebViewSandboxMode;
-}
-
 // 'context' mode makes it attempt to behave like a context menu -- defaulting
 // to the lower right of the anchor element and working its way around.  It is not supported
 // with inner positioning and will throw an exception if used there.
@@ -1305,18 +1229,6 @@ export interface WheelEvent extends SyntheticEvent {
     deltaZ: number;
 }
 
-export interface WebViewShouldStartLoadEvent {
-    url: string;
-}
-
-export interface WebViewNavigationEvent extends SyntheticEvent {
-    nativeEvent: WebViewNavigationState;
-}
-
-export interface WebViewErrorEvent extends SyntheticEvent {
-    nativeEvent: WebViewErrorState;
-}
-
 export type ViewOnLayoutEvent = {
     x: number;
     y: number;
@@ -1331,11 +1243,6 @@ export interface KeyboardEvent extends SyntheticEvent {
     keyCode: number;
     metaKey: boolean;
     key: string;
-}
-
-export interface WebViewMessageEvent extends SyntheticEvent {
-    data: string;
-    origin: string;
 }
 
 //

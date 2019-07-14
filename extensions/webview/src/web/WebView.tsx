@@ -9,18 +9,17 @@
 
 import * as React from 'react';
 
-import * as RX from '../common/Interfaces';
+import * as RX from 'reactxp';
 
-import Styles from './Styles';
-import { View } from './View';
+import * as Types from '../common/Types';
 
 const _styles = {
-    webViewDefault: Styles.createWebViewStyle({
+    webViewDefault: RX.Styles.createViewStyle({
         flex: 1,
         alignSelf: 'stretch',
         borderStyle: 'none'
     }),
-    webViewContainer: Styles.createViewStyle({
+    webViewContainer: RX.Styles.createViewStyle({
         flexDirection: 'column',
         flex: 1,
         alignSelf: 'stretch'
@@ -33,11 +32,11 @@ export interface WebViewState {
     webFrameIdentifier?: string;
 }
 
-interface WebViewMessageEventInternal extends RX.Types.WebViewMessageEvent {
+interface WebViewMessageEventInternal extends Types.WebViewMessageEvent {
     __propagationStopped: boolean;
 }
 
-export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState> implements RX.WebView {
+export class WebView extends React.Component<Types.WebViewProps, WebViewState> implements Types.WebView {
     private static _webFrameNumber = 1;
     private static _onMessageReceived: RX.Types.SubscribableEvent<(e: WebViewMessageEventInternal) => void>;
     private static _messageListenerInstalled = false;
@@ -45,7 +44,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
     private _mountedComponent: HTMLIFrameElement | null = null;
     private _onMessageReceivedToken: RX.Types.SubscriptionToken | undefined;
 
-    constructor(props: RX.Types.WebViewProps) {
+    constructor(props: Types.WebViewProps) {
         super(props);
 
         this.state = {
@@ -66,7 +65,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
         }
     }
 
-    componentDidUpdate(prevProps: RX.Types.WebViewProps, prevState: WebViewState) {
+    componentDidUpdate(prevProps: Types.WebViewProps, prevState: WebViewState) {
         this._postRender();
 
         const oldCustomContents = this._getCustomHtml(prevProps);
@@ -86,7 +85,7 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
         }
     }
 
-    private _getCustomHtml(props: RX.Types.WebViewProps): string | undefined {
+    private _getCustomHtml(props: Types.WebViewProps): string | undefined {
         if (props.url || !props.source) {
             return undefined;
         }
@@ -170,14 +169,14 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
     }
 
     render() {
-        const styles = Styles.combine([_styles.webViewDefault, this.props.style]);
+        const styles = RX.Styles.combine([_styles.webViewDefault, this.props.style]);
         const sandbox = this.props.sandbox !== undefined
             ? this.props.sandbox
-            : (this.props.javaScriptEnabled ? RX.Types.WebViewSandboxMode.AllowScripts : RX.Types.WebViewSandboxMode.None);
+            : (this.props.javaScriptEnabled ? Types.WebViewSandboxMode.AllowScripts : Types.WebViewSandboxMode.None);
 
         // width 100% is needed for Edge - it doesn't grow iframe. Resize needs to be done with wrapper
         return (
-            <View style={ _styles.webViewContainer }>
+            <RX.View style={ _styles.webViewContainer }>
                 <iframe
                     ref={ this._onMount }
                     name={ this.state.webFrameIdentifier }
@@ -186,10 +185,10 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
                     src={ this.props.url }
                     onLoad={ this._onLoad }
                     sandbox={ this._sandboxToStringValue(sandbox) }
-                    width='100%'
+                    width={ '100%' }
                     data-test-id={ this.props.testId }
                 />
-            </View>
+            </RX.View>
         );
     }
 
@@ -203,37 +202,37 @@ export class WebView extends React.Component<RX.Types.WebViewProps, WebViewState
         }
     }
 
-    private _sandboxToStringValue = (sandbox: RX.Types.WebViewSandboxMode) => {
+    private _sandboxToStringValue = (sandbox: Types.WebViewSandboxMode) => {
         const values: string[] = [];
 
-        if (sandbox & RX.Types.WebViewSandboxMode.AllowForms) {
+        if (sandbox & Types.WebViewSandboxMode.AllowForms) {
             values.push('allow-forms');
         }
-        if (sandbox & RX.Types.WebViewSandboxMode.AllowModals) {
+        if (sandbox & Types.WebViewSandboxMode.AllowModals) {
             values.push('allow-modals');
         }
-        if (sandbox & RX.Types.WebViewSandboxMode.AllowOrientationLock) {
+        if (sandbox & Types.WebViewSandboxMode.AllowOrientationLock) {
             values.push('allow-orientation-lock');
         }
-        if (sandbox & RX.Types.WebViewSandboxMode.AllowPointerLock) {
+        if (sandbox & Types.WebViewSandboxMode.AllowPointerLock) {
             values.push('allow-pointer-lock');
         }
-        if (sandbox & RX.Types.WebViewSandboxMode.AllowPopups) {
+        if (sandbox & Types.WebViewSandboxMode.AllowPopups) {
             values.push('allow-popups');
         }
-        if (sandbox & RX.Types.WebViewSandboxMode.AllowPopupsToEscapeSandbox) {
+        if (sandbox & Types.WebViewSandboxMode.AllowPopupsToEscapeSandbox) {
             values.push('allow-popups-to-escape-sandbox');
         }
-        if (sandbox & RX.Types.WebViewSandboxMode.AllowPresentation) {
+        if (sandbox & Types.WebViewSandboxMode.AllowPresentation) {
             values.push('allow-presentation');
         }
-        if (sandbox & RX.Types.WebViewSandboxMode.AllowSameOrigin) {
+        if (sandbox & Types.WebViewSandboxMode.AllowSameOrigin) {
             values.push('allow-same-origin');
         }
-        if (sandbox & RX.Types.WebViewSandboxMode.AllowScripts) {
+        if (sandbox & Types.WebViewSandboxMode.AllowScripts) {
             values.push('allow-scripts');
         }
-        if (sandbox & RX.Types.WebViewSandboxMode.AllowTopNavigation) {
+        if (sandbox & Types.WebViewSandboxMode.AllowTopNavigation) {
             values.push('allow-top-navigation');
         }
 

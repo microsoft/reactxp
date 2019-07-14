@@ -36,6 +36,7 @@
     "react-native": "0.59.5",
     "react-native-webview": "^5.7.2",
     "react-native-windows": "^0.57.1",
-    "reactxp": "^1.6.1"
+    "reactxp": "^1.6.1",
+    "reactxp-webview": "0.0.1-alpha.1"
   }
 }

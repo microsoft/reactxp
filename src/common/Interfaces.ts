@@ -234,7 +234,6 @@ export abstract class Styles {
     abstract createAnimatedViewStyle(ruleSet: Types.AnimatedViewStyle): Types.AnimatedViewStyleRuleSet;
     abstract createScrollViewStyle(ruleSet: Types.ScrollViewStyle, cacheStyle?: boolean): Types.ScrollViewStyleRuleSet;
     abstract createButtonStyle(ruleSet: Types.ButtonStyle, cacheStyle?: boolean): Types.ButtonStyleRuleSet;
-    abstract createWebViewStyle(ruleSet: Types.WebViewStyle, cacheStyle?: boolean): Types.WebViewStyleRuleSet;
     abstract createTextStyle(ruleSet: Types.TextStyle, cacheStyle?: boolean): Types.TextStyleRuleSet;
     abstract createAnimatedTextStyle(ruleSet: Types.AnimatedTextStyle): Types.AnimatedTextStyleRuleSet;
     abstract createTextInputStyle(ruleSet: Types.TextInputStyle, cacheStyle?: boolean): Types.TextInputStyleRuleSet;
@@ -288,17 +287,6 @@ export abstract class View extends ViewBase<Types.ViewProps> implements Focusabl
 }
 
 export abstract class GestureView extends ViewBase<Types.GestureViewProps> {}
-
-export interface WebViewConstructor {
-    new(props: Types.WebViewProps): WebView;
-}
-
-export interface WebView extends ViewBase<Types.WebViewProps> {
-    postMessage(message: string, targetOrigin?: string): void;
-    reload(): void;
-    goBack(): void;
-    goForward(): void;
-}
 
 export interface Animated {
     Image: typeof AnimatedImage;

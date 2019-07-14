@@ -45,10 +45,6 @@ declare module 'react-native' {
         tooltip?: string;
     }
 
-    interface ExtendedWebViewProps extends RN.WebViewProps {
-        useWebKit?: boolean;
-    }
-
     interface RtlEventNativePayload {
         isRTL:  boolean;
     }
