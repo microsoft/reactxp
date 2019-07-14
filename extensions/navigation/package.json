@@ -16,7 +16,6 @@
     "react"
   ],
   "dependencies": {
-    "assert": "1.4.1",
     "lodash": "^4.17.11",
     "rebound": "^0.1.0",
     "reactxp-experimental-navigation": "1.0.14"

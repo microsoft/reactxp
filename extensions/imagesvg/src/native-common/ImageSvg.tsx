@@ -7,15 +7,15 @@
  * SVG (scalable vector graphics) images.
  */
 
-import * as assert from 'assert';
 import * as React from 'react';
 import * as RNSvg from 'react-native-svg';
 
+import assert from '../common/assert';
 import { ImageSvgProps } from '../common/Types';
 
 export class ImageSvg extends React.Component<ImageSvgProps, {}> {
     render() {
-        assert.ok(this.props.width && this.props.height, 'The width and height on imagesvg are mandatory.');
+        assert(this.props.width && this.props.height, 'The width and height on imagesvg are mandatory.');
 
         if (this.props.width > 0 && this.props.height > 0) {
             return (

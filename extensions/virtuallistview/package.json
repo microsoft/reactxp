@@ -9,7 +9,6 @@
     "tslint": "tslint --project tsconfig.json -r tslint.json --fix || true"
   },
   "dependencies": {
-    "assert": "^1.4.1",
     "lodash": "^4.17.11"
   },
   "peerDependencies": {
@@ -20,7 +19,6 @@
     "react-native-windows": "^0.57.1"
   },
   "devDependencies": {
-    "@types/assert": "^1.4.0",
     "@types/lodash": "^4.14.134",
     "reactxp": "^1.6.1",
     "tslint": "^5.17.0",
