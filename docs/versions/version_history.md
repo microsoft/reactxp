@@ -16,6 +16,27 @@ A new version of ReactXP will be released a monthly basis (approximately), follo
 
 ### Version History
 
+#### Version 1.7.0-rc.1 of reactxp-video, reactxp-imagesvg, reactxp-navigation - _14 July 2019_
+* No new functionality, just version and dependency updates.
+
+#### Version 1.7.0-rc.1 of reactxp - _14 July 2019_
+* #1077: Added longPress support for web.
+* #1080: Addes upport for delayLongPress on web.
+* #1079: Fixed bug that caused onTouchMove not to trigger on mobile web.
+* #1082: Added support on web for onTouchStart, onTouchEnd, and onTouchCancel props for RX.View.
+* #1087: Added support on web for onHoverEnd.
+* #1059: Improved support for RN 0.59.
+* #1089: Added support on web for onTouchMoveCapture and onTouchStartCapture props of RX.View.
+* #1098: Fixed bug on web where reference to HTML element was not released properly, resulting in leak.
+* #1088: Added support on web for scrollEnabled prop in RX.ScrollView.
+* #1098: Fixed bug in handling of images on RN platforms.
+* #1118: Fixed bug on web related to pan gestures.
+* #1114: Fixed crash on Android relating to TextInput event processing.
+* #1102: Fixed bug on web where animated properties were not properly updated if they were interpolated.
+* #1117: Added support on web for blockPointerEvents prop on RX.View.
+* #1101: Extracted RX.WebView out of ReactXP core into an extension.
+* #1091: Fixed bug on web in onPressIn processing where event could get triggered twice.
+
 #### Version 2.0.0 of reactxp-virtuallistview - _6 Apr 2019_
 * #1073: Removed internal string-based refs with React.RefObject.
 
