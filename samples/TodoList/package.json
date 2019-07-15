@@ -1,6 +1,6 @@
 {
     "name": "todolist",
-    "version": "1.6.0",
+    "version": "1.7.0-rc.1",
     "private": true,
     "main": "index.js",
     "scripts": {
@@ -66,8 +66,8 @@
         "react-native": "^0.59.1",
         "react-native-sqlite-storage": "^3.3.10",
         "react-native-windows": "0.57.0-rc.5",
-        "reactxp": "^1.6.0",
-        "reactxp-navigation": "^1.6.0",
+        "reactxp": "^1.7.0-rc.1",
+        "reactxp-navigation": "^1.7.0-rc.1",
         "reactxp-virtuallistview": "^2.0.0",
         "resub": "^1.0.13",
         "simplerestclients": "^0.2.7",

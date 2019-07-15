@@ -2,7 +2,7 @@
   "name": "hello-world",
   "private": true,
   "main": "index.js",
-  "version": "1.6.0",
+  "version": "1.7.0-rc.1",
   "scripts": {
     "rn-cli": "node node_modules/react-native/local-cli/cli.js",
     "start:android": "npm run rn-cli -- run-android",
@@ -39,9 +39,9 @@
     "react-dom": "16.8.4",
     "react-native": "0.59.1",
     "react-native-windows": "0.57.0-rc.5",
-    "reactxp": "^1.6.0",
-    "reactxp-imagesvg": "^1.6.0",
-    "reactxp-navigation": "^1.6.0",
-    "reactxp-video": "^1.6.0"
+    "reactxp": "^1.7.0-rc.1",
+    "reactxp-imagesvg": "^1.7.0-rc.1",
+    "reactxp-navigation": "^1.7.0-rc.1",
+    "reactxp-video": "^1.7.0-rc.1"
   }
 }
