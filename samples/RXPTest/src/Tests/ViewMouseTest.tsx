@@ -184,10 +184,10 @@ class MouseView extends RX.Component<RX.CommonProps, MouseViewState> {
                 </RX.View>
                 <RX.View style={_styles.row}>
                     <RX.Text style={ _styles.labelText }>
-                        blockPointerEvents: {this.state.blockPointerEvents ? 'true' : 'false' }
+                        { 'blockPointerEvents:' + (this.state.blockPointerEvents ? 'true' : 'false') }
                     </RX.Text>
                     <RX.Button onPress={this.toggleBlockPointerEvents}>
-                    {    this.state.blockPointerEvents ? 'Enable' : 'Disable' }
+                        { this.state.blockPointerEvents ? 'Enable' : 'Disable' }
                     </RX.Button>
                 </RX.View>
                 <RX.View style={_styles.row}>
