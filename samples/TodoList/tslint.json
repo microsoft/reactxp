@@ -43,7 +43,7 @@
         "no-inner-html":true,
         "no-document-write":true,
         "insecure-random": true,
-        "no-reserved-keywords": true,
+        "variable-name": [true, "ban-keywords"/*, "check-format", "allow-leading-underscore", "require-const-for-all-caps"*/],
 
         // Rules that are built in to tslint
         "align": [true, "statements"],

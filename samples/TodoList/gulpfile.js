@@ -23,7 +23,6 @@ var path = require('path');
 var prettyTime = require('pretty-hrtime');
 var rename = require('gulp-rename');
 var replaceWithSM = require('gulp-replace-with-sourcemaps');
-var runSequence = require('run-sequence');
 var shell = require('gulp-shell');
 var sourcemaps = require('gulp-sourcemaps');
 var stylish = require('jshint-stylish');
@@ -196,7 +195,7 @@ var tslintNeedsRun = true;
 function _runTsLintInternal(src, cacheName, fakeTaskName) {
     if (tslintRunning) {
         tslintNeedsRun = true;
-        return;
+        return Promise.resolve();
     }
 
     tslintRunning = true;
@@ -356,7 +355,7 @@ function watcher(glob, callback) {
 
 // Gulp Tasks
 // --------------------------------------------------------------------- //
-gulp.task('watch', function() {
+gulp.task('watch', function(callback) {
     // Watch for changes in the gulpfile or other package lists.
     // If changes are made, notify the user.
     watcher(config.infrastructure.files, function(file) {
@@ -382,24 +381,14 @@ gulp.task('watch', function() {
     });
 
     // Watch external files to copy.
-    watcher(getFilePathsFromConfig(config.copy), function() {
-        runSequence('copy');
-    });
+    watcher(getFilePathsFromConfig(config.copy), gulp.series('copy'));
 
     if (!usesWebpack()) {
         // Watch for ts change & run linter
-        watcher(config.ts.src, function() {
-            // On web/desktop webpack builds the bundle
-            runSequence('compile-rn', 'apply-aliases', runTsLintFromWatcher);
-        });
+        watcher(config.ts.src, gulp.series('compile-rn', 'apply-aliases', runTsLintFromWatcher));
     }
 
-    gutil.log(gutil.colors.yellow('gulp watch enabled'));
-
-    if (usesWebpack()) {
-        // Start the webpack bundler, which will also be watching for changes.
-        runSequence('webpack-js-watch');
-    }
+    callback();
 });
 
 gulp.task('clean', function() {
@@ -411,6 +400,7 @@ gulp.task('ts-lint', function() {
     if (!usesWebpack()) {
         return runTsLint();
     }
+    return Promise.resolve();
 });
 
 gulp.task('gulpfile-lint', function() {
@@ -422,7 +412,7 @@ gulp.task('gulpfile-lint', function() {
 
 gulp.task('compile-rn', function () {
     if (platform === PLATFORMS.WEB || platform === PLATFORMS.TESTS) {
-        return;
+        return Promise.resolve();
     }
 
     var rnSource = config.ts.src.concat(config.ts.definitions);
@@ -467,25 +457,19 @@ gulp.task('copy', function(callback) {
     copyMultiple(config.copy, callback);
 });
 
-gulp.task('lint', function(callback) {
-    runSequence(['ts-lint', 'gulpfile-lint'], callback);
-});
+gulp.task('lint', gulp.series('ts-lint', 'gulpfile-lint'));
 
-gulp.task('build', function(callback) {
-    runSequence(['copy', 'compile-rn'], callback);
-});
+gulp.task('build', gulp.series('copy', 'compile-rn'));
 
 gulp.task('webpack-js', shell.task('node --max_old_space_size=4096 ./node_modules/webpack/bin/webpack.js --bail --hide-modules', { env: webpackEnv }));
 gulp.task('webpack-js-watch', shell.task('node --max_old_space_size=4096 ./node_modules/webpack/bin/webpack.js --watch --hide-modules', { env: webpackEnv }));
 
-gulp.task('run-once', function (callback) {
-    runSequence('clean', 'lint', 'copy', 'build', 'apply-aliases', usesWebpack() ? 'webpack-js' : 'noop', callback);
-});
-
-gulp.task('noop', function() {
+gulp.task('noop', function(callback) {
     // NOOP!
+    callback();
 });
 
-gulp.task('run', function(callback) {
-    runSequence('clean', 'copy', 'build', 'apply-aliases', 'watch', 'lint', callback);
-});
+gulp.task('run-once', gulp.series('clean', 'lint', 'copy', 'build', 'apply-aliases', usesWebpack() ? 'webpack-js' : 'noop'));
+
+gulp.task('run', gulp.series('clean', 'copy', 'build', 'apply-aliases', 'watch',
+    (usesWebpack() ? 'webpack-js-watch' : 'noop'), 'lint'));
