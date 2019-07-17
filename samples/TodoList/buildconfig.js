@@ -167,9 +167,6 @@ function getConfigInternal() {
         ts: {
             src: [getSourcePath('ts/**/*.{ts,tsx}')],
             srcRoot: getSourcePath('ts'),
-            definitions: [
-                getSourcePath('typings/**/*.d.ts') // internal
-            ],
             obj: getObjPath(''),
             config: './tsconfig.json',
             RNDest: getBuildPath('js')

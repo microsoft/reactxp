@@ -164,8 +164,6 @@ function getPlatformSpecificResources() {
     return config[configKey] || {};
 }
 
-var tsProject = ts.createProject(config.ts.config);
-
 var defaultFormatter = new tslintEng.Formatters.StylishFormatter();
 var createCacheInvalidator = function(cacheName) {
     function formatter() {}
@@ -415,9 +413,9 @@ gulp.task('compile-rn', function () {
         return Promise.resolve();
     }
 
-    var rnSource = config.ts.src.concat(config.ts.definitions);
+    var tsProject = ts.createProject(config.ts.config);
+    var rnSource = config.ts.src;
     var stream = gulp.src(rnSource)
-        .pipe(cached('typescript'))
         .pipe(eol(os.EOL, false))
         .pipe(enableSrcMaps ? sourcemaps.init() : gutil.noop())
         .pipe(tsProject());
