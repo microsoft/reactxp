@@ -7,38 +7,37 @@
 
 'use strict';
 
-var _ = require('lodash');
-var fs = require('fs');
-var path = require('path');
+import fs = require('fs');
+import _ = require('lodash');
+import path = require('path');
 
-var targetPlatform = 'web';
-var isDevEnv = false;
+let targetPlatform = 'web';
 
 // Base paths to specific folders
-var basePaths = {
+const basePaths = {
     nodeModulesPath: './node_modules',
     sourcePath : './src/',
     tempPath: './temp/',
     webAppPath : './web/'
 };
 
-function getTempPath(mypath) {
+function getTempPath(mypath: string) {
     return path.join(basePaths.tempPath, targetPlatform, mypath);
 }
 
-function getSourcePath(mypath) {
+function getSourcePath(mypath: string) {
     return path.join(basePaths.sourcePath, mypath);
 }
 
-function getObjPath(mypath) {
+function getObjPath(mypath: string) {
     return path.join(getTempPath('obj'), mypath);
 }
 
-function getWebAppPath(mypath) {
+function getWebAppPath(mypath: string) {
     return path.join(basePaths.webAppPath, mypath);
 }
 
-function getBuildPath(mypath) {
+function getBuildPath(mypath: string) {
     if (targetPlatform === 'web') {
         return getWebAppPath(mypath);
     } else {
@@ -46,7 +45,7 @@ function getBuildPath(mypath) {
     }
 }
 
-function setTargetPlatform(target) {
+function setTargetPlatform(target: string) {
     switch (target) {
         case 'ios':
         case 'android':
@@ -64,11 +63,7 @@ function setTargetPlatform(target) {
     }
 }
 
-function setIsDevEnv(dev) {
-    isDevEnv = dev;
-}
-
-function getCommonFallback(targetPlatform) {
+function getCommonFallback(targetPlatform: string) {
     switch (targetPlatform) {
         case 'android':
         case 'ios':
@@ -88,25 +83,24 @@ function getCommonFallback(targetPlatform) {
 // 1. modules/<name>/index.<platform>.ts[x]
 // 2. modules/<name>/index.<web|native>.ts[x]
 // 3. modules/<name>/index.ts[x]
-function getModuleAliases(targetPlatform) {
-    var aliases = {};
-    var fallbackSearchOrder = ['index.' + getCommonFallback(targetPlatform), 'index'];
+function getModuleAliases(targetPlatform: string) {
+    const aliases: _.Dictionary<string> = {};
+    const fallbackSearchOrder = ['index.' + getCommonFallback(targetPlatform), 'index'];
 
-    var modules = fs.readdirSync('./src/ts/modules/');
-
+    const modules = fs.readdirSync('./src/ts/modules/');
     _.each(modules, function (moduleName) {
-        var fileNameSearchOrder = [];
-        var moduleVariant = 'index.' + targetPlatform;
+        let moduleVariant = 'index.' + targetPlatform;
 
         _.each(fallbackSearchOrder, function (fallback) {
-            var variantPath = './src/ts/modules/' + moduleName + '/' + moduleVariant;
+            const variantPath = './src/ts/modules/' + moduleName + '/' + moduleVariant;
             if (fs.existsSync(variantPath + '.ts') || fs.existsSync(variantPath + '.tsx')) {
                 return true;
             }
             moduleVariant = fallback;
+            return undefined;
         });
 
-        var modulePath = (targetPlatform === 'web' || targetPlatform === 'tests' || targetPlatform === 'electron') ?
+        const modulePath = (targetPlatform === 'web' || targetPlatform === 'tests' || targetPlatform === 'electron') ?
             getSourcePath('ts/modules') : './' + getObjPath('modules');
         aliases['modules/' + moduleName] = modulePath + '/' + moduleName + '/' + moduleVariant;
     });
@@ -171,11 +165,10 @@ function getConfigInternal() {
             config: './tsconfig.json',
             RNDest: getBuildPath('js')
         }
-    }
+    };
 }
 
-module.exports = function getConfig(newTargetPlatform, isDev) {
+export default function getConfig(newTargetPlatform: string) {
     setTargetPlatform(newTargetPlatform);
-    setIsDevEnv(isDev);
     return getConfigInternal();
 }

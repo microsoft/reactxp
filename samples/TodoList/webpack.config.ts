@@ -5,68 +5,115 @@
 * Configuration for webpack, the bundling tool used for the web.
 */
 
+import ForkTsCheckerPlugin = require('fork-ts-checker-webpack-plugin');
+import _ = require('lodash');
 import path = require('path');
 import * as webpack from 'webpack';
 
-const platform = process.env.PLATFORM || 'web';
+// The TS types built into the plugin don't work right...
+const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
+
+import getConfig from './buildconfig';
+
+const passedPlatform = process.env.PLATFORM || 'web';
+const isWebpack = ['web', 'tests'].includes(passedPlatform);
 const isDev = (process.env.NODE_ENV === 'development');
-const isTest = (platform === 'tests');
+const isTest = (passedPlatform === 'tests');
 
-const getConfig = require('./buildconfig.js');
-const config = getConfig(platform, isDev);
+function buildConfig({ platform }: { platform: string }, defaults: webpack.Configuration) {
+    console.log(platform, defaults);
 
-const webpackConfig: webpack.Configuration = {
-    entry: './src/ts/index.web.tsx',
-    mode: isDev ? 'development' : 'production',
-    output: {
+    const config = getConfig(platform);
+
+    const webpackConfig: webpack.Configuration = _.extend({}, defaults);
+
+    webpackConfig.entry = (platform === 'web') ? './src/ts/index.web.tsx' : './src/ts/index.native.tsx';
+    webpackConfig.mode = isDev ? 'development' : 'production';
+    webpackConfig.output = (platform === 'web') ? {
         filename: 'app.js',
         path: __dirname + '/web/js'
-    },
+    } : {
+        filename: `index${platform !== 'ios' ? '.' + platform : ''}.bundle`
+    };
 
     // Enable sourcemaps for debugging webpack's output.
-    devtool: 'source-map',
+    webpackConfig.devtool = 'source-map';
 
-    resolve: {
-        modules: [
-            path.resolve('.'),
-            path.resolve('./node_modules')
-        ],
-        // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
-        alias: config.bundling.aliases
-    },
+    webpackConfig.resolve = webpackConfig.resolve || {};
+    webpackConfig.resolve.modules = _.compact([
+        path.resolve('.'),
+        path.resolve('./node_modules'),
+        isWebpack ? undefined : path.resolve('./node_modules/react-native/node_modules'),
+    ]);
 
-    module: {
-        rules: [
-            {
-                test: /\.(t|j)sx?$/,
-                exclude: /node_modules[\/\\].*lodash/,
-                loader: 'babel-loader'
-            },
-            {
-                test: /\.tsx?$/,
-                loader: 'ts-loader',
-                options: {
-                    configFile: 'tsconfig.json'
-                }
+    // Add '.ts' and '.tsx' as resolvable extensions.
+    webpackConfig.resolve.extensions = _.compact([
+        `.${platform}.ts`,
+        `.${platform}.tsx`,
+        isWebpack ? undefined : '.native.ts',
+        isWebpack ? undefined : '.native.tsx',
+        '.ts',
+        '.tsx',
+        ...(webpackConfig.resolve.extensions || []),
+    ]);
+
+    webpackConfig.resolve.alias = Object.assign({}, webpackConfig.resolve.alias, config.bundling.aliases);
+
+    webpackConfig.module = webpackConfig.module || { rules: [] };
+    webpackConfig.module.rules = [
+        {
+            test: /\.(t|j)sx?$/,
+            exclude: /node_modules[\/\\].*lodash/,
+            loader: 'babel-loader',
+            query: { compact: !isDev },
+        },
+        {
+            test: /\.tsx?$/,
+            loader: 'ts-loader',
+            options: {
+                configFile: 'tsconfig.json'
             }
-        ]
-    },
+        },
+        ...webpackConfig.module.rules,
+    ];
 
-    plugins: [
+    webpackConfig.plugins = [
         // Replace flags in the code based on the build variables. This is similar to
         // the replaceFlags method in gulpfile.js. If you make a change here, reflect
         // the same change in the other location.
         new webpack.DefinePlugin({
             '__DEV__': isDev,
             '__TEST__': isTest,
-            '__WEB__': true,
-            '__ANDROID__': false,
-            '__IOS__': false,
-            '__WINDOWS__': false,
-            '__MACOS__': false
-        })
-    ]
-};
+            '__WEB__': platform === 'web',
+            '__ANDROID__': platform === 'android',
+            '__IOS__': platform === 'ios',
+            '__WINDOWS__': platform === 'windows',
+            '__MACOS__': platform === 'macos',
+        }),
+        new ForkTsCheckerPlugin({
+            tslint: './tslint.json',
+            tsconfig: './tsconfig.json',
+            tslintAutoFix: true,
+            checkSyntacticErrors: false,    // Dealt with by ts-loader
+            watch: [path.resolve('./src') + '/**/*.ts*'],
+            useTypescriptIncrementalApi: !!process.env.WATCH_MODE,
+            workers: process.env.WATCH_MODE ? 1 : ForkTsCheckerPlugin.TWO_CPUS_FREE,
+        }),
+        process.env.WATCH_MODE ? new WebpackBuildNotifierPlugin({
+            title: 'TodoList Build Tools',
+            suppressSuccess: false,
+            // Intentionally ignore click since we're usually just trying to dismiss the header
+            onClick: () => undefined,
+        }) : undefined,
+        ...(webpackConfig.plugins || [])
+    ];
+
+    console.log(webpackConfig);
+
+    return webpackConfig;
+}
+
+const webpackConfig = isWebpack ? buildConfig({ platform: passedPlatform },
+    { resolve: {}, module: { rules: [] } }) : buildConfig;
 
 export default webpackConfig;

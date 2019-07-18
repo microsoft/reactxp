@@ -6,6 +6,7 @@ yarn-error.log
 /.cache-loader/
 
 temp/
+dist/
 
 # Android/IntelliJ
 #

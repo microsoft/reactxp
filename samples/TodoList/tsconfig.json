@@ -33,6 +33,7 @@
         ".vscode"
     ],
     "include": [
-        "./src/ts/**/*"
+        "./src/ts/**/*",
+        "./*.ts"
     ]
 }
