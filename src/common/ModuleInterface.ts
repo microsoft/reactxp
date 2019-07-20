@@ -42,8 +42,6 @@ export declare module ReactXP {
     export let Location: RX.Location;
     export type Modal = RX.Modal;
     export let Modal: RX.Modal;
-    export type Network = RX.Network;
-    export let Network: RX.Network;
     export type Platform = RX.Platform;
     export let Platform: RX.Platform;
     export type Popup = RX.Popup;

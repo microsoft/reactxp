@@ -1,9 +1,10 @@
 /*
-* Tests the RX.Network APIs in an interactive manner.
+* Tests the ~RX.Network~ reatxp-netinfo APIs in an interactive manner.
 */
 
 import _ = require('lodash');
 import RX = require('reactxp');
+import RXNetInfo, { Types as RXNetInfoTypes } from 'reactxp-netinfo'
 
 import * as CommonStyles from '../CommonStyles';
 import { Test, TestResult, TestType } from '../Test';
@@ -53,7 +54,7 @@ class NetworkView extends RX.Component<RX.CommonProps, NetworkState> {
     componentDidMount() {
         this._isMounted = true;
 
-        this._connectivityChangedEvent = RX.Network.connectivityChangedEvent.subscribe(isConnected => {
+        this._connectivityChangedEvent = RXNetInfo.connectivityChangedEvent.subscribe(isConnected => {
             this.setState({
                 connectionState: isConnected ? 'Connected' : 'Disconnected'
             });
@@ -67,10 +68,14 @@ class NetworkView extends RX.Component<RX.CommonProps, NetworkState> {
 
     componentWillUnmount() {
         this._isMounted = false;
+
+        if (this._connectivityChangedEvent) {
+            this._connectivityChangedEvent.unsubscribe();
+        }
     }
 
     private _queryConnectivityState() {
-        RX.Network.isConnected().then(isConnected => {
+        RXNetInfo.isConnected().then(isConnected => {
             if (this._isMounted) {
                 this.setState({
                     connectionState: isConnected ? 'Connected' : 'Disconnected'
@@ -86,7 +91,7 @@ class NetworkView extends RX.Component<RX.CommonProps, NetworkState> {
     }
 
     private _queryNetworkState() {
-        RX.Network.getType().then(type => {
+        RXNetInfo.getType().then(type => {
             if (this._isMounted) {
                 this.setState({
                     networkType: this._formatNetworkType(type)
@@ -129,24 +134,24 @@ class NetworkView extends RX.Component<RX.CommonProps, NetworkState> {
         );
     }
 
-    private _formatNetworkType(type: RX.Types.DeviceNetworkType): string {
+    private _formatNetworkType(type: RXNetInfoTypes.DeviceNetworkType): string {
         switch (type) {
-            case RX.Types.DeviceNetworkType.Unknown:
+            case RXNetInfoTypes.DeviceNetworkType.Unknown:
                 return 'Unknown';
 
-            case RX.Types.DeviceNetworkType.None:
+            case RXNetInfoTypes.DeviceNetworkType.None:
                 return 'None';
 
-            case RX.Types.DeviceNetworkType.Wifi:
+            case RXNetInfoTypes.DeviceNetworkType.Wifi:
                 return 'WiFi';
 
-            case RX.Types.DeviceNetworkType.Mobile2G:
+            case RXNetInfoTypes.DeviceNetworkType.Mobile2G:
                 return 'Mobile 2G';
 
-            case RX.Types.DeviceNetworkType.Mobile3G:
+            case RXNetInfoTypes.DeviceNetworkType.Mobile3G:
                 return 'Mobile 3G';
 
-            case RX.Types.DeviceNetworkType.Mobile4G:
+            case RXNetInfoTypes.DeviceNetworkType.Mobile4G:
                 return 'Mobile 4G';
 
             default:
