@@ -83,7 +83,7 @@ let compositeAnimation = RX.Animated.parallel([
         { toValue: 0.0, duration: 250, easing: RX.Animated.Easing.InOut() }
     ),
     RX.Animated.timing(animatedOpacityValue,
-        { toValue: 1.1, duration 250, easing: RX.Animated.Easing.Linear() }
+        { toValue: 1.1, duration: 250, easing: RX.Animated.Easing.Linear() }
     )
 ]);
 
