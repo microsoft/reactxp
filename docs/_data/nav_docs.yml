@@ -86,6 +86,8 @@
       title: ImageSvg
     - id: extensions/navigator
       title: Navigator
+    - id: extensions/netinfo
+      title: NetInfo
     - id: extensions/restclient
       title: REST Client
     - id: extensions/video

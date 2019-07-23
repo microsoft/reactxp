@@ -3,7 +3,7 @@ id: extensions/netinfo
 title: NetInfo
 layout: docs
 category: Extensions
-permalink: docs/extensions/navigator.html
+permalink: docs/extensions/netinfo.html
 next: extensions/restclient
 ---
 
