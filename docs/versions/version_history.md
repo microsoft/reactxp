@@ -11,10 +11,16 @@ redirect_from:
 ## ReactXP Versioning
 
 ### Versioning Strategy
-A new version of ReactXP will be released a monthly basis (approximately), following the same general update timeline of React Native. Each new version will get its own branch, allowing consumers of the library to take a dependency on a stable code base.
+A new version of ReactXP will be released periodically following the same general update timeline of React Native. Each new version will get its own branch, allowing consumers of the library to take a dependency on a stable code base.
+
+Following semver rules, the major version (the first number in the version string) will be incremented for breaking changes. The minor version (the second number) will be incremented for major new functionality that does not break existing contracts or behaviors.
 
 
 ### Version History
+
+#### Version 2.0.0-rc.1 of reactxp - _27 July 2019_
+* Adopted new major version number to reflect breaking changes with netinfo and webview.
+* No other functionality since 1.7.0-rc.1 was published.
 
 #### Version 1.7.0-rc.1 of reactxp-video, reactxp-imagesvg, reactxp-navigation - _14 July 2019_
 * No new functionality, just version and dependency updates.
