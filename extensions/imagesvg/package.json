@@ -1,6 +1,6 @@
 {
   "name": "reactxp-imagesvg",
-  "version": "1.7.0-rc.1",
+  "version": "2.0.0-rc.1",
   "description": "Plugin for ReactXP that provides support for SVG (scalable vector graphics) for all platforms",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
@@ -13,7 +13,7 @@
   },
   "peerDependencies": {
     "react": "^16.0",
-    "reactxp": "^1.7.0-rc.1",
+    "reactxp": "^2.0.0-rc.1",
     "react-dom": "^16.0",
     "react-native": ">=0.57 <0.60",
     "react-native-windows": "^0.57.1"
@@ -21,7 +21,7 @@
   "devDependencies": {
     "@types/react-native": "^0.57.62",
     "@types/node": "^11.13.14",
-    "reactxp": "^1.7.0-rc.1",
+    "reactxp": "^2.0.0-rc.1",
     "tslint": "^5.17.0",
     "tslint-microsoft-contrib": "^6.2.0",
     "tslint-react": "^4.0.0",

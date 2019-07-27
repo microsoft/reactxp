@@ -1,6 +1,6 @@
 {
   "name": "reactxp-video",
-  "version": "1.7.0-rc.1",
+  "version": "2.0.0-rc.1",
   "description": "Plugin for ReactXP that provides a video player component for all platforms",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
@@ -14,7 +14,7 @@
   },
   "peerDependencies": {
     "react": "^16.0",
-    "reactxp": "^1.7.0-rc.1",
+    "reactxp": "^2.0.0-rc.1",
     "react-dom": "^16.0",
     "react-native": ">=0.57 <0.60",
     "react-native-windows": "^0.57.1"
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.134",
     "@types/react-native": "^0.57.62",
-    "reactxp": "^1.7.0-rc.1",
+    "reactxp": "^2.0.0-rc.1",
     "tslint": "^5.17.0",
     "tslint-microsoft-contrib": "^6.2.0",
     "tslint-react": "^4.0.0",

@@ -1,6 +1,6 @@
 {
   "name": "rxptest",
-  "version": "1.7.0-rc.1",
+  "version": "2.0.0-rc.1",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -37,7 +37,7 @@
     "react-native": "0.59.5",
     "react-native-webview": "^5.7.2",
     "react-native-windows": "^0.57.1",
-    "reactxp": "^1.7.0-rc.1",
+    "reactxp": "^2.0.0-rc.1",
     "reactxp-netinfo": "0.0.1-alpha.1",
     "reactxp-webview": "0.0.1-alpha.1"
   }
