@@ -40,7 +40,7 @@ const _styles = {
         color: 'black'
     }),
     buttonPanel: RX.Styles.createViewStyle({
-        flexDirection: 'row'
+        flexDirection: 'column'
     }),
     alertBody: RX.Styles.createViewStyle({
         backgroundColor: '#333',
