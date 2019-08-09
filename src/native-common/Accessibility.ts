@@ -25,24 +25,24 @@ export class Accessibility extends CommonAccessibility {
     constructor() {
         super();
 
-        let initialStateChanged = false;
+        let initialScreenReaderState = false;
 
         // Some versions of RN don't support this interface.
         if (RN.AccessibilityInfo) {
             // Subscribe to an event to get notified when screen reader is enabled or disabled.
-            RN.AccessibilityInfo.addEventListener('change', (isEnabled: boolean) => {
-                initialStateChanged = true;
+            RN.AccessibilityInfo.addEventListener('screenReaderChanged', (isEnabled: boolean) => {
+                initialScreenReaderState = true;
                 this._updateScreenReaderStatus(isEnabled);
             });
 
             // Fetch initial state.
-            RN.AccessibilityInfo.fetch().then(isEnabled => {
-                if (!initialStateChanged) {
+            RN.AccessibilityInfo.isScreenReaderEnabled().then(isEnabled => {
+                if (!initialScreenReaderState) {
                     this._updateScreenReaderStatus(isEnabled);
                 }
             }).catch(err => {
                 if (AppConfig.isDevelopmentMode()) {
-                    console.error('Accessibility: RN.AccessibilityInfo.fetch failed');
+                    console.error('Accessibility: RN.AccessibilityInfo.isScreenReaderEnabled failed');
                 }
             });
         }
