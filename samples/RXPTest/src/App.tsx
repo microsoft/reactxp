@@ -52,6 +52,7 @@ class App extends RX.Component<RX.CommonProps, AppState> {
 
             // If there are more tests to run, move on to the next one.
             if (curTestIndex + 1 < testPaths.length) {
+                console.log('state selectedTest moving to: ', testPaths[curTestIndex + 1]);
                 this.setState({ selectedTest: testPaths[curTestIndex + 1] });
                 return;
             }
