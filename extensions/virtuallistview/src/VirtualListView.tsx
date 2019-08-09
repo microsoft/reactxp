@@ -284,13 +284,13 @@ export class VirtualListView<ItemInfo extends VirtualListViewItemInfo>
         };
     }
 
-    componentWillReceiveProps(nextProps: VirtualListViewProps<ItemInfo>): void {
+    UNSAFE_componentWillReceiveProps(nextProps: VirtualListViewProps<ItemInfo>): void {
         if (!_.isEqual(this.props, nextProps)) {
             this._updateStateFromProps(nextProps, false);
         }
     }
 
-    componentWillUpdate(nextProps: VirtualListViewProps<ItemInfo>, nextState: VirtualListViewState) {
+    UNSAFE_componentWillUpdate(nextProps: VirtualListViewProps<ItemInfo>, nextState: VirtualListViewState) {
         const updatedState: Partial<VirtualListViewState> = {};
         let updateState = false;
         if (nextState.lastFocusedItemKey && !_.some(nextProps.itemList, item => item.key === nextState.lastFocusedItemKey)) {

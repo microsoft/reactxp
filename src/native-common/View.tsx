@@ -175,7 +175,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
         }
     }
 
-    componentWillReceiveProps(nextProps: RX.Types.ViewProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: RX.Types.ViewProps) {
         this._updateMixin(nextProps, false);
         this._buildInternalProps(nextProps);
 
@@ -184,7 +184,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
         }
     }
 
-    componentWillUpdate(nextProps: RX.Types.ViewProps, nextState: {}) {
+    UNSAFE_componentWillUpdate(nextProps: RX.Types.ViewProps, nextState: {}) {
         //
         // Exit fast if not an "animated children" case
         if (!(nextProps.animateChildEnter || nextProps.animateChildMove || nextProps.animateChildLeave)) {

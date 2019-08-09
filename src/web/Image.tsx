@@ -195,7 +195,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         }
     }
 
-    componentWillReceiveProps(nextProps: Types.ImageProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: Types.ImageProps) {
         const sourceOrHeaderChanged = (nextProps.source !== this.props.source ||
             !_.isEqual(nextProps.headers || {}, this.props.headers || {}));
 

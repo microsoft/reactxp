@@ -157,7 +157,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
     private _phase: ComponentPhaseEnum = ComponentPhaseEnum.rest;
     private _willAnimatePhaseInfo: WillAnimatePhaseInfo | undefined;
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this._childrenKeys = extractChildrenKeys(this.props.children);
         this._childrenMap = createChildrenMap(this.props.children);
     }
@@ -174,7 +174,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
         return this._phase !== ComponentPhaseEnum.animating;
     }
 
-    componentWillUpdate(nextProps: MonitorListEditsProps) {
+    UNSAFE_componentWillUpdate(nextProps: MonitorListEditsProps) {
         assert(
             this._phase !== ComponentPhaseEnum.animating,
             'componentWillUpdate should never run while the component is animating due to the implementation of shouldComponentUpdate'

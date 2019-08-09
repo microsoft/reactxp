@@ -71,7 +71,7 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
         this._mainViewProps = this._getPropsForMainView();
     }
 
-    componentWillMount(): void {
+    UNSAFE_componentWillMount(): void {
         this._frontLayerViewChangedSubscription = FrontLayerViewManager.event_changed.subscribe(() => {
             // Setting empty state will trigger a render.
             this.setState({});
@@ -175,8 +175,8 @@ class RootViewUsingStore extends BaseRootView<BaseRootViewProps> {
         };
     }
 
-    componentWillMount(): void {
-        super.componentWillMount();
+    UNSAFE_componentWillMount(): void {
+        super.UNSAFE_componentWillMount();
 
         MainViewStore.subscribe(this._changeListener);
         this.setState(this._getStateFromStore());

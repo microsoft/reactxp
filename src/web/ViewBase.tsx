@@ -58,7 +58,7 @@ export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, C exten
         }
     }
 
-    componentWillReceiveProps(nextProps: RX.Types.ViewPropsShared<C>) {
+    UNSAFE_componentWillReceiveProps(nextProps: RX.Types.ViewPropsShared<C>) {
         if (!!this.props.onLayout !== !!nextProps.onLayout) {
             if (this.props.onLayout) {
                 this._checkViewCheckerUnbuild();

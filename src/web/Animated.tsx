@@ -485,7 +485,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps<C>, C>(C
             }
         }
 
-        componentWillReceiveProps(props: RX.Types.CommonStyledProps<RX.Types.StyleRuleSet<Object>, C>) {
+        UNSAFE_componentWillReceiveProps(props: RX.Types.CommonStyledProps<RX.Types.StyleRuleSet<Object>, C>) {
             this._updateStyles(props);
         }
 

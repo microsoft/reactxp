@@ -155,7 +155,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.springSystem = new rebound.SpringSystem();
         this.spring = this.springSystem.createSpring();
         this.spring.setRestSpeedThreshold(0.05);

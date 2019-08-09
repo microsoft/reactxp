@@ -171,7 +171,7 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
         });
     }
 
-    componentWillReceiveProps(nextProps: VirtualListCellProps<ItemInfo>) {
+    UNSAFE_componentWillReceiveProps(nextProps: VirtualListCellProps<ItemInfo>) {
         // If it's inactive, it had better be invisible.
         assert(nextProps.isActive || !nextProps.isVisible);
 
