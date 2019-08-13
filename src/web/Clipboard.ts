@@ -7,8 +7,6 @@
  * Web-specific implementation of the cross-platform Clipboard abstraction.
  */
 
-import * as SyncTasks from 'synctasks';
-
 import * as RX from '../common/Interfaces';
 
 export class Clipboard extends RX.Clipboard {
@@ -21,10 +19,10 @@ export class Clipboard extends RX.Clipboard {
         document.body.removeChild(node);
     }
 
-    getText(): SyncTasks.Promise<string> {
+    getText(): Promise<string> {
         // Not supported in web platforms. This should can be only handled
         // in the paste event handlers.
-       return SyncTasks.Rejected<string>('Not supported on web');
+       return Promise.reject<string>('Not supported on web');
     }
 
     private static _createInvisibleNode(): HTMLTextAreaElement {

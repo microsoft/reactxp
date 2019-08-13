@@ -15,8 +15,7 @@
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
     "rebound": "^0.1.0",
-    "subscribableevent": "^1.0.1",
-    "synctasks": "^0.3.3"
+    "subscribableevent": "^1.0.1"
   },
   "peerDependencies": {
     "react": "^16.0",

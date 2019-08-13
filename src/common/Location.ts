@@ -7,9 +7,8 @@
  * Methods to fetch the user's location.
  */
 
-import * as SyncTasks from 'synctasks';
-
 import * as RX from './Interfaces';
+import { Defer } from './utils/PromiseDefer';
 
 export class Location extends RX.Location {
     setConfiguration(config: RX.LocationConfiguration) {
@@ -31,10 +30,7 @@ export class Location extends RX.Location {
 
     // Get the current location of the user. This method returns a promise that either
     // resolves to the position or rejects with an error code.
-    getCurrentPosition(options?: PositionOptions): SyncTasks.Promise<Position> {
-        const deferred = SyncTasks.Defer<Position>();
-        let reportedError = false;
-
+    getCurrentPosition(options?: PositionOptions): Promise<Position> {
         if (!this.isAvailable()) {
             const error: PositionError = {
                 code: RX.Types.LocationErrorType.PositionUnavailable,
@@ -43,8 +39,11 @@ export class Location extends RX.Location {
                 POSITION_UNAVAILABLE: 1,
                 TIMEOUT: 0
             };
-            return deferred.reject(error).promise();
+            return Promise.reject(error);
         }
+
+        const deferred = new Defer<Position>();
+        let reportedError = false;
 
         navigator.geolocation.getCurrentPosition((position: Position) => {
             deferred.resolve(position);
@@ -65,9 +64,9 @@ export class Location extends RX.Location {
     // a promise that resolves to a watcher id or rejects with an error code. If resolved,
     // future locations and errors will be piped through the provided callbacks.
     watchPosition(successCallback: RX.Types.LocationSuccessCallback, errorCallback?: RX.Types.LocationFailureCallback,
-        options?: PositionOptions): SyncTasks.Promise<RX.Types.LocationWatchId> {
+        options?: PositionOptions): Promise<RX.Types.LocationWatchId> {
         if (!this.isAvailable()) {
-            return SyncTasks.Rejected<RX.Types.LocationWatchId>(RX.Types.LocationErrorType.PositionUnavailable);
+            return Promise.reject<RX.Types.LocationWatchId>(RX.Types.LocationErrorType.PositionUnavailable);
         }
 
         const watchId = navigator.geolocation.watchPosition((position: Position) => {
@@ -78,7 +77,7 @@ export class Location extends RX.Location {
             }
         }, options);
 
-        return SyncTasks.Resolved<RX.Types.LocationWatchId>(watchId);
+        return Promise.resolve<RX.Types.LocationWatchId>(watchId);
     }
 
     // Clears a location watcher from watchPosition.

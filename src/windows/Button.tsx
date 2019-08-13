@@ -172,6 +172,8 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
                                     this.props.onContextMenu(mouseEvent);
                                 }
                             }
+                        }).catch(e => {
+                            console.warn('Button measureKayoutRelativeToWindow exception: ' + JSON.stringify(e));
                         });
                     }
                 }

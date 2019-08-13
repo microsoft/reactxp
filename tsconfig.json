@@ -16,6 +16,7 @@
         "forceConsistentCasingInFileNames": true,
         "outDir": "dist/",
         "lib": [
+            "es2015.promise",
             "es5",
             "dom"
         ],

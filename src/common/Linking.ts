@@ -7,8 +7,6 @@
  * Common implementation for deep linking.
  */
 
-import * as SyncTasks from 'synctasks';
-
 import * as RX from './Interfaces';
 import { filter } from './lodashMini';
 
@@ -23,17 +21,17 @@ const emailHostRegex = /^[a-z0-9.-]+$/i;
 const emailHostConstraintViolationRegex = /\.\.|^[.-]|[.-]$|\.-|-\./i;
 
 export abstract class Linking extends RX.Linking {
-    protected abstract _openUrl(url: string): SyncTasks.Promise<void>;
+    protected abstract _openUrl(url: string): Promise<void>;
 
     // Launches SMS app
-    launchSms(phoneInfo: RX.Types.SmsInfo): SyncTasks.Promise<void> {
+    launchSms(phoneInfo: RX.Types.SmsInfo): Promise<void> {
         // Format phone info
         const phoneUrl = this._createSmsUrl(phoneInfo);
         return this._openUrl(phoneUrl);
     }
 
     // Opens url
-    openUrl(url: string): SyncTasks.Promise<void> {
+    openUrl(url: string): Promise<void> {
         return this._openUrl(url);
     }
 

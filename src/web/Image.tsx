@@ -9,11 +9,11 @@
 
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import * as SyncTasks from 'synctasks';
 
 import assert from '../common/assert';
 import { DEFAULT_RESIZE_MODE } from '../common/Image';
 import { Types } from '../common/Interfaces';
+import { Defer } from '../common/utils/PromiseDefer';
 
 import * as _ from './utils/lodashMini';
 import restyleForInlineText from './utils/restyleForInlineText';
@@ -136,8 +136,8 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         return { isRxParentAText: false };
     }
 
-    static prefetch(url: string): SyncTasks.Promise<boolean> {
-        const defer = SyncTasks.Defer<boolean>();
+    static prefetch(url: string): Promise<boolean> {
+        const defer = new Defer<boolean>();
 
         const img = new window.Image();
 
@@ -157,8 +157,8 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         return defer.promise();
     }
 
-    static getMetadata(url: string): SyncTasks.Promise<Types.ImageMetadata> {
-        const defer = SyncTasks.Defer<Types.ImageMetadata>();
+    static getMetadata(url: string): Promise<Types.ImageMetadata> {
+        const defer = new Defer<Types.ImageMetadata>();
 
         const img = new window.Image();
 

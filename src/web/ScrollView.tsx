@@ -209,6 +209,8 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                 if (this.props.scrollYAnimatedValue) {
                     this.props.scrollYAnimatedValue.setValue(container.scrollTop);
                 }
+            }).catch(e => {
+                console.warn('ScrollView onLayout exception: ' + JSON.stringify(e));
             });
         }
     }, (this.props.scrollEventThrottle || _defaultScrollThrottleValue), { leading: true, trailing: true });

@@ -10,7 +10,6 @@
 
 import * as React from 'react';
 import SubscribableEvent from 'subscribableevent';
-import * as SyncTasks from 'synctasks';
 
 import AppConfig from './AppConfig';
 import * as Types from './Types';
@@ -74,13 +73,13 @@ export abstract class UserInterface {
 
     // Measurements
     abstract measureLayoutRelativeToWindow(component: React.Component<any>):
-        SyncTasks.Promise<Types.LayoutInfo>;
+        Promise<Types.LayoutInfo>;
     abstract measureLayoutRelativeToAncestor(component: React.Component<any>,
-        ancestor: React.Component<any>): SyncTasks.Promise<Types.LayoutInfo>;
+        ancestor: React.Component<any>): Promise<Types.LayoutInfo>;
     abstract measureWindow(rootViewId?: string): Types.Dimensions;
 
     // Content Size Multiplier
-    abstract getContentSizeMultiplier(): SyncTasks.Promise<number>;
+    abstract getContentSizeMultiplier(): Promise<number>;
     contentSizeMultiplierChangedEvent = new SubscribableEvent<(multiplier: number) => void>();
     abstract setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
 
@@ -113,13 +112,13 @@ export abstract class Popup {
 
 export abstract class Linking {
     // Incoming deep links
-    abstract getInitialUrl(): SyncTasks.Promise<string | undefined>;
+    abstract getInitialUrl(): Promise<string | undefined>;
     deepLinkRequestEvent = new SubscribableEvent<(url: string) => void>();
 
     // Outgoing deep links
-    abstract openUrl(url: string): SyncTasks.Promise<void>;
-    abstract launchSms(smsData: Types.SmsInfo): SyncTasks.Promise<void>;
-    abstract launchEmail(emailData: Types.EmailInfo): SyncTasks.Promise<void>;
+    abstract openUrl(url: string): Promise<void>;
+    abstract launchSms(smsData: Types.SmsInfo): Promise<void>;
+    abstract launchEmail(emailData: Types.EmailInfo): Promise<void>;
 
     protected abstract _createEmailUrl(emailInfo: Types.EmailInfo): string;
 }
@@ -151,8 +150,8 @@ export class Component<P, T> extends React.Component<P, T> {}
 export interface ImageConstructor {
     new (props: Types.ImageProps): Image;
 
-    prefetch(url: string): SyncTasks.Promise<boolean>;
-    getMetadata(url: string): SyncTasks.Promise<Types.ImageMetadata>;
+    prefetch(url: string): Promise<boolean>;
+    getMetadata(url: string): Promise<Types.ImageMetadata>;
 }
 
 export abstract class Image extends React.Component<Types.ImageProps> {
@@ -162,7 +161,7 @@ export abstract class Image extends React.Component<Types.ImageProps> {
 
 export abstract class Clipboard {
     abstract setText(text: string): void;
-    abstract getText(): SyncTasks.Promise<string>;
+    abstract getText(): Promise<string>;
 }
 
 export abstract class Link extends React.Component<Types.LinkProps> implements FocusableComponent {
@@ -172,18 +171,18 @@ export abstract class Link extends React.Component<Types.LinkProps> implements F
 }
 
 export abstract class Storage {
-    abstract getItem(key: string): SyncTasks.Promise<string | undefined>;
-    abstract setItem(key: string, value: string): SyncTasks.Promise<void>;
-    abstract removeItem(key: string): SyncTasks.Promise<void>;
-    abstract clear(): SyncTasks.Promise<void>;
+    abstract getItem(key: string): Promise<string | undefined>;
+    abstract setItem(key: string, value: string): Promise<void>;
+    abstract removeItem(key: string): Promise<void>;
+    abstract clear(): Promise<void>;
 }
 
 export abstract class Location {
     abstract isAvailable(): boolean;
     abstract setConfiguration(config: LocationConfiguration): void;
-    abstract getCurrentPosition(options?: PositionOptions): SyncTasks.Promise<Position>;
+    abstract getCurrentPosition(options?: PositionOptions): Promise<Position>;
     abstract watchPosition(successCallback: Types.LocationSuccessCallback, errorCallback?: Types.LocationFailureCallback,
-        options?: PositionOptions): SyncTasks.Promise<Types.LocationWatchId>;
+        options?: PositionOptions): Promise<Types.LocationWatchId>;
     abstract clearWatch(watchID: Types.LocationWatchId): void;
 }
 

@@ -10,11 +10,11 @@
 
 import * as React from 'react';
 import * as RN from 'react-native';
-import * as SyncTasks from 'synctasks';
 
 import AppConfig from '../common/AppConfig';
 import assert from '../common/assert';
 import * as RX from '../common/Interfaces';
+import { Defer } from '../common/utils/PromiseDefer';
 
 import MainViewStore from './MainViewStore';
 
@@ -34,9 +34,9 @@ export class UserInterface extends RX.UserInterface {
     }
 
     measureLayoutRelativeToWindow(component: React.Component<any, any>):
-        SyncTasks.Promise<RX.Types.LayoutInfo> {
+        Promise<RX.Types.LayoutInfo> {
 
-        const deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
+        const deferred = new Defer<RX.Types.LayoutInfo>();
         const nodeHandle = RN.findNodeHandle(component);
 
         assert(!!nodeHandle);
@@ -56,9 +56,9 @@ export class UserInterface extends RX.UserInterface {
     }
 
     measureLayoutRelativeToAncestor(component: React.Component<any, any>,
-        ancestor: React.Component<any, any>): SyncTasks.Promise<RX.Types.LayoutInfo> {
+        ancestor: React.Component<any, any>): Promise<RX.Types.LayoutInfo> {
 
-        const deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
+        const deferred = new Defer<RX.Types.LayoutInfo>();
         const nodeHandle = RN.findNodeHandle(component);
         const ancestorNodeHander = RN.findNodeHandle(ancestor);
 
@@ -100,8 +100,8 @@ export class UserInterface extends RX.UserInterface {
         };
     }
 
-    getContentSizeMultiplier(): SyncTasks.Promise<number> {
-        const deferred = SyncTasks.Defer<number>();
+    getContentSizeMultiplier(): Promise<number> {
+        const deferred = new Defer<number>();
 
         // TODO: #727532 Remove conditional after implementing UIManager.getContentSizeMultiplier for UWP
         // TODO:(alregner) Remove conditional after implementing UIManager.getContentSizeMultiplier for macos
@@ -114,8 +114,8 @@ export class UserInterface extends RX.UserInterface {
         return deferred.promise();
     }
 
-    getMaxContentSizeMultiplier(): SyncTasks.Promise<number> {
-        const deferred = SyncTasks.Defer<number>();
+    getMaxContentSizeMultiplier(): Promise<number> {
+        const deferred = new Defer<number>();
 
         // TODO: #727532 Remove conditional after implementing UIManager.getContentSizeMultiplier for UWP
         // TODO:(alregner) Remove conditional after implementing UIManager.getContentSizeMultiplier for macos

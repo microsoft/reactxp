@@ -10,9 +10,9 @@
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as SyncTasks from 'synctasks';
 
 import * as RX from '../common/Interfaces';
+import { Defer } from '../common/utils/PromiseDefer';
 
 import FrontLayerViewManager from './FrontLayerViewManager';
 import ScrollViewConfig from './ScrollViewConfig';
@@ -26,9 +26,9 @@ export class UserInterface extends RX.UserInterface {
     }
 
     measureLayoutRelativeToWindow(component: React.Component<any, any>) :
-            SyncTasks.Promise<RX.Types.LayoutInfo> {
+            Promise<RX.Types.LayoutInfo> {
 
-        const deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
+        const deferred = new Defer<RX.Types.LayoutInfo>();
         let componentDomNode: HTMLElement | null = null;
 
         try {
@@ -54,9 +54,9 @@ export class UserInterface extends RX.UserInterface {
     }
 
     measureLayoutRelativeToAncestor(component: React.Component<any, any>,
-        ancestor: React.Component<any, any>) : SyncTasks.Promise<RX.Types.LayoutInfo> {
+        ancestor: React.Component<any, any>) : Promise<RX.Types.LayoutInfo> {
 
-        const deferred = SyncTasks.Defer<RX.Types.LayoutInfo>();
+        const deferred = new Defer<RX.Types.LayoutInfo>();
         let componentDomNode: HTMLElement | null = null;
         let ancestorDomNode: HTMLElement | null = null;
 
@@ -94,16 +94,16 @@ export class UserInterface extends RX.UserInterface {
         };
     }
 
-    getContentSizeMultiplier(): SyncTasks.Promise<number> {
+    getContentSizeMultiplier(): Promise<number> {
         // Browsers don't support font-specific scaling. They scale all of their
         // UI elements the same.
-        return SyncTasks.Resolved(1);
+        return Promise.resolve(1);
     }
 
-    getMaxContentSizeMultiplier(): SyncTasks.Promise<number> {
+    getMaxContentSizeMultiplier(): Promise<number> {
         // Browsers don't support font-specific scaling. They scale all of their
         // UI elements the same.
-        return SyncTasks.Resolved(0);
+        return Promise.resolve(0);
     }
 
     setMaxContentSizeMultiplier(maxContentSizeMultiplier: number) {
