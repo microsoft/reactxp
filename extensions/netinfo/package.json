@@ -9,8 +9,7 @@
     "tslint": "tslint -p tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
   },
   "dependencies": {
-    "@react-native-community/netinfo": "^3.2.0",
-    "synctasks": "^0.3.3"
+    "@react-native-community/netinfo": "^3.2.0"
   },
   "peerDependencies": {
     "reactxp": "^2.0.0-rc.1",
