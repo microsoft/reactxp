@@ -22,7 +22,6 @@ import { DbProvider } from 'nosqlprovider';
 import { IndexedDbProvider } from 'nosqlprovider/dist/IndexedDbProvider';
 import { InMemoryProvider } from 'nosqlprovider/dist/InMemoryProvider';
 import { WebSqlProvider } from 'nosqlprovider/dist/WebSqlProvider';
-import * as SyncTasks from 'synctasks';
 
 import AppBootstrapper from './AppBootstrapper';
 
@@ -36,8 +35,8 @@ class AppBootstrapperWeb extends AppBootstrapper {
         ];
     }
 
-    protected _getInitialUrl(): SyncTasks.Promise<string | undefined> {
-        return SyncTasks.Resolved(window.location.href);
+    protected _getInitialUrl(): Promise<string | undefined> {
+        return Promise.resolve(window.location.href);
     }
 }
 

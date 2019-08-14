@@ -17,6 +17,7 @@
         "outDir": "dist/",
         "lib": [
             "es2015.promise",
+            "es2018.promise",
             "es5",
             "dom"
         ],

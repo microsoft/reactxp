@@ -85,7 +85,7 @@ class StorageBasicTest implements AutoExecutableTest {
             });
         }).catch(error => {
             results.errors.push('Received unexpected error from RX.Storage');
-        }).always(() => {
+        }).finally(() => {
             complete(results);
         });
     }

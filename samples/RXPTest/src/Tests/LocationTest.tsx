@@ -158,7 +158,7 @@ class LocationView extends RX.Component<RX.CommonProps, LocationState> {
                     polledPositionHistory: this.state.polledPositionHistory +
                         '(' + this._formatError(err.code as RX.Types.LocationErrorType) + ')\n'
                 });
-            }).always(() => {
+            }).finally(() => {
                 sampleCount++;
                 if (sampleCount < totalSamplesInTest) {
                     _.delay(() => {

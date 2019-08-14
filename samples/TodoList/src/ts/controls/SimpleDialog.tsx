@@ -9,7 +9,6 @@
 import * as _ from 'lodash';
 import * as RX from 'reactxp';
 import { ComponentBase } from 'resub';
-import * as SyncTasks from 'synctasks';
 
 import KeyCodes from '../utilities/KeyCodes';
 import Modal from './Modal';
@@ -225,7 +224,7 @@ export default class SimpleDialog extends ComponentBase<SimpleDialogProps, RX.St
         return false;
     }
 
-    static dismissAnimated(dialogId: string): SyncTasks.Promise<void> {
+    static dismissAnimated(dialogId: string): Promise<void> {
         return Modal.dismissAnimated(dialogId);
     }
 }
