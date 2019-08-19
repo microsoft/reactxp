@@ -149,7 +149,6 @@ class ScrollViewView extends RX.Component<RX.CommonProps, ScrollViewState> {
                 <RX.View style={ _styles.scrollViewContainer }>
                     <RX.ScrollView
                         style={ _styles.scrollView1 }
-                        vertical={ true }
                         horizontal={ true }
                         bounces={ false }
                         overScrollMode={ 'never' }

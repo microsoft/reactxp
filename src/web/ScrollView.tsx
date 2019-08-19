@@ -40,10 +40,6 @@ const _styles = {
         flexDirection: 'row',
         overflowY: 'hidden',
         overflowX: 'auto'
-    },
-    bothStyle: {
-        overflowY: 'auto',
-        overflowX: 'auto'
     }
 };
 
@@ -60,7 +56,6 @@ const _customStyles = {
     },
     verticalStyle: {},
     horizontalStyle: {},
-    bothStyle: {},
     customScrollContainer: {
         position: 'relative',
         overflow: 'hidden',
@@ -113,8 +108,6 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                 // indication that content will exist here.
                 minWidth: 0
             };
-
-            _customStyles.bothStyle = Styles.combine([_customStyles.verticalStyle, _customStyles.horizontalStyle])!;
         }
     }
 
@@ -225,7 +218,6 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         if (this._mounted && this._customScrollbarEnabled) {
             if (this._customScrollbar) {
                 if (this.props.horizontal === props.horizontal &&
-                    this.props.vertical === props.vertical &&
                     this.props.showsHorizontalScrollIndicator === props.showsHorizontalScrollIndicator &&
                     this.props.showsVerticalScrollIndicator === props.showsVerticalScrollIndicator) {
                     // No need to re-create the scrollbar.
@@ -239,10 +231,10 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
             if (element) {
                 this._customScrollbar = new CustomScrollbar(element);
                 const horizontalHidden = (props.horizontal && props.showsHorizontalScrollIndicator === false);
-                const verticalHidden = (props.vertical && props.showsVerticalScrollIndicator === false);
+                const verticalHidden = (!props.horizontal && props.showsVerticalScrollIndicator === false);
                 this._customScrollbar.init({
                     horizontal: props.horizontal && !horizontalHidden,
-                    vertical: props.vertical && !verticalHidden,
+                    vertical: !props.horizontal && !verticalHidden,
                     hiddenScrollbar: horizontalHidden || verticalHidden
                 });
             }
@@ -256,9 +248,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
 
         styles.push(sourceStyles.defaultStyle);
 
-        if (scrollEnabled && this.props.horizontal && this.props.vertical) {
-            styles.push(sourceStyles.bothStyle);
-        } else if (scrollEnabled && this.props.horizontal) {
+        if (scrollEnabled && this.props.horizontal) {
             styles.push(sourceStyles.horizontalStyle);
         } else if (scrollEnabled) {
             styles.push(sourceStyles.verticalStyle);
@@ -293,7 +283,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         if (this.props.horizontal) {
             scrollComponentClassNames.push('scrollViewportH');
         }
-        if (this.props.vertical || this.props.vertical === undefined) {
+        if (this.props.horizontal === false) {
             scrollComponentClassNames.push('scrollViewportV');
             containerStyles = _.extend({}, _customStyles.customScrollVertical, containerStyles);
         }
