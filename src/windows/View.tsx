@@ -183,6 +183,8 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                         this.props.onContextMenu(mouseEvent);
                     }
                 }
+            }).catch(e => {
+                console.warn('View measureKayoutRelativeToWindow exception: ' + JSON.stringify(e));
             });
         }
     }

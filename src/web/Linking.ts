@@ -7,13 +7,11 @@
  * Web-specific implementation for deep linking
  */
 
-import * as SyncTasks from 'synctasks';
-
 import { Types } from '../common/Interfaces';
 import { Linking as CommonLinking } from '../common/Linking';
 
 export class Linking extends CommonLinking {
-    protected _openUrl(url: string): SyncTasks.Promise<void> {
+    protected _openUrl(url: string): Promise<void> {
         const otherWindow = window.open();
         if (!otherWindow) {
             // window opening was blocked by browser (probably not
@@ -24,7 +22,7 @@ export class Linking extends CommonLinking {
                 url: url,
                 description: 'Window was blocked by popup blocker'
             };
-            return SyncTasks.Rejected<void>(linkingError);
+            return Promise.reject<void>(linkingError);
         }
         // SECURITY WARNING:
         //   Destroy the back-link to this window. Otherwise the (untrusted) URL we are about to load can redirect OUR window.
@@ -36,19 +34,19 @@ export class Linking extends CommonLinking {
         }
         otherWindow.location.href = url;
 
-        return SyncTasks.Resolved<void>();
+        return Promise.resolve<void>(void 0);
     }
 
-    launchEmail(emailInfo: Types.EmailInfo): SyncTasks.Promise<void> {
+    launchEmail(emailInfo: Types.EmailInfo): Promise<void> {
         // Format email info
         const emailUrl = this._createEmailUrl(emailInfo);
         window.location.href = emailUrl;
 
-        return SyncTasks.Resolved<void>();
+        return Promise.resolve<void>(void 0);
     }
 
-    getInitialUrl(): SyncTasks.Promise<string | undefined> {
-        return SyncTasks.Resolved(undefined);
+    getInitialUrl(): Promise<string | undefined> {
+        return Promise.resolve(undefined);
     }
 }
 

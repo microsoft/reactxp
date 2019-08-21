@@ -8,7 +8,6 @@
  */
 
 import * as RN from 'react-native';
-import * as SyncTasks from 'synctasks';
 
 import { Types } from '../common/Interfaces';
 import { Linking as CommonLinking } from '../common/Linking';
@@ -22,8 +21,8 @@ export class Linking extends CommonLinking {
         });
     }
 
-    protected _openUrl(url: string): SyncTasks.Promise<void> {
-        return SyncTasks.fromThenable(RN.Linking.canOpenURL(url))
+    protected _openUrl(url: string): Promise<void> {
+        return RN.Linking.canOpenURL(url)
         .then(value => {
             if (!value) {
                 const linkingError: Types.LinkingErrorInfo = {
@@ -31,9 +30,9 @@ export class Linking extends CommonLinking {
                     url: url,
                     description: 'No app found to handle url: ' + url
                 };
-                return SyncTasks.Rejected(linkingError);
+                return Promise.reject(linkingError);
             } else {
-                return SyncTasks.fromThenable(RN.Linking.openURL(url));
+                return RN.Linking.openURL(url);
             }
         }).catch(error => {
             const linkingError: Types.LinkingErrorInfo = {
@@ -41,24 +40,24 @@ export class Linking extends CommonLinking {
                 url: url,
                 description: error
             };
-            return SyncTasks.Rejected(linkingError);
+            return Promise.reject(linkingError);
         });
     }
 
-    getInitialUrl(): SyncTasks.Promise<string | undefined> {
-        return SyncTasks.fromThenable(RN.Linking.getInitialURL())
+    getInitialUrl(): Promise<string | undefined> {
+        return RN.Linking.getInitialURL()
         .then(url => !!url ? url : undefined)
         .catch(error => {
             const linkingError: Types.LinkingErrorInfo = {
                 code: Types.LinkingErrorCode.InitialUrlNotFound,
                 description: error
             };
-            return SyncTasks.Rejected(linkingError);
+            return Promise.reject(linkingError);
         });
     }
 
     // Launches Email app
-    launchEmail(emailInfo: Types.EmailInfo): SyncTasks.Promise<void> {
+    launchEmail(emailInfo: Types.EmailInfo): Promise<void> {
         // Format email info
         const emailUrl = this._createEmailUrl(emailInfo);
         return this._openUrl(emailUrl);

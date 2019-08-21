@@ -15,7 +15,13 @@
     "noImplicitReturns": true,
     "outDir": "./dist/",
     "types" : ["lodash", "react", "react-dom"],
-    "strict": true
+    "strict": true,
+    "lib": [
+        "es2015.promise",
+        "es2018.promise",
+        "es5",
+        "dom"
+    ]
   },
   "include": [
     "./src/**/*"

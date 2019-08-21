@@ -8,7 +8,6 @@
  */
 
 import * as RNNetInfo from '@react-native-community/netinfo';
-import * as SyncTasks from 'synctasks';
 
 import * as Types from '../common/Types';
 import * as Interfaces from '../common/Interfaces';
@@ -24,20 +23,16 @@ export class NetInfo extends Interfaces.NetInfo {
         RNNetInfo.addEventListener(onEventOccurredHandler);
     }
 
-    isConnected(): SyncTasks.Promise<boolean> {
-        const deferred = SyncTasks.Defer<boolean>();
-
-        RNNetInfo.fetch().then((state: RNNetInfo.NetInfoState) => {
-            deferred.resolve(state.isConnected);
+    isConnected(): Promise<boolean> {
+        return RNNetInfo.fetch().then((state: RNNetInfo.NetInfoState) => {
+            return state.isConnected;
         }).catch(() => {
-            deferred.reject('NetInfo.isConnected.fetch() failed');
+            return Promise.reject('NetInfo.isConnected.fetch() failed');
         });
-
-        return deferred.promise();
     }
 
-    getType(): SyncTasks.Promise<Types.DeviceNetworkType> {
-        return SyncTasks.fromThenable(RNNetInfo.fetch()).then((state: RNNetInfo.NetInfoState) => {
+    getType(): Promise<Types.DeviceNetworkType> {
+        return RNNetInfo.fetch().then((state: RNNetInfo.NetInfoState) => {
             return NetInfo._getNetworkTypeFromConnectionInfo(state);
         });
     }

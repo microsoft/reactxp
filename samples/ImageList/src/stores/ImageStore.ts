@@ -20,7 +20,7 @@ export class ImageStore extends StoreBase {
     private _searchQuery = '';
     private _images: Image[] = [];
 
-    private _request: SyncTasks.STPromise<void> | null = null;
+    private _request: SyncTasks.Promise<void> | null = null;
 
     @autoSubscribe
     getImages() {
@@ -68,7 +68,7 @@ export class ImageStore extends StoreBase {
         this._request = this._searchImages(searchQuery);
     }
 
-    private _searchImages(query: string): SyncTasks.STPromise<void> {
+    private _searchImages(query: string): SyncTasks.Promise<void> {
         return GiphyClient.searchImages(query)
             .then(images => {
                 this._images = images;

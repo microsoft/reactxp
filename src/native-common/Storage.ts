@@ -8,13 +8,13 @@
  */
 
 import * as RN from 'react-native';
-import * as SyncTasks from 'synctasks';
 
 import * as RX from '../common/Interfaces';
+import { Defer } from '../common/utils/PromiseDefer';
 
 export class Storage extends RX.Storage {
-    getItem(key: string): SyncTasks.Promise<string | undefined> {
-        const deferred = SyncTasks.Defer<string | undefined>();
+    getItem(key: string): Promise<string | undefined> {
+        const deferred = new Defer<string | undefined>();
 
         RN.AsyncStorage.getItem(key, (error: any, result: string | undefined) => {
             if (!error) {
@@ -29,8 +29,8 @@ export class Storage extends RX.Storage {
         return deferred.promise();
     }
 
-    setItem(key: string, value: string): SyncTasks.Promise<void> {
-        const deferred = SyncTasks.Defer<void>();
+    setItem(key: string, value: string): Promise<void> {
+        const deferred = new Defer<void>();
 
         RN.AsyncStorage.setItem(key, value, (error: any) => {
             if (!error) {
@@ -45,8 +45,8 @@ export class Storage extends RX.Storage {
         return deferred.promise();
     }
 
-    removeItem(key: string): SyncTasks.Promise<void> {
-        const deferred = SyncTasks.Defer<void>();
+    removeItem(key: string): Promise<void> {
+        const deferred = new Defer<void>();
 
         RN.AsyncStorage.removeItem(key, (error: any) => {
             if (!error) {
@@ -61,8 +61,8 @@ export class Storage extends RX.Storage {
         return deferred.promise();
     }
 
-    clear(): SyncTasks.Promise<void> {
-        const deferred = SyncTasks.Defer<void>();
+    clear(): Promise<void> {
+        const deferred = new Defer<void>();
 
         RN.AsyncStorage.clear((error: any) => {
             if (!error) {

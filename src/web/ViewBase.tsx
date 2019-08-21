@@ -7,10 +7,9 @@
  * A base class for the Web-specific implementation of the cross-platform View abstraction.
  */
 
-import * as SyncTasks from 'synctasks';
-
 import AppConfig from '../common/AppConfig';
 import * as RX from '../common/Interfaces';
+import { Defer } from '../common/utils/PromiseDefer';
 import Timers from '../common/utils/Timers';
 
 import FrontLayerViewManager from './FrontLayerViewManager';
@@ -72,7 +71,9 @@ export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, C exten
 
     protected static _checkViews() {
         _.each(ViewBase._viewCheckingList, view => {
-            view._checkAndReportLayout();
+            view._checkAndReportLayout().catch(e => {
+                console.warn('ScrollView onLayout exception: ' + JSON.stringify(e));
+            });
         });
     }
 
@@ -110,14 +111,14 @@ export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, C exten
     protected _lastHeight = 0;
 
     // Returns a promise to indicate when firing of onLayout event has completed (if any)
-    protected _checkAndReportLayout(): SyncTasks.Promise<void> {
+    protected _checkAndReportLayout(): Promise<void> {
         if (!this._isMounted) {
-            return SyncTasks.Resolved<void>();
+            return Promise.resolve(void 0);
         }
 
         const container = this._getContainer();
         if (!container) {
-            return SyncTasks.Resolved<void>();
+            return Promise.resolve(void 0);
         }
 
         const newX = container.offsetLeft;
@@ -135,7 +136,7 @@ export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, C exten
             this._lastWidth = newWidth;
             this._lastHeight = newHeight;
 
-            const deferred = SyncTasks.Defer<void>();
+            const deferred = new Defer<void>();
             ViewBase._reportLayoutChange(() => {
                 if (!this._isMounted || !this.props.onLayout) {
                     deferred.resolve(void 0);
@@ -153,7 +154,7 @@ export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, C exten
             return deferred.promise();
         }
 
-        return SyncTasks.Resolved<void>();
+        return Promise.resolve(void 0);
     }
 
     private _checkViewCheckerBuild() {
@@ -208,10 +209,14 @@ export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, C exten
                 // execution because the browser would have to do a reflow. Avoid that
                 // by deferring the work.
                 setTimeout(() => {
-                    this._checkAndReportLayout();
+                    this._checkAndReportLayout().catch(e => {
+                        console.warn('ScrollView onLayout exception: ' + JSON.stringify(e));
+                    });
                 }, 0);
             } else {
-                this._checkAndReportLayout();
+                this._checkAndReportLayout().catch(e => {
+                    console.warn('ScrollView onLayout exception: ' + JSON.stringify(e));
+                });
             }
         }
         this._isPopupDisplayed = isPopupDisplayed;

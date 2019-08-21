@@ -7,33 +7,31 @@
  * Web-specific implementation of the cross-platform database storage abstraction.
  */
 
-import * as SyncTasks from 'synctasks';
-
 import * as RX from '../common/Interfaces';
 
 export class Storage extends RX.Storage {
-    getItem(key: string): SyncTasks.Promise<string | undefined> {
+    getItem(key: string): Promise<string | undefined> {
         const value = window.localStorage.getItem(key);
-        return SyncTasks.Resolved<string | undefined>(value === null ? undefined : value);
+        return Promise.resolve<string | undefined>(value === null ? undefined : value);
     }
 
-    setItem(key: string, value: string): SyncTasks.Promise<void> {
+    setItem(key: string, value: string): Promise<void> {
         try {
             window.localStorage.setItem(key, value);
         } catch (e) {
-            return SyncTasks.Rejected(e);
+            return Promise.resolve(e);
         }
-        return SyncTasks.Resolved<void>();
+        return Promise.resolve<void>(void 0);
     }
 
-    removeItem(key: string): SyncTasks.Promise<void> {
+    removeItem(key: string): Promise<void> {
         window.localStorage.removeItem(key);
-        return SyncTasks.Resolved<void>();
+        return Promise.resolve<void>(void 0);
     }
 
-    clear(): SyncTasks.Promise<void> {
+    clear(): Promise<void> {
         window.localStorage.clear();
-        return SyncTasks.Resolved<void>();
+        return Promise.resolve<void>(void 0);
     }
 }
 

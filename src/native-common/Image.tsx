@@ -10,10 +10,10 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
-import * as SyncTasks from 'synctasks';
 
 import { DEFAULT_RESIZE_MODE } from '../common/Image';
 import { Types } from '../common/Interfaces';
+import { Defer } from '../common/utils/PromiseDefer';
 
 import * as _ from './utils/lodashMini';
 import Platform from './Platform';
@@ -43,16 +43,16 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
         isRxParentAText: PropTypes.bool.isRequired
     };
 
-    static prefetch(url: string): SyncTasks.Promise<boolean> {
-        return SyncTasks.fromThenable(RN.Image.prefetch(url));
+    static prefetch(url: string): Promise<boolean> {
+        return RN.Image.prefetch(url);
     }
 
-    static getMetadata(url: string): SyncTasks.Promise<Types.ImageMetadata> {
-        return SyncTasks.fromThenable(Image.prefetch(url)).then(success => {
+    static getMetadata(url: string): Promise<Types.ImageMetadata> {
+        return Image.prefetch(url).then(success => {
             if (!success) {
-                return SyncTasks.Rejected(`Prefetching url ${ url } did not succeed.`);
+                return Promise.reject(`Prefetching url ${ url } did not succeed.`);
             } else {
-                const defer = SyncTasks.Defer<Types.ImageMetadata>();
+                const defer = new Defer<Types.ImageMetadata>();
                 RN.Image.getSize(url, (width, height) => {
                     defer.resolve({ width, height });
                 }, error => {

@@ -8,14 +8,13 @@
  * info. This was extracted from the reactxp core
  */
 
-import * as SyncTasks from 'synctasks';
 import SubscribableEvent from 'subscribableevent';
 
 import * as Types from './Types';
 
 export abstract class NetInfo {
-    abstract isConnected(): SyncTasks.Promise<boolean>;
-    abstract getType(): SyncTasks.Promise<Types.DeviceNetworkType>;
+    abstract isConnected(): Promise<boolean>;
+    abstract getType(): Promise<Types.DeviceNetworkType>;
     connectivityChangedEvent = new SubscribableEvent<(isConnected: boolean) => void>();
 }
 

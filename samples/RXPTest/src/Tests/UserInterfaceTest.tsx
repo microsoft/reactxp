@@ -4,7 +4,6 @@
 
 import _ = require('lodash');
 import RX = require('reactxp');
-import SyncTasks = require('synctasks');
 
 import * as CommonStyles from '../CommonStyles';
 import { AutoExecutableTest, TestResult, TestType } from '../Test';
@@ -182,7 +181,7 @@ class UserInterfaceView extends RX.Component<RX.CommonProps, UserInterfaceState>
         });
 
         // Wait for all async tasks to complete.
-        SyncTasks.all([measureTask, multiplierTask]).then(() => {
+        Promise.all([measureTask, multiplierTask]).then(() => {
             // Mark the test as complete.
             complete(result);
         });

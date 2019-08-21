@@ -8,7 +8,6 @@
  */
 
 import * as RN from 'react-native';
-import * as SyncTasks from 'synctasks';
 
 import * as RX from '../common/Interfaces';
 
@@ -17,8 +16,8 @@ export class Clipboard extends RX.Clipboard  {
         RN.Clipboard.setString(text);
     }
 
-    getText(): SyncTasks.Promise<string> {
-        return SyncTasks.fromThenable(RN.Clipboard.getString());
+    getText(): Promise<string> {
+        return RN.Clipboard.getString();
     }
 }
 

@@ -209,6 +209,8 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
                                 this.props.onContextMenu(mouseEvent);
                             }
                         }
+                    }).catch(e => {
+                        console.warn('Link measureKayoutRelativeToWindow exception: ' + JSON.stringify(e));
                     });
                 }
             }

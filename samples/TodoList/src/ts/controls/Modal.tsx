@@ -8,7 +8,6 @@
 import * as assert from 'assert';
 import * as RX from 'reactxp';
 import { ComponentBase } from 'resub';
-import * as SyncTasks from 'synctasks';
 
 import KeyCodes from '../utilities/KeyCodes';
 import { Colors } from '../app/Styles';
@@ -198,18 +197,16 @@ export default class Modal extends ComponentBase<ModalProps, ModalState> {
         });
     }
 
-    static dismissAnimated(modalId: string): SyncTasks.Promise<void> {
+    static dismissAnimated(modalId: string): Promise<void> {
         let modal = Modal._visibleModalMap[modalId];
         if (!modal) {
-            return SyncTasks.Rejected('Modal ID not found');
+            return Promise.reject('Modal ID not found');
         }
 
-        let deferred = SyncTasks.Defer<void>();
-        modal._animateClose(() => {
-            RX.Modal.dismiss(modalId);
-            deferred.resolve(void 0);
-        });
-
-        return deferred.promise();
+        return new Promise<void>(resolve => {
+            modal._animateClose(() => {
+                RX.Modal.dismiss(modalId);
+                resolve(void 0);
+            });
     }
 }

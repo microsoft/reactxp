@@ -7,8 +7,6 @@
  * Web-specific implementation of the cross-platform Video abstraction.
  */
 
-import * as SyncTasks from 'synctasks';
-
 import * as Types from '../common/Types';
 import * as Interfaces from '../common/Interfaces';
 
@@ -27,12 +25,12 @@ export class NetInfo extends Interfaces.NetInfo {
         }
     }
 
-    isConnected(): SyncTasks.Promise<boolean> {
-        return SyncTasks.Resolved(navigator.onLine);
+    isConnected(): Promise<boolean> {
+        return Promise.resolve(navigator.onLine);
     }
 
-    getType(): SyncTasks.Promise<Types.DeviceNetworkType> {
-        return SyncTasks.Resolved(Types.DeviceNetworkType.Unknown);
+    getType(): Promise<Types.DeviceNetworkType> {
+        return Promise.resolve(Types.DeviceNetworkType.Unknown);
     }
 }
 

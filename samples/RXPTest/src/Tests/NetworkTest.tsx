@@ -4,10 +4,10 @@
 
 import _ = require('lodash');
 import RX = require('reactxp');
-import RXNetInfo, { Types as RXNetInfoTypes } from 'reactxp-netinfo'
+import RXNetInfo, { Types as RXNetInfoTypes } from 'reactxp-netinfo';
 
 import * as CommonStyles from '../CommonStyles';
-import { Test, TestResult, TestType } from '../Test';
+import { Test, TestType } from '../Test';
 
 const _styles = {
     container: RX.Styles.createViewStyle({
