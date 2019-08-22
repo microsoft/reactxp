@@ -105,8 +105,8 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         this._popupContainer = context && context.popupContainer;
     }
 
-    componentWillReceiveProps(nextProps: Types.ViewProps) {
-        super.componentWillReceiveProps(nextProps);
+    UNSAFE_componentWillReceiveProps(nextProps: Types.ViewProps) {
+        super.UNSAFE_componentWillReceiveProps(nextProps);
 
         if (AppConfig.isDevelopmentMode()) {
             if (this.props.restrictFocusWithin !== nextProps.restrictFocusWithin) {

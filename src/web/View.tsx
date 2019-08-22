@@ -419,8 +419,8 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RX.Vi
             reactElement;
     }
 
-    componentWillReceiveProps(nextProps: RX.Types.ViewProps) {
-        super.componentWillReceiveProps(nextProps);
+    UNSAFE_componentWillReceiveProps(nextProps: RX.Types.ViewProps) {
+        super.UNSAFE_componentWillReceiveProps(nextProps);
 
         if (AppConfig.isDevelopmentMode()) {
             if (this.props.restrictFocusWithin !== nextProps.restrictFocusWithin) {

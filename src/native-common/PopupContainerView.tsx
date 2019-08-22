@@ -62,7 +62,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
         };
     }
 
-    componentWillReceiveProps(prevProps: PopupContainerViewProps) {
+    UNSAFE_componentWillReceiveProps(prevProps: PopupContainerViewProps) {
         if (this.props.popupOptions !== prevProps.popupOptions) {
             // If the popup changes, reset our state.
             this.setState(this._getInitialState());

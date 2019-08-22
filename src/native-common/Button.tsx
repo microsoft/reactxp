@@ -197,7 +197,7 @@ export class Button extends ButtonBase {
         this._isMounted = false;
     }
 
-    componentWillReceiveProps(nextProps: Types.ButtonProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: Types.ButtonProps) {
         // If opacity styles were updated as a part of props update, we need to reflect that in the opacity animation value
         this._setOpacityStyles(nextProps, this.props);
     }

@@ -144,7 +144,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         return this._customScrollbarEnabled ? this._renderWithCustomScrollbar() : this._renderNormal();
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this._onPropsChange(this.props);
     }
 
@@ -155,8 +155,8 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         this._createCustomScrollbarsIfNeeded(this.props);
     }
 
-    componentWillReceiveProps(newProps: RX.Types.ScrollViewProps) {
-        super.componentWillReceiveProps(newProps);
+    UNSAFE_componentWillReceiveProps(newProps: RX.Types.ScrollViewProps) {
+        super.UNSAFE_componentWillReceiveProps(newProps);
         this._onPropsChange(newProps);
     }
 

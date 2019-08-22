@@ -146,7 +146,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         };
     }
 
-    componentWillReceiveProps(prevProps: RootViewProps) {
+    UNSAFE_componentWillReceiveProps(prevProps: RootViewProps) {
         if (this.props.activePopup !== prevProps.activePopup) {
             this._stopHidePopupTimer();
 

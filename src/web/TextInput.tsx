@@ -151,7 +151,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         };
     }
 
-    componentWillReceiveProps(nextProps: Types.TextInputProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: Types.TextInputProps) {
         const nextState: Partial<TextInputState> = {};
 
         if (nextProps.value !== undefined && nextProps.value !== this.state.inputValue) {
