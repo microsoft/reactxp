@@ -133,6 +133,8 @@ onMouseOver: (e: MouseEvent) => void = undefined;
 // Mouse & Touch Events
 onContextMenu: (e: React.SyntheticEvent) => void;
 onPress: (e: SyntheticEvent) => void = undefined;
+onPressIn: (e: SyntheticEvent) => void = undefined;
+onPressOut: (e: SyntheticEvent) => void = undefined;
 
 // Focus Events
 onFocus: (e: FocusEvent) => void = undefined;

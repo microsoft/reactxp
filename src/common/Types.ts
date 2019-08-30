@@ -659,6 +659,8 @@ export interface ViewPropsShared<C = React.Component> extends CommonProps<C>, Co
     onMouseMove?: (e: MouseEvent) => void;
 
     onPress?: (e: SyntheticEvent) => void;
+    onPressIn?: (e: SyntheticEvent) => void;
+    onPressOut?: (e: SyntheticEvent) => void;
     onLongPress?: (e: SyntheticEvent) => void;
     onKeyPress?: (e: KeyboardEvent) => void;
     onFocus?: (e: FocusEvent) => void;

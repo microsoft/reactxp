@@ -469,7 +469,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
     }
 
     protected _isButton(viewProps: RX.Types.ViewProps): boolean {
-        return !!(viewProps.onPress || viewProps.onLongPress);
+        return !!(viewProps.onPress || viewProps.onLongPress || viewProps.onPressIn || viewProps.onPressOut);
     }
 
     private _updateFocusArbitratorProvider(props: RX.Types.ViewProps) {
@@ -536,6 +536,10 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
                 this._opacityActive(_activeOpacityAnimationDuration);
             }
         }
+
+        if (this.props.onPressIn) {
+            this.props.onPressIn(e);
+        }
     }
 
     touchableHandleActivePressOut(e: RX.Types.SyntheticEvent): void {
@@ -550,6 +554,10 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
             if (!this.props.disableTouchOpacityAnimation && (this.props.activeOpacity || !this.props.underlayColor)) {
                 this._opacityInactive(_inactiveOpacityAnimationDuration);
             }
+        }
+
+        if (this.props.onPressOut) {
+            this.props.onPressOut(e);
         }
     }
 
