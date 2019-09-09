@@ -40,11 +40,6 @@ export class WebView extends React.Component<Types.WebViewProps, RX.Types.Statel
         const source = this._buildSource();
         const injectedJavascript = this._buildInjectedJavascript();
 
-        // Force use of webkit on iOS (applies to RN 0.57 and newer only).
-        const extendedProps: RNWebViewProps = {
-            useWebKit: true
-        };
-
         return (
             <RNWebView
                 ref={ this._onMount }
@@ -65,7 +60,6 @@ export class WebView extends React.Component<Types.WebViewProps, RX.Types.Statel
                 onMessage={ this.props.onMessage ? this._onMessage : undefined }
                 testID={ this.props.testId }
                 mixedContentMode={ this._sandboxToMixedContentMode(this.props.sandbox) }
-                { ...extendedProps }
             />
         );
     }
