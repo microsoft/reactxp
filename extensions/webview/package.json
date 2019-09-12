@@ -1,6 +1,6 @@
 {
   "name": "reactxp-webview",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0-rc.2",
   "description": "Plugin for ReactXP that provides a control that allows the display of an independent web page",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
