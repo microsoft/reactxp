@@ -28,7 +28,6 @@
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.5",
     "@types/react-native": "^0.57.65",
-    "react-native-webview": "^5.12.1",
     "tslint": "^5.18.0",
     "tslint-microsoft-contrib": "^6.2.0",
     "tslint-react": "^4.0.0",
