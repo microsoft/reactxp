@@ -5,7 +5,7 @@
 To test the web build, you can run a local web server in node.
 
 ### Node.JS
-From a command line, go to the web directory and simply type:
+From a command line, go to the TodoList directory and simply type:
 ```
 node nodeserver.js
 ```
