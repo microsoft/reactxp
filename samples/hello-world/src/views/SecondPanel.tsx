@@ -10,8 +10,8 @@ interface SecondPanelProps extends RX.CommonProps {
 }
 
 interface SecondPanelState {
-    progressValue?: number;
-    toggleValue?: boolean;
+    progressValue: number;
+    toggleValue: boolean;
 }
 
 const styles = {
@@ -94,9 +94,9 @@ export class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState
                         </RX.Text>
                         <ProgressIndicator
                             fillColor={ '#ddd' }
-                            style={ styles.progressMargin as any }
+                            style={ styles.progressMargin }
                             size={ 32 }
-                            progress={ this.state.progressValue! }
+                            progress={ this.state.progressValue }
                         />
 
                         <RX.Text style={ [styles.titleText, styles.videoTitleText] }>
@@ -104,7 +104,7 @@ export class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState
                         </RX.Text>
                         <RXVideo
                             source={ 'https://www.w3schools.com/html/mov_bbb.mp4' }
-                            style={ styles.video as any }
+                            style={ styles.video }
                             loop={ true }
                             ref={ this._onMountVideo }
                             onCanPlay={ this._playVideo }
@@ -115,7 +115,7 @@ export class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState
         );
     }
 
-    private _onMountVideo = (component: any) => {
+    private _onMountVideo = (component: RXVideo) => {
         this._mountedVideo = component;
     }
 
@@ -132,7 +132,7 @@ export class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState
 
     private _startProgressIndicator() {
         this._progressTimerToken = window.setInterval(() => {
-            const newProgressValue = (this.state.progressValue! + 0.02) % 1;
+            const newProgressValue = (this.state.progressValue + 0.02) % 1;
             this.setState({ progressValue: newProgressValue });
         }, 1000 / 15);
     }

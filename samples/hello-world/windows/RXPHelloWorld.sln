@@ -1,8 +1,9 @@
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RXPHelloWorld", "RXPHelloWorld\RXPHelloWorld.csproj", "{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RXPHelloWorld", "RXPHelloWorld\RXPHelloWorld.csproj", "d1dc24da-295c-4d81-b9f2-70e98e6ea95e"
 	ProjectSection(ProjectDependencies) = postProject
 		{2EACF721-73B5-46AE-9775-4A8674D05A9C} = {2EACF721-73B5-46AE-9775-4A8674D05A9C}
 	EndProjectSection
@@ -21,10 +22,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yoga.uwp", "..\node_modules
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\node_modules\react-native-windows\Yoga\csharp\Facebook.Yoga\Facebook.Yoga.Shared.projitems*{91c42d32-291d-4b72-90b4-551663d60b8b}*SharedItemsImports = 13
-		..\node_modules\react-native-windows\ReactWindows\ReactNative.Shared\ReactNative.Shared.projitems*{c7673ad5-e3aa-468c-a5fd-fa38154e205c}*SharedItemsImports = 4
-		..\node_modules\react-native-windows\Yoga\csharp\Facebook.Yoga\Facebook.Yoga.Shared.projitems*{c7673ad5-e3aa-468c-a5fd-fa38154e205c}*SharedItemsImports = 4
-		..\node_modules\react-native-windows\ReactWindows\ReactNative.Shared\ReactNative.Shared.projitems*{eea8b852-4d07-48e1-8294-a21ab5909fe5}*SharedItemsImports = 13
+		ReactNative.Shared\ReactNative.Shared.projitems*{c7673ad5-e3aa-468c-a5fd-fa38154e205c}*SharedItemsImports = 4
+		ReactNative.Shared\ReactNative.Shared.projitems*{eea8b852-4d07-48e1-8294-a21ab5909fe5}*SharedItemsImports = 13
+		..\Yoga\csharp\Facebook.Yoga\Facebook.Yoga.Shared.projitems*{c7673ad5-e3aa-468c-a5fd-fa38154e205c}*SharedItemsImports = 4
+		..\Yoga\csharp\Facebook.Yoga\Facebook.Yoga.Shared.projitems*{91c42d32-291d-4b72-90b4-551663d60b8b}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -41,42 +42,42 @@ Global
 		ReleaseBundle|x86 = ReleaseBundle|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Debug|ARM.ActiveCfg = Debug|ARM
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Debug|ARM.Build.0 = Debug|ARM
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Debug|ARM.Deploy.0 = Debug|ARM
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Debug|x64.ActiveCfg = Debug|x64
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Debug|x64.Build.0 = Debug|x64
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Debug|x64.Deploy.0 = Debug|x64
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Debug|x86.ActiveCfg = Debug|x86
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Debug|x86.Build.0 = Debug|x86
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Debug|x86.Deploy.0 = Debug|x86
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.DebugBundle|ARM.ActiveCfg = DebugBundle|ARM
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.DebugBundle|ARM.Build.0 = DebugBundle|ARM
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.DebugBundle|ARM.Deploy.0 = DebugBundle|ARM
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.DebugBundle|x64.ActiveCfg = DebugBundle|x64
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.DebugBundle|x64.Build.0 = DebugBundle|x64
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.DebugBundle|x64.Deploy.0 = DebugBundle|x64
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.DebugBundle|x86.ActiveCfg = DebugBundle|x86
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.DebugBundle|x86.Build.0 = DebugBundle|x86
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.DebugBundle|x86.Deploy.0 = DebugBundle|x86
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Release|ARM.ActiveCfg = Release|ARM
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Release|ARM.Build.0 = Release|ARM
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Release|ARM.Deploy.0 = Release|ARM
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Release|x64.ActiveCfg = Release|x64
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Release|x64.Build.0 = Release|x64
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Release|x64.Deploy.0 = Release|x64
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Release|x86.ActiveCfg = Release|x86
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Release|x86.Build.0 = Release|x86
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.Release|x86.Deploy.0 = Release|x86
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.ReleaseBundle|ARM.ActiveCfg = ReleaseBundle|ARM
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.ReleaseBundle|ARM.Build.0 = ReleaseBundle|ARM
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.ReleaseBundle|ARM.Deploy.0 = ReleaseBundle|ARM
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.ReleaseBundle|x64.ActiveCfg = ReleaseBundle|x64
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.ReleaseBundle|x64.Build.0 = ReleaseBundle|x64
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.ReleaseBundle|x64.Deploy.0 = ReleaseBundle|x64
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.ReleaseBundle|x86.ActiveCfg = ReleaseBundle|x86
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.ReleaseBundle|x86.Build.0 = ReleaseBundle|x86
-		{72DCD3F3-8213-44CF-879E-2A7C8D3D8C16}.ReleaseBundle|x86.Deploy.0 = ReleaseBundle|x86
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Debug|ARM.ActiveCfg = Debug|ARM
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Debug|ARM.Build.0 = Debug|ARM
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Debug|ARM.Deploy.0 = Debug|ARM
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Debug|x64.ActiveCfg = Debug|x64
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Debug|x64.Build.0 = Debug|x64
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Debug|x64.Deploy.0 = Debug|x64
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Debug|x86.ActiveCfg = Debug|x86
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Debug|x86.Build.0 = Debug|x86
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Debug|x86.Deploy.0 = Debug|x86
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.DebugBundle|ARM.ActiveCfg = DebugBundle|ARM
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.DebugBundle|ARM.Build.0 = DebugBundle|ARM
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.DebugBundle|ARM.Deploy.0 = DebugBundle|ARM
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.DebugBundle|x64.ActiveCfg = DebugBundle|x64
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.DebugBundle|x64.Build.0 = DebugBundle|x64
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.DebugBundle|x64.Deploy.0 = DebugBundle|x64
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.DebugBundle|x86.ActiveCfg = DebugBundle|x86
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.DebugBundle|x86.Build.0 = DebugBundle|x86
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.DebugBundle|x86.Deploy.0 = DebugBundle|x86
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Release|ARM.ActiveCfg = Release|ARM
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Release|ARM.Build.0 = Release|ARM
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Release|ARM.Deploy.0 = Release|ARM
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Release|x64.ActiveCfg = Release|x64
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Release|x64.Build.0 = Release|x64
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Release|x64.Deploy.0 = Release|x64
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Release|x86.ActiveCfg = Release|x86
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Release|x86.Build.0 = Release|x86
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.Release|x86.Deploy.0 = Release|x86
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.ReleaseBundle|ARM.ActiveCfg = ReleaseBundle|ARM
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.ReleaseBundle|ARM.Build.0 = ReleaseBundle|ARM
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.ReleaseBundle|ARM.Deploy.0 = ReleaseBundle|ARM
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.ReleaseBundle|x64.ActiveCfg = ReleaseBundle|x64
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.ReleaseBundle|x64.Build.0 = ReleaseBundle|x64
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.ReleaseBundle|x64.Deploy.0 = ReleaseBundle|x64
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.ReleaseBundle|x86.ActiveCfg = ReleaseBundle|x86
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.ReleaseBundle|x86.Build.0 = ReleaseBundle|x86
+		{d1dc24da-295c-4d81-b9f2-70e98e6ea95e}.ReleaseBundle|x86.Deploy.0 = ReleaseBundle|x86
 		{C7673AD5-E3AA-468C-A5FD-FA38154E205C}.Debug|ARM.ActiveCfg = Debug|ARM
 		{C7673AD5-E3AA-468C-A5FD-FA38154E205C}.Debug|ARM.Build.0 = Debug|ARM
 		{C7673AD5-E3AA-468C-A5FD-FA38154E205C}.Debug|x64.ActiveCfg = Debug|x64
@@ -176,8 +177,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {1B41408E-3DB0-484C-8CC1-05004CDC2B95}
 	EndGlobalSection
 EndGlobal

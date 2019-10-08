@@ -89,7 +89,7 @@ export class ToggleSwitch extends RX.Component<ToggleSwitchProps, RX.Stateless> 
                     easing: RX.Animated.Easing.InOut()
                 })
             ])
-            .start();
+                .start();
         }
     }
 
@@ -103,7 +103,7 @@ export class ToggleSwitch extends RX.Component<ToggleSwitchProps, RX.Stateless> 
                     <RX.Animated.View style={ backgroundStyle }/>
                     <RX.Animated.View style={ knobStyles }/>
                 </RX.View>
-             </RX.Button>
+            </RX.Button>
         );
     }
 
