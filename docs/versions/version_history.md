@@ -18,6 +18,9 @@ Following semver rules, the major version (the first number in the version strin
 
 ### Version History
 
+#### Version 2.0.0-rc.2 of reactxp-video - _9 October 2019_
+* Updated react-native-video to 4.X
+
 #### Version 2.0.0-rc.2 of reactxp-webview - _12 September 2019_
 * Upgraded react-native-webview dependency
 
