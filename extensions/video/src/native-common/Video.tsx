@@ -44,6 +44,7 @@ class Video extends RX.Component<Types.VideoProps, VideoState> {
                 repeat={ this.props.loop }
                 source={ source }
                 style={ this.props.style }
+                useTextureView={ false }
                 onEnd={ this._onEnd }
                 onBuffer={ this._onBuffer }
                 onLoadStart={ this.props.onLoadStart}

@@ -56,6 +56,7 @@ declare module 'react-native-video' {
         controls?: boolean;
         currentTime?: number;
         progressUpdateInterval?: number;
+        useTextureView?: boolean;
         onLoadStart?: () => void;
         onLoad?: (info: VideoInfo) => void;
         onBuffer?: (bufferInfo: VideoBufferInfo) => void;
