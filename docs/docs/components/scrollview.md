@@ -25,7 +25,7 @@ keyboardDismissMode: 'none' | 'interactive' | 'on-drag'; // Native only
 
 // Should the on-screen keyboard remain visible when the user taps
 // the scroll view?
-keyboardShouldPersistTaps: boolean = false; // Native only
+keyboardShouldPersistTaps: boolean | 'always' | 'never' | 'handled' = 'never'; // Native only
 
 // Invoked when the contents of the scroll view change
 onContentSizeChange: (width: number, height: number) => void = undefined;

@@ -838,7 +838,7 @@ export interface ScrollViewProps extends CommonStyledProps<ScrollViewStyleRuleSe
     // The following props are valid only on native platforms and
     // have no meaning on the web implementation.
     keyboardDismissMode?: 'none' | 'interactive' | 'on-drag';
-    keyboardShouldPersistTaps?: boolean;
+    keyboardShouldPersistTaps?: boolean | 'always' | 'never' | 'handled';
 
     // This controls how often the scroll event will be fired while scrolling
     // (in milliseconds between events). A lower number yields better accuracy for code

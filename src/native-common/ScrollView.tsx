@@ -11,6 +11,7 @@ import * as React from 'react';
 import * as RN from 'react-native';
 
 import * as RX from '../common/Interfaces';
+import { ScrollViewProps } from '../common/Types';
 
 import ViewBase from './ViewBase';
 
@@ -82,7 +83,18 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
             scrollHandler = undefined;
         }
 
-        const keyboardShouldPersistTaps = (overrideKeyboardShouldPersistTaps || this.props.keyboardShouldPersistTaps ? 'always' : 'never');
+        // 1) keyboardShouldPersistTaps may be overridden, superceding all other settings
+        // 2) in the absence of any other setting, 'never' is the default
+        // 3) if a boolean is seen, translate to 'always' or 'never' as the boolean is deprecated
+        // 4) it is also possible to see a string value of 'handled'
+        let keyboardShouldPersistTaps: ScrollViewProps['keyboardShouldPersistTaps'] = 'never';
+        if (overrideKeyboardShouldPersistTaps || this.props.keyboardShouldPersistTaps === true) {
+            // If there is an override or a boolean true, translate it to 'always'
+            keyboardShouldPersistTaps = 'always';
+        } else if (typeof this.props.keyboardShouldPersistTaps === 'string') {
+            // If there is no override, and a string && non-boolean was provided, use it without translation
+            keyboardShouldPersistTaps = this.props.keyboardShouldPersistTaps;
+        }
 
         // NOTE: We are setting `automaticallyAdjustContentInsets` to false
         // (http://facebook.github.io/react-native/docs/scrollview.html#automaticallyadjustcontentinsets). The
