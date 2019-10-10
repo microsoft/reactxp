@@ -43,15 +43,15 @@ export class RootView extends RX.Component {
 
     _renderScene = (navigatorRoute) => {
         switch (navigatorRoute.routeId) {
-            case NavigationRouteId.MainPanel:
-                return (
-                    <MainPanel onPressNavigate={ this._onPressNavigate }/>
-                );
+        case NavigationRouteId.MainPanel:
+            return (
+                <MainPanel onPressNavigate={ this._onPressNavigate }/>
+            );
 
-            case NavigationRouteId.SecondPanel:
-                return (
-                    <SecondPanel onNavigateBack={ this._onPressBack }/>
-                );
+        case NavigationRouteId.SecondPanel:
+            return (
+                <SecondPanel onNavigateBack={ this._onPressBack }/>
+            );
         }
 
         return null;

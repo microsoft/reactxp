@@ -1,7 +1,7 @@
 {
     "parser": "babel-eslint",
-    "plugins": ["react"],
-    "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "plugins": ["react", "jest"],
+    "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:jest/recommended"],
     "env": {
         "browser": true,
         "node": true,
@@ -17,7 +17,8 @@
         "react/jsx-curly-brace-presence": [2, { "props": "always" }],
         "react/display-name": 0,
         "comma-dangle": ["error", "never"],
-        "max-len": ["error", 140]
+        "max-len": ["error", 140],
+        "indent": "error"
     },
     "globals": {
         "__DEV__": true

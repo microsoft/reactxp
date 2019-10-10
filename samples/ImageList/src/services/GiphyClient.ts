@@ -37,8 +37,7 @@ const GIPHY_API_URL = 'https://api.giphy.com/v1/gifs/search';
 const GIPHY_API_KEY = 'dc6zaTOxFJmzC';
 
 export class GiphyClient extends GenericRestClient {
-    searchImages(query: string, limit: number = 25, offset: number = 0, rating: string = 'g')
-            : SyncTasks.Promise<GiphySearchResult[]> {
+    searchImages(query: string, limit = 25, offset = 0, rating = 'g'): SyncTasks.Promise<GiphySearchResult[]> {
         const url = this._buildUrl(query, limit, offset, rating);
 
         return this._performApiCall<GiphySearchResponse>(url, 'GET', undefined, undefined)

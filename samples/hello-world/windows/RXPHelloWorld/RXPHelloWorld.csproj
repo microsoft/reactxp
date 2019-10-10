@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>72dcd3f3-8213-44cf-879e-2a7c8d3d8c16</ProjectGuid>
+    <ProjectGuid>d1dc24da-295c-4d81-b9f2-70e98e6ea95e</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RXPHelloWorld</RootNamespace>

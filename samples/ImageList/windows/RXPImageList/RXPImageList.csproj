@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>552acc6a-39ed-4895-977a-8c7b3d6df2b7</ProjectGuid>
+    <ProjectGuid>e1a04243-db95-4b1a-97de-1aa66875892d</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RXPImageList</RootNamespace>
