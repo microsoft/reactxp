@@ -10,7 +10,7 @@ enum NavigationRouteId {
     SecondPanel
 }
 
-const styles = {
+const _styles = {
     // Standard navigator style should be an object. So we have to disable caching here.
     navCardStyle: RX.Styles.createViewStyle({
         backgroundColor: '#f5fcff'
@@ -33,7 +33,7 @@ export class RootView extends RX.Component<RX.CommonProps, RX.Stateless> {
         return (
             <Navigator
                 delegateSelector={ DelegateSelector }
-                cardStyle={ styles.navCardStyle }
+                cardStyle={ _styles.navCardStyle }
                 renderScene={ this._renderScene }
                 ref={ this._onNavigatorRef }
             />
