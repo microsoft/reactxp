@@ -5,7 +5,7 @@ interface MainPanelProps {
     onPressNavigate: () => void;
 }
 
-const styles = {
+const _styles = {
     scroll: RX.Styles.createScrollViewStyle({
         alignSelf: 'stretch',
         backgroundColor: '#f5fcff'
@@ -71,23 +71,23 @@ export class MainPanel extends RX.Component<MainPanelProps, RX.Stateless> {
     render() {
         return (
             <RX.View useSafeInsets={ true }>
-                <RX.ScrollView style={ styles.scroll }>
-                    <RX.View style={ styles.container }>
-                        <RX.Animated.Text style={ [styles.helloWorld, this._animatedStyle] }>
+                <RX.ScrollView style={ _styles.scroll }>
+                    <RX.View style={ _styles.container }>
+                        <RX.Animated.Text style={ [_styles.helloWorld, this._animatedStyle] }>
                             Hello World
                         </RX.Animated.Text>
-                        <RX.Text style={ styles.welcome }>
+                        <RX.Text style={ _styles.welcome }>
                             Welcome to ReactXP
                         </RX.Text>
-                        <RX.Text style={ styles.instructions }>
+                        <RX.Text style={ _styles.instructions }>
                             Edit App.tsx to get started
                         </RX.Text>
-                        <RX.Link style={ styles.docLink } url={ 'https://microsoft.github.io/reactxp/docs' }>
+                        <RX.Link style={ _styles.docLink } url={ 'https://microsoft.github.io/reactxp/docs' }>
                             View ReactXP documentation
                         </RX.Link>
 
-                        <RX.Button style={ styles.roundButton } onPress={ this._onPressNavigate }>
-                            <RX.Text style={ styles.buttonText }>
+                        <RX.Button style={ _styles.roundButton } onPress={ this._onPressNavigate }>
+                            <RX.Text style={ _styles.buttonText }>
                                 See More Examples
                             </RX.Text>
                         </RX.Button>

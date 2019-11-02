@@ -14,7 +14,7 @@ interface SecondPanelState {
     toggleValue: boolean;
 }
 
-const styles = {
+const _styles = {
     scroll: RX.Styles.createScrollViewStyle({
         alignSelf: 'stretch',
         backgroundColor: '#f5fcff'
@@ -73,15 +73,15 @@ export class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState
     render() {
         return (
             <RX.View useSafeInsets={ true }>
-                <RX.ScrollView style={ styles.scroll }>
-                    <RX.View style={ styles.container }>
-                        <RX.Button style={ styles.roundButton } onPress={ this._onPressBack }>
-                            <RX.Text style={ styles.buttonText }>
+                <RX.ScrollView style={ _styles.scroll }>
+                    <RX.View style={ _styles.container }>
+                        <RX.Button style={ _styles.roundButton } onPress={ this._onPressBack }>
+                            <RX.Text style={ _styles.buttonText }>
                                 Go Back
                             </RX.Text>
                         </RX.Button>
 
-                        <RX.Text style={ styles.titleText }>
+                        <RX.Text style={ _styles.titleText }>
                             Here is a simple control built using ReactXP
                         </RX.Text>
                         <ToggleSwitch
@@ -89,22 +89,22 @@ export class SecondPanel extends RX.Component<SecondPanelProps, SecondPanelState
                             onChange={ this._onChangeToggle }
                         />
 
-                        <RX.Text style={ styles.titleText }>
+                        <RX.Text style={ _styles.titleText }>
                             Here is an SVG image using the ImageSvg extension
                         </RX.Text>
                         <ProgressIndicator
                             fillColor={ '#ddd' }
-                            style={ styles.progressMargin }
+                            style={ _styles.progressMargin }
                             size={ 32 }
                             progress={ this.state.progressValue }
                         />
 
-                        <RX.Text style={ [styles.titleText, styles.videoTitleText] }>
+                        <RX.Text style={ [_styles.titleText, _styles.videoTitleText] }>
                             Here is a video using the Video extension
                         </RX.Text>
                         <RXVideo
                             source={ 'https://www.w3schools.com/html/mov_bbb.mp4' }
-                            style={ styles.video }
+                            style={ _styles.video }
                             loop={ true }
                             ref={ this._onMountVideo }
                             onCanPlay={ this._playVideo }

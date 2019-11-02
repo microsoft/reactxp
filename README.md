@@ -43,6 +43,12 @@ This will create a directory called **AppName** inside the current working direc
 * [Node.Js](https://nodejs.org/) ([Setup Instructions](https://nodejs.org/en/download/package-manager/))
 * [React Native](https://facebook.github.io/react-native/) ([Setup Instructions](https://facebook.github.io/react-native/docs/getting-started))
 
+## ESLint rules
+
+> [TSLint will be deprecated some time in 2019](https://github.com/palantir/tslint)
+
+If you plan to migrate your projects from TSLint to ESlint and want to continue using the [_rules_](https://github.com/microsoft/reactxp/tree/master/src/tslint) to automate search common problems in *ReactXP* usage, you can use [eslint-plugin-reactxp](https://github.com/a-tarasyuk/eslint-plugin-reactxp).
+
 ## Contributing
 
 We welcome contributions to ReactXP. See the [CONTRIBUTING](./CONTRIBUTING.md) file for how to help out.

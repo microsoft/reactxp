@@ -7,12 +7,13 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": ["@typescript-eslint", "react", "jest"],
+  "plugins": ["@typescript-eslint", "reactxp", "react", "jest"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:reactxp/recommended",
     "plugin:react/recommended",
     "plugin:jest/recommended"
   ],
@@ -26,7 +27,7 @@
     "indent": "off",
     "@typescript-eslint/indent": ["error", 4],
     "react/jsx-curly-brace-presence": [2, { "props": "always" }],
-    "max-len": ["error", 140],
+    "max-len": ["error", 140]
   },
   "globals": {
     "__DEV__": true
