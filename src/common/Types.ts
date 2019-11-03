@@ -819,7 +819,6 @@ export interface ScrollIndicatorInsets {
 export interface ScrollViewProps extends CommonStyledProps<ScrollViewStyleRuleSet, RX.ScrollView>, CommonAccessibilityProps {
     children?: ReactNode;
 
-    vertical?: boolean; // By default true
     horizontal?: boolean; // By default false
 
     onLayout?: (e: ViewOnLayoutEvent) => void;
