@@ -395,7 +395,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
                         opacity: this._opacityAnimatedValue
                     });
                 }
-                this._internalProps.style = Styles.combine([baseStyle, this._opacityAnimatedStyle]);
+                this._internalProps.style = Styles.combine([baseStyle as any, this._opacityAnimatedStyle]);
             }
 
             this._internalProps.tooltip = this.props.title;

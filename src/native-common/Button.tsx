@@ -152,7 +152,7 @@ export class Button extends ButtonBase {
             onMouseEnter: this._onMouseEnter,
             onMouseLeave: this._onMouseLeave,
             tooltip: this.props.title,
-            style: Styles.combine([_styles.defaultButton, this.props.style, opacityStyle,
+            style: Styles.combine([_styles.defaultButton as any, this.props.style, opacityStyle,
                 disabledStyle]) as RN.StyleProp<RN.ViewStyle>,
             accessibilityLabel: this.props.accessibilityLabel || this.props.title,
             accessibilityTraits: accessibilityTrait,
