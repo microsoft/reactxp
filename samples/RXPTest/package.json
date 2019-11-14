@@ -35,10 +35,9 @@
     "react": "16.11.0",
     "react-dom": "16.11.0",
     "react-native": "0.59.10",
-    "react-native-webview": "^7.5.1",
     "react-native-windows": "0.59.0-rc.3",
     "reactxp": "^2.0.0-rc.2",
     "reactxp-netinfo": "0.0.1-alpha.1",
-    "reactxp-webview": "0.0.1-alpha.1"
+    "reactxp-webview": "2.0.0-rc.3"
   }
 }
