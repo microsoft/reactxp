@@ -49,7 +49,7 @@ const _styles = {
     }),
     scrollView: RX.Styles.createScrollViewStyle({
         flex: 1,
-        alignSelf: 'stretch'
+        alignSelf: 'stretch',
     }),
     itemContainer: RX.Styles.createViewStyle({
         alignSelf: 'stretch',
