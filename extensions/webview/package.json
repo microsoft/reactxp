@@ -9,20 +9,20 @@
     "tslint": "tslint -p tsconfig.json -r tslint.json --fix || true"
   },
   "dependencies": {
-    "react-native-webview": "^7.0.5"
+    "react-native-webview": "^7.5.1"
   },
   "peerDependencies": {
-    "reactxp": "^2.0.0-rc.1",
-    "react": "^16.0",
-    "react-dom": "^16.0",
+    "react": "^16.3",
+    "reactxp": "^2.0.0-rc.2",
+    "react-dom": "^16.3",
     "react-native": ">=0.57 <0.60",
     "react-native-windows": "^0.57.1"
   },
   "devDependencies": {
-    "reactxp": "^2.0.0-rc.1",
-    "typescript": "3.4.5",
-    "tslint": "5.16.0",
-    "tslint-microsoft-contrib": "6.1.1"
+    "reactxp": "^2.0.0-rc.2",
+    "typescript": "3.7.2",
+    "tslint": "5.20.1",
+    "tslint-microsoft-contrib": "6.2.0"
   },
   "types": "dist/web/PluginBase.d.ts"
 }
