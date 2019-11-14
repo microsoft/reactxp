@@ -420,13 +420,6 @@ gulp.task('compile-rn', function () {
         .pipe(enableSrcMaps ? sourcemaps.init() : gutil.noop())
         .pipe(tsProject());
 
-    var shouldAssert = isDevEnv || (!isCandidateBuild && !isPublicRelease && !isInsidersRelease);
-    if (!shouldAssert) {
-        stream = stream
-            .pipe(unassert());
-    }
-
-    // must run after unassert
     if (enableSrcMaps) {
         stream = stream.pipe(sourcemaps.write('.',
             { sourceRoot: path.join(process.cwd(), config.ts.srcRoot) }));
