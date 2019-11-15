@@ -33,9 +33,6 @@ export class Text extends CommonText {
     // to null to indicate the default behavior.
     render() {
         const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility);
-        const extendedProps: RN.ExtendedTextProps = {
-            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier
-        };
         return (
             <RN.Text
                 style={ this._getStyles() as RN.StyleProp<RN.TextStyle> }
@@ -47,7 +44,6 @@ export class Text extends CommonText {
                 onPress={ this.props.onPress }
                 textBreakStrategy={ this.props.textBreakStrategy }
                 testID={ this.props.testId }
-                { ...extendedProps }
             >
                 { this.props.children }
             </RN.Text>

@@ -23,14 +23,12 @@ declare module 'react-native' {
     }
 
     interface ExtendedTextProps extends RN.TextProps, RNW.TextWindowsProps {
-        maxContentSizeMultiplier?: number;
         disableContextMenu?: boolean;
         tooltip?: string;
     }
 
     interface ExtendedTextInputProps extends RN.TextInputProps {
         onPaste?: (e: RN.NativeSyntheticEvent) => void;
-        maxContentSizeMultiplier?: number;
         tabIndex?: number;
     }
 

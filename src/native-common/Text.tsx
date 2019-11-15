@@ -88,13 +88,13 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
     }
 
     protected _getExtendedProperties(): RN.ExtendedTextProps {
-        const { maxContentSizeMultiplier, onContextMenu } = this.props;
+        const { onContextMenu } = this.props;
 
         // The presence of an onContextMenu on this instance or on the first responder parent up the tree
         // should disable any system provided context menu
         const disableContextMenu = !!onContextMenu || !!this.context.isRxParentAContextMenuResponder;
 
-        return { maxContentSizeMultiplier, disableContextMenu };
+        return { disableContextMenu };
     }
 
     private _onPress = (e: RN.GestureResponderEvent) => {

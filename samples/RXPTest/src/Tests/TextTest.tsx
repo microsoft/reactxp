@@ -244,7 +244,7 @@ class TextView extends RX.Component<RX.CommonProps, TextViewState> {
                     </RX.Text>
                 </RX.View>
                 <RX.View style={ _styles.resultContainer }>
-                    <RX.Text style={ _styles.test2Text }  maxContentSizeMultiplier={ 1.2 }>
+                    <RX.Text style={ _styles.test2Text }>
                         { 'This text scales up to 1.2x, no more' }
                     </RX.Text>
                 </RX.View>

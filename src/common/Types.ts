@@ -572,9 +572,6 @@ export interface TextPropsShared<C = React.Component> extends CommonProps<C> {
     // to true. iOS and Android only.
     allowFontScaling?: boolean;
 
-    // Specifies the maximum scale factor for text size. iOS and Android only.
-    maxContentSizeMultiplier?: number;
-
     // iOS and Android only
     ellipsizeMode?:  'head' | 'middle' | 'tail';
 
@@ -891,7 +888,6 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet, RX.Link> 
     selectable?: boolean;
     numberOfLines?: number;
     allowFontScaling?: boolean;
-    maxContentSizeMultiplier?: number;
     tabIndex?: number;
     accessibilityId?: string;
     autoFocus?: boolean; // The component is a candidate for being autofocused.
@@ -923,9 +919,6 @@ export interface TextInputPropsShared<C = React.Component> extends CommonProps<C
      // Should fonts be scaled according to system setting? Defaults
     // to true. iOS and Android only.
     allowFontScaling?: boolean;
-
-    // Specifies the maximum scale factor for text size. iOS and Android only.
-    maxContentSizeMultiplier?: number;
 
     // iOS-only prop for controlling the keyboard appearance
     keyboardAppearance?: 'default' | 'light' | 'dark';

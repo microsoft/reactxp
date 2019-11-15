@@ -101,16 +101,6 @@ class UserInterfaceView extends RX.Component<RX.CommonProps, UserInterfaceState>
         // isHighPixelDensityScreen
         let isHighDensity = RX.UserInterface.isHighPixelDensityScreen();
 
-        // setMaxContentSizeMultiplier
-        try {
-            RX.UserInterface.setMaxContentSizeMultiplier(1.3);
-            RX.UserInterface.setMaxContentSizeMultiplier(0);
-        } catch (e) {
-            // Some versions of RN don't implement this call, which can result
-            // in an exception.
-            result.errors.push('Caught exception when calling RX.UserInterface.setMaxContentSizeMultiplier');
-        }
-
         // dismissKeyboard
         RX.UserInterface.dismissKeyboard();
 

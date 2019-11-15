@@ -104,7 +104,6 @@ class LinkView extends RX.Component<RX.CommonProps, LinkViewState> {
                         style={ _styles.link }
                         url={ 'https://microsoft.github.io/reactxp/docs/components/link.html' }
                         title={ 'Open RX.Link documentation in browser' }
-                        maxContentSizeMultiplier={ 1.5 }
                         numberOfLines={ 1 }
                     >
                         { 'Documentation for RX.Link' }
