@@ -389,7 +389,7 @@ export abstract class FocusManager {
 // they exist and should be accounted during the focus restriction.
 //
 // isConditionallyFocusable is an optional callback which will be
-// called for componentDidMount() or for componentWillUpdate() to
+// called for componentDidMount() or for UNSAFE_componentWillUpdate() to
 // determine if the component is actually focusable.
 //
 // accessibleOnly is true for components that support just being focused
@@ -410,7 +410,8 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
         focusManager.removeFocusableComponent(this);
     });
 
-    inheritMethod('componentWillUpdate', function(this: FocusableComponentInternal, focusManager: FocusManager, origArgs: IArguments) {
+    inheritMethod('UNSAFE_componentWillUpdate', function(this: FocusableComponentInternal, focusManager: FocusManager,
+            origArgs: IArguments) {
         if (isConditionallyFocusable) {
             const isFocusable = isConditionallyFocusable.apply(this, origArgs);
 
