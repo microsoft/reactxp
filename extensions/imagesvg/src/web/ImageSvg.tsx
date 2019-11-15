@@ -21,7 +21,7 @@ export class ImageSvg extends React.Component<ImageSvgProps, {}> {
             let combinedStyles = RXStyles.combine([{
                 display: 'flex',
                 position: 'relative'
-            }, this.props.style]) as any;
+            } as any, this.props.style]) as any;
 
             if (this.props.fillColor !== undefined) {
                 combinedStyles.fill = this.props.fillColor;
