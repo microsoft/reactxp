@@ -114,30 +114,6 @@ export class UserInterface extends RX.UserInterface {
         return deferred.promise();
     }
 
-    getMaxContentSizeMultiplier(): Promise<number> {
-        const deferred = new Defer<number>();
-
-        // TODO: #727532 Remove conditional after implementing UIManager.getContentSizeMultiplier for UWP
-        // TODO:(alregner) Remove conditional after implementing UIManager.getContentSizeMultiplier for macos
-        if (RN.Platform.OS === 'windows' || RN.Platform.OS === 'macos') {
-            deferred.resolve(1);
-        } else {
-            RN.NativeModules.UIManager.getMaxContentSizeMultiplier((value: number) => {
-                deferred.resolve(value);
-            });
-        }
-
-        return deferred.promise();
-    }
-
-    setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void {
-        // TODO: #727532 Remove conditional after implementing UIManager.getContentSizeMultiplier for UWP
-        // TODO:(alregner) Remove conditional after implementing UIManager.getContentSizeMultiplier for macos
-        if (RN.Platform.OS !== 'windows' && RN.Platform.OS !== 'macos') {
-            RN.NativeModules.UIManager.setMaxContentSizeMultiplier(maxContentSizeMultiplier);
-        }
-    }
-
     useCustomScrollbars(enable = true) {
         // Nothing to do
     }

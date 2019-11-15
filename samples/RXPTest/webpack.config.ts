@@ -4,8 +4,7 @@ const config: webpack.Configuration = {
     entry: "./src/index.tsx",
     mode: "development",
     output: {
-        filename: "bundle.js",
-        path: __dirname + "/dist"
+        filename: "dist/bundle.js",
     },
 
     // Enable sourcemaps for debugging webpack's output.

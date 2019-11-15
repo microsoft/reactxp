@@ -81,7 +81,6 @@ export abstract class UserInterface {
     // Content Size Multiplier
     abstract getContentSizeMultiplier(): Promise<number>;
     contentSizeMultiplierChangedEvent = new SubscribableEvent<(multiplier: number) => void>();
-    abstract setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
 
     // On-screen Keyboard
     abstract dismissKeyboard(): void;

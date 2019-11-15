@@ -48,7 +48,6 @@ export class LinkBase<S> extends React.Component<RX.Types.LinkProps, S> {
             onPress: this._onPress,
             onLongPress: this._onLongPress,
             allowFontScaling: this.props.allowFontScaling,
-            maxContentSizeMultiplier: this.props.maxContentSizeMultiplier,
             children: this.props.children,
             tooltip: this.props.title,
             testID: this.props.testId

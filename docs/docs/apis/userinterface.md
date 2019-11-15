@@ -57,12 +57,6 @@ measureWindow(rootViewId?: string): Types.Dimensions;
 // can be adjusted by users on some platforms; defaults to 1.0
 getContentSizeMultiplier(): SyncTasks.Promise<number>;
 
-// Sets the default maximum "size multiplier" for text increase.
-// Values must be 0 or >=1. The default is 0 which indicates that
-// there is no max.
-// Note: Older versions of React Native don’t support this interface.
-setMaxContentSizeMultiplier(maxContentSizeMultiplier: number): void;
-
 // Dismisses the on-screen keyboard (on applicable platforms)
 dismissKeyboard(): void;
 

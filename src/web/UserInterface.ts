@@ -100,18 +100,6 @@ export class UserInterface extends RX.UserInterface {
         return Promise.resolve(1);
     }
 
-    getMaxContentSizeMultiplier(): Promise<number> {
-        // Browsers don't support font-specific scaling. They scale all of their
-        // UI elements the same.
-        return Promise.resolve(0);
-    }
-
-    setMaxContentSizeMultiplier(maxContentSizeMultiplier: number) {
-        // Browsers don't support font-specific scaling. They scale all of their
-        // UI elements the same.
-        // No-op.
-    }
-
     isHighPixelDensityScreen(): boolean {
         return this.getPixelRatio() > 1;
     }

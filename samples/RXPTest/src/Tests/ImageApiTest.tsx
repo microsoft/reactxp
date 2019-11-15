@@ -122,9 +122,12 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
         this._test1Complete = true;
 
         if (this._testResult) {
+            const pixelRatio = RX.UserInterface.getPixelRatio();
+
             if (!dimensions) {
                 this._testResult.errors.push('Received undefined dimensions from onLoad');
-            } else if (!approxEquals(dimensions.width, image1ExpectedWidth) || !approxEquals(dimensions.height, image1ExpectedHeight)) {
+            } else if (!approxEquals(dimensions.width, image1ExpectedWidth / pixelRatio) ||
+                    !approxEquals(dimensions.height, image1ExpectedHeight / pixelRatio)) {
                 this._testResult.errors.push(`Expected dimensions from onLoad to be ${image1ExpectedWidth}x${image1ExpectedHeight}. ` +
                     `Got ${dimensions.width}x${dimensions.height}`);
             }
@@ -132,10 +135,10 @@ class ImageView extends RX.Component<RX.CommonProps, ImageViewState> {
             // Now call the component back to see if we get the same dimensions.
             const width = this._image1Ref!.getNativeWidth();
             const height = this._image1Ref!.getNativeHeight();
-            if (width == null || !approxEquals(width, image1ExpectedWidth)) {
+            if (width == null || !approxEquals(width, image1ExpectedWidth / pixelRatio)) {
                 this._testResult.errors.push(`Expected width from getNativeWidth to be ${image1ExpectedWidth}. Got ${width}`);
             }
-            if (height == null || !approxEquals(height, image1ExpectedHeight)) {
+            if (height == null || !approxEquals(height, image1ExpectedHeight / pixelRatio)) {
                 this._testResult.errors.push(`Expected height from getNativeHeight to be ${image1ExpectedHeight}. Got ${height}`);
             }
         }

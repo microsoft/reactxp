@@ -1,6 +1,6 @@
 {
   "name": "reactxp-navigation",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0-rc.2",
   "description": "Plugin for ReactXP that provides a navigation framework",
   "scripts": {
     "build": "npm run tslint && tsc",
@@ -16,27 +16,27 @@
     "react"
   ],
   "dependencies": {
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "rebound": "^0.1.0",
     "reactxp-experimental-navigation": "1.0.14"
   },
   "peerDependencies": {
-    "react": "^16.0",
-    "reactxp": "^2.0.0-rc.1",
-    "react-dom": "^16.0",
-    "react-native": ">=0.57 <0.60",
+    "react": "^16.3",
+    "reactxp": "^2.0.0-rc.2",
+    "react-dom": "^16.3",
+    "react-native": ">=0.57",
     "react-native-windows": "^0.57.1"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.134",
-    "@types/node": "^11.13.14",
-    "@types/react-native": "^0.57.62",
-    "reactxp": "^2.0.0-rc.1",
-    "tslint": "^5.17.0",
+    "@types/lodash": "^4.14.147",
+    "@types/node": "^12.12.7",
+    "@types/react-native": "^0.60.22",
+    "reactxp": "^2.0.0-rc.2",
+    "tslint": "^5.20.1",
     "tslint-microsoft-contrib": "^6.2.0",
-    "tslint-react": "^4.0.0",
-    "tsutils": "^3.14.0",
-    "typescript": "^3.5.1"
+    "tslint-react": "^4.1.0",
+    "tsutils": "^3.17.1",
+    "typescript": "^3.7.2"
   },
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "reactxp-virtuallistview",
-  "version": "2.0.0",
+  "version": "2.1.0-rc.1",
   "description": "General-purpose virtualized list view built on the cross-platform ReactXP library",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
@@ -9,23 +9,23 @@
     "tslint": "tslint --project tsconfig.json -r tslint.json --fix || true"
   },
   "dependencies": {
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.15"
   },
   "peerDependencies": {
-    "react": "^16.0",
-    "reactxp": "^2.0.0-rc.1",
-    "react-dom": "^16.0",
-    "react-native": ">=0.57 <0.60",
+    "react": "^16.3",
+    "reactxp": "^2.0.0-rc.2",
+    "react-dom": "^16.3",
+    "react-native": ">=0.57",
     "react-native-windows": "^0.57.1"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.134",
-    "reactxp": "^2.0.0-rc.1",
-    "tslint": "^5.17.0",
+    "@types/lodash": "^4.14.147",
+    "reactxp": "^2.0.0-rc.2",
+    "tslint": "^5.20.1",
     "tslint-microsoft-contrib": "^6.2.0",
-    "tslint-react": "^4.0.0",
-    "tsutils": "^3.14.0",
-    "typescript": "^3.5.1"
+    "tslint-react": "^4.1.0",
+    "tsutils": "^3.17.1",
+    "typescript": "^3.7.2"
   },
   "homepage": "https://microsoft.github.io/reactxp/docs/extensions/virtuallistview.html",
   "repository": {

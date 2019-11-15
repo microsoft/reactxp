@@ -149,7 +149,6 @@ class TextInputView extends RX.Component<RX.CommonProps, TextInputViewState> {
                         autoCorrect={ false }
                         accessibilityId={ 'TextInputViewTextInput' }
                         autoFocus={ true }
-                        maxContentSizeMultiplier={ 1.5 }
                         onChangeText={ val => this.setState({ test1Input: val }) }
                     />
                     <RX.Text style={ _styles.resultText } numberOfLines={ 1 }>

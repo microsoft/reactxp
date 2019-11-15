@@ -284,8 +284,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         const scrollComponentClassNames = ['scrollViewport'];
         if (this.props.horizontal) {
             scrollComponentClassNames.push('scrollViewportH');
-        }
-        if (this.props.horizontal === false) {
+        } else {
             scrollComponentClassNames.push('scrollViewportV');
             containerStyles = _.extend({}, _customStyles.customScrollVertical, containerStyles);
         }
