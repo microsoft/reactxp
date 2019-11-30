@@ -1,6 +1,6 @@
 {
   "name": "reactxp-netinfo",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0",
   "description": "Plugin for ReactXP that provides information about network connectivity",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
@@ -9,16 +9,16 @@
     "tslint": "tslint -p tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
   },
   "dependencies": {
-    "@react-native-community/netinfo": "^4.6.0"
+    "@react-native-community/netinfo": "^4.6.1"
   },
   "peerDependencies": {
-    "reactxp": "^2.0.0-rc.2",
+    "reactxp": "^2.0.0",
     "react-dom": "^16.3",
     "react-native": ">=0.57",
     "react-native-windows": "^0.57.1"
   },
   "devDependencies": {
-    "reactxp": "^2.0.0-rc.2",
+    "reactxp": "^2.0.0",
     "typescript": "3.7.2",
     "tslint": "5.20.1",
     "tslint-microsoft-contrib": "6.2.0"

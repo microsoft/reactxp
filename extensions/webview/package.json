@@ -1,6 +1,6 @@
 {
   "name": "reactxp-webview",
-  "version": "2.0.0-rc.3",
+  "version": "2.0.0",
   "description": "Plugin for ReactXP that provides a control that allows the display of an independent web page",
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
@@ -9,17 +9,17 @@
     "tslint": "tslint -p tsconfig.json -r tslint.json --fix || true"
   },
   "dependencies": {
-    "react-native-webview": "^7.5.1"
+    "react-native-webview": "^7.5.2"
   },
   "peerDependencies": {
     "react": "^16.3",
-    "reactxp": "^2.0.0-rc.2",
+    "reactxp": "^2.0.0",
     "react-dom": "^16.3",
     "react-native": ">=0.57",
     "react-native-windows": "^0.57.1"
   },
   "devDependencies": {
-    "reactxp": "^2.0.0-rc.2",
+    "reactxp": "^2.0.0",
     "typescript": "3.7.2",
     "tslint": "5.20.1",
     "tslint-microsoft-contrib": "6.2.0"

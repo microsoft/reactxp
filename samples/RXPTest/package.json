@@ -1,6 +1,6 @@
 {
   "name": "rxptest",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -15,13 +15,13 @@
     "tslint": "tslint --project tsconfig.json -r tslint.json -r ./node_modules/tslint-microsoft-contrib --fix || true"
   },
   "devDependencies": {
-    "@types/node": "^12.12.7",
-    "@types/webpack": "^4.39.8",
+    "@types/node": "^12.12.14",
+    "@types/webpack": "^4.41.0",
     "awesome-typescript-loader": "^5.2.1",
     "rnpm-plugin-windows": "^0.3.8",
     "source-map-loader": "^0.2.4",
     "sync-glob": "^1.4.0",
-    "ts-node": "^8.5.0",
+    "ts-node": "^8.5.4",
     "tslint": "^5.20.1",
     "tslint-loader": "^3.5.4",
     "tslint-microsoft-contrib": "^6.2.0",
@@ -31,13 +31,12 @@
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
-    "@react-native-community/netinfo": "^4.6.0",
-    "react": "16.11.0",
-    "react-dom": "16.11.0",
+    "react": "16.12.0",
+    "react-dom": "16.12.0",
     "react-native": "0.59.10",
     "react-native-windows": "0.59.0-rc.3",
-    "reactxp": "^2.0.0-rc.2",
-    "reactxp-netinfo": "0.0.1-alpha.1",
-    "reactxp-webview": "2.0.0-rc.3"
+    "reactxp": "^2.0.0",
+    "reactxp-netinfo": "^2.0.0",
+    "reactxp-webview": "^2.0.0"
   }
 }

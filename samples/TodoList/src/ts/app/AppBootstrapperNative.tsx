@@ -17,6 +17,7 @@ import { DbProvider } from 'nosqlprovider';
 import { CordovaNativeSqliteProvider } from 'nosqlprovider/dist/CordovaNativeSqliteProvider';
 import { InMemoryProvider } from 'nosqlprovider/dist/InMemoryProvider';
 import * as RX from 'reactxp';
+import * as SyncTasks from 'synctasks';
 
 import AppBootstrapper from './AppBootstrapper';
 
@@ -31,8 +32,8 @@ class AppBootstrapperNative extends AppBootstrapper {
         ];
     }
 
-    protected _getInitialUrl(): Promise<string | undefined> {
-        return RX.Linking.getInitialUrl();
+    protected _getInitialUrl(): SyncTasks.Promise<string | undefined> {
+        return SyncTasks.fromThenable(RX.Linking.getInitialUrl());
     }
 }
 
