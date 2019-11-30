@@ -18,6 +18,9 @@ Following semver rules, the major version (the first number in the version strin
 
 ### Version History
 
+#### Version 2.0.0 of reactxp - _30 November 2019_
+* All releases and notes going forward will be tracked on the [Github ReactXP Releases page](https://github.com/microsoft/reactxp/releases)
+
 #### Version 2.0.0-rc.2 of reactxp-video - _9 October 2019_
 * Updated react-native-video to 4.X
 
