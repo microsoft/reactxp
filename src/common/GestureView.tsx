@@ -123,11 +123,13 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
     // Returns true if we care about trapping/tracking the event
     protected _onTouchChange(event: TouchEventBasic, gestureState: GestureStatePointVelocity): boolean {
-        this._lastGestureStartEvent = event;
-        let initializeFromEvent = false;
+        if (!this._lastGestureStartEvent) {
+            this._lastGestureStartEvent = event;
+        }
 
         // If this is the first movement we've seen, try to match it against
         // the various move gestures that we're looking for.
+        let initializeFromEvent = false;
         if (this._pendingGestureType === GestureType.None) {
             this._pendingGestureType = this._detectMoveGesture(event, gestureState);
             initializeFromEvent = true;
@@ -136,12 +138,14 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         if (this._pendingGestureType === GestureType.MultiTouch) {
             this._setPendingGestureState(this._sendMultiTouchEvents(event, gestureState,
                 initializeFromEvent, false));
+            return true;
         } else if (this._pendingGestureType === GestureType.Pan ||
                 this._pendingGestureType === GestureType.PanVertical ||
                 this._pendingGestureType === GestureType.PanHorizontal) {
             const spEvent = this._touchEventToSinglePointGestureState(event);
             this._setPendingGestureState(this._sendPanEvent(spEvent, gestureState,
                 this._pendingGestureType, initializeFromEvent, false));
+            return true;
         }
 
         return false;
