@@ -12,11 +12,12 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+import GestureViewCommon, { GestureStatePoint, GestureStatePointVelocity, GestureType, TouchEventBasic,
+    TouchListBasic } from '../common/GestureView';
 import { Types } from '../common/Interfaces';
-import Timers from '../common/utils/Timers';
 
 import AccessibilityUtil from './AccessibilityUtil';
-import { clone, isUndefined } from './utils/lodashMini';
+import { clone } from './utils/lodashMini';
 import MouseResponder, { MouseResponderSubscription } from './utils/MouseResponder';
 import Styles from './Styles';
 
@@ -34,18 +35,8 @@ const _styles = {
     } as any
 };
 
-const _longPressDurationThreshold = 750;
-const _doubleTapDurationThreshold = 250;
-const _doubleTapPixelThreshold = 20;
-const _panPixelThreshold = 10;
+// Unique to web
 const _preferredPanRatio = 3;
-
-enum GestureType {
-    None,
-    Pan,
-    PanVertical,
-    PanHorizontal
-}
 
 export interface GestureViewContext {
     isInRxMainView?: boolean;
@@ -53,39 +44,47 @@ export interface GestureViewContext {
 
 let _idCounter = 1;
 
-export class GestureView extends React.Component<Types.GestureViewProps, Types.Stateless> {
+interface Point2D {
+    x: number;
+    y: number;
+}
+
+export abstract class GestureView extends GestureViewCommon {
     private _id = _idCounter++;
     private _isMounted = false;
 
-    private _container: HTMLElement | null |   undefined;
+    private _container: HTMLElement | null | undefined;
 
-    // State for tracking long presses
-    private _pendingLongPressEvent: React.MouseEvent<any> | undefined;
-    private _longPressTimer: number | undefined;
-
-    // State for tracking double taps
-    private _doubleTapTimer: number | undefined;
-    private _lastTapEvent: React.MouseEvent<any> | undefined;
+    private _initialTouch: Point2D | undefined;
+    private _ongoingGesture: GestureStatePointVelocity | undefined;
 
     private _responder: MouseResponderSubscription | undefined;
 
-    // private _pendingGestureState: Types.PanGestureState = null;
-    private _pendingGestureType = GestureType.None;
+    private _pendingMouseGestureType = GestureType.None;
     private _gestureTypeLocked = false;
-    private _skipNextTap = false;
 
     static contextTypes: React.ValidationMap<any> = {
         isInRxMainView: PropTypes.bool
     };
+
+    // Get preferred pan ratio for platform.
+    protected _getPreferredPanRatio(): number {
+        return _preferredPanRatio;
+    }
+
+    // Returns the timestamp for the touch event in milliseconds.
+    protected _getEventTimestamp(e: Types.TouchEvent | Types.MouseEvent): number {
+        return e.timeStamp;
+    }
 
     componentDidMount() {
         this._isMounted = true;
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
+
         this._isMounted = false;
-        // Dispose of timer before the component goes away.
-        this._cancelDoubleTapTimer();
     }
 
     render() {
@@ -100,6 +99,9 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
                 onMouseDown={ this._onMouseDown }
                 onClick={ this._onClick }
                 onWheel={ this._onWheel }
+                onTouchStart={ this._onTouchStart }
+                onTouchMove={ this._onTouchMove }
+                onTouchEnd={ this._onTouchEnd }
                 onFocus={ this.props.onFocus }
                 onBlur={ this.props.onBlur }
                 onKeyPress={ this.props.onKeyPress }
@@ -167,20 +169,20 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
                 return false;
             },
             onMove: (event: MouseEvent, gestureState: Types.PanGestureState) => {
-                this._pendingGestureType = this._detectGestureType(gestureState);
-                if (this._pendingGestureType !== GestureType.None) {
+                this._pendingMouseGestureType = this._detectGestureType(gestureState);
+                if (this._pendingMouseGestureType !== GestureType.None) {
                     this._cancelLongPressTimer();
                 }
 
-                this._sendPanEvent(gestureState);
+                this._sendMousePanEvent(gestureState);
             },
             onTerminate: (event: MouseEvent, gestureState: Types.PanGestureState) => {
                 this._cancelLongPressTimer();
 
-                this._pendingGestureType = this._detectGestureType(gestureState);
-                this._sendPanEvent(gestureState);
+                this._pendingMouseGestureType = this._detectGestureType(gestureState);
+                this._sendMousePanEvent(gestureState);
 
-                this._pendingGestureType = GestureType.None;
+                this._pendingMouseGestureType = GestureType.None;
                 this._gestureTypeLocked = false;
             }
         });
@@ -265,26 +267,28 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
         }
 
         if (this.props.onLongPress) {
-            this._startLongPressTimer(e);
+            const gsState = this._mouseEventToSinglePointGestureState(e);
+            this._startLongPressTimer(gsState, true);
         }
     }
 
     private _onClick = (e: React.MouseEvent<any>) => {
         this._cancelLongPressTimer();
 
+        const gsState = this._mouseEventToSinglePointGestureState(e);
+
         if (!this.props.onDoubleTap) {
             // If there is no double-tap handler, we can invoke the tap handler immediately.
-            this._sendTapEvent(e);
-        } else if (this._isDoubleTap(e)) {
+            this._sendTapEvent(gsState);
+        } else if (this._isDoubleTap(gsState)) {
             // This is a double-tap, so swallow the previous single tap.
             this._cancelDoubleTapTimer();
-            this._sendDoubleTapEvent(e);
-            this._lastTapEvent = undefined;
+            this._sendDoubleTapEvent(gsState);
         } else {
             // This wasn't a double-tap. Report any previous single tap and start the double-tap
             // timer so we can determine whether the current tap is a single or double.
             this._reportDelayedTap();
-            this._startDoubleTapTimer(e);
+            this._startDoubleTapTimer(gsState);
         }
     }
 
@@ -293,100 +297,113 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
             e.preventDefault();
             e.stopPropagation();
 
-            const clientRect = this._getGestureViewClientRect();
+            const tapEvent = this._mouseEventToSinglePointGestureState(e);
+            this.props.onContextMenu(tapEvent);
+        }
+    }
 
-            if (clientRect) {
-                const tapEvent: Types.TapGestureState = {
-                    pageX: e.pageX,
-                    pageY: e.pageY,
-                    clientX: e.clientX - clientRect.left,
-                    clientY: e.clientY - clientRect.top,
-                    timeStamp: e.timeStamp,
-                    isTouch: false
-                };
+    private static _mapReactTouchToRx(l: React.Touch): Types.Touch {
+        return {
+            identifier: l.identifier,
+            locationX: l.clientX,
+            locationY: l.clientY,
+            screenX: l.screenX,
+            screenY: l.screenY,
+            clientX: l.clientX,
+            clientY: l.clientY,
+            pageX: l.pageX,
+            pageY: l.pageY
+        };
+    }
 
-                this.props.onContextMenu(tapEvent);
-            }
+    private static _mapReactTouchListToBasic(l: React.TouchList): TouchListBasic {
+        const nl: Types.Touch[] = new Array(l.length);
+        for (let i = 0; i < l.length; i++) {
+            nl[i] = this._mapReactTouchToRx(l[i]);
+        }
+        return nl;
+    }
+
+    private static _reactTouchEventToBasic(e: React.TouchEvent<any>): TouchEventBasic {
+        // The RN and React touch event types are basically identical except that React uses "clientX/Y"
+        // and RN uses "locationX/Y", so we need to map one to the other.  Unfortunately, due to inertia,
+        // web loses.
+        const ne = clone(e) as any as TouchEventBasic;
+        ne.changedTouches = this._mapReactTouchListToBasic(e.changedTouches);
+        ne.targetTouches = this._mapReactTouchListToBasic(e.targetTouches);
+        ne.touches = this._mapReactTouchListToBasic(e.touches);
+        const ft = ne.touches[0];
+        if (ft) {
+            // RN also apparently shims the first touch's location info onto the root touch event
+            ne.pageX = ft.pageX;
+            ne.pageY = ft.pageY;
+            ne.locationX = ft.locationX;
+            ne.locationY = ft.locationY;
+        }
+        return ne;
+    }
+
+    private _onTouchStart = (e: React.TouchEvent<any>) => {
+        if (!this._initialTouch) {
+            const ft = e.touches[0];
+            this._initialTouch = { x: ft.clientX, y: ft.clientY };
+            this._ongoingGesture = { dx: 0, dy: 0, vx: 0, vy: 0 };
+
+            this._onTouchSeriesStart(GestureView._reactTouchEventToBasic(e));
+        }
+    }
+
+    private _onTouchMove = (e: React.TouchEvent<any>) => {
+        if (!this._initialTouch || !this._ongoingGesture) {
+            return;
+        }
+
+        const ft = e.touches[0];
+        this._ongoingGesture = {
+            dx: ft.clientX - this._initialTouch.x,
+            dy: ft.clientY - this._initialTouch.y,
+            // TODO: calculate velocity?
+            vx: 0,
+            vy: 0
+        };
+        this._onTouchChange(GestureView._reactTouchEventToBasic(e), this._ongoingGesture);
+    }
+
+    private _onTouchEnd = (e: React.TouchEvent<any>) => {
+        if (!this._initialTouch || !this._ongoingGesture) {
+            return;
+        }
+
+        if (e.touches.length === 0) {
+            this._onTouchSeriesFinished(GestureView._reactTouchEventToBasic(e), this._ongoingGesture);
+            this._initialTouch = undefined;
+            this._ongoingGesture = undefined;
         }
     }
 
     private _detectGestureType = (gestureState: Types.PanGestureState) => {
         // we need to lock gesture type until it's completed
         if (this._gestureTypeLocked) {
-            return this._pendingGestureType;
+            return this._pendingMouseGestureType;
         }
 
         this._gestureTypeLocked = true;
 
-        if (this._shouldRespondToPan(gestureState)) {
+        const gsBasic: GestureStatePoint = {
+            dx: gestureState.clientX - gestureState.initialClientX,
+            dy: gestureState.clientY - gestureState.initialClientY
+        };
+
+        if (this._shouldRespondToPan(gsBasic)) {
             return GestureType.Pan;
-        } else if (this._shouldRespondToPanVertical(gestureState)) {
+        } else if (this._shouldRespondToPanVertical(gsBasic)) {
             return GestureType.PanVertical;
-        } else if (this._shouldRespondToPanHorizontal(gestureState)) {
+        } else if (this._shouldRespondToPanHorizontal(gsBasic)) {
             return GestureType.PanHorizontal;
         }
 
         this._gestureTypeLocked = false;
         return GestureType.None;
-    }
-
-    private _getPanPixelThreshold = () => {
-        return (!isUndefined(this.props.panPixelThreshold) && this.props.panPixelThreshold > 0) ?
-            this.props.panPixelThreshold : _panPixelThreshold;
-    }
-
-    private _shouldRespondToPan(gestureState: Types.PanGestureState): boolean {
-        if (!this.props.onPan) {
-            return false;
-        }
-
-        const threshold = this._getPanPixelThreshold();
-        const distance = this._calcDistance(
-            gestureState.clientX - gestureState.initialClientX,
-            gestureState.clientY - gestureState.initialClientY
-        );
-
-        if (distance < threshold) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private _shouldRespondToPanVertical(gestureState: Types.PanGestureState) {
-        if (!this.props.onPanVertical) {
-            return false;
-        }
-
-        const dx = gestureState.clientX - gestureState.initialClientX;
-        const dy = gestureState.clientY - gestureState.initialClientY;
-
-        // Has the user started to pan?
-        const panThreshold = this._getPanPixelThreshold();
-        const isPan = Math.abs(dy) >= panThreshold;
-
-        if (isPan && this.props.preferredPan === Types.PreferredPanGesture.Horizontal) {
-            return Math.abs(dy) > Math.abs(dx * _preferredPanRatio);
-        }
-        return isPan;
-    }
-
-    private _shouldRespondToPanHorizontal(gestureState: Types.PanGestureState) {
-        if (!this.props.onPanHorizontal) {
-            return false;
-        }
-
-        const dx = gestureState.clientX - gestureState.initialClientX;
-        const dy = gestureState.clientY - gestureState.initialClientY;
-
-        // Has the user started to pan?
-        const panThreshold = this._getPanPixelThreshold();
-        const isPan = Math.abs(dx) >= panThreshold;
-
-        if (isPan && this.props.preferredPan === Types.PreferredPanGesture.Vertical) {
-            return Math.abs(dx) > Math.abs(dy * _preferredPanRatio);
-        }
-        return isPan;
     }
 
     private _onWheel = (e: React.WheelEvent<any>) => {
@@ -409,137 +426,8 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
         }
     }
 
-    private _calcDistance(dx: number, dy: number) {
-        return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    // This method assumes that the caller has already determined that two
-    // clicks have been detected in a row. It is responsible for determining if
-    // they occurred within close proximity and within a certain threshold of time.
-    private _isDoubleTap(e: React.MouseEvent<any>) {
-        const timeStamp = e.timeStamp.valueOf();
-        const pageX = e.pageX;
-        const pageY = e.pageY;
-
-        if (!this._lastTapEvent) {
-            return false;
-        }
-
-        return (timeStamp - this._lastTapEvent.timeStamp.valueOf() <= _doubleTapDurationThreshold &&
-            this._calcDistance(this._lastTapEvent.pageX - pageX, this._lastTapEvent.pageY - pageY) <=
-                _doubleTapPixelThreshold);
-    }
-
-    private _startLongPressTimer(event: React.MouseEvent<any>) {
-        event.persist();
-
-        this._pendingLongPressEvent = event;
-
-        this._longPressTimer = Timers.setTimeout(() => {
-            this._reportLongPress();
-            this._longPressTimer = undefined;
-        }, _longPressDurationThreshold);
-    }
-
-    private _cancelLongPressTimer() {
-        if (this._longPressTimer) {
-            Timers.clearTimeout(this._longPressTimer);
-            this._longPressTimer = undefined;
-        }
-        this._pendingLongPressEvent = undefined;
-    }
-
-    // Starts a timer that reports a previous tap if it's not canceled by a subsequent gesture.
-    private _startDoubleTapTimer(e: React.MouseEvent<any>) {
-        this._lastTapEvent = clone(e);
-
-        this._doubleTapTimer = Timers.setTimeout(() => {
-            this._reportDelayedTap();
-            this._doubleTapTimer = undefined;
-        }, _doubleTapDurationThreshold);
-    }
-
-    // Cancels any pending double-tap timer.
-    private _cancelDoubleTapTimer() {
-        if (this._doubleTapTimer) {
-            Timers.clearTimeout(this._doubleTapTimer);
-            this._doubleTapTimer = undefined;
-        }
-    }
-
-    // If there was a previous tap recorded but we haven't yet reported it because we were
-    // waiting for a potential second tap, report it now.
-    private _reportDelayedTap() {
-        if (this._lastTapEvent && this.props.onTap) {
-            this._sendTapEvent(this._lastTapEvent);
-            this._lastTapEvent = undefined;
-        }
-    }
-
-    private _reportLongPress() {
-        if (this.props.onLongPress) {
-            const tapEvent: Types.TapGestureState = {
-                pageX: this._pendingLongPressEvent!.pageX,
-                pageY: this._pendingLongPressEvent!.pageY,
-                clientX: this._pendingLongPressEvent!.clientX,
-                clientY: this._pendingLongPressEvent!.clientY,
-                timeStamp: this._pendingLongPressEvent!.timeStamp,
-                isTouch: false
-            };
-
-            this.props.onLongPress(tapEvent);
-        }
-
-        this._pendingLongPressEvent = undefined;
-    }
-
-    private _sendTapEvent(e: React.MouseEvent<any>) {
-        // we need to skip tap after succesfull pan event
-        // mouse up would otherwise trigger both pan & tap
-        if (this._skipNextTap) {
-            this._skipNextTap = false;
-            return;
-        }
-
-        if (this.props.onTap) {
-            const clientRect = this._getGestureViewClientRect();
-
-            if (clientRect) {
-                const tapEvent: Types.TapGestureState = {
-                    pageX: e.pageX,
-                    pageY: e.pageY,
-                    clientX: e.clientX - clientRect.left,
-                    clientY: e.clientY - clientRect.top,
-                    timeStamp: e.timeStamp,
-                    isTouch: false
-                };
-
-                this.props.onTap(tapEvent);
-            }
-        }
-    }
-
-    private _sendDoubleTapEvent(e: React.MouseEvent<any>) {
-        if (this.props.onDoubleTap) {
-            const clientRect = this._getGestureViewClientRect();
-
-            if (clientRect) {
-                const tapEvent: Types.TapGestureState = {
-                    pageX: e.pageX,
-                    pageY: e.pageY,
-                    clientX: e.clientX - clientRect.left,
-                    clientY: e.clientY - clientRect.top,
-                    timeStamp: e.timeStamp,
-                    isTouch: false
-                };
-
-                this.props.onDoubleTap(tapEvent);
-            }
-        }
-    }
-
-    private _sendPanEvent = (gestureState: Types.PanGestureState) => {
-        switch (this._pendingGestureType) {
+    private _sendMousePanEvent = (gestureState: Types.PanGestureState) => {
+        switch (this._pendingMouseGestureType) {
             case GestureType.Pan:
                 if (this.props.onPan) {
                     this.props.onPan(gestureState);
@@ -561,11 +449,16 @@ export class GestureView extends React.Component<Types.GestureViewProps, Types.S
         }
 
         // we need to clean taps in case there was a pan event in the meantime
-        if (this._pendingGestureType !== GestureType.None) {
-            this._lastTapEvent = undefined;
+        if (this._pendingMouseGestureType !== GestureType.None) {
+            this._clearLastTap();
             this._cancelDoubleTapTimer();
-            this._skipNextTap = true;
+            this._skipNextTap();
         }
+    }
+
+    protected _getClientXYOffset(): { x: number; y: number } {
+        const rect = this._getGestureViewClientRect();
+        return rect ? { x: rect.left, y: rect.top } : { x: 0, y: 0 };
     }
 
     private _getGestureViewClientRect() {

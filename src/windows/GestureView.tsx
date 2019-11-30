@@ -22,7 +22,7 @@ export class GestureView extends BaseGestureView {
         return _preferredPanRatio;
     }
 
-    protected _getEventTimestamp(e: Types.TouchEvent): number {
+    protected _getEventTimestamp(e: Types.TouchEvent | Types.MouseEvent): number {
         let timestamp = e.timeStamp;
 
         // Work around a bug in some versions of RN where "timestamp" is
