@@ -109,7 +109,7 @@ export abstract class GestureView extends GestureViewCommon {
     }
 
     protected _macos_sendTapEvent = (e: Types.MouseEvent) => {
-        const gsState = this._mouseEventToSinglePointGestureState(e);
+        const gsState = this._mouseEventToTapGestureState(e);
         this._sendTapEvent(gsState);
     }
 

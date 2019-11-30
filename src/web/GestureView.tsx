@@ -267,7 +267,7 @@ export abstract class GestureView extends GestureViewCommon {
         }
 
         if (this.props.onLongPress) {
-            const gsState = this._mouseEventToSinglePointGestureState(e);
+            const gsState = this._mouseEventToTapGestureState(e);
             this._startLongPressTimer(gsState, true);
         }
     }
@@ -275,7 +275,7 @@ export abstract class GestureView extends GestureViewCommon {
     private _onClick = (e: React.MouseEvent<any>) => {
         this._cancelLongPressTimer();
 
-        const gsState = this._mouseEventToSinglePointGestureState(e);
+        const gsState = this._mouseEventToTapGestureState(e);
 
         if (!this.props.onDoubleTap) {
             // If there is no double-tap handler, we can invoke the tap handler immediately.
@@ -297,9 +297,36 @@ export abstract class GestureView extends GestureViewCommon {
             e.preventDefault();
             e.stopPropagation();
 
-            const tapEvent = this._mouseEventToSinglePointGestureState(e);
+            const tapEvent = this._mouseEventToTapGestureState(e);
             this.props.onContextMenu(tapEvent);
         }
+    }
+
+    // The RN and React touch event types are basically identical except that React uses "clientX/Y"
+    // and RN uses "locationX/Y", so we need to map one to the other.  Unfortunately, due to inertia,
+    // web loses.  So, we need these 3 ugly functions...
+    private static _reactTouchEventToBasic(e: React.TouchEvent<any>): TouchEventBasic {
+        const ne = clone(e) as any as TouchEventBasic;
+        ne.changedTouches = this._mapReactTouchListToBasic(e.changedTouches);
+        ne.targetTouches = this._mapReactTouchListToBasic(e.targetTouches);
+        ne.touches = this._mapReactTouchListToBasic(e.touches);
+        const ft = ne.touches[0];
+        if (ft) {
+            // RN also apparently shims the first touch's location info onto the root touch event
+            ne.pageX = ft.pageX;
+            ne.pageY = ft.pageY;
+            ne.locationX = ft.locationX;
+            ne.locationY = ft.locationY;
+        }
+        return ne;
+    }
+
+    private static _mapReactTouchListToBasic(l: React.TouchList): TouchListBasic {
+        const nl: Types.Touch[] = new Array(l.length);
+        for (let i = 0; i < l.length; i++) {
+            nl[i] = this._mapReactTouchToRx(l[i]);
+        }
+        return nl;
     }
 
     private static _mapReactTouchToRx(l: React.Touch): Types.Touch {
@@ -314,33 +341,6 @@ export abstract class GestureView extends GestureViewCommon {
             pageX: l.pageX,
             pageY: l.pageY
         };
-    }
-
-    private static _mapReactTouchListToBasic(l: React.TouchList): TouchListBasic {
-        const nl: Types.Touch[] = new Array(l.length);
-        for (let i = 0; i < l.length; i++) {
-            nl[i] = this._mapReactTouchToRx(l[i]);
-        }
-        return nl;
-    }
-
-    private static _reactTouchEventToBasic(e: React.TouchEvent<any>): TouchEventBasic {
-        // The RN and React touch event types are basically identical except that React uses "clientX/Y"
-        // and RN uses "locationX/Y", so we need to map one to the other.  Unfortunately, due to inertia,
-        // web loses.
-        const ne = clone(e) as any as TouchEventBasic;
-        ne.changedTouches = this._mapReactTouchListToBasic(e.changedTouches);
-        ne.targetTouches = this._mapReactTouchListToBasic(e.targetTouches);
-        ne.touches = this._mapReactTouchListToBasic(e.touches);
-        const ft = ne.touches[0];
-        if (ft) {
-            // RN also apparently shims the first touch's location info onto the root touch event
-            ne.pageX = ft.pageX;
-            ne.pageY = ft.pageY;
-            ne.locationX = ft.locationX;
-            ne.locationY = ft.locationY;
-        }
-        return ne;
     }
 
     private _onTouchStart = (e: React.TouchEvent<any>) => {

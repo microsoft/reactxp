@@ -698,7 +698,7 @@ export interface GestureState {
     timeStamp: number;
 }
 
-export interface SinglePointGestureState extends GestureState {
+export interface TapGestureState extends GestureState {
     clientX: number;
     clientY: number;
     pageX: number;
@@ -729,11 +729,11 @@ export interface MultiTouchGestureState extends GestureState {
     isComplete: boolean;
 }
 
-export interface ScrollWheelGestureState extends SinglePointGestureState {
+export interface ScrollWheelGestureState extends TapGestureState {
     scrollAmount: number;
 }
 
-export interface PanGestureState extends SinglePointGestureState {
+export interface PanGestureState extends TapGestureState {
     initialClientX: number;
     initialClientY: number;
     initialPageX: number;
@@ -743,8 +743,6 @@ export interface PanGestureState extends SinglePointGestureState {
 
     isComplete: boolean;
 }
-
-export type TapGestureState = SinglePointGestureState;
 
 export enum GestureMouseCursor {
     Default,

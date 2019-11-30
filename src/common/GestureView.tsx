@@ -111,7 +111,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         // If we're trying to detect a tap, set this as the responder immediately.
         if (this.props.onTap || this.props.onDoubleTap || this.props.onLongPress || this.props.onContextMenu) {
             if (this.props.onLongPress) {
-                const gsState = this._touchEventToSinglePointGestureState(event);
+                const gsState = this._touchEventToTapGestureState(event);
                 this._startLongPressTimer(gsState);
             }
 
@@ -142,7 +142,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         } else if (this._pendingGestureType === GestureType.Pan ||
                 this._pendingGestureType === GestureType.PanVertical ||
                 this._pendingGestureType === GestureType.PanHorizontal) {
-            const spEvent = this._touchEventToSinglePointGestureState(event);
+            const spEvent = this._touchEventToTapGestureState(event);
             this._setPendingGestureState(this._sendPanEvent(spEvent, gestureState,
                 this._pendingGestureType, initializeFromEvent, false));
             return true;
@@ -163,12 +163,12 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         } else if (this._pendingGestureType === GestureType.Pan ||
             this._pendingGestureType === GestureType.PanVertical ||
             this._pendingGestureType === GestureType.PanHorizontal) {
-            const spEvent = this._touchEventToSinglePointGestureState(touchEvent);
+            const spEvent = this._touchEventToTapGestureState(touchEvent);
             this._sendPanEvent(spEvent, gestureState, this._pendingGestureType, false, true);
             this._pendingGestureState = undefined;
             this._pendingGestureType = GestureType.None;
         } else if (this._isTap(touchEvent)) {
-            const tapGestureState = this._touchEventToSinglePointGestureState(touchEvent);
+            const tapGestureState = this._touchEventToTapGestureState(touchEvent);
             if (!this.props.onDoubleTap) {
                 // If there is no double-tap handler, we can invoke the tap handler immediately.
                 this._sendTapEvent(tapGestureState);
@@ -498,7 +498,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         return multiTouchEvent;
     }
 
-    protected _touchEventToSinglePointGestureState(e: TouchEventBasic): Types.SinglePointGestureState {
+    protected _touchEventToTapGestureState(e: TouchEventBasic): Types.TapGestureState {
         let pageX = e.pageX!;
         let pageY = e.pageY!;
         let clientX = e.locationX!;
@@ -524,7 +524,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         };
     }
 
-    protected _mouseEventToSinglePointGestureState(e: Types.MouseEvent): Types.SinglePointGestureState {
+    protected _mouseEventToTapGestureState(e: Types.MouseEvent): Types.TapGestureState {
         const xyOffset = this._getClientXYOffset();
         return {
             timeStamp: this._getEventTimestamp(e),
@@ -540,7 +540,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         return { x: 0, y: 0 };
     }
 
-    private _sendPanEvent(e: Types.SinglePointGestureState, gestureState: GestureStatePointVelocity,
+    private _sendPanEvent(e: Types.TapGestureState, gestureState: GestureStatePointVelocity,
             gestureType: GestureType, initializeFromEvent: boolean, isComplete: boolean) {
         const state = this._pendingGestureState as Types.PanGestureState;
 
