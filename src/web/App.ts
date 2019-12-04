@@ -20,7 +20,7 @@ export class App extends RX.App {
         // Handle test environment where document is not defined.
         if (typeof(document) !== 'undefined') {
             this._activationState = AppVisibilityUtils.isAppInForeground() ?
-            RX.Types.AppActivationState.Active : RX.Types.AppActivationState.Background;
+                RX.Types.AppActivationState.Active : RX.Types.AppActivationState.Background;
 
             AppVisibilityUtils.onAppForegroundedEvent.subscribe(() => {
                 this._setActivationState(RX.Types.AppActivationState.Active);
@@ -34,7 +34,7 @@ export class App extends RX.App {
         }
     }
 
-    initialize(debug: boolean, development: boolean) {
+    initialize(debug: boolean, development: boolean): void {
         super.initialize(debug, development);
     }
 
@@ -42,12 +42,12 @@ export class App extends RX.App {
         return this._activationState;
     }
 
-    private _setActivationState = (currentState: RX.Types.AppActivationState) => {
+    private _setActivationState = (currentState: RX.Types.AppActivationState): void => {
         if (this._activationState !== currentState) {
             this._activationState = currentState;
             this.activationStateChangedEvent.fire(this._activationState);
         }
-    }
+    };
 }
 
 export default new App();

@@ -13,7 +13,9 @@ import StyleLeakDetector from '../common/StyleLeakDetector';
 
 import * as _ from './utils/lodashMini';
 
-type CssAliasMap = { [prop: string]: string };
+interface CssAliasMap {
+    [prop: string]: string;
+}
 
 export class Styles extends RX.Styles {
     // Combines a set of styles - for web we need to flatten to a single object
@@ -152,7 +154,7 @@ export class Styles extends RX.Styles {
     }
 
     // Returns the name of a CSS property or its alias. Returns undefined if the property is not supported.
-    private _getCssPropertyAlias(name: string) {
+    private _getCssPropertyAlias(name: string): string | undefined {
         // If we're inside unit tests, document may not be defined yet. We don't need prefixes for tests
         if (typeof document === 'undefined') {
             return undefined;
@@ -179,9 +181,7 @@ export class Styles extends RX.Styles {
     }
 
     // Use memoize to cache the result after the first call.
-    private _createDummyElement = _.memoize((): HTMLElement => {
-        return document.createElement('testCss');
-    });
+    private _createDummyElement = _.memoize((): HTMLElement => document.createElement('testCss'));
 
     private _getCssPropertyAliasesJsStyle = _.memoize(() => {
         const props = [
@@ -201,7 +201,7 @@ export class Styles extends RX.Styles {
             'animationName',
             'hyphens',
             'filter',
-            'appRegion'
+            'appRegion',
         ];
 
         const aliases: CssAliasMap = {};
@@ -234,7 +234,7 @@ export class Styles extends RX.Styles {
         return cssString;
     }
 
-    _cssPropertyAliasesCssStyle = memoize(() => {
+    private _cssPropertyAliasesCssStyle = memoize(() => {
         const jsStyleAliases = this._getCssPropertyAliasesJsStyle();
 
         const aliases: CssAliasMap = {};
@@ -314,7 +314,7 @@ export class Styles extends RX.Styles {
 
         if (def.transform) {
             const transformStrings: string[] = [];
-            const animatedTransforms: { [key: string]: Object } = {};
+            const animatedTransforms: { [key: string]: {} } = {};
             const staticTransforms: { [key: string]: string } = {};
 
             _.each(def.transform, (t: { [key: string]: string }) => {

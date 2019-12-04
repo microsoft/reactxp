@@ -26,7 +26,7 @@ export interface LinkContext {
 export class LinkBase<S> extends React.Component<RX.Types.LinkProps, S> {
     static contextTypes = {
         focusArbitrator: PropTypes.object,
-        isRxParentAText: PropTypes.bool
+        isRxParentAText: PropTypes.bool,
     };
 
     context!: LinkContext;
@@ -50,7 +50,7 @@ export class LinkBase<S> extends React.Component<RX.Types.LinkProps, S> {
             allowFontScaling: this.props.allowFontScaling,
             children: this.props.children,
             tooltip: this.props.title,
-            testID: this.props.testId
+            testID: this.props.testId,
         };
 
         return this._render(internalProps, this._onMount);
@@ -76,7 +76,7 @@ export class LinkBase<S> extends React.Component<RX.Types.LinkProps, S> {
 
     protected _onMount = (component: RN.Text | null) => {
         this._mountedComponent = component || undefined;
-    }
+    };
 
     protected _onPress = (e: RX.Types.SyntheticEvent) => {
         if (EventHelpers.isRightMouseButton(e)) {
@@ -97,7 +97,7 @@ export class LinkBase<S> extends React.Component<RX.Types.LinkProps, S> {
                 // Catch the exception so it doesn't propagate.
             });
         }
-    }
+    };
 
     protected _onLongPress = (e: RX.Types.SyntheticEvent) => {
         // Right mouse button doesn't change behavior based on press length.
@@ -111,13 +111,13 @@ export class LinkBase<S> extends React.Component<RX.Types.LinkProps, S> {
         if (!EventHelpers.isRightMouseButton(e) && this.props.onLongPress) {
             this.props.onLongPress(EventHelpers.toMouseEvent(e), this.props.url);
         }
-    }
+    };
 
     requestFocus() {
         FocusArbitratorProvider.requestFocus(
             this,
             () => this.focus(),
-            () => !!this._mountedComponent
+            () => !!this._mountedComponent,
         );
     }
 

@@ -11,7 +11,7 @@ export class AppConfig {
     private _isDebug = false;
     private _isDevelopment = false;
 
-    setAppConfig(isDebug: boolean, isDevelopment: boolean) {
+    setAppConfig(isDebug: boolean, isDevelopment: boolean): void {
         this._isDebug = isDebug;
         this._isDevelopment = isDevelopment;
     }

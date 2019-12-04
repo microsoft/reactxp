@@ -77,14 +77,15 @@ export interface MainViewContext {
 // "isInRxMainView" to all children found within it. This is used to
 // prevent gesture handling within the main view when a modal is displayed.
 export class MainViewContainer extends React.Component<Types.CommonProps<MainViewContainer>, Types.Stateless>
-        implements React.ChildContextProvider<MainViewContext> {
+    implements React.ChildContextProvider<MainViewContext> {
+
     static childContextTypes: React.ValidationMap<any> = {
-        isInRxMainView: PropTypes.bool
+        isInRxMainView: PropTypes.bool,
     };
 
     getChildContext(): MainViewContext {
         return {
-            isInRxMainView: true
+            isInRxMainView: true,
         };
     }
 
@@ -97,7 +98,7 @@ export class MainViewContainer extends React.Component<Types.CommonProps<MainVie
 
 export class RootView extends React.Component<RootViewProps, RootViewState> {
     static childContextTypes: React.ValidationMap<any> = {
-        focusManager: PropTypes.object
+        focusManager: PropTypes.object,
     };
 
     private _mountedComponent: Element | undefined;
@@ -127,7 +128,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     getChildContext() {
         // Provide the context with root FocusManager to all descendants.
         return {
-            focusManager: this._focusManager
+            focusManager: this._focusManager,
         };
     }
 
@@ -142,7 +143,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             popupHeight: 0,
             constrainedPopupWidth: 0,
             constrainedPopupHeight: 0,
-            focusClass: this.props.mouseFocusOutline
+            focusClass: this.props.mouseFocusOutline,
         };
     }
 
@@ -225,7 +226,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         const popupContainerStyle: React.CSSProperties = {
             display: 'flex',
             position: 'fixed',
-            zIndex: 100001
+            zIndex: 100001,
         };
 
         if (!hidden) {
@@ -248,7 +249,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             popup.popupOptions.renderPopup(
                 this.state.anchorPosition, this.state.anchorOffset,
                 this.state.constrainedPopupWidth, this.state.constrainedPopupHeight)
-            );
+        );
         return (
             <PopupContainerView
                 key={ key }
@@ -268,7 +269,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             width: '100%',
             height: '100%',
             display: 'flex',
-            cursor: 'default'
+            cursor: 'default',
         };
 
         const optionalPopups: JSX.Element[] = [];
@@ -307,7 +308,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
     protected _onMount = (component: PopupContainerView | null) => {
         const domNode = component && ReactDOM.findDOMNode(component) as HTMLElement | null;
         this._mountedComponent = domNode ? domNode : undefined;
-    }
+    };
 
     private _tryClosePopup = (e: MouseEvent) => {
         // Dismiss a visible popup if there's a click outside.
@@ -367,7 +368,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 this._dismissPopup();
             });
         }
-    }
+    };
 
     private _determineIfClickOnElement(elementReference: React.Component<any, any>, eventSource: Element | null | undefined): boolean {
         try {
@@ -391,7 +392,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
         this._shouldEnableKeyboardNavigationModeOnFocus = false;
         this._updateKeyboardNavigationState(false);
-    }
+    };
 
     private _onKeyDownCapture = (e: KeyboardEvent) => {
         if (e.keyCode === KEY_CODE_TAB) {
@@ -415,7 +416,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 }
             }, 500);
         }
-    }
+    };
 
     private _onFocusIn = (e: FocusEvent) => {
         // When the screen reader is being used, we need to enable the keyboard navigation
@@ -453,7 +454,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                 this._updateKeyboardNavigationState(true);
             }
         }, 0);
-    }
+    };
 
     private _onFocusOut = (e: FocusEvent) => {
         // If the focus is out and nothing is focused after some time, most likely
@@ -462,7 +463,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         // This is a safety pillow for checking that _prevFocusedElement is changed,
         // as _prevFocusedElement might be gone while the application is not active.
         this._requestApplicationIsNotActive();
-    }
+    };
 
     private _requestApplicationIsNotActive() {
         this._cancelApplicationIsNotActive();
@@ -499,7 +500,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
 
     private _onKeyDown = (e: KeyboardEvent) => {
         Input.dispatchKeyDown(e as any);
-    }
+    };
 
     private _onKeyUp = (e: KeyboardEvent) => {
         if (this.props.activePopup && (e.keyCode === KEY_CODE_ESC)) {
@@ -511,7 +512,7 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
         }
 
         Input.dispatchKeyUp(e as any);
-    }
+    };
 
     private _onMouseEnter(e: React.MouseEvent<any>) {
         this._stopHidePopupTimer();

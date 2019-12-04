@@ -24,7 +24,7 @@ export interface TextContext extends TextContextBase {
 export class Text extends TextBase implements React.ChildContextProvider<TextContext>, FocusManagerFocusableComponent {
     static contextTypes: React.ValidationMap<any> = {
         isRxParentAFocusableInSameFocusManager: PropTypes.bool,
-        ...TextBase.contextTypes
+        ...TextBase.contextTypes,
     };
 
     private _selectedText = '';
@@ -34,20 +34,20 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
 
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAFocusableInSameFocusManager: PropTypes.bool,
-        ...TextBase.childContextTypes
+        ...TextBase.childContextTypes,
     };
 
     protected _getExtendedProperties(): ExtendedTextProps {
         const superExtendedProps: ExtendedTextProps = super._getExtendedProperties();
         return {
             ...superExtendedProps,
-            onSelectionChange: this._onSelectionChange
+            onSelectionChange: this._onSelectionChange,
         };
     }
 
     private _onSelectionChange = (event: NativeSyntheticEvent<SelectionChangeEventData>) => {
         this._selectedText = event.nativeEvent.selectedText;
-    }
+    };
 
     requestFocus() {
         // UWP doesn't support casually focusing RN.Text elements. We override requestFocus in order to drop any focus requests
@@ -87,7 +87,7 @@ export class Text extends TextBase implements React.ChildContextProvider<TextCon
         if (this._mountedComponent) {
             const importantForAccessibility = this.getImportantForAccessibility();
             this._mountedComponent.setNativeProps({
-                importantForAccessibility: importantForAccessibility
+                importantForAccessibility: importantForAccessibility,
             });
         }
     }

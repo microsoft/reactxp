@@ -16,7 +16,8 @@ install:
   - npm i
 
 script:
-  - npm run build-release
+  - npm run lint
+  - npm run build
 
 cache:
   directories:

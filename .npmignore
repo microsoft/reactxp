@@ -6,3 +6,4 @@
 /extensions
 /docs
 *.user
+.eslintrc

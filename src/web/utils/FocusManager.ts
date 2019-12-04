@@ -12,14 +12,14 @@ import * as ReactDOM from 'react-dom';
 import {
     FocusArbitratorProvider,
     FocusCandidateInternal,
-    FocusCandidateType
+    FocusCandidateType,
 } from '../../common/utils/AutoFocusHelper';
 import {
     applyFocusableComponentMixin as applyFocusableComponentMixinCommon,
     FocusableComponentInternal,
     FocusableComponentStateCallback,
     FocusManager as FocusManagerBase,
-    StoredFocusableComponent as StoredFocusableComponentBase
+    StoredFocusableComponent as StoredFocusableComponentBase,
 } from '../../common/utils/FocusManager';
 import Timers from '../../common/utils/Timers';
 import UserInterface from '../UserInterface';
@@ -35,6 +35,11 @@ export interface StoredFocusableComponent extends StoredFocusableComponentBase {
     origAriaHidden?: string;
     curTabIndex?: number;
     curAriaHidden?: boolean;
+}
+
+interface FocusableComponent {
+    storedComponent: StoredFocusableComponent;
+    el: HTMLElement;
 }
 
 export class FocusManager extends FocusManagerBase {
@@ -129,7 +134,7 @@ export class FocusManager extends FocusManagerBase {
         return false;
     }
 
-    static setLastFocusedProgrammatically(element: HTMLElement | undefined) {
+    static setLastFocusedProgrammatically(element: HTMLElement | undefined): void {
         this._lastFocusedProgrammatically = element;
     }
 
@@ -149,7 +154,7 @@ export class FocusManager extends FocusManagerBase {
             storedComponent.limitedCountAccessible === 0;
     }
 
-    private static _getFirstFocusable(last?: boolean, parent?: FocusManager) {
+    private static _getFirstFocusable(last?: boolean, parent?: FocusManager): FocusableComponent | undefined {
         const focusable = Object.keys(FocusManager._allFocusableComponents)
             .filter(componentId => !parent || (componentId in parent._myFocusableComponentIds))
             .map(componentId => FocusManager._allFocusableComponents[componentId])
@@ -173,7 +178,7 @@ export class FocusManager extends FocusManagerBase {
         return undefined;
     }
 
-    static focusFirst(last?: boolean) {
+    static focusFirst(last?: boolean): void {
         const first = FocusManager._getFirstFocusable(last);
 
         if (first) {
@@ -186,12 +191,12 @@ export class FocusManager extends FocusManagerBase {
                     first.el.focus();
                 },
                 () => FocusManager._isComponentAvailable(storedComponent),
-                FocusCandidateType.FocusFirst
+                FocusCandidateType.FocusFirst,
             );
         }
     }
 
-    protected /* static */ resetFocus(focusFirstWhenNavigatingWithKeyboard: boolean) {
+    protected /* static */ resetFocus(focusFirstWhenNavigatingWithKeyboard: boolean): void {
         if (FocusManager._resetFocusTimer) {
             Timers.clearTimeout(FocusManager._resetFocusTimer);
             FocusManager._resetFocusTimer = undefined;
@@ -213,7 +218,7 @@ export class FocusManager extends FocusManagerBase {
                         first.el.focus();
                     },
                     () => FocusManager._isComponentAvailable(storedComponent),
-                    FocusCandidateType.FocusFirst
+                    FocusCandidateType.FocusFirst,
                 );
             }
         } else if ((typeof document !== 'undefined') && document.body && document.body.focus && document.body.blur) {
@@ -251,7 +256,7 @@ export class FocusManager extends FocusManagerBase {
         }
     }
 
-    protected /* static */  _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
+    protected /* static */  _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent): void {
         const newAriaHidden = storedComponent.restricted || (storedComponent.limitedCount > 0) ? true : undefined;
         const newTabIndex = newAriaHidden || (storedComponent.limitedCountAccessible > 0) ? -1 : undefined;
         const restrictionRemoved = newTabIndex === undefined;
@@ -378,15 +383,13 @@ export class FocusManager extends FocusManagerBase {
     }
 }
 
-export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function) {
+export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function): void {
     applyFocusableComponentMixinCommon(Component, isConditionallyFocusable);
 
     const origFocus = Component.prototype.focus;
-
     if (origFocus) {
         Component.prototype.focus = function() {
             try {
-                // tslint:disable-next-line
                 const el = ReactDOM.findDOMNode(this) as HTMLElement | null;
                 if (el) {
                     FocusManager.setLastFocusedProgrammatically(el);
@@ -395,7 +398,6 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
                 // Swallow exception due to component unmount race condition.
             }
 
-            // tslint:disable-next-line
             origFocus.apply(this, arguments);
         };
     }

@@ -26,19 +26,19 @@ const _styles = {
         flexGrow: 0,
         position: 'relative',
         display: 'inline',
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     ellipsis: {
         textOverflow: 'ellipsis',
         whiteSpace: 'pre',
-        msHyphens: 'none'
+        msHyphens: 'none',
     },
     selectable: {
         WebkitUserSelect: 'text',
         MozUserSelect: 'text',
         msUserSelect: 'text',
-        userSelect: 'text'
-    }
+        userSelect: 'text',
+    },
 };
 
 const _longPressTime = 1000;
@@ -49,7 +49,7 @@ export interface LinkContext {
 
 export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
     static contextTypes = {
-        focusArbitrator: PropTypes.object
+        focusArbitrator: PropTypes.object,
     };
 
     context!: LinkContext;
@@ -94,7 +94,7 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
         FocusArbitratorProvider.requestFocus(
             this,
             () => this.focus(),
-            () => this._mountedAnchor !== null
+            () => this._mountedAnchor !== null,
         );
     }
 
@@ -112,7 +112,7 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
 
     private _onMount = (ref: HTMLAnchorElement | null) => {
         this._mountedAnchor = ref;
-    }
+    };
 
     private _getStyles(): React.CSSProperties {
         // There's no way in HTML to properly handle numberOfLines > 1,
@@ -130,7 +130,7 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
             e.preventDefault();
             this.props.onPress(e, this.props.url);
         }
-    }
+    };
 
     private _onMouseDown = (e: React.SyntheticEvent<any>) => {
         if (this.props.onLongPress) {
@@ -147,14 +147,14 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
                 }
             }, _longPressTime);
         }
-    }
+    };
 
     private _onMouseUp = (e: Types.SyntheticEvent) => {
         if (this._longPressTimer) {
             Timers.clearTimeout(this._longPressTimer);
             this._longPressTimer = undefined;
         }
-    }
+    };
 
     private _onContextMenu = (e: React.MouseEvent<any>) => {
         if (this.props.onContextMenu) {
@@ -162,7 +162,7 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
             e.preventDefault();
             this.props.onContextMenu(e);
         }
-    }
+    };
 }
 
 applyFocusableComponentMixin(Link);

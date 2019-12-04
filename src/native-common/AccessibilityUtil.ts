@@ -13,7 +13,7 @@ import * as RN from 'react-native';
 
 import {
     AccessibilityPlatformUtil,
-    AccessibilityUtil as CommonAccessibilityUtil
+    AccessibilityUtil as CommonAccessibilityUtil,
 } from '../common/AccessibilityUtil';
 import { Types } from '../common/Interfaces';
 
@@ -26,14 +26,17 @@ type AccessibilityLiveRegionValue = 'none' | 'polite' | 'assertive';
 const liveRegionMap: { [key: string]: AccessibilityLiveRegionValue } = {
     [Types.AccessibilityLiveRegion.None]: 'none',
     [Types.AccessibilityLiveRegion.Assertive]: 'assertive',
-    [Types.AccessibilityLiveRegion.Polite]: 'polite'
+    [Types.AccessibilityLiveRegion.Polite]: 'polite',
 };
 
 // iOS supported map.
 const traitsMap: { [key: string]: string } = {
     [Types.AccessibilityTrait.None]: 'none',
-    [Types.AccessibilityTrait.Tab]: 'none', // NOTE: Tab trait isn't supported on iOS. Setting it to none, allows us to give it a custom
-                                            // label. This needs to be done for any custom role, which needs to be supported on iOS.
+
+    // NOTE: Tab trait isn't supported on iOS. Setting it to none, allows us to give it a custom
+    // label. This needs to be done for any custom role, which needs to be supported on iOS.
+    [Types.AccessibilityTrait.Tab]: 'none',
+
     [Types.AccessibilityTrait.Button]: 'button',
     [Types.AccessibilityTrait.Link]: 'link',
     [Types.AccessibilityTrait.Header]: 'header',
@@ -50,7 +53,7 @@ const traitsMap: { [key: string]: string } = {
     [Types.AccessibilityTrait.StartsMedia]: 'startsMedia',
     [Types.AccessibilityTrait.AllowsDirectInteraction]: 'allowsDirectionInteraction',
     [Types.AccessibilityTrait.PageTurn]: 'pageTurn',
-    [Types.AccessibilityTrait.ListItem]: 'listItem'
+    [Types.AccessibilityTrait.ListItem]: 'listItem',
 };
 
 type AccessibilityComponentTypeValue = 'none' | 'button' | 'radiobutton_checked' | 'radiobutton_unchecked';
@@ -58,19 +61,22 @@ type AccessibilityComponentTypeValue = 'none' | 'button' | 'radiobutton_checked'
 // Android supported map.
 const componentTypeMap: { [key: string]: AccessibilityComponentTypeValue } = {
     [Types.AccessibilityTrait.None]: 'none',
-    [Types.AccessibilityTrait.Tab]: 'none', // NOTE: Tab component type isn't supported on Android. Setting it to none, allows us to give
-                                            // it a custom label. This needs to be done for any custom role, which needs to be supported
-                                            // on Android.
+
+    // NOTE: Tab component type isn't supported on Android. Setting it to none, allows us to give
+    // it a custom label. This needs to be done for any custom role, which needs to be supported
+    // on Android.
+    [Types.AccessibilityTrait.Tab]: 'none',
+
     [Types.AccessibilityTrait.Button]: 'button',
     [Types.AccessibilityTrait.Radio_button_checked]: 'radiobutton_checked',
-    [Types.AccessibilityTrait.Radio_button_unchecked]: 'radiobutton_unchecked'
+    [Types.AccessibilityTrait.Radio_button_unchecked]: 'radiobutton_unchecked',
 };
 
 export class AccessibilityUtil extends CommonAccessibilityUtil {
     // Handle to accessibility platform helper instance that gets initialized during ReactXP initialization using the setter.
     private _instance!: AccessibilityPlatformUtil;
 
-    setAccessibilityPlatformUtil(instance: AccessibilityPlatformUtil) {
+    setAccessibilityPlatformUtil(instance: AccessibilityPlatformUtil): void {
         this._instance = instance;
     }
 
@@ -79,13 +85,13 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
     // We use the override traits if they are present, else use the default trait.
     // If ensureDefaultTrait is true, ensure the return result contains the defaultTrait.
     accessibilityTraitToString(overrideTraits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined,
-        defaultTrait?: Types.AccessibilityTrait, ensureDefaultTrait?: boolean): RN.AccessibilityTrait[] | undefined {
+            defaultTrait?: Types.AccessibilityTrait, ensureDefaultTrait?: boolean): RN.AccessibilityTrait[] | undefined {
         // Check if there are valid override traits. Use them or else fallback to default traits.
         if (!overrideTraits && !defaultTrait) {
             return undefined;
         }
 
-        let traits : (Types.AccessibilityTrait | undefined)[];
+        let traits: (Types.AccessibilityTrait | undefined)[];
         if (defaultTrait && ensureDefaultTrait) {
             if (Array.isArray(overrideTraits)) {
                 traits = overrideTraits.indexOf(defaultTrait) === -1 ? overrideTraits.concat([defaultTrait]) : overrideTraits;
@@ -101,7 +107,7 @@ export class AccessibilityUtil extends CommonAccessibilityUtil {
     // Converts an AccessibilityTrait to an accessibilityComponentType string, but the returned value is only needed for Android. Other
     // platforms ignore it.
     accessibilityComponentTypeToString(overrideTraits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined,
-        defaultTrait?: Types.AccessibilityTrait): AccessibilityComponentTypeValue | undefined {
+            defaultTrait?: Types.AccessibilityTrait): AccessibilityComponentTypeValue | undefined {
         // Check if there are valid override traits. Use them or else fallback to default traits.
         // Max enum value in this array is the componentType for android.
         if (!overrideTraits && !defaultTrait) {

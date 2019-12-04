@@ -11,7 +11,7 @@ import { Types } from '../../common/Interfaces';
 
 import * as _ from './../utils/lodashMini';
 
-const _compareDOMOrder = (a: Responder, b: Responder) => {
+const _compareDOMOrder = (a: Responder, b: Responder): number => {
     if (a.target.compareDocumentPosition(b.target) & Node.DOCUMENT_POSITION_PRECEDING) {
         return 1;
     } else {
@@ -25,6 +25,11 @@ interface Responder {
     shouldBecomeFirstResponder: (event: MouseEvent, gestureState: Types.PanGestureState) => boolean;
     onMove: (event: MouseEvent, gestureState: Types.PanGestureState) => void;
     onTerminate: (event: MouseEvent, gestureState: Types.PanGestureState) => void;
+}
+
+interface Velocity {
+    velocityX: number;
+    velocityY: number;
 }
 
 export interface MouseResponderConfig {
@@ -48,7 +53,7 @@ export default class MouseResponder {
 
     private static _responders: Responder[];
 
-    static setModalIsDisplayed(isDisplayed: boolean) {
+    static setModalIsDisplayed(isDisplayed: boolean): void {
         MouseResponder._isModalDisplayed = isDisplayed;
     }
 
@@ -86,7 +91,7 @@ export default class MouseResponder {
                 }
 
                 config.onTerminate(event, gestureState);
-            }
+            },
         };
 
         MouseResponder._responders.push(responder);
@@ -98,11 +103,11 @@ export default class MouseResponder {
                 if (MouseResponder._responders.length === 0) {
                     MouseResponder._removeEventHandlers();
                 }
-            }
+            },
         };
     }
 
-    private static _initializeEventHandlers() {
+    private static _initializeEventHandlers(): void {
         if (MouseResponder._initialized) {
             return;
         }
@@ -114,7 +119,7 @@ export default class MouseResponder {
         MouseResponder._initialized = true;
     }
 
-    private static _removeEventHandlers() {
+    private static _removeEventHandlers(): void {
         if (!MouseResponder._initialized) {
             return;
         }
@@ -126,7 +131,7 @@ export default class MouseResponder {
         MouseResponder._initialized = false;
     }
 
-    private static _onMouseDown = (event: MouseEvent) => {
+    private static _onMouseDown = (event: MouseEvent): void => {
         // We need to skip new gesture starts when there is already on in progress
         if (MouseResponder._currentResponder) {
             event.preventDefault();
@@ -148,7 +153,7 @@ export default class MouseResponder {
             velocityY: 0,
             timeStamp: Date.now(),
             isComplete: false,
-            isTouch: false
+            isTouch: false,
         };
 
         // We must sort them properly to be consistent with native PanResponder picks it's first responders
@@ -157,16 +162,16 @@ export default class MouseResponder {
         MouseResponder._responders.sort(_compareDOMOrder);
 
         // We need to pick a responder that will handle this GestureView
-        const firstResponder = _.findLast(MouseResponder._responders, (responder: Responder) => {
-            return responder.shouldBecomeFirstResponder(event, MouseResponder._pendingGestureState!);
-        });
+        const firstResponder = _.findLast(MouseResponder._responders, (responder: Responder) => (
+            responder.shouldBecomeFirstResponder(event, MouseResponder._pendingGestureState!)
+        ));
 
         if (firstResponder) {
             MouseResponder._currentResponder = firstResponder;
         }
-    }
+    };
 
-    private static _onMouseMove = (event: MouseEvent) => {
+    private static _onMouseMove = (event: MouseEvent): void => {
         if (MouseResponder._currentResponder && MouseResponder._pendingGestureState) {
             const { velocityX, velocityY } = MouseResponder._calcVelocity(event, MouseResponder._pendingGestureState);
 
@@ -177,7 +182,7 @@ export default class MouseResponder {
                 pageY: event.pageY,
                 velocityX,
                 velocityY,
-                isComplete: false
+                isComplete: false,
             });
 
             if (event.buttons === 0) {
@@ -186,9 +191,9 @@ export default class MouseResponder {
                 MouseResponder._currentResponder.onMove(event, MouseResponder._pendingGestureState);
             }
         }
-    }
+    };
 
-    private static _onMouseUp = (event: MouseEvent) => {
+    private static _onMouseUp = (event: MouseEvent): void => {
         // We check whether there is still some buttom pressed
         // in case there are still some buttons left,
         // we don't stop terminate the gesture.
@@ -209,7 +214,7 @@ export default class MouseResponder {
                 pageY: event.pageY,
                 velocityX,
                 velocityY,
-                isComplete: true
+                isComplete: true,
             });
 
             MouseResponder._currentResponder.onTerminate(event, MouseResponder._pendingGestureState);
@@ -217,9 +222,9 @@ export default class MouseResponder {
             MouseResponder._currentResponder = null;
             MouseResponder._pendingGestureState = null;
         }
-    }
+    };
 
-    private static _calcVelocity = (e: MouseEvent, gestureState: Types.PanGestureState) => {
+    private static _calcVelocity = (e: MouseEvent, gestureState: Types.PanGestureState): Velocity => {
         const time = Date.now() - gestureState.timeStamp;
 
         const velocityX = (e.clientX - gestureState.initialClientX) / time;
@@ -227,7 +232,7 @@ export default class MouseResponder {
 
         return {
             velocityX,
-            velocityY
+            velocityY,
         };
-    }
+    };
 }

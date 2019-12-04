@@ -7,8 +7,6 @@
  * Implements animated components for web version of ReactXP.
  */
 
-// tslint:disable:function-name
-
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
@@ -57,8 +55,8 @@ const animatedPropUnits: { [key: string]: string } = {
 
     // AnimatedTextStyleRules
     color: '',
-    fontSize: 'px'
- };
+    fontSize: 'px',
+};
 
 // Every Animation subclass should extend this.
 export abstract class Animation {
@@ -225,7 +223,7 @@ export class InterpolatedValue extends Value {
             stopTransition: (valueObject: Value) => {
                 this._stopTransition();
                 return undefined;
-            }
+            },
         });
     }
 
@@ -275,9 +273,7 @@ export class InterpolatedValue extends Value {
         }
 
         const numericInputValue = this._convertValueToNumeric(inputVal);
-        const outputValues = this._config.outputRange.map(value => {
-            return this._convertValueToNumeric(value);
-        });
+        const outputValues = this._config.outputRange.map(value => this._convertValueToNumeric(value));
 
         if (this._interpolationConfig[numericInputValue]) {
             return this._interpolationConfig[numericInputValue];
@@ -307,8 +303,8 @@ export class InterpolatedValue extends Value {
     }
 }
 
-export let timing: RX.Types.Animated.TimingFunction = function(
-    value: Value, config: RX.Types.Animated.TimingAnimationConfig): RX.Types.Animated.CompositeAnimation {
+export const timing: RX.Types.Animated.TimingFunction = function(value: Value,
+        config: RX.Types.Animated.TimingAnimationConfig): RX.Types.Animated.CompositeAnimation {
 
     if (!value  || !config) {
         throw new Error('Timing animation requires value and config');
@@ -346,12 +342,12 @@ export let timing: RX.Types.Animated.TimingFunction = function(
         stop: function(): void {
             stopLooping = true;
             value._stopTransition();
-        }
+        },
     };
 };
 
-export let sequence: RX.Types.Animated.SequenceFunction = function(
-    animations: Array<RX.Types.Animated.CompositeAnimation>): RX.Types.Animated.CompositeAnimation {
+export const sequence: RX.Types.Animated.SequenceFunction = function(
+        animations: RX.Types.Animated.CompositeAnimation[]): RX.Types.Animated.CompositeAnimation {
 
     if (!animations) {
         throw new Error('Sequence animation requires a list of animations');
@@ -391,14 +387,14 @@ export let sequence: RX.Types.Animated.SequenceFunction = function(
                 hasBeenStopped = true;
                 animations[doneCount].stop();
             }
-        }
+        },
     };
 
     return result;
 };
 
-export let parallel: RX.Types.Animated.ParallelFunction = function(
-    animations: Array<RX.Types.Animated.CompositeAnimation>): RX.Types.Animated.CompositeAnimation {
+export const parallel: RX.Types.Animated.ParallelFunction = function(
+        animations: RX.Types.Animated.CompositeAnimation[]): RX.Types.Animated.CompositeAnimation {
 
     if (!animations) {
         throw new Error('Parallel animation requires a list of animations');
@@ -438,7 +434,7 @@ export let parallel: RX.Types.Animated.ParallelFunction = function(
             animations.forEach(animation => {
                 animation.stop();
             });
-        }
+        },
     };
 
     return result;
@@ -454,12 +450,14 @@ interface AnimatedAttribute {
     activeTransition?: ExtendedTransition;
 }
 
-type AnimatedValueMap = { [transform: string]: AnimatedAttribute };
+interface AnimatedValueMap {
+    [transform: string]: AnimatedAttribute;
+}
 
 // Function for creating wrapper AnimatedComponent around passed in component
 function createAnimatedComponent<PropsType extends RX.Types.CommonProps<C>, C>(Component: any): any {
     class AnimatedComponentGenerated extends React.Component<PropsType, void>
-            implements RX.AnimatedComponent<PropsType, void, C>, ValueListener {
+        implements RX.AnimatedComponent<PropsType, void, C>, ValueListener {
 
         private _mountedComponent: any = null;
         private _propsWithoutStyle: any;
@@ -485,7 +483,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps<C>, C>(C
             }
         }
 
-        UNSAFE_componentWillReceiveProps(props: RX.Types.CommonStyledProps<RX.Types.StyleRuleSet<Object>, C>) {
+        UNSAFE_componentWillReceiveProps(props: RX.Types.CommonStyledProps<RX.Types.StyleRuleSet<object>, C>) {
             this._updateStyles(props);
         }
 
@@ -541,7 +539,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps<C>, C>(C
                     timing: easing,
                     delay,
                     toValue,
-                    onEnd
+                    onEnd,
                 };
                 updateTransition = true;
             }
@@ -561,7 +559,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps<C>, C>(C
                     timing: easing,
                     delay,
                     toValue,
-                    onEnd
+                    onEnd,
                 };
                 updateTransition = true;
             }
@@ -678,7 +676,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps<C>, C>(C
                     to: this._generateCssTransformList(true),
                     duration: transformTransition.duration,
                     timing: transformTransition.timing,
-                    delay: transformTransition.delay
+                    delay: transformTransition.delay,
                 });
             }
 
@@ -903,7 +901,7 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps<C>, C>(C
 
         protected _onMount = (component: any) => {
             this._mountedComponent = component;
-        }
+        };
 
         // Update the component's display name for easy debugging in react devtools extension
         static displayName = `Animated.${Component.displayName || Component.name || 'Component'}`;
@@ -912,23 +910,23 @@ function createAnimatedComponent<PropsType extends RX.Types.CommonProps<C>, C>(C
     return AnimatedComponentGenerated;
 }
 
-export let Image = createAnimatedComponent(RXImage) as typeof RX.AnimatedImage;
-export let Text = createAnimatedComponent(RXText) as typeof RX.AnimatedText;
-export let TextInput = createAnimatedComponent(RXTextInput) as typeof RX.AnimatedTextInput;
-export let View = createAnimatedComponent(RXView) as typeof RX.AnimatedView;
+export const Image = createAnimatedComponent(RXImage) as typeof RX.AnimatedImage;
+export const Text = createAnimatedComponent(RXText) as typeof RX.AnimatedText;
+export const TextInput = createAnimatedComponent(RXTextInput) as typeof RX.AnimatedTextInput;
+export const View = createAnimatedComponent(RXView) as typeof RX.AnimatedView;
 
 export type Image = RX.AnimatedImage;
 export type Text = RX.AnimatedText;
 export type TextInput = RX.AnimatedTextInput;
 export type View = RX.AnimatedView;
 
-export let createValue: (initialValue: number) => Value = function(initialValue: number) {
+export const createValue: (initialValue: number) => Value = function(initialValue: number) {
     return new Value(initialValue);
 };
 
-export let interpolate: (value: Value, inputRange: number[], outputRange: string[]) =>
-        Value = function(value: Value, inputRange: number[], outputRange: string[]) {
-    return value.interpolate({ inputRange: inputRange, outputRange: outputRange });
-};
+export const interpolate: (value: Value, inputRange: number[], outputRange: string[]) => Value =
+    function(value: Value, inputRange: number[], outputRange: string[]) {
+        return value.interpolate({ inputRange: inputRange, outputRange: outputRange });
+    };
 
 export { Easing };

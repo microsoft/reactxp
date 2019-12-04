@@ -12,7 +12,7 @@ import * as RN from 'react-native';
 import * as RX from '../common/Interfaces';
 
 export class Clipboard extends RX.Clipboard  {
-    setText(text: string) {
+    setText(text: string): void {
         RN.Clipboard.setString(text);
     }
 

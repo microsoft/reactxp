@@ -15,11 +15,11 @@ export class Input extends InputCommon {
         super();
     }
 
-    dispatchKeyDown(e: Types.KeyboardEvent) {
+    dispatchKeyDown(e: Types.KeyboardEvent): void {
         this.keyDownEvent.fire(e);
     }
 
-    dispatchKeyUp(e: Types.KeyboardEvent) {
+    dispatchKeyUp(e: Types.KeyboardEvent): void {
         if (this.keyUpEvent.fire(e)) {
             e.stopPropagation();
         }

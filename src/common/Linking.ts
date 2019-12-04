@@ -12,7 +12,7 @@ import { filter } from './lodashMini';
 
 // Collection of Regex that help validate an email.
 // The name can be any of these characters.
-const emailNameRegex = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.@-]+$/i;
+const emailNameRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~.@-]+$/i;
 // However, the name cannot contain '..', or start/end with '.'.
 const emailNameConstraintViolationRegex = /\.\.|^\.|\.$/i;
 // The host is limited to these characters.
@@ -36,7 +36,7 @@ export abstract class Linking extends RX.Linking {
     }
 
     // Escaped Email uri - mailto:[emailAddress]?subject=<emailSubject>&body=<emailBody>
-    protected _createEmailUrl(emailInfo: RX.Types.EmailInfo) {
+    protected _createEmailUrl(emailInfo: RX.Types.EmailInfo): string {
         let emailUrl = 'mailto:';
         let validEmails: string[];
 
@@ -68,7 +68,7 @@ export abstract class Linking extends RX.Linking {
     }
 
     // Escaped SMS uri - sms:<phoneNumber>?body=<messageString>
-    protected _createSmsUrl(smsInfo: RX.Types.SmsInfo) {
+    protected _createSmsUrl(smsInfo: RX.Types.SmsInfo): string {
         let smsUrl = 'sms:';
         if (smsInfo.phoneNumber) {
             smsUrl += encodeURI(smsInfo.phoneNumber);

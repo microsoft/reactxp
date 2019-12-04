@@ -32,8 +32,8 @@ const _styles = {
         flex: 1,
         alignSelf: 'stretch',
         overflow: 'visible',
-        backgroundColor: 'transparent' // otherwise in UWP it will be removed from the tree and won't receive mouse events
-    }
+        backgroundColor: 'transparent', // otherwise in UWP it will be removed from the tree and won't receive mouse events
+    },
 };
 
 const MAX_CACHED_POPUPS = 4;
@@ -53,7 +53,7 @@ export class FrontLayerViewManager {
         }
     }
 
-    isModalDisplayed(modalId?: string) : boolean {
+    isModalDisplayed(modalId?: string): boolean {
         if (modalId) {
             return this._findIndexOfModal(modalId) !== -1;
         }
@@ -132,7 +132,7 @@ export class FrontLayerViewManager {
         const overlayContext =
             _.findLast(
                 this._overlayStack,
-                context => context instanceof ModalStackContext && this._modalOptionsMatchesRootViewId(context.modalOptions, rootViewId)
+                context => context instanceof ModalStackContext && this._modalOptionsMatchesRootViewId(context.modalOptions, rootViewId),
             ) as ModalStackContext;
 
         if (overlayContext) {
@@ -146,7 +146,7 @@ export class FrontLayerViewManager {
         return null;
     }
 
-    getActivePopupId() : string | null {
+    getActivePopupId(): string | null {
         const activeOverlay = this._getActiveOverlay();
         if (activeOverlay && (activeOverlay instanceof PopupStackContext)) {
             return activeOverlay.popupId;
@@ -179,7 +179,7 @@ export class FrontLayerViewManager {
     private _getOverlayContext(rootViewId?: string | null): PopupStackContext | undefined {
         return _.findLast(
             this._overlayStack,
-            context => context instanceof PopupStackContext && context.popupOptions.rootViewId === rootViewId
+            context => context instanceof PopupStackContext && context.popupOptions.rootViewId === rootViewId,
         ) as PopupStackContext | undefined;
     }
 
@@ -234,7 +234,7 @@ export class FrontLayerViewManager {
                     (x: number, y: number, width: number, height: number) => {
                         const touchEvent = e.nativeEvent;
                         const anchorRect: ClientRect = { left: x, top: y, right: x + width,
-                                bottom: y + height, width: width, height: height };
+                            bottom: y + height, width: width, height: height };
 
                         // Find out if the press event was on the anchor so we can notify the caller about it.
                         if (!_.isUndefined(touchEvent.pageX) && !_.isUndefined(touchEvent.pageY) &&
@@ -246,7 +246,7 @@ export class FrontLayerViewManager {
                             // dimissing animation has finished before we call the event handler.
                             Timers.setTimeout(() => { activePopupContext.popupOptions.onAnchorPressed!(e); }, 500);
                         }
-                    }
+                    },
                 );
             }
 
@@ -258,7 +258,7 @@ export class FrontLayerViewManager {
         }
 
         this._dismissActivePopup();
-    }
+    };
 
     private _dismissActivePopup(): void {
         // Dismiss any currently visible popup:

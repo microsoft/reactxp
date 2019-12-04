@@ -35,12 +35,12 @@ const _styles = {
         flexShrink: 0,
         overflowX: 'hidden',
         overflowY: 'auto',
-        alignItems: 'stretch'
+        alignItems: 'stretch',
     } as any,
     formStyle: {
         display: 'flex',
-        flex: 1
-    } as any
+        flex: 1,
+    } as any,
 };
 
 export interface TextInputContext {
@@ -81,7 +81,7 @@ class TextInputPlaceholderSupport {
 
             cache[key] = {
                 refCounter: 1,
-                styleElement: style
+                styleElement: style,
             };
         }
     }
@@ -115,7 +115,7 @@ class TextInputPlaceholderSupport {
             '::-webkit-input-placeholder',  // Webkit
             '::-moz-placeholder', // Firefox 19+
             ':-moz-placeholder', // Firefox 18-
-            ':-ms-input-placeholder' // IE 10+
+            ':-ms-input-placeholder', // IE 10+
         ];
 
         return selectors
@@ -123,14 +123,14 @@ class TextInputPlaceholderSupport {
                 `.${className}${pseudoSelector} {\n` +
                     `  opacity: 1;\n` +
                     `  color: ${placeholderColor};\n` +
-                    `}`
-                ).join('\n');
+                    `}`,
+            ).join('\n');
     }
 }
 
 export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
     static contextTypes: React.ValidationMap<any> = {
-        focusArbitrator: PropTypes.object
+        focusArbitrator: PropTypes.object,
     };
 
     context!: TextInputContext;
@@ -147,7 +147,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
         this.state = {
             inputValue: props.value !== undefined ? props.value : (props.defaultValue || ''),
-            autoResize: TextInput._shouldAutoResize(props)
+            autoResize: TextInput._shouldAutoResize(props),
         };
     }
 
@@ -307,11 +307,12 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         if (this._mountedComponent && this._mountedComponent instanceof HTMLTextAreaElement) {
             TextInput._updateScrollPositions(this._mountedComponent, !!this.state.autoResize);
         }
-    }
+    };
+
     private _onMultilineInput = (ev: React.FormEvent<HTMLTextAreaElement>) => {
         this._onInput();
         TextInput._updateScrollPositions(ev.currentTarget, !!this.state.autoResize);
-    }
+    };
 
     private _onInput = () => {
         if (_isMac && this._mountedComponent && this._isFocused && !this._ariaLiveEnabled) {
@@ -321,7 +322,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             this._mountedComponent.setAttribute('aria-live', 'assertive');
             this._ariaLiveEnabled = true;
         }
-    }
+    };
 
     private static _shouldAutoResize(props: Types.TextInputProps) {
         // Single line boxes don't need auto-resize
@@ -362,7 +363,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         element.style.height = element.scrollHeight + 'px';
 
         scrollTops.forEach(obj => {
-          obj.el.scrollTop = obj.top;
+            obj.el.scrollTop = obj.top;
         });
 
     }
@@ -374,7 +375,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             element = element.parentElement;
             results.push({
                 el: element,
-                top: element.scrollTop
+                top: element.scrollTop,
             });
         }
         return results;
@@ -388,7 +389,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 this.props.onFocus(e);
             }
         }
-    }
+    };
 
     private _onBlur = (e: Types.FocusEvent) => {
         if (this._mountedComponent) {
@@ -403,7 +404,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 this.props.onBlur(e);
             }
         }
-    }
+    };
 
     private _getKeyboardType(): { keyboardTypeValue: string; wrapInForm: boolean; pattern: string | undefined } {
         // Determine the correct virtual keyboardType in HTML 5.
@@ -439,7 +440,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
 
         this._checkSelectionChanged();
-    }
+    };
 
     private _onInputChanged = (event: React.ChangeEvent<HTMLElement>) => {
         if (!event.defaultPrevented) {
@@ -451,7 +452,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                     // track of the modified value.
                     if (this.props.value === undefined) {
                         this.setState({
-                            inputValue: value
+                            inputValue: value,
                         });
                     }
 
@@ -463,7 +464,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 this._checkSelectionChanged();
             }
         }
-    }
+    };
 
     private _checkSelectionChanged = () => {
         if (this._mountedComponent) {
@@ -477,7 +478,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
                 }
             }
         }
-    }
+    };
 
     private _onKeyDown = (e: Types.KeyboardEvent) => {
         // Generate a "submit editing" event if the user
@@ -497,7 +498,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         }
 
         this._checkSelectionChanged();
-    }
+    };
 
     private _onScroll = (e: React.UIEvent<HTMLTextAreaElement>) => {
         const targetElement = e.currentTarget;
@@ -510,15 +511,15 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         if (this.props.onScroll) {
             this.props.onScroll(targetElement.scrollLeft, targetElement.scrollTop);
         }
-    }
+    };
 
     private _focus = () => {
         FocusArbitratorProvider.requestFocus(
             this,
             () => this.focus(),
-            () => !!this._mountedComponent
+            () => !!this._mountedComponent,
         );
-    }
+    };
 
     blur() {
         if (this._mountedComponent) {
@@ -563,7 +564,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
     getSelectionRange(): { start: number; end: number } {
         const range = {
             start: 0,
-            end: 0
+            end: 0,
         };
         if (this._mountedComponent) {
             range.start = this._mountedComponent.selectionStart || 0;
@@ -583,7 +584,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             }
 
             this.setState({
-                inputValue: inputValue
+                inputValue: inputValue,
             });
 
             if (this.props.onChangeText) {

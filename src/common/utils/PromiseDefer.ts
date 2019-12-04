@@ -21,7 +21,7 @@ export class Defer<T> {
         });
     }
 
-    resolve(value: T) {
+    resolve(value: T): void {
         // Resolver shouldn't be undefined, but it's technically possible
         if (!this._resolver) {
             Timers.setTimeout(() => {
@@ -32,7 +32,7 @@ export class Defer<T> {
         this._resolver(value);
     }
 
-    reject(value: any) {
+    reject(value: any): void {
         // Rejector shouldn't be undefined, but it's technically possible
         if (!this._rejector) {
             Timers.setTimeout(() => {

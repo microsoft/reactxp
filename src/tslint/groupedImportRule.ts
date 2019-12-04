@@ -15,9 +15,9 @@ import { RuleFailure, Rules, RuleWalker } from 'tslint';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
-export class Rule extends Rules.AbstractRule {
-    static FAILURE_STRING_PART = 'Ambient and relative imports must be separated';
+const FAILURE_STRING_PART = 'Ambient and relative imports must be separated';
 
+export class Rule extends Rules.AbstractRule {
     apply(sourceFile: ts.SourceFile): RuleFailure[] {
         const options = this.getOptions();
         const banModuleWalker = new GroupedImportModuleWalker(sourceFile, options);
@@ -35,7 +35,7 @@ class GroupedImportModuleWalker extends RuleWalker {
     private _inImportGroup = false;
     private _lastImportType = ImportType.None;
 
-    visitNode(node: ts.Node) {
+    visitNode(node: ts.Node): void {
         if (tsutils.isImportDeclaration(node) || tsutils.isImportEqualsDeclaration(node)) {
             // If last line was linebreak, we're in a new block.
             const prevStatement = tsutils.getPreviousStatement(node);
@@ -50,7 +50,7 @@ class GroupedImportModuleWalker extends RuleWalker {
             this._inImportGroup = true;
             const importType = this._checkImportType(node);
             if (wasInImportGroup && importType !== this._lastImportType) {
-                this.addFailure(this.createFailure(node.getStart(), node.getWidth(), Rule.FAILURE_STRING_PART));
+                this.addFailure(this.createFailure(node.getStart(), node.getWidth(), FAILURE_STRING_PART));
             }
             this._lastImportType = importType;
         } else {

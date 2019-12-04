@@ -20,8 +20,8 @@ import Styles from './Styles';
 const _styles = {
     defaultTextInput: Styles.createTextInputStyle({
         borderWidth: 0, // Needed for Windows UWP
-        padding: 0
-    })
+        padding: 0,
+    }),
 };
 
 export interface TextInputState {
@@ -40,7 +40,7 @@ interface Selection {
 
 export class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
     static contextTypes: React.ValidationMap<any> = {
-        focusArbitrator: PropTypes.object
+        focusArbitrator: PropTypes.object,
     };
 
     context!: TextInputContext;
@@ -54,14 +54,14 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
         this.state = {
             inputValue: props.value !== undefined ? props.value : (props.defaultValue || ''),
-            isFocused: false
+            isFocused: false,
         };
     }
 
     UNSAFE_componentWillReceiveProps(nextProps: Types.TextInputProps) {
         if (nextProps.value !== undefined && nextProps.value !== this.state.inputValue) {
             this.setState({
-                inputValue: nextProps.value || ''
+                inputValue: nextProps.value || '',
             });
         }
     }
@@ -118,7 +118,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
             allowFontScaling: this.props.allowFontScaling,
             underlineColorAndroid: 'transparent',
             clearButtonMode: this.props.clearButtonMode,
-            testID: this.props.testId
+            testID: this.props.testId,
         };
 
         this._selectionToSet = undefined;
@@ -128,7 +128,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
     protected _onMount = (component: RN.TextInput | null) => {
         this._mountedComponent = component || undefined;
-    }
+    };
 
     private _onFocus = (e: Types.FocusEvent) => {
         this.setState({ isFocused: true });
@@ -136,7 +136,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         if (this.props.onFocus) {
             this.props.onFocus(e);
         }
-    }
+    };
 
     private _onBlur = (e: Types.FocusEvent) => {
         this.setState({ isFocused: false });
@@ -144,7 +144,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         if (this.props.onBlur) {
             this.props.onBlur(e);
         }
-    }
+    };
 
     private _onChangeText = (newText: string) => {
         this.setState({ inputValue: newText });
@@ -152,7 +152,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         if (this.props.onChangeText) {
             this.props.onChangeText(newText);
         }
-    }
+    };
 
     private _onSelectionChange = (e: RN.NativeSyntheticEvent<RN.TextInputSelectionChangeEventData>) => {
         const selection = e.nativeEvent.selection;
@@ -177,26 +177,26 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         if (this.props.onSelectionChange) {
             this.props.onSelectionChange(selectionStart, selectionEnd);
         }
-    }
+    };
 
     private _onKeyPress = (e: RN.NativeSyntheticEvent<RN.TextInputKeyPressEventData>) => {
         if (this.props.onKeyPress) {
             this.props.onKeyPress(EventHelpers.toKeyboardEvent(e));
         }
-    }
+    };
 
     private _onPaste = (e: React.ClipboardEvent<any>) => {
         if (this.props.onPaste) {
             this.props.onPaste(e);
         }
-    }
+    };
 
     private _onScroll = (e: RN.NativeSyntheticEvent<RN.TextInputScrollEventData>) => {
         if (this.props.onScroll) {
             const { contentOffset } = e.nativeEvent;
             this.props.onScroll(contentOffset.x, contentOffset.y);
         }
-    }
+    };
 
     blur() {
         if (this._mountedComponent) {
@@ -208,7 +208,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
         FocusArbitratorProvider.requestFocus(
             this,
             () => this.focus(),
-            () => !!this._mountedComponent
+            () => !!this._mountedComponent,
         );
     }
 

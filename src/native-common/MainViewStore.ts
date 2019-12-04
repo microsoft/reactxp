@@ -14,11 +14,11 @@ import SubscribableEvent from 'subscribableevent';
 export class MainViewStore extends SubscribableEvent<() => void> {
     private _mainView: React.ReactElement<any> | undefined;
 
-    getMainView() {
+    getMainView(): React.ReactElement<any> | undefined {
         return this._mainView;
     }
 
-    setMainView(view: React.ReactElement<any>) {
+    setMainView(view: React.ReactElement<any>): void {
         this._mainView = view;
         this.fire();
     }

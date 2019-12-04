@@ -20,7 +20,7 @@ import * as _ from './../utils/lodashMini';
 function getPosition(el: HTMLElement): { left: number; top: number } {
     return {
         left: el.offsetLeft,
-        top: el.offsetTop
+        top: el.offsetTop,
     };
 }
 
@@ -33,7 +33,7 @@ function extractChildrenKeys(children: React.ReactNode | undefined): ChildKey[] 
                 const childReactElement = child as React.ReactElement<any>;
                 assert(
                     childReactElement.key !== undefined && childReactElement.key !== null,
-                    'Children passed to a `View` with child animations enabled must have a `key`'
+                    'Children passed to a `View` with child animations enabled must have a `key`',
                 );
                 if (childReactElement.key !== null) {
                     keys.push(childReactElement.key);
@@ -51,7 +51,10 @@ function childrenEdited(prevChildrenKeys: ChildKey[], nextChildrenKeys: ChildKey
     return !_.isEqual(prevChildrenKeys, nextChildrenKeys);
 }
 
-type ChildrenMap = { [key: string]: React.ReactElement<any> };
+interface ChildrenMap {
+    [key: string]: React.ReactElement<any>;
+}
+
 function createChildrenMap(children: React.ReactNode | undefined): ChildrenMap {
     const map: ChildrenMap = {};
     if (children) {
@@ -60,7 +63,7 @@ function createChildrenMap(children: React.ReactNode | undefined): ChildrenMap {
                 const childReactElement = child as React.ReactElement<any>;
                 assert(
                     'key' in childReactElement,
-                    'Children passed to a `View` with child animations enabled must have a `key`'
+                    'Children passed to a `View` with child animations enabled must have a `key`',
                 );
                 const index = childReactElement.key;
                 if (index !== null) {
@@ -83,11 +86,13 @@ function computePositions(refs: { [key: string]: MountedChildrenRef }) {
 export interface AddEdit {
     element: React.Component<any, any> | Element;
 }
+
 export interface MoveEdit {
     element: React.Component<any, any> | Element;
     leftDelta: number;
     topDelta: number;
 }
+
 export interface RemoveEdit {
     element: React.Component<any, any> | Element;
     leftDelta: number;
@@ -177,7 +182,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
     UNSAFE_componentWillUpdate(nextProps: MonitorListEditsProps) {
         assert(
             this._phase !== ComponentPhaseEnum.animating,
-            'componentWillUpdate should never run while the component is animating due to the implementation of shouldComponentUpdate'
+            'componentWillUpdate should never run while the component is animating due to the implementation of shouldComponentUpdate',
         );
 
         const prevChildrenKeys = this._childrenKeys;
@@ -212,7 +217,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
                 removed: removed,
                 other: other,
                 prevPositions: computePositions(this._itemRefs),
-                prevChildrenMap: prevChildrenMap
+                prevChildrenMap: prevChildrenMap,
             };
         }
     }
@@ -232,7 +237,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
                 if (!refData || refData.exisiting !== childElement.ref) {
                     refData = {
                         replacement: refValue => { this._saveRef(childElement, refValue); },
-                        exisiting: childElement.ref
+                        exisiting: childElement.ref,
                     };
                     this._refReplacementCache[childElement.key] = refData;
                 }
@@ -247,7 +252,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
                     this._childrenToRender.push(React.cloneElement(childElement, {
                         ref: (refValue: React.Component<any, any>) => {
                             this._saveRef(childElement, refValue);
-                        }
+                        },
                     }));
                 }
             });
@@ -269,7 +274,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
     componentDidUpdate(prevProps: MonitorListEditsProps) {
         assert(
             this._phase !== ComponentPhaseEnum.animating,
-            'componentDidUpdate should never run while the component is animating due to the implementation of shouldComponentUpdate'
+            'componentDidUpdate should never run while the component is animating due to the implementation of shouldComponentUpdate',
         );
 
         if (this._phase === ComponentPhaseEnum.willAnimate) {
@@ -277,11 +282,9 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
             const prevPositions = phaseInfo.prevPositions;
             const nextPositions = computePositions(this._itemRefs);
 
-            const added: AddEdit[] = phaseInfo.added.map(child => {
-                return {
-                    element: this._itemRefs[(child as any).key].reactElement
-                };
-            });
+            const added: AddEdit[] = phaseInfo.added.map(child => ({
+                element: this._itemRefs[(child as any).key].reactElement,
+            }));
 
             const removed: RemoveEdit[] = phaseInfo.removed.map(child => {
                 const key = child.key as any;
@@ -291,7 +294,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
                 return {
                     leftDelta: nextPos.left - prevPos.left,
                     topDelta: nextPos.top - prevPos.top,
-                    element: this._itemRefs[key].reactElement
+                    element: this._itemRefs[key].reactElement,
                 };
             });
 
@@ -304,7 +307,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
                     moved.push({
                         leftDelta: nextPos.left - prevPos.left,
                         topDelta: nextPos.top - prevPos.top,
-                        element: this._itemRefs[key].reactElement
+                        element: this._itemRefs[key].reactElement,
                     });
                 }
             });
@@ -314,7 +317,7 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
             this.props.componentWillAnimate({
                 added: added,
                 moved: moved,
-                removed: removed
+                removed: removed,
             }, () => {
                 this._phase = ComponentPhaseEnum.rest;
                 if (this._isMounted) {
@@ -335,13 +338,13 @@ export class MonitorListEdits extends React.Component<MonitorListEditsProps, Typ
             // Cache both the react component reference and the corresponding HTML DOM node (for perf reasons).
             this._itemRefs[reactElement.key] = {
                 reactElement: refValue,
-                domElement: ReactDOM.findDOMNode(refValue) as HTMLElement
+                domElement: ReactDOM.findDOMNode(refValue) as HTMLElement,
             };
         }
 
         assert(
             typeof reactElement.ref === 'function' || reactElement.ref === undefined || reactElement.ref === null,
-            'Invalid ref: ' + reactElement.ref + '. Only callback refs are supported when using child animations on a `View`'
+            'Invalid ref: ' + reactElement.ref + '. Only callback refs are supported when using child animations on a `View`',
         );
 
         // If the creator of the reactElement also provided a ref, call it.

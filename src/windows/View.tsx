@@ -19,11 +19,10 @@ import EventHelpers from '../native-common/utils/EventHelpers';
 import {
     applyFocusableComponentMixin,
     FocusManager,
-    FocusManagerFocusableComponent
+    FocusManagerFocusableComponent,
 } from '../native-desktop/utils/FocusManager';
 import { RestrictFocusType } from '../common/utils/FocusManager';
 import { Types } from '../common/Interfaces';
-import * as _ from '../native-common/utils/lodashMini';
 import PopupContainerView from '../native-common/PopupContainerView';
 import { PopupComponent } from '../common/PopupContainerViewBase';
 import UserInterface from '../native-common/UserInterface';
@@ -53,7 +52,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         isRxParentAText: PropTypes.bool,
         focusManager: PropTypes.object,
         popupContainer: PropTypes.object,
-        ...ViewCommon.contextTypes
+        ...ViewCommon.contextTypes,
     };
     // Context is provided by super - just re-typing here
     context!: ViewContext;
@@ -64,7 +63,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         popupContainer: PropTypes.object,
         isRxParentAContextMenuResponder: PropTypes.bool,
         isRxParentAFocusableInSameFocusManager: PropTypes.bool,
-        ...ViewCommon.childContextTypes
+        ...ViewCommon.childContextTypes,
     };
 
     // Offset to show context menu using keyboard.
@@ -78,7 +77,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
     private _onMouseOver: ((e: React.SyntheticEvent<any>) => void) | undefined;
     private _onMouseMove: ((e: React.SyntheticEvent<any>) => void) | undefined;
 
-    private _focusableElement : RNW.FocusableWindows<RN.ViewProps> | null = null;
+    private _focusableElement: RNW.FocusableWindows<RN.ViewProps> | null = null;
 
     private _focusManager: FocusManager | undefined;
     private _limitFocusWithin = false;
@@ -258,7 +257,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                             if (e.preventDefault) {
                                 e.preventDefault();
                             }
-                        }
+                        },
                     });
                 };
             }
@@ -287,7 +286,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                             if (e.preventDefault) {
                                 e.preventDefault();
                             }
-                        }
+                        },
                     });
                 };
             }
@@ -298,7 +297,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             if (!this._onMouseEnter) {
                 this._onMouseEnter =  (e: React.SyntheticEvent<any>) => {
                     if (this.props.onMouseEnter) {
-                         this.props.onMouseEnter(EventHelpers.toMouseEvent(e));
+                        this.props.onMouseEnter(EventHelpers.toMouseEvent(e));
                     }
                 };
             }
@@ -309,7 +308,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             if (!this._onMouseLeave) {
                 this._onMouseLeave =  (e: React.SyntheticEvent<any>) => {
                     if (this.props.onMouseLeave) {
-                         this.props.onMouseLeave(EventHelpers.toMouseEvent(e));
+                        this.props.onMouseLeave(EventHelpers.toMouseEvent(e));
                     }
                 };
             }
@@ -320,7 +319,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             if (!this._onMouseOver) {
                 this._onMouseOver =  (e: React.SyntheticEvent<any>) => {
                     if (this.props.onMouseOver) {
-                         this.props.onMouseOver(EventHelpers.toMouseEvent(e));
+                        this.props.onMouseOver(EventHelpers.toMouseEvent(e));
                     }
                 };
             }
@@ -331,7 +330,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             if (!this._onMouseMove) {
                 this._onMouseMove =  (e: React.SyntheticEvent<any>) => {
                     if (this.props.onMouseMove) {
-                         this.props.onMouseMove(EventHelpers.toMouseEvent(e));
+                        this.props.onMouseMove(EventHelpers.toMouseEvent(e));
                     }
                 };
             }
@@ -365,7 +364,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                 onFocus: this._onFocus,
                 onBlur: this._onBlur,
                 onAccessibilityTap: this._internalProps.onPress,
-                testID: this.props.testId
+                testID: this.props.testId,
             };
 
             const PotentiallyAnimatedFocusableView = this._isButton(this.props) ? FocusableAnimatedView : FocusableView;
@@ -381,7 +380,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
 
     private _onFocusableRef = (btn: RNW.FocusableWindows<RN.ViewProps>): void => {
         this._focusableElement = btn;
-    }
+    };
 
     requestFocus() {
         if (!this._focusableElement) {
@@ -498,7 +497,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         // This covers cases where outside the view focusable controls are not controlled and/or not controllable
         // by FocusManager
         const viewProps: RNW.ViewProps = {
-            tabNavigation: restricted !== RestrictFocusType.Unrestricted ? 'cycle' : 'local'
+            tabNavigation: restricted !== RestrictFocusType.Unrestricted ? 'cycle' : 'local',
         };
         this.setNativeProps(viewProps);
     }
@@ -537,7 +536,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                 this._showContextMenu(keyEvent);
             }
         }
-    }
+    };
 
     private _onFocusableKeyUp = (e: React.SyntheticEvent<any>): void => {
         const keyEvent = EventHelpers.toKeyboardEvent(e);
@@ -546,7 +545,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
                 this.props.onPress(keyEvent);
             }
         }
-    }
+    };
 
     private _onFocus = (e: React.SyntheticEvent<any>): void => {
         if (e.currentTarget === e.target) {
@@ -556,13 +555,13 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
         if (this.props.onFocus) {
             this.props.onFocus(EventHelpers.toFocusEvent(e));
         }
-    }
+    };
 
     private _onBlur = (e: React.SyntheticEvent<any>): void => {
         if (this.props.onBlur) {
             this.props.onBlur(EventHelpers.toFocusEvent(e));
         }
-    }
+    };
 
     // From FocusManagerFocusableComponent interface
     //
@@ -592,7 +591,7 @@ export class View extends ViewCommon implements React.ChildContextProvider<ViewC
             this._focusableElement.setNativeProps({
                 tabIndex: tabIndex,
                 isTabStop: windowsTabFocusable,
-                importantForAccessibility: importantForAccessibility
+                importantForAccessibility: importantForAccessibility,
             });
         }
     }

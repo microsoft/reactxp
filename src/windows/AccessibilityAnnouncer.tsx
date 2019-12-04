@@ -25,8 +25,8 @@ const _styles = {
         top: -30,
         height: 30,
         left: 0,
-        right: 0
-    })
+        right: 0,
+    }),
 };
 
 export class AccessibilityAnnouncer extends React.Component<{}, {}> {
@@ -73,7 +73,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
         if (view !== null) {
             this._tryDequeueAndAnnounce();
         }
-    }
+    };
 
     private _tryDequeueAndAnnounce() {
         if (this._announcementQueueTimer === undefined) {
@@ -93,9 +93,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
                 // NVDA tends to announce 2 or 3 subsequent identical texts but usually ignores 4+ ones.
                 const textToAnnounce = (announcement && announcement === this._lastAnnouncement) ? announcement + ' ' : announcement;
 
-                this._viewElement.setNativeProps({
-                    accessibilityLabel : textToAnnounce
-                });
+                this._viewElement.setNativeProps({ accessibilityLabel : textToAnnounce });
                 this._lastAnnouncement = textToAnnounce;
 
                 // 2 seconds is probably enough for screen reader to finally receive UIA live region event
@@ -109,14 +107,12 @@ export class AccessibilityAnnouncer extends React.Component<{}, {}> {
                 // We want to hide the view used for announcement from screen reader so user cannot navigate to it.
                 // We do it by emptying accessible name on it as soon as possible - after we think screen reader
                 // already processed live region event.
-                this._viewElement.setNativeProps({
-                    accessibilityLabel : ''
-                });
+                this._viewElement.setNativeProps({ accessibilityLabel : '' });
             }
             this._lastAnnouncement = undefined;
             this._announcementQueueTimer = undefined;
         }
-    }
+    };
 }
 
 export default AccessibilityAnnouncer;

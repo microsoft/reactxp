@@ -47,7 +47,7 @@ function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, properti
         if (name !== 'constructor' && propertiesToSkip.indexOf(name) === -1 && typeof mixin[name].bind === 'function') {
             assert(
                 !(name in thisObj),
-                `An object cannot have a method with the same name as one of its mixins: "${name}"`
+                `An object cannot have a method with the same name as one of its mixins: "${name}"`,
             );
             thisObj[name] = mixin[name].bind(thisObj);
         }
@@ -59,7 +59,7 @@ function removeMixin(thisObj: any, mixin: {[propertyName: string]: any}, propert
         if (name !== 'constructor' && propertiesToSkip.indexOf(name) === -1) {
             assert(
                 (name in thisObj),
-                `An object is missing a mixin method: "${name}"`
+                `An object is missing a mixin method: "${name}"`,
             );
             delete thisObj[name];
         }
@@ -74,7 +74,7 @@ function extractChildrenKeys(children: React.ReactNode): ChildKey[] {
             const childReactElement = child as React.ReactElement<any>;
             assert(
                 childReactElement.key !== undefined && childReactElement.key !== null,
-                'Children passed to a `View` with child animations enabled must have a `key`'
+                'Children passed to a `View` with child animations enabled must have a `key`',
             );
             if (childReactElement.key !== null) {
                 keys.push(childReactElement.key);
@@ -131,13 +131,13 @@ export interface ViewContext {
 
 export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.View, RX.View> {
     static contextTypes: React.ValidationMap<any> = {
-        focusArbitrator: PropTypes.object
+        focusArbitrator: PropTypes.object,
     };
 
     context!: ViewContext;
 
     static childContextTypes: React.ValidationMap<any> = {
-        focusArbitrator: PropTypes.object
+        focusArbitrator: PropTypes.object,
     };
 
     protected _internalProps: any = {};
@@ -209,7 +209,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
         assert(
             findInvalidRefs(nextProps.children).length === 0,
             'Invalid ref(s): ' + JSON.stringify(findInvalidRefs(nextProps.children)) +
-            ' Only callback refs are supported when using child animations on a `View`'
+            ' Only callback refs are supported when using child animations on a `View`',
         );
 
         const prevChildrenKeys = this._childrenKeys || [];
@@ -219,16 +219,16 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
             const updateConfig: RN.LayoutAnimationAnim = {
                 delay: 0,
                 duration: 300,
-                type: LayoutAnimation.Types.easeOut
+                type: LayoutAnimation.Types.easeOut,
             };
             const createConfig: RN.LayoutAnimationAnim = {
                 delay: 75,
                 duration: 150,
                 type: LayoutAnimation.Types.linear,
-                property: LayoutAnimation.Properties.opacity
+                property: LayoutAnimation.Properties.opacity,
             };
             const configDictionary: RN.LayoutAnimationConfig = {
-                duration: 300
+                duration: 300,
             };
 
             if (nextProps.animateChildMove) {
@@ -276,7 +276,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
                 // Properties that View and RN.Touchable.Mixin have in common. View needs
                 // to dispatch these methods to RN.Touchable.Mixin manually.
                 'componentDidMount',
-                'componentWillUnmount'
+                'componentWillUnmount',
             ]);
 
             this._mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount || noop;
@@ -292,7 +292,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
         } else if (!isButton && this._mixinIsApplied) {
             removeMixin(this, RN.Touchable.Mixin, [
                 'componentDidMount',
-                'componentWillUnmount'
+                'componentWillUnmount',
             ]);
 
             delete this._mixin_componentDidMount;
@@ -342,7 +342,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
             accessibilityLabel: props.accessibilityLabel || props.title,
             accessibilityTraits: AccessibilityUtil.accessibilityTraitToString(props.accessibilityTraits),
             accessibilityComponentType: AccessibilityUtil.accessibilityComponentTypeToString(props.accessibilityTraits),
-            accessibilityLiveRegion: AccessibilityUtil.accessibilityLiveRegionToString(props.accessibilityLiveRegion)
+            accessibilityLiveRegion: AccessibilityUtil.accessibilityLiveRegionToString(props.accessibilityLiveRegion),
         };
         if (_isNativeMacOs && App.supportsExperimentalKeyboardNavigation && (props.onPress ||
                 (props.tabIndex !== undefined && props.tabIndex >= 0))) {
@@ -382,7 +382,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
                 onResponderGrant: this.props.onResponderGrant || this.touchableHandleResponderGrant,
                 onResponderMove: this.props.onResponderMove || this.touchableHandleResponderMove,
                 onResponderRelease: this.props.onResponderRelease || this.touchableHandleResponderRelease,
-                onResponderTerminate: this.props.onResponderTerminate || this.touchableHandleResponderTerminate
+                onResponderTerminate: this.props.onResponderTerminate || this.touchableHandleResponderTerminate,
             };
             this._internalProps = extend(this._internalProps, responderProps);
 
@@ -392,7 +392,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
                     this._defaultOpacityValue = opacityValueFromProps;
                     this._opacityAnimatedValue = new Animated.Value(this._defaultOpacityValue);
                     this._opacityAnimatedStyle = Styles.createAnimatedViewStyle({
-                        opacity: this._opacityAnimatedValue
+                        opacity: this._opacityAnimatedValue,
                     });
                 }
                 this._internalProps.style = Styles.combine([baseStyle as any, this._opacityAnimatedStyle]);
@@ -410,7 +410,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
         if (this.props.onKeyPress) {
             this.props.onKeyPress(EventHelpers.toKeyboardEvent(e));
         }
-    }
+    };
 
     private _isTouchFeedbackApplicable() {
         return this._isMounted && this._mixinIsApplied && !!this._nativeComponent;
@@ -434,13 +434,13 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
     }
 
     private _setOpacityTo(value: number, duration: number) {
-       Animated.timing(
+        Animated.timing(
             this._opacityAnimatedValue!,
             {
                 toValue: value,
                 duration: duration,
-                easing: Animated.Easing.InOut()
-            }
+                easing: Animated.Easing.InOut(),
+            },
         ).start();
     }
 
@@ -451,8 +451,8 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
 
         this._nativeComponent.setNativeProps({
             style: {
-                backgroundColor: this.props.underlayColor
-            }
+                backgroundColor: this.props.underlayColor,
+            },
         });
     }
 
@@ -463,10 +463,10 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
 
         this._nativeComponent.setNativeProps({
             style: [{
-                backgroundColor: _underlayInactive
-            }, this.props.style]
+                backgroundColor: _underlayInactive,
+            }, this.props.style],
         });
-    }
+    };
 
     protected _isButton(viewProps: RX.Types.ViewProps): boolean {
         return !!(viewProps.onPress || viewProps.onLongPress);
@@ -531,7 +531,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
                 this._showUnderlay();
             }
 
-             // We do not want to animate opacity if underlayColour is provided. Unless an explicit activeOpacity is provided
+            // We do not want to animate opacity if underlayColour is provided. Unless an explicit activeOpacity is provided
             if (!this.props.disableTouchOpacityAnimation && (this.props.activeOpacity || !this.props.underlayColor)) {
                 this._opacityActive(_activeOpacityAnimationDuration);
             }
@@ -579,7 +579,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RN.Vi
         FocusArbitratorProvider.requestFocus(
             this,
             () => this.focus(),
-            () => this._isMounted
+            () => this._isMounted,
         );
     }
 

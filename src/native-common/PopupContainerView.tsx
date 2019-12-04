@@ -58,7 +58,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
             popupWidth: 0,
             popupHeight: 0,
             constrainedPopupWidth: 0,
-            constrainedPopupHeight: 0
+            constrainedPopupHeight: 0,
         };
     }
 
@@ -105,7 +105,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
                 this.state.anchorPosition, this.state.anchorOffset,
                 this.state.constrainedPopupWidth,
                 this.state.constrainedPopupHeight)
-            );
+        );
         const isRTL = International.isRTL();
         const style = {
             position: 'absolute',
@@ -117,7 +117,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
             opacity: this.state.isMeasuringPopup ? 0 : 1,
             overflow: this.props.hidden ? 'hidden' : 'visible',
             width: this.props.hidden ? 0 : undefined,
-            height: this.props.hidden ? 0 : undefined
+            height: this.props.hidden ? 0 : undefined,
         };
 
         const importantForAccessibility = this.props.hidden
@@ -137,7 +137,7 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
 
     protected _onMount = (component: RN.View | null) => {
         this._mountedComponent = component || undefined;
-    }
+    };
 
     private _recalcPosition() {
         if (!this._mountedComponent) {
@@ -164,13 +164,13 @@ export class PopupContainerView extends PopupContainerViewBase<PopupContainerVie
                     (x: number, y: number, width: number, height: number) => {
                         const popupRect: ClientRect = {
                             left: x, top: y, right: x + width, bottom: y + height,
-                            width: width, height: height
+                            width: width, height: height,
                         };
 
                         this._recalcPositionFromLayoutData(anchorRect, popupRect);
-                    }
+                    },
                 );
-            }
+            },
         );
     }
 

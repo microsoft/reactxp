@@ -14,7 +14,7 @@ import Accessibility from '../native-common/Accessibility';
 import { AccessibilityPlatformUtil as CommonAccessibilityNativeUtil } from '../common/AccessibilityUtil';
 
 export class AccessibilityUtil extends CommonAccessibilityNativeUtil {
-    private _sendAccessibilityEvent(component: React.Component<any, any>, eventId: number) {
+    private _sendAccessibilityEvent(component: React.Component<any, any>, eventId: number): void {
         // See list of events here:
         // https://developer.android.com/reference/android/view/accessibility/AccessibilityEvent.html
 
@@ -39,7 +39,7 @@ export class AccessibilityUtil extends CommonAccessibilityNativeUtil {
         }, 100);
     }
 
-    setAccessibilityFocus(component: React.Component<any, any>) {
+    setAccessibilityFocus(component: React.Component<any, any>): void {
         const TYPE_VIEW_FOCUSED = 8;
 
         if (Accessibility.isScreenReaderEnabled()) {

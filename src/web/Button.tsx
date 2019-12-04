@@ -34,8 +34,8 @@ const _styles = {
         backgroundColor: 'transparent',
         borderColor: 'transparent',
         textAlign: 'left',
-        borderWidth: '0'
-    }
+        borderWidth: '0',
+    },
 };
 
 const _longPressTime = 1000;
@@ -49,13 +49,13 @@ export interface ButtonContext {
 export class Button extends ButtonBase {
     static contextTypes = {
         hasRxButtonAscendant: PropTypes.bool,
-        focusArbitrator: PropTypes.object
+        focusArbitrator: PropTypes.object,
     };
 
     context!: ButtonContext;
 
     static childContextTypes = {
-        hasRxButtonAscendant: PropTypes.bool
+        hasRxButtonAscendant: PropTypes.bool,
     };
 
     private _mountedButton: HTMLButtonElement | null = null;
@@ -135,7 +135,7 @@ export class Button extends ButtonBase {
         FocusArbitratorProvider.requestFocus(
             this,
             () => this.focus(),
-            () => this._mountedButton !== null
+            () => this._mountedButton !== null,
         );
     }
 
@@ -153,7 +153,7 @@ export class Button extends ButtonBase {
 
     private _onMount = (ref: HTMLButtonElement | null) => {
         this._mountedButton = ref;
-    }
+    };
 
     protected onClick = (e: Types.MouseEvent) => {
         if (this._ignoreClick) {
@@ -162,7 +162,7 @@ export class Button extends ButtonBase {
         } else if (!this.props.disabled && this.props.onPress) {
             this.props.onPress(e);
         }
-    }
+    };
 
     private _getStyles(): Types.ButtonStyleRuleSet {
         const buttonStyleMutations: Types.ButtonStyle = {};
@@ -192,7 +192,7 @@ export class Button extends ButtonBase {
         if (this.props.onContextMenu) {
             this.props.onContextMenu(e);
         }
-    }
+    };
 
     private _onMouseDown = (e: React.SyntheticEvent<any>) => {
         if (this.props.disabled) {
@@ -224,9 +224,9 @@ export class Button extends ButtonBase {
                         this._ignoreClick = true;
                     }
                 }
-            }, this.props.delayLongPress || _longPressTime);
+            }, this.props.delayLongPress || _longPressTime);
         }
-    }
+    };
 
     private _onTouchMove = (e: React.SyntheticEvent<HTMLButtonElement, TouchEvent>) => {
         const buttonRect = (e.target as HTMLButtonElement).getBoundingClientRect();
@@ -247,7 +247,7 @@ export class Button extends ButtonBase {
             }
         }
         this._isMouseOver = isMouseOver;
-    }
+    };
 
     private _onMouseUp = (e: Types.SyntheticEvent | Types.TouchEvent) => {
         if (!this.props.disabled && this.props.onPressOut) {
@@ -257,7 +257,7 @@ export class Button extends ButtonBase {
         if (this._longPressTimer) {
             Timers.clearTimeout(this._longPressTimer);
         }
-    }
+    };
 
     /**
      * Case where onPressOut is not triggered and the bubbling is canceled:
@@ -297,12 +297,12 @@ export class Button extends ButtonBase {
         if (this._longPressTimer) {
             Timers.clearTimeout(this._longPressTimer);
         }
-    }
+    };
 
     private _onMouseEnter = (e: Types.SyntheticEvent) => {
         this._isMouseOver = true;
         this._onHoverStart(e);
-    }
+    };
 
     private _onMouseLeave = (e: Types.SyntheticEvent) => {
         this._isMouseOver = false;
@@ -315,7 +315,7 @@ export class Button extends ButtonBase {
         if (this._longPressTimer) {
             Timers.clearTimeout(this._longPressTimer);
         }
-    }
+    };
 
     // When we get focus on an element, show the hover effect on the element.
     // This ensures that users using keyboard also get the similar experience as mouse users for accessibility.
@@ -326,7 +326,7 @@ export class Button extends ButtonBase {
         if (this.props.onFocus) {
             this.props.onFocus(e);
         }
-    }
+    };
 
     private _onBlur = (e: Types.FocusEvent) => {
         this._isFocusedWithKeyboard = false;
@@ -335,7 +335,7 @@ export class Button extends ButtonBase {
         if (this.props.onBlur) {
             this.props.onBlur(e);
         }
-    }
+    };
 
     private _onHoverStart = (e: Types.SyntheticEvent) => {
         if (!this._isHoverStarted && (this._isMouseOver || this._isFocusedWithKeyboard)) {
@@ -345,7 +345,7 @@ export class Button extends ButtonBase {
                 this.props.onHoverStart(e);
             }
         }
-    }
+    };
 
     private _onHoverEnd = (e: Types.SyntheticEvent) => {
         if (this._isHoverStarted && !this._isMouseOver && !this._isFocusedWithKeyboard) {
@@ -355,7 +355,7 @@ export class Button extends ButtonBase {
                 this.props.onHoverEnd(e);
             }
         }
-    }
+    };
 }
 
 applyFocusableComponentMixin(Button);

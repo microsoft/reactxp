@@ -42,7 +42,7 @@ export class UserPresence extends RX.UserPresence {
         }
     }
 
-    private _setUserPresent(isPresent: boolean) {
+    private _setUserPresent(isPresent: boolean): void {
         if (this._isPresent !== isPresent) {
             this._isPresent = isPresent;
 

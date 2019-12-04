@@ -18,8 +18,8 @@ import { Text as CommonText } from '../native-common/Text';
 const _styles = {
     defaultText: Styles.createTextStyle({
         includeFontPadding: false,
-        textAlignVertical: 'center'
-    })
+        textAlignVertical: 'center',
+    }),
 };
 
 export class Text extends CommonText {

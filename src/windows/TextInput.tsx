@@ -19,7 +19,7 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
 
     protected _render(props: RN.TextInputProps, onMount: (textInput: any) => void): JSX.Element {
         const extendedProps: RN.ExtendedTextInputProps = {
-            tabIndex: this.getTabIndex()
+            tabIndex: this.getTabIndex(),
         };
 
         return (
@@ -33,8 +33,8 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
         );
     }
 
-    private _onFocusEx(e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>, origHandler:
-            ((e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>) => void) | undefined) {
+    private _onFocusEx(e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>,
+            origHandler: ((e: RN.NativeSyntheticEvent<RN.TextInputFocusEventData>) => void) | undefined) {
         if (e.currentTarget === e.target) {
             this.onFocus();
         }
@@ -73,7 +73,7 @@ export class TextInput extends TextInputBase implements FocusManagerFocusableCom
                 tabIndex: tabIndex,
                 value: this.state.inputValue, // mandatory for some reason
                 isTabStop: this.props.editable && tabIndex >= 0,
-                importantForAccessibility: importantForAccessibility
+                importantForAccessibility: importantForAccessibility,
             });
         }
     }

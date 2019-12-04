@@ -678,7 +678,7 @@ export class ActivityIndicator extends React.Component<Types.ActivityIndicatorPr
 
     render() {
         const colorStyle = {
-            backgroundColor: this.props.color
+            backgroundColor: this.props.color,
         };
 
         const spinnerClasses = ['rx-activity'];

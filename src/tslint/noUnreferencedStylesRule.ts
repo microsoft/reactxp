@@ -41,7 +41,7 @@ class StylesWalker extends RuleWalker {
         this._reportUnreferencedStyles();
     }
 
-    visitVariableDeclaration(node: ts.VariableDeclaration) {
+    visitVariableDeclaration(node: ts.VariableDeclaration): void {
         // Is this a _styles node?
         if (node.name.getText() === '_styles' && node.initializer) {
             const nodeFlags = ts.getCombinedNodeFlags(node);
@@ -81,7 +81,7 @@ class StylesWalker extends RuleWalker {
                         this._definedStyles[nodeName] = {
                             isReferenced: false,
                             start: property.getStart(),
-                            width: property.getWidth()
+                            width: property.getWidth(),
                         };
                     }
 
@@ -93,28 +93,28 @@ class StylesWalker extends RuleWalker {
         return hasChildren;
     }
 
-    visitFunctionDeclaration(node: ts.FunctionDeclaration) {
+    visitFunctionDeclaration(node: ts.FunctionDeclaration): void {
         this._markReferencedStyles(node.getText());
     }
 
-    visitConstructorDeclaration(node: ts.ConstructorDeclaration) {
+    visitConstructorDeclaration(node: ts.ConstructorDeclaration): void {
         this._markReferencedStyles(node.getText());
     }
 
-    visitMethodDeclaration(node: ts.MethodDeclaration) {
+    visitMethodDeclaration(node: ts.MethodDeclaration): void {
         this._markReferencedStyles(node.getText());
     }
 
-    visitArrowFunction(node: ts.FunctionLikeDeclaration) {
+    visitArrowFunction(node: ts.FunctionLikeDeclaration): void {
         this._markReferencedStyles(node.getText());
     }
 
-    visitPropertyDeclaration(node: ts.PropertyDeclaration) {
+    visitPropertyDeclaration(node: ts.PropertyDeclaration): void {
         this._markReferencedStyles(node.getText());
     }
 
-    private _markReferencedStyles(functionText: string) {
-        const stylesRegEx = /\_styles\.[\_\.a-zA-Z0-9]+/g;
+    private _markReferencedStyles(functionText: string): void {
+        const stylesRegEx = /_styles\.[_.a-zA-Z0-9]+/g;
         const matches = functionText.match(stylesRegEx);
 
         if (matches) {
@@ -127,7 +127,7 @@ class StylesWalker extends RuleWalker {
         }
     }
 
-    private _reportUnreferencedStyles() {
+    private _reportUnreferencedStyles(): void {
         _.each(this._definedStyles, (styleInfo, styleName) => {
             if (!styleInfo.isReferenced) {
                 this.addFailure(this.createFailure(styleInfo.start, styleInfo.width,

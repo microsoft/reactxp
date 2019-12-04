@@ -37,7 +37,8 @@ export abstract class AnimatedTextInput extends AnimatedComponent<Types.Animated
 }
 
 export abstract class AnimatedView extends AnimatedComponent<Types.AnimatedViewProps, Types.Stateless, AnimatedView>
-        implements FocusableComponent {
+    implements FocusableComponent {
+
     abstract setFocusRestricted(restricted: boolean): void;
     abstract setFocusLimited(limited: boolean): void;
     abstract focus(): void;
@@ -72,8 +73,7 @@ export abstract class UserInterface {
     abstract getPixelRatio(): number;
 
     // Measurements
-    abstract measureLayoutRelativeToWindow(component: React.Component<any>):
-        Promise<Types.LayoutInfo>;
+    abstract measureLayoutRelativeToWindow(component: React.Component<any>): Promise<Types.LayoutInfo>;
     abstract measureLayoutRelativeToAncestor(component: React.Component<any>,
         ancestor: React.Component<any>): Promise<Types.LayoutInfo>;
     abstract measureWindow(rootViewId?: string): Types.Dimensions;
@@ -220,8 +220,8 @@ export abstract class StatusBar {
 }
 
 export abstract class Styles {
-    abstract combine<T>(ruleSet1: Types.StyleRuleSetRecursive<T> | undefined, ruleSet2?: Types.StyleRuleSetRecursive<T>)
-        : Types.StyleRuleSetOrArray<T> | undefined;
+    abstract combine<T>(ruleSet1: Types.StyleRuleSetRecursive<T> | undefined,
+        ruleSet2?: Types.StyleRuleSetRecursive<T>): Types.StyleRuleSetOrArray<T> | undefined;
     abstract createViewStyle(ruleSet: Types.ViewStyle, cacheStyle?: boolean): Types.ViewStyleRuleSet;
     abstract createAnimatedViewStyle(ruleSet: Types.AnimatedViewStyle): Types.AnimatedViewStyleRuleSet;
     abstract createScrollViewStyle(ruleSet: Types.ScrollViewStyle, cacheStyle?: boolean): Types.ScrollViewStyleRuleSet;

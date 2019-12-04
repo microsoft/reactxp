@@ -17,7 +17,7 @@ import Timers from './Timers';
 let _sortAndFilter: SortAndFilterFunc | undefined;
 let _autoFocusTimer: number | undefined;
 let _lastFocusArbitratorProviderId = 0;
-let rootFocusArbitratorProvider: FocusArbitratorProvider;
+let rootFocusArbitratorProvider: FocusArbitratorProvider; // eslint-disable-line prefer-const
 
 export enum FocusCandidateType {
     Focus = 1,
@@ -54,7 +54,7 @@ export class FocusArbitratorProvider {
         this._arbitratorCallback = arbitrator;
     }
 
-    private _notifyParent() {
+    private _notifyParent(): void {
         if (this._parentArbitratorProvider) {
             this._parentArbitratorProvider._pendingChildren['fa-' + this._id.toString()] = this;
             this._parentArbitratorProvider._notifyParent();
@@ -87,7 +87,7 @@ export class FocusArbitratorProvider {
             focus,
             isAvailable,
             type,
-            accessibilityId
+            accessibilityId,
         });
 
         this._notifyParent();
@@ -121,7 +121,7 @@ export class FocusArbitratorProvider {
 
                     toArbitrate.push({
                         component,
-                        accessibilityId: candidate.accessibilityId
+                        accessibilityId: candidate.accessibilityId,
                     });
                 }
             });
@@ -145,7 +145,7 @@ export class FocusArbitratorProvider {
         return candidates[candidates.length - 1];
     }
 
-    setCallback(arbitrator?: RX.Types.FocusArbitrator) {
+    setCallback(arbitrator?: RX.Types.FocusArbitrator): void {
         this._arbitratorCallback = arbitrator;
     }
 

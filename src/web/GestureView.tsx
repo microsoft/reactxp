@@ -31,8 +31,8 @@ const _styles = {
         flexShrink: 0,
         overflow: 'hidden',
         alignItems: 'stretch',
-        justifyContent: 'center'
-    } as any
+        justifyContent: 'center',
+    } as any,
 };
 
 // Unique to web
@@ -64,7 +64,7 @@ export abstract class GestureView extends GestureViewCommon {
     private _gestureTypeLocked = false;
 
     static contextTypes: React.ValidationMap<any> = {
-        isInRxMainView: PropTypes.bool
+        isInRxMainView: PropTypes.bool,
     };
 
     // Get preferred pan ratio for platform.
@@ -184,7 +184,7 @@ export abstract class GestureView extends GestureViewCommon {
 
                 this._pendingMouseGestureType = GestureType.None;
                 this._gestureTypeLocked = false;
-            }
+            },
         });
     }
 
@@ -204,7 +204,7 @@ export abstract class GestureView extends GestureViewCommon {
         } else {
             this._disposeMouseResponder();
         }
-    }
+    };
 
     private _getStyles(): any {
         const combinedStyles = Styles.combine([_styles.defaultView, this.props.style]);
@@ -270,7 +270,7 @@ export abstract class GestureView extends GestureViewCommon {
             const gsState = this._mouseEventToTapGestureState(e);
             this._startLongPressTimer(gsState, true);
         }
-    }
+    };
 
     private _onClick = (e: React.MouseEvent<any>) => {
         this._cancelLongPressTimer();
@@ -290,7 +290,7 @@ export abstract class GestureView extends GestureViewCommon {
             this._reportDelayedTap();
             this._startDoubleTapTimer(gsState);
         }
-    }
+    };
 
     private _sendContextMenuEvent = (e: React.MouseEvent<any>) => {
         if (this.props.onContextMenu) {
@@ -300,7 +300,7 @@ export abstract class GestureView extends GestureViewCommon {
             const tapEvent = this._mouseEventToTapGestureState(e);
             this.props.onContextMenu(tapEvent);
         }
-    }
+    };
 
     // The RN and React touch event types are basically identical except that React uses "clientX/Y"
     // and RN uses "locationX/Y", so we need to map one to the other.  Unfortunately, due to inertia,
@@ -339,7 +339,7 @@ export abstract class GestureView extends GestureViewCommon {
             clientX: l.clientX,
             clientY: l.clientY,
             pageX: l.pageX,
-            pageY: l.pageY
+            pageY: l.pageY,
         };
     }
 
@@ -351,7 +351,7 @@ export abstract class GestureView extends GestureViewCommon {
 
             this._onTouchSeriesStart(GestureView._reactTouchEventToBasic(e));
         }
-    }
+    };
 
     private _onTouchMove = (e: React.TouchEvent<any>) => {
         if (!this._initialTouch || !this._ongoingGesture) {
@@ -364,10 +364,10 @@ export abstract class GestureView extends GestureViewCommon {
             dy: ft.clientY - this._initialTouch.y,
             // TODO: calculate velocity?
             vx: 0,
-            vy: 0
+            vy: 0,
         };
         this._onTouchChange(GestureView._reactTouchEventToBasic(e), this._ongoingGesture);
-    }
+    };
 
     private _onTouchEnd = (e: React.TouchEvent<any>) => {
         if (!this._initialTouch || !this._ongoingGesture) {
@@ -379,7 +379,7 @@ export abstract class GestureView extends GestureViewCommon {
             this._initialTouch = undefined;
             this._ongoingGesture = undefined;
         }
-    }
+    };
 
     private _detectGestureType = (gestureState: Types.PanGestureState) => {
         // we need to lock gesture type until it's completed
@@ -391,7 +391,7 @@ export abstract class GestureView extends GestureViewCommon {
 
         const gsBasic: GestureStatePoint = {
             dx: gestureState.clientX - gestureState.initialClientX,
-            dy: gestureState.clientY - gestureState.initialClientY
+            dy: gestureState.clientY - gestureState.initialClientY,
         };
 
         if (this._shouldRespondToPan(gsBasic)) {
@@ -404,7 +404,7 @@ export abstract class GestureView extends GestureViewCommon {
 
         this._gestureTypeLocked = false;
         return GestureType.None;
-    }
+    };
 
     private _onWheel = (e: React.WheelEvent<any>) => {
         if (this.props.onScrollWheel) {
@@ -418,13 +418,13 @@ export abstract class GestureView extends GestureViewCommon {
                     pageY: e.pageY,
                     scrollAmount: e.deltaY,
                     timeStamp: e.timeStamp,
-                    isTouch: false
+                    isTouch: false,
                 };
 
                 this.props.onScrollWheel(scrollWheelEvent);
             }
         }
-    }
+    };
 
     private _sendMousePanEvent = (gestureState: Types.PanGestureState) => {
         switch (this._pendingMouseGestureType) {
@@ -454,7 +454,7 @@ export abstract class GestureView extends GestureViewCommon {
             this._cancelDoubleTapTimer();
             this._skipNextTap();
         }
-    }
+    };
 
     protected _getClientXYOffset(): { x: number; y: number } {
         const rect = this._getGestureViewClientRect();

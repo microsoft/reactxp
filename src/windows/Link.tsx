@@ -47,7 +47,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         super(props);
 
         this.state = {
-            isRestrictedOrLimited: false
+            isRestrictedOrLimited: false,
         };
     }
 
@@ -69,9 +69,9 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
 
     private _restrictedOrLimitedCallback = (restrictedOrLimited: boolean): void => {
         this.setState({
-            isRestrictedOrLimited: restrictedOrLimited
+            isRestrictedOrLimited: restrictedOrLimited,
         });
-    }
+    };
 
     protected _render(internalProps: RN.TextProps, onMount: (text: any) => void) {
         if (this.context && !this.context.isRxParentAText) {
@@ -93,11 +93,11 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         );
     }
 
-    private _focusableElement : RNW.FocusableWindows<RN.TextProps> | null = null;
+    private _focusableElement: RNW.FocusableWindows<RN.TextProps> | null = null;
 
     private _onFocusableRef = (btn: RNW.FocusableWindows<RN.TextProps> | null): void => {
         this._focusableElement = btn;
-    }
+    };
 
     private _createFocusableTextProps(internalProps: RN.TextProps) {
         const tabIndex: number | undefined = this.getTabIndex();
@@ -109,8 +109,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         assert(!(typeof originalRef === 'string'), 'Link: ReactXP must not use string refs internally');
 
         const componentRef = originalRef as Function;
-        const focusableTextProps: RNW.FocusableWindowsProps<
-                Without<RN.TextProps, 'onAccessibilityTap'> & RNW.AccessibilityEvents> = {
+        const focusableTextProps: RNW.FocusableWindowsProps<Without<RN.TextProps, 'onAccessibilityTap'> & RNW.AccessibilityEvents> = {
             ...internalProps,
             componentRef,
             ref: this._onFocusableRef,
@@ -123,17 +122,17 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
             onKeyDown: this._onKeyDown,
             onKeyUp: this._onKeyUp,
             onFocus: this._onFocus,
-            onAccessibilityTap: this._onPress
+            onAccessibilityTap: this._onPress,
         };
 
         return focusableTextProps;
     }
 
-    private _nativeHyperlinkElement : RNW.HyperlinkWindows | null = null;
+    private _nativeHyperlinkElement: RNW.HyperlinkWindows | null = null;
 
     private _onNativeHyperlinkRef = (ref: RNW.HyperlinkWindows | null): void => {
         this._nativeHyperlinkElement = ref;
-    }
+    };
 
     private _renderLinkAsNativeHyperlink(internalProps: RN.TextProps) {
         // We don't use 'string' ref type inside ReactXP
@@ -178,13 +177,13 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
         FocusArbitratorProvider.requestFocus(
             this,
             () => { this.focus(); },
-            () => this._isAvailableToFocus()
+            () => this._isAvailableToFocus(),
         );
     }
 
     private _isAvailableToFocus(): boolean {
         return !!((this._focusableElement && this._focusableElement.focus) ||
-         (this._nativeHyperlinkElement && this._nativeHyperlinkElement.focus));
+            (this._nativeHyperlinkElement && this._nativeHyperlinkElement.focus));
     }
 
     private _onKeyDown = (e: React.SyntheticEvent<any>): void => {
@@ -215,7 +214,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
                 }
             }
         }
-    }
+    };
 
     private _onKeyUp = (e: React.SyntheticEvent<any>): void => {
         const keyEvent = EventHelpers.toKeyboardEvent(e);
@@ -223,13 +222,13 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
             // Defer to base class
             this._onPress(keyEvent);
         }
-    }
+    };
 
     private _onFocus = (e: React.SyntheticEvent<any>): void => {
         if (e.currentTarget === e.target) {
             this.onFocus();
         }
-    }
+    };
 
     // From FocusManagerFocusableComponent interface
     //
@@ -259,7 +258,7 @@ export class Link extends LinkBase<LinkState> implements FocusManagerFocusableCo
             this._focusableElement.setNativeProps({
                 tabIndex: tabIndex,
                 isTabStop: windowsTabFocusable,
-                importantForAccessibility: importantForAccessibility
+                importantForAccessibility: importantForAccessibility,
             });
         }
     }

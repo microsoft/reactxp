@@ -29,18 +29,18 @@ const _styles = {
 
         // This forces some browsers (like Chrome) to create a new render context,
         // which can significantly speed up scrolling.
-        transform: 'translateZ(0)'
+        transform: 'translateZ(0)',
     },
     verticalStyle: {
         flexDirection: 'column',
         overflowY: 'auto',
-        overflowX: 'hidden'
+        overflowX: 'hidden',
     },
     horizontalStyle: {
         flexDirection: 'row',
         overflowY: 'hidden',
-        overflowX: 'auto'
-    }
+        overflowX: 'auto',
+    },
 };
 
 let _initializedCustomStyles = false;
@@ -52,7 +52,7 @@ const _customStyles = {
 
         // This forces some browsers (like Chrome) to create a new render context,
         // which can significantly speed up scrolling.
-        transform: 'translateZ(0)'
+        transform: 'translateZ(0)',
     },
     verticalStyle: {},
     horizontalStyle: {},
@@ -60,14 +60,14 @@ const _customStyles = {
         position: 'relative',
         overflow: 'hidden',
         boxSizing: 'border-box',
-        alignSelf: 'stretch'
+        alignSelf: 'stretch',
     },
     customScrollVertical: {
         // Set flex only for vertical scroll view.
         // Don't set flex for horizontal scroll view, otherwise it disappears.
         display: 'flex',
-        flex: '1 1 0px'
-    }
+        flex: '1 1 0px',
+    },
 };
 
 // Default to once per frame.
@@ -94,7 +94,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                 // Fixes a bug for Chrome beta where the parent flexbox (customScrollContainer) doesn't
                 // recognize that its child got populated with items. Smallest default width gives an
                 // indication that content will exist here.
-                minHeight: 0
+                minHeight: 0,
             };
 
             _customStyles.horizontalStyle = {
@@ -106,7 +106,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                 // Fixes a bug for Chrome beta where the parent flexbox (customScrollContainer) doesn't
                 // recognize that its child got populated with items. Smallest default width gives an
                 // indication that content will exist here.
-                minWidth: 0
+                minWidth: 0,
             };
         }
     }
@@ -237,7 +237,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                 this._customScrollbar.init({
                     horizontal: props.horizontal && !horizontalHidden,
                     vertical: !props.horizontal && !verticalHidden,
-                    hiddenScrollbar: horizontalHidden || verticalHidden
+                    hiddenScrollbar: horizontalHidden || verticalHidden,
                 });
             }
         }
@@ -316,7 +316,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
 
     protected _onMount = (component: HTMLElement | null) => {
         this._mountedComponent = component;
-    }
+    };
 
     setScrollTop(scrollTop: number, animate = false): void {
         const container = this._getContainer();
@@ -392,14 +392,14 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                 this.props.onScrollBeginDrag();
             }
         }
-    }
+    };
 
     private _onTouchEnd = () => {
         this._dragging = false;
         if (this.props.onScrollEndDrag) {
             this.props.onScrollEndDrag();
         }
-    }
+    };
 }
 
 export default ScrollView;

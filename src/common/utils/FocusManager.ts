@@ -7,8 +7,6 @@
  * Manages focusable elements for better keyboard navigation.
  */
 
-// tslint:disable:no-invalid-this
-
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
@@ -78,13 +76,13 @@ export abstract class FocusManager {
     protected abstract /* static */ removeFocusListenerFromComponent(component: FocusableComponentInternal, onFocus: () => void): void;
     protected abstract /* static */ focusComponent(component: FocusableComponentInternal): boolean;
 
-    protected abstract /* static */ resetFocus(focusFirstWhenNavigatingWithKeyboard: boolean) : void;
+    protected abstract /* static */ resetFocus(focusFirstWhenNavigatingWithKeyboard: boolean): void;
     protected abstract /* static */ _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent): void;
 
     // Whenever the focusable element is mounted, we let the application
     // know so that FocusManager could account for this element during the
     // focus restriction.
-    addFocusableComponent(component: FocusableComponentInternal, accessibleOnly = false) {
+    addFocusableComponent(component: FocusableComponentInternal, accessibleOnly = false): void {
         if (component.focusableComponentId) {
             return;
         }
@@ -102,7 +100,7 @@ export abstract class FocusManager {
             limitedCountAccessible: 0,
             onFocus: () => {
                 FocusManager._currentFocusedComponent = storedComponent;
-            }
+            },
         };
 
         component.focusableComponentId = componentId;
@@ -133,7 +131,7 @@ export abstract class FocusManager {
         this.addFocusListenerOnComponent(component, storedComponent.onFocus);
     }
 
-    removeFocusableComponent(component: FocusableComponentInternal) {
+    removeFocusableComponent(component: FocusableComponentInternal): void {
         if (!component.focusableComponentId) {
             return;
         }
@@ -162,7 +160,7 @@ export abstract class FocusManager {
         }
     }
 
-    restrictFocusWithin(restrictType: RestrictFocusType, noFocusReset?: boolean) {
+    restrictFocusWithin(restrictType: RestrictFocusType, noFocusReset?: boolean): void {
         // Limit the focus received by the keyboard navigation to all
         // the descendant focusable elements by setting tabIndex of all
         // other elements to -1.
@@ -202,7 +200,7 @@ export abstract class FocusManager {
         }
     }
 
-    removeFocusRestriction() {
+    removeFocusRestriction(): void {
         // Restore the focus to the previous view with restrictFocusWithin or
         // remove the restriction if there is no such view.
         FocusManager._restrictionStack = FocusManager._restrictionStack.filter(focusManager => focusManager !== this);
@@ -265,7 +263,7 @@ export abstract class FocusManager {
         }
     }
 
-    limitFocusWithin(limitType: Types.LimitFocusType) {
+    limitFocusWithin(limitType: Types.LimitFocusType): void {
         if (this._isFocusLimited !== Types.LimitFocusType.Unlimited ||
             (limitType !== Types.LimitFocusType.Limited &&
              limitType !== Types.LimitFocusType.Accessible)) {
@@ -287,7 +285,7 @@ export abstract class FocusManager {
         });
     }
 
-    removeFocusLimitation() {
+    removeFocusLimitation(): void {
         if (this._isFocusLimited === Types.LimitFocusType.Unlimited) {
             return;
         }
@@ -307,12 +305,12 @@ export abstract class FocusManager {
         this._isFocusLimited = Types.LimitFocusType.Unlimited;
     }
 
-    release() {
+    release(): void {
         this.removeFocusRestriction();
         this.removeFocusLimitation();
     }
 
-    static subscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback) {
+    static subscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback): void {
         const storedComponent = FocusManager._getStoredComponent(component);
 
         if (storedComponent) {
@@ -324,17 +322,15 @@ export abstract class FocusManager {
         }
     }
 
-    static unsubscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback) {
+    static unsubscribe(component: FocusableComponentInternal, callback: FocusableComponentStateCallback): void {
         const storedComponent = FocusManager._getStoredComponent(component);
 
         if (storedComponent && storedComponent.callbacks) {
-            storedComponent.callbacks = storedComponent.callbacks.filter(cb => {
-                return cb !== callback;
-            });
+            storedComponent.callbacks = storedComponent.callbacks.filter(cb => cb !== callback);
         }
     }
 
-    setRestrictionStateCallback(callback: FocusManagerRestrictionStateCallback | undefined) {
+    setRestrictionStateCallback(callback: FocusManagerRestrictionStateCallback | undefined): void {
         this._restrictionStateCallback = callback;
     }
 
@@ -358,7 +354,8 @@ export abstract class FocusManager {
         return undefined;
     }
 
-    protected static _callFocusableComponentStateChangeCallbacks(storedComponent: StoredFocusableComponent, restrictedOrLimited: boolean) {
+    protected static _callFocusableComponentStateChangeCallbacks(storedComponent: StoredFocusableComponent,
+            restrictedOrLimited: boolean): void {
         if (!storedComponent.callbacks) {
             return;
         }
@@ -368,7 +365,7 @@ export abstract class FocusManager {
         });
     }
 
-    private /* static */ _removeFocusRestriction() {
+    private /* static */ _removeFocusRestriction(): void {
         Object.keys(FocusManager._allFocusableComponents).forEach(componentId => {
             const storedComponent = FocusManager._allFocusableComponents[componentId];
             storedComponent.restricted = false;
@@ -376,7 +373,7 @@ export abstract class FocusManager {
         });
     }
 
-    private static _clearRestoreRestrictionTimeout() {
+    private static _clearRestoreRestrictionTimeout(): void {
         if (FocusManager._restoreRestrictionTimer) {
             Timers.clearTimeout(FocusManager._restoreRestrictionTimer);
             FocusManager._restoreRestrictionTimer = undefined;
@@ -395,7 +392,7 @@ export abstract class FocusManager {
 // accessibleOnly is true for components that support just being focused
 // by screen readers.
 // By default components support both screen reader and keyboard focusing.
-export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function, accessibleOnly = false) {
+export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function, accessibleOnly = false): void {
     const contextTypes = Component.contextTypes || {};
     contextTypes.focusManager = PropTypes.object;
     Component.contextTypes = contextTypes;
@@ -423,7 +420,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
         }
     });
 
-    function inheritMethod(methodName: string, action: Function) {
+    function inheritMethod(methodName: string, action: Function): void {
         const origCallback = Component.prototype[methodName];
 
         Component.prototype[methodName] = function() {

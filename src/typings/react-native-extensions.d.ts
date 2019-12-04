@@ -52,41 +52,45 @@ declare module 'react-native' {
         focus(): void;
         blur(): void;
         measure(callback: ((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => void)): void;
-        measureLayout(relativeToNativeNode: number, onSuccess: ((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => void), onFail: () => void): void;
+        measureLayout(
+            relativeToNativeNode: number,
+            onSuccess: ((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => void),
+            onFail: () => void
+        ): void;
         refs: {
             [key: string]: ReactNativeBaseComponent<any, any>;
-        }
+        };
     }
 
     module Touchable {
-        type RectOffset = {
-            top: number,
-            left: number,
-            right: number,
-            bottom: number
+        interface RectOffset {
+            top: number;
+            left: number;
+            right: number;
+            bottom: number;
         }
 
         interface State {
-            touchable: any
+            touchable: any;
         }
 
         interface TouchableMixin extends React.Mixin<any, any> {
-            touchableGetInitialState: () => State
-            touchableHandleStartShouldSetResponder: () => {}
-            touchableHandleResponderTerminationRequest: () => {}
-            touchableHandleResponderGrant: (e: React.SyntheticEvent<any>, dispatchID: string) => {}
-            touchableHandleResponderMove: (e: React.SyntheticEvent<any>) => {}
-            touchableHandleResponderRelease: (e: React.SyntheticEvent<any>) => {}
-            touchableHandleResponderTerminate: (e: React.SyntheticEvent<any>) => {}
-            touchableHandleActivePressIn?: (e: React.SyntheticEvent<any>) => {}
-            touchableHandleActivePressOut?: (e: React.SyntheticEvent<any>) => {}
-            touchableHandlePress?: (e: React.SyntheticEvent<any>) => {}
-            touchableHandleLongPress?: (e: React.SyntheticEvent<any>) => {}
-            touchableGetHighlightDelayMS?: () => number
-            touchableGetPressRectOffset?: () => RectOffset
+            touchableGetInitialState: () => State;
+            touchableHandleStartShouldSetResponder: () => {};
+            touchableHandleResponderTerminationRequest: () => {};
+            touchableHandleResponderGrant: (e: React.SyntheticEvent<any>, dispatchID: string) => {};
+            touchableHandleResponderMove: (e: React.SyntheticEvent<any>) => {};
+            touchableHandleResponderRelease: (e: React.SyntheticEvent<any>) => {};
+            touchableHandleResponderTerminate: (e: React.SyntheticEvent<any>) => {};
+            touchableHandleActivePressIn?: (e: React.SyntheticEvent<any>) => {};
+            touchableHandleActivePressOut?: (e: React.SyntheticEvent<any>) => {};
+            touchableHandlePress?: (e: React.SyntheticEvent<any>) => {};
+            touchableHandleLongPress?: (e: React.SyntheticEvent<any>) => {};
+            touchableGetHighlightDelayMS?: () => number;
+            touchableGetPressRectOffset?: () => RectOffset;
         }
 
-        var Mixin: TouchableMixin;
+        let Mixin: TouchableMixin;
     }
 
     interface ExtendedAccessibilityInfoStatic extends RN.AccessibilityInfoStatic {

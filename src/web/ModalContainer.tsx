@@ -25,8 +25,8 @@ const _styles = {
         flex: '1 1 auto',
         alignSelf: 'stretch',
         overflow: 'hidden',
-        zIndex: 10000
-    }
+        zIndex: 10000,
+    },
 };
 
 export class ModalContainer extends React.Component<Types.CommonProps<ModalContainer>, Types.Stateless> {

@@ -7,8 +7,6 @@
  * Manages focusable elements for better keyboard navigation (RN desktop version)
  */
 
-// tslint:disable:no-invalid-this
-
 import { ImportantForAccessibilityValue } from '../../native-common/AccessibilityUtil';
 import AppConfig from '../../common/AppConfig';
 import {
@@ -16,7 +14,7 @@ import {
     FocusableComponentInternal as FocusableComponentInternalBase,
     FocusableComponentStateCallback,
     FocusManager as FocusManagerBase,
-    StoredFocusableComponent as StoredFocusableComponentBase
+    StoredFocusableComponent as StoredFocusableComponentBase,
 } from '../../common/utils/FocusManager';
 import Platform from '../../native-common/Platform';
 import Timers from '../../common/utils/Timers';
@@ -78,7 +76,7 @@ export class FocusManager extends FocusManagerBase {
         return false;
     }
 
-    private static _focusFirst() {
+    private static _focusFirst(): void {
         const focusable = Object.keys(FocusManager._allFocusableComponents)
             .map(componentId => FocusManager._allFocusableComponents[componentId])
             .filter(storedComponent =>
@@ -114,7 +112,7 @@ export class FocusManager extends FocusManagerBase {
         }
     }
 
-    protected /* static */ resetFocus(focusFirstWhenNavigatingWithKeyboard: boolean) {
+    protected /* static */ resetFocus(focusFirstWhenNavigatingWithKeyboard: boolean): void {
         if (FocusManager._resetFocusTimer) {
             Timers.clearTimeout(FocusManager._resetFocusTimer);
             FocusManager._resetFocusTimer = undefined;
@@ -146,7 +144,7 @@ export class FocusManager extends FocusManagerBase {
         }
     }
 
-    protected /* static */ _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent) {
+    protected /* static */ _updateComponentFocusRestriction(storedComponent: StoredFocusableComponent): void {
 
         let newOverrideType: OverrideType = OverrideType.None;
         if (storedComponent.restricted || (storedComponent.limitedCount > 0)) {
@@ -173,7 +171,7 @@ export class FocusManager extends FocusManagerBase {
     }
 
     private static _updateComponentTabIndexAndIFAOverrides(component: FocusableComponentInternal,
-        tabIndexOverride: boolean, accessibleOverride: boolean): void {
+            tabIndexOverride: boolean, accessibleOverride: boolean): void {
 
         if (tabIndexOverride) {
             component.tabIndexOverride = -1;
@@ -192,7 +190,7 @@ export class FocusManager extends FocusManagerBase {
     }
 }
 
-function updateNativeAccessibilityProps(component: FocusableComponentInternal) {
+function updateNativeAccessibilityProps(component: FocusableComponentInternal): void {
     // Call special method on component avoiding state changes/re-renderings
     if (component.updateNativeAccessibilityProps) {
         component.updateNativeAccessibilityProps();
@@ -203,7 +201,7 @@ function updateNativeAccessibilityProps(component: FocusableComponentInternal) {
     }
 }
 
-export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function, accessibleOnly = false) {
+export function applyFocusableComponentMixin(Component: any, isConditionallyFocusable?: Function, accessibleOnly = false): void {
     // Call base
     // This adds the basic "monitor focusable components" functionality.
     applyFocusableComponentMixinBase(Component, isConditionallyFocusable, accessibleOnly);
@@ -298,7 +296,7 @@ export function applyFocusableComponentMixin(Component: any, isConditionallyFocu
         }
     }
 
-    function inheritMethod(methodName: string, action: Function) {
+    function inheritMethod(methodName: string, action: Function): void {
         const origCallback = Component.prototype[methodName];
 
         if (origCallback) {

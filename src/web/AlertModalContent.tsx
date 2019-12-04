@@ -35,12 +35,12 @@ const _styles = {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.1)',
         alignItems: 'center',
-        alignSelf: 'stretch'
+        alignSelf: 'stretch',
     }),
     verticalRoot: Styles.createViewStyle({
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     }),
     defaultBody: Styles.createViewStyle({
         width: 300,
@@ -49,53 +49,53 @@ const _styles = {
         borderWidth: 1,
         alignItems: 'stretch',
         paddingHorizontal: 8,
-        paddingVertical: 4
+        paddingVertical: 4,
     }),
     defaultTitleText: Styles.createTextStyle({
         fontSize: 20,
         fontWeight: 'bold',
         alignSelf: 'center',
         padding: 12,
-        flex: 1
+        flex: 1,
     }),
     defaultMessageText: Styles.createTextStyle({
         fontSize: 16,
         alignSelf: 'center',
         padding: 12,
-        flex: 1
+        flex: 1,
     }),
     defaultButtonContainer: Styles.createButtonStyle({
         padding: 8,
-        flex: 1
+        flex: 1,
     }),
     defaultButton: Styles.createButtonStyle({
         alignItems: 'center',
         flex: 1,
         borderWidth: 1,
         borderRadius: 8,
-        borderColor: '#bbb'
+        borderColor: '#bbb',
     }),
     defaultButtonHover: Styles.createButtonStyle({
-        backgroundColor: '#eee'
+        backgroundColor: '#eee',
     }),
     defaultCancelButton: Styles.createButtonStyle({
-        borderColor: 'red'
+        borderColor: 'red',
     }),
     defaultBtnText: Styles.createTextStyle({
         fontSize: 14,
         padding: 8,
-        color: '#333'
+        color: '#333',
     }),
     defaultCancelBtnText: Styles.createTextStyle({
-        color: 'red'
-    })
+        color: 'red',
+    }),
 };
 
 export class AlertModalContent extends RX.Component<AppModalContentProps, AppModalContentState> {
     constructor(props: AppModalContentProps) {
         super(props);
         this.state = {
-            hoverIndex: -1
+            hoverIndex: -1,
         };
     }
 
@@ -175,13 +175,13 @@ export class AlertModalContent extends RX.Component<AppModalContentProps, AppMod
 
     private _onPressBody = (e: RX.Types.SyntheticEvent) => {
         e.stopPropagation();
-    }
+    };
 
     private _onPressBackground = (e: RX.Types.SyntheticEvent) => {
         if (!this.props.preventDismissOnPress) {
             Modal.dismiss(this.props.modalId);
         }
-    }
+    };
 }
 
 export default AlertModalContent;

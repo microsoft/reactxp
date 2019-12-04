@@ -42,7 +42,7 @@ const _styles = {
     rootViewStyle: Styles.createViewStyle ({
         flex: 1,
         alignItems: 'stretch',
-        overflow: 'visible'
+        overflow: 'visible',
     }),
     liveRegionContainer: Styles.createViewStyle({
         position: 'absolute',
@@ -51,8 +51,8 @@ const _styles = {
         bottom: 0,
         left: 0,
         right: 0,
-        height: 30
-    })
+        height: 30,
+    }),
 };
 
 // Abstract RootView class which handles rendering, front layer view changes and announcement
@@ -81,9 +81,9 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
         this._newAnnouncementEventChangedSubscription =
             Accessibility.newAnnouncementReadyEvent.subscribe(announcement => {
                 this.setState({
-                    announcementText: announcement
+                    announcementText: announcement,
                 });
-        });
+            });
 
         this._memoryWarningEventSubscription = App.memoryWarningEvent.subscribe(() => {
             FrontLayerViewManager.releaseCachedPopups();
@@ -124,22 +124,22 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
         const isActivePopup = FrontLayerViewManager.isPopupActiveFor(this._rootViewId);
         const announcerView = this._renderAnnouncerView();
 
-        // When showing a modal/popup we want to hide the mainView shown behind from an accessibility
-        // standpoint to ensure that it won't get the focus and the screen reader's attention.
-        const importantForAccessibility = (modalLayerView || isActivePopup) ?
-            AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.NoHideDescendants) :
-            undefined;  // default
+        // When showing a modal/popup we want to hide the mainView shown behind from an accessibility
+        // standpoint to ensure that it won't get the focus and the screen reader's attention.
+        const importantForAccessibility = (modalLayerView || isActivePopup) ?
+            AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.NoHideDescendants) :
+            undefined; // default
 
         const content = (
-            <RN.Animated.View style={ _styles.rootViewStyle }>
+            <RN.Animated.View style={ _styles.rootViewStyle }>
                 <RN.View
-                    style={ _styles.rootViewStyle as RN.StyleProp<RN.ViewStyle> }
-                    importantForAccessibility={ importantForAccessibility }
+                    style={ _styles.rootViewStyle as RN.StyleProp<RN.ViewStyle> }
+                    importantForAccessibility={ importantForAccessibility }
                 >
-                    { this.state.mainView }
-                </RN.View>
-                { modalLayerView }
-                { popupLayerView }
+                    { this.state.mainView }
+                </RN.View>
+                { modalLayerView }
+                { popupLayerView }
                 { announcerView }
             </RN.Animated.View>
         );
@@ -171,7 +171,7 @@ class RootViewUsingStore extends BaseRootView<BaseRootViewProps> {
 
         this.state = {
             mainView: undefined,
-            announcementText: ''
+            announcementText: '',
         };
     }
 
@@ -199,7 +199,7 @@ class RootViewUsingStore extends BaseRootView<BaseRootViewProps> {
         }
 
         return {
-            mainView: mainView
+            mainView: mainView,
         };
     }
 
@@ -225,7 +225,7 @@ class RootViewUsingProps extends BaseRootView<RootViewPropsWithMainViewType> {
 
         this.state = {
             mainView: React.createElement(props.reactxp_mainViewType, this._mainViewProps),
-            announcementText: ''
+            announcementText: '',
         };
     }
 
@@ -241,7 +241,7 @@ export {
     RootViewState,
     BaseRootView,
     RootViewUsingStore as RootView,
-    RootViewUsingProps
+    RootViewUsingProps,
 };
 
 export default RootViewUsingStore;

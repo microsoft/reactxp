@@ -43,7 +43,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
     static childContextTypes: React.ValidationMap<any> = {
         isRxParentAContextMenuResponder: PropTypes.bool,
         isRxParentAFocusableInSameFocusManager: PropTypes.bool,
-        ...ButtonBase.childContextTypes
+        ...ButtonBase.childContextTypes,
     };
 
     private _isFocusedWithKeyboard = false;
@@ -86,7 +86,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
             onKeyUp: this._onKeyUp,
             onFocus: this._onFocus,
             onBlur: this._onBlur,
-            onAccessibilityTap: this._onAccessibilityTap
+            onAccessibilityTap: this._onAccessibilityTap,
         };
 
         return (
@@ -141,7 +141,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         if (!this.props.disabled && this.props.onPress) {
             this.props.onPress(e);
         }
-    }
+    };
 
     private _onKeyDown = (e: React.SyntheticEvent<any>): void => {
         if (!this.props.disabled) {
@@ -179,14 +179,14 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
                 }
             }
         }
-    }
+    };
 
     private _onKeyUp = (e: React.SyntheticEvent<any>): void => {
         const keyEvent = EventHelpers.toKeyboardEvent(e);
         if (keyEvent.keyCode === KEY_CODE_SPACE && !this.props.disabled && this.props.onPress) {
             this.props.onPress(keyEvent);
         }
-    }
+    };
 
     // When we get focus on an element, show the hover effect on the element.
     // This ensures that users using keyboard also get the similar experience as mouse users for accessibility.
@@ -201,7 +201,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         if (this.props.onFocus) {
             this.props.onFocus(EventHelpers.toFocusEvent(e));
         }
-    }
+    };
 
     private _onBlur = (e: React.SyntheticEvent<any>): void => {
         this._isFocusedWithKeyboard = false;
@@ -210,7 +210,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
         if (this.props.onBlur) {
             this.props.onBlur(EventHelpers.toFocusEvent(e));
         }
-    }
+    };
 
     protected _onHoverStart = (e: React.SyntheticEvent<any>) => {
         if (!this._isHoverStarted && (this._isMouseOver || this._isFocusedWithKeyboard)) {
@@ -220,7 +220,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
                 this.props.onHoverStart(e);
             }
         }
-    }
+    };
 
     protected _onHoverEnd = (e: React.SyntheticEvent<any>) => {
         if (this._isHoverStarted && !this._isMouseOver && !this._isFocusedWithKeyboard) {
@@ -230,7 +230,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
                 this.props.onHoverEnd(e);
             }
         }
-    }
+    };
 
     // From FocusManagerFocusableComponent interface
     //
@@ -260,7 +260,7 @@ export class Button extends ButtonBase implements React.ChildContextProvider<But
             this._buttonElement.setNativeProps({
                 tabIndex: tabIndex,
                 isTabStop: windowsTabFocusable,
-                importantForAccessibility: importantForAccessibility
+                importantForAccessibility: importantForAccessibility,
             });
         }
     }

@@ -7,8 +7,6 @@
  * The top-most view that's used for proper layering or modals and popups.
  */
 
-// tslint:disable:function-name
-
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as RN from 'react-native';
@@ -21,7 +19,7 @@ import {
     RootView as RootViewBase,
     RootViewPropsWithMainViewType,
     RootViewState,
-    RootViewUsingProps as RootViewUsingPropsBase
+    RootViewUsingProps as RootViewUsingPropsBase,
 } from '../native-common/RootView';
 import Timers from '../common/utils/Timers';
 import UserInterface from '../native-common/UserInterface';
@@ -33,9 +31,9 @@ const KEY_CODE_TAB = 9;
 const KEY_CODE_ESC = 27;
 
 const _styles = RN.StyleSheet.create({
-    appWrapperStyle : {
-        flex: 1
-    }
+    appWrapperStyle: {
+        flex: 1,
+    },
 });
 
 //
@@ -50,7 +48,7 @@ type Constructor<T extends React.Component> = new (...args: any[]) => T;
 function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Component>>(RootViewBase: TRootViewBase) {
     return class RootView extends RootViewBase implements React.ChildContextProvider<any> {
         static childContextTypes: React.ValidationMap<any> = {
-            focusManager: PropTypes.object
+            focusManager: PropTypes.object,
         };
 
         _focusManager: FocusManager;
@@ -66,7 +64,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
 
         _onTouchStartCapture = (e: RN.NativeSyntheticEvent<any>) => {
             this._updateKeyboardNavigationState(false);
-        }
+        };
 
         _onKeyDownCapture = (e: RN.NativeSyntheticEvent<any>) => {
             const kbdEvent = EventHelpers.toKeyboardEvent(e);
@@ -91,7 +89,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
                     }
                 }, 500);
             }
-        }
+        };
 
         _updateKeyboardNavigationState(isNavigatingWithKeyboard: boolean) {
             if (this._isNavigatingWithKeyboardUpateTimer) {
@@ -107,7 +105,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
         _onKeyDown = (e: RN.NativeSyntheticEvent<any>) => {
             const kbdEvent = EventHelpers.toKeyboardEvent(e);
             Input.dispatchKeyDown(kbdEvent);
-        }
+        };
 
         _onKeyPress = (e: RN.NativeSyntheticEvent<any>) => {
             const kbdEvent = EventHelpers.toKeyboardEvent(e);
@@ -115,7 +113,7 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
             // events bubbling up for the same situation of user pressing down a key.
             // TODO: consolidate key events #602
             Input.dispatchKeyDown(kbdEvent);
-        }
+        };
 
         _onKeyUp = (e: RN.NativeSyntheticEvent<any>) => {
             const kbdEvent = EventHelpers.toKeyboardEvent(e);
@@ -130,16 +128,16 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
             }
 
             Input.dispatchKeyUp(kbdEvent);
-        }
+        };
 
         getChildContext() {
             // Provide the context with root FocusManager to all descendants.
             return {
-                focusManager: this._focusManager
+                focusManager: this._focusManager,
             };
         }
 
-        renderTopView(content: JSX.Element) : JSX.Element {
+        renderTopView(content: JSX.Element): JSX.Element {
             //
             // As a default implementation we use a regular RN.View to intercept keyboard/touches.
             // this is not perfect since the keyboard events are not standardized in RN.
@@ -154,13 +152,13 @@ function applyDesktopBehaviorMixin<TRootViewBase extends Constructor<React.Compo
                 onKeyDownCapture: this._onKeyDownCapture,
                 onKeyUp: this._onKeyUp,
                 onTouchStartCapture: this._onTouchStartCapture,
-                collapsable: false
+                collapsable: false,
             };
 
             return  (
                 <RN.View
                     { ...internalProps }
-                     style={ _styles.appWrapperStyle }
+                    style={ _styles.appWrapperStyle }
                 >
                     { content }
                 </RN.View>
@@ -178,7 +176,7 @@ export {
     RootViewState,
     BaseRootView,
     RootViewUsingStore as RootView,
-    RootViewUsingProps
+    RootViewUsingProps,
 };
 
 export default RootViewUsingStore;

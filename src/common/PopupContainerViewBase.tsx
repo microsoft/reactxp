@@ -88,7 +88,7 @@ export function recalcPositionFromLayoutData(windowDims: Dimensions, anchorRect:
         anchorOffset: 0,
         anchorPosition: 'top',
         constrainedPopupWidth: popupRect.width,
-        constrainedPopupHeight: popupRect.height
+        constrainedPopupHeight: popupRect.height,
     };
 
     let foundPerfectFit = false;
@@ -151,7 +151,7 @@ export function recalcPositionFromLayoutData(windowDims: Dimensions, anchorRect:
                     }
                     break;
 
-                case 'context':
+                case 'context': {
                     // Search for perfect fits on the LR, LL, TR, and TL corners.
                     const fitsAbove = anchorRect.top - popupRect.height >= ALLEY_WIDTH;
                     const fitsBelow = anchorRect.top + anchorRect.height + popupRect.height <= windowDims.height - ALLEY_WIDTH;
@@ -175,6 +175,7 @@ export function recalcPositionFromLayoutData(windowDims: Dimensions, anchorRect:
                         absY = anchorRect.top - popupRect.height;
                     }
                     break;
+                }
             }
 
             const effectiveWidth = constrainedWidth || popupRect.width;
@@ -274,18 +275,18 @@ function recalcInnerPosition(anchorRect: ClientRect, positionToUse: PopupPositio
         anchorOffset,
         anchorPosition: positionToUse,
         constrainedPopupWidth: popupWidth,
-        constrainedPopupHeight: popupHeight
+        constrainedPopupHeight: popupHeight,
     };
     return result;
 }
 
 export abstract class PopupContainerViewBase<P extends PopupContainerViewBaseProps<C>, S, C> extends React.Component<P, S> {
     static contextTypes: React.ValidationMap<any> = {
-        focusManager: PropTypes.object
+        focusManager: PropTypes.object,
     };
     static childContextTypes: React.ValidationMap<any> = {
         focusManager: PropTypes.object,
-        popupContainer: PropTypes.object
+        popupContainer: PropTypes.object,
     };
 
     private _popupComponentStack: PopupComponent[] = [];
@@ -297,14 +298,14 @@ export abstract class PopupContainerViewBase<P extends PopupContainerViewBasePro
     getChildContext() {
         return {
             focusManager: this.context.focusManager,
-            popupContainer: this as PopupContainerViewBase<P, S, C>
+            popupContainer: this as PopupContainerViewBase<P, S, C>,
         };
     }
 
     registerPopupComponent(onShow: () => void, onHide: () => void): PopupComponent {
         const component = {
             onShow,
-            onHide
+            onHide,
         };
         this._popupComponentStack.push(component);
         return component;

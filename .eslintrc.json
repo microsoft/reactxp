@@ -1,0 +1,91 @@
+{
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": ["skype", "skype/react"],
+  "rules": {
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "error",
+          "warn",
+          "log"
+        ]
+      }
+    ],
+
+    "camelcase": "off",
+    "@typescript-eslint/camelcase": [
+      "error",
+      {
+        "allow": [
+          "^reactxp_",
+          "^mixin_",
+          "^UNSAFE_",
+          "^Radio_button_" /* Android properties only */
+        ]
+      }
+    ],
+    "@typescript-eslint/no-parameter-properties": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.tsx"
+      ],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": "off"
+      }
+    },
+
+    {
+      "files": [
+        "ReactXP.ts",
+        "ModuleInterface.ts"
+      ],
+      "rules": {
+        "no-self-assign": "off",
+        "prefer-const": "off",
+
+        "@typescript-eslint/no-namespace": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/prefer-namespace-keyword": "off"
+      }
+    },
+
+    {
+      "files": [
+        "Easing.ts"
+      ],
+      "rules": {
+        "@typescript-eslint/member-naming": [
+          "error",
+          {
+            "public": "^[A-Z]\\w+$"
+          }
+        ]
+      }
+    },
+
+    {
+      "files": [
+        "*.d.ts"
+      ],
+      "rules": {
+        "@typescript-eslint/prefer-namespace-keyword": "off",
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    },
+
+    {
+      "files": [
+        "*/web/Animated.tsx",
+        "*/native-desktop/RootView.tsx"
+      ],
+      "rules": {
+        "@typescript-eslint/member-naming": "off"
+      }
+    }
+  ]
+}
