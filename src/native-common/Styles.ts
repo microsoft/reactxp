@@ -19,7 +19,7 @@ import StyleLeakDetector from './StyleLeakDetector';
 const forbiddenProps: string[] = [
     'wordBreak',
     'appRegion',
-    'cursor'
+    'cursor',
 ];
 
 // RN would crash if it gets an undeclared property.
@@ -42,8 +42,8 @@ type ReactNativeViewAndImageCommonStyle<Style extends RX.Types.ViewAndImageCommo
 };
 
 export class Styles extends RX.Styles {
-    combine<S>(ruleSet1: RX.Types.StyleRuleSetRecursive<S> | undefined, ruleSet2?: RX.Types.StyleRuleSetRecursive<S>)
-            : RX.Types.StyleRuleSetOrArray<S> | undefined {
+    combine<S>(ruleSet1: RX.Types.StyleRuleSetRecursive<S> | undefined,
+            ruleSet2?: RX.Types.StyleRuleSetRecursive<S>): RX.Types.StyleRuleSetOrArray<S> | undefined {
         if (!ruleSet1 && !ruleSet2) {
             return undefined;
         }
@@ -126,7 +126,7 @@ export class Styles extends RX.Styles {
         return this._adaptStyles(ruleSet, cacheStyle);
     }
 
-     // Creates animated opaque styles that can be used for Image
+    // Creates animated opaque styles that can be used for Image
     createAnimatedImageStyle(ruleSet: RX.Types.AnimatedImageStyle): RX.Types.AnimatedImageStyleRuleSet {
         return this._adaptAnimatedStyles(ruleSet);
     }
@@ -146,11 +146,8 @@ export class Styles extends RX.Styles {
         return {};
     }
 
-    private _adaptStyles<S extends RX.Types.ViewAndImageCommonStyle>(
-        def: S,
-        cacheStyle: boolean,
-        isTextStyle = false
-    ): Readonly<RX.Types.StyleRuleSet<S>> {
+    private _adaptStyles<S extends RX.Types.ViewAndImageCommonStyle>(def: S,
+            cacheStyle: boolean, isTextStyle = false): Readonly<RX.Types.StyleRuleSet<S>> {
         let adaptedRuleSet = def as ReactNativeViewAndImageCommonStyle<S>;
         if (cacheStyle) {
             StyleLeakDetector.detectLeaks(def);

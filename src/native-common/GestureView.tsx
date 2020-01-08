@@ -66,8 +66,8 @@ export abstract class GestureView extends GestureViewCommon {
 
             // Something else wants to become responder. Should this view release the responder?
             // Returning true allows release
-            onPanResponderTerminationRequest: (e: RN.GestureResponderEvent, gestureState:
-                RN.PanResponderGestureState) => !!this.props.releaseOnRequest
+            onPanResponderTerminationRequest: (e: RN.GestureResponderEvent,
+                    gestureState: RN.PanResponderGestureState) => !!this.props.releaseOnRequest,
         });
     }
 
@@ -80,7 +80,7 @@ export abstract class GestureView extends GestureViewCommon {
         const extendedProps: RN.ExtendedViewProps & MacComponentAccessibilityProps = {
             onFocus: this.props.onFocus,
             onBlur: this.props.onBlur,
-            onKeyPress: this.props.onKeyPress ? this._onKeyPress : undefined
+            onKeyPress: this.props.onKeyPress ? this._onKeyPress : undefined,
         };
 
         if (_isNativeMacOs && App.supportsExperimentalKeyboardNavigation && this.props.onTap) {
@@ -111,17 +111,17 @@ export abstract class GestureView extends GestureViewCommon {
     protected _macos_sendTapEvent = (e: Types.MouseEvent) => {
         const gsState = this._mouseEventToTapGestureState(e);
         this._sendTapEvent(gsState);
-    }
+    };
 
     private _onRef = (ref: RN.View | null) => {
         this._view = ref || undefined;
-    }
+    };
 
     private _onKeyPress = (e: RN.NativeSyntheticEvent<RN.TextInputKeyPressEventData>) => {
         if (this.props.onKeyPress) {
             this.props.onKeyPress(EventHelpers.toKeyboardEvent(e));
         }
-    }
+    };
 
     focus() {
         if (this._view && this._view.focus) {

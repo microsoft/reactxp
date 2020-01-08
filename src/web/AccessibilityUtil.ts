@@ -38,14 +38,14 @@ const roleMap: { [key: string]: string } = {
     [Types.AccessibilityTrait.Log]: 'log',
     [Types.AccessibilityTrait.Status]: 'status',
     [Types.AccessibilityTrait.Dialog]: 'dialog',
-    [Types.AccessibilityTrait.Switch]: 'switch'
+    [Types.AccessibilityTrait.Switch]: 'switch',
 };
 
 // Map of accesssibility live region to an aria-live property.
 const liveRegionMap: { [key: string]: Types.AriaLive } = {
     [Types.AccessibilityLiveRegion.None]: 'off',
     [Types.AccessibilityLiveRegion.Assertive]: 'assertive',
-    [Types.AccessibilityLiveRegion.Polite]: 'polite'
+    [Types.AccessibilityLiveRegion.Polite]: 'polite',
 };
 
 export class AccessibilityUtil extends CommonAccessibiltiyUtil {
@@ -75,7 +75,7 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
             : undefined;
     }
 
-    accessibilityTraitToAriaSelected(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined) {
+    accessibilityTraitToAriaSelected(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined): boolean | undefined {
         // Walk through each trait and check if there's a selected trait. Return if one is found.
         if (traits && Array.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.Tab) !== -1) {
             return traits.indexOf(Types.AccessibilityTrait.Selected) !== -1;
@@ -86,7 +86,7 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
         return undefined;
     }
 
-    accessibilityTraitToAriaChecked(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined) {
+    accessibilityTraitToAriaChecked(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined): boolean | undefined {
         // Walk through each trait and check if there's a checked trait. Return if one is found.
         if (traits && Array.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.CheckBox) !== -1) {
             return traits.indexOf(Types.AccessibilityTrait.Checked) !== -1;
@@ -97,7 +97,7 @@ export class AccessibilityUtil extends CommonAccessibiltiyUtil {
         return undefined;
     }
 
-    accessibilityTraitToAriaHasPopup(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined) {
+    accessibilityTraitToAriaHasPopup(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[] | undefined): boolean | undefined {
         // Walk through each trait and check if there's a hasPopup trait. Return if one is found.
         if (traits && Array.isArray(traits) && traits.indexOf(Types.AccessibilityTrait.HasPopup) !== -1) {
             return traits.indexOf(Types.AccessibilityTrait.HasPopup) !== -1;

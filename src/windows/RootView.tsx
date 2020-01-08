@@ -17,7 +17,7 @@ import {
     RootView as RootViewBase,
     RootViewPropsWithMainViewType,
     RootViewState,
-    RootViewUsingProps as RootViewUsingPropsBase
+    RootViewUsingProps as RootViewUsingPropsBase,
 } from '../native-desktop/RootView';
 
 import { AccessibilityAnnouncer } from './AccessibilityAnnouncer';
@@ -28,15 +28,15 @@ import { AccessibilityAnnouncer } from './AccessibilityAnnouncer';
 const _isRootInputViewSupported = !!RNW.RootInputViewWindows;
 
 const _styles = RN.StyleSheet.create({
-    appWrapperStyle : {
-        flex: 1
-    }
+    appWrapperStyle: {
+        flex: 1,
+    },
 });
 
 type Handler = (e: RN.NativeSyntheticEvent<any>) => void;
 
-function _renderTopView(
-    content: JSX.Element, onKeyDown: Handler, onKeyDownCapture: Handler, onKeyUp: Handler, onTouchStartCapture: Handler): JSX.Element {
+function _renderTopView(content: JSX.Element, onKeyDown: Handler, onKeyDownCapture: Handler, onKeyUp: Handler,
+        onTouchStartCapture: Handler): JSX.Element {
     return (
         <RNW.RootInputViewWindows
             onTouchStartCapture={ onTouchStartCapture }
@@ -57,7 +57,7 @@ class RootViewUsingStore extends RootViewBase {
                 this._onKeyDown,
                 this._onKeyDownCapture,
                 this._onKeyUp,
-                this._onTouchStartCapture
+                this._onTouchStartCapture,
             );
         } else {
             return super.renderTopView(content);
@@ -79,7 +79,7 @@ class RootViewUsingProps extends RootViewUsingPropsBase {
                 this._onKeyDown,
                 this._onKeyDownCapture,
                 this._onKeyUp,
-                this._onTouchStartCapture
+                this._onTouchStartCapture,
             );
         } else {
             return super.renderTopView(content);
@@ -99,7 +99,7 @@ export {
     RootViewState,
     BaseRootView,
     RootViewUsingStore as RootView,
-    RootViewUsingProps
+    RootViewUsingProps,
 };
 
 export default RootViewUsingStore;

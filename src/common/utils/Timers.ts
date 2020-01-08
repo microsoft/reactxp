@@ -12,7 +12,7 @@
  */
 
 // global typing doesn't exist without node.d.ts, but we don't want it since this isn't a nodeJS app by default
-declare var global: any;
+declare let global: any;
 
 const timerProvider = typeof window !== 'undefined' ? window : global;
 

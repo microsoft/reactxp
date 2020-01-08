@@ -31,7 +31,7 @@ export class Picker extends RX.Picker {
 
     onValueChange = (itemValue: any, itemPosition: number) => {
         this.props.onValueChange(itemValue, itemPosition);
-    }
+    };
 }
 
 export default Picker;

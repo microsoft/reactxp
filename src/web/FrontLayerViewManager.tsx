@@ -72,10 +72,10 @@ export class FrontLayerViewManager {
         }
     }
 
-    private _shouldPopupBeDismissed = (options: Types.PopupOptions): boolean => {
-        return !!this._activePopupOptions &&
-            this._activePopupOptions.getAnchor() === options.getAnchor();
-    }
+    private _shouldPopupBeDismissed = (options: Types.PopupOptions): boolean => (
+        !!this._activePopupOptions &&
+            this._activePopupOptions.getAnchor() === options.getAnchor()
+    );
 
     private _updateModalDisplayedState() {
         MouseResponder.setModalIsDisplayed(this.isModalDisplayed());
@@ -97,7 +97,7 @@ export class FrontLayerViewManager {
         return true;
     }
 
-    private _showPopup(options: Types.PopupOptions, popupId: string, showDelay?: number) : void {
+    private _showPopup(options: Types.PopupOptions, popupId: string, showDelay?: number): void {
         // New popup is transitioning from maybe cached to active.
         this._cachedPopups = this._cachedPopups.filter(popup => popup.popupId !== popupId);
         if (this._activePopupOptions && this._activePopupOptions.cacheable && this._activePopupId !== popupId) {

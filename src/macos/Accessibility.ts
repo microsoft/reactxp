@@ -36,7 +36,7 @@ export class Accessibility extends NativeAccessibility {
         }
     }
 
-    protected _updateScreenReaderStatus(isEnabled: boolean) {
+    protected _updateScreenReaderStatus(isEnabled: boolean): void {
         super._updateScreenReaderStatus(isEnabled);
         // Empty announcement queue when screen reader is disabled.
         if (!isEnabled && this._announcementQueue.length > 0) {
@@ -58,12 +58,12 @@ export class Accessibility extends NativeAccessibility {
         }
     }
 
-    private _trackQueueStatus = (newState: string) => {
+    private _trackQueueStatus = (newState: string): void => {
         if (this._isScreenReaderEnabled && ['background', 'inactive'].indexOf(newState) >= 0) {
             this._announcementQueue = [];
             this._retryTimestamp = NaN;
         }
-    }
+    };
 
     private _postAnnouncement(announcement: string, resetTimestamp = true): void {
         if (resetTimestamp) {
@@ -76,7 +76,7 @@ export class Accessibility extends NativeAccessibility {
         }
     }
 
-    private _recalcAnnouncement = (payload: AnnouncementFinishedPayload) => {
+    private _recalcAnnouncement = (payload: AnnouncementFinishedPayload): void => {
         if (this._announcementQueue.length === 0) {
             return;
         }
@@ -97,7 +97,7 @@ export class Accessibility extends NativeAccessibility {
                 }
             }
         }
-    }
+    };
 }
 
 export default new Accessibility();

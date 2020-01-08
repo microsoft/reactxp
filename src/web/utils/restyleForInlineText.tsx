@@ -25,7 +25,7 @@ function restyleForInlineText(reactElement: React.ReactElement<any>) {
         style &&
         style.width !== undefined &&
         style.height !== undefined,
-        'Children of an <RX.Text> must have a defined height and width'
+        'Children of an <RX.Text> must have a defined height and width',
     );
 
     /*
@@ -54,8 +54,8 @@ function restyleForInlineText(reactElement: React.ReactElement<any>) {
 
             // Reset the line height so the value from outside
             // the inlined item doesn't cascade into this element.
-            lineHeight: 'normal'
-        })
+            lineHeight: 'normal',
+        }),
     });
 }
 

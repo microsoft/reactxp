@@ -34,7 +34,7 @@ const _styles = {
         flexGrow: 0,
         flexShrink: 0,
         overflow: 'hidden',
-        alignItems: 'stretch'
+        alignItems: 'stretch',
     } as any,
 
     // See resize detector comments in renderResizeDetectorIfNeeded() method below.
@@ -46,7 +46,7 @@ const _styles = {
         bottom: '0',
         overflow: 'scroll',
         zIndex: '-1',
-        visibility: 'hidden'
+        visibility: 'hidden',
     },
 
     resizeGrowDetectorStyles: {
@@ -54,14 +54,14 @@ const _styles = {
         left: '100500px',
         top: '100500px',
         width: '1px',
-        height: '1px'
+        height: '1px',
     },
 
     resizeShrinkDetectorStyles: {
         position: 'absolute',
         width: '150%',
-        height: '150%'
-    }
+        height: '150%',
+    },
 };
 
 if (typeof document !== 'undefined') {
@@ -87,7 +87,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RX.Vi
         isRxParentAText: PropTypes.bool,
         focusManager: PropTypes.object,
         popupContainer: PropTypes.object,
-        focusArbitrator: PropTypes.object
+        focusArbitrator: PropTypes.object,
     };
     // Context is provided by super - just re-typing here
     context!: ViewContext;
@@ -96,7 +96,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RX.Vi
         isRxParentAText: PropTypes.bool.isRequired,
         focusManager: PropTypes.object,
         popupContainer: PropTypes.object,
-        focusArbitrator: PropTypes.object
+        focusArbitrator: PropTypes.object,
     };
 
     private _focusManager: FocusManager | undefined;
@@ -179,19 +179,19 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RX.Vi
                 >
                     <div style={ _styles.resizeShrinkDetectorStyles as any } />
                 </div>
-            )
+            ),
         ];
     }
 
     private _onResizeDetectorGrowRef = (node: HTMLDivElement | null) => {
         this._resizeDetectorNodes.grow = node || undefined;
         this._resizeDetectorOnScroll();
-    }
+    };
 
     private _onResizeDetectorShrinkRef = (node: HTMLDivElement | null) => {
         this._resizeDetectorNodes.shrink = node || undefined;
         this._resizeDetectorOnScroll();
-    }
+    };
 
     private _resizeDetectorReset() {
         // Scroll the detectors to the bottom-right corner so
@@ -227,14 +227,14 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RX.Vi
                 ViewBase._checkViews();
             }
         });
-    }
+    };
 
     getChildContext() {
         // Let descendant Types components know that their nearest Types ancestor is not an Types.Text.
         // Because they're in an Types.View, they should use their normal styling rather than their
         // special styling for appearing inline with text.
         const childContext: ViewContext = {
-            isRxParentAText: false
+            isRxParentAText: false,
         };
 
         // Provide the descendants with the focus manager and popup container (if any).
@@ -378,7 +378,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RX.Vi
             onFocus: this.props.onFocus,
             onBlur: this.props.onBlur,
             onKeyDown: this.props.onKeyPress,
-            id: this.props.id
+            id: this.props.id,
         };
 
         if (this.props.blockPointerEvents) {
@@ -493,7 +493,7 @@ export class View extends ViewBase<RX.Types.ViewProps, RX.Types.Stateless, RX.Vi
         FocusArbitratorProvider.requestFocus(
             this,
             () => this.focus(),
-            () => this._isMounted
+            () => this._isMounted,
         );
     }
 

@@ -21,7 +21,7 @@ const _rnStateToRxState: {[key: string]: RX.Types.AppActivationState} = {
     'inactive': RX.Types.AppActivationState.Inactive,
     'extension': RX.Types.AppActivationState.Extension,
     // uninitialized means in Background on android since last change I did
-    'uninitialized': RX.Types.AppActivationState.Background
+    'uninitialized': RX.Types.AppActivationState.Background,
 };
 
 export class App extends RX.App {
@@ -38,7 +38,7 @@ export class App extends RX.App {
         });
     }
 
-    initialize(debug: boolean, development: boolean) {
+    initialize(debug: boolean, development: boolean): void {
         super.initialize(debug, development);
         window.rxdebug = debug;
         RN.AppRegistry.registerComponent('RXApp', this.getRootViewFactory());

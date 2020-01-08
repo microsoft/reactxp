@@ -25,12 +25,12 @@ const _styles = {
         overflow: 'hidden',
         // On Android, we need to provide some color to prevent
         // removal of the view.
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
     },
     hiddenContainer: {
         width: 0,
-        height: 0
-    }
+        height: 0,
+    },
 };
 
 export interface ModalContainerProps extends Types.CommonProps<ModalContainer> {

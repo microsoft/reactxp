@@ -48,7 +48,7 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, Typ
                             to: 0,
                             delay: delay,
                             duration: 150,
-                            timing: 'linear'
+                            timing: 'linear',
                         }], animationCompleted);
                     }
                 } catch {
@@ -71,7 +71,7 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, Typ
                             to: '',
                             delay: delay,
                             duration: 300,
-                            timing: 'ease-out'
+                            timing: 'ease-out',
                         }], animationCompleted);
                     }
                 } catch {
@@ -94,7 +94,7 @@ export class AnimateListEdits extends React.Component<AnimateListEditsProps, Typ
                             to: 1,
                             delay: delay,
                             duration: 150,
-                            timing: 'linear'
+                            timing: 'linear',
                         }], animationCompleted);
                     }
                 } catch {

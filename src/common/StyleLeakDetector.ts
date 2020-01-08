@@ -37,7 +37,7 @@ export class StyleLeakDetector {
         }
     }
 
-    private _sortObject(object: Dictionary<any>) {
+    private _sortObject(object: Dictionary<any>): Dictionary<any> {
         const result: Dictionary<any> = {};
         let keys: string [] = [];
         for (const key in object) {

@@ -34,5 +34,5 @@ export {
     map,
     max,
     omit,
-    union
+    union,
 };

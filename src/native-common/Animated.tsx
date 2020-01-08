@@ -29,7 +29,7 @@ export const CommonAnimatedClasses: AnimatedClasses = {
     Image: RN.Animated.createAnimatedComponent(RXImage) as typeof RN.ReactNativeBaseComponent,
     Text: RN.Animated.createAnimatedComponent(RXText) as typeof RN.ReactNativeBaseComponent,
     TextInput: RN.Animated.createAnimatedComponent(RXTextInput) as typeof RN.ReactNativeBaseComponent,
-    View: RN.Animated.createAnimatedComponent(RXView)  as typeof RN.ReactNativeBaseComponent
+    View: RN.Animated.createAnimatedComponent(RXView)  as typeof RN.ReactNativeBaseComponent,
 };
 
 let animatedClasses: AnimatedClasses = CommonAnimatedClasses;
@@ -66,7 +66,7 @@ class AnimatedWrapper<P, T, C> extends RX.AnimatedComponent<P, T, C> {
 
     protected _onMount = (component: RN.ReactNativeBaseComponent<any, any> | null) => {
         this._mountedComponent = component || undefined;
-    }
+    };
 }
 
 class AnimatedImage extends AnimatedWrapper<RX.Types.AnimatedImageProps, RX.Types.Stateless, RX.AnimatedImage> {
@@ -150,21 +150,20 @@ class FocusRestrictedAnimatedView extends AnimatedView {
 }
 
 const timing = function(
-    value: RX.Types.AnimatedValue,
-    config: RX.Types.Animated.TimingAnimationConfig)
-    : RX.Types.Animated.CompositeAnimation {
+        value: RX.Types.AnimatedValue,
+        config: RX.Types.Animated.TimingAnimationConfig): RX.Types.Animated.CompositeAnimation {
 
     let isLooping = config.loop !== undefined && config.loop !== null;
     return {
         start: function(onEnd?: RX.Types.Animated.EndCallback): void {
-            function animate() : void {
+            function animate(): void {
                 const timingConfig: RN.Animated.TimingAnimationConfig = {
                     toValue: config.toValue,
                     easing: config.easing ? config.easing.function : undefined,
                     duration: config.duration,
                     delay: config.delay,
                     isInteraction: config.isInteraction,
-                    useNativeDriver: config.useNativeDriver
+                    useNativeDriver: config.useNativeDriver,
                 };
 
                 RN.Animated.timing(value as RN.Animated.Value, timingConfig).start(result => {
@@ -187,8 +186,23 @@ const timing = function(
         stop: function(): void {
             isLooping = false;
             (value as any).stopAnimation();
-        }
+        },
     };
+};
+
+export const AnimatedCommon = {
+    Easing: Easing as RX.Types.Animated.Easing,
+
+    timing: timing,
+    parallel: RN.Animated.parallel,
+    sequence: RN.Animated.sequence,
+
+    Value: RN.Animated.Value,
+    createValue: (initialValue: number) => new RN.Animated.Value(initialValue),
+    interpolate: (animatedValue: RX.Types.AnimatedValue, inputRange: number[], outputRange: string[]) => animatedValue.interpolate({
+        inputRange: inputRange,
+        outputRange: outputRange,
+    }),
 };
 
 export function makeAnimated(nativeAnimatedClasses: AnimatedClasses, useFocusRestrictedView?: boolean): RX.Animated {
@@ -203,27 +217,10 @@ export function makeAnimated(nativeAnimatedClasses: AnimatedClasses, useFocusRes
         TextInput: AnimatedTextInput,
         View: useFocusRestrictedView ? FocusRestrictedAnimatedView :  AnimatedView,
         // common stuff
-        ...AnimatedCommon
+        ...AnimatedCommon,
     };
 
     return animated;
 }
-
-export let AnimatedCommon = {
-    Easing: Easing as RX.Types.Animated.Easing,
-
-    timing: timing,
-    parallel: RN.Animated.parallel,
-    sequence: RN.Animated.sequence,
-
-    Value: RN.Animated.Value,
-    createValue: (initialValue: number) => new RN.Animated.Value(initialValue),
-    interpolate: (animatedValue: RX.Types.AnimatedValue, inputRange: number[], outputRange: string[]) => {
-        return animatedValue.interpolate({
-            inputRange: inputRange,
-            outputRange: outputRange
-        });
-    }
-};
 
 export default AnimatedCommon;

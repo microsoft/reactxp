@@ -147,7 +147,7 @@ export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, C exten
                     x: newX,
                     y: newY,
                     width: this._lastWidth,
-                    height: this._lastHeight
+                    height: this._lastHeight,
                 });
                 deferred.resolve(void 0);
             });

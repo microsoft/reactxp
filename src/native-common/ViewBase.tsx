@@ -13,8 +13,13 @@ import * as RX from '../common/Interfaces';
 
 import { isEqual } from './utils/lodashMini';
 
-export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, T extends RN.View | RN.ScrollView,
-        C extends RX.View | RX.ScrollView> extends RX.ViewBase<P, S> {
+export abstract class ViewBase<
+    P extends RX.Types.ViewPropsShared<C>,
+    S,
+    T extends RN.View | RN.ScrollView,
+    C extends RX.View | RX.ScrollView
+> extends RX.ViewBase<P, S> {
+
     protected static readonly _supportsNativeFocusBlur = RN.Platform.OS !== 'android';
     private static _defaultViewStyle: RX.Types.ViewStyleRuleSet | undefined;
     private _layoutEventValues: RX.Types.ViewOnLayoutEvent | undefined;
@@ -41,7 +46,7 @@ export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, T exten
 
     protected _setNativeComponent = (view: T | null) => {
         this._nativeComponent = view || undefined;
-    }
+    };
 
     protected _getStyles(props: RX.Types.ViewProps) {
         // If this platform uses an explicit default view style, push it on to
@@ -59,7 +64,7 @@ export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, T exten
                 x: event.nativeEvent.layout.x,
                 y: event.nativeEvent.layout.y,
                 width: event.nativeEvent.layout.width,
-                height: event.nativeEvent.layout.height
+                height: event.nativeEvent.layout.height,
             };
 
             // Only fire the onLayout callback if the layout values change
@@ -68,7 +73,7 @@ export abstract class ViewBase<P extends RX.Types.ViewPropsShared<C>, S, T exten
                 this._layoutEventValues = layoutEventValues;
             }
         }
-    }
+    };
 }
 
 export default ViewBase;

@@ -26,14 +26,14 @@ const _styles = {
         flexDirection: 'column',
         opacity: 0,
         maxWidth: '100%',
-        maxHeight: '100%'
+        maxHeight: '100%',
     },
     defaultContainer: Styles.createImageStyle({
         position: 'relative',
         flex: 0,
         overflow: 'visible',
-        backgroundColor: 'transparent'
-    })
+        backgroundColor: 'transparent',
+    }),
 };
 
 export interface ImageState {
@@ -77,7 +77,7 @@ class XhrBlobUrlCache {
             const xhrBlobUrlCacheEntry: XhrBlobUrlCacheEntry = {
                 xhrBlobUrl: xhrBlobUrl,
                 insertionDate: Date.now(),
-                refCount: 1
+                refCount: 1,
             };
 
             XhrBlobUrlCache._cachedXhrBlobUrls[source] = xhrBlobUrlCacheEntry;
@@ -117,14 +117,14 @@ class XhrBlobUrlCache {
 
 export class Image extends React.Component<Types.ImageProps, ImageState> {
     static contextTypes: React.ValidationMap<any> = {
-        isRxParentAText: PropTypes.bool
+        isRxParentAText: PropTypes.bool,
     };
 
     // Provided by super, just re-typing here
     context!: ImageContext;
 
     static childContextTypes: React.ValidationMap<any> = {
-        isRxParentAText: PropTypes.bool.isRequired
+        isRxParentAText: PropTypes.bool.isRequired,
     };
 
     private _mountedComponent: HTMLImageElement | null = null;
@@ -165,7 +165,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         img.onload = ((event: Event) => {
             defer.resolve({
                 width: img.naturalWidth,
-                height: img.naturalHeight
+                height: img.naturalHeight,
             });
         });
 
@@ -215,7 +215,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
     componentWillUnmount() {
         this._isMounted = false;
         if (this.state.displayUrl && this.state.xhrRequest) {
-           XhrBlobUrlCache.release(this.props.source);
+            XhrBlobUrlCache.release(this.props.source);
         }
     }
 
@@ -224,8 +224,8 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         // requests take some time and cause flicker during rendering. Even when we're hitting the browser cache, we've
         // seen it stall and take some time.
         const cachedXhrBlobUrl = props.headers ? XhrBlobUrlCache.get(props.source) : null;
-        const displayUrl = !!cachedXhrBlobUrl ? cachedXhrBlobUrl :
-            !!props.headers ? '' : props.source;
+        const displayUrl = cachedXhrBlobUrl ? cachedXhrBlobUrl :
+            props.headers ? '' : props.source;
 
         // Only make the xhr request if headers are specified and there was no cache hit.
         const performXhrRequest = !!props.headers && !cachedXhrBlobUrl;
@@ -237,7 +237,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         const newState: ImageState = {
             showImgTag: (!performXhrRequest || !!cachedXhrBlobUrl) && (!!props.onLoad || !!props.onError),
             xhrRequest: !!props.headers,
-            displayUrl: displayUrl
+            displayUrl: displayUrl,
         };
         if (initial) {
             this.state = newState;
@@ -262,7 +262,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
             displayUrl: newUrl,
 
             // If we have an onload handler, we need to now load the img tag to get dimensions for the load.
-            showImgTag: !!this.props.onLoad
+            showImgTag: !!this.props.onLoad,
         });
     }
 
@@ -293,7 +293,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
                 credentials: withCredentials ? 'include' : 'same-origin',
                 method: 'GET',
                 mode: 'cors',
-                headers
+                headers,
             });
 
             fetch(xhr)
@@ -377,7 +377,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
 
     protected _onMount = (component: HTMLImageElement | null) => {
         this._mountedComponent = component;
-    }
+    };
 
     private _getStyles(): React.CSSProperties {
         const { resizeMode } = this.props;
@@ -401,7 +401,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
             backgroundImage,
             backgroundSize,
             borderStyle,
-            display: 'flex'
+            display: 'flex',
         };
     }
 
@@ -442,17 +442,17 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         // We can hide the img now. We assume that if the img. URL resolved without error,
         // then the background img. URL also did.
         this.setState({
-            showImgTag: false
+            showImgTag: false,
         });
 
         if (this.props.onLoad) {
             this.props.onLoad({ width: this._nativeImageWidth, height: this._nativeImageHeight });
         }
-    }
+    };
 
     private _imgOnError = () => {
         this._onError();
-    }
+    };
 
     private _onError(err?: Error) {
         if (!this._isMounted) {
@@ -462,7 +462,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
         // We can hide the img now. We assume that if the img. URL failed to resolve,
         // then the background img. URL also did.
         this.setState({
-            showImgTag: false
+            showImgTag: false,
         });
 
         if (this.props.onError) {
@@ -479,7 +479,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> {
                 onClick(e);
             }
         }
-    }
+    };
 
     // Note: This works only if you have an onLoaded handler and wait for the image to load.
     getNativeWidth(): number | undefined {

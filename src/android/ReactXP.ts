@@ -106,7 +106,7 @@ module ReactXP {
 
     const androidAnimatedClasses =  {
         ...CommonAnimatedClasses,
-        Text: RN.Animated.createAnimatedComponent(TextImpl)
+        Text: RN.Animated.createAnimatedComponent(TextImpl),
     };
 
     export const Animated = makeAnimated(androidAnimatedClasses);
@@ -125,9 +125,7 @@ module ReactXP {
 
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.ts for more details.
-
-// tslint:disable-next-line
-var _rxImplementsRxInterface: typeof RXModuleInterface.ReactXP = ReactXP;
+let _rxImplementsRxInterface: typeof RXModuleInterface.ReactXP = ReactXP;
 _rxImplementsRxInterface = _rxImplementsRxInterface;
 export = ReactXP;
 

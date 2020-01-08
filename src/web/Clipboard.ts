@@ -10,7 +10,7 @@
 import * as RX from '../common/Interfaces';
 
 export class Clipboard extends RX.Clipboard {
-    setText(text: string) {
+    setText(text: string): void {
         const node = Clipboard._createInvisibleNode();
         node.value = text;
 
@@ -22,7 +22,7 @@ export class Clipboard extends RX.Clipboard {
     getText(): Promise<string> {
         // Not supported in web platforms. This should can be only handled
         // in the paste event handlers.
-       return Promise.reject<string>('Not supported on web');
+        return Promise.reject<string>('Not supported on web');
     }
 
     private static _createInvisibleNode(): HTMLTextAreaElement {
@@ -41,7 +41,7 @@ export class Clipboard extends RX.Clipboard {
         return node;
     }
 
-    private static _copyNode(node: HTMLTextAreaElement) {
+    private static _copyNode(node: HTMLTextAreaElement): void {
         node.select();
         node.setSelectionRange(0, node.value.length);
 

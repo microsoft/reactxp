@@ -12,7 +12,7 @@ import { Linking as CommonLinking } from '../native-common/Linking';
 
 export class Linking extends CommonLinking {
     // Escaped SMS uri - sms:<phoneNumber>&body=<messageString>
-    protected _createSmsUrl(smsInfo: Types.SmsInfo) {
+    protected _createSmsUrl(smsInfo: Types.SmsInfo): string {
         let smsUrl = 'sms:';
         if (smsInfo.phoneNumber) {
             smsUrl += encodeURI(smsInfo.phoneNumber);

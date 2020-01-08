@@ -30,7 +30,7 @@ export class Alert extends RX.Alert {
                     theme={ options && options.theme }
                     preventDismissOnPress={ options && options.preventDismissOnPress }
                 />
-            ), this._modalId
+            ), this._modalId,
         );
     }
 }

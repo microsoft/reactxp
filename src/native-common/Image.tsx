@@ -24,8 +24,8 @@ const _styles = {
         flex: 0,
         overflow: 'hidden',
         width: undefined,
-        height: undefined
-    })
+        height: undefined,
+    }),
 };
 
 export interface ImageContext {
@@ -40,7 +40,7 @@ export interface ImageState {
 
 export class Image extends React.Component<Types.ImageProps, ImageState> implements React.ChildContextProvider<ImageContext> {
     static childContextTypes: React.ValidationMap<any> = {
-        isRxParentAText: PropTypes.bool.isRequired
+        isRxParentAText: PropTypes.bool.isRequired,
     };
 
     static prefetch(url: string): Promise<boolean> {
@@ -76,7 +76,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
         const styles = this.getStyles();
         const extendedProps: RN.ExtendedImageProps = {
             source: this._buildSource(),
-            tooltip: this.props.title
+            tooltip: this.props.title,
         };
 
         const props = {
@@ -88,7 +88,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
             onLoad: this.props.onLoad ? this._onLoad : undefined,
             ref: this._onMount,
             ...this._getAdditionalProps(),
-            ...extendedProps
+            ...extendedProps,
         };
 
         /**
@@ -129,7 +129,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
 
     protected _onMount = (component: RN.Image | null) => {
         this._mountedComponent = component || undefined;
-    }
+    };
 
     setNativeProps(nativeProps: RN.ImageProps) {
         if (this._mountedComponent) {
@@ -175,7 +175,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
         if (this.props.onLoad) {
             this.props.onLoad({ width: this._nativeImageWidth, height: this._nativeImageHeight });
         }
-    }
+    };
 
     private _onError = (e: RN.NativeSyntheticEvent<RN.ImageErrorEventData>) => {
         if (!this._mountedComponent) {
@@ -194,7 +194,7 @@ export class Image extends React.Component<Types.ImageProps, ImageState> impleme
                 this.props.onError(new Error(e.nativeEvent.error));
             }
         }
-    }
+    };
 
     private static _maybeOverrideHeaders(props: Types.ImageProps): Types.Headers | undefined {
         if (props.headers) {

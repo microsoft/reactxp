@@ -38,8 +38,8 @@ const _styles = {
         left: 0,
         right: 0,
         height: 30,
-        whiteSpace: 'pre'
-    })
+        whiteSpace: 'pre',
+    }),
 };
 
 export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnnouncerState> {
@@ -64,7 +64,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
                     // annnouncementText should never be in nested div for mac.
                     // Voice over ignores reading nested divs in aria-live container.
                     this.setState({
-                        announcementText: announcement
+                        announcementText: announcement,
                     });
                 } else {
 
@@ -73,7 +73,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
                     // not announce aria-live reliably without this, for example.
                     this.setState({
                         announcementText: announcement,
-                        announcementTextInNestedDiv: !this.state.announcementTextInNestedDiv
+                        announcementTextInNestedDiv: !this.state.announcementTextInNestedDiv,
                     });
                 }
             });
@@ -84,7 +84,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
     private _getInitialState(): AccessibilityAnnouncerState {
         return {
             announcementText: '',
-            announcementTextInNestedDiv: false
+            announcementTextInNestedDiv: false,
         };
     }
 
@@ -132,7 +132,7 @@ export class AccessibilityAnnouncer extends React.Component<{}, AccessibilityAnn
 
         this._clearAnnouncementTimer = Timers.setTimeout(() => {
             this.setState({
-                announcementText: ''
+                announcementText: '',
             });
         }, 2000);
     }

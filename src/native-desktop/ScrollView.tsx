@@ -37,7 +37,7 @@ export class ScrollView extends ScrollViewBase {
         if (this.props.onKeyPress) {
             this.props.onKeyPress(EventHelpers.toKeyboardEvent(e));
         }
-    }
+    };
 }
 
 export default ScrollView;

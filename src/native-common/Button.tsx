@@ -32,11 +32,11 @@ const _styles = {
         alignItems: 'stretch',
         justifyContent: 'center',
         overflow: 'hidden',
-        backgroundColor: 'rgba(0, 0, 0, 0)'
+        backgroundColor: 'rgba(0, 0, 0, 0)',
     }),
     disabled: Styles.createButtonStyle({
-        opacity: 0.5
-    })
+        opacity: 0.5,
+    }),
 };
 
 const _isNativeMacOs = Platform.getType() === 'macos';
@@ -57,7 +57,7 @@ function applyMixin(thisObj: any, mixin: {[propertyName: string]: any}, properti
         if (name !== 'constructor' && propertiesToSkip.indexOf(name) === -1 && typeof mixin[name].bind === 'function') {
             assert(
                 !(name in thisObj),
-                `An object cannot have a method with the same name as one of its mixins: "${name}"`
+                `An object cannot have a method with the same name as one of its mixins: "${name}"`,
             );
             thisObj[name] = mixin[name].bind(thisObj);
         }
@@ -72,13 +72,13 @@ export interface ButtonContext {
 export class Button extends ButtonBase {
     static contextTypes = {
         hasRxButtonAscendant: PropTypes.bool,
-        focusArbitrator: PropTypes.object
+        focusArbitrator: PropTypes.object,
     };
 
     context!: ButtonContext;
 
     static childContextTypes: React.ValidationMap<any> = {
-        hasRxButtonAscendant: PropTypes.bool
+        hasRxButtonAscendant: PropTypes.bool,
     };
 
     private _mixin_componentDidMount = RN.Touchable.Mixin.componentDidMount || noop;
@@ -109,7 +109,7 @@ export class Button extends ButtonBase {
             // Properties that Button and RN.Touchable.Mixin have in common. Button needs
             // to dispatch these methods to RN.Touchable.Mixin manually.
             'componentDidMount',
-            'componentWillUnmount'
+            'componentWillUnmount',
         ]);
         this.state = this.touchableGetInitialState();
         this._setOpacityStyles(props);
@@ -134,7 +134,7 @@ export class Button extends ButtonBase {
         const importantForAccessibility = AccessibilityUtil.importantForAccessibilityToString(this.props.importantForAccessibility,
             _defaultImportantForAccessibility);
         const accessibilityTrait = AccessibilityUtil.accessibilityTraitToString(this.props.accessibilityTraits,
-             _defaultAccessibilityTrait, true);
+            _defaultAccessibilityTrait, true);
         const accessibilityComponentType = AccessibilityUtil.accessibilityComponentTypeToString(this.props.accessibilityTraits,
             _defaultAccessibilityTrait);
 
@@ -143,7 +143,7 @@ export class Button extends ButtonBase {
 
         if (this.props.disabled && this.props.disabledOpacity !== undefined) {
             disabledStyle = Styles.createButtonStyle({
-                opacity: this.props.disabledOpacity
+                opacity: this.props.disabledOpacity,
             }, false);
         }
 
@@ -165,7 +165,7 @@ export class Button extends ButtonBase {
             onResponderRelease: this.touchableHandleResponderRelease,
             onResponderTerminate: this.touchableHandleResponderTerminate,
             shouldRasterizeIOS: this.props.shouldRasterizeIOS,
-            testID: this.props.testId
+            testID: this.props.testId,
         };
 
         // Mac RN requires some addition props for button accessibility
@@ -222,7 +222,7 @@ export class Button extends ButtonBase {
                 this._showUnderlay();
             }
 
-             // We do not want to animate opacity if underlayColour is provided. Unless an explicit activeOpacity is provided
+            // We do not want to animate opacity if underlayColour is provided. Unless an explicit activeOpacity is provided
             if (!this.props.disableTouchOpacityAnimation && (this.props.activeOpacity || !this.props.underlayColor)) {
                 this._opacityActive(_activeOpacityAnimationDuration);
             }
@@ -231,7 +231,7 @@ export class Button extends ButtonBase {
         if (!this.props.disabled && this.props.onPressIn) {
             this.props.onPressIn(e);
         }
-    }
+    };
 
     touchableHandleActivePressOut = (e: Types.SyntheticEvent) => {
         if (this._isTouchFeedbackApplicable()) {
@@ -250,7 +250,7 @@ export class Button extends ButtonBase {
         if (!this.props.disabled && this.props.onPressOut) {
             this.props.onPressOut(e);
         }
-    }
+    };
 
     touchableHandlePress = (e: Types.SyntheticEvent) => {
         UserInterface.evaluateTouchLatency(e);
@@ -265,27 +265,23 @@ export class Button extends ButtonBase {
                 }
             }
         }
-    }
+    };
 
     touchableHandleLongPress = (e: Types.SyntheticEvent) => {
         if (!this.props.disabled && !EventHelpers.isRightMouseButton(e) && this.props.onLongPress) {
             this.props.onLongPress(EventHelpers.toMouseEvent(e));
         }
-    }
+    };
 
-    touchableGetHighlightDelayMS = () => {
-        return 20;
-    }
+    touchableGetHighlightDelayMS = () => 20;
 
-    touchableGetPressRectOffset = () => {
-        return {top: 20, left: 20, right: 20, bottom: 100};
-    }
+    touchableGetPressRectOffset = () => ({top: 20, left: 20, right: 20, bottom: 100});
 
     requestFocus() {
         FocusArbitratorProvider.requestFocus(
             this,
             () => this.focus(),
-            () => this._isMounted
+            () => this._isMounted,
         );
     }
 
@@ -310,14 +306,14 @@ export class Button extends ButtonBase {
             this._defaultOpacityValue = opacityValueFromProps;
             this._opacityAnimatedValue = new Animated.Value(this._defaultOpacityValue);
             this._opacityAnimatedStyle = Styles.createAnimatedViewStyle({
-                opacity: this._opacityAnimatedValue
+                opacity: this._opacityAnimatedValue,
             });
         }
     }
 
     private _onMount = (btn: RN.View | null): void => {
         this._buttonElement = btn || undefined;
-    }
+    };
 
     private _isTouchFeedbackApplicable() {
         return this._isMounted && this._hasPressHandler() && this._buttonElement;
@@ -343,12 +339,12 @@ export class Button extends ButtonBase {
     protected _onMouseEnter = (e: Types.SyntheticEvent) => {
         this._isMouseOver = true;
         this._onHoverStart(e);
-    }
+    };
 
     protected _onMouseLeave = (e: Types.SyntheticEvent) => {
         this._isMouseOver = false;
         this._onHoverEnd(e);
-    }
+    };
 
     protected _onHoverStart = (e: Types.SyntheticEvent) => {
         if (!this._isHoverStarted && this._isMouseOver) {
@@ -358,7 +354,7 @@ export class Button extends ButtonBase {
                 this.props.onHoverStart(e);
             }
         }
-    }
+    };
 
     protected _onHoverEnd = (e: Types.SyntheticEvent) => {
         if (this._isHoverStarted && !this._isMouseOver) {
@@ -368,19 +364,19 @@ export class Button extends ButtonBase {
                 this.props.onHoverEnd(e);
             }
         }
-    }
+    };
 
     /**
     * Animate the touchable to a new opacity.
     */
     setOpacityTo(value: number, duration: number) {
-       Animated.timing(
+        Animated.timing(
             this._opacityAnimatedValue!,
             {
                 toValue: value,
                 duration: duration,
-                easing: Animated.Easing.InOut()
-            }
+                easing: Animated.Easing.InOut(),
+            },
         ).start();
     }
 
@@ -400,8 +396,8 @@ export class Button extends ButtonBase {
 
         this._buttonElement.setNativeProps({
             style: {
-                backgroundColor: this.props.underlayColor
-            }
+                backgroundColor: this.props.underlayColor,
+            },
         });
     }
 
@@ -412,10 +408,10 @@ export class Button extends ButtonBase {
 
         this._buttonElement.setNativeProps({
             style: [{
-                backgroundColor: _underlayInactive
-            }, this.props.style]
+                backgroundColor: _underlayInactive,
+            }, this.props.style],
         });
-    }
+    };
 }
 
 export default Button;

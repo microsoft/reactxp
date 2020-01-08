@@ -343,9 +343,8 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         }
 
         // Has the user started to pinch or zoom?
-        if (this._calcDistance(e.touches[0].pageX - e.touches[1].pageX,
-                e.touches[0].pageY - e.touches[1].pageY) >=
-                    _pinchZoomPixelThreshold) {
+        const distance = this._calcDistance(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
+        if (distance >= _pinchZoomPixelThreshold) {
             return true;
         }
 
@@ -483,7 +482,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
                 isComplete: isComplete,
                 timeStamp: e.timeStamp,
-                isTouch: !GestureView._isActuallyMouseEvent(e)
+                isTouch: !GestureView._isActuallyMouseEvent(e),
             };
         }
 
@@ -520,7 +519,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
             clientY,
             pageX,
             pageY,
-            isTouch: !GestureView._isActuallyMouseEvent(e)
+            isTouch: !GestureView._isActuallyMouseEvent(e),
         };
     }
 
@@ -532,7 +531,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
             clientY: e.clientY - xyOffset.y,
             pageX: e.pageX || 0,
             pageY: e.pageY || 0,
-            isTouch: false
+            isTouch: false,
         };
     }
 
@@ -577,7 +576,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
 
             isComplete: isComplete,
             timeStamp: e.timeStamp,
-            isTouch: !GestureView._isActuallyMouseEvent(this._lastGestureStartEvent)
+            isTouch: !GestureView._isActuallyMouseEvent(this._lastGestureStartEvent),
         };
 
         switch (gestureType) {
@@ -634,7 +633,7 @@ export abstract class GestureView extends React.Component<Types.GestureViewProps
         } else if (this.props.onTap) {
             this.props.onTap(tapEvent);
         }
-    }
+    };
 
     protected _sendDoubleTapEvent(e: Types.TapGestureState) {
         // If user did a double click with different mouse buttons, eg. left (50ms) right

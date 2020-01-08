@@ -18,21 +18,20 @@ import { Accessibility as NativeAccessibility } from '../native-common/Accessibi
 export class Accessibility extends NativeAccessibility {
     // Work around the fact that the public react-native type definition doesn't
     // include initialHighContrast in RN.AccessibilityInfoStatic.
-    private _isHighContrast = (RN.AccessibilityInfo as
-        RN.ExtendedAccessibilityInfoStatic).initialHighContrast || false;
+    private _isHighContrast = (RN.AccessibilityInfo as RN.ExtendedAccessibilityInfoStatic).initialHighContrast || false;
 
     constructor() {
         super();
 
         // Work around the fact that the public react-native type definition doesn't
         // include 'highContrastDidChange' in RN.AccessibilityEventName.
-        RN.AccessibilityInfo.addEventListener('highContrastDidChange' as RN.AccessibilityEventName,
-                (isEnabled: boolean) => {
-            this._updateIsHighContrast(isEnabled);
-        });
+        RN.AccessibilityInfo.addEventListener(
+            'highContrastDidChange' as RN.AccessibilityEventName,
+            (isEnabled: boolean) => this._updateIsHighContrast(isEnabled),
+        );
     }
 
-    private _updateIsHighContrast(isEnabled: boolean) {
+    private _updateIsHighContrast(isEnabled: boolean): void {
         if (this._isHighContrast !== isEnabled) {
             this._isHighContrast = isEnabled;
             this.highContrastChangedEvent.fire(isEnabled);

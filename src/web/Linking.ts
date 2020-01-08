@@ -20,7 +20,7 @@ export class Linking extends CommonLinking {
             const linkingError: Types.LinkingErrorInfo = {
                 code: Types.LinkingErrorCode.Blocked,
                 url: url,
-                description: 'Window was blocked by popup blocker'
+                description: 'Window was blocked by popup blocker',
             };
             return Promise.reject<void>(linkingError);
         }

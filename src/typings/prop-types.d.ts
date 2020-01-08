@@ -26,7 +26,7 @@ declare module 'prop-types' {
     export const element: Requireable<any> & Validator<any>;
     export function instanceOf(expectedClass: {}): Requireable<any> & Validator<any>;
     export function oneOf(types: any[]): Requireable<any> & Validator<any>;
-    export function oneOfType(types: Array<Validator<any>>): Requireable<any> & Validator<any>;
+    export function oneOfType(types: Validator<any>[]): Requireable<any> & Validator<any>;
     export function arrayOf(type: Validator<any>): Requireable<any> & Validator<any>;
     export function objectOf(type: Validator<any>): Requireable<any> & Validator<any>;
     export function shape(type: ValidationMap<any>): Requireable<any> & Validator<any>;

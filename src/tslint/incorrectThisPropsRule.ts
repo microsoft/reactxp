@@ -35,7 +35,7 @@ class ThisPropsWalker extends RuleWalker {
         super.walk(node);
     }
 
-    visitMethodDeclaration(node: ts.MethodDeclaration) {
+    visitMethodDeclaration(node: ts.MethodDeclaration): void {
         const hasPropsParam = _.find(node.parameters, param => {
             const paramNameIdentifier = param.name as ts.Identifier;
             return (paramNameIdentifier && paramNameIdentifier.text === 'props');

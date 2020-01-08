@@ -24,5 +24,5 @@ export {
     filter,
     isEqual,
     pull,
-    sortBy
+    sortBy,
 };

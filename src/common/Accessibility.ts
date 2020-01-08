@@ -22,7 +22,7 @@ export abstract class Accessibility extends RX.Accessibility {
 
     newAnnouncementReadyEvent = new SubscribableEvent<(announcement: string) => void>();
     announceForAccessibility(announcement: string): void {
-       this.newAnnouncementReadyEvent.fire(announcement);
+        this.newAnnouncementReadyEvent.fire(announcement);
     }
 }
 

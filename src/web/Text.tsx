@@ -37,7 +37,7 @@ const _styles = {
         flexShrink: 0,
         overflow: 'hidden',
         whiteSpace: 'pre-wrap',
-        overflowWrap: 'break-word'
+        overflowWrap: 'break-word',
     } as any,
     ellipsis: {
         position: 'relative',
@@ -46,8 +46,8 @@ const _styles = {
         flexShrink: 0,
         overflow: 'hidden',
         whiteSpace: 'pre',
-        textOverflow: 'ellipsis'
-    } as any
+        textOverflow: 'ellipsis',
+    } as any,
 };
 
 export interface TextContext {
@@ -57,13 +57,13 @@ export interface TextContext {
 
 export class Text extends TextBase {
     static contextTypes = {
-        focusArbitrator: PropTypes.object
+        focusArbitrator: PropTypes.object,
     };
 
     context!: TextContext;
 
     static childContextTypes: React.ValidationMap<any> = {
-        isRxParentAText: PropTypes.bool.isRequired
+        isRxParentAText: PropTypes.bool.isRequired,
     };
 
     private _mountedText: HTMLDivElement | null = null;
@@ -124,7 +124,7 @@ export class Text extends TextBase {
 
     private _onMount = (ref: HTMLDivElement | null) => {
         this._mountedText = ref;
-    }
+    };
 
     private _getStyles(): Types.TextStyleRuleSet {
         // There's no way in HTML to properly handle numberOfLines > 1,
@@ -165,7 +165,7 @@ export class Text extends TextBase {
         FocusArbitratorProvider.requestFocus(
             this,
             () => this.focus(),
-            () => this._mountedText !== null
+            () => this._mountedText !== null,
         );
     }
 

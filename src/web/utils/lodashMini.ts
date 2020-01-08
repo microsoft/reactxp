@@ -64,5 +64,5 @@ export {
     omit,
     remove,
     throttle,
-    union
+    union,
 };

@@ -37,7 +37,7 @@ export class AppVisibilityUtils {
         }
     }
 
-    hasFocusAndActive() {
+    hasFocusAndActive(): boolean {
         // Handle test environment where document is not defined.
         if (typeof (document) !== 'undefined') {
             return document.hasFocus() && !this._isIdle;
@@ -46,7 +46,7 @@ export class AppVisibilityUtils {
         return true;
     }
 
-    hasFocus() {
+    hasFocus(): boolean {
         // Handle test environment where document is not defined.
         if (typeof (document) !== 'undefined') {
             return document.hasFocus();
@@ -55,7 +55,7 @@ export class AppVisibilityUtils {
         return true;
     }
 
-    isAppInForeground() {
+    isAppInForeground(): boolean {
         // Handle test environment where document is not defined.
         if (typeof (document) !== 'undefined') {
             return !document.hidden;
@@ -64,7 +64,7 @@ export class AppVisibilityUtils {
         return true;
     }
 
-    private _trackIdleStatus() {
+    private _trackIdleStatus(): void {
         document.addEventListener('mousemove', this._wakeUpAndSetTimerForIdle);
         document.addEventListener('keyup', this._wakeUpAndSetTimerForIdle);
         document.addEventListener('touchstart', this._wakeUpAndSetTimerForIdle);
@@ -73,7 +73,7 @@ export class AppVisibilityUtils {
         this._wakeUpAndSetTimerForIdle();
     }
 
-    private _wakeUpAndSetTimerForIdle = () => {
+    private _wakeUpAndSetTimerForIdle = (): void => {
         if (!isUndefined(this._timer)) {
             Timers.clearTimeout(this._timer);
         }
@@ -91,34 +91,35 @@ export class AppVisibilityUtils {
                 this._onIdle();
             }
         }, idleTimeInMs);
-    }
+    };
 
-    private _onFocus = () => {
+    private _onFocus = (): void => {
         this._wakeUpAndSetTimerForIdle();
         this.onFocusedEvent.fire();
-    }
+    };
 
-    private _onBlur = () => {
+    private _onBlur = (): void => {
         this._onIdle();
         this.onBlurredEvent.fire();
-    }
+    };
 
-    private _onAppVisibilityChanged = () => {
+    private _onAppVisibilityChanged = (): void => {
         if (document.hidden) {
             this.onAppBackgroundedEvent.fire();
         } else {
             this.onAppForegroundedEvent.fire();
         }
-    }
+    };
 
-    private _onWakeUp = () => {
+    private _onWakeUp = (): void => {
         this._isIdle = false;
         this.onWakeUpEvent.fire();
-    }
-    private _onIdle = () => {
+    };
+
+    private _onIdle = (): void => {
         this._isIdle = true;
         this.onIdleEvent.fire();
-    }
+    };
 }
 
 export default new AppVisibilityUtils();

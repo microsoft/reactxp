@@ -14,7 +14,6 @@ import { clone } from './lodashMini';
 const _isNativeMacOs = Platform.OS === 'macos';
 // These helpers promote a SyntheticEvent to their higher level counterparts
 export class EventHelpers {
-
     toKeyboardEvent(e: Types.SyntheticEvent): Types.KeyboardEvent {
         // Conversion to a KeyboardEvent-like event if needed
         let keyEvent = e as Types.KeyboardEvent;
@@ -342,7 +341,7 @@ export class EventHelpers {
     // We simulate a mouse event so that we can show things like context Menus in the correct position.
     // Ensure offset is passed in {x = number, y= number} format. Using Top Left as anchor position.
     keyboardToMouseEvent(e: Types.KeyboardEvent, layoutInfo: Types.LayoutInfo,
-        contextMenuOffset: { x: number; y: number }): Types.MouseEvent {
+            contextMenuOffset: { x: number; y: number }): Types.MouseEvent {
         const mouseEvent = this.toMouseEvent(e);
 
         if ((layoutInfo.x !== undefined) && (contextMenuOffset.x !== undefined)) {

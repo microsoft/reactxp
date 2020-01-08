@@ -59,7 +59,7 @@ declare module 'react-native-windows' {
     type HyperlinkWindowsProps = RN.TextProps & {
         onFocus?: Function;
         onBlur?: Function;
-    }
+    };
 
     class HyperlinkWindows extends RN.ReactNativeBaseComponent<HyperlinkWindowsProps, {}> {
         focus(): void;
@@ -70,7 +70,7 @@ declare module 'react-native-windows' {
         onAccelKeyDown?: Function;
         onAccelKeyUp?: Function;
         onTouchStartCapture?: Function;
-    }
+    };
 
     class RootInputViewWindows extends RN.ReactNativeBaseComponent<RootInputViewWindowsProps, {}> {}
 }

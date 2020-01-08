@@ -16,7 +16,7 @@ export const ImportantForAccessibilityMap = {
     [Types.ImportantForAccessibility.Auto]: 'auto' as ImportantForAccessibilityValue,
     [Types.ImportantForAccessibility.Yes]: 'yes' as ImportantForAccessibilityValue,
     [Types.ImportantForAccessibility.No]: 'no' as ImportantForAccessibilityValue,
-    [Types.ImportantForAccessibility.NoHideDescendants]: 'no-hide-descendants' as ImportantForAccessibilityValue
+    [Types.ImportantForAccessibility.NoHideDescendants]: 'no-hide-descendants' as ImportantForAccessibilityValue,
 };
 
 // Platform specific helpers exposed through Native-Common AccessibilityUtil.
@@ -37,7 +37,7 @@ export abstract class AccessibilityUtil {
     }
 
     importantForAccessibilityToString(importantForAccessibility: Types.ImportantForAccessibility | undefined,
-        defaultImportantForAccessibility?: Types.ImportantForAccessibility): ImportantForAccessibilityValue | undefined {
+            defaultImportantForAccessibility?: Types.ImportantForAccessibility): ImportantForAccessibilityValue | undefined {
         importantForAccessibility = importantForAccessibility || defaultImportantForAccessibility;
 
         if (importantForAccessibility && ImportantForAccessibilityMap[importantForAccessibility]) {

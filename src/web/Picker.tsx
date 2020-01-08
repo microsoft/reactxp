@@ -38,7 +38,7 @@ export class Picker extends RX.Picker {
         const selectedItemPosition = _.findIndex(this.props.items, i => i.value === selectedValue);
 
         this.props.onValueChange(selectedValue, selectedItemPosition);
-    }
+    };
 }
 
 export default Picker;

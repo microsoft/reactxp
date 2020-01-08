@@ -14,5 +14,6 @@ steps:
 
 - script: |
     npm ci
-    npm run build-release
+    npm run lint
+    npm run build
   displayName: 'npm install and build'

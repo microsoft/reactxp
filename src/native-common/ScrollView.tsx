@@ -20,7 +20,8 @@ import ViewBase from './ViewBase';
 //   order for the UI to acknowledge your interaction.
 const overrideKeyboardShouldPersistTaps = RN.Platform.OS === 'macos' || RN.Platform.OS === 'windows';
 export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stateless, RN.ScrollView, RX.ScrollView>
-        implements RX.ScrollView {
+    implements RX.ScrollView {
+
     private _scrollTop = 0;
     private _scrollLeft = 0;
 
@@ -60,8 +61,8 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
             // https://facebook.github.io/react-native/docs/animated#handling-gestures-and-other-events
             const handlerWrapper: RN.EventMapping = {
                 nativeEvent: {
-                    contentOffset: { }
-                }
+                    contentOffset: { },
+                },
             };
             if (this.props.scrollXAnimatedValue) {
                 handlerWrapper.nativeEvent.contentOffset.x = this.props.scrollXAnimatedValue;
@@ -70,7 +71,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
                 handlerWrapper.nativeEvent.contentOffset.y = this.props.scrollYAnimatedValue;
             }
             const eventConfig: RN.AnimatedEventConfig<RN.NativeScrollEvent> = {
-                useNativeDriver: true
+                useNativeDriver: true,
             };
             if (this.props.onScroll) {
                 eventConfig.listener = this._onScroll;
@@ -133,7 +134,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
             onScrollBeginDrag: this.props.onScrollBeginDrag,
             onScrollEndDrag: this.props.onScrollEndDrag,
             children: this.props.children,
-            testID: this.props.testId
+            testID: this.props.testId,
         };
 
         return this._render(internalProps);
@@ -148,7 +149,7 @@ export class ScrollView extends ViewBase<RX.Types.ScrollViewProps, RX.Types.Stat
         if (this.props.onScroll) {
             this.props.onScroll(this._scrollTop, this._scrollLeft);
         }
-    }
+    };
 
     setScrollTop(scrollTop: number, animate?: boolean): void {
         if (this._nativeComponent) {

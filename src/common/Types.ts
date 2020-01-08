@@ -19,11 +19,11 @@ export type ReactNode = React.ReactNode;
 // Some RX components contain render logic in the abstract classes located in rx/common. That render logic
 // depends on using a platform specific React library (web vs native). Thus, we need an interface to abstract
 // this detail away from the components' common implementation.
-export type ReactInterface = {
+export interface ReactInterface {
     createElement<P>(type: string, props?: P, ...children: ReactNode[]): React.ReactElement<P>;
-};
+}
 
-//------------------------------------------------------------
+// ------------------------------------------------------------
 // React Native Flexbox styles 0.14.2
 // ------------------------------------------------------------
 
@@ -87,10 +87,10 @@ export interface FlexboxChildrenStyle {
 export interface FlexboxStyle extends FlexboxParentStyle, FlexboxChildrenStyle {
 }
 
-export type InterpolationConfig = {
+export interface InterpolationConfig {
     inputRange: number[];
     outputRange: number[] | string[];
-};
+}
 
 export abstract class AnimatedValue {
     constructor(val: number) {
@@ -150,7 +150,7 @@ export interface AnimatedTransformStyle {
 }
 
 export type StyleRuleSet<T> = T | number | undefined;
-export type StyleRuleSetOrArray<T> = StyleRuleSet<T> | Array<StyleRuleSet<T>>;
+export type StyleRuleSetOrArray<T> = StyleRuleSet<T> | StyleRuleSet<T>[];
 export interface StyleRuleSetRecursiveArray<T> extends Array<StyleRuleSetOrArray<T> | StyleRuleSetRecursiveArray<T>> {}
 export type StyleRuleSetRecursive<T> = StyleRuleSet<T> | StyleRuleSetRecursiveArray<T>;
 
@@ -623,10 +623,12 @@ export interface ViewPropsShared<C = React.Component> extends CommonProps<C>, Co
     limitFocusWithin?: LimitFocusType; // Web-only, make the view and all focusable subelements not focusable
 
     autoFocus?: boolean; // The component is a candidate for being autofocused.
-    arbitrateFocus?: FocusArbitrator; // When multiple components with autoFocus=true inside this View are mounting at the same time,
-                                      // and/or multiple components inside this view have received requestFocus() call during the same
-                                      // render cycle, this callback will be called so that it's possible for the application to
-                                      // decide which one should actually be focused.
+
+    // When multiple components with autoFocus=true inside this View are mounting at the same time,
+    // and/or multiple components inside this view have received requestFocus() call during the same
+    // render cycle, this callback will be called so that it's possible for the application to
+    // decide which one should actually be focused.
+    arbitrateFocus?: FocusArbitrator;
 
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
     id?: string; // Web-only. Needed for accessibility.
@@ -908,7 +910,7 @@ export interface TextInputPropsShared<C = React.Component> extends CommonProps<C
     value?: string;
     title?: string;
 
-     // Should fonts be scaled according to system setting? Defaults
+    // Should fonts be scaled according to system setting? Defaults
     // to true. iOS and Android only.
     allowFontScaling?: boolean;
 
@@ -1075,13 +1077,14 @@ export type LocationFailureCallback = (error: LocationErrorType) => void;
 //
 // Animated
 // ----------------------------------------------------------------------
-export module Animated {
-    export type EndResult = { finished: boolean };
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Animated {
+    export interface EndResult { finished: boolean }
     export type EndCallback = (result: EndResult) => void;
-    export type CompositeAnimation = {
+    export interface CompositeAnimation {
         start: (callback?: EndCallback) => void;
         stop: () => void;
-    };
+    }
 
     export interface LoopConfig {
         restartFrom: number;
@@ -1109,16 +1112,16 @@ export module Animated {
         config: TimingAnimationConfig) => CompositeAnimation;
     export let timing: TimingFunction;
 
-    export type SequenceFunction = (animations: Array<CompositeAnimation>) => CompositeAnimation;
+    export type SequenceFunction = (animations: CompositeAnimation[]) => CompositeAnimation;
     export let sequence: SequenceFunction;
 
-    export type ParallelFunction = (animations: Array<CompositeAnimation>) => CompositeAnimation;
+    export type ParallelFunction = (animations: CompositeAnimation[]) => CompositeAnimation;
     export let parallel: ParallelFunction;
 
-    export type EasingFunction = {
+    export interface EasingFunction {
         cssName: string;
         function: (input: number) => number;
-    };
+    }
 
     export interface Easing {
         Default(): EasingFunction;
@@ -1139,7 +1142,7 @@ export module Animated {
 //
 // Events
 // ----------------------------------------------------------------------
-export type SyntheticEvent = {
+export interface SyntheticEvent {
     readonly bubbles: boolean;
     readonly cancelable: boolean;
     readonly defaultPrevented: boolean;
@@ -1147,7 +1150,7 @@ export type SyntheticEvent = {
     readonly nativeEvent: any; // Platform-specific
     preventDefault(): void;
     stopPropagation(): void;
-};
+}
 
 export interface ClipboardEvent extends SyntheticEvent {
     clipboardData: DataTransfer;
@@ -1213,12 +1216,12 @@ export interface WheelEvent extends SyntheticEvent {
     deltaZ: number;
 }
 
-export type ViewOnLayoutEvent = {
+export interface ViewOnLayoutEvent {
     x: number;
     y: number;
     height: number;
     width: number;
-};
+}
 
 export interface KeyboardEvent extends SyntheticEvent {
     ctrlKey: boolean;
@@ -1237,10 +1240,10 @@ export let Children: React.ReactChildren;
 //
 // Dimensions
 // ----------------------------------------------------------------------
-export type Dimensions = {
+export interface Dimensions {
     width: number;
     height: number;
-};
+}
 
 //
 // Linking

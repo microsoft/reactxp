@@ -11,7 +11,7 @@ import * as RX from './Interfaces';
 import { Defer } from './utils/PromiseDefer';
 
 export class Location extends RX.Location {
-    setConfiguration(config: RX.LocationConfiguration) {
+    setConfiguration(config: RX.LocationConfiguration): void {
         if (this.isAvailable()) {
             // Work around the fact "geolocation" type definition in ES6 lib
             // doesn't declare the RN-specific setRNConfiguration setter.
@@ -37,7 +37,7 @@ export class Location extends RX.Location {
                 message: 'Position unavailable because device does not support it.',
                 PERMISSION_DENIED: 0,
                 POSITION_UNAVAILABLE: 1,
-                TIMEOUT: 0
+                TIMEOUT: 0,
             };
             return Promise.reject(error);
         }
@@ -64,7 +64,7 @@ export class Location extends RX.Location {
     // a promise that resolves to a watcher id or rejects with an error code. If resolved,
     // future locations and errors will be piped through the provided callbacks.
     watchPosition(successCallback: RX.Types.LocationSuccessCallback, errorCallback?: RX.Types.LocationFailureCallback,
-        options?: PositionOptions): Promise<RX.Types.LocationWatchId> {
+            options?: PositionOptions): Promise<RX.Types.LocationWatchId> {
         if (!this.isAvailable()) {
             return Promise.reject<RX.Types.LocationWatchId>(RX.Types.LocationErrorType.PositionUnavailable);
         }
