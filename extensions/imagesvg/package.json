@@ -5,8 +5,9 @@
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
   "scripts": {
-    "build": "npm run tslint && tsc",
-    "tslint": "tslint -p tsconfig.json -r tslint.json --fix || true"
+    "build": "tsc",
+    "lint": "eslint --ext .ts,.tsx src",
+    "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {
     "react-native-svg": "^9.13.3"
@@ -20,13 +21,13 @@
   },
   "devDependencies": {
     "@types/react-native": "^0.60.23",
-    "@types/node": "^12.12.14",
+    "@typescript-eslint/eslint-plugin": "2.15.0",
+    "eslint": "6.8.0",
+    "eslint-config-skype": "1.5.0",
+    "eslint-plugin-import": "2.19.1",
+    "eslint-plugin-react": "7.17.0",
     "reactxp": "^2.0.0",
-    "tslint": "^5.20.1",
-    "tslint-microsoft-contrib": "^6.2.0",
-    "tslint-react": "^4.1.0",
-    "tsutils": "^3.17.1",
-    "typescript": "^3.7.2"
+    "typescript": "3.7.4"
   },
   "types": "dist/web/PluginBase.d.ts"
 }

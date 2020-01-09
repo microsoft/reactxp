@@ -20,7 +20,7 @@ export class SvgPath extends React.Component<SvgPathProps, {}> {
                 strokeWidth={ this.props.strokeWidth }
                 strokeOpacity={ this.props.strokeOpacity }
                 fillOpacity={ this.props.fillOpacity }
-                stroke={ this.props.strokeColor}
+                stroke={ this.props.strokeColor }
                 d={ this.props.d }
             />
         );

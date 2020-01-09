@@ -18,10 +18,10 @@ export class ImageSvg extends React.Component<ImageSvgProps, {}> {
         assert(this.props.width && this.props.height, 'The width and height on imagesvg are mandatory.');
 
         if (this.props.width > 0 && this.props.height > 0) {
-            let combinedStyles = RXStyles.combine([{
+            const combinedStyles = RXStyles.combine([{
                 display: 'flex',
-                position: 'relative'
-            } as any, this.props.style]) as any;
+                position: 'relative',
+            } as any, this.props.style]);
 
             if (this.props.fillColor !== undefined) {
                 combinedStyles.fill = this.props.fillColor;
@@ -52,10 +52,10 @@ export class ImageSvg extends React.Component<ImageSvgProps, {}> {
             }
 
             if (this.props.webShadow) {
-                let aliases = RXStyles.getCssPropertyAliasesCssStyle();
+                const aliases = RXStyles.getCssPropertyAliasesCssStyle();
 
                 if (this._isFilterDropShadowSupported()) {
-                    let filterAlias = aliases['filter'] || 'filter';
+                    const filterAlias = aliases.filter || 'filter';
                     combinedStyles[filterAlias] = 'drop-shadow(' + this.props.webShadow + ')';
                 }
             }
