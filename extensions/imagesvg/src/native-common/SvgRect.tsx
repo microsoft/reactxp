@@ -20,7 +20,7 @@ export class SvgRect extends React.Component<SvgRectProps, {}> {
                 strokeWidth={ this.props.strokeWidth }
                 strokeOpacity={ this.props.strokeOpacity }
                 fillOpacity={ this.props.fillOpacity }
-                stroke={ this.props.strokeColor}
+                stroke={ this.props.strokeColor }
                 width={ this.props.width }
                 height={ this.props.height }
                 x={ this.props.x }
