@@ -1,21 +1,20 @@
 {
     "compilerOptions": {
-        "declaration": true,
-        "noResolve": false,
-        "jsx": "react",
-        "module": "commonjs",
-        "target": "es5",
+        "forceConsistentCasingInFileNames": true,
+        "strictPropertyInitialization": true,
         "experimentalDecorators": true,
+        "noImplicitReturns": true,
+        "strictNullChecks": true,
+        "noImplicitThis": true,
         "noImplicitAny": true,
         "skipLibCheck": true,
-        "strict": true,
-        "outDir": "dist/",
-        "lib": [
-            "es2015.promise",
-            "es5",
-            "dom"
-        ],
-        "types" : ["lodash", "react", "react-dom", "react-native"]
+        "declaration": true,
+        "noResolve": false,
+        "target": "es5",
+        "module": "commonjs",
+        "outDir": "dist",
+        "jsx": "react",
+        "lib": ["es2015.promise", "es5", "DOM"]
     },
 
     "include": [
@@ -23,7 +22,7 @@
     ],
 
     "exclude": [
-        "dist",
-        "node_modules"
+        "node_modules",
+        "dist"
     ]
 }
