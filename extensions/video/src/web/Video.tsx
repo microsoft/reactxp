@@ -10,6 +10,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as RX from 'reactxp';
+
 import extend = require('lodash/extend');
 
 import * as Types from '../common/Types';
@@ -17,7 +18,7 @@ import * as Types from '../common/Types';
 class Video extends RX.Component<Types.VideoProps, {}> {
     componentDidMount() {
         // We need to manually install the onEnded handler because. React doesn't support this.
-        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement|null;
+        const videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement | null;
         if (videoDOM) {
             videoDOM.onended = () => {
                 if (this.props.onEnded) {
@@ -28,7 +29,7 @@ class Video extends RX.Component<Types.VideoProps, {}> {
     }
 
     componentWillUnmount() {
-        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement|null;
+        const videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement | null;
         if (videoDOM) {
             // Prevent Chrome based browsers  to leak video elements
             videoDOM.src = '';
@@ -37,7 +38,7 @@ class Video extends RX.Component<Types.VideoProps, {}> {
 
     render() {
         let combinedStyles = extend(RX.Styles.combine(this.props.style), {
-            display: 'flex'
+            display: 'flex',
         });
 
         if (this.props.resizeMode === 'cover') {
@@ -52,19 +53,19 @@ class Video extends RX.Component<Types.VideoProps, {}> {
                 WebkitTransform: 'translate(-50%,-50%)',
                 MozTransform: 'translate(-50%,-50%)',
                 msTransform: 'translate(-50%,-50%)',
-                transform: 'translate(-50%,-50%)'
+                transform: 'translate(-50%,-50%)',
             });
         } else if (this.props.resizeMode === 'contain') {
             combinedStyles = extend(combinedStyles, {
                 width: '100%',
-                height: '100%'
+                height: '100%',
             });
         } else {
             combinedStyles = extend(combinedStyles, {
                 width: 'auto',
                 height: 'auto',
                 maxWidth: '100%',
-                maxHeight: '100%'
+                maxHeight: '100%',
             });
         }
 
@@ -82,44 +83,45 @@ class Video extends RX.Component<Types.VideoProps, {}> {
                 onLoadedData={ this._onLoadedData }
                 onError={ this.props.onError }
                 onEnded={ this.props.onEnded }
-                onLoadStart={ this.props.onLoadStart}
+                onLoadStart={ this.props.onLoadStart }
                 onCanPlay={ this.props.onCanPlay }
                 onCanPlayThrough={ this.props.onCanPlayThrough }
-                onTimeUpdate={ this.props.onProgress ? this._onTimeUpdate : null }
+                onTimeUpdate={ this.props.onProgress ? this._onTimeUpdate : undefined }
             />
         );
     }
 
     seek(position: number) {
-        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement|null;
+        const videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement | null;
         if (videoDOM) {
             videoDOM.currentTime = position;
         }
     }
 
     seekPercent(percentage: number) {
-        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement|null;
+        const videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement | null;
         if (videoDOM) {
             videoDOM.currentTime = percentage * videoDOM.duration;
         }
     }
 
     play() {
-        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement|null;
+        const videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement | null;
         if (videoDOM) {
+            // eslint-disable-next-line @typescript-eslint/no-floating-promises
             videoDOM.play();
         }
     }
 
     pause() {
-        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement|null;
+        const videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement | null;
         if (videoDOM) {
             videoDOM.pause();
         }
     }
 
     stop() {
-        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement|null;
+        const  videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement | null;
         if (videoDOM) {
             videoDOM.pause();
             videoDOM.currentTime = 0;
@@ -127,7 +129,7 @@ class Video extends RX.Component<Types.VideoProps, {}> {
     }
 
     mute(muted: boolean) {
-        let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement|null;
+        const videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement | null;
         if (videoDOM) {
             videoDOM.muted = muted;
         }
@@ -135,32 +137,32 @@ class Video extends RX.Component<Types.VideoProps, {}> {
 
     private _onLoadedData = () => {
         if (this.props.onLoadedData) {
-            let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement|null;
+            const videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement | null;
 
             if (videoDOM) {
                 const loadInfo: Types.VideoInfo = {
                     duration: videoDOM.duration,
                     naturalSize: {
                         width: videoDOM.videoWidth,
-                        height: videoDOM.videoHeight
-                    }
+                        height: videoDOM.videoHeight,
+                    },
                 };
                 this.props.onLoadedData(loadInfo);
             }
         }
-    }
+    };
 
     private _onTimeUpdate = () => {
         if (this.props.onProgress) {
-            let videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement|null;
+            const videoDOM = ReactDOM.findDOMNode(this) as HTMLVideoElement | null;
             if (videoDOM) {
                 this.props.onProgress({
                     currentTime: videoDOM.currentTime,
-                    playableDuration: videoDOM.duration
+                    playableDuration: videoDOM.duration,
                 });
             }
         }
-    }
+    };
 }
 
 export default Video;
