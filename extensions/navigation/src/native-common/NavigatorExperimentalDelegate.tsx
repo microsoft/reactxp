@@ -27,7 +27,7 @@ import {
     NavigationCommand,
     NavigatorDelegate,
     NavigatorRoute,
-    NavigatorState
+    NavigatorState,
 } from '../common/Types';
 
 type NavigationSceneRendererProps = Navigation.NavigationSceneRendererProps;
@@ -96,19 +96,19 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
         );
     }
 
-    private _convertCustomTransitionConfig(config: CustomNavigatorSceneConfig | undefined):
-            Navigation.NavigationCustomTransitionConfig | undefined {
+    private _convertCustomTransitionConfig(
+            config: CustomNavigatorSceneConfig | undefined): Navigation.NavigationCustomTransitionConfig | undefined {
         if (!config) {
             return undefined;
         }
 
-        let nativeConfig: Navigation.NavigationCustomTransitionConfig = {
+        const nativeConfig: Navigation.NavigationCustomTransitionConfig = {
             transitionStyle: config.transitionStyle,
-            presentBelowPrevious: config.presentBelowPrevious
+            presentBelowPrevious: config.presentBelowPrevious,
         };
 
         if (config.transitionSpec) {
-            let transitionSpec: Navigation.NavigationTransitionSpec = {};
+            const transitionSpec: Navigation.NavigationTransitionSpec = {};
             if (config.transitionSpec.duration) {
                 transitionSpec.duration = config.transitionSpec.duration;
             }
@@ -126,11 +126,11 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
     private _buildTransitionSpec(state: Navigation.NavigationState): TransitionSpec {
         const route = (state.routes[state.index] as NavigationRouteState).route;
         let direction: Navigation.NavigationGestureDirection = 'horizontal';
-        let customSceneConfig: Navigation.NavigationCustomTransitionConfig | undefined = undefined;
-        let enableGesture: boolean = false;
-        let responseDistance: number = 0;
-        let hideShadow = route && route.customSceneConfig && route.customSceneConfig.hideShadow;
-        let cardStyle: RX.Types.ViewStyleRuleSet | undefined = route && route.customSceneConfig
+        let customSceneConfig: Navigation.NavigationCustomTransitionConfig | undefined;
+        let enableGesture = false;
+        let responseDistance = 0;
+        const hideShadow = route && route.customSceneConfig && route.customSceneConfig.hideShadow;
+        const cardStyle: RX.Types.ViewStyleRuleSet | undefined = route && route.customSceneConfig
             ? route.customSceneConfig.cardStyle
             : undefined;
         let gestureDistanceSet = false;
@@ -159,8 +159,8 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
                     }
                     break;
                 // Currently we support only right to left animation
-                //case NavigatorSceneConfigType.FloatFromRight:
-                //case NavigatorSceneConfigType.FloatFromLeft:
+                // case NavigatorSceneConfigType.FloatFromRight:
+                // case NavigatorSceneConfigType.FloatFromLeft:
                 default:
                     break;
             }
@@ -190,7 +190,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
         if (this._owner.props.transitionCompleted) {
             this._owner.props.transitionCompleted();
         }
-    }
+    };
 
     private _onTransitionStart = (transitionProps: NavigationTransitionProps, prevTransitionProps?: NavigationTransitionProps) => {
         if (this._owner.props.transitionStarted) {
@@ -205,12 +205,12 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
                 toIndex,
                 fromIndex);
         }
-    }
+    };
 
     // Callback from Navigator.js to RX.Navigator
     private _renderScene = (props: NavigationSceneRendererProps): JSX.Element => {
-        let parentState: NavigationState = props.navigationState;
-        let sceneState: NavigationRouteState = parentState.routes[props.scene.index] as NavigationRouteState;
+        const parentState: NavigationState = props.navigationState;
+        const sceneState: NavigationRouteState = parentState.routes[props.scene.index] as NavigationRouteState;
 
         // Does the route exist?
         if (sceneState && sceneState.route) {
@@ -220,7 +220,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
 
         // No route? Return empty scene.
         return <RN.View />;
-    }
+    };
 
     handleBackPress(): void {
         this._owner.pop();
@@ -235,14 +235,14 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
 
         let useNewStateAsScene = false;
 
-        let command = commandQueue.shift()!;
-        let route = command.param.route;
-        let value = command.param.value;
+        const command = commandQueue.shift()!;
+        const route = command.param.route;
+        const value = command.param.value;
 
         switch (command.type) {
             case CommandType.Push:
                 useNewStateAsScene = true;
-                this._state = StateUtils.push(this._state, this._createState(route!));
+                this._state = StateUtils.push(this._state, this._createState(route));
                 break;
 
             case CommandType.Pop:
@@ -263,10 +263,10 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
             case CommandType.Replace:
                 if (value === -1) {
                     this._state = StateUtils.replaceAtIndex(this._state, this._state.routes.length - 2,
-                        this._createState(route!));
+                        this._createState(route));
                 } else {
                     this._state = StateUtils.replaceAtIndex(this._state, this._state.routes.length - 1,
-                        this._createState(route!));
+                        this._createState(route));
                 }
 
                 break;
@@ -292,7 +292,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
     */
     private _onNavigateBack = () => {
         this.onBackPress();
-    }
+    };
 
     private _createState(route: NavigatorRoute): NavigationRouteState {
         return { key: route.routeId.toString(), route: route };
@@ -300,7 +300,7 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
 
     private _createParentState(routes: NavigatorRoute[], prevState: NavigationState): NavigationState {
         const prevRoutes = prevState.routes as NavigationRouteState[];
-        let children = _.map(routes, (element: NavigatorRoute, index: number) => {
+        const children = _.map(routes, (element: NavigatorRoute, index: number) => {
             if (prevRoutes.length > index) {
                 const prevRoute = prevRoutes[index];
                 // Navigator state reducer is a little bit naive,
@@ -330,14 +330,14 @@ export class NavigatorExperimentalDelegate extends NavigatorDelegate {
         const initialLength = initialRoutes.length;
         assert(initialLength >= n, 'navigation stack underflow');
 
-        let result: NavigationState = _.clone(state);
+        const result: NavigationState = _.clone(state);
         result.routes = initialRoutes.slice(0, initialLength - n);
         result.index = initialLength - n - 1;
         return result;
     }
 
     private _popToRoute(state: NavigationState, route: NavigatorRoute): NavigationState {
-        let popCount: number = 0;
+        let popCount = 0;
         for (let i = state.routes.length - 1; i >= 0; i--) {
             const child = state.routes[i] as NavigationRouteState;
             if (route.routeId === child.route.routeId) {

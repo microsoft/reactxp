@@ -39,78 +39,77 @@ export interface TransitionStyle {
 // Defined style interpolators for each transition type
 class SceneConfigStyles {
     static fadeToTheLeft: TransitionStyle = {
-        translateX: (t, dimensions) => { return (t * -dimensions.width * 0.3) + 'px'; },
-        opacity: 1
+        translateX: (t, dimensions) =>(t * -dimensions.width * 0.3) + 'px',
+        opacity: 1,
     };
 
     static fadeToTheRight: TransitionStyle = {
-        translateX: (t, dimensions) => { return (t * dimensions.width * 0.3) + 'px'; },
-        opacity: 1
+        translateX: (t, dimensions) => (t * dimensions.width * 0.3) + 'px',
+        opacity: 1,
     };
 
     static fadeIn: TransitionStyle = {
-        opacity: t => { return (t); }
+        opacity: t => t,
     };
 
     static fadeOut: TransitionStyle = {
-        opacity: t => { return (1 - t); }
+        opacity: t => 1 - t,
     };
 
     static fadeOutToTop: TransitionStyle = {
-        opacity: t => { return (1 - t); },
-        translateY: (t, dimensions) => { return (t * -0.1 * dimensions.height) + 'px'; }
+        opacity: t => 1 - t,
+        translateY: (t, dimensions) => (t * -0.1 * dimensions.height) + 'px',
     };
 
     static toTheLeft: TransitionStyle = {
-        translateX: (t, dimensions) => { return (t * -dimensions.width) + 'px'; }
+        translateX: (t, dimensions) => (t * -dimensions.width) + 'px',
     };
 
     static toTheUp: TransitionStyle = {
-        translateY: (t, dimensions) => { return (t * -dimensions.height) + 'px'; }
+        translateY: (t, dimensions) => (t * -dimensions.height) + 'px',
     };
 
     static toTheDown: TransitionStyle = {
-        translateY: (t, dimensions) => { return (t * dimensions.height) + 'px'; }
+        translateY: (t, dimensions) => (t * dimensions.height) + 'px',
     };
 
     static fromTheRight: TransitionStyle = {
         opacity: 1,
-        translateX: (t, dimensions) => { return (dimensions.width - (t * dimensions.width)) + 'px'; }
+        translateX: (t, dimensions) => (dimensions.width - (t * dimensions.width)) + 'px',
     };
 
     static fromTheLeft: TransitionStyle = {
         opacity: 1,
-        translateX: (t, dimensions) => { return (-dimensions.width + (t * dimensions.width)) + 'px'; }
+        translateX: (t, dimensions) => (-dimensions.width + (t * dimensions.width)) + 'px',
     };
 
     static fromTheDown: TransitionStyle = {
-        translateY: (t, dimensions) => { return (dimensions.height - t * dimensions.height) + 'px'; }
+        translateY: (t, dimensions) => (dimensions.height - t * dimensions.height) + 'px',
     };
 
     static fromTheUp: TransitionStyle = {
         opacity: 1,
-        translateY: (t, dimensions) => { return (-dimensions.height + t * dimensions.height) + 'px'; }
+        translateY: (t, dimensions) => (-dimensions.height + t * dimensions.height) + 'px',
     };
 
     static fromTheFront: TransitionStyle = {
         opacity: 1,
-        translateY: (t, dimensions) => { return (dimensions.height - t * dimensions.height) + 'px'; }
+        translateY: (t, dimensions) => (dimensions.height - t * dimensions.height) + 'px',
     };
 
     static toTheBack: TransitionStyle = {
-        scaleX: t => { return (1 - (t * 0.05)); },
-        scaleY: t => { return (1 - (t * 0.05)); },
-        opacity: 1
+        scaleX: t => (1 - (t * 0.05)),
+        scaleY: t => (1 - (t * 0.05)),
+        opacity: 1,
     };
 
-    /* tslint:enable:no-unused-variable */
     // CSS requires all transforms to be combined into one transform property. bundleCompoundStyles searches a style
     // definition for separate transforms and melts it down to a "transform" property.
-    public static bundleCompoundStyles(styles: { [name: string]: string | number }): any {
-        let transforms: { [name: string]: string | number } = { };
-        let remaining: { [name: string]: string | number } = { };
+    static bundleCompoundStyles(styles: { [name: string]: string | number }): any {
+        const transforms: { [name: string]: string | number } = { };
+        const remaining: { [name: string]: string | number } = { };
 
-        for (let name in styles) {
+        for (const name in styles) {
             if (styles.hasOwnProperty(name)) {
                 switch (name) {
                     case 'translateX':
@@ -134,7 +133,7 @@ class SceneConfigStyles {
 
         // Add transforms into remaining object
         if (!_.isEmpty(transforms)) {
-            remaining['transform'] = _.map(transforms, (val, key) => { return key + '(' + val + ')'; }).join(' ');
+            remaining.transform = _.map(transforms, (val, key) => key + '(' + val + ')').join(' ');
         }
 
         return remaining;
@@ -144,36 +143,36 @@ class SceneConfigStyles {
 // Navigator config class. Navigator works on the instances of this class
 export class NavigatorSceneConfig {
     // Rebound spring parameters when transitioning FROM this scene
-    public springFriction: number = 26;
-    public springTension: number = 200;
+    springFriction = 26;
+    springTension = 200;
 
     // Velocity to start at when transitioning without gesture
-    public defaultTransitionVelocity: number = 1.5;
+    defaultTransitionVelocity = 1.5;
 
     // Returns an object of functions that return a function
-    public animationInterpolators: {
+    animationInterpolators: {
         into: InterpolatorWrapper;
         out: InterpolatorWrapper;
     };
 
-    constructor (intoStyle: TransitionStyle, outStyle: TransitionStyle) {
+    constructor(intoStyle: TransitionStyle, outStyle: TransitionStyle) {
         // Into, Out interpolators are required to do a scene transition
         this.animationInterpolators = {
             into: this._styleInterpolator(intoStyle),
-            out: this._styleInterpolator(outStyle)
+            out: this._styleInterpolator(outStyle),
         };
     }
 
     // Private method that hangs as a callback on animationInterpolator object
     // It calculates new styles and updates the previousStyles object sent to decide
     // if the animation triggered or not in the component that calls it
-    private _styleInterpolator (styles: TransitionStyle): InterpolatorWrapper {
+    private _styleInterpolator(styles: TransitionStyle): InterpolatorWrapper {
         return (previousStyleSet: RX.Types.ViewStyleRuleSet, dimensions: RX.Types.Dimensions, progress: number): boolean => {
             // Calls the interpolator method for each type and calculates
             const newStyleSet = SceneConfigStyles.bundleCompoundStyles(
-                _.mapValues(styles, (interpolator: Interpolator | number) => {
-                    return _.isNumber(interpolator) ? interpolator : interpolator(progress, dimensions);
-                }) as any);
+                _.mapValues(styles, (interpolator: Interpolator | number) => (
+                    _.isNumber(interpolator) ? interpolator : interpolator(progress, dimensions)
+                )) as any);
 
             // Check if anything has changed since last frame.
             if (_.isEqual(previousStyleSet, newStyleSet)) {
@@ -181,7 +180,7 @@ export class NavigatorSceneConfig {
             }
 
             // Copy the new props into the previous object.
-            for (let prop in newStyleSet) {
+            for (const prop in newStyleSet) {
                 if (newStyleSet.hasOwnProperty(prop)) {
                     _.assign(previousStyleSet, {[prop]: _.get(newStyleSet, prop)});
                 }
@@ -196,13 +195,13 @@ export class NavigatorSceneConfig {
 export class NavigatorSceneConfigFactory {
 
     // Helper method that creates a new Animation config for a scene
-    public static createConfig (configType: Types.NavigatorSceneConfigType): NavigatorSceneConfig {
+    static createConfig(configType: Types.NavigatorSceneConfigType): NavigatorSceneConfig {
         switch (configType) {
             case Types.NavigatorSceneConfigType.FloatFromRight:
-                 return new NavigatorSceneConfig(SceneConfigStyles.fromTheRight, SceneConfigStyles.fadeToTheLeft);
+                return new NavigatorSceneConfig(SceneConfigStyles.fromTheRight, SceneConfigStyles.fadeToTheLeft);
 
             case Types.NavigatorSceneConfigType.FloatFromLeft:
-                 return new NavigatorSceneConfig(SceneConfigStyles.fromTheLeft, SceneConfigStyles.fadeToTheRight);
+                return new NavigatorSceneConfig(SceneConfigStyles.fromTheLeft, SceneConfigStyles.fadeToTheRight);
 
             case Types.NavigatorSceneConfigType.FloatFromBottom:
                 return new NavigatorSceneConfig(SceneConfigStyles.fromTheFront, SceneConfigStyles.toTheBack);

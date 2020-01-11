@@ -18,13 +18,14 @@ import { Styles, View } from 'reactxp';
 
 import * as _ from '../common/lodashMini';
 import * as Types from '../common/Types';
-import { NavigatorSceneConfigFactory, NavigatorSceneConfig } from './NavigatorSceneConfigFactory';
 import {
     NavigatorDelegateSelector as DelegateSelector,
     NavigatorState as BaseNavigatorState,
     Navigator as NavigatorBase,
     NavigatorProps,
 } from '../common/Types';
+
+import { NavigatorSceneConfigFactory, NavigatorSceneConfig } from './NavigatorSceneConfigFactory';
 
 // [Bug:506870] Move web navigator to RX animated API
 export interface SpringSystem {
@@ -48,14 +49,14 @@ const _styles = {
         flex: 1,
         flexDirection: 'column',
         alignSelf: 'stretch',
-        overflow: 'hidden'
+        overflow: 'hidden',
     }),
     defaultSceneStyle: Styles.createViewStyle({
         position: 'absolute',
         left: 0,
         right: 0,
         bottom: 0,
-        top: 0
+        top: 0,
     }),
     baseScene: Styles.createViewStyle({
         position: 'absolute',
@@ -63,26 +64,26 @@ const _styles = {
         left: 0,
         right: 0,
         bottom: 0,
-        top: 0
+        top: 0,
     }),
     disabledScene: Styles.createViewStyle({
         top: 0,
         bottom: 0,
-        flex: 1
+        flex: 1,
     }),
     transitioner: Styles.createViewStyle( {
         flex: 1,
         flexDirection: 'column',
         backgroundColor: 'transparent',
         overflow: 'hidden',
-        alignItems: 'stretch'
+        alignItems: 'stretch',
     }),
     sceneStyle: Styles.createViewStyle({
         flex: 1,
         shadowOffset: { height: 0, width: 0 },
         shadowRadius: 40,
-        shadowColor: 'rgba(0, 0, 0, 0.2)'
-    })
+        shadowColor: 'rgba(0, 0, 0, 0.2)',
+    }),
 };
 
 // Transition types
@@ -151,7 +152,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
             routeStack: [],
             presentedIndex: 0,
             transitionFromIndex: undefined,
-            transitionQueue: []
+            transitionQueue: [],
         };
     }
 
@@ -166,7 +167,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
             },
             onSpringAtRest: () => {
                 this._completeTransition();
-            }
+            },
         });
     }
 
@@ -180,7 +181,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
     }
 
     render() {
-        let newRenderedSceneMap: { [routeId: number]: JSX.Element } = {};
+        const newRenderedSceneMap: { [routeId: number]: JSX.Element } = {};
         let scenes: JSX.Element[];
 
         if (this.state.routeStack.length > 0) {
@@ -242,12 +243,12 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
         const nextStack = activeStack.concat([route]);
         const destIndex = nextStack.length - 1;
         const nextAnimationConfigStack: NavigatorSceneConfig [] = activeAnimationConfigStack.concat([
-            this._getSceneConfigFromRoute(route)
+            this._getSceneConfigFromRoute(route),
         ]);
 
         this.setState({
             routeStack: nextStack,
-            sceneConfigStack: nextAnimationConfigStack
+            sceneConfigStack: nextAnimationConfigStack,
         }, () => {
             this._enableScene(destIndex);
             this._transitionTo(destIndex);
@@ -263,7 +264,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
             routeStack: nextRouteStack,
             presentedIndex: destIndex,
             transitionFromIndex: undefined,
-            transitionQueue: []
+            transitionQueue: [],
         }, () => {
             this._handleSpringUpdate();
             if (destIndex >= 0) {
@@ -298,14 +299,14 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
             return;
         }
 
-        let nextRouteStack = this.state.routeStack.slice(0, index + 1);
-        let nextAnimationModeStack = this.state.sceneConfigStack.slice(0, index + 1);
+        const nextRouteStack = this.state.routeStack.slice(0, index + 1);
+        const nextAnimationModeStack = this.state.sceneConfigStack.slice(0, index + 1);
         nextRouteStack[index] = route;
         nextAnimationModeStack[index] = this._getSceneConfigFromRoute(route);
 
         this.setState({
             routeStack: nextRouteStack,
-            sceneConfigStack: nextAnimationModeStack
+            sceneConfigStack: nextAnimationModeStack,
         });
     }
 
@@ -345,7 +346,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
 
     private _onMountContainer = (comp: RX.View | null) => {
         this._containerRef = comp;
-    }
+    };
 
     private _updateDimensionsCache() {
         if (this._containerRef) {
@@ -353,7 +354,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
             if (transitioner) {
                 this._dimensions = {
                     width: transitioner.offsetWidth,
-                    height: transitioner.offsetHeight
+                    height: transitioner.offsetHeight,
                 };
             }
         }
@@ -370,8 +371,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
 
     // Render a scene for the navigator
     private _renderNavigatorScene(route: Types.NavigatorRoute, index: number): JSX.Element {
-        let styles: RX.Types.ViewStyleRuleSet[] = [_styles.baseScene, _styles.sceneStyle,
-             _styles.defaultSceneStyle];
+        const styles: RX.Types.ViewStyleRuleSet[] = [_styles.baseScene, _styles.sceneStyle, _styles.defaultSceneStyle];
 
         if (index !== this.state.presentedIndex) {
             // update styles
@@ -382,7 +382,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
         return (
             <View
                 key={ 'scene_' + this._getRouteID(route) }
-                ref={ (comp) => this._onMountScene(comp, index) }
+                ref={ comp => this._onMountScene(comp, index) }
                 style={ styles }
             >
                 { this.props.renderScene(route) }
@@ -407,7 +407,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
         if (this._sceneRefs[sceneId]) {
             this._setNativeStyles(this._sceneRefs[sceneId], {
                 opacity: 0,
-                zIndex: -10
+                zIndex: -10,
             });
         }
     }
@@ -415,17 +415,17 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
     // Add styles on the scene - At this time, the scene should be mounted and sitting in the
     // DOM. We are just adding giving styles to this current scene.
     private _enableScene(sceneIndex: number, force = false) {
-        let sceneStyle = Styles.combine([_styles.baseScene, _styles.sceneStyle, _styles.defaultSceneStyle]) as any;
+        const sceneStyle = Styles.combine([_styles.baseScene, _styles.sceneStyle, _styles.defaultSceneStyle]) as any;
 
         // Then restore the top value for this scene.
         const enabledSceneNativeProps = {
             style: {
-                top: sceneStyle['top'],
-                bottom: sceneStyle['bottom'],
+                top: sceneStyle.top,
+                bottom: sceneStyle.bottom,
                 opacity: 1,
                 zIndex: 0,
-                transform: ''
-            }
+                transform: '',
+            },
         };
 
         if (!force && sceneIndex !== this.state.transitionFromIndex &&
@@ -449,11 +449,11 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
 
         // If we're already transitioning to another index, queue this one.
         if (this.state.transitionFromIndex !== undefined) {
-            let newTransitionQueue = _.cloneDeep(this.state.transitionQueue);
+            const newTransitionQueue = _.cloneDeep(this.state.transitionQueue);
             newTransitionQueue.push({
                 destIndex: destIndex,
                 velocity: velocity,
-                transitionFinished: cb
+                transitionFinished: cb,
             });
             // set new transition queue
             this.setState ({ transitionQueue: newTransitionQueue });
@@ -464,7 +464,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
         this.setState({
             transitionFromIndex: this.state.presentedIndex,
             presentedIndex: destIndex,
-            transitionFinished: cb
+            transitionFinished: cb,
         });
 
         // Grab the scene config from the route we're leaving.
@@ -488,17 +488,17 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
     }
 
     private _completeTransition() {
-        let newState: NavigatorState = {};
+        const newState: NavigatorState = {};
 
         this.setState({
-            transitionFromIndex: undefined
+            transitionFromIndex: undefined,
         });
         this.spring.setCurrentValue(0).setAtRest();
         this._hideScenes();
 
         // Do we have pending transitions? trigger transitions then
         if (this.state.transitionQueue.length) {
-            let newTransitionQueue = _.cloneDeep(this.state.transitionQueue);
+            const newTransitionQueue = _.cloneDeep(this.state.transitionQueue);
             const queuedTransition = newTransitionQueue.shift();
 
             // add styles on the scene we are about to transition to
@@ -508,7 +508,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
                 queuedTransition.destIndex,
                 queuedTransition.velocity,
                 undefined,
-                queuedTransition.transitionFinished
+                queuedTransition.transitionFinished,
             );
 
             if (this.state.transitionFinished) {
@@ -550,7 +550,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
             this._transitionBetween(
                 this.state.transitionFromIndex,
                 this.state.presentedIndex,
-                this.spring.getCurrentValue()
+                this.spring.getCurrentValue(),
             );
         }
     }
@@ -571,7 +571,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
             sceneConfig = this.state.sceneConfigStack[sceneConfigIndex - 1];
         }
 
-        let styleToUse: RX.Types.ViewStyleRuleSet = {};
+        const styleToUse: RX.Types.ViewStyleRuleSet = {};
         const useFn = index < fromIndex || index < toIndex ?
             sceneConfig.animationInterpolators.out :
             sceneConfig.animationInterpolators.into;
@@ -620,9 +620,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
             popIndex,
             undefined, // default velocity
             undefined, // no spring jumping
-            () => {
-                this._cleanScenesPastIndex(popIndex);
-            }
+            () => this._cleanScenesPastIndex(popIndex),
         );
     }
 
@@ -633,7 +631,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
         if (newStackLength < this.state.routeStack.length) {
             this.setState({
                 sceneConfigStack: this.state.sceneConfigStack.slice(0, newStackLength),
-                routeStack: this.state.routeStack.slice(0, newStackLength)
+                routeStack: this.state.routeStack.slice(0, newStackLength),
             });
         }
     }
@@ -654,7 +652,7 @@ export class NavigatorImpl extends NavigatorBase<NavigatorState> {
     // setNativeProps.
     private _setNativeStyles(component: React.ReactInstance, currentStyles: any) {
         // Grab the actual element from the DOM.
-        let element = ReactDOM.findDOMNode(component) as HTMLElement|null;
+        const element = ReactDOM.findDOMNode(component) as HTMLElement|null;
         if (element) {
             const flatStyles: RX.Types.ViewStyleRuleSet = Array.isArray(currentStyles) ? _.flatten(currentStyles) : currentStyles;
 

@@ -1,0 +1,43 @@
+{
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": ["skype", "skype/react"],
+  "rules": {
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "error"
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.tsx"
+      ],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": "off"
+      }
+    },
+    {
+      "files": [
+        "Navigator.tsx"
+      ],
+      "rules": {
+        "no-duplicate-imports": "off"
+      }
+    },
+    {
+      "files": [
+        "*.d.ts"
+      ],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/member-naming": "off"
+      }
+    }
+  ]
+}

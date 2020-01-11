@@ -7,8 +7,8 @@ declare module 'react-native-deprecated-custom-components' {
         initialRouteStack?: any[];
         navigatorBar?: any;
         navigator?: Navigator;
-        onDidFocus?: Function; //deprecated
-        onWillFocus?: Function; //deprecated
+        onDidFocus?: Function; // deprecated
+        onWillFocus?: Function; // deprecated
         renderScene: Function;
         sceneStyle?: RN.StyleRuleSet | RN.StyleRuleSet[];
     }
@@ -21,7 +21,7 @@ declare module 'react-native-deprecated-custom-components' {
             FloatFromBottom: any;
             FloatFromBottomAndroid: any;
             FadeAndroid: any;
-            HorizontalSwipeJump:any;
+            HorizontalSwipeJump: any;
         };
         getCurrentRoutes(): any[];
         jumpBack(): void;

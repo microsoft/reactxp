@@ -38,50 +38,52 @@ export interface NavigatorRoute {
 }
 
 // NOTE: Experimental navigator only
-export type NavigationTransitionSpec = {
+export interface NavigationTransitionSpec {
     duration?: number;
 
     // NOTE: Elastic and bounce easing will not work as expected due to how the navigator interpolates styles
     easing?: RX.Types.Animated.EasingFunction;
-};
+}
 
 // NOTE: Experimental navigator only
-export type NavigationTransitionStyleConfig = {
-  // By default input range is defined as [index - 1, index, index + 1];
-  // Input and output ranges must contain the same number of elements
-  inputRange?: number[];
-  opacityOutput: number | number[];
-  scaleOutput: number | number[];
-  translateXOutput: number | number[];
-  translateYOutput: number | number[];
-};
+export interface NavigationTransitionStyleConfig {
+    // By default input range is defined as [index - 1, index, index + 1];
+    // Input and output ranges must contain the same number of elements
+    inputRange?: number[];
+    opacityOutput: number | number[];
+    scaleOutput: number | number[];
+    translateXOutput: number | number[];
+    translateYOutput: number | number[];
+}
 
 // NOTE: Experimental navigator only
-export type CustomNavigatorSceneConfig = {
-  // Optional transition styles
-  transitionStyle: (sceneIndex: number, sceneDimensions: RX.Types.Dimensions) => NavigationTransitionStyleConfig;
-  // Optional overrides for duration, easing, and timing
-  transitionSpec?: NavigationTransitionSpec;
-  // Optional cardStyle override
-  cardStyle?: RX.Types.ViewStyleRuleSet;
-  // Optionally hide drop shadow
-  hideShadow?: boolean;
-  // Optionally flip the visual order of the last two scenes
-  presentBelowPrevious?: boolean;
-};
+export interface CustomNavigatorSceneConfig {
+    // Optional transition styles
+    transitionStyle: (sceneIndex: number, sceneDimensions: RX.Types.Dimensions) => NavigationTransitionStyleConfig;
+    // Optional overrides for duration, easing, and timing
+    transitionSpec?: NavigationTransitionSpec;
+    // Optional cardStyle override
+    cardStyle?: RX.Types.ViewStyleRuleSet;
+    // Optionally hide drop shadow
+    hideShadow?: boolean;
+    // Optionally flip the visual order of the last two scenes
+    presentBelowPrevious?: boolean;
+}
 
 export interface NavigatorProps extends RX.CommonProps {
-  renderScene: (route: NavigatorRoute) => JSX.Element | null;
-  navigateBackCompleted?: () => void;
-  // NOTE: Arguments are only passed to transitionStarted by the experimental navigator
-  transitionStarted?: (progress?: RX.Types.AnimatedValue,
-  toRouteId?: string, fromRouteId?: string,
-  toIndex?: number, fromIndex?: number) => void;
-  transitionCompleted?: () => void;
-  cardStyle?: RX.Types.ViewStyleRuleSet;
-  children?: ReactNode;
-  // Selector of the navigator delegate. Currently make difference only in react-native.
-  delegateSelector?: NavigatorDelegateSelector;
+    renderScene: (route: NavigatorRoute) => JSX.Element | null;
+    navigateBackCompleted?: () => void;
+    // NOTE: Arguments are only passed to transitionStarted by the experimental navigator
+    transitionStarted?: (progress?: RX.Types.AnimatedValue,
+        toRouteId?: string,
+        fromRouteId?: string,
+        toIndex?: number,
+        fromIndex?: number) => void;
+    transitionCompleted?: () => void;
+    cardStyle?: RX.Types.ViewStyleRuleSet;
+    children?: ReactNode;
+    // Selector of the navigator delegate. Currently make difference only in react-native.
+    delegateSelector?: NavigatorDelegateSelector;
 }
 
 export enum CommandType {
@@ -136,12 +138,12 @@ export abstract class NavigatorDelegate {
                 this._owner.props.navigateBackCompleted();
             }
 
-             // Indicate that we handled the event.
+            // Indicate that we handled the event.
             return true;
         }
 
         return false;
-    }
+    };
 
     abstract getRoutes(): NavigatorRoute[];
     abstract immediatelyResetRouteStack(nextRouteStack: NavigatorRoute[]): void;
