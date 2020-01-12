@@ -1,19 +1,15 @@
 {
     "compilerOptions": {
-        "declaration": true,
-        "noResolve": false,
-        "jsx": "react",
-        "module": "commonjs",
-        "target": "es5",
         "experimentalDecorators": true,
         "noImplicitAny": true,
-        "outDir": "dist/",
         "skipLibCheck": true,
-        "lib": [
-            "es5",
-            "dom"
-        ],
-        "types" : ["lodash", "node", "react", "react-dom", "react-native"]
+        "declaration": true,
+        "noResolve": false,
+        "module": "commonjs",
+        "target": "es5",
+        "outDir": "dist",
+        "jsx": "react",
+        "lib": ["es5", "dom"]
     },
 
     "include": [
@@ -21,8 +17,7 @@
     ],
 
     "exclude": [
-        "dist",
         "node_modules",
-        "website"
+        "dist"
     ]
 }
