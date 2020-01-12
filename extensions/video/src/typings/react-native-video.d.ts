@@ -75,7 +75,7 @@ declare module 'react-native-video' {
         onAudioFocusChanged?: () => void;
         onAudioBecomingNoisy?: () => void;
 
-        style?: any
+        style?: any;
     }
 
     export default class Video extends React.Component<VideoProps, {}> {
