@@ -24,17 +24,13 @@ export class NetInfo extends Interfaces.NetInfo {
     }
 
     isConnected(): Promise<boolean> {
-        return RNNetInfo.fetch().then((state: RNNetInfo.NetInfoState) => {
-            return state.isConnected;
-        }).catch(() => {
-            return Promise.reject('NetInfo.isConnected.fetch() failed');
-        });
+        return RNNetInfo.fetch()
+            .then((state: RNNetInfo.NetInfoState) => state.isConnected)
+            .catch(() => Promise.reject('NetInfo.isConnected.fetch() failed'));
     }
 
     getType(): Promise<Types.DeviceNetworkType> {
-        return RNNetInfo.fetch().then((state: RNNetInfo.NetInfoState) => {
-            return NetInfo._getNetworkTypeFromConnectionInfo(state);
-        });
+        return RNNetInfo.fetch().then((state: RNNetInfo.NetInfoState) => NetInfo._getNetworkTypeFromConnectionInfo(state));
     }
 
     private static _getNetworkTypeFromConnectionInfo(state: RNNetInfo.NetInfoState): Types.DeviceNetworkType {
