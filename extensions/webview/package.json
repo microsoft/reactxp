@@ -5,24 +5,30 @@
   "author": "ReactXP Team <reactxp@microsoft.com>",
   "license": "MIT",
   "scripts": {
-    "build": "npm run tslint && tsc",
-    "tslint": "tslint -p tsconfig.json -r tslint.json --fix || true"
+    "build": "tsc",
+    "lint": "eslint --ext .ts,.tsx src",
+    "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {
     "react-native-webview": "^7.5.2"
   },
   "peerDependencies": {
-    "react": "^16.3",
+    "react": "^16.3.0",
     "reactxp": "^2.0.0",
     "react-dom": "^16.3",
     "react-native": ">=0.57",
     "react-native-windows": "^0.57.1"
   },
   "devDependencies": {
+    "@types/react-native": "0.60.30",
+    "@typescript-eslint/eslint-plugin": "2.15.0",
+    "eslint": "6.8.0",
+    "eslint-config-skype": "1.5.0",
+    "eslint-plugin-import": "2.19.1",
+    "eslint-plugin-react": "7.17.0",
+    "react": "^16.3.0",
     "reactxp": "^2.0.0",
-    "typescript": "3.7.2",
-    "tslint": "5.20.1",
-    "tslint-microsoft-contrib": "6.2.0"
+    "typescript": "3.7.4"
   },
   "types": "dist/web/PluginBase.d.ts"
 }

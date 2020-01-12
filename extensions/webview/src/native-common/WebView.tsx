@@ -9,14 +9,11 @@
 
 import * as React from 'react';
 import * as RN from 'react-native';
-import {
-    WebView as RNWebView,
-    WebViewProps as RNWebViewProps
-} from 'react-native-webview';
+import { WebView as RNWebView } from 'react-native-webview';
 import {
     WebViewMessageEvent as RNWebViewMessageEvent,
     WebViewSourceHtml as RNWebViewSourceHtml,
-    WebViewSourceUri as RNWebViewSourceUri
+    WebViewSourceUri as RNWebViewSourceUri,
 } from 'react-native-webview/lib/WebViewTypes';
 
 import * as RX from 'reactxp';
@@ -26,8 +23,8 @@ import * as Types from '../common/Types';
 const _styles = {
     webViewDefault: RX.Styles.createViewStyle({
         flex: 1,
-        alignSelf: 'stretch'
-    })
+        alignSelf: 'stretch',
+    }),
 };
 
 type MixedContentMode = 'never' | 'always' | 'compatibility' | undefined;
@@ -65,7 +62,7 @@ export class WebView extends React.Component<Types.WebViewProps, RX.Types.Statel
     }
 
     private _sandboxToMixedContentMode(sandbox?: Types.WebViewSandboxMode): MixedContentMode {
-        if (!!sandbox) {
+        if (sandbox) {
             if (sandbox & Types.WebViewSandboxMode.AllowMixedContentAlways) {
                 return 'always';
             }
@@ -79,7 +76,7 @@ export class WebView extends React.Component<Types.WebViewProps, RX.Types.Statel
 
     protected _onMount = (component: RNWebView | null) => {
         this._mountedComponent = component || undefined;
-    }
+    };
 
     protected _onMessage = (e: RNWebViewMessageEvent) => {
         if (this.props.onMessage) {
@@ -92,12 +89,12 @@ export class WebView extends React.Component<Types.WebViewProps, RX.Types.Statel
                 origin: '*',
                 data: e.nativeEvent.data,
                 stopPropagation: () => e.stopPropagation(),
-                preventDefault: () => e.preventDefault()
+                preventDefault: () => e.preventDefault(),
             };
 
             this.props.onMessage(event);
         }
-    }
+    };
 
     private _buildSource(): RNWebViewSourceUri | RNWebViewSourceHtml | undefined {
         const { headers, source, url } = this.props;

@@ -8,7 +8,6 @@
  */
 
 import * as React from 'react';
-
 import * as RX from 'reactxp';
 
 import * as Types from '../common/Types';
@@ -17,13 +16,13 @@ const _styles = {
     webViewDefault: RX.Styles.createViewStyle({
         flex: 1,
         alignSelf: 'stretch',
-        borderStyle: 'none'
+        borderStyle: 'none',
     }),
     webViewContainer: RX.Styles.createViewStyle({
         flexDirection: 'column',
         flex: 1,
-        alignSelf: 'stretch'
-    })
+        alignSelf: 'stretch',
+    }),
 };
 
 export interface WebViewState {
@@ -50,7 +49,7 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
         this.state = {
             postComplete: false,
             webFormIdentifier: `form${WebView._webFrameNumber}`,
-            webFrameIdentifier: `frame${WebView._webFrameNumber}`
+            webFrameIdentifier: `frame${WebView._webFrameNumber}`,
         };
 
         WebView._webFrameNumber++;
@@ -110,8 +109,7 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
         // Don't install global message listener twice.
         if (!WebView._messageListenerInstalled) {
             // Set up the global event.
-            WebView._onMessageReceived = new RX.Types.SubscribableEvent<
-                (e: WebViewMessageEventInternal) => void>(true);
+            WebView._onMessageReceived = new RX.Types.SubscribableEvent<(e: WebViewMessageEventInternal) => void>(true);
 
             window.addEventListener('message', (e: MessageEvent) => {
                 const event: WebViewMessageEventInternal = {
@@ -129,7 +127,7 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
                     preventDefault: () => {
                         e.preventDefault();
                     },
-                    timeStamp: e.timeStamp
+                    timeStamp: e.timeStamp,
                 };
 
                 WebView._onMessageReceived.fire(event);
@@ -163,13 +161,13 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
 
         if (!this.state.postComplete) {
             this.setState({
-                postComplete: true
+                postComplete: true,
             });
         }
     }
 
     render() {
-        const styles = RX.Styles.combine([_styles.webViewDefault, this.props.style]);
+        const styles = RX.Styles.combine([_styles.webViewDefault, this.props.style]) as React.CSSProperties;
         const sandbox = this.props.sandbox !== undefined
             ? this.props.sandbox
             : (this.props.javaScriptEnabled ? Types.WebViewSandboxMode.AllowScripts : Types.WebViewSandboxMode.None);
@@ -181,7 +179,7 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
                     ref={ this._onMount }
                     name={ this.state.webFrameIdentifier }
                     id={ this.state.webFrameIdentifier }
-                    style={ styles as any }
+                    style={ styles }
                     src={ this.props.url }
                     onLoad={ this._onLoad }
                     sandbox={ this._sandboxToStringValue(sandbox) }
@@ -194,13 +192,13 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
 
     protected _onMount = (component: HTMLIFrameElement | null) => {
         this._mountedComponent = component;
-    }
+    };
 
     private _onLoad = (e: RX.Types.SyntheticEvent) => {
         if (this.props.onLoad) {
             this.props.onLoad(e);
         }
-    }
+    };
 
     private _sandboxToStringValue = (sandbox: Types.WebViewSandboxMode) => {
         const values: string[] = [];
@@ -237,7 +235,7 @@ export class WebView extends React.Component<Types.WebViewProps, WebViewState> i
         }
 
         return values.join(' ');
-    }
+    };
 
     postMessage(message: string, targetOrigin = '*') {
         const iframeDOM = this._mountedComponent;

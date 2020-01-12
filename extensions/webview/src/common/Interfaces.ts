@@ -8,8 +8,6 @@
  * display of an independent web page. This was extracted from the reactxp core
  */
 
-import { Component as RXComponent, Types as RXTypes } from 'reactxp';
-
 import * as Types from './Types';
 
 export interface PluginInterface {
