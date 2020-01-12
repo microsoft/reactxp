@@ -64,14 +64,14 @@ interface StaticRendererProps<ItemInfo extends VirtualListCellInfo> extends RX.C
 
 const _styles = {
     cellView: RX.Styles.createViewStyle({
-        position: 'absolute'
+        position: 'absolute',
     }),
     overflowVisible: RX.Styles.createViewStyle({
-        overflow: 'visible'
+        overflow: 'visible',
     }),
     overflowHidden: RX.Styles.createViewStyle({
-        overflow: 'hidden'
-    })
+        overflow: 'hidden',
+    }),
 };
 
 const _isNativeMacOS = RX.Platform.getType() === 'macos';
@@ -84,8 +84,10 @@ const _keyCodeReturn = 3;
 export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Component<VirtualListCellProps<ItemInfo>, RX.Stateless> {
     // Helper class used to render child elements. If we know that none of the children changed - we would like to skip
     // the render completely, to improve performance.
-    private static StaticRenderer = class <CellItemInfo extends VirtualListCellInfo> extends
-            RX.Component<StaticRendererProps<CellItemInfo>, RX.Stateless> {
+    // eslint-disable-next-line @typescript-eslint/member-naming
+    private static StaticRenderer = class <CellItemInfo extends VirtualListCellInfo>
+        extends RX.Component<StaticRendererProps<CellItemInfo>, RX.Stateless> {
+
         constructor(props: StaticRendererProps<CellItemInfo>) {
             super(props);
         }
@@ -107,7 +109,7 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
                     { this.props.renderItem({
                         item: this.props.item,
                         selected: this.props.isSelected,
-                        focused: this.props.isFocused
+                        focused: this.props.isFocused,
                     }) }
                 </RX.Fragment>
             );
@@ -150,9 +152,9 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
             // On native platforms, we'll stick with translate[X|Y] because it has a performance advantage.
             this._animatedStylePosition = RX.Styles.createAnimatedViewStyle({
                 transform: [{
-                    translateY: this._topValue
+                    translateY: this._topValue,
                 }],
-                left: this._leftValue
+                left: this._leftValue,
             });
         } else {
             // We need to work around an IE-specific bug. It doesn't properly handle
@@ -160,14 +162,14 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
             // within the item itself, it doesn't handle that combination.
             this._animatedStylePosition = RX.Styles.createAnimatedViewStyle({
                 top: this._topValue,
-                left: this._leftValue
+                left: this._leftValue,
             });
         }
 
         this._widthValue = RX.Animated.createValue(props.width || 0);
 
         this._animatedStyleWidth = RX.Styles.createAnimatedViewStyle({
-            width: this._widthValue
+            width: this._widthValue,
         });
     }
 
@@ -282,20 +284,20 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
                                 toValue: top + animationOvershoot,
                                 duration: 200,
                                 delay: animationDelay,
-                                easing: _skypeEaseInAnimationCurve
+                                easing: _skypeEaseInAnimationCurve,
                             }),
                             RX.Animated.timing(this._topValue, {
                                 toValue: top,
                                 duration: 400,
-                                easing: _skypeEaseOutAnimationCurve
-                            })
+                                easing: _skypeEaseOutAnimationCurve,
+                            }),
                         ]);
                     } else {
                         this._topAnimation = RX.Animated.timing(this._topValue, {
                             toValue: top,
                             duration: 200,
                             delay: animationDelay,
-                            easing: RX.Animated.Easing.InOut()
+                            easing: RX.Animated.Easing.InOut(),
                         });
                     }
 
@@ -376,31 +378,31 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
         if (this.props.onKeyPress) {
             this.props.onKeyPress(e);
         }
-    }
+    };
 
     private _onFocus = (e: RX.Types.FocusEvent) => {
         if (this.props.onItemFocused) {
             this.props.onItemFocused(this.props.item);
         }
-    }
+    };
 
     private _onPress = (e: RX.Types.SyntheticEvent) => {
         if (this.props.onItemSelected && this.props.item) {
             this.props.onItemSelected(this.props.item);
             e.stopPropagation();
         }
-    }
+    };
 
     private _onBlur = (e: RX.Types.FocusEvent) => {
         if (this.props.onItemFocused) {
             this.props.onItemFocused(undefined);
         }
-    }
+    };
 
     private _onLayout = (layoutInfo: RX.Types.ViewOnLayoutEvent) => {
         if (this.props.onLayout && this.props.isActive && this._itemKey) {
             this._calculatedHeight = layoutInfo.height;
             this.props.onLayout(this._itemKey, layoutInfo.height);
         }
-    }
+    };
 }
