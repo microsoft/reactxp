@@ -16,13 +16,7 @@ export interface WebViewNavigationState {
     loading: boolean;
     url: string;
     title: string;
-    readonly navigationType:
-        | 'click'
-        | 'formsubmit'
-        | 'backforward'
-        | 'reload'
-        | 'formresubmit'
-        | 'other';
+    readonly navigationType: 'click' | 'formsubmit' | 'backforward' | 'reload' | 'formresubmit' | 'other';
 }
 
 export interface WebViewErrorState extends WebViewNavigationState {
