@@ -9,7 +9,7 @@
 
 var _ = require('lodash');
 var fs = require('fs');
-var path = require('path');
+var path = require('path-posix');
 
 var targetPlatform = 'web';
 var isDevEnv = false;
