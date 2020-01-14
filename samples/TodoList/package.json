@@ -46,6 +46,7 @@
         "metro-react-native-babel-preset": "^0.57.0",
         "node-notifier": "^6.0.0",
         "path": "^0.12.7",
+        "path-posix": "^1.0.0",
         "pretty-hrtime": "^1.0.3",
         "run-sequence": "^2.2.1",
         "serve-static": "^1.14.1",
