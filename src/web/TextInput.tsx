@@ -265,6 +265,7 @@ export class TextInput extends React.Component<Types.TextInputProps, TextInputSt
 
                     className={ className }
 
+                    autoCapitalize={ this.props.autoCapitalize }
                     autoCorrect={ this.props.autoCorrect === false ? 'off' : undefined }
                     spellCheck={ spellCheck }
                     disabled={ !editable }
