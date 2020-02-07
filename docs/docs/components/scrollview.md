@@ -18,7 +18,6 @@ bounces: boolean = true; // iOS only
 
 // Does it support scrolling in the horizontal and/or vertical directions?
 horizontal: boolean = false;
-vertical: boolean = true;
 
 // When the user scrolls the view, how should the on-screen keyboard react?
 keyboardDismissMode: 'none' | 'interactive' | 'on-drag'; // Native only
