@@ -16,9 +16,8 @@ ScrollViews must have a bounded height (or width, if it scrolls horizontally) si
 // Should scroll bar bounce when user hits the bounds?
 bounces: boolean = true; // iOS only
 
-// Does it support scrolling in the horizontal and/or vertical directions?
+// Controls the scroll direction. When false or undefined, only vertical scroll is enabled, when true, only horizontal scroll is enabled
 horizontal: boolean = false;
-vertical: boolean = true;
 
 // When the user scrolls the view, how should the on-screen keyboard react?
 keyboardDismissMode: 'none' | 'interactive' | 'on-drag'; // Native only
