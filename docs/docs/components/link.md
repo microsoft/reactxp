@@ -24,6 +24,12 @@ allowFontScaling: boolean = true; // Android and iOS only
 // property.
 autoFocus: boolean = false;
 
+// Specifies largest possible scale a font can reach when allowFontScaling is enabled. Possible values:
+//  - null / undefined (default): inherit from the parent node or the global default (0)
+//  - 0: no max, ignore parent / global default
+//  - >= 1: sets the maxFontSizeMultiplier of this node to this value
+maxFontSizeMultiplier: number = undefined; // iOS and Android only.
+
 // For non-zero values, truncates with ellipsis if necessary
 numberOfLines: number = 0;
 

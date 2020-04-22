@@ -54,6 +54,12 @@ accessibilityId: string = undefined;
 // callback.
 autoFocus: boolean = false;
 
+// Specifies largest possible scale a font can reach when allowFontScaling is enabled. Possible values:
+//  - null / undefined (default): inherit from the parent node or the global default (0)
+//  - 0: no max, ignore parent / global default
+//  - >= 1: sets the maxFontSizeMultiplier of this node to this value
+maxFontSizeMultiplier: number = undefined; // iOS and Android only.
+
 // For non-zero values, truncates with ellipsis if necessary. Web platform
 // doesn't support values greater than 1. Web platform may also not truncate
 // properly if text contains line breaks, so it may be necessary to replace
