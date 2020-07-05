@@ -23,11 +23,11 @@ class TodosStore extends StoreBase {
 
     addTodo(todoText: string) {
         const now = Date.now().valueOf();
-        let newTodo: Todo = {
+        const newTodo: Todo = {
             id: now.toString(),
             creationTime: now,
             text: todoText,
-            _searchTerms: todoText
+            _searchTerms: todoText,
         };
 
         this._todos = this._todos.concat(newTodo);

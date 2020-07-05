@@ -6,15 +6,17 @@
 */
 
 import * as assert from 'assert';
+
 import * as _ from 'lodash';
 import * as RX from 'reactxp';
 import Navigator, { Types as NavTypes } from 'reactxp-navigation';
 import { ComponentBase } from 'resub';
 
-import CreateTodoPanel from './CreateTodoPanel';
 import NavContextStore from '../stores/NavContextStore';
 import * as NavModels from '../models/NavModels';
 import { Colors } from '../app/Styles';
+
+import CreateTodoPanel from './CreateTodoPanel';
 import TodoCompositeView from './TodoCompositeView';
 import TodoListPanel from './TodoListPanel';
 import TopBarComposite from './TopBarComposite';
@@ -33,33 +35,33 @@ interface RootViewState {
 const _styles = {
     root: RX.Styles.createViewStyle({
         flex: 1,
-        alignSelf: 'stretch'
+        alignSelf: 'stretch',
     }),
     stackViewBackground: RX.Styles.createViewStyle({
         flex: 1,
         alignSelf: 'stretch',
-        backgroundColor: Colors.white
-    })
+        backgroundColor: Colors.white,
+    }),
 };
 
 export default class RootView extends ComponentBase<RootViewProps, RootViewState> {
     private _navigator: Navigator | null = null;
 
     protected _buildState(props: RootViewProps, initState: boolean): Partial<RootViewState> | undefined {
-        let newNavContext = NavContextStore.getNavContext();
+        const newNavContext = NavContextStore.getNavContext();
 
-        let partialState: Partial<RootViewState> = {
+        const partialState: Partial<RootViewState> = {
             viewTitle: this._getViewTitle(newNavContext),
-            navContext: newNavContext
+            navContext: newNavContext,
         };
 
         if (newNavContext.isStackNav) {
             if (this._navigator) {
-                let newNavStack = newNavContext as NavModels.StackRootNavContext;
+                const newNavStack = newNavContext as NavModels.StackRootNavContext;
                 let mustResetRouteStack = true;
 
                 if (this.state.navContext && this.state.navContext.isStackNav) {
-                    let prevNavStack = this.state.navContext as NavModels.StackRootNavContext;
+                    const prevNavStack = this.state.navContext as NavModels.StackRootNavContext;
 
                     if (newNavStack.stack.length === prevNavStack.stack.length + 1) {
                         if (this._compareNavStack(newNavStack.stack, prevNavStack.stack, prevNavStack.stack.length)) {
@@ -112,8 +114,8 @@ export default class RootView extends ComponentBase<RootViewProps, RootViewState
 
     private _getViewTitle(navContext: NavModels.RootNavContext): string {
         if (navContext.isStackNav) {
-            let stackContext = navContext as NavModels.StackRootNavContext;
-            let topViewId = stackContext.stack[stackContext.stack.length - 1].viewId;
+            const stackContext = navContext as NavModels.StackRootNavContext;
+            const topViewId = stackContext.stack[stackContext.stack.length - 1].viewId;
 
             switch (topViewId) {
                 case NavModels.NavViewId.TodoList:
@@ -141,7 +143,7 @@ export default class RootView extends ComponentBase<RootViewProps, RootViewState
             this._navigator.immediatelyResetRouteStack(this._createNavigatorRouteStack(
                 this.state.navContext as NavModels.StackRootNavContext));
         }
-    }
+    };
 
     private _onRenderScene = (navigatorRoute: NavTypes.NavigatorRoute): JSX.Element | null => {
         const viewId = navigatorRoute.routeId as NavModels.NavViewId;
@@ -157,7 +159,7 @@ export default class RootView extends ComponentBase<RootViewProps, RootViewState
                 { this._renderSceneContents(viewId) }
             </RX.View>
         );
-    }
+    };
 
     private _renderSceneContents(viewId: NavModels.NavViewId) {
         switch (viewId) {
@@ -173,7 +175,7 @@ export default class RootView extends ComponentBase<RootViewProps, RootViewState
                 return <CreateTodoPanel />;
 
             case NavModels.NavViewId.ViewTodo:
-                let viewContext = this._findNavContextForRoute(viewId) as NavModels.ViewTodoViewNavContext;
+                const viewContext = this._findNavContextForRoute(viewId) as NavModels.ViewTodoViewNavContext;
                 if (!viewContext) {
                     return null;
                 }
@@ -186,17 +188,17 @@ export default class RootView extends ComponentBase<RootViewProps, RootViewState
 
     private _onSelectTodoFromList = (selectedId: string) => {
         NavContextStore.navigateToTodoList(selectedId, false);
-    }
+    };
 
     private _onCreateNewTodo = () => {
         NavContextStore.navigateToTodoList(undefined, true);
-    }
+    };
 
     private _onBack = () => {
         if (this.state.navContext.isStackNav) {
             NavContextStore.popNavigationStack();
         }
-    }
+    };
 
     private _renderMainView(): JSX.Element | null {
         if (this.state.navContext instanceof NavModels.TodoRootNavContext) {
@@ -208,25 +210,21 @@ export default class RootView extends ComponentBase<RootViewProps, RootViewState
     }
 
     private _createNavigatorRouteStack(stackContext: NavModels.StackRootNavContext): NavTypes.NavigatorRoute[] {
-        return _.map(stackContext.stack, (viewContext, index) => {
-            return this._createNavigatorRoute(viewContext.viewId);
-        });
+        return _.map(stackContext.stack, (viewContext, index) => this._createNavigatorRoute(viewContext.viewId));
     }
 
     private _createNavigatorRoute(viewId: NavModels.NavViewId): NavTypes.NavigatorRoute {
         return {
             routeId: viewId,
-            sceneConfigType: NavTypes.NavigatorSceneConfigType.FloatFromRight
+            sceneConfigType: NavTypes.NavigatorSceneConfigType.FloatFromRight,
         };
     }
 
     private _findNavContextForRoute(routeId: number) {
         assert.ok(this.state.navContext.isStackNav);
 
-        let stackContext = this.state.navContext as NavModels.StackRootNavContext;
-        return _.find(stackContext.stack, (viewContext: NavModels.ViewNavContext) => {
-            return viewContext.viewId === routeId;
-        });
+        const stackContext = this.state.navContext as NavModels.StackRootNavContext;
+        return _.find(stackContext.stack, (viewContext: NavModels.ViewNavContext) => viewContext.viewId === routeId);
     }
 
     private _compareNavStack(stackA: NavModels.ViewNavContext[], stackB: NavModels.ViewNavContext[], count: number): boolean {

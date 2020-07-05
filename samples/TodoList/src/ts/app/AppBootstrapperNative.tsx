@@ -23,12 +23,12 @@ import AppBootstrapper from './AppBootstrapper';
 
 class AppBootstrapperNative extends AppBootstrapper {
     protected _getDbProvidersToTry(): DbProvider[] {
-        let rnSqliteProvider = require('react-native-sqlite-storage');
+        const rnSqliteProvider = require('react-native-sqlite-storage');
 
         // Specify the DB providers that are valid on the RN platforms.
         return [
             new CordovaNativeSqliteProvider(rnSqliteProvider),
-            new InMemoryProvider()
+            new InMemoryProvider(),
         ];
     }
 

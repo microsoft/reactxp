@@ -51,7 +51,7 @@ class ResponsiveWidthStore extends StoreBase {
         const triggers: TriggerKeys[] = [];
 
         // No need to re-calc when the width is unchanged
-        let widthUpdated = this._rawWidth[rootViewId] !== width;
+        const widthUpdated = this._rawWidth[rootViewId] !== width;
         if (widthUpdated) {
             this._rawWidth[rootViewId] = width;
             triggers.push(TriggerKeys.Width);

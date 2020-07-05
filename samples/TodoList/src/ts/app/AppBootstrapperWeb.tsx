@@ -10,12 +10,11 @@ import * as ShimHelpers from '../utilities/ShimHelpers';
 ShimHelpers.shimEnvironment(__DEV__, false);
 
 // Initialize AppConfig.
-import AppConfig from './AppConfig';
 const appVersionElement = document.getElementById('appVersion')!;
 const appVersion = (appVersionElement as HTMLInputElement).value;
 appVersionElement.parentElement!.removeChild(appVersionElement);
 AppConfig.initialize({
-    appVersion
+    appVersion,
 });
 
 import { DbProvider } from 'nosqlprovider';
@@ -23,6 +22,8 @@ import { IndexedDbProvider } from 'nosqlprovider/dist/IndexedDbProvider';
 import { InMemoryProvider } from 'nosqlprovider/dist/InMemoryProvider';
 import { WebSqlProvider } from 'nosqlprovider/dist/WebSqlProvider';
 import * as SyncTasks from 'synctasks';
+
+import AppConfig from './AppConfig';
 
 import AppBootstrapper from './AppBootstrapper';
 
@@ -32,7 +33,7 @@ class AppBootstrapperWeb extends AppBootstrapper {
         return [
             new IndexedDbProvider(),
             new WebSqlProvider(),
-            new InMemoryProvider()
+            new InMemoryProvider(),
         ];
     }
 

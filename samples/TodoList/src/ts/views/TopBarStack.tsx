@@ -19,34 +19,34 @@ const _styles = {
         borderBottomWidth: 1,
         borderColor: Colors.gray66,
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
     }),
     leftRightContainer: RX.Styles.createViewStyle({
         flexDirection: 'row',
         alignItems: 'center',
-        width: 60
+        width: 60,
     }),
     titleContainer: RX.Styles.createViewStyle({
         flex: 1,
         alignSelf: 'stretch',
-        justifyContent: 'center'
+        justifyContent: 'center',
     }),
     titleText: RX.Styles.createTextStyle({
         flex: -1,
         font: Fonts.displaySemibold,
         fontSize: FontSizes.size16,
         color: Colors.menuText,
-        textAlign: 'center'
+        textAlign: 'center',
     }),
     backText: RX.Styles.createTextStyle({
         font: Fonts.displayRegular,
         fontSize: FontSizes.size16,
         color: Colors.menuText,
-        margin: 8
+        margin: 8,
     }),
     backTextHover: RX.Styles.createTextStyle({
-        color: Colors.menuTextHover
-    })
+        color: Colors.menuTextHover,
+    }),
 };
 
 export interface TopBarStackProps extends RX.CommonProps {
@@ -89,13 +89,11 @@ export default class TopBarStack extends ComponentBase<TopBarStackProps, RX.Stat
         if (this.props.onBack) {
             this.props.onBack();
         }
-    }
+    };
 
-    private _renderBackButton = (isHovering: boolean) => {
-        return (
-            <RX.Text style={ [_styles.backText, isHovering ? _styles.backTextHover : undefined] }>
-                { 'Back' }
-            </RX.Text>
-        );
-    }
+    private _renderBackButton = (isHovering: boolean) => (
+        <RX.Text style={ [_styles.backText, isHovering ? _styles.backTextHover : undefined] }>
+            { 'Back' }
+        </RX.Text>
+    );
 }

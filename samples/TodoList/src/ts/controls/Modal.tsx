@@ -6,6 +6,7 @@
 */
 
 import * as assert from 'assert';
+
 import * as RX from 'reactxp';
 import { ComponentBase } from 'resub';
 
@@ -38,16 +39,16 @@ const _styles = {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: Colors.simpleDialogBehind,
-        flexDirection: 'row'
+        flexDirection: 'row',
     }),
     modalContainer: RX.Styles.createViewStyle({
         flex: -1,
-        flexDirection: 'row'
+        flexDirection: 'row',
     }),
     modalBox: RX.Styles.createViewStyle({
         flex: -1,
-        margin: 32
-    })
+        margin: 32,
+    }),
 };
 
 export default class Modal extends ComponentBase<ModalProps, ModalState> {
@@ -58,25 +59,25 @@ export default class Modal extends ComponentBase<ModalProps, ModalState> {
     private _contentScaleAnimationStyle = RX.Styles.createAnimatedViewStyle({
         opacity: this._contentOpacityValue,
         transform: [{
-            scale: this._contentScaleValue
-        }]
+            scale: this._contentScaleValue,
+        }],
     });
 
     private _opacityAnimationValue = new RX.Animated.Value(1);
     private _opacityAnimationStyle = RX.Styles.createAnimatedViewStyle({
-        opacity: this._opacityAnimationValue
+        opacity: this._opacityAnimationValue,
     });
 
     protected _buildState(props: ModalProps, initialBuild: boolean): Partial<ModalState> {
-        let newState: Partial<ModalState> = {
+        const newState: Partial<ModalState> = {
         };
 
         newState.widthStyle = props.modalWidth ? RX.Styles.createViewStyle({
-            width: props.modalWidth
+            width: props.modalWidth,
         }, false) : undefined;
 
         newState.heightStyle = props.modalHeight ? RX.Styles.createViewStyle({
-            height: props.modalHeight
+            height: props.modalHeight,
         }, false) : undefined;
 
         return newState;
@@ -98,7 +99,7 @@ export default class Modal extends ComponentBase<ModalProps, ModalState> {
             toValue: 1,
             duration: _scalingAnimationDuration,
             easing: RX.Animated.Easing.OutBack(),
-            useNativeDriver: true
+            useNativeDriver: true,
         }).start();
     }
 
@@ -119,7 +120,7 @@ export default class Modal extends ComponentBase<ModalProps, ModalState> {
         const modalBoxStyles = [_styles.modalBox, this.state.widthStyle];
         const modalContentStyles = [_styles.modalContainer, this._contentScaleAnimationStyle, this.state.heightStyle];
 
-        let modalContent = (
+        const modalContent = (
             <RX.Animated.View style={ modalContentStyles }>
                 <RX.View
                     style={ modalBoxStyles }
@@ -152,21 +153,21 @@ export default class Modal extends ComponentBase<ModalProps, ModalState> {
             return true;
         }
         return false;
-    }
+    };
 
     private _clickInside = (e: RX.Types.SyntheticEvent) => {
         // Do nothing, keeps click/press from propogating up to the dismissal action.
         e.stopPropagation();
-    }
+    };
 
     private _onLongPressOutside = (e: RX.Types.SyntheticEvent) => {
         // Do nothing, required to keep onPress from firing on long press.
         e.stopPropagation();
-    }
+    };
 
     private _clickOutside = (e: RX.Types.SyntheticEvent) => {
         e.stopPropagation();
-    }
+    };
 
     private _animateClose(onAnimationComplete: () => void) {
         RX.Animated.parallel([
@@ -174,27 +175,27 @@ export default class Modal extends ComponentBase<ModalProps, ModalState> {
                 toValue: 0,
                 duration: _opacityAnimationDuration,
                 easing: RX.Animated.Easing.Out(),
-                useNativeDriver: true
+                useNativeDriver: true,
             }),
             RX.Animated.timing(this._contentOpacityValue, {
                 toValue: 0,
                 duration: _opacityAnimationDuration,
                 easing: RX.Animated.Easing.Out(),
-                useNativeDriver: true
+                useNativeDriver: true,
             }),
             RX.Animated.timing(this._contentScaleValue, {
                 toValue: _initialScalingRatio,
                 duration: _scalingAnimationDuration,
                 easing: RX.Animated.Easing.Out(),
-                useNativeDriver: true
-            })
+                useNativeDriver: true,
+            }),
         ]).start(() => {
             onAnimationComplete();
         });
     }
 
     static dismissAnimated(modalId: string): Promise<void> {
-        let modal = Modal._visibleModalMap[modalId];
+        const modal = Modal._visibleModalMap[modalId];
         if (!modal) {
             return Promise.reject('Modal ID not found');
         }

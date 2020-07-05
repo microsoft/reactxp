@@ -3,7 +3,12 @@
     "project": "./tsconfig.json"
   },
   "extends": ["skype", "skype/react"],
-  "rules": {},
+  "rules": {
+    "@typescript-eslint/naming-convention": [
+      "error",
+        { "selector": "variableLike", "format": ["camelCase", "UPPER_CASE"], "leadingUnderscore": "allow" }
+    ]
+  },
   "overrides": [
     {
       "files": [

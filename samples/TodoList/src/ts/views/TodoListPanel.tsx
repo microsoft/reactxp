@@ -14,9 +14,11 @@ import { ComponentBase } from 'resub';
 import AppConfig from '../app/AppConfig';
 import HoverButton from '../controls/HoverButton';
 import { Colors, Fonts, FontSizes } from '../app/Styles';
-import TodoListItem from './TodoListItem';
+
 import { Todo } from '../models/TodoModels';
 import TodosStore from '../stores/TodosStore';
+
+import TodoListItem from './TodoListItem';
 
 interface TodoListItemInfo extends VirtualListViewItemInfo {
     todo: Todo;
@@ -40,14 +42,14 @@ const _styles = {
     listScroll: RX.Styles.createViewStyle({
         flexDirection: 'column',
         alignSelf: 'stretch',
-        backgroundColor: Colors.contentBackground
+        backgroundColor: Colors.contentBackground,
     }),
     todoListHeader: RX.Styles.createViewStyle({
         height: 60,
         borderBottomWidth: 1,
         borderColor: Colors.borderSeparator,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     }),
     searchBox: RX.Styles.createTextInputStyle({
         font: Fonts.displayRegular,
@@ -56,48 +58,46 @@ const _styles = {
         borderColor: Colors.borderSeparator,
         flex: 1,
         padding: 4,
-        marginLeft: 12
+        marginLeft: 12,
     }),
     container: RX.Styles.createViewStyle({
         flex: 1,
         alignSelf: 'stretch',
-        backgroundColor: Colors.contentBackground
+        backgroundColor: Colors.contentBackground,
     }),
     addTodoButton: RX.Styles.createViewStyle({
         margin: 8,
         paddingHorizontal: 8,
-        paddingVertical: 4
+        paddingVertical: 4,
     }),
     buttonText: RX.Styles.createTextStyle({
         font: Fonts.displayRegular,
         fontSize: FontSizes.size32,
         lineHeight: 32,
-        color: Colors.buttonTextColor
+        color: Colors.buttonTextColor,
     }),
     buttonTextHover: RX.Styles.createTextStyle({
-        color: Colors.buttonTextHover
-    })
+        color: Colors.buttonTextHover,
+    }),
 };
 
 export default class TodoListPanel extends ComponentBase<TodoListPanelProps, TodoListPanelState> {
     protected _buildState(props: TodoListPanelProps, initState: boolean): Partial<TodoListPanelState> | undefined {
-        let partialState: Partial<TodoListPanelState> = {
+        const partialState: Partial<TodoListPanelState> = {
         };
 
-        partialState.todos = TodosStore.getTodos().map((todo, i) => {
-            return {
-                key: i.toString(),
-                height: _listItemHeight,
-                template: 'todo',
-                todo
-            };
-        });
+        partialState.todos = TodosStore.getTodos().map((todo, i) => ({
+            key: i.toString(),
+            height: _listItemHeight,
+            template: 'todo',
+            todo,
+        }));
 
         if (initState) {
             partialState.searchString = '';
             partialState.filteredTodoList = partialState.todos;
         } else {
-            let filter = _.trim(partialState.searchString);
+            const filter = _.trim(partialState.searchString);
             if (filter) {
                 partialState.filteredTodoList = this._filterTodoList(partialState.todos, filter);
             } else {
@@ -135,29 +135,27 @@ export default class TodoListPanel extends ComponentBase<TodoListPanelProps, Tod
         );
     }
 
-    private _onRenderAddTodoButton = (isHovering: boolean) => {
-        return (
-            <RX.View style={ _styles.addTodoButton }>
-                <RX.Text style={ [_styles.buttonText, isHovering ? _styles.buttonTextHover : undefined] }>
-                    { '+' }
-                </RX.Text>
-            </RX.View>
-        );
-    }
+    private _onRenderAddTodoButton = (isHovering: boolean) => (
+        <RX.View style={ _styles.addTodoButton }>
+            <RX.Text style={ [_styles.buttonText, isHovering ? _styles.buttonTextHover : undefined] }>
+                { '+' }
+            </RX.Text>
+        </RX.View>
+    );
 
     private _onChangeTextSearch = (newValue: string) => {
-        let filteredTodoList = this._filterTodoList(this.state.todos, newValue.trim());
+        const filteredTodoList = this._filterTodoList(this.state.todos, newValue.trim());
         this.setState({
             filteredTodoList,
-            searchString: newValue
+            searchString: newValue,
         });
-    }
+    };
 
     private _filterTodoList(sortedTodos: TodoListItemInfo[], searchString: string): TodoListItemInfo[] {
-        let lowerSearchString = searchString.toLowerCase();
+        const lowerSearchString = searchString.toLowerCase();
 
         return _.filter(sortedTodos, item => {
-            let todoLower = item.todo.text.toLowerCase();
+            const todoLower = item.todo.text.toLowerCase();
             return todoLower.search(lowerSearchString) >= 0;
         });
     }
@@ -179,7 +177,7 @@ export default class TodoListPanel extends ComponentBase<TodoListPanelProps, Tod
         this.props.onSelect(todoId);
         this.setState({
             searchString: '',
-            filteredTodoList: this.state.todos
+            filteredTodoList: this.state.todos,
         });
     };
 
@@ -187,7 +185,7 @@ export default class TodoListPanel extends ComponentBase<TodoListPanelProps, Tod
         this.props.onCreateNew();
         this.setState({
             searchString: '',
-            filteredTodoList: this.state.todos
+            filteredTodoList: this.state.todos,
         });
     };
 }

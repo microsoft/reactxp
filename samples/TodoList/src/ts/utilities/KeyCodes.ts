@@ -7,7 +7,7 @@
 
 import * as RX from 'reactxp';
 
-let _isInitialized = false;
+const _isInitialized = false;
 let _isReactNative = false;
 
 function isReactNative(): boolean {

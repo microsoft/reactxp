@@ -15,7 +15,7 @@ export class CurrentUserStore extends StoreBase {
     private _user: User = {
         id: '1',
         fullName: 'Adam Smith',
-        email: 'adam.smith@sample.com'
+        email: 'adam.smith@sample.com',
     };
 
     @autoSubscribe

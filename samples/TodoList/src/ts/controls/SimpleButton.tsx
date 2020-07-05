@@ -7,8 +7,9 @@
 
 import * as RX from 'reactxp';
 
-import HoverButton from './HoverButton';
 import { Colors, Fonts, FontSizes } from '../app/Styles';
+
+import HoverButton from './HoverButton';
 
 export interface SimpleButtonProps {
     onPress?: (e: RX.Types.SyntheticEvent) => void;
@@ -29,19 +30,19 @@ const _styles = {
         paddingVertical: 4,
         paddingHorizontal: 12,
         backgroundColor: Colors.simpleButtonBackground,
-        borderColor: Colors.simpleButtonBorder
+        borderColor: Colors.simpleButtonBorder,
     }),
     buttonHover: RX.Styles.createViewStyle({
-        backgroundColor: Colors.simpleButtonBackgroundHover
+        backgroundColor: Colors.simpleButtonBackgroundHover,
     }),
     text: RX.Styles.createTextStyle({
         font: Fonts.displayRegular,
         fontSize: FontSizes.size16,
-        color: Colors.simpleButtonText
+        color: Colors.simpleButtonText,
     }),
     textHover: RX.Styles.createTextStyle({
-        color: Colors.simpleButtonTextHover
-    })
+        color: Colors.simpleButtonTextHover,
+    }),
 };
 
 export default class SimpleButton extends RX.Component<SimpleButtonProps, RX.Stateless> {
@@ -57,8 +58,8 @@ export default class SimpleButton extends RX.Component<SimpleButtonProps, RX.Sta
     }
 
     private _onRenderButton = (isHovering: boolean) => {
-        let buttonStyles = [_styles.button, this.props.buttonStyle];
-        let textStyles = [_styles.text, this.props.textStyle];
+        const buttonStyles = [_styles.button, this.props.buttonStyle];
+        const textStyles = [_styles.text, this.props.textStyle];
         if (isHovering) {
             buttonStyles.push(_styles.buttonHover);
             buttonStyles.push(this.props.buttonHoverStyle);
@@ -73,5 +74,5 @@ export default class SimpleButton extends RX.Component<SimpleButtonProps, RX.Sta
                 </RX.Text>
             </RX.View>
         );
-    }
+    };
 }

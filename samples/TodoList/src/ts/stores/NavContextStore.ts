@@ -6,6 +6,7 @@
 */
 
 import * as assert from 'assert';
+
 import * as RX from 'reactxp';
 import { autoSubscribe, AutoSubscribeStore, disableWarnings, StoreBase } from 'resub';
 
@@ -36,7 +37,7 @@ export class NavContextStore extends StoreBase {
         });
 
         if (this._isUsingStackNav) {
-            let stackNavContext = new NavModels.StackRootNavContext();
+            const stackNavContext = new NavModels.StackRootNavContext();
             stackNavContext.stack.push(new NavModels.TodoListViewNavContext());
             this._navContext = stackNavContext;
         } else {
@@ -89,7 +90,7 @@ export class NavContextStore extends StoreBase {
 
     popNavigationStack() {
         assert.ok(this._navContext.isStackNav);
-        let stackContext = this._navContext.clone() as NavModels.StackRootNavContext;
+        const stackContext = this._navContext.clone() as NavModels.StackRootNavContext;
         assert.ok(stackContext.stack.length >= 2);
         stackContext.stack.pop();
         this.setNavContext(stackContext);

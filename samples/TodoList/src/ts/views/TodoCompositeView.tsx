@@ -9,10 +9,11 @@
 import * as RX from 'reactxp';
 import { ComponentBase } from 'resub';
 
-import CreateTodoPanel from './CreateTodoPanel';
 import NavContextStore from '../stores/NavContextStore';
 import * as NavModels from '../models/NavModels';
 import { Colors } from '../app/Styles';
+
+import CreateTodoPanel from './CreateTodoPanel';
 import TodoListPanel from './TodoListPanel';
 import ViewTodoPanel from './ViewTodoPanel';
 
@@ -27,17 +28,17 @@ const _styles = {
     viewContainer: RX.Styles.createViewStyle({
         flex: 1,
         alignSelf: 'stretch',
-        flexDirection: 'row'
+        flexDirection: 'row',
     }),
     leftPanelContainer: RX.Styles.createViewStyle({
         width: 400,
-        flexDirection: 'column'
+        flexDirection: 'column',
     }),
     rightPanelContainer: RX.Styles.createViewStyle({
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: Colors.grayF8
-    })
+        backgroundColor: Colors.grayF8,
+    }),
 };
 
 export default class TodoCompositeView extends ComponentBase<TodoCompositeViewProps, TodoCompositeViewState> {
@@ -78,9 +79,9 @@ export default class TodoCompositeView extends ComponentBase<TodoCompositeViewPr
 
     private _onSelectTodo = (todoId: string) => {
         NavContextStore.navigateToTodoList(todoId, false);
-    }
+    };
 
     private _onCreateNewTodo = () => {
         NavContextStore.navigateToTodoList('', true);
-    }
+    };
 }

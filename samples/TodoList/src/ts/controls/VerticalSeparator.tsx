@@ -19,8 +19,8 @@ const _styles = {
         marginVertical: 12,
         marginHorizontal: 8,
         width: 1,
-        backgroundColor: Colors.separator
-    })
+        backgroundColor: Colors.separator,
+    }),
 };
 
 export default class VerticalSeparator extends RX.Component<VerticalSeparatorProps, RX.Stateless> {

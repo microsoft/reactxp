@@ -11,9 +11,11 @@ import * as RX from 'reactxp';
 import { ComponentBase } from 'resub';
 
 import KeyCodes from '../utilities/KeyCodes';
+
+import { Colors, Fonts, FontSizes } from '../app/Styles';
+
 import Modal from './Modal';
 import SimpleButton from './SimpleButton';
-import { Colors, Fonts, FontSizes } from '../app/Styles';
 
 export interface SimpleDialogButton {
     text?: string;
@@ -49,45 +51,45 @@ const _styles = {
         flex: 1,
         backgroundColor: Colors.simpleDialogBackground,
         borderWidth: 1,
-        borderColor: Colors.simpleDialogBorder
+        borderColor: Colors.simpleDialogBorder,
     }),
     titleText: RX.Styles.createTextStyle({
         font: Fonts.displaySemibold,
         fontSize: FontSizes.size16,
         color: Colors.simpleDialogText,
         textAlign: 'center',
-        paddingVertical: _modalPadding
+        paddingVertical: _modalPadding,
     }),
     contentText: RX.Styles.createTextStyle({
         font: Fonts.displayRegular,
         fontSize: FontSizes.size16,
         color: Colors.simpleDialogText,
         textAlign: 'left',
-        paddingVertical: _modalPadding
+        paddingVertical: _modalPadding,
     }),
     contentContainer: RX.Styles.createViewStyle({
         flex: 1,
-        paddingHorizontal: _modalPadding
+        paddingHorizontal: _modalPadding,
     }),
     buttonContainer: RX.Styles.createViewStyle({
         alignItems: 'stretch',
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        padding: _modalPadding
+        padding: _modalPadding,
     }),
     button: RX.Styles.createViewStyle({
-        marginLeft: 12
+        marginLeft: 12,
     }),
     panelHeader: RX.Styles.createTextStyle({
         font: Fonts.displayBold,
         fontSize: FontSizes.size16,
-        color: Colors.gray66
+        color: Colors.gray66,
     }),
     displayText: RX.Styles.createTextStyle({
         font: Fonts.displayRegular,
         fontSize: FontSizes.size16,
-        color: Colors.gray66
-    })
+        color: Colors.gray66,
+    }),
 };
 
 export default class SimpleDialog extends ComponentBase<SimpleDialogProps, RX.Stateless> {
@@ -162,19 +164,17 @@ export default class SimpleDialog extends ComponentBase<SimpleDialogProps, RX.St
         );
     }
 
-    private _renderButton = (buttonDef: SimpleDialogButton, index: number): JSX.Element => {
-        return (
-            <SimpleButton
-                key={ index }
-                onPress={ e => this._onButtonPress(e, buttonDef) }
-                title={ buttonDef.text }
-                text={ buttonDef.text || '' }
-                disabled={ buttonDef.isDisabled }
-                buttonStyle={ [_styles.button, buttonDef.buttonStyle] }
-                textStyle={ buttonDef.textStyle }
-            />
-        );
-    };
+    private _renderButton = (buttonDef: SimpleDialogButton, index: number): JSX.Element => (
+        <SimpleButton
+            key={ index }
+            onPress={ e => this._onButtonPress(e, buttonDef) }
+            title={ buttonDef.text }
+            text={ buttonDef.text || '' }
+            disabled={ buttonDef.isDisabled }
+            buttonStyle={ [_styles.button, buttonDef.buttonStyle] }
+            textStyle={ buttonDef.textStyle }
+        />
+    );
 
     private _onButtonPress(e: RX.Types.SyntheticEvent, buttonDef: SimpleDialogButton) {
         e.stopPropagation();
@@ -204,7 +204,7 @@ export default class SimpleDialog extends ComponentBase<SimpleDialogProps, RX.St
         }
 
         return false;
-    }
+    };
 
     private _onBack = () => {
         let buttonToCall: SimpleDialogButton | undefined;
@@ -222,7 +222,7 @@ export default class SimpleDialog extends ComponentBase<SimpleDialogProps, RX.St
         }
 
         return false;
-    }
+    };
 
     static dismissAnimated(dialogId: string): Promise<void> {
         return Modal.dismissAnimated(dialogId);

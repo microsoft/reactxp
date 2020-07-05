@@ -10,7 +10,7 @@ import * as NavModels from '../models/NavModels';
 export default class NavActions {
     static createTodoListContext(useStackNav: boolean, selectedTodoId?: string, showNewTodoPanel = false) {
         if (useStackNav) {
-            let navContext = new NavModels.StackRootNavContext();
+            const navContext = new NavModels.StackRootNavContext();
             navContext.stack.push(new NavModels.TodoListViewNavContext(selectedTodoId));
             if (showNewTodoPanel) {
                 navContext.stack.push(new NavModels.NewTodoViewNavContext());
