@@ -27,8 +27,8 @@ var shell = require('gulp-shell');
 var sourcemaps = require('gulp-sourcemaps');
 var stylish = require('jshint-stylish');
 var ts = require('gulp-typescript');
-var tslint = require('gulp-tslint');
-var tslintEng = require('tslint');
+var eslint = require('gulp-eslint');
+var eslintEng = require('eslint');
 var util = require('util');
 var watch = require('gulp-watch');
 
@@ -164,7 +164,7 @@ function getPlatformSpecificResources() {
     return config[configKey] || {};
 }
 
-var defaultFormatter = new tslintEng.Formatters.StylishFormatter();
+//var defaultFormatter = new eslintEng.Formatters.StylishFormatter();
 var createCacheInvalidator = function(cacheName) {
     function formatter() {}
     formatter.prototype.format = function(ruleFailures) {
@@ -188,16 +188,16 @@ var createCacheInvalidator = function(cacheName) {
 };
 
 // Note: Cannot have multiple instances of a gulp.task running at the same time. Pass the last parameter to make this print like a task.
-var tslintRunning = false;
-var tslintNeedsRun = true;
-function _runTsLintInternal(src, cacheName, fakeTaskName) {
-    if (tslintRunning) {
-        tslintNeedsRun = true;
+var eslintRunning = false;
+var eslintNeedsRun = true;
+function _runEsLintInternal(src, cacheName, fakeTaskName) {
+    if (eslintRunning) {
+        eslintNeedsRun = true;
         return Promise.resolve();
     }
 
-    tslintRunning = true;
-    tslintNeedsRun = false;
+    eslintRunning = true;
+    eslintNeedsRun = false;
 
     // Setup for fake gulp.task.
     var start = process.hrtime();
@@ -205,19 +205,19 @@ function _runTsLintInternal(src, cacheName, fakeTaskName) {
         gutil.log('Starting \'' + gutil.colors.cyan(fakeTaskName) + '\'...');
     }
 
-    // Run tslint.
+    // Run eslint.
     var stream = gulp.src(src, { base: './' }) // specify base to preserve folder structure
         .pipe(cached(cacheName, {optimizeMemory: true}))
-        .pipe(tslint({
-            tslint: tslintEng,
+        .pipe(eslint({
+            eslint: eslintEng,
             reporter: 'verbose',
             formatter: createCacheInvalidator(cacheName),
             fix: !!argv.fix
         }))
-        .pipe(tslint.report({
-            // Break non-dev builds on lint
-            emitError: !isDevEnv
-        }))
+        //.pipe(eslint.report({
+        //    // Break non-dev builds on lint
+        //    emitError: !isDevEnv
+        //}))
         .on('error', handleError);
 
     // Print duration for the fake gulp.task.
@@ -230,26 +230,26 @@ function _runTsLintInternal(src, cacheName, fakeTaskName) {
     }
 
     return stream.on('end', function() {
-        tslintRunning = false;
-        if (tslintNeedsRun) {
-            runTsLintFromWatcher();
+        eslintRunning = false;
+        if (eslintNeedsRun) {
+            runEsLintFromWatcher();
         }
     });
 }
 
-// Debounce running ts-lint. We don't need to call it once per change since it runs over all changed files.
-function _debounceTsLintRunner(runner, fakeTaskName) {
+// Debounce running es-lint. We don't need to call it once per change since it runs over all changed files.
+function _debounceEsLintRunner(runner, fakeTaskName) {
     return _.debounce(function () {
         runner(fakeTaskName);
     }, 100, { leading: true, trailing: true });
 }
 
-function runTsLint(fakeTaskName) {
+function runEsLint(fakeTaskName) {
     var src = config.ts.src;
-    var tsLintCacheName = 'tsLint';
-    return _runTsLintInternal(src, tsLintCacheName, fakeTaskName);
+    var esLintCacheName = 'esLint';
+    return _runEsLintInternal(src, esLintCacheName, fakeTaskName);
 }
-var runTsLintFromWatcher = _debounceTsLintRunner(runTsLint, 'tsLint');
+var runEsLintFromWatcher = _debounceEsLintRunner(runEsLint, 'esLint');
 
 function copyMultiple(copyList, callback) {
     // Iterate over each entry in the copy list. Each has a src
@@ -383,7 +383,7 @@ gulp.task('watch', function(callback) {
 
     if (!usesWebpack()) {
         // Watch for ts change & run linter
-        watcher(config.ts.src, gulp.series('compile-rn', 'apply-aliases', runTsLintFromWatcher));
+        watcher(config.ts.src, gulp.series('compile-rn', 'apply-aliases', runEsLintFromWatcher));
     }
 
     callback();
@@ -393,10 +393,10 @@ gulp.task('clean', function() {
     return del(_.flatten([config.clean.temp, config.clean[platform] || config.clean.rnApp]), { force: true });
 });
 
-gulp.task('ts-lint', function() {
-    // Webpack runs tslint
+gulp.task('es-lint', function() {
+    // Webpack runs eslint
     if (!usesWebpack()) {
-        return runTsLint();
+        return runEsLint();
     }
     return Promise.resolve();
 });
@@ -448,7 +448,7 @@ gulp.task('copy', function(callback) {
     copyMultiple(config.copy, callback);
 });
 
-gulp.task('lint', gulp.series('ts-lint', 'gulpfile-lint'));
+gulp.task('lint', gulp.series('es-lint', 'gulpfile-lint'));
 
 gulp.task('build', gulp.series('copy', 'compile-rn'));
 
