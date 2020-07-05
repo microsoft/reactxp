@@ -17,13 +17,13 @@ The commands in the instructions below assume you are in the root of this repo.
 
 - Run `npm run start-ios`. This compiles the TypeScript code and recompiles it whenever any files are changed.
 - In another command prompt run `npm run start`. This starts the React Native Packager.
-- Open the project (ios/RXPTodoList.xcodeproj) in Xcode and build it like any other React Native project.
+- In another command prompt run `npx pod-install && npx react-native run-ios`
 
 ### Building for Android
 
 - Run `npm run start-android`. This compiles the TypeScript code and recompiles it whenever any files are changed.
 - In another command prompt run `npm run start`. This starts the React Native Packager.
-- Open the project (in the android directory) in Android Studio and build it like any other React Native project.
+- In another command prompt run `npx react-native run-android`
 
 ### Building for Windows
 

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>RXPTodoList</string>
+	<string>rxptodolist</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,6 +26,8 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>
