@@ -11,7 +11,9 @@ The commands in the instructions below assume you are in the root of this repo.
 ### Building for Web
 
 - Run `npm run start-web`. This compiles the TypeScript code and recompiles it whenever any files are changed.
-- Follow instructions in docs/setup to start the local web server.
+- Run `node nodeserver.js`. This starts a local web server on localhost port 8080
+  - On Windows, if there is another process already bound to port 8080, the node server will fail to start ("Error listen EACCES 0.0.0.0:8080").
+- Within a browser, open http://localhost:8080/
 
 ### Building for iOS
 
