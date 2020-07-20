@@ -91,7 +91,7 @@ onLoadStart: (e: SyntheticEvent) => void = undefined; // Native only
 onMessage: (e: WebViewMessageEvent) => void = undefined;
 
 // Called when the navigation state changes
-onNavigationStateChange: (navigationState: WebViewNavigationState) => void;
+onNavigationStateChange: (navigationState: WebViewNavigationState) => void; // Native only
 
 // Flags that restrict behaviors within the control
 sandbox: WebViewSandboxMode = None;
