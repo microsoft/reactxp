@@ -26,16 +26,16 @@ const _styles = {
         paddingHorizontal: 4,
         paddingVertical: 8,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     }),
     nameText: RX.Styles.createTextStyle({
         font: Fonts.displayRegular,
         fontSize: FontSizes.menuItem,
         marginHorizontal: 8,
-        color: Colors.menuText
+        color: Colors.menuText,
     }),
     nameTextHover: RX.Styles.createTextStyle({
-        color: Colors.menuTextHover
+        color: Colors.menuTextHover,
     }),
     circleGlyph: RX.Styles.createViewStyle({
         width: 12,
@@ -43,19 +43,19 @@ const _styles = {
         borderRadius: 6,
         borderWidth: 1,
         borderColor: Colors.menuText,
-        backgroundColor: Colors.logoColor
+        backgroundColor: Colors.logoColor,
     }),
     circleGlyphHover: RX.Styles.createViewStyle({
-        borderColor: Colors.menuTextHover
-    })
+        borderColor: Colors.menuTextHover,
+    }),
 };
 
 export default class AccountMenuButton extends ComponentBase<RX.CommonProps, AccountMenuButtonState> {
     private _mountedButton: any;
 
     protected _buildState(props: RX.CommonProps, initState: boolean): Partial<AccountMenuButtonState> | undefined {
-        let partialState: Partial<AccountMenuButtonState> = {
-            currentUserName: CurrentUserStore.getFullName()
+        const partialState: Partial<AccountMenuButtonState> = {
+            currentUserName: CurrentUserStore.getFullName(),
         };
 
         return partialState;
@@ -82,28 +82,24 @@ export default class AccountMenuButton extends ComponentBase<RX.CommonProps, Acc
 
     private _onMountButton = (elem: any) => {
         this._mountedButton = elem;
-    }
+    };
 
     private _onPress = (e: RX.Types.SyntheticEvent) => {
         e.stopPropagation();
 
         RX.Popup.show({
-            getAnchor: () => {
-                return this._mountedButton;
-            },
-            getElementTriggeringPopup: () => {
-                return this._mountedButton;
-            },
+            getAnchor: () => this._mountedButton,
+            getElementTriggeringPopup: () => this._mountedButton,
             renderPopup: (anchorPosition: RX.Types.PopupPosition, anchorOffset: number, popupWidth: number, popupHeight: number) => {
-                let items: MenuItem[] = [{
+                const items: MenuItem[] = [{
                     command: 'settings',
-                    text: 'Account Settings'
+                    text: 'Account Settings',
                 }, {
                     command: '',
-                    text: '-'
+                    text: '-',
                 }, {
                     command: 'signout',
-                    text: 'Sign Out'
+                    text: 'Sign Out',
                 }];
 
                 return (
@@ -113,13 +109,13 @@ export default class AccountMenuButton extends ComponentBase<RX.CommonProps, Acc
                     />
                 );
             },
-            dismissIfShown: true
+            dismissIfShown: true,
         }, _menuPopupId);
-    }
+    };
 
     private _onSelectMenuItem = (command: string) => {
         RX.Popup.dismiss(_menuPopupId);
 
         // TODO - need to implement
-    }
+    };
 }

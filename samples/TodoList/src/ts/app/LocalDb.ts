@@ -11,16 +11,16 @@ import * as SyncTasks from 'synctasks';
 import * as TodoModels from '../models/TodoModels';
 
 // The actual value is just a string, but the type system can extract this extra info.
-type DBStore<Name extends string, ObjectType, KeyFormat> = string & { name?: Name, objectType?: ObjectType, keyFormat?: KeyFormat };
-type DBIndex<Store extends DBStore<string, any, any>, IndexKeyFormat> = string & { store?: Store, indexKeyFormat?: IndexKeyFormat };
+type DBStore<Name extends string, ObjectType, KeyFormat> = string & { name?: Name; objectType?: ObjectType; keyFormat?: KeyFormat };
+type DBIndex<Store extends DBStore<string, any, any>, IndexKeyFormat> = string & { store?: Store; indexKeyFormat?: IndexKeyFormat };
 
 const _appDatabaseName = 'todoDb';
 const _appSchemaVersion = 1;
 const Stores = {
-    todoItems: 'todoItems_v1' as DBStore<'TodoItemsStore', TodoModels.Todo, string>
+    todoItems: 'todoItems_v1' as DBStore<'TodoItemsStore', TodoModels.Todo, string>,
 };
 const Indexes = {
-    todoSearchTerms: 'todoItems_searchTerms_v1' as DBIndex<typeof Stores.todoItems, string>
+    todoSearchTerms: 'todoItems_searchTerms_v1' as DBIndex<typeof Stores.todoItems, string>,
 };
 
 const _appSchema: DbSchema = {
@@ -34,11 +34,11 @@ const _appSchema: DbSchema = {
                 {
                     name: Indexes.todoSearchTerms,
                     keyPath: '_searchTerms',
-                    fullText: true
-                }
-            ]
-        }
-    ]
+                    fullText: true,
+                },
+            ],
+        },
+    ],
 };
 
 class LocalDb {
@@ -51,11 +51,11 @@ class LocalDb {
     }
 
     private _openListOfProviders(providersToTry: DbProvider[], dbName: string, schema: DbSchema):
-        SyncTasks.Promise<DbProvider> {
+    SyncTasks.Promise<DbProvider> {
 
         const task = SyncTasks.Defer<DbProvider>();
         let providerIndex = 0;
-        let errorList: any[] = [];
+        const errorList: any[] = [];
 
         console.log('Opening Database: Providers: ' + providersToTry.length);
 
@@ -65,7 +65,7 @@ class LocalDb {
                 return;
             }
 
-            let provider = providersToTry[providerIndex];
+            const provider = providersToTry[providerIndex];
             provider.open(dbName, schema, false, false).then(() => {
                 console.log('Provider ' + providerIndex + ': Open Success!');
                 task.resolve(provider);
@@ -88,11 +88,7 @@ class LocalDb {
             return SyncTasks.Rejected('Database not open');
         }
 
-        return this._db.openTransaction([Stores.todoItems], false).then(tx => {
-            return tx.getStore(Stores.todoItems);
-        }).then(store => {
-            return store.openPrimaryKey().getAll() as SyncTasks.Promise<TodoModels.Todo[]>;
-        }).fail(this._handleDbFail);
+        return this._db.openTransaction([Stores.todoItems], false).then(tx => tx.getStore(Stores.todoItems)).then(store => store.openPrimaryKey().getAll() as SyncTasks.Promise<TodoModels.Todo[]>).fail(this._handleDbFail);
     }
 
     // Adds a new todo item to the DB.
@@ -101,11 +97,7 @@ class LocalDb {
             return SyncTasks.Rejected('Database not open');
         }
 
-        return this._db.openTransaction([Stores.todoItems], true).then(tx => {
-            return tx.getStore(Stores.todoItems);
-        }).then(store => {
-            return store.put(todo);
-        }).fail(this._handleDbFail);
+        return this._db.openTransaction([Stores.todoItems], true).then(tx => tx.getStore(Stores.todoItems)).then(store => store.put(todo)).fail(this._handleDbFail);
     }
 
     /**
@@ -117,11 +109,7 @@ class LocalDb {
             return SyncTasks.Rejected('Database not open');
         }
 
-        return this._db.openTransaction([Stores.todoItems], true).then(tx => {
-            return tx.getStore(Stores.todoItems);
-        }).then(store => {
-            return store.remove(todoId);
-        }).fail(this._handleDbFail);
+        return this._db.openTransaction([Stores.todoItems], true).then(tx => tx.getStore(Stores.todoItems)).then(store => store.remove(todoId)).fail(this._handleDbFail);
     }
 
     private _handleDbFail = (err: any) => {
@@ -139,7 +127,7 @@ class LocalDb {
                 console.error(`IDBStore: ${source.name}, ${source.keyPath}, indexes: ${source.indexNames.join()}`);
             }
         }
-    }
+    };
 }
 
 export default new LocalDb();

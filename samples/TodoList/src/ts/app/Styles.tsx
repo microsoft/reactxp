@@ -59,32 +59,32 @@ export const enum FontSizes {
 // Font infos
 export class Fonts {
     static monospace: RX.Types.FontInfo = {
-        fontFamily: FontRefs.monospace
+        fontFamily: FontRefs.monospace,
     };
 
     static displayLight: RX.Types.FontInfo = {
-        fontFamily: FontRefs.displayLight
+        fontFamily: FontRefs.displayLight,
     };
 
     static displayRegular: RX.Types.FontInfo = {
         fontFamily: FontRefs.displayRegular,
-        fontWeight: '400'
+        fontWeight: '400',
     };
 
     static displaySemibold: RX.Types.FontInfo = {
         fontFamily: FontRefs.displaySemibold,
-        fontWeight: '600'
+        fontWeight: '600',
     };
 
     static displayBold: RX.Types.FontInfo = {
         fontFamily: FontRefs.displayBold,
-        fontWeight: '700'
+        fontWeight: '700',
     };
 }
 
 // Styles
 export class Styles {
     static statusBarTopMargin = RX.Styles.createViewStyle({
-        marginTop: RX.StatusBar.isOverlay() ? 20 : 0
+        marginTop: RX.StatusBar.isOverlay() ? 20 : 0,
     });
 }

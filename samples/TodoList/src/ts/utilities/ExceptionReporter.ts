@@ -14,7 +14,7 @@ export type ExceptionReporterDelegate = (message: string, source: string | undef
     columnNo: number | undefined, errName: string | undefined, stackTrace: string | undefined) => boolean;
 
 export default class ExceptionReporter {
-    private _handlers : ExceptionReporterDelegate[] = [];
+    private _handlers: ExceptionReporterDelegate[] = [];
 
     constructor() {
         window.onerror = (event: Event | string, source?: string, fileNum?: number, columnNum?: number, ...extData: any[]) => {
@@ -22,8 +22,8 @@ export default class ExceptionReporter {
             let stack = '';
             let name = '';
             if (extData && extData[0]) {
-                stack = extData[0]['stack'] || stack;
-                name = extData[0]['name'] || name;
+                stack = extData[0].stack || stack;
+                name = extData[0].name || name;
             }
 
             let swallowError = false;
@@ -44,7 +44,7 @@ export default class ExceptionReporter {
 
     register(handler: ExceptionReporterDelegate) {
         if (handler !== null) {
-             this._handlers.push(handler);
+            this._handlers.push(handler);
         }
     }
 

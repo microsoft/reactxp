@@ -38,17 +38,17 @@ export default class HoverButton extends RX.Component<HoverButtonProps, HoverBut
         if (this.props.onPress) {
             this.props.onPress(e);
         }
-    }
+    };
 
     private _onHoverStart = () => {
         if (!this.props.disabled) {
             this.setState({ isHovering: true });
         }
-    }
+    };
 
     private _onHoverEnd = () => {
         if (!this.props.disabled) {
             this.setState({ isHovering: false });
         }
-    }
+    };
 }

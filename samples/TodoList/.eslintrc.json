@@ -1,0 +1,30 @@
+{
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": ["skype", "skype/react"],
+  "rules": {
+    "@typescript-eslint/naming-convention": [
+      "error",
+        { "selector": "variableLike", "format": ["camelCase", "UPPER_CASE"], "leadingUnderscore": "allow" }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.tsx"
+      ],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": "off"
+      }
+    },
+    {
+      "files": [
+        "PluginBaseChecker.ts"
+      ],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    }
+  ]
+}

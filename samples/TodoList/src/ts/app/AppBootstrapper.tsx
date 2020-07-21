@@ -9,9 +9,6 @@ import { DbProvider } from 'nosqlprovider';
 import * as RX from 'reactxp';
 import * as SyncTasks from 'synctasks';
 
-import AppConfig from './AppConfig';
-import DeepLinkConverter from './DeepLinkConverter';
-import LocalDb from './LocalDb';
 import NavContextStore from '../stores/NavContextStore';
 import PageUrlService from '../services/PageUrlService';
 import ResponsiveWidthStore from '../stores/ResponsiveWidthStore';
@@ -20,6 +17,10 @@ import ServiceManager, { Service } from '../services/ServiceManager';
 import ServiceRegistrar from '../services/ServiceRegistrar';
 import TodosStore from '../stores/TodosStore';
 
+import LocalDb from './LocalDb';
+import DeepLinkConverter from './DeepLinkConverter';
+import AppConfig from './AppConfig';
+
 export default abstract class AppBootstrapper {
     constructor() {
         RX.App.initialize(__DEV__, __DEV__);
@@ -27,15 +28,13 @@ export default abstract class AppBootstrapper {
         ServiceRegistrar.init();
 
         // Open the DB and startup any critical services before displaying the UI.
-        LocalDb.open(this._getDbProvidersToTry()).then(() => {
-            return this._startCriticalServices();
-        }).then(() => {
+        LocalDb.open(this._getDbProvidersToTry()).then(() => this._startCriticalServices()).then(() => {
             RX.UserInterface.setMainView(this._renderRootView());
 
             // Convert the initial URL into a navigation context.
             this._getInitialUrl().then(url => {
                 if (url) {
-                    let context = DeepLinkConverter.getContextFromUrl(url, NavContextStore.isUsingStackNav());
+                    const context = DeepLinkConverter.getContextFromUrl(url, NavContextStore.isUsingStackNav());
                     if (context) {
                         NavContextStore.setNavContext(context);
                     }
@@ -45,7 +44,7 @@ export default abstract class AppBootstrapper {
     }
 
     private _startCriticalServices(): SyncTasks.Promise<void> {
-        let servicesToStart: Service[] = [TodosStore];
+        const servicesToStart: Service[] = [TodosStore];
 
         if (AppConfig.getPlatformType() === 'web') {
             servicesToStart.push(PageUrlService);
@@ -65,7 +64,7 @@ export default abstract class AppBootstrapper {
     private _onLayoutRootView = (e: RX.Types.ViewOnLayoutEvent) => {
         const { width, height } = e;
         ResponsiveWidthStore.putWindowSize(width, height);
-    }
+    };
 
     // Subclasses must override.
     protected abstract _getDbProvidersToTry(): DbProvider[];

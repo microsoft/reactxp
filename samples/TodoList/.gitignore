@@ -15,6 +15,10 @@ build/
 local.properties
 *.iml
 
+# Xcode
+Pods/
+rxptodolist.xcworkspace
+
 
 # Certificate information for node webserver
 cert.pem

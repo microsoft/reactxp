@@ -11,19 +11,21 @@ The commands in the instructions below assume you are in the root of this repo.
 ### Building for Web
 
 - Run `npm run start-web`. This compiles the TypeScript code and recompiles it whenever any files are changed.
-- Follow instructions in docs/setup to start the local web server.
+- Run `node nodeserver.js`. This starts a local web server on localhost port 8080
+  - On Windows, if there is another process already bound to port 8080, the node server will fail to start ("Error listen EACCES 0.0.0.0:8080").
+- Within a browser, open http://localhost:8080/
 
 ### Building for iOS
 
 - Run `npm run start-ios`. This compiles the TypeScript code and recompiles it whenever any files are changed.
 - In another command prompt run `npm run start`. This starts the React Native Packager.
-- Open the project (ios/RXPTodoList.xcodeproj) in Xcode and build it like any other React Native project.
+- In another command prompt run `npx pod-install && npx react-native run-ios`
 
 ### Building for Android
 
 - Run `npm run start-android`. This compiles the TypeScript code and recompiles it whenever any files are changed.
 - In another command prompt run `npm run start`. This starts the React Native Packager.
-- Open the project (in the android directory) in Android Studio and build it like any other React Native project.
+- In another command prompt run `npx react-native run-android`
 
 ### Building for Windows
 

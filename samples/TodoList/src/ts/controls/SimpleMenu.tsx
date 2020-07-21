@@ -40,16 +40,16 @@ const _styles = {
         backgroundColor: Colors.menuBackground,
         borderWidth: 1,
         borderStyle: 'solid',
-        borderColor: Colors.menuBorder
+        borderColor: Colors.menuBorder,
     }),
     menuItemContainer: RX.Styles.createButtonStyle({
         minHeight: 30,
         alignItems: 'center',
         justifyContent: 'flex-start',
-        flexDirection: 'row'
+        flexDirection: 'row',
     }),
     menuItemHover: RX.Styles.createButtonStyle({
-        backgroundColor: Colors.menuItemHover
+        backgroundColor: Colors.menuItemHover,
     }),
     menuItemText: RX.Styles.createTextStyle({
         flex: 1,
@@ -58,22 +58,22 @@ const _styles = {
         color: Colors.menuText,
         marginLeft: 16,
         marginRight: 32,
-        marginVertical: 4
+        marginVertical: 4,
     }),
     checkMarkText: RX.Styles.createTextStyle({
         font: Fonts.displayRegular,
         fontSize: FontSizes.size16,
         marginRight: 16,
-        color: Colors.menuText
+        color: Colors.menuText,
     }),
     disabledText: RX.Styles.createTextStyle({
-        color: Colors.menuTextDisabled
+        color: Colors.menuTextDisabled,
     }),
     divider: RX.Styles.createViewStyle({
         height: 1,
         marginVertical: 4,
-        backgroundColor: Colors.grayEE
-    })
+        backgroundColor: Colors.grayEE,
+    }),
 };
 
 const _menuItemPrefix = 'menuitem';
@@ -85,7 +85,7 @@ export default class SimpleMenu extends ComponentBase<MenuProps, MenuState> {
         if (initialBuild) {
             return {
                 hoverCommand: undefined,
-                focusedIndex: -1
+                focusedIndex: -1,
             };
         }
         return {};
@@ -151,7 +151,7 @@ export default class SimpleMenu extends ComponentBase<MenuProps, MenuState> {
                 buttonContainerStyles.push(_styles.menuItemHover);
             }
 
-            let accessibilityLabel = item.text;
+            const accessibilityLabel = item.text;
             let selectedCheckMark: JSX.Element | undefined;
             if (item.checked) {
                 selectedCheckMark = (
@@ -218,7 +218,7 @@ export default class SimpleMenu extends ComponentBase<MenuProps, MenuState> {
     private _onMouseEnter(item: MenuItem) {
         if (!item.disabled && item.command !== this.state.hoverCommand) {
             this.setState({
-                hoverCommand: item.command
+                hoverCommand: item.command,
             });
         }
     }
@@ -226,7 +226,7 @@ export default class SimpleMenu extends ComponentBase<MenuProps, MenuState> {
     private _onMouseLeave(item: MenuItem) {
         if (!item.disabled && item.command === this.state.hoverCommand) {
             this.setState({
-                hoverCommand: undefined
+                hoverCommand: undefined,
             });
         }
     }

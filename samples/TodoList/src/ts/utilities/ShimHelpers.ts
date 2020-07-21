@@ -9,7 +9,7 @@ import { Options as ReSubOptions } from 'resub';
 
 import ExceptionReporter from './ExceptionReporter';
 
-declare var global: any;
+declare let global: any;
 
 export function shimEnvironment(isDev: boolean, isNative: boolean) {
     // Set resub development options early, before autosubscriptions set themselves up.
@@ -17,7 +17,7 @@ export function shimEnvironment(isDev: boolean, isNative: boolean) {
     ReSubOptions.preventTryCatchInRender = true;
 
     // Install our exception-reporting alert on local builds.
-    let exceptionReporter = new ExceptionReporter();
+    const exceptionReporter = new ExceptionReporter();
     if (isDev) {
         exceptionReporter.registerAlertView();
         exceptionReporter.registerConsoleView();
@@ -34,15 +34,15 @@ function shimReactNative() {
     if (typeof (document) === 'undefined') {
         global.document = {
             documentElement: {
-                style: {}
-            }
+                style: {},
+            },
         };
 
-        global.window.addEventListener = function (eventName: string) {
+        global.window.addEventListener = function(eventName: string) {
             // No-op
         };
 
-        global.window.removeEventListener = function (eventName: string) {
+        global.window.removeEventListener = function(eventName: string) {
             // No-op
         };
     }

@@ -7,9 +7,11 @@
 */
 
 import AppConfig from '../app/AppConfig';
+
+import TodosStore from '../stores/TodosStore';
+
 import PageUrlService from './PageUrlService';
 import ServiceManager from './ServiceManager';
-import TodosStore from '../stores/TodosStore';
 
 export default class ServiceRegistrar {
     static init() {

@@ -10,11 +10,12 @@ import ImageSource from 'modules/images';
 import * as RX from 'reactxp';
 import { ComponentBase } from 'resub';
 
-import AccountMenuButton from './AccountMenuButton';
 import HoverButton from '../controls/HoverButton';
 import NavContextStore from '../stores/NavContextStore';
 import { Colors, Fonts, FontSizes } from '../app/Styles';
 import VerticalSeparator from '../controls/VerticalSeparator';
+
+import AccountMenuButton from './AccountMenuButton';
 
 const _styles = {
     background: RX.Styles.createViewStyle({
@@ -23,46 +24,46 @@ const _styles = {
         borderBottomWidth: 1,
         borderColor: Colors.gray66,
         flexDirection: 'row',
-        paddingHorizontal: 16
+        paddingHorizontal: 16,
     }),
     logoContainer: RX.Styles.createViewStyle({
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     }),
     barControlsContainer: RX.Styles.createViewStyle({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        flexDirection: 'row'
+        flexDirection: 'row',
     }),
     logoImage: RX.Styles.createImageStyle({
         height: 24,
-        width: 26
+        width: 26,
     }),
     logoText: RX.Styles.createTextStyle({
         font: Fonts.displaySemibold,
         fontSize: FontSizes.size20,
         marginHorizontal: 4,
-        color: Colors.logoColor
+        color: Colors.logoColor,
     }),
     linkText: RX.Styles.createTextStyle({
         font: Fonts.displayRegular,
         fontSize: FontSizes.menuItem,
         marginHorizontal: 8,
-        color: Colors.menuText
+        color: Colors.menuText,
     }),
     linkTextHover: RX.Styles.createTextStyle({
-        color: Colors.menuTextHover
+        color: Colors.menuTextHover,
     }),
     backButtonContainer: RX.Styles.createViewStyle({
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     }),
     backText: RX.Styles.createTextStyle({
         font: Fonts.displayRegular,
         fontSize: FontSizes.size16,
-        color: Colors.menuText
-    })
+        color: Colors.menuText,
+    }),
 };
 
 export interface TopBarCompositeProps extends RX.CommonProps {
@@ -109,23 +110,21 @@ export default class TopBarComposite extends ComponentBase<TopBarCompositeProps,
         if (this.props.onBack) {
             this.props.onBack();
         }
-    }
+    };
 
-    private _renderBackButton = (isHovering: boolean) => {
-        return (
-            <RX.View style={ _styles.backButtonContainer }>
-                <RX.Text style={ [_styles.backText, isHovering ? _styles.linkTextHover : undefined] }>
-                    { 'Back' }
-                </RX.Text>
-            </RX.View>
-        );
-    }
+    private _renderBackButton = (isHovering: boolean) => (
+        <RX.View style={ _styles.backButtonContainer }>
+            <RX.Text style={ [_styles.backText, isHovering ? _styles.linkTextHover : undefined] }>
+                { 'Back' }
+            </RX.Text>
+        </RX.View>
+    );
 
     private _onPressLogo = (e: RX.Types.SyntheticEvent) => {
         e.stopPropagation();
 
         NavContextStore.navigateToTodoList('', false);
-    }
+    };
 
     private _onPressHelp = (e: RX.Types.SyntheticEvent) => {
         e.stopPropagation();
@@ -134,7 +133,7 @@ export default class TopBarComposite extends ComponentBase<TopBarCompositeProps,
     };
 
     private _onRenderHelpButton = (isHovering: boolean) => {
-        let textStyles = [_styles.linkText];
+        const textStyles = [_styles.linkText];
         if (isHovering) {
             textStyles.push(_styles.linkTextHover);
         }

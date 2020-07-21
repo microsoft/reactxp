@@ -23,22 +23,22 @@ const _styles = {
     container: RX.Styles.createViewStyle({
         flex: 1,
         alignSelf: 'stretch',
-        padding: 16
+        padding: 16,
     }),
     editTodoItem: RX.Styles.createTextInputStyle({
         margin: 8,
         height: 32,
         paddingHorizontal: 4,
         fontSize: FontSizes.size16,
-        alignSelf: 'stretch'
+        alignSelf: 'stretch',
     }),
     buttonContainer: RX.Styles.createViewStyle({
         margin: 8,
         alignSelf: 'stretch',
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        alignItems: 'center'
-    })
+        alignItems: 'center',
+    }),
 };
 
 export default class CreateTodoPanel extends RX.Component<CreateTodoPanelProps, CreateTodoPanelState> {
@@ -63,19 +63,19 @@ export default class CreateTodoPanel extends RX.Component<CreateTodoPanelProps, 
 
     private _onChangeText = (newText: string) => {
         this.setState({ todoText: newText });
-    }
+    };
 
     private _onSubmitText = () => {
         this._saveTodo();
-    }
+    };
 
     private _onPressSave = () => {
         this._saveTodo();
-    }
+    };
 
     private _saveTodo() {
         if (!!this.state && this.state.todoText) {
-            let newTodo = TodosStore.addTodo(this.state.todoText);
+            const newTodo = TodosStore.addTodo(this.state.todoText);
 
             this.setState({ todoText: '' });
 

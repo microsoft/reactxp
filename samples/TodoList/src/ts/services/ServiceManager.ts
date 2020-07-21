@@ -9,6 +9,7 @@
 */
 
 import * as assert from 'assert';
+
 import * as _ from 'lodash';
 import * as SyncTasks from 'synctasks';
 
@@ -40,15 +41,15 @@ export default class ServiceManager {
             dependencies,
             startupPromise: undefined,
             hasBegunStartingUp: false,
-            isComplete: false
+            isComplete: false,
         };
         ServiceManager._serviceInfos.push(serviceInfo);
     }
 
     static hasStarted(startupable: Service): boolean {
-        let startupInfo = _.find(ServiceManager._serviceInfos, info => info.service === startupable);
+        const startupInfo = _.find(ServiceManager._serviceInfos, info => info.service === startupable);
         assert.ok(startupInfo, 'Service not found in hasStarted: ' + ServiceManager._getName(startupable));
-        return startupInfo!.isComplete;
+        return startupInfo.isComplete;
     }
 
     static ensureStarted(services: Service[]): SyncTasks.Promise<void> {
@@ -57,7 +58,7 @@ export default class ServiceManager {
     }
 
     static ensureStartedSingle(service: Service): SyncTasks.Promise<void> {
-        let foundInfo = _.find(ServiceManager._serviceInfos, info => info.service === service);
+        const foundInfo = _.find(ServiceManager._serviceInfos, info => info.service === service);
         if (!foundInfo) {
             assert.ok(false, 'Service not registered for startup: ' + ServiceManager._getName(service));
             return SyncTasks.Rejected<void>('Service not registered for startup: ' +
@@ -73,14 +74,12 @@ export default class ServiceManager {
 
         // Pre-wrap this in a promise, since when you async wrap around to cascade
         // dependencies, you need startupPromise to already be set!
-        let deferred = SyncTasks.Defer<void>();
+        const deferred = SyncTasks.Defer<void>();
         startupInfo.startupPromise = deferred.promise();
 
         // Make sure all dependencies have launched.
         ServiceManager.ensureStarted(startupInfo.dependencies).then(() => {
-            const startupPromise = _.attempt(() => {
-                return service.startup();
-            });
+            const startupPromise = _.attempt(() => service.startup());
 
             if (_.isError(startupPromise)) {
                 return SyncTasks.Rejected<void>(startupPromise);

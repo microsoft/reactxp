@@ -28,7 +28,7 @@ class PageUrlService {
         // Prevent reentrancy.
         if (!this._handlingPopState) {
             const navContext = NavContextStore.getNavContext();
-            let newUrl = DeepLinkConverter.getUrlFromContext(navContext);
+            const newUrl = DeepLinkConverter.getUrlFromContext(navContext);
 
             this._navigatingToNewPlace = true;
             window.history.pushState(null, '', newUrl);

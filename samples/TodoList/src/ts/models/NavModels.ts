@@ -24,9 +24,9 @@ export enum NavViewId {
     ViewTodo
 }
 
-//----------------------------------------
+// ----------------------------------------
 // Root nav contexts
-//----------------------------------------
+// ----------------------------------------
 export abstract class RootNavContext {
     constructor(public isStackNav: boolean) {
     }
@@ -49,7 +49,7 @@ export class StackRootNavContext extends RootNavContext {
     }
 
     clone(): StackRootNavContext {
-        let clone = new StackRootNavContext();
+        const clone = new StackRootNavContext();
         _.each(this.stack, navContext => {
             clone.stack.push(navContext.clone());
         });
@@ -70,9 +70,9 @@ export class TodoRootNavContext extends CompositeRootNavContext {
     }
 }
 
-//----------------------------------------
+// ----------------------------------------
 // View nav contexts
-//----------------------------------------
+// ----------------------------------------
 
 export abstract class ViewNavContext {
     constructor(public viewId: NavViewId) {

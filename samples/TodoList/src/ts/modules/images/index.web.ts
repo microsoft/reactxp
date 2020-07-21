@@ -6,6 +6,7 @@
 */
 
 import AppConfig from '../../app/AppConfig';
+
 import { ImageSourceBase } from './Images';
 
 class ImageSource implements ImageSourceBase {
