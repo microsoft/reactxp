@@ -2,9 +2,7 @@
 This module provides a cross-platform control that allows the display of an independent web page within the [ReactXP](https://microsoft.github.io/reactxp/) library. This used to be a part of ReactXP core, but was extracted to be a standalone module inline with React Native `Lean Core` initiative. This exists as a standalone module to prevent users of ReactXP from having to link native modules when getting started.
 
 ## Getting Started
-This module relies on [react-native-webview](https://www.npmjs.com/package/react-native-webview) and will need to be linked into the react-native project.
-This can be done by following the linking instructions in the React Native documentation or by running
-```react-native link react-native-webview```
+This module relies on [react-native-webview](https://www.npmjs.com/package/react-native-webview) and will need to be added into the react native project. Follow the instructions in their [Getting Started](https://github.com/react-native-webview/react-native-webview/blob/HEAD/docs/Getting-Started.md) guide to properly add the package to the project.
 
 ## Documentation
 For detailed documentation, look [here](https://microsoft.github.io/reactxp/docs/extensions/webview.html).
