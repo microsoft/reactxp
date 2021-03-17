@@ -13,6 +13,8 @@ import SubscribableEvent from 'subscribableevent';
 
 export class MainViewStore extends SubscribableEvent<() => void> {
     private _mainView: React.ReactElement<any> | undefined;
+    private _contextWrapper: ((rootView: React.ReactElement<any>) => React.ReactElement<any>) | undefined;
+
 
     getMainView(): React.ReactElement<any> | undefined {
         return this._mainView;
@@ -20,6 +22,15 @@ export class MainViewStore extends SubscribableEvent<() => void> {
 
     setMainView(view: React.ReactElement<any>): void {
         this._mainView = view;
+        this.fire();
+    }
+
+    getContextWrapper(): ((rootView: React.ReactElement<any>) => React.ReactElement<any>) | undefined {
+        return this._contextWrapper;
+    }
+
+    setContextWrapper(contextWrapper: ((rootView: React.ReactElement<any>) => React.ReactElement<any>)): void {
+        this._contextWrapper = contextWrapper;
         this.fire();
     }
 }

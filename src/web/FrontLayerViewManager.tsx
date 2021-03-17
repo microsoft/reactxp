@@ -37,9 +37,15 @@ export class FrontLayerViewManager {
     private _isRtlAllowed = true;
     private _isRtlForced = false;
 
+    private _contextWrapper: ((rootView: React.ReactElement<any>) => React.ReactElement<any>) | undefined;
+
     setMainView(element: React.ReactElement<any>): void {
         this._mainView = element;
         this._renderRootView();
+    }
+
+    setContextWrapper(contextWrapper: ((rootView: React.ReactElement<any>) => React.ReactElement<any>)): void {
+        this._contextWrapper = contextWrapper;
     }
 
     isModalDisplayed(modalId?: string): boolean {
@@ -205,7 +211,12 @@ export class FrontLayerViewManager {
 
         const container = document.getElementsByClassName('app-container')[0];
 
-        ReactDOM.render(rootView, container);
+        const maybeContextWrappedRootView =
+            this._contextWrapper === undefined
+            ? rootView
+            : this._contextWrapper(rootView);
+
+        ReactDOM.render(maybeContextWrappedRootView, container);
     }
 
     isPopupDisplayed(popupId?: string): boolean {
