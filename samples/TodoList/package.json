@@ -47,7 +47,7 @@
         "jshint": "^2.11.1",
         "jshint-stylish": "^2.2.1",
         "metro-react-native-babel-preset": "^0.60.0",
-        "node-notifier": "^7.0.1",
+        "node-notifier": "^8.0.1",
         "path": "^0.12.7",
         "path-posix": "^1.0.0",
         "pretty-hrtime": "^1.0.3",
