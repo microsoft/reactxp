@@ -279,7 +279,7 @@ export class Button extends ButtonBase {
             /* 3 */
             this._isMouseOver && !this._ignoreTouchEnd
         ) {
-            if ('touches' in e) {
+            if ('touches' in e && e.cancelable) {
                 // Stop the to event sequence to prevent trigger button.onMouseDown
                 e.preventDefault();
                 if (this.props.onPress) {
