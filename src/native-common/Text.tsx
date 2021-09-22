@@ -65,6 +65,7 @@ export class Text extends React.Component<Types.TextProps, Types.Stateless> impl
                 importantForAccessibility={ importantForAccessibility }
                 numberOfLines={ this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
+                maxFontSizeMultiplier={ this.props.maxFontSizeMultiplier }
                 onPress={ onPress }
                 selectable={ this.props.selectable }
                 textBreakStrategy={ 'simple' }

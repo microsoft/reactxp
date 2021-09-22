@@ -40,6 +40,7 @@ export class Text extends CommonText {
                 importantForAccessibility={ importantForAccessibility }
                 numberOfLines={ this.props.numberOfLines === 0 ? undefined : this.props.numberOfLines }
                 allowFontScaling={ this.props.allowFontScaling }
+                maxFontSizeMultiplier={ this.props.maxFontSizeMultiplier }
                 ellipsizeMode={ this.props.ellipsizeMode }
                 onPress={ this.props.onPress }
                 textBreakStrategy={ this.props.textBreakStrategy }
