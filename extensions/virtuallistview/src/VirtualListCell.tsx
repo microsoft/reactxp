@@ -123,14 +123,11 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
     private _calculatedHeight = 0;
 
     private _topValue: RX.Animated.Value;
-    private _leftValue: RX.Animated.Value;
-    private _widthValue: RX.Animated.Value;
     private _ref = createRef<RX.Animated.View>();
 
-    // we need to split style for position and width because we use native driver for position,
-    // but native driver doesnt support width
+    // position style is splitted between animated (top) and static (width, left)
     private _animatedStylePosition: RX.Types.AnimatedViewStyleRuleSet;
-    private _animatedStyleWidth: RX.Types.AnimatedViewStyleRuleSet;
+    private _staticStylePosition: RX.Types.ViewStyleRuleSet;
     private _topAnimation: RX.Types.Animated.CompositeAnimation | undefined;
 
     private _itemKey: string | undefined;
@@ -145,32 +142,26 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
         const topValue = this._isVisible ? this._top : VirtualListCell._hiddenTopValue;
         this._topValue = RX.Animated.createValue(topValue);
 
-        const leftValue = props.left || 0;
-        this._leftValue = RX.Animated.createValue(leftValue);
-
         if (!props.isScreenReaderModeEnabled && !_isNativeMacOS) {
             // On native platforms, we'll stick with translate[X|Y] because it has a performance advantage.
             this._animatedStylePosition = RX.Styles.createAnimatedViewStyle({
                 transform: [{
                     translateY: this._topValue,
-                }],
-                left: this._leftValue,
+                }]
             });
         } else {
             // We need to work around an IE-specific bug. It doesn't properly handle
             // translateY in this case. In particular, if separate translations are used
             // within the item itself, it doesn't handle that combination.
             this._animatedStylePosition = RX.Styles.createAnimatedViewStyle({
-                top: this._topValue,
-                left: this._leftValue,
+                top: this._topValue
             });
         }
 
-        this._widthValue = RX.Animated.createValue(props.width || 0);
-
-        this._animatedStyleWidth = RX.Styles.createAnimatedViewStyle({
-            width: this._widthValue,
-        });
+        this._staticStylePosition = RX.Styles.createViewStyle({
+            width: this.props.width,
+            left: this.props.left || 0,
+        }, false);
     }
 
     UNSAFE_componentWillReceiveProps(nextProps: VirtualListCellProps<ItemInfo>) {
@@ -191,14 +182,6 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
         assert(this.props.isScreenReaderModeEnabled === nextProps.isScreenReaderModeEnabled);
 
         this.setItemKey(nextProps.itemKey);
-
-        if (this.props.left !== nextProps.left) {
-            this._leftValue.setValue(nextProps.left);
-        }
-
-        if (this.props.width !== nextProps.width) {
-            this._widthValue.setValue(nextProps.width);
-        }
 
         if (this.props.itemKey !== nextProps.itemKey) {
             this.setVisibility(nextProps.isVisible);
@@ -285,11 +268,13 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
                                 duration: 200,
                                 delay: animationDelay,
                                 easing: _skypeEaseInAnimationCurve,
+                                useNativeDriver: true,
                             }),
                             RX.Animated.timing(this._topValue, {
                                 toValue: top,
                                 duration: 400,
                                 easing: _skypeEaseOutAnimationCurve,
+                                useNativeDriver: true,
                             }),
                         ]);
                     } else {
@@ -298,6 +283,7 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
                             duration: 200,
                             delay: animationDelay,
                             easing: RX.Animated.Easing.InOut(),
+                            useNativeDriver: true,
                         });
                     }
 
@@ -346,7 +332,7 @@ export class VirtualListCell<ItemInfo extends VirtualListCellInfo> extends RX.Co
 
         return (
             <RX.Animated.View
-                style={ [_styles.cellView, overflow, this._animatedStylePosition, this._animatedStyleWidth] }
+                style={ [_styles.cellView, overflow, this._animatedStylePosition, this._staticStylePosition] }
                 ref={ this._ref }
                 tabIndex={ this.props.tabIndex }
                 onLayout={ this.props.onLayout ? this._onLayout : undefined }
