@@ -42,6 +42,7 @@ export class Text extends CommonText {
                 allowFontScaling={ this.props.allowFontScaling }
                 ellipsizeMode={ this.props.ellipsizeMode }
                 onPress={ this.props.onPress }
+                selectable={ this.props.selectable }
                 textBreakStrategy={ this.props.textBreakStrategy }
                 testID={ this.props.testId }
             >
