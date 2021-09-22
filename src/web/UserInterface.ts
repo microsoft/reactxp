@@ -114,6 +114,10 @@ export class UserInterface extends RX.UserInterface {
         FrontLayerViewManager.setMainView(element);
     }
 
+    setContextWrapper(contextWrapper: ((rootView: React.ReactElement<any>) => React.ReactElement<any>)): void {
+        FrontLayerViewManager.setContextWrapper(contextWrapper);
+    }
+
     registerRootView(viewKey: string, getComponentFunc: Function): void {
         // Nothing to do
     }

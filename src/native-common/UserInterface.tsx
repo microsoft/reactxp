@@ -137,6 +137,10 @@ export class UserInterface extends RX.UserInterface {
         MainViewStore.setMainView(element);
     }
 
+    setContextWrapper(contextWrapper: ((rootView: React.ReactElement<any>) => React.ReactElement<any>)): void {
+        MainViewStore.setContextWrapper(contextWrapper);
+    }
+
     registerRootViewUsingPropsFactory(factory: RN.ComponentProvider) {
         this._rootViewUsingPropsFactory = factory;
     }
