@@ -5,6 +5,9 @@
 
 ReactXP is a library for cross-platform app development using React and React Native.
 
+## ReactXP End of Life
+The ReactXP library is no longer being maintained and is is considered “end of life”. We recommend alternatives such as [React Native for Web](https://necolas.github.io/react-native-web/docs/). The ReactXP github project will be put into “archive” mode and will remain available in read-only form for the benefit of those who are still using it within older projects, but no new versions will be published.
+
 ## Why ReactXP
 With React and React Native, your web app can share most of its logic with your iOS and Android apps, but the view layer needs to be implemented separately for each platform. We have taken this a step further and developed a thin cross-platform layer we call ReactXP. If you write your app to this abstraction, you can share your view definitions, styles and animations across multiple target platforms. Of course, you can still provide platform-specific UI variants, but this can be done selectively where desired.
 
