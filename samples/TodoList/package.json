@@ -25,7 +25,7 @@
         "@types/node": "^14.0.14",
         "@types/react": "^16.9.41",
         "@types/webpack": "^4.41.18",
-        "async": "^3.2.0",
+        "async": "^3.2.2",
         "babel-loader": "^8.1.0",
         "babel-plugin-lodash": "^3.3.4",
         "cross-env": "^7.0.2",
