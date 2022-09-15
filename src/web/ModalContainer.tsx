@@ -29,15 +29,18 @@ const _styles = {
     },
 };
 
-export class ModalContainer extends React.Component<Types.CommonProps<ModalContainer>, Types.Stateless> {
+export class ModalContainer extends React.Component<
+Types.CommonProps<ModalContainer>,
+Types.Stateless
+> {
     constructor(props: Types.CommonProps<ModalContainer>) {
         super(props);
     }
 
     render() {
         return (
-            <div style={ _styles.modalContainerStyle as any }>
-                { this.props.children }
+            <div>
+                {this.props.children}
             </div>
         );
     }

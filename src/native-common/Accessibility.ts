@@ -36,15 +36,17 @@ export class Accessibility extends CommonAccessibility {
             });
 
             // Fetch initial state.
-            RN.AccessibilityInfo.fetch().then(isEnabled => {
-                if (!initialStateChanged) {
-                    this._updateScreenReaderStatus(isEnabled);
-                }
-            }).catch(err => {
-                if (AppConfig.isDevelopmentMode()) {
-                    console.error('Accessibility: RN.AccessibilityInfo.fetch failed');
-                }
-            });
+            RN.AccessibilityInfo.isScreenReaderEnabled()
+                .then(isEnabled => {
+                    if (!initialStateChanged) {
+                        this._updateScreenReaderStatus(isEnabled);
+                    }
+                })
+                .catch(err => {
+                    if (AppConfig.isDevelopmentMode()) {
+                        console.error('Accessibility: RN.AccessibilityInfo.fetch failed');
+                    }
+                });
         }
     }
 

@@ -58,17 +58,17 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
     private _longPressTimer: number | undefined;
 
     render() {
-        // SECURITY WARNING:
-        //   Note the use of rel='noreferrer'
-        //   Destroy the back-link to this window. Otherwise the (untrusted) URL we are about to load can redirect OUR window.
-        //   See: https://mathiasbynens.github.io/rel-noopener/
+    // SECURITY WARNING:
+    //   Note the use of rel='noreferrer'
+    //   Destroy the back-link to this window. Otherwise the (untrusted) URL we are about to load can redirect OUR window.
+    //   See: https://mathiasbynens.github.io/rel-noopener/
         return (
             <a
                 ref={ this._onMount }
                 style={ this._getStyles() }
                 title={ this.props.title }
                 href={ this.props.url }
-                target={ '_blank' }
+                target={ this.props.target || '_blank' }
                 rel={ 'noreferrer' }
                 onClick={ this._onClick }
                 onMouseEnter={ this.props.onHoverStart }
@@ -76,10 +76,13 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
                 onMouseDown={ this._onMouseDown }
                 onMouseUp={ this._onMouseUp }
                 tabIndex={ this.props.tabIndex }
-                onContextMenu={ this.props.onContextMenu ? this._onContextMenu : undefined }
+                onContextMenu={
+                    this.props.onContextMenu ? this._onContextMenu : undefined
+                }
                 data-test-id={ this.props.testId }
+                className={ this.props.className }
             >
-                { this.props.children }
+                {this.props.children}
             </a>
         );
     }
@@ -115,12 +118,18 @@ export class Link extends React.Component<Types.LinkProps, Types.Stateless> {
     };
 
     private _getStyles(): React.CSSProperties {
-        // There's no way in HTML to properly handle numberOfLines > 1,
-        //  but we can correctly handle the common case where numberOfLines is 1.
-        const ellipsisStyles = this.props.numberOfLines === 1 ? _styles.ellipsis : {};
+    // There's no way in HTML to properly handle numberOfLines > 1,
+    //  but we can correctly handle the common case where numberOfLines is 1.
+        const ellipsisStyles =
+      this.props.numberOfLines === 1 ? _styles.ellipsis : {};
         const selectableStyles = this.props.selectable ? _styles.selectable : {};
 
-        return Styles.combine([ _styles.defaultStyle, ellipsisStyles, this.props.style, selectableStyles ]) as React.CSSProperties;
+        return Styles.combine([
+            _styles.defaultStyle,
+            ellipsisStyles,
+            this.props.style,
+            selectableStyles,
+        ]) as React.CSSProperties;
     }
 
     private _onClick = (e: React.MouseEvent<any>) => {

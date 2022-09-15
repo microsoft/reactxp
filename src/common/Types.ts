@@ -1,18 +1,21 @@
 /**
-* Types.ts
-*
-* Copyright (c) Microsoft Corporation. All rights reserved.
-* Licensed under the MIT license.
-*
-* Type definitions for ReactXP framework.
-*/
+ * Types.ts
+ *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ * Type definitions for ReactXP framework.
+ */
 
 import * as React from 'react';
 
 // Use only for type data
 import * as RX from './Interfaces';
 
-export { default as SubscribableEvent, SubscriptionToken } from 'subscribableevent';
+export {
+    default as SubscribableEvent,
+    SubscriptionToken,
+} from 'subscribableevent';
 
 export type ReactNode = React.ReactNode;
 
@@ -20,7 +23,11 @@ export type ReactNode = React.ReactNode;
 // depends on using a platform specific React library (web vs native). Thus, we need an interface to abstract
 // this detail away from the components' common implementation.
 export interface ReactInterface {
-    createElement<P>(type: string, props?: P, ...children: ReactNode[]): React.ReactElement<P>;
+    createElement<P>(
+        type: string,
+        props?: P,
+        ...children: ReactNode[]
+    ): React.ReactElement<P>;
 }
 
 // ------------------------------------------------------------
@@ -81,11 +88,17 @@ export interface FlexboxChildrenStyle {
     alignContent?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
 
     flexWrap?: 'wrap' | 'nowrap';
-    justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around';
+    justifyContent?:
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-between'
+    | 'space-around';
 }
 
-export interface FlexboxStyle extends FlexboxParentStyle, FlexboxChildrenStyle {
-}
+export interface FlexboxStyle
+    extends FlexboxParentStyle,
+    FlexboxChildrenStyle {}
 
 export interface InterpolationConfig {
     inputRange: number[];
@@ -94,7 +107,7 @@ export interface InterpolationConfig {
 
 export abstract class AnimatedValue {
     constructor(val: number) {
-        // No-op
+    // No-op
     }
     abstract setValue(value: number): void;
     abstract interpolate(config: InterpolationConfig): InterpolatedValue;
@@ -151,8 +164,11 @@ export interface AnimatedTransformStyle {
 
 export type StyleRuleSet<T> = T | number | undefined;
 export type StyleRuleSetOrArray<T> = StyleRuleSet<T> | StyleRuleSet<T>[];
-export interface StyleRuleSetRecursiveArray<T> extends Array<StyleRuleSetOrArray<T> | StyleRuleSetRecursiveArray<T>> {}
-export type StyleRuleSetRecursive<T> = StyleRuleSet<T> | StyleRuleSetRecursiveArray<T>;
+export interface StyleRuleSetRecursiveArray<T>
+    extends Array<StyleRuleSetOrArray<T> | StyleRuleSetRecursiveArray<T>> {}
+export type StyleRuleSetRecursive<T> =
+  | StyleRuleSet<T>
+  | StyleRuleSetRecursiveArray<T>;
 
 // ------------------------------------------------------------
 // Image and View common Style Rules
@@ -171,7 +187,9 @@ export interface ViewAndImageCommonStyle extends FlexboxStyle, TransformStyle {
     opacity?: number;
 }
 
-export interface AnimatedViewAndImageCommonStyle extends AnimatedFlexboxStyle, AnimatedTransformStyle {
+export interface AnimatedViewAndImageCommonStyle
+    extends AnimatedFlexboxStyle,
+    AnimatedTransformStyle {
     borderRadius?: AnimatedValue | InterpolatedValue;
     backgroundColor?: InterpolatedValue;
     opacity?: AnimatedValue | InterpolatedValue;
@@ -208,8 +226,7 @@ export interface ViewStyle extends ViewAndImageCommonStyle {
 
 export type ViewStyleRuleSet = StyleRuleSet<ViewStyle>;
 
-export interface AnimatedViewStyle extends AnimatedViewAndImageCommonStyle {
-}
+export interface AnimatedViewStyle extends AnimatedViewAndImageCommonStyle {}
 
 export type AnimatedViewStyleRuleSet = StyleRuleSet<AnimatedViewStyle>;
 
@@ -229,8 +246,7 @@ export type ScrollViewStyleRuleSet = StyleRuleSet<ScrollViewStyle>;
 // Button Style Rules
 // ------------------------------------------------------------
 
-export interface ButtonStyle extends ViewStyle {
-}
+export interface ButtonStyle extends ViewStyle {}
 
 export type ButtonStyleRuleSet = StyleRuleSet<ButtonStyle>;
 
@@ -238,10 +254,10 @@ export type ButtonStyleRuleSet = StyleRuleSet<ButtonStyle>;
 // ActivityIndicator Style Rules
 // ------------------------------------------------------------
 
-export interface ActivityIndicatorStyle extends ViewStyle {
-}
+export interface ActivityIndicatorStyle extends ViewStyle {}
 
-export type ActivityIndicatorStyleRuleSet = StyleRuleSet<ActivityIndicatorStyle>;
+export type ActivityIndicatorStyleRuleSet =
+  StyleRuleSet<ActivityIndicatorStyle>;
 
 // ------------------------------------------------------------
 // Text Style Rules
@@ -250,7 +266,18 @@ export type ActivityIndicatorStyleRuleSet = StyleRuleSet<ActivityIndicatorStyle>
 export interface FontInfo {
     fontFamily?: string;
     fontStyle?: 'normal' | 'italic';
-    fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
+    fontWeight?:
+    | 'normal'
+    | 'bold'
+    | '100'
+    | '200'
+    | '300'
+    | '400'
+    | '500'
+    | '600'
+    | '700'
+    | '800'
+    | '900';
 }
 
 export interface TextStyle extends ViewStyle {
@@ -258,12 +285,27 @@ export interface TextStyle extends ViewStyle {
     fontFamily?: string;
     fontSize?: number;
     fontStyle?: 'normal' | 'italic';
-    fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
+    fontWeight?:
+    | 'normal'
+    | 'bold'
+    | '100'
+    | '200'
+    | '300'
+    | '400'
+    | '500'
+    | '600'
+    | '700'
+    | '800'
+    | '900';
     font?: FontInfo;
     letterSpacing?: number;
     lineHeight?: number;
     textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify';
-    textDecorationLine?: 'none' | 'underline' | 'line-through' | 'underline line-through';
+    textDecorationLine?:
+    | 'none'
+    | 'underline'
+    | 'line-through'
+    | 'underline line-through';
     textDecorationStyle?: 'solid' | 'double' | 'dotted' | 'dashed';
     textDecorationColor?: string;
     writingDirection?: 'auto' | 'ltr' | 'rtl';
@@ -287,24 +329,24 @@ export type AnimatedTextStyleRuleSet = StyleRuleSet<AnimatedTextStyle>;
 // TextInput Style Rules
 // ------------------------------------------------------------
 
-export interface TextInputStyle extends TextStyle {
-}
+export interface TextInputStyle extends TextStyle {}
 
 export type TextInputStyleRuleSet = StyleRuleSet<TextInputStyle>;
 
-export interface AnimatedTextInputStyle extends AnimatedViewAndImageCommonStyle {
+export interface AnimatedTextInputStyle
+    extends AnimatedViewAndImageCommonStyle {
     color?: InterpolatedValue;
     fontSize?: AnimatedValue | InterpolatedValue;
 }
 
-export type AnimatedTextInputStyleRuleSet = StyleRuleSet<AnimatedTextInputStyle>;
+export type AnimatedTextInputStyleRuleSet =
+  StyleRuleSet<AnimatedTextInputStyle>;
 
 // ------------------------------------------------------------
 // Link Style Rules
 // ------------------------------------------------------------
 
-export interface LinkStyle extends TextStyle {
-}
+export interface LinkStyle extends TextStyle {}
 
 export type LinkStyleRuleSet = StyleRuleSet<LinkStyle>;
 
@@ -320,8 +362,9 @@ export interface ImageStyle extends ViewAndImageCommonStyle, FlexboxStyle {
 
 export type ImageStyleRuleSet = StyleRuleSet<ImageStyle>;
 
-export interface AnimatedImageStyle extends AnimatedViewAndImageCommonStyle, AnimatedFlexboxStyle {
-}
+export interface AnimatedImageStyle
+    extends AnimatedViewAndImageCommonStyle,
+    AnimatedFlexboxStyle {}
 
 export type AnimatedImageStyleRuleSet = StyleRuleSet<AnimatedImageStyle>;
 
@@ -346,7 +389,10 @@ export type ComponentBase = React.Component<any, any>;
 interface RefObject<T> {
     readonly current: T | null;
 }
-type Ref<T> = { bivarianceHack(instance: T | null): void }['bivarianceHack'] | RefObject<T> | null;
+type Ref<T> =
+  | { bivarianceHack(instance: T | null): void }['bivarianceHack']
+  | RefObject<T>
+  | null;
 interface RefAttributes<T> {
     ref?: Ref<T>;
     key?: string | number;
@@ -385,7 +431,7 @@ export enum ImportantForAccessibility {
     Auto = 1,
     Yes,
     No,
-    NoHideDescendants
+    NoHideDescendants,
 }
 
 export type AriaLive = 'off' | 'assertive' | 'polite';
@@ -395,7 +441,7 @@ export type AriaLive = 'off' | 'assertive' | 'polite';
 export enum AccessibilityLiveRegion {
     None,
     Polite,
-    Assertive
+    Assertive,
 }
 
 // NOTE: This enum is organized based on priority of these traits (0 is the lowest),
@@ -451,14 +497,16 @@ export enum AccessibilityTrait {
 
     // Desktop & mobile. This is at the end because this
     // is the highest priority trait.
-    None
+    None,
 }
 
 // When multiple components with autoFocus=true are mounting at the same time,
 // and/or multiple requestFocus() calls are happening during the same render cycle,
 // it is possible to specify a callback which will choose one from those multiple.
 // To set this callback use View's arbitrateFocus property.
-export type FocusArbitrator = (candidates: FocusCandidate[]) => FocusCandidate | undefined;
+export type FocusArbitrator = (
+    candidates: FocusCandidate[]
+) => FocusCandidate | undefined;
 
 // FocusArbitrator callback will be called with an array of FocusCandidate.
 // See View's arbitrateFocus property.
@@ -470,12 +518,15 @@ export interface FocusCandidate {
     accessibilityId?: string;
 }
 
-export interface CommonStyledProps<T, C = React.Component> extends CommonProps<C> {
+export interface CommonStyledProps<T, C = React.Component>
+    extends CommonProps<C> {
     style?: StyleRuleSetRecursive<T>;
 }
 
 // Button
-export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet, RX.Button>, CommonAccessibilityProps {
+export interface ButtonProps
+    extends CommonStyledProps<ButtonStyleRuleSet, RX.Button>,
+    CommonAccessibilityProps {
     title?: string;
     disabled?: boolean;
     disabledOpacity?: number;
@@ -527,7 +578,12 @@ export interface Headers {
 }
 
 // Image
-export type ImageResizeMode = 'stretch' | 'contain' | 'cover' | 'auto' | 'repeat';
+export type ImageResizeMode =
+  | 'stretch'
+  | 'contain'
+  | 'cover'
+  | 'auto'
+  | 'repeat';
 
 export interface ImagePropsShared<C = React.Component> extends CommonProps<C> {
     source: string;
@@ -573,7 +629,7 @@ export interface TextPropsShared<C = React.Component> extends CommonProps<C> {
     allowFontScaling?: boolean;
 
     // iOS and Android only
-    ellipsizeMode?:  'head' | 'middle' | 'tail';
+    ellipsizeMode?: 'head' | 'middle' | 'tail';
 
     // Exposing this property as temporary workaround to fix a bug.
     // TODO : http://skype.vso.io/865016 : remove this exposed property
@@ -608,11 +664,13 @@ export enum LimitFocusType {
     Limited = 1,
     // When limitFocusWithin=Accessible, the View and the focusable components inside
     // the View get only tabIndex=-1.
-    Accessible = 2
+    Accessible = 2,
 }
 
 // View
-export interface ViewPropsShared<C = React.Component> extends CommonProps<C>, CommonAccessibilityProps {
+export interface ViewPropsShared<C = React.Component>
+    extends CommonProps<C>,
+    CommonAccessibilityProps {
     title?: string;
     ignorePointerEvents?: boolean; // Prop for disabling touches on self
     blockPointerEvents?: boolean; // Prop for disabling touches on self and all child views
@@ -623,12 +681,10 @@ export interface ViewPropsShared<C = React.Component> extends CommonProps<C>, Co
     limitFocusWithin?: LimitFocusType; // Web-only, make the view and all focusable subelements not focusable
 
     autoFocus?: boolean; // The component is a candidate for being autofocused.
-
-    // When multiple components with autoFocus=true inside this View are mounting at the same time,
+    arbitrateFocus?: FocusArbitrator; // When multiple components with autoFocus=true inside this View are mounting at the same time,
     // and/or multiple components inside this view have received requestFocus() call during the same
     // render cycle, this callback will be called so that it's possible for the application to
     // decide which one should actually be focused.
-    arbitrateFocus?: FocusArbitrator;
 
     importantForLayout?: boolean; // Web-only, additional invisible DOM elements will be added to track the size changes faster
     id?: string; // Web-only. Needed for accessibility.
@@ -757,15 +813,17 @@ export enum GestureMouseCursor {
     NWSEResize,
     NotAllowed,
     ZoomIn,
-    ZoomOut
+    ZoomOut,
 }
 
 export enum PreferredPanGesture {
     Horizontal,
-    Vertical
+    Vertical,
 }
 
-export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet, RX.GestureView>, CommonAccessibilityProps {
+export interface GestureViewProps
+    extends CommonStyledProps<ViewStyleRuleSet, RX.GestureView>,
+    CommonAccessibilityProps {
     // Gestures and attributes that apply only to touch inputs
     onPinchZoom?: (gestureState: MultiTouchGestureState) => void;
     onRotate?: (gestureState: MultiTouchGestureState) => void;
@@ -807,7 +865,9 @@ export interface ScrollIndicatorInsets {
 }
 
 // ScrollView
-export interface ScrollViewProps extends CommonStyledProps<ScrollViewStyleRuleSet, RX.ScrollView>, CommonAccessibilityProps {
+export interface ScrollViewProps
+    extends CommonStyledProps<ScrollViewStyleRuleSet, RX.ScrollView>,
+    CommonAccessibilityProps {
     children?: ReactNode;
 
     horizontal?: boolean; // By default false
@@ -875,7 +935,8 @@ export interface ScrollViewProps extends CommonStyledProps<ScrollViewStyleRuleSe
 }
 
 // Link
-export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet, RX.Link> {
+export interface LinkProps
+    extends CommonStyledProps<LinkStyleRuleSet, RX.Link> {
     title?: string;
     url: string;
     children?: ReactNode;
@@ -885,6 +946,8 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet, RX.Link> 
     tabIndex?: number;
     accessibilityId?: string;
     autoFocus?: boolean; // The component is a candidate for being autofocused.
+    className?: string;
+    target?: '_blank' | '_self' | '_parent' | '_top';
 
     onPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
     onLongPress?: (e: RX.Types.SyntheticEvent, url: string) => void;
@@ -894,7 +957,9 @@ export interface LinkProps extends CommonStyledProps<LinkStyleRuleSet, RX.Link> 
 }
 
 // TextInput
-export interface TextInputPropsShared<C = React.Component> extends CommonProps<C>, CommonAccessibilityProps {
+export interface TextInputPropsShared<C = React.Component>
+    extends CommonProps<C>,
+    CommonAccessibilityProps {
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
     autoCorrect?: boolean;
     autoFocus?: boolean; // The component is a candidate for being autofocused.
@@ -946,12 +1011,19 @@ export interface TextInputProps extends TextInputPropsShared<RX.TextInput> {
     style?: StyleRuleSetRecursive<TextInputStyleRuleSet>;
 }
 
-export interface AnimatedTextInputProps extends TextInputPropsShared<RX.AnimatedTextInput> {
-    style?: StyleRuleSetRecursive<AnimatedTextInputStyleRuleSet | TextInputStyleRuleSet>;
+export interface AnimatedTextInputProps
+    extends TextInputPropsShared<RX.AnimatedTextInput> {
+    style?: StyleRuleSetRecursive<
+    AnimatedTextInputStyleRuleSet | TextInputStyleRuleSet
+    >;
 }
 
 // ActivityIndicator
-export interface ActivityIndicatorProps extends CommonStyledProps<ActivityIndicatorStyleRuleSet, RX.ActivityIndicator> {
+export interface ActivityIndicatorProps
+    extends CommonStyledProps<
+    ActivityIndicatorStyleRuleSet,
+    RX.ActivityIndicator
+    > {
     color: string;
     size?: 'large' | 'medium' | 'small' | 'tiny';
     deferTime?: number; // Number of ms to wait before displaying
@@ -960,7 +1032,7 @@ export interface ActivityIndicatorProps extends CommonStyledProps<ActivityIndica
 // 'context' mode makes it attempt to behave like a context menu -- defaulting
 // to the lower right of the anchor element and working its way around.  It is not supported
 // with inner positioning and will throw an exception if used there.
-export type PopupPosition  = 'top' | 'right' | 'bottom' | 'left' | 'context';
+export type PopupPosition = 'top' | 'right' | 'bottom' | 'left' | 'context';
 
 // Popup
 export interface PopupOptions {
@@ -969,8 +1041,12 @@ export interface PopupOptions {
     getAnchor: () => React.Component<any, any>;
 
     // Renders the contents of the popup.
-    renderPopup: (anchorPosition: PopupPosition, anchorOffset: number,
-        popupWidth: number, popupHeight: number) => ReactNode;
+    renderPopup: (
+        anchorPosition: PopupPosition,
+        anchorOffset: number,
+        popupWidth: number,
+        popupHeight: number
+    ) => ReactNode;
 
     // Returns a mounted component instance that controls the triggering of the popup.
     // In majority of cases, "anchor" of popup has handlers to control when the popup will be seen and this function is not required.
@@ -1067,7 +1143,7 @@ export interface AlertOptions {
 export enum LocationErrorType {
     PermissionDenied = 1,
     PositionUnavailable,
-    Timeout
+    Timeout,
 }
 
 export type LocationWatchId = number;
@@ -1077,7 +1153,6 @@ export type LocationFailureCallback = (error: LocationErrorType) => void;
 //
 // Animated
 // ----------------------------------------------------------------------
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Animated {
     export interface EndResult { finished: boolean }
     export type EndCallback = (result: EndResult) => void;
@@ -1108,14 +1183,20 @@ export namespace Animated {
         outputRange: (number | string)[];
     }
 
-    export type TimingFunction = (value: RX.Types.AnimatedValue | RX.Types.InterpolatedValue,
-        config: TimingAnimationConfig) => CompositeAnimation;
+    export type TimingFunction = (
+        value: RX.Types.AnimatedValue | RX.Types.InterpolatedValue,
+        config: TimingAnimationConfig
+    ) => CompositeAnimation;
     export let timing: TimingFunction;
 
-    export type SequenceFunction = (animations: CompositeAnimation[]) => CompositeAnimation;
+    export type SequenceFunction = (
+        animations: CompositeAnimation[]
+    ) => CompositeAnimation;
     export let sequence: SequenceFunction;
 
-    export type ParallelFunction = (animations: CompositeAnimation[]) => CompositeAnimation;
+    export type ParallelFunction = (
+        animations: CompositeAnimation[]
+    ) => CompositeAnimation;
     export let parallel: ParallelFunction;
 
     export interface EasingFunction {
@@ -1265,7 +1346,7 @@ export enum LinkingErrorCode {
     NoAppFound = 0,
     UnexpectedFailure = 1,
     Blocked = 2,
-    InitialUrlNotFound = 3
+    InitialUrlNotFound = 3,
 }
 
 export interface LinkingErrorInfo {
@@ -1281,7 +1362,7 @@ export enum AppActivationState {
     Active = 1,
     Background = 2,
     Inactive = 3,
-    Extension = 4
+    Extension = 4,
 }
 
 // UserInterface
