@@ -70,7 +70,7 @@
         "nosqlprovider": "^0.6.23",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
-        "react-native": "0.62.2",
+        "react-native": "0.70.2",
         "react-native-sqlite-storage": "^5.0.0",
         "react-native-windows": "^0.62.0",
         "reactxp": "^2.0.0",
