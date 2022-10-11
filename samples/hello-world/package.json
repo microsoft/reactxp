@@ -54,7 +54,7 @@
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-native": "0.70.2",
-    "react-native-windows": "0.70.2",
+    "react-native-windows": "1.0.0",
     "reactxp": "^2.0.0",
     "reactxp-imagesvg": "^2.0.0",
     "reactxp-navigation": "^2.0.0",
