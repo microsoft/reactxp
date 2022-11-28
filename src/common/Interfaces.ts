@@ -64,6 +64,7 @@ export abstract class App {
 
 export abstract class UserInterface {
     abstract setMainView(element: React.ReactElement<any>): void;
+    abstract setContextWrapper(contextWrapper: ((rootView: React.ReactElement<any>) => React.ReactElement<any>)): void;
     abstract registerRootView(viewKey: string, getComponentFunc: Function): void;
 
     abstract useCustomScrollbars(enable?: boolean): void;

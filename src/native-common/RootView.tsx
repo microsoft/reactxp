@@ -35,6 +35,7 @@ interface RootViewPropsWithMainViewType extends BaseRootViewProps {
 
 interface RootViewState {
     mainView?: any;
+    contextWrapper?: (rootView: React.ReactElement<any>) => React.ReactElement<any>;
     announcementText?: string;
 }
 
@@ -144,7 +145,12 @@ abstract class BaseRootView<P extends BaseRootViewProps> extends React.Component
             </RN.Animated.View>
         );
 
-        return this.renderTopView(content);
+        const maybeContextWrappedContent =
+            this.state.contextWrapper === undefined
+            ? content
+            : this.state.contextWrapper(content);
+
+        return this.renderTopView(maybeContextWrappedContent);
     }
 
     protected _renderAnnouncerView(): JSX.Element {
@@ -193,13 +199,15 @@ class RootViewUsingStore extends BaseRootView<BaseRootViewProps> {
 
     private _getStateFromStore(): RootViewState {
         let mainView = MainViewStore.getMainView();
+        let contextWrapper = MainViewStore.getContextWrapper();
 
         if (mainView && !isEqual(mainView.props, this._mainViewProps)) {
             mainView = React.cloneElement(mainView, this._mainViewProps);
         }
 
         return {
-            mainView: mainView,
+            mainView:       mainView,
+            contextWrapper: contextWrapper,
         };
     }
 
