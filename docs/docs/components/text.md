@@ -65,6 +65,7 @@ onPress?: (e: SyntheticEvent) => void = undefined;
 onContextMenu?: (e: SyntheticEvent) => void = undefined;
 
 // Is the text selectable (affects mouse pointer and copy command)
+// iOS doesn't support partial selections.
 selectable: boolean = false;
 
 // See below for supported styles
